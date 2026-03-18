@@ -78,6 +78,12 @@ class ResearchAgent:
         self._router   = get_router()
         self._graph    = evidence_graph
         self._memory   = portfolio_memory
+        # Wire in real PDF parser for grounding with actual financial data
+        try:
+            from ..data.parsers.real_pdf_parser import RealPDFParser
+            self._real_parser = RealPDFParser()
+        except ImportError:
+            self._real_parser = None
 
     async def analyze(self, doc_text: str, doc_id: str, ticker: str, query: str) -> dict:
         # Pull prior thesis from memory
@@ -90,10 +96,21 @@ class ResearchAgent:
                 + "\n\nCompare current analysis against prior thesis.\n"
             )
 
+        # Ground with REAL financial data from yfinance
+        grounding_context = ""
+        if self._real_parser:
+            try:
+                parsed = self._real_parser.parse_yfinance(ticker)
+                if parsed.facts:
+                    grounding_context = "\n\n" + parsed.to_grounding_context() + "\n"
+            except Exception:
+                pass
+
         prompt = (
             f"DOCUMENT ID: {doc_id}\nTICKER: {ticker}\n"
+            f"{grounding_context}"
             f"{history_context}"
-            f"\nDOCUMENT TEXT:\n{doc_text[:60000]}\n\n"
+            f"\nDOCUMENT TEXT:\n{doc_text[:50000]}\n\n"
             f"QUERY: {query}"
         )
 
@@ -116,11 +133,11 @@ class ResearchAgent:
             node = EvidenceNode(
                 claim=c["claim"],
                 source_doc_id=doc_id,
-                page_number=max(int(c.get("page", 1)), 1),
+                page_number=max(int(c.get("page") or 1), 1),
                 paragraph_hash=f"{doc_id}_claim_{i}",
                 extraction_timestamp=now,
                 model_version="nemotron-3-super",
-                confidence=float(c.get("confidence", 0.8)),
+                confidence=float(c.get("confidence") or 0.8),
                 ontology_tags=c.get("ontology_tags", [])
             )
             nid = await self._graph.add_node(node)

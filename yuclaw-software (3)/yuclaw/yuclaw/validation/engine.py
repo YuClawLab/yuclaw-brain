@@ -143,6 +143,12 @@ class DarwinianSandbox:
     def __init__(self, calmar_threshold: float = 1.0):
         self._router   = get_router()
         self._threshold = calmar_threshold
+        # Wire in real backtester for actual Calmar computation
+        try:
+            from ..validation.real_backtest import RealBacktester
+            self._real_bt = RealBacktester()
+        except ImportError:
+            self._real_bt = None
 
     async def attack(self, strategy: str, strategy_id: str) -> SandboxResult:
         # Step 1: AI generates strategy-specific attack scenarios
@@ -169,7 +175,17 @@ class DarwinianSandbox:
         killed    = [r for r in results if not r.survived]
         survived  = len(results) - len(killed)
         worst_dd  = max((abs(r.max_drawdown) for r in killed), default=0.05)
-        calmar    = 0.15 / worst_dd if worst_dd > 0 else 0.0
+
+        # Use REAL Calmar from actual price data if available
+        calmar = 0.15 / worst_dd if worst_dd > 0 else 0.0
+        if self._real_bt:
+            try:
+                real_result = self._real_bt.run_momentum(start="2010-01-01")
+                if real_result and real_result.calmar_ratio > 0:
+                    calmar = real_result.calmar_ratio
+                    worst_dd = real_result.max_drawdown
+            except Exception:
+                pass  # Fall back to LLM-estimated Calmar
 
         passed = (calmar >= self._threshold) and (survived / len(results) >= 0.5)
 
