@@ -97,19 +97,48 @@ class FactorLab:
         factor_name = factor.get("factor_name", "unnamed_factor")
         print(f"  Factor: {factor_name}")
 
-        # Step 2: Estimate backtest performance
-        print("  Step 2/3: Estimating historical performance...")
-        backtest_resp = await self._router.complete(
-            prompt=(f"Factor specification:\n{json.dumps(factor, indent=2)}\n\n"
-                    f"Estimate historical performance characteristics for this factor "
-                    f"over the past 5 years across US equity ETF universe."),
-            system=BACKTEST_SUMMARY_SYSTEM,
-            max_tokens=1500
-        )
+        # Step 2: REAL backtest with actual historical prices
+        print("  Step 2/3: Running REAL backtest with historical prices...")
+        backtest = {}
         try:
-            backtest = json.loads(backtest_resp)
-        except Exception:
-            backtest = {"error": "parse_failed", "raw": backtest_resp[:300]}
+            from ..validation.real_backtest import RealBacktester
+            bt = RealBacktester()
+            lookback = max(1, factor.get("lookback_period_days", 180) // 30)
+            real_result = bt.run_momentum(
+                lookback_months=lookback,
+                top_n=3,
+                stop_loss=factor.get("stop_loss_pct", 0.05),
+                start="2010-01-01",
+            )
+            if real_result:
+                backtest = {
+                    "period": f"{real_result.start_date} to {real_result.end_date}",
+                    "annualized_return_pct": round(real_result.annualized_return * 100, 1),
+                    "annualized_volatility_pct": round(real_result.volatility * 100, 1),
+                    "sharpe_ratio": round(real_result.sharpe_ratio, 2),
+                    "max_drawdown_pct": round(real_result.max_drawdown * 100, 1),
+                    "calmar_ratio": round(real_result.calmar_ratio, 3),
+                    "win_rate_pct": round(real_result.win_rate * 100, 1),
+                    "is_real": True,
+                    "crisis_returns": {k: round(v*100, 1) for k, v in real_result.crisis_returns.items()},
+                }
+                print(f"  REAL Calmar: {real_result.calmar_ratio:.3f}, Sharpe: {real_result.sharpe_ratio:.2f}")
+            else:
+                raise ValueError("Backtest returned no results")
+        except Exception as e:
+            print(f"  Real backtest failed ({e}), falling back to LLM estimate...")
+            backtest_resp = await self._router.complete(
+                prompt=(f"Factor specification:\n{json.dumps(factor, indent=2)}\n\n"
+                        f"Estimate historical performance characteristics for this factor "
+                        f"over the past 5 years across US equity ETF universe."),
+                system=BACKTEST_SUMMARY_SYSTEM,
+                max_tokens=1500
+            )
+            try:
+                backtest = json.loads(backtest_resp)
+                backtest["is_real"] = False
+            except Exception:
+                backtest = {"error": "parse_failed", "is_real": False}
 
         # Step 3: Adversarial validation (Red Team attack)
         print("  Step 3/3: Red Team adversarial attack...")

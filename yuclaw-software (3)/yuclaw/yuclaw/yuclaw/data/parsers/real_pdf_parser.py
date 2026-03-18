@@ -194,11 +194,22 @@ class RealPDFParser:
         filing = ParsedFiling(ticker=ticker, filing_type=filing_type, raw_text=text[:100000])
         facts = []
 
+        def _safe_float(s: str) -> Optional[float]:
+            """Safely convert a string to float, returning None on failure."""
+            if not s or not s.strip():
+                return None
+            try:
+                return float(s.replace(",", "").strip())
+            except (ValueError, TypeError):
+                return None
+
         for page_num, page_text in pages:
             # Revenue
             for pat in self.REVENUE_PATTERNS:
                 for m in pat.finditer(page_text):
-                    val = float(m.group(1).replace(",", ""))
+                    val = _safe_float(m.group(1))
+                    if val is None or val == 0:
+                        continue
                     unit = (m.group(2) or "").lower()
                     if unit == "billion":
                         val *= 1_000_000_000
@@ -214,7 +225,9 @@ class RealPDFParser:
             # Net Income
             for pat in self.INCOME_PATTERNS:
                 for m in pat.finditer(page_text):
-                    val = float(m.group(1).replace(",", ""))
+                    val = _safe_float(m.group(1))
+                    if val is None or val == 0:
+                        continue
                     unit = (m.group(2) or "").lower()
                     if unit == "billion":
                         val *= 1_000_000_000
@@ -229,7 +242,10 @@ class RealPDFParser:
             # Margins
             for pat in self.MARGIN_PATTERNS:
                 for m in pat.finditer(page_text):
-                    pct = float(m.group(1)) / 100.0
+                    pct = _safe_float(m.group(1))
+                    if pct is None or pct == 0:
+                        continue
+                    pct = pct / 100.0
                     metric = "Gross Margin" if "gross" in pat.pattern else "Operating Margin"
                     if "gross" in pat.pattern:
                         filing.gross_margin = pct

@@ -149,6 +149,28 @@ class ResearchAgent:
         result["status"]  = ValidationStatus.EVIDENCE_EXTRACTED.value
         result["prior_thesis_count"] = len(history)
 
+        # Thesis Tracker: compare against history
+        try:
+            from ..memory.thesis_tracker import ThesisTracker
+            tracker = ThesisTracker(self._memory)
+            current_thesis = result.get("thesis", {}).get("base", result.get("summary", ""))
+            current_assumptions = result.get("key_assumptions", [])
+            comparison = await tracker.compare_against_history(ticker, current_thesis, current_assumptions)
+            result["thesis_change"] = {
+                "prior_count": comparison.prior_count,
+                "drift_detected": comparison.drift_detected,
+                "drift_description": comparison.drift_description,
+                "conviction_trend": comparison.conviction_trend,
+                "assumptions_changed": comparison.assumptions_changed,
+                "status": "FALSIFIED" if comparison.drift_detected and comparison.conviction_trend == "decreasing"
+                    else "WEAKENED" if comparison.conviction_trend == "decreasing"
+                    else "STRENGTHENED" if comparison.conviction_trend == "increasing"
+                    else "NEW" if comparison.prior_count == 0
+                    else "UNCHANGED",
+            }
+        except Exception:
+            result["thesis_change"] = {"status": "NEW", "prior_count": 0}
+
         return result
 
 

@@ -155,17 +155,29 @@ class YUCLAW:
         snapshot = self._yahoo.get_snapshot(ticker)
         print(f"  Market data: {snapshot.get('short_name', ticker)} @ ${snapshot.get('price', 'N/A')}")
 
-        # Get 10-K from EDGAR
+        # Get 10-K from EDGAR (try real downloader first, fall back to old connector)
         doc_text = ""
         doc_id   = f"{ticker.upper()}_SNAPSHOT"
-        edgar_result = await self._edgar.get_10k_text(ticker)
-        if edgar_result:
-            doc_text, doc_id = edgar_result
-            print(f"  Filing loaded: {doc_id} ({len(doc_text):,} chars)")
-        else:
-            # Fall back to Yahoo Finance description
-            doc_text = json.dumps(snapshot)
-            print(f"  No 10-K found — using market data snapshot")
+        try:
+            from .data.edgar_downloader import EDGARDownloader
+            dl = EDGARDownloader(cache_dir=f"{self._data_dir}/filings")
+            result = dl.download_and_parse(ticker)
+            if result and result.get("grounding"):
+                doc_text = result["grounding"]
+                doc_id = f"{ticker.upper()}_10K_REAL"
+                print(f"  Real 10-K loaded: {result.get('filepath', 'cached')} ({len(doc_text):,} chars)")
+            dl.close()
+        except Exception as e:
+            print(f"  [EDGAR real] {e}")
+
+        if not doc_text:
+            edgar_result = await self._edgar.get_10k_text(ticker)
+            if edgar_result:
+                doc_text, doc_id = edgar_result
+                print(f"  Filing loaded: {doc_id} ({len(doc_text):,} chars)")
+            else:
+                doc_text = json.dumps(snapshot)
+                print(f"  No 10-K found — using market data snapshot")
 
         # Append snapshot data
         doc_text += f"\n\nMARKET DATA SNAPSHOT:\n{json.dumps(snapshot, indent=2)}"
