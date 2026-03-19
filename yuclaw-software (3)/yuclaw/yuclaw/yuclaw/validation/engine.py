@@ -176,11 +176,42 @@ class DarwinianSandbox:
         survived  = len(results) - len(killed)
         worst_dd  = max((abs(r.max_drawdown) for r in killed), default=0.05)
 
-        # Use REAL Calmar from actual price data if available
+        # Use REAL Calmar from actual price data — strategy-specific parameters
         calmar = 0.15 / worst_dd if worst_dd > 0 else 0.0
         if self._real_bt:
             try:
-                real_result = self._real_bt.run_momentum(start="2010-01-01")
+                import re
+                # Extract lookback from strategy text
+                lb_match = re.search(r'(\d+)\s*-?\s*(?:month|mo|m)\b', strategy, re.I)
+                lookback = int(lb_match.group(1)) if lb_match else 6
+                # Extract top_n
+                top_match = re.search(r'top\s*(\d+)', strategy, re.I)
+                top_n = int(top_match.group(1)) if top_match else 3
+                # Extract stop loss
+                stop_match = re.search(r'(\d+)\s*%?\s*stop', strategy, re.I)
+                stop_loss = int(stop_match.group(1)) / 100 if stop_match else 0.05
+                # Extract tickers for custom universe
+                ticker_match = re.findall(r'\b([A-Z]{2,5})\b', strategy)
+                known_etfs = {'SPY','QQQ','IWM','EFA','EEM','XLK','XLF','XLE','XLV','XLI',
+                              'XLP','XLU','XLY','XLB','XLRE','TLT','GLD','SLV','VNQ','HYG',
+                              'ARKK','SOXL','XBI','TQQQ','UVXY','SVXY','TAN','ICLN','IBIT',
+                              'COIN','MSTR','HOOD','NVDA','AMD','SMCI','PLTR','TSLA','AAPL',
+                              'MSFT','META','AMZN','GOOGL','ARM','NNE','OKLO','RKLB','ASTS',
+                              'LUNR','CCJ','SMR','URA','EEM','INDA','LLY','NVO','IEF','TIPS'}
+                custom_tickers = [t for t in ticker_match if t in known_etfs]
+
+                from ..validation.real_backtest import RealBacktester
+                if len(custom_tickers) >= 3:
+                    bt = RealBacktester(universe=custom_tickers)
+                else:
+                    bt = self._real_bt
+
+                real_result = bt.run_momentum(
+                    start="2010-01-01",
+                    lookback_months=max(1, min(lookback, 24)),
+                    top_n=max(1, min(top_n, 10)),
+                    stop_loss=max(0.01, min(stop_loss, 0.20)),
+                )
                 if real_result and real_result.calmar_ratio > 0:
                     calmar = real_result.calmar_ratio
                     worst_dd = real_result.max_drawdown
