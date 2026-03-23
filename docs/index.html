@@ -1,68 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FINClaw — Powered by YUCLAW Engine</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0a0a0f;color:#e0e0e0;font-family:'Courier New',monospace;padding:20px}
-.header{border-bottom:2px solid #333;padding-bottom:20px;margin-bottom:30px}
-.logo{font-size:32px;font-weight:bold;color:#ffd700;letter-spacing:4px}
-.subtitle{color:#888;font-size:14px;margin-top:5px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-bottom:30px}
-.card{background:#111118;border:1px solid #222;border-radius:8px;padding:20px}
-.card-title{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:15px}
-.regime-badge{display:inline-block;padding:8px 20px;border-radius:4px;font-size:24px;font-weight:bold;color:white;background:#ff4444}
-.confidence{font-size:14px;color:#888;margin-top:8px}
-.implication{padding:6px 0;border-bottom:1px solid #1a1a1a;font-size:13px}
-.signal-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a1a;font-size:13px}
-.buy{color:#44ff88}.sell{color:#ff4444}.hold{color:#ffaa00}
-.calmar-good{color:#44ff88}.calmar-ok{color:#ffaa00}
-.live-dot{display:inline-block;width:8px;height:8px;background:#44ff88;border-radius:50%;margin-right:8px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.footer{border-top:1px solid #222;padding-top:20px;margin-top:30px;font-size:12px;color:#444;text-align:center}
-.footer a{color:#666}
-</style>
-</head>
+<!DOCTYPE html><html><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=refresh content=1800><title>FINClaw Live</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{background:#080810;color:#e0e0e0;font-family:'Courier New',monospace;padding:20px}.logo{font-size:28px;font-weight:bold;color:#ffd700;letter-spacing:3px}.sub{font-size:12px;color:#444;margin:4px 0 20px}.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}.c{background:#0d0d1a;border:1px solid #1a1a2e;border-radius:8px;padding:18px}.t{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #1a1a2e}.reg{font-size:32px;font-weight:bold;color:white;background:#ff2244;padding:10px 20px;border-radius:4px;display:inline-block}.r{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #111;font-size:13px}.r:last-child{border:none}.b{color:#44ff88}.s{color:#ff4455}.n{color:#ffaa00}.f{text-align:center;font-size:11px;color:#333;border-top:1px solid #1a1a2e;padding-top:15px;margin-top:20px}.f a{color:#555}.d{display:inline-block;width:8px;height:8px;background:#44ff88;border-radius:50%;margin-right:6px;animation:p 2s infinite}@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}</style></head>
 <body>
-<div class="header">
-<div class="logo">FINClaw</div>
-<div class="subtitle"><span class="live-dot"></span>Powered by YUCLAW Engine on NVIDIA DGX Spark GB10 | Updated: 2026-03-22 21:28 ET | <a href="https://github.com/YuClawLab" target="_blank">github.com/YuClawLab</a></div>
+<div class=logo>FINClaw</div>
+<div class=sub><span class=d></span>YUCLAW Engine | DGX Spark GB10 | 2026-03-23 02:26 ET | <a href=https://github.com/YuClawLab style=color:#555>GitHub</a></div>
+<div class=g>
+<div class=c><div class=t>Market Regime</div><div class=reg>CRISIS</div><div style="font-size:13px;color:#888;margin-top:8px">90% confidence</div><div style=margin-top:12px><div style="padding:5px 0;font-size:13px;color:#bbb">-> Maximum cash</div><div style="padding:5px 0;font-size:13px;color:#bbb">-> TLT + GLD only</div><div style="padding:5px 0;font-size:13px;color:#bbb">-> Hedge with puts</div></div></div>
+<div class=c><div class=t>Buy Signals (10)</div><div class=r><span class=b>MRNA</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.835</span></div><div class=r><span class=b>DELL</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.754</span></div><div class=r><span class=b>MU</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.754</span></div><div class=r><span class=b>ASTS</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.702</span></div><div class=r><span class=b>KLAC</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.674</span></div><div class=r><span class=b>AMAT</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.648</span></div><div class=r><span class=b>LUNR</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.616</span></div><div class=r><span class=b>LRCX</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.581</span></div><div class=r><span class=b>MRVL</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.555</span></div><div class=r><span class=b>CRCL</span><span style="color:#555;font-size:11px">STRONG_BUY</span><span>+0.542</span></div></div>
+<div class=c><div class=t>Strategies (Real Calmar)</div><div class=r><span>mom_1m_tight</span><span style="color:#44ff88">2.309</span><span style="color:#666">22.7%</span></div><div class=r><span>mom_6m_tight</span><span style="color:#ffaa00">1.764</span><span style="color:#666">22.5%</span></div><div class=r><span>mom_6m_top3</span><span style="color:#ffaa00">1.291</span><span style="color:#666">16.5%</span></div><div class=r><span>mom_3m_top3</span><span style="color:#ffaa00">0.968</span><span style="color:#666">16.2%</span></div><div class=r><span>mom_6m_top5</span><span style="color:#ffaa00">0.799</span><span style="color:#666">12.2%</span></div></div>
+<div class=c><div class=t>Portfolio Risk</div><div class=r><span>balanced</span><span style="color:#ff8888">VaR:-1.63%</span><span style="color:#88ff88">S:1.60</span></div><div class=r><span>ai_infra</span><span style="color:#ff8888">VaR:-4.91%</span><span style="color:#88ff88">S:0.89</span></div><div class=r><span>defensive</span><span style="color:#ff8888">VaR:-0.97%</span><span style="color:#88ff88">S:1.35</span></div><div class=r><span>nuclear</span><span style="color:#ff8888">VaR:-5.63%</span><span style="color:#88ff88">S:1.53</span></div><div class=r><span>mag7</span><span style="color:#ff8888">VaR:-2.70%</span><span style="color:#88ff88">S:0.98</span></div><div class=r><span>pharma</span><span style="color:#ff8888">VaR:-3.49%</span><span style="color:#88ff88">S:-0.01</span></div></div>
+<div class=c><div class=t>Sectors</div><div class=r><span style="color:#666">1.</span><span>Energy</span><span class="b">OVERWEIGHT</span></div><div class=r><span style="color:#666">2.</span><span>Communication</span><span class="n">NEUTRAL</span></div><div class=r><span style="color:#666">3.</span><span>Utilities</span><span class="n">NEUTRAL</span></div><div class=r><span style="color:#666">4.</span><span>Technology</span><span class="s">UNDERWEIGHT</span></div><div class=r><span style="color:#666">5.</span><span>Financials</span><span class="s">UNDERWEIGHT</span></div><div class=r><span style="color:#666">6.</span><span>ConsumerStaples</span><span class="n">NEUTRAL</span></div><div class=r><span style="color:#666">7.</span><span>ConsumerDisc</span><span class="s">UNDERWEIGHT</span></div><div class=r><span style="color:#666">8.</span><span>Healthcare</span><span class="s">UNDERWEIGHT</span></div></div>
+<div class=c><div class=t>System</div><div class=r><span>Engines</span><span class=b>10 RUNNING</span></div><div class=r><span>Model</span><span class=n>llama3.1:70b local</span></div><div class=r><span>Hardware</span><span style=color:#76b900>DGX Spark GB10</span></div></div>
 </div>
-<div class="grid">
-<div class="card">
-<div class="card-title">Market Regime</div>
-<div class="regime-badge">CRISIS</div>
-<div class="confidence">90% confidence</div>
-<div style="margin-top:15px"><div class="implication">-> Maximum cash</div><div class="implication">-> TLT + GLD only</div><div class="implication">-> Hedge with puts</div></div>
-</div>
-<div class="card">
-<div class="card-title">Top Buy Signals</div>
-<div class="signal-row"><span class="buy">MRNA</span><span style="color:#666">STRONG_BUY</span><span>+0.835</span></div><div class="signal-row"><span class="buy">DELL</span><span style="color:#666">STRONG_BUY</span><span>+0.754</span></div><div class="signal-row"><span class="buy">MU</span><span style="color:#666">STRONG_BUY</span><span>+0.754</span></div><div class="signal-row"><span class="buy">ASTS</span><span style="color:#666">STRONG_BUY</span><span>+0.702</span></div><div class="signal-row"><span class="buy">KLAC</span><span style="color:#666">STRONG_BUY</span><span>+0.674</span></div><div class="signal-row"><span class="buy">AMAT</span><span style="color:#666">STRONG_BUY</span><span>+0.648</span></div><div class="signal-row"><span class="buy">LUNR</span><span style="color:#666">STRONG_BUY</span><span>+0.616</span></div><div class="signal-row"><span class="buy">LRCX</span><span style="color:#666">STRONG_BUY</span><span>+0.581</span></div>
-</div>
-<div class="card">
-<div class="card-title">Best Strategies (Real Backtest)</div>
-<div class="signal-row"><span>mom_1m_tight</span><span class="calmar-good">Calmar: 2.309</span><span style="color:#888">22.7%</span></div><div class="signal-row"><span>mom_6m_tight</span><span class="calmar-ok">Calmar: 1.764</span><span style="color:#888">22.5%</span></div><div class="signal-row"><span>mom_6m_top3</span><span class="calmar-ok">Calmar: 1.292</span><span style="color:#888">16.5%</span></div><div class="signal-row"><span>mom_3m_top3</span><span class="calmar-ok">Calmar: 0.968</span><span style="color:#888">16.2%</span></div><div class="signal-row"><span>mom_6m_top5</span><span class="calmar-ok">Calmar: 0.799</span><span style="color:#888">12.2%</span></div>
-</div>
-<div class="card">
-<div class="card-title">Portfolio Risk (Real VaR)</div>
-<div class="signal-row"><span>balanced</span><span style="color:#ff8888">VaR: -1.63%</span><span style="color:#88ff88">Sharpe: 1.60</span></div><div class="signal-row"><span>ai_infra</span><span style="color:#ff8888">VaR: -4.91%</span><span style="color:#88ff88">Sharpe: 0.89</span></div><div class="signal-row"><span>defensive</span><span style="color:#ff8888">VaR: -0.97%</span><span style="color:#88ff88">Sharpe: 1.35</span></div><div class="signal-row"><span>nuclear</span><span style="color:#ff8888">VaR: -5.63%</span><span style="color:#88ff88">Sharpe: 1.53</span></div><div class="signal-row"><span>mag7</span><span style="color:#ff8888">VaR: -2.70%</span><span style="color:#88ff88">Sharpe: 0.98</span></div><div class="signal-row"><span>pharma</span><span style="color:#ff8888">VaR: -3.49%</span><span style="color:#88ff88">Sharpe: -0.01</span></div>
-</div>
-<div class="card">
-<div class="card-title">Sector Rotation</div>
-<div class="signal-row"><span style="color:#888">1.</span><span>Energy</span><span class="buy">OVERWEIGHT</span><span style="color:#888">+7.5%</span></div><div class="signal-row"><span style="color:#888">2.</span><span>Communication</span><span class="hold">NEUTRAL</span><span style="color:#888">-2.5%</span></div><div class="signal-row"><span style="color:#888">3.</span><span>Utilities</span><span class="hold">NEUTRAL</span><span style="color:#888">-3.2%</span></div><div class="signal-row"><span style="color:#888">4.</span><span>Technology</span><span class="sell">UNDERWEIGHT</span><span style="color:#888">-3.5%</span></div><div class="signal-row"><span style="color:#888">5.</span><span>Financials</span><span class="sell">UNDERWEIGHT</span><span style="color:#888">-5.9%</span></div><div class="signal-row"><span style="color:#888">6.</span><span>ConsumerStaples</span><span class="hold">NEUTRAL</span><span style="color:#888">-7.3%</span></div><div class="signal-row"><span style="color:#888">7.</span><span>ConsumerDisc</span><span class="sell">UNDERWEIGHT</span><span style="color:#888">-7.3%</span></div><div class="signal-row"><span style="color:#888">8.</span><span>Healthcare</span><span class="sell">UNDERWEIGHT</span><span style="color:#888">-7.6%</span></div>
-</div>
-<div class="card">
-<div class="card-title">System Status</div>
-<div class="signal-row"><span>Factor Engine</span><span class="buy">RUNNING</span><span style="color:#888">30min</span></div>
-<div class="signal-row"><span>Backtest Engine</span><span class="buy">RUNNING</span><span style="color:#888">45min</span></div>
-<div class="signal-row"><span>Risk Engine</span><span class="buy">RUNNING</span><span style="color:#888">60min</span></div>
-<div class="signal-row"><span>Macro Regime</span><span class="buy">RUNNING</span><span style="color:#888">60min</span></div>
-<div class="signal-row"><span>Screener</span><span class="buy">RUNNING</span><span style="color:#888">30min</span></div>
-<div class="signal-row"><span>Hardware</span><span style="color:#76b900">DGX Spark GB10</span><span style="color:#888">128GB</span></div>
-</div>
-</div>
-<div class="footer">FINClaw powered by YUCLAW Engine | <a href="https://github.com/YuClawLab">github.com/YuClawLab</a> | Zero LLM estimation in quantitative components</div>
-</body>
-</html>
+<div class=f>FINClaw | <a href=https://github.com/YuClawLab>github.com/YuClawLab</a> | Zero LLM estimation in quant</div>
+</body></html>
