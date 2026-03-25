@@ -1,5 +1,5 @@
 """
-ZKP On-Chain — Base Sepolia Testnet.
+ZKP On-Chain — Ethereum Sepolia Testnet.
 Every YUCLAW decision gets a cryptographic proof on blockchain.
 This is what institutional compliance requires.
 """
@@ -7,8 +7,8 @@ import json, hashlib, time, os
 from web3 import Web3
 from eth_account import Account
 
-# Base Sepolia testnet
-RPC_URL = "https://sepolia.base.org"
+# Ethereum Sepolia testnet
+RPC_URL = "https://rpc.sepolia.org"
 w3 = Web3(Web3.HTTPProvider(RPC_URL))
 
 # Generate or load wallet
@@ -23,11 +23,11 @@ else:
         f.write(PRIVATE_KEY)
     os.chmod(KEY_FILE, 0o600)
     print(f"New wallet: {account.address}")
-    print(f"Fund at: https://www.coinbase.com/faucets/base-ethereum-goerli-faucet")
+    print(f"Fund at: https://cloud.google.com/application/web3/faucet/ethereum/sepolia")
 
 account = Account.from_key(PRIVATE_KEY)
 print(f"Wallet: {account.address}")
-print(f"Connected to Base Sepolia: {w3.is_connected()}")
+print(f"Connected to Ethereum Sepolia: {w3.is_connected()}")
 
 
 def hash_decision(decision: dict) -> str:
@@ -36,7 +36,7 @@ def hash_decision(decision: dict) -> str:
 
 
 def submit_proof_onchain(decision: dict) -> dict:
-    """Submit ZKP proof hash to Base Sepolia."""
+    """Submit ZKP proof hash to Ethereum Sepolia."""
     decision_hash = hash_decision(decision)
 
     if not w3.is_connected():
@@ -47,7 +47,7 @@ def submit_proof_onchain(decision: dict) -> dict:
         balance = w3.eth.get_balance(account.address)
         if balance < w3.to_wei(0.001, 'ether'):
             print(f"Low balance: {w3.from_wei(balance, 'ether')} ETH")
-            print(f"Fund at: https://www.coinbase.com/faucets/base-ethereum-goerli-faucet")
+            print(f"Fund at: https://cloud.google.com/application/web3/faucet/ethereum/sepolia")
             return {'hash': decision_hash, 'onchain': False, 'reason': 'insufficient_funds'}
 
         # Store hash in transaction data field
@@ -59,7 +59,7 @@ def submit_proof_onchain(decision: dict) -> dict:
             'gas': 21500,
             'gasPrice': w3.eth.gas_price,
             'nonce': w3.eth.get_transaction_count(account.address),
-            'chainId': 84532  # Base Sepolia
+            'chainId': 11155111  # Ethereum Sepolia
         }
 
         signed = account.sign_transaction(tx)
@@ -72,7 +72,7 @@ def submit_proof_onchain(decision: dict) -> dict:
             'tx_hash': tx_hash.hex(),
             'block': receipt['blockNumber'],
             'onchain': True,
-            'explorer': f"https://sepolia.basescan.org/tx/{tx_hash.hex()}"
+            'explorer': f"https://sepolia.etherscan.io/tx/{tx_hash.hex()}"
         }
 
         os.makedirs('output/zkp_onchain', exist_ok=True)
