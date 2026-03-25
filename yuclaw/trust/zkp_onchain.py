@@ -8,7 +8,7 @@ from web3 import Web3
 from eth_account import Account
 
 # Ethereum Sepolia testnet
-RPC_URL = "https://rpc.sepolia.org"
+RPC_URL = "https://ethereum-sepolia-rpc.publicnode.com"
 w3 = Web3(Web3.HTTPProvider(RPC_URL))
 
 # Generate or load wallet
@@ -56,7 +56,7 @@ def submit_proof_onchain(decision: dict) -> dict:
             'to': account.address,
             'value': 0,
             'data': w3.to_hex(text=f"YUCLAW:{decision_hash[:32]}"),
-            'gas': 21500,
+            'gas': 25000,
             'gasPrice': w3.eth.gas_price,
             'nonce': w3.eth.get_transaction_count(account.address),
             'chainId': 11155111  # Ethereum Sepolia
