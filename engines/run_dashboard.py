@@ -38,7 +38,7 @@ html = f"""<!DOCTYPE html><html><head><meta charset=UTF-8><meta name=viewport co
 <div class=c><div class=t>Strategies (Real Calmar)</div>{rows(strategies, lambda s: f'<div class=r><span>{s["name"]}</span><span style="color:{"#44ff88" if s["calmar"]>2 else "#ffaa00"}">{s["calmar"]:.3f}</span><span style="color:#666">{s.get("annret",0):.1%}</span></div>')}</div>
 <div class=c><div class=t>Portfolio Risk</div>{rows(risk[:6], lambda r: f'<div class=r><span>{r["portfolio"]}</span><span style="color:#ff8888">VaR:{r["var_95"]:.2%}</span><span style="color:#88ff88">S:{r["sharpe"]:.2f}</span></div>')}</div>
 <div class=c><div class=t>Sectors</div>{rows(sectors[:8], lambda s: f'<div class=r><span style="color:#666">{s["rank"]}.</span><span>{s["sector"]}</span><span class="{"b" if s["signal"]=="OVERWEIGHT" else "s" if s["signal"]=="UNDERWEIGHT" else "n"}">{s["signal"]}</span></div>')}</div>
-<div class=c><div class=t>System</div><div class=r><span>Engines</span><span class=b>10 RUNNING</span></div><div class=r><span>Model</span><span class=n>llama3.1:70b local</span></div><div class=r><span>Hardware</span><span style=color:#76b900>DGX Spark GB10</span></div></div>
+<div class=c><div class=t>System</div><div class=r><span>Engines</span><span class=b>10 RUNNING</span></div><div class=r><span>Model</span><span class=n>Nemotron 3 Super 120B</span></div><div class=r><span>Hardware</span><span style=color:#76b900>DGX Spark GB10</span></div></div>
 </div>
 <div class=f>FINClaw | <a href=https://github.com/YuClawLab>github.com/YuClawLab</a> | Zero LLM estimation in quant</div>
 </body></html>"""
