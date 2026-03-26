@@ -7,7 +7,22 @@ __pycache__/
 *.sqlite3
 data/*.db
 data/filings/
-output/
 services/model.log
 .claude/
 *.gguf
+
+# Ignore most output except tracked data
+output/*.xlsx
+output/briefs/
+output/evidence/
+output/ner/
+output/pipeline/
+output/brief_log.txt
+output/signal_log.txt
+output/track_log.txt
+output/factor_log.txt
+output/risk_log.txt
+output/macro_log.txt
+output/validation_log.txt
+output/portfolio_memory.json
+output/universe_200.json

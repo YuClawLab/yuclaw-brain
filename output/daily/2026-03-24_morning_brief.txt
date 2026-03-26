@@ -1,0 +1,38 @@
+YUCLAW Morning Brief — 2026-03-24
+============================================================
+**Executive Summary**  
+The model flags a CRISIS regime with 90 % confidence, indicating elevated tail risk and heightened volatility across equity markets. Momentum‑driven exposure (mom_1m_tight) remains the highest‑conviction strategy, delivering a 22.7 % annualized return and a Calmar ratio of 2.308, while the defensive overlay shows a VaR95 of –0.97 % and a Sharpe of 1.34.
+
+**Market Regime Analysis**  
+A CRISIS regime reflects a >90 % probability that the market is operating in a stressed state characterized by amplified price swings, increased correlation among assets, and a higher likelihood of extreme downside moves. In such environments, traditional long‑only beta tends to underperform, whereas disciplined momentum factors that capture short‑term persistence can generate positive alpha, and defensive risk controls (VaR, Sharpe) become critical for capital preservation.
+
+**Top 5 Opportunities**  
+
+| Rank | Ticker | Signal Strength | Thesis (data‑driven) |
+|------|--------|-----------------|----------------------|
+| 1 | LUNR | +0.933 | Highest momentum signal; in a CRISIS regime, strong short‑term trends are likely to persist, offering the greatest upside capture. |
+| 2 | ASTS | +0.848 | Second‑ranked signal; provides diversified exposure to the same momentum factor while maintaining a high signal‑to‑noise ratio. |
+| 3 | DELL | +0.826 | Third‑ranked signal; reinforces the momentum thesis with a slightly lower but still robust signal, reducing idiosyncratic risk via multi‑stock exposure. |
+| 4 | MRNA | +0.821 | Fourth‑ranked signal; adds sectoral breadth to the momentum basket, helping to mitigate regime‑specific sector shocks. |
+| 5 | mom_1m_tight (strategy) | Calmar 2.308, AnnRet 22.7% | The best‑performing systematic strategy; its high Calmar ratio indicates strong return‑to‑drawdown efficiency, making it a core allocation to harness the prevailing momentum regime. |
+
+**Risk Factors**  
+1. **Tail‑risk amplification** – The CRISIS regime raises the probability of extreme negative moves; even high‑signal stocks can experience sharp reversals.  
+2. **Momentum factor congestion** – If many participants chase the same signal, liquidity may deteriorate, increasing slippage and reducing realized returns.  
+3. **Model risk** – The signal outputs are derived from the Nemotron 3 Super 120B local model; any mis‑specification or data‑feed issue could distort the perceived strength of the opportunities.
+
+**Portfolio Positioning** (based on normalized signal weights and strategy allocation)  
+- LUNR: 27.2 % of equity exposure  
+- ASTS: 24.7 %  
+- DELL: 24.1 %  
+- MRNA: 23.9 %  
+- mom_1m_tight strategy: 100 % of the systematic overlay (treated as a separate sleeve; equity allocation can be scaled to 80 % of total capital, with the remaining 20 % held in cash or low‑volatility instruments to respect the defensive VaR95 of –0.97 %).  
+
+*No leverage is assumed; the defensive VaR95 implies that, under the current regime, the portfolio should not expect a loss greater than ~1 % at the 95 % confidence level.*
+
+**Action Items for Today**  
+1. **Enter positions** in LUNR, ASTS, DELL, and MRNA according to the weightings above, using limit orders to mitigate slippage.  
+2. **Allocate capital** to the mom_1m_tight systematic strategy (e.g., via the fund’s existing momentum overlay) targeting the 22.7 % annualized return profile.  
+3. **Monitor real‑time VaR**; if intraday moves approach the –0.97 % threshold, consider tightening stop‑losses or increasing the cash buffer.  
+4. **Review signal updates** at the next model refresh (end‑of‑day) to confirm persistence of the top‑four rankings.  
+5. **Prepare a brief for the risk committee** outlining the CRISIS regime probability, expected
