@@ -3,7 +3,7 @@ import os
 
 setup(
     name='yuclaw',
-    version='1.2.0',
+    version='1.3.0',
     description='YUCLAW — Open Financial Intelligence Platform. Real backtests. ZKP audit. Local AI.',
     long_description=open('README_PACKAGE.md').read() if os.path.exists('README_PACKAGE.md') else '',
     long_description_content_type='text/markdown',
@@ -21,7 +21,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'yuclaw=yuclaw.cli:main',
+            'yuclaw=yuclaw.cli_v2:main',
         ],
     },
     classifiers=[
