@@ -1,28 +1,53 @@
+# Build artifacts
+dist/
+build/
+*.egg-info/
 __pycache__/
 *.pyc
 *.pyo
+
+# Internal
+.claude/
+CLAUDE.md
+
+# Environment
 .env
+*.gguf
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Databases
 *.db
 *.sqlite
 *.sqlite3
 data/*.db
 data/filings/
-services/model.log
-.claude/
-*.gguf
 
-# Ignore most output except tracked data
+# Logs
+services/model.log
+
+# Output — keep dashboard data, ignore the rest
 output/*.xlsx
 output/briefs/
 output/evidence/
+output/evidence_v2/
 output/ner/
 output/pipeline/
-output/brief_log.txt
-output/signal_log.txt
-output/track_log.txt
-output/factor_log.txt
-output/risk_log.txt
-output/macro_log.txt
-output/validation_log.txt
+output/fix/
 output/portfolio_memory.json
+output/portfolio_memory_v2.json
 output/universe_200.json
+output/daily_run_*.json
+output/pipeline_*.json
+output/execution_state.json
+output/validation_studio_v2.json
+output/backtest_results.json
+output/portfolio_optimization.json
+output/insider_trades.json
+output/earnings_calendar.json

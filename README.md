@@ -90,7 +90,7 @@ We replace LLM estimates with rigorous, adversarial quantitative validation.
 
 ---
 
-## Verifiable Track Record (Day 5 of 30)
+## Verifiable Track Record (Day 6 of 30)
 
 *Every signal is cryptographically secured on the Ethereum blockchain.*
 
