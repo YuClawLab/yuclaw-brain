@@ -16,7 +16,7 @@ def cmd_today():
     if regime:
         r = regime.get('regime', 'UNKNOWN')
         c = regime.get('confidence', 0)
-        print(f"\nMARKET: {r} ({c:.0%} confidence)")
+        print(f"\nMARKET: {r} ({c:.0%})")
         for imp in regime.get('portfolio_implications', [])[:2]:
             print(f"   {imp}")
     signals = load('output/aggregated_signals.json')
@@ -24,21 +24,65 @@ def cmd_today():
         buys = [s for s in signals if 'BUY' in s.get('signal', '') and s.get('price', 0) > 0][:5]
         print(f"\nTOP BUY SIGNALS:")
         for s in buys:
-            print(f"   {s['ticker']:6} {s['signal']:12} score:{s['score']:+.3f} price:${s['price']:.2f}")
+            v = 'V' if s.get('verified') else '?'
+            print(f"   {s['ticker']:6} {s['signal']:12} {s['score']:+.3f} ${s['price']:.2f} [{v}]")
+    sector = load('output/sector_rotation.json')
+    if sector:
+        inflows = sector.get('top_inflows', [])
+        if inflows:
+            print(f"\nSECTOR INFLOWS: {', '.join([r['sector'] for r in inflows[:3]])}")
+    earnings = load('output/earnings_this_week.json')
+    if earnings:
+        print(f"\nEARNINGS THIS WEEK: {', '.join(list(earnings.keys())[:5])}")
     track = load('output/track_record_verified.json')
     if track:
         print(f"\nTRACK RECORD: Day {track.get('day', 0)} accuracy {track.get('accuracy', 0):.0%}")
     print(f"\nPORTFOLIO ACTION:")
     if regime and regime.get('regime') == 'CRISIS':
-        print(f"   Hold 80%+ cash. Buy only highest conviction signals.")
-        print(f"   Max position size: 5% per ticker")
+        print(f"   Hold 80%+ cash. Max position 5%.")
     elif regime and regime.get('regime') == 'RISK_OFF':
-        print(f"   Hold 50% cash. Selective buys only.")
-        print(f"   Max position size: 8% per ticker")
+        print(f"   Hold 50% cash. Max position 8%.")
     else:
-        print(f"   Deploy capital. Follow top signals.")
-        print(f"   Max position size: 10% per ticker")
+        print(f"   Deploy capital. Max position 10%.")
     print(f"\nDashboard: yuclawlab.github.io/yuclaw-brain")
+
+
+def cmd_sector():
+    print(f"\nSector Rotation")
+    print("=" * 50)
+    data = load('output/sector_rotation.json')
+    if not data:
+        print("No data. Run sector rotation first.")
+        return
+    print(f"\n{'ETF':5} {'Sector':22} {'Change':8} Signal")
+    print("-" * 50)
+    for r in data.get('rotation', []):
+        icon = 'IN ' if r['signal'] == 'INFLOW' else 'OUT' if r['signal'] == 'OUTFLOW' else '---'
+        print(f"[{icon}] {r['etf']:5} {r['sector']:22} {r['change_pct']:+.2f}%  {r['signal']}")
+
+
+def cmd_news():
+    print(f"\nNews Sentiment — Nemotron 120B")
+    print("=" * 50)
+    data = load('output/news_sentiment.json')
+    if not data:
+        print("No data.")
+        return
+    for r in (data if isinstance(data, list) else [])[:10]:
+        s = r.get('sentiment', 'NEUTRAL')
+        icon = 'BULL' if s == 'BULLISH' else 'BEAR' if s == 'BEARISH' else 'NEUT'
+        print(f"[{icon}] {r['ticker']:6} {s:8} {r.get('score', 0):+.2f} — {r.get('reason', '')[:60]}")
+
+
+def cmd_earnings():
+    print(f"\nEarnings This Week — Finnhub")
+    print("=" * 50)
+    data = load('output/earnings_this_week.json')
+    if not data:
+        print("No earnings this week for tracked tickers.")
+        return
+    for ticker, info in data.items():
+        print(f"  {ticker:6} {info['earnings_date']} in {info['days_until']}d — {info['action']}")
 
 
 def cmd_track():
@@ -50,22 +94,20 @@ def cmd_track():
         results = verified.get('results', [])
         correct = [r for r in results if r.get('aligned')]
         wrong = [r for r in results if not r.get('aligned')]
-        print(f"\nDay {verified.get('day', 0)} of 30-day verification")
+        print(f"\nDay {verified.get('day', 0)} of 30")
         print(f"Accuracy: {verified.get('accuracy', 0):.0%} ({len(correct)}/{len(results)})")
-        print(f"\nCORRECT SIGNALS:")
-        for r in correct:
-            print(f"   {r['ticker']:6} {r['signal']:12} {r['change_pct']:+.2f}%")
+        if correct:
+            print(f"\nCORRECT:")
+            for r in correct:
+                print(f"   {r['ticker']:6} {r['signal']:12} {r['change_pct']:+.2f}%")
         if wrong:
-            print(f"\nWRONG SIGNALS:")
+            print(f"\nWRONG:")
             for r in wrong:
                 print(f"   {r['ticker']:6} {r['signal']:12} {r['change_pct']:+.2f}%")
     if memory:
         perf = memory.get('performance', {})
-        print(f"\nPATTERN MEMORY:")
-        print(f"   Total decisions: {perf.get('total', 0)}")
-        print(f"   Verified: {perf.get('verified', 0)}")
-        print(f"   Overall accuracy: {perf.get('accuracy', 0):.0%}")
-    print(f"\nZKP: Every signal verified on Ethereum Sepolia")
+        print(f"\nTotal: {perf.get('total', 0)} decisions, {perf.get('accuracy', 0):.0%} accuracy")
+    print(f"\nZKP: Every signal on Ethereum Sepolia")
 
 
 def cmd_ask(question: str):
@@ -78,9 +120,17 @@ def cmd_ask(question: str):
     regime = load('output/macro_regime.json')
     if regime:
         context_parts.append(f"Regime: {regime.get('regime')} {regime.get('confidence', 0):.0%}")
-    verified = load('output/track_record_verified.json')
-    if verified:
-        context_parts.append(f"Track record day {verified.get('day')} accuracy {verified.get('accuracy', 0):.0%}")
+    sector = load('output/sector_rotation.json')
+    if sector:
+        context_parts.append(f"Sector inflows: {[r['sector'] for r in sector.get('top_inflows', [])]}")
+    news = load('output/news_sentiment.json')
+    if isinstance(news, list):
+        bullish = [r['ticker'] for r in news if r.get('sentiment') == 'BULLISH'][:3]
+        if bullish:
+            context_parts.append(f"Bullish news: {bullish}")
+    earnings = load('output/earnings_this_week.json')
+    if earnings:
+        context_parts.append(f"Earnings this week: {list(earnings.keys())}")
     context = "\n".join(context_parts)
     model = os.getenv('YUCLAW_SUPER_MODEL', 'nemotron-q4km.gguf')
     endpoint = os.getenv('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
@@ -90,8 +140,8 @@ def cmd_ask(question: str):
             json={
                 'model': model,
                 'messages': [
-                    {'role': 'system', 'content': 'You are YUCLAW AI — a financial intelligence assistant. Be specific, data-driven, honest about uncertainty. Use the real data provided.'},
-                    {'role': 'user', 'content': f"Real-time context:\n{context}\n\nUser question: {question}"}
+                    {'role': 'system', 'content': 'You are YUCLAW AI. Be specific, data-driven, honest.'},
+                    {'role': 'user', 'content': f"Context:\n{context}\n\nQuestion: {question}"}
                 ],
                 'max_tokens': 400
             },
@@ -101,12 +151,11 @@ def cmd_ask(question: str):
         text = msg.get('content') or msg.get('reasoning_content') or ''
         print(f"\n{text}")
     except Exception as e:
-        print(f"Nemotron not available: {e}")
-        print("Start with: yuclaw start")
+        print(f"Nemotron error: {e}")
 
 
 def cmd_verify(ticker: str):
-    print(f"\nVerifying {ticker.upper()} signal...")
+    print(f"\nVerifying {ticker.upper()}...")
     zkp_dir = 'output/zkp_onchain'
     found = False
     if os.path.exists(zkp_dir):
@@ -121,11 +170,9 @@ def cmd_verify(ticker: str):
                             print(f"  Proof found")
                             print(f"  Hash: {item.get('hash', item.get('decision_hash', ''))[:32]}...")
                             if item.get('onchain'):
-                                print(f"  On-chain: YES — Ethereum Sepolia")
+                                print(f"  On-chain: Ethereum Sepolia")
                                 print(f"  Block: {item.get('block', '')}")
                                 print(f"  Explorer: {item.get('explorer', '')}")
-                            else:
-                                print(f"  On-chain: Local proof only")
                             found = True
                             break
                 except Exception:
@@ -133,51 +180,50 @@ def cmd_verify(ticker: str):
             if found:
                 break
     if not found:
-        print(f"  No proof found for {ticker.upper()}")
-        print(f"  Generate: yuclaw zkp")
+        print(f"  No proof for {ticker.upper()}")
 
 
 def cmd_portfolio():
-    print(f"\nYUCLAW Portfolio Optimizer")
+    print(f"\nPortfolio Optimizer")
     print("=" * 50)
     signals = load('output/aggregated_signals.json')
     regime = load('output/macro_regime.json')
+    earnings = load('output/earnings_this_week.json') or {}
     if not isinstance(signals, list) or not signals:
-        print("No signals. Run: yuclaw start")
+        print("No signals.")
         return
     buys = [s for s in signals if 'BUY' in s.get('signal', '') and s.get('price', 0) > 0][:8]
     if not buys:
-        print("No buy signals right now.")
+        print("No buy signals.")
         return
     regime_name = regime.get('regime', 'UNKNOWN') if regime else 'UNKNOWN'
     cash_reserve = {'CRISIS': 0.80, 'RISK_OFF': 0.50, 'RISK_ON': 0.20}.get(regime_name, 0.50)
     equity = 1 - cash_reserve
     total_score = sum(abs(s['score']) for s in buys)
-    print(f"\nRegime: {regime_name} -> {cash_reserve:.0%} cash reserve")
-    print(f"\nRECOMMENDED ALLOCATION:")
-    print(f"   {'CASH':8} {cash_reserve:6.1%}  Keep as reserve")
-    print(f"   {'-' * 35}")
+    print(f"\nRegime: {regime_name} -> {cash_reserve:.0%} cash")
+    print(f"\n   {'CASH':8} {cash_reserve:6.1%}  Reserve")
+    print(f"   {'-' * 40}")
     for s in buys:
         weight = (abs(s['score']) / total_score) * equity if total_score > 0 else 0
-        print(f"   {s['ticker']:8} {weight:6.1%}  {s['signal']} @ ${s['price']:.2f}")
-    print(f"\n   Not financial advice. Use position sizing rules.")
+        warn = ' EARNINGS!' if s['ticker'] in earnings else ''
+        print(f"   {s['ticker']:8} {weight:6.1%}  ${s['price']:.2f}{warn}")
+    print(f"\n   Not financial advice.")
 
 
 def cmd_watchlist():
-    print(f"\nYUCLAW Watchlist — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"\nWatchlist — {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("=" * 60)
     signals = load('output/aggregated_signals.json')
     if not isinstance(signals, list) or not signals:
-        print("No signals. Run: yuclaw start")
+        print("No signals.")
         return
-    print(f"\n{'Ticker':8} {'Signal':14} {'Score':8} {'Price':10} {'Action'}")
-    print("-" * 60)
+    print(f"\n{'Ticker':8} {'Signal':14} {'Score':8} {'Price':10} {'Verified'}")
+    print("-" * 55)
     for s in signals[:20]:
         if s.get('price', 0) <= 0:
             continue
-        action = {'STRONG_BUY': 'Strong buy', 'BUY': 'Buy', 'HOLD': 'Hold',
-                  'SELL': 'Sell', 'STRONG_SELL': 'Strong sell'}.get(s.get('signal', ''), 'Hold')
-        print(f"{s['ticker']:8} {s.get('signal', ''):14} {s.get('score', 0):+.3f}   ${s.get('price', 0):8.2f}  {action}")
+        v = 'V' if s.get('verified') else '?'
+        print(f"{s['ticker']:8} {s.get('signal', ''):14} {s.get('score', 0):+.3f}   ${s.get('price', 0):8.2f}  [{v}]")
 
 
 def cmd_brief():
@@ -185,11 +231,11 @@ def cmd_brief():
     if files:
         with open(files[-1]) as f:
             content = f.read()
-        print(f"\nYUCLAW Institutional Brief")
+        print(f"\nInstitutional Brief")
         print("=" * 50)
         print(content[:1000])
     else:
-        print("No brief yet. Run: yuclaw start")
+        print("No brief yet.")
 
 
 def main():
@@ -198,27 +244,33 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Commands:
-  yuclaw today          What should I do today? (START HERE)
-  yuclaw watchlist      All signals with prices and actions
-  yuclaw portfolio      Kelly-optimal allocation for your capital
+  yuclaw today          What to do RIGHT NOW
+  yuclaw sector         Sector rotation — where money moves
+  yuclaw news           News sentiment via Nemotron 120B
+  yuclaw earnings       Earnings this week — Finnhub
+  yuclaw watchlist      All signals with prices
+  yuclaw portfolio      Kelly allocation + earnings warnings
   yuclaw track          30-day verified track record
-  yuclaw ask "..."      Ask Nemotron 120B any financial question
-  yuclaw verify LUNR    Verify signal proof on Ethereum
-  yuclaw brief          Latest institutional brief
-  yuclaw signals        Raw signal list
-  yuclaw regime         Market regime only
-  yuclaw risk           Portfolio risk metrics
-  yuclaw dashboard      Open live dashboard
+  yuclaw ask "..."      Ask Nemotron 120B
+  yuclaw verify LUNR    Ethereum proof
+  yuclaw brief          Institutional brief
         """
     )
     parser.add_argument('command', nargs='?', default='today',
-                        choices=['today', 'start', 'watchlist', 'portfolio', 'track',
-                                 'ask', 'verify', 'brief', 'signals', 'regime', 'risk', 'dashboard'])
+                        choices=['today', 'sector', 'news', 'earnings', 'watchlist',
+                                 'portfolio', 'track', 'ask', 'verify', 'brief',
+                                 'signals', 'regime', 'risk', 'dashboard', 'start'])
     parser.add_argument('arg', nargs='?', default='')
     args = parser.parse_args()
 
+    cmds = {
+        'today': cmd_today, 'start': cmd_today, 'sector': cmd_sector,
+        'news': cmd_news, 'earnings': cmd_earnings, 'watchlist': cmd_watchlist,
+        'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
+    }
+
     if args.command == 'ask':
-        question = args.arg or ' '.join(sys.argv[2:]) or "What is the best trade today?"
+        question = args.arg or ' '.join(sys.argv[2:]) or "What is best trade today?"
         cmd_ask(question)
     elif args.command == 'verify':
         cmd_verify(args.arg or 'LUNR')
@@ -228,7 +280,6 @@ Commands:
     elif args.command == 'signals':
         signals = load('output/aggregated_signals.json')
         if isinstance(signals, list):
-            print(f"\nSignals ({len(signals)} total)")
             for s in signals[:15]:
                 if s.get('price', 0) > 0:
                     print(f"  {s['ticker']:6} {s['signal']:12} {s['score']:+.3f} ${s['price']:.2f}")
@@ -236,20 +287,13 @@ Commands:
         r = load('output/macro_regime.json')
         if r:
             print(f"\nRegime: {r.get('regime')} ({r.get('confidence', 0):.0%})")
-            for imp in r.get('portfolio_implications', []):
-                print(f"  -> {imp}")
     elif args.command == 'risk':
         risk = load('output/risk_analysis.json')
         if isinstance(risk, list) and risk:
             r = risk[0]
-            print(f"\nRisk: VaR {r.get('var_95', 0):.2%} Sharpe {r.get('sharpe', 0):.2f} Kelly {r.get('kelly', 0):.2%}")
-    elif args.command == 'start':
-        cmd_today()
-    else:
-        cmds = {'today': cmd_today, 'watchlist': cmd_watchlist, 'portfolio': cmd_portfolio,
-                'track': cmd_track, 'brief': cmd_brief}
-        if args.command in cmds:
-            cmds[args.command]()
+            print(f"\nVaR:{r.get('var_95', 0):.2%} Sharpe:{r.get('sharpe', 0):.2f} Kelly:{r.get('kelly', 0):.2%}")
+    elif args.command in cmds:
+        cmds[args.command]()
 
 
 if __name__ == '__main__':
