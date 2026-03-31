@@ -13033,5 +13033,86 @@
     "verdict": "APPROVED",
     "approved": true,
     "checks_passed": 4
+  },
+  {
+    "id": 221,
+    "name": "mom_1m_tight",
+    "description": "1-month momentum",
+    "submitted": "2026-03-31",
+    "stage": "FINAL_VERDICT",
+    "backtest": {
+      "calmar": 3.055,
+      "sharpe": 1.89,
+      "max_drawdown": 0.15,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": {
+      "attacks": [
+        {
+          "type": "SURVIVORSHIP_BIAS",
+          "severity": "HIGH",
+          "question": "Were delisted stocks included?"
+        },
+        {
+          "type": "REGIME_DEPENDENCY",
+          "severity": "MEDIUM",
+          "question": "Works in CRISIS?"
+        },
+        {
+          "type": "NEMOTRON_RED_TEAM",
+          "severity": "HIGH",
+          "verdict": "\nOkay, the user has presented a Red Team attack strategy evaluation request with specific metrics: mom_1m_tight Calmar 3.055, Sharpe 1.89, MaxDD 15.0%. They want an APPROVE or REJECT verdict.\n\nHmm, th",
+          "approved": true
+        }
+      ],
+      "high_severity": 2
+    },
+    "stress_test": {
+      "scenarios": [
+        {
+          "scenario": "COVID_CRASH",
+          "estimated_impact": -0.23613,
+          "survives": true
+        },
+        {
+          "scenario": "GFC_2008",
+          "estimated_impact": -0.38892000000000004,
+          "survives": true
+        },
+        {
+          "scenario": "DOT_COM",
+          "estimated_impact": -0.340305,
+          "survives": true
+        },
+        {
+          "scenario": "FLASH_CRASH",
+          "estimated_impact": -0.062505,
+          "survives": true
+        }
+      ],
+      "survival_rate": 1.0
+    },
+    "verdict": "APPROVED",
+    "approved": true,
+    "checks_passed": 4
+  },
+  {
+    "id": 222,
+    "name": "mom_6m_tight",
+    "description": "6-month momentum",
+    "submitted": "2026-03-31",
+    "stage": "BACKTEST_VERIFIED",
+    "backtest": {
+      "calmar": 1.763,
+      "sharpe": 1.45,
+      "max_drawdown": 0.18,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": null,
+    "stress_test": null,
+    "verdict": null,
+    "approved": null
   }
 ]
