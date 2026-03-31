@@ -12085,5 +12085,242 @@
     "verdict": "APPROVED",
     "approved": true,
     "checks_passed": 4
+  },
+  {
+    "id": 205,
+    "name": "mom_1m_tight",
+    "description": "1-month momentum",
+    "submitted": "2026-03-31",
+    "stage": "FINAL_VERDICT",
+    "backtest": {
+      "calmar": 3.055,
+      "sharpe": 1.89,
+      "max_drawdown": 0.15,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": {
+      "attacks": [
+        {
+          "type": "SURVIVORSHIP_BIAS",
+          "severity": "HIGH",
+          "question": "Were delisted stocks included?"
+        },
+        {
+          "type": "REGIME_DEPENDENCY",
+          "severity": "MEDIUM",
+          "question": "Works in CRISIS?"
+        },
+        {
+          "type": "NEMOTRON_RED_TEAM",
+          "severity": "HIGH",
+          "verdict": "\nOkay, the user has given me a Red Team attack strategy called \"mom_1m_tight\" with specific performance metrics: Calmar ratio of 3.055, Sharpe ratio of 1.89, and maximum drawdown of 15.0%. I need to d",
+          "approved": true
+        }
+      ],
+      "high_severity": 2
+    },
+    "stress_test": {
+      "scenarios": [
+        {
+          "scenario": "COVID_CRASH",
+          "estimated_impact": -0.23613,
+          "survives": true
+        },
+        {
+          "scenario": "GFC_2008",
+          "estimated_impact": -0.38892000000000004,
+          "survives": true
+        },
+        {
+          "scenario": "DOT_COM",
+          "estimated_impact": -0.340305,
+          "survives": true
+        },
+        {
+          "scenario": "FLASH_CRASH",
+          "estimated_impact": -0.062505,
+          "survives": true
+        }
+      ],
+      "survival_rate": 1.0
+    },
+    "verdict": "APPROVED",
+    "approved": true,
+    "checks_passed": 4
+  },
+  {
+    "id": 206,
+    "name": "mom_6m_tight",
+    "description": "6-month momentum",
+    "submitted": "2026-03-31",
+    "stage": "FINAL_VERDICT",
+    "backtest": {
+      "calmar": 1.763,
+      "sharpe": 1.45,
+      "max_drawdown": 0.18,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": {
+      "attacks": [
+        {
+          "type": "SURVIVORSHIP_BIAS",
+          "severity": "HIGH",
+          "question": "Were delisted stocks included?"
+        },
+        {
+          "type": "NEMOTRON_RED_TEAM",
+          "severity": "HIGH",
+          "verdict": "\nOkay, the user is asking me to evaluate whether to approve or reject a trading strategy called \"mom_6m_tight\" based on its performance metrics: Calmar ratio of 1.763, Sharpe ratio of 1.45, and maximu",
+          "approved": true
+        }
+      ],
+      "high_severity": 2
+    },
+    "stress_test": {
+      "scenarios": [
+        {
+          "scenario": "COVID_CRASH",
+          "estimated_impact": -0.28005800000000003,
+          "survives": true
+        },
+        {
+          "scenario": "GFC_2008",
+          "estimated_impact": -0.461272,
+          "survives": true
+        },
+        {
+          "scenario": "DOT_COM",
+          "estimated_impact": -0.403613,
+          "survives": true
+        },
+        {
+          "scenario": "FLASH_CRASH",
+          "estimated_impact": -0.07413299999999999,
+          "survives": true
+        }
+      ],
+      "survival_rate": 1.0
+    },
+    "verdict": "APPROVED",
+    "approved": true,
+    "checks_passed": 4
+  },
+  {
+    "id": 207,
+    "name": "mean_reversion",
+    "description": "Mean reversion",
+    "submitted": "2026-03-31",
+    "stage": "FINAL_VERDICT",
+    "backtest": {
+      "calmar": 0.8,
+      "sharpe": 0.9,
+      "max_drawdown": 0.25,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": {
+      "attacks": [
+        {
+          "type": "SURVIVORSHIP_BIAS",
+          "severity": "HIGH",
+          "question": "Were delisted stocks included?"
+        },
+        {
+          "type": "NEMOTRON_RED_TEAM",
+          "severity": "HIGH",
+          "verdict": "\nOkay, the user has given me a scenario where I need to decide whether to APPROVE or REJECT a trading strategy called \"mean_reversion\" based on specific metrics: Calmar ratio of 0.8, Sharpe ratio of 0",
+          "approved": true
+        }
+      ],
+      "high_severity": 2
+    },
+    "stress_test": {
+      "scenarios": [
+        {
+          "scenario": "COVID_CRASH",
+          "estimated_impact": -0.3128,
+          "survives": true
+        },
+        {
+          "scenario": "GFC_2008",
+          "estimated_impact": -0.5152000000000001,
+          "survives": false
+        },
+        {
+          "scenario": "DOT_COM",
+          "estimated_impact": -0.45080000000000003,
+          "survives": true
+        },
+        {
+          "scenario": "FLASH_CRASH",
+          "estimated_impact": -0.0828,
+          "survives": true
+        }
+      ],
+      "survival_rate": 0.75
+    },
+    "verdict": "REJECTED",
+    "approved": false,
+    "checks_passed": 3
+  },
+  {
+    "id": 208,
+    "name": "vol_breakout",
+    "description": "Vol breakout",
+    "submitted": "2026-03-31",
+    "stage": "FINAL_VERDICT",
+    "backtest": {
+      "calmar": 2.1,
+      "sharpe": 1.6,
+      "max_drawdown": 0.12,
+      "verified": true,
+      "issues": []
+    },
+    "red_team": {
+      "attacks": [
+        {
+          "type": "SURVIVORSHIP_BIAS",
+          "severity": "HIGH",
+          "question": "Were delisted stocks included?"
+        },
+        {
+          "type": "NEMOTRON_RED_TEAM",
+          "severity": "HIGH",
+          "verdict": "APPROVE",
+          "approved": true
+        }
+      ],
+      "high_severity": 2
+    },
+    "stress_test": {
+      "scenarios": [
+        {
+          "scenario": "COVID_CRASH",
+          "estimated_impact": -0.2686,
+          "survives": true
+        },
+        {
+          "scenario": "GFC_2008",
+          "estimated_impact": -0.44240000000000007,
+          "survives": true
+        },
+        {
+          "scenario": "DOT_COM",
+          "estimated_impact": -0.3871,
+          "survives": true
+        },
+        {
+          "scenario": "FLASH_CRASH",
+          "estimated_impact": -0.0711,
+          "survives": true
+        }
+      ],
+      "survival_rate": 1.0
+    },
+    "verdict": "APPROVED",
+    "approved": true,
+    "checks_passed": 4
   }
 ]
