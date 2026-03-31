@@ -1,27 +1,9 @@
 [
   {
-    "ticker": "MRVL",
-    "sentiment": "BULLISH",
-    "score": 0.85,
-    "reason": "Nvidia's $2\u202fbillion investment in Marvell boosted investor confidence and drove the stock sharply higher.",
-    "news_count": 5,
-    "latest_headline": "Sector Update: Tech Stocks Gain Tuesday Afternoon",
-    "date": "2026-03-31"
-  },
-  {
-    "ticker": "DELL",
-    "sentiment": "BULLISH",
-    "score": 0.3,
-    "reason": "Evercore ISI's Outperform rating outweighs Truist's Hold, indicating cautious optimism for DELL.",
-    "news_count": 5,
-    "latest_headline": "Top S&P500 movers in Tuesday's session",
-    "date": "2026-03-31"
-  },
-  {
     "ticker": "LUNR",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "{\"sentiment\":\"NEUTRAL\",\"score\":0.0,\"reason\":\"The news shows both negative pressure (s",
+    "reason": "\nWe need sentiment for LUNR based on news. The news mentions space-related companies trading lower d",
     "news_count": 5,
     "latest_headline": "Shares of space-related companies are trading lower as the stock extends Friday's selloff. NASA read",
     "date": "2026-03-31"
@@ -30,16 +12,34 @@
     "ticker": "ASTS",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to output JSON with sentiment, score, reason. The news: multiple contradictory statements: ",
+    "reason": "\nWe need to output JSON with sentiment: BULLISH/BEARISH/NEUTRAL, score -1 to 1, reason one sentence.",
     "news_count": 5,
     "latest_headline": "Shares of space-related companies are trading lower as the stock extends Friday's selloff. NASA read",
+    "date": "2026-03-31"
+  },
+  {
+    "ticker": "DELL",
+    "sentiment": "NEUTRAL",
+    "score": 0.0,
+    "reason": "{\"sentiment\":\"BULLISH\",\"score\":0.25,\"reason\":\"Evercore's Outperform rating outweighs Truist's Hold, ",
+    "news_count": 5,
+    "latest_headline": "Top S&P500 movers in Tuesday's session",
+    "date": "2026-03-31"
+  },
+  {
+    "ticker": "MRNA",
+    "sentiment": "NEUTRAL",
+    "score": 0.0,
+    "reason": "\nWe need to output JSON only with fields sentiment (BULLISH/BEARISH/NEUTRAL), score -1 to 1, reason ",
+    "news_count": 5,
+    "latest_headline": "These 2 Medical Stocks Could Beat Earnings: Why They Should Be on Your Radar",
     "date": "2026-03-31"
   },
   {
     "ticker": "KLAC",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to output JSON with sentiment, score, reason.\n\nWe need to analyze the news: multiple items.",
+    "reason": "Expecting ',' delimiter: line 1 column 53 (char 52)",
     "news_count": 5,
     "latest_headline": "Why KLA (KLAC) Could Beat Earnings Estimates Again",
     "date": "2026-03-31"
@@ -48,16 +48,25 @@
     "ticker": "AMAT",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to produce JSON only: sentiment, score, reason.\n\nWe need to analyze news for AMAT (Applied ",
+    "reason": "\nWe need to produce JSON with sentiment BULLISH/BEARISH/NEUTRAL, score -1 to 1, and reason one sente",
     "news_count": 5,
     "latest_headline": "The AMD Foundation Joins Last Mile Education Fund's National Semiconductor Coalition Protecting Amer",
+    "date": "2026-03-31"
+  },
+  {
+    "ticker": "MRVL",
+    "sentiment": "NEUTRAL",
+    "score": 0.0,
+    "reason": "{\"sentiment\":\"BULLISH\",\"score\":0.65,\"reason\":\"Tech and chip stocks are rallying on sector-wide gains",
+    "news_count": 5,
+    "latest_headline": "Sector Update: Tech Stocks Rise Late Afternoon",
     "date": "2026-03-31"
   },
   {
     "ticker": "CRCL",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to produce JSON with sentiment (BULLISH, BEARISH, NEUTRAL), score between -1 and 1, and a o",
+    "reason": "\nWe need to produce JSON with sentiment, score, reason. The news: multiple items: shares of crypto-r",
     "news_count": 5,
     "latest_headline": "Shares of crypto-related companies are trading higher amid a gain in the price of Bitcoin.",
     "date": "2026-03-31"
@@ -66,7 +75,7 @@
     "ticker": "LRCX",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to output JSON only with fields sentiment, score, reason. Need to analyze news for LRCX tic",
+    "reason": "\nWe need to output JSON only with fields sentiment, score, reason. Need to analyze news for LRCX.\n\nN",
     "news_count": 5,
     "latest_headline": "The AMD Foundation Joins Last Mile Education Fund's National Semiconductor Coalition Protecting Amer",
     "date": "2026-03-31"
@@ -75,18 +84,9 @@
     "ticker": "MU",
     "sentiment": "NEUTRAL",
     "score": 0.0,
-    "reason": "\nWe need to output JSON with sentiment, score, reason. Analyze news: multiple items: S&P500 active s",
+    "reason": "\nWe need to output JSON only with sentiment, score, reason.\n\nWe need to analyze the news. The news i",
     "news_count": 5,
     "latest_headline": "Which S&P500 stocks are the most active on Tuesday?",
-    "date": "2026-03-31"
-  },
-  {
-    "ticker": "MRNA",
-    "sentiment": "BEARISH",
-    "score": -0.4,
-    "reason": "Moderna's shares fell sharply despite some positive vaccine news, indicating overall bearish sentiment.",
-    "news_count": 5,
-    "latest_headline": "These 2 Medical Stocks Could Beat Earnings: Why They Should Be on Your Radar",
     "date": "2026-03-31"
   }
 ]
