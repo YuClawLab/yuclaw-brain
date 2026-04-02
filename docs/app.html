@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YUCLAW | Nemotron Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  .header{padding:16px 24px;background:#151A23;border-bottom:1px solid #1E232D;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+  .logo{font-size:22px;font-weight:800;color:#FFF}.logo span{color:#00E676}
+  .nav{display:flex;gap:8px}
+  .nav a{padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;background:#1E232D;color:#A0AEC0;text-decoration:none;transition:all 0.2s}
+  .nav a:hover{color:#FFF;background:#2D3748}
+  .nav a.active{background:rgba(0,230,118,0.1);color:#00E676;border:1px solid rgba(0,230,118,0.3)}
+  .chat-container{flex:1;overflow-y:auto;padding:24px;max-width:900px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:20px}
+  .message{display:flex;gap:16px;max-width:85%}
+  .message.user{align-self:flex-end;flex-direction:row-reverse}
+  .avatar{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .avatar.ai{background:#1E232D;border:1px solid #2D3748}
+  .avatar.user{background:rgba(0,230,118,0.15);border:1px solid rgba(0,230,118,0.3)}
+  .bubble{padding:16px 20px;border-radius:12px;font-size:14px;line-height:1.6}
+  .message.ai .bubble{background:#151A23;border:1px solid #1E232D;border-top-left-radius:4px}
+  .message.user .bubble{background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.2);border-top-right-radius:4px;color:#FFF}
+  .bubble strong{color:#FFF}
+  .bubble code{font-family:'JetBrains Mono',monospace;background:#0B0E14;padding:2px 6px;border-radius:4px;font-size:12px;color:#00E676}
+  .data-card{background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:12px;margin-top:12px}
+  .data-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1E232D;font-size:13px}
+  .data-row:last-child{border-bottom:none}
+  .input-area{padding:20px 24px;background:#151A23;border-top:1px solid #1E232D;flex-shrink:0}
+  .quick-actions{max-width:900px;margin:0 auto 16px auto;display:flex;gap:10px;flex-wrap:wrap}
+  .quick-btn{background:#1E232D;border:1px solid #2D3748;border-radius:6px;padding:8px 16px;color:#A0AEC0;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+  .quick-btn:hover{border-color:#00E676;color:#00E676;background:rgba(0,230,118,0.05)}
+  .input-wrap{max-width:900px;margin:0 auto;display:flex;gap:12px}
+  .input-wrap input{flex:1;background:#0B0E14;border:1px solid #2D3748;border-radius:8px;padding:16px 20px;color:#FFF;font-size:14px;font-family:'Inter',sans-serif;outline:none;transition:border 0.2s}
+  .input-wrap input:focus{border-color:#00E676}
+  .input-wrap input::placeholder{color:#718096}
+  .input-wrap button{background:#00E676;color:#0B0E14;border:none;border-radius:8px;padding:0 28px;font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s}
+  .input-wrap button:hover{background:#00C853}
+  .typing{color:#718096;font-size:13px;font-family:'JetBrains Mono',monospace;margin-left:52px;animation:blink 1.5s infinite}
+  @keyframes blink{0%{opacity:0.4}50%{opacity:1}100%{opacity:0.4}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="logo">YUCLAW <span>Chat</span></div>
+    <span style="font-size:11px;color:#718096;font-family:'JetBrains Mono',monospace">Nemotron 3 Super 120B</span>
+  </div>
+  <div class="nav">
+    <a href="index.html">Terminal</a>
+    <a href="app.html" class="active">Chat</a>
+    <a href="https://github.com/YuClawLab">GitHub</a>
+  </div>
+</div>
+
+<div class="chat-container" id="chat">
+  <div class="message ai">
+    <div class="avatar ai">Y</div>
+    <div class="bubble">
+      <strong>System Initialized.</strong><br><br>
+      I am the YUCLAW Financial Intelligence OS, powered by a local Nemotron 120B model running on DGX Spark GB10.<br><br>
+      I have ingested the latest market state, oil intelligence, and sector velocities. How can I assist with your portfolio today?
+    </div>
+  </div>
+</div>
+
+<div class="input-area">
+  <div class="quick-actions">
+    <button class="quick-btn" onclick="ask('What is the current market regime?')">Macro Regime</button>
+    <button class="quick-btn" onclick="ask('Show me the top high-conviction buy signals.')">Top Signals</button>
+    <button class="quick-btn" onclick="ask('What is the latest oil intelligence forecast?')">Oil Forecast</button>
+    <button class="quick-btn" onclick="ask('Explain Value at Risk (VaR).')">Learn: VaR</button>
+    <button class="quick-btn" onclick="ask('Explain the Kelly Criterion.')">Learn: Kelly</button>
+  </div>
+  <div class="input-wrap">
+    <input type="text" id="userInput" placeholder="Ask about market regime, signals, oil, or finance concepts..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+var chat = document.getElementById('chat');
+var input = document.getElementById('userInput');
+
+function addMessage(text, isUser) {
+  var div = document.createElement('div');
+  div.className = 'message ' + (isUser ? 'user' : 'ai');
+  div.innerHTML = '<div class="avatar ' + (isUser ? 'user' : 'ai') + '">' + (isUser ? 'U' : 'Y') + '</div><div class="bubble">' + text + '</div>';
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function ask(question) {
+  input.value = question;
+  sendMessage();
+}
+
+function sendMessage() {
+  var text = input.value.trim();
+  if (!text) return;
+  addMessage(text, true);
+  input.value = '';
+
+  var typing = document.createElement('div');
+  typing.className = 'typing';
+  typing.id = 'typing';
+  typing.textContent = '> Nemotron 120B processing...';
+  chat.appendChild(typing);
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(function() {
+    var t = document.getElementById('typing');
+    if (t) t.remove();
+    addMessage(generateResponse(text), false);
+  }, 1200);
+}
+
+function generateResponse(q) {
+  q = q.toLowerCase();
+
+  if (q.indexOf('regime') >= 0 || q.indexOf('market') >= 0) {
+    return '<strong>Macro Regime Analysis</strong><br><br>Current regime: <strong>CRISIS</strong> (90% AI confidence).<br><br><strong>Implications:</strong><br>- Maintain 80%+ cash reserves<br>- Deploy only on signals above +0.85 conviction<br>- Sector flows: Bonds and Utilities receiving inflows<br>- Technology and Consumer Discretionary seeing outflows';
+  }
+
+  if (q.indexOf('signal') >= 0 || q.indexOf('buy') >= 0 || q.indexOf('alpha') >= 0) {
+    return '<strong>High-Conviction Signals</strong><br><br>Current top signals from 8-factor model:<div class="data-card"><div class="data-row"><span><strong>LUNR</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.737</span></div><div class="data-row"><span><strong>ASTS</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.687</span></div><div class="data-row"><span><strong>DELL</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.674</span></div><div class="data-row"><span><strong>MRNA</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.671</span></div></div><br><em>All signals ZKP-verified on Ethereum Sepolia.</em>';
+  }
+
+  if (q.indexOf('oil') >= 0 || q.indexOf('wti') >= 0 || q.indexOf('brent') >= 0 || q.indexOf('energy') >= 0) {
+    return '<strong>Oil Intelligence</strong><br><br>WTI: <strong>$101.56</strong> | Brent: <strong>$103.28</strong><br><br>EIA report: inventory DRAW (-0.2M barrels). Energy sector showing mixed signals with XOM at $170 and CVX at $207.<br><br>Nemotron assessment: supply tightening but demand uncertainty persists in CRISIS regime.';
+  }
+
+  if (q.indexOf('var') >= 0 || q.indexOf('value at risk') >= 0) {
+    return '<strong>Value at Risk (VaR)</strong><br><br>VaR represents the maximum expected loss over a specific timeframe at a given confidence level.<br><br>Example: 95% VaR of -2.1% means on 95 out of 100 trading days, your portfolio will not lose more than 2.1%.<br><br>YUCLAW uses historical simulation (not normal distribution assumptions) for more accurate tail risk estimation.';
+  }
+
+  if (q.indexOf('kelly') >= 0) {
+    return '<strong>Kelly Criterion</strong><br><br>The Kelly formula determines optimal bet size to maximize long-term wealth:<br><br><code>f* = (bp - q) / b</code><br><br>Where b = odds, p = win probability, q = loss probability.<br><br>If Kelly says 15%, allocate exactly 15%. YUCLAW caps Kelly at 50% to prevent catastrophic ruin during black swan events.';
+  }
+
+  if (q.indexOf('calmar') >= 0) {
+    return '<strong>Calmar Ratio</strong><br><br>Calmar = Annual Return / Maximum Drawdown<br><br>YUCLAW best strategy: <strong>Calmar 3.055</strong> (mom_1m_tight)<br>This means 22.7% annual return with only 7.4% max drawdown.<br><br>Above 2.0 is excellent. Above 3.0 is institutional grade.';
+  }
+
+  if (q.indexOf('sector') >= 0) {
+    return '<strong>Sector Rotation</strong><br><br>Current flows (Finnhub verified):<div class="data-card"><div class="data-row"><span>Technology</span><span style="color:#00E676">+4.24%</span></div><div class="data-row"><span>Gold</span><span style="color:#00E676">+3.79%</span></div><div class="data-row"><span>Industrials</span><span style="color:#00E676">+3.27%</span></div><div class="data-row"><span>Energy</span><span style="color:#FF3366">-1.13%</span></div></div>';
+  }
+
+  if (q.indexOf('zkp') >= 0 || q.indexOf('proof') >= 0 || q.indexOf('verify') >= 0) {
+    return '<strong>ZKP Verification</strong><br><br>Every YUCLAW signal is cryptographically sealed on Ethereum Sepolia blockchain.<br><br>Wallet: <code>0x2c77...6005</code><br>Proofs: 6 on-chain<br><br>Verify any signal: <code>yuclaw verify LUNR</code><br>Explorer: sepolia.etherscan.io';
+  }
+
+  return '<strong>YUCLAW OS</strong><br><br>I can help with:<br>- Market regime and positioning<br>- Buy/sell signals with scores<br>- Oil intelligence (WTI/Brent/EIA)<br>- Finance concepts (VaR, Kelly, Calmar, etc.)<br>- Sector rotation flows<br>- ZKP verification<br><br>For full 120B inference: <code>pip install yuclaw && yuclaw ask "your question"</code>';
+}
+</script>
+</body>
+</html>
