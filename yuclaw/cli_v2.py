@@ -260,7 +260,7 @@ Commands:
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
                                  'signals', 'regime', 'risk', 'dashboard', 'start',
-                                 'learn', 'trade'])
+                                 'learn', 'trade', 'swarm'])
     parser.add_argument('arg', nargs='*', default=[])
     args = parser.parse_args()
     args.arg = ' '.join(args.arg) if args.arg else ''
@@ -271,7 +271,10 @@ Commands:
         'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
     }
 
-    if args.command == 'learn':
+    if args.command == 'swarm':
+        from yuclaw.swarm.debate import run_swarm
+        run_swarm()
+    elif args.command == 'learn':
         from yuclaw.campus.learn import explain, list_concepts
         if args.arg:
             print(explain(args.arg))
