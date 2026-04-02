@@ -259,9 +259,11 @@ Commands:
     parser.add_argument('command', nargs='?', default='today',
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
-                                 'signals', 'regime', 'risk', 'dashboard', 'start'])
-    parser.add_argument('arg', nargs='?', default='')
+                                 'signals', 'regime', 'risk', 'dashboard', 'start',
+                                 'learn', 'trade'])
+    parser.add_argument('arg', nargs='*', default=[])
     args = parser.parse_args()
+    args.arg = ' '.join(args.arg) if args.arg else ''
 
     cmds = {
         'today': cmd_today, 'start': cmd_today, 'sector': cmd_sector,
@@ -269,7 +271,35 @@ Commands:
         'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
     }
 
-    if args.command == 'ask':
+    if args.command == 'learn':
+        from yuclaw.campus.learn import explain, list_concepts
+        if args.arg:
+            print(explain(args.arg))
+        else:
+            list_concepts()
+    elif args.command == 'trade':
+        from yuclaw.campus.paper_trading import PaperTrader
+        trader = PaperTrader(os.environ.get('USER', 'Student'))
+        extra = sys.argv[2:]
+        if not extra:
+            print(trader.show())
+        elif len(extra) == 3:
+            action, ticker, shares = extra[0].upper(), extra[1].upper(), int(extra[2])
+            if action == 'BUY':
+                res = trader.buy(ticker, shares)
+                if 'error' in res:
+                    print(f"  Error: {res['error']}")
+                else:
+                    print(f"  Bought {shares} {ticker} @ ${res['price']:,.2f}")
+            elif action == 'SELL':
+                res = trader.sell(ticker, shares)
+                if 'error' in res:
+                    print(f"  Error: {res['error']}")
+                else:
+                    print(f"  Sold {shares} {ticker}. PnL: ${res['pnl']:+,.2f}")
+        else:
+            print("Usage: yuclaw trade [BUY/SELL] [TICKER] [SHARES]")
+    elif args.command == 'ask':
         question = args.arg or ' '.join(sys.argv[2:]) or "What is best trade today?"
         cmd_ask(question)
     elif args.command == 'verify':
