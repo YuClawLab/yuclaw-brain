@@ -260,7 +260,7 @@ Commands:
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
                                  'signals', 'regime', 'risk', 'dashboard', 'start',
-                                 'learn', 'trade', 'chain', 'swarm'])
+                                 'learn', 'trade', 'audio', 'chain', 'swarm'])
     parser.add_argument('arg', nargs='*', default=[])
     args = parser.parse_args()
     args.arg = ' '.join(args.arg) if args.arg else ''
@@ -271,7 +271,17 @@ Commands:
         'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
     }
 
-    if args.command == 'chain':
+    if args.command == 'audio':
+        from yuclaw.audio.audio_intel import analyze_audio
+        extra = sys.argv[2:]
+        if not extra:
+            print("Usage: yuclaw audio <file_or_url> [context]")
+            print("  yuclaw audio /tmp/fomc.mp3 'FOMC meeting'")
+        else:
+            source = extra[0]
+            context = ' '.join(extra[1:]) if len(extra) > 1 else 'financial speech'
+            analyze_audio(source, context)
+    elif args.command == 'chain':
         from yuclaw.graph.causal_graph import CausalGraph
         event = args.arg.upper() if args.arg else 'TSMC'
         graph = CausalGraph()
