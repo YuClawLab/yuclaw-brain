@@ -260,7 +260,7 @@ Commands:
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
                                  'signals', 'regime', 'risk', 'dashboard', 'start',
-                                 'learn', 'trade', 'swarm'])
+                                 'learn', 'trade', 'chain', 'swarm'])
     parser.add_argument('arg', nargs='*', default=[])
     args = parser.parse_args()
     args.arg = ' '.join(args.arg) if args.arg else ''
@@ -271,7 +271,17 @@ Commands:
         'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
     }
 
-    if args.command == 'swarm':
+    if args.command == 'chain':
+        from yuclaw.graph.causal_graph import CausalGraph
+        event = args.arg.upper() if args.arg else 'TSMC'
+        graph = CausalGraph()
+        print(graph.explain_chain(event))
+        trades = graph.get_second_order_trades(event)
+        if trades:
+            print(f"\n  Second-order trade ideas:")
+            for t in trades[:5]:
+                print(f"    {t['ticker']:6} ({t['order']}) -- {t['chain']}")
+    elif args.command == 'swarm':
         from yuclaw.swarm.debate import run_swarm
         run_swarm()
     elif args.command == 'learn':

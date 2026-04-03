@@ -1,0 +1,544 @@
+{
+  "nodes": [
+    "TSMC",
+    "NVDA",
+    "AMD",
+    "AAPL",
+    "QCOM",
+    "AVGO",
+    "DELL",
+    "HPE",
+    "MSFT",
+    "GOOG",
+    "META",
+    "AMZN",
+    "ASML",
+    "INTC",
+    "Samsung",
+    "AMAT",
+    "KLAC",
+    "MRVL",
+    "OpenAI",
+    "WTI",
+    "XOM",
+    "CVX",
+    "COP",
+    "OXY",
+    "SLB",
+    "DAL",
+    "UAL",
+    "LUV",
+    "AAL",
+    "OPEC",
+    "BRENT",
+    "EIA_INVENTORY",
+    "AI_DEMAND",
+    "VST",
+    "CEG",
+    "NRG",
+    "SO",
+    "ASTS",
+    "LUNR",
+    "RKLB",
+    "SpaceX",
+    "FDA",
+    "MRNA",
+    "PFE",
+    "LLY",
+    "ABBV",
+    "BNTX",
+    "FED_RATE",
+    "TLT",
+    "IEF",
+    "HYG",
+    "SPY",
+    "QQQ",
+    "DXY",
+    "CHINA_GDP",
+    "CAT",
+    "DE",
+    "FCX",
+    "AA",
+    "TAIWAN_RISK",
+    "MIDDLE_EAST",
+    "TARIFF",
+    "TSLA",
+    "NKE",
+    "CONSUMER_SPEND",
+    "WMT",
+    "COST",
+    "TGT",
+    "HOUSING",
+    "HD",
+    "LOW",
+    "DHI",
+    "LEN"
+  ],
+  "edges": [
+    {
+      "source": "TSMC",
+      "target": "NVDA",
+      "relationship": "supplies_chips_to"
+    },
+    {
+      "source": "TSMC",
+      "target": "AMD",
+      "relationship": "supplies_chips_to"
+    },
+    {
+      "source": "TSMC",
+      "target": "AAPL",
+      "relationship": "supplies_chips_to"
+    },
+    {
+      "source": "TSMC",
+      "target": "QCOM",
+      "relationship": "supplies_chips_to"
+    },
+    {
+      "source": "TSMC",
+      "target": "AVGO",
+      "relationship": "supplies_chips_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "DELL",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "HPE",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "MSFT",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "GOOG",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "META",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "AMZN",
+      "relationship": "supplies_gpus_to"
+    },
+    {
+      "source": "NVDA",
+      "target": "AI_DEMAND",
+      "relationship": "drives_power_demand_via"
+    },
+    {
+      "source": "AMD",
+      "target": "DELL",
+      "relationship": "supplies_cpus_to"
+    },
+    {
+      "source": "AMD",
+      "target": "HPE",
+      "relationship": "supplies_cpus_to"
+    },
+    {
+      "source": "AMD",
+      "target": "MSFT",
+      "relationship": "supplies_cpus_to"
+    },
+    {
+      "source": "AMD",
+      "target": "GOOG",
+      "relationship": "supplies_cpus_to"
+    },
+    {
+      "source": "AVGO",
+      "target": "AAPL",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "AVGO",
+      "target": "MSFT",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "AVGO",
+      "target": "GOOG",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "MSFT",
+      "target": "AMZN",
+      "relationship": "cloud_competes_with"
+    },
+    {
+      "source": "MSFT",
+      "target": "GOOG",
+      "relationship": "cloud_competes_with"
+    },
+    {
+      "source": "MSFT",
+      "target": "OpenAI",
+      "relationship": "ai_partner_of"
+    },
+    {
+      "source": "GOOG",
+      "target": "MSFT",
+      "relationship": "ai_competes_with"
+    },
+    {
+      "source": "GOOG",
+      "target": "META",
+      "relationship": "ai_competes_with"
+    },
+    {
+      "source": "ASML",
+      "target": "TSMC",
+      "relationship": "supplies_lithography_to"
+    },
+    {
+      "source": "ASML",
+      "target": "INTC",
+      "relationship": "supplies_lithography_to"
+    },
+    {
+      "source": "ASML",
+      "target": "Samsung",
+      "relationship": "supplies_lithography_to"
+    },
+    {
+      "source": "AMAT",
+      "target": "TSMC",
+      "relationship": "supplies_equipment_to"
+    },
+    {
+      "source": "AMAT",
+      "target": "INTC",
+      "relationship": "supplies_equipment_to"
+    },
+    {
+      "source": "AMAT",
+      "target": "Samsung",
+      "relationship": "supplies_equipment_to"
+    },
+    {
+      "source": "AMAT",
+      "target": "KLAC",
+      "relationship": "supplies_equipment_to"
+    },
+    {
+      "source": "KLAC",
+      "target": "TSMC",
+      "relationship": "inspects_chips_for"
+    },
+    {
+      "source": "KLAC",
+      "target": "INTC",
+      "relationship": "inspects_chips_for"
+    },
+    {
+      "source": "KLAC",
+      "target": "Samsung",
+      "relationship": "inspects_chips_for"
+    },
+    {
+      "source": "MRVL",
+      "target": "AMZN",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "MRVL",
+      "target": "MSFT",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "MRVL",
+      "target": "GOOG",
+      "relationship": "supplies_networking_to"
+    },
+    {
+      "source": "WTI",
+      "target": "XOM",
+      "relationship": "price_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "CVX",
+      "relationship": "price_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "COP",
+      "relationship": "price_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "OXY",
+      "relationship": "price_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "SLB",
+      "relationship": "price_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "DAL",
+      "relationship": "cost_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "UAL",
+      "relationship": "cost_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "LUV",
+      "relationship": "cost_impacts"
+    },
+    {
+      "source": "WTI",
+      "target": "AAL",
+      "relationship": "cost_impacts"
+    },
+    {
+      "source": "OPEC",
+      "target": "WTI",
+      "relationship": "controls_supply_of"
+    },
+    {
+      "source": "OPEC",
+      "target": "BRENT",
+      "relationship": "controls_supply_of"
+    },
+    {
+      "source": "EIA_INVENTORY",
+      "target": "WTI",
+      "relationship": "signals_demand_for"
+    },
+    {
+      "source": "EIA_INVENTORY",
+      "target": "BRENT",
+      "relationship": "signals_demand_for"
+    },
+    {
+      "source": "AI_DEMAND",
+      "target": "VST",
+      "relationship": "increases_power_for"
+    },
+    {
+      "source": "AI_DEMAND",
+      "target": "CEG",
+      "relationship": "increases_power_for"
+    },
+    {
+      "source": "AI_DEMAND",
+      "target": "NRG",
+      "relationship": "increases_power_for"
+    },
+    {
+      "source": "AI_DEMAND",
+      "target": "SO",
+      "relationship": "increases_power_for"
+    },
+    {
+      "source": "ASTS",
+      "target": "LUNR",
+      "relationship": "competes_with"
+    },
+    {
+      "source": "ASTS",
+      "target": "RKLB",
+      "relationship": "competes_with"
+    },
+    {
+      "source": "SpaceX",
+      "target": "ASTS",
+      "relationship": "launches_for"
+    },
+    {
+      "source": "SpaceX",
+      "target": "LUNR",
+      "relationship": "launches_for"
+    },
+    {
+      "source": "FDA",
+      "target": "MRNA",
+      "relationship": "approves_drugs_for"
+    },
+    {
+      "source": "FDA",
+      "target": "PFE",
+      "relationship": "approves_drugs_for"
+    },
+    {
+      "source": "FDA",
+      "target": "LLY",
+      "relationship": "approves_drugs_for"
+    },
+    {
+      "source": "FDA",
+      "target": "ABBV",
+      "relationship": "approves_drugs_for"
+    },
+    {
+      "source": "MRNA",
+      "target": "PFE",
+      "relationship": "competes_with"
+    },
+    {
+      "source": "MRNA",
+      "target": "BNTX",
+      "relationship": "competes_with"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "TLT",
+      "relationship": "impacts"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "IEF",
+      "relationship": "impacts"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "HYG",
+      "relationship": "impacts"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "SPY",
+      "relationship": "impacts"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "QQQ",
+      "relationship": "impacts"
+    },
+    {
+      "source": "FED_RATE",
+      "target": "DXY",
+      "relationship": "strengthens"
+    },
+    {
+      "source": "DXY",
+      "target": "AAPL",
+      "relationship": "hurts_earnings_of"
+    },
+    {
+      "source": "DXY",
+      "target": "MSFT",
+      "relationship": "hurts_earnings_of"
+    },
+    {
+      "source": "DXY",
+      "target": "GOOG",
+      "relationship": "hurts_earnings_of"
+    },
+    {
+      "source": "DXY",
+      "target": "META",
+      "relationship": "hurts_earnings_of"
+    },
+    {
+      "source": "CHINA_GDP",
+      "target": "CAT",
+      "relationship": "demand_for"
+    },
+    {
+      "source": "CHINA_GDP",
+      "target": "DE",
+      "relationship": "demand_for"
+    },
+    {
+      "source": "CHINA_GDP",
+      "target": "FCX",
+      "relationship": "demand_for"
+    },
+    {
+      "source": "CHINA_GDP",
+      "target": "AA",
+      "relationship": "demand_for"
+    },
+    {
+      "source": "TAIWAN_RISK",
+      "target": "TSMC",
+      "relationship": "disrupts"
+    },
+    {
+      "source": "MIDDLE_EAST",
+      "target": "WTI",
+      "relationship": "disrupts"
+    },
+    {
+      "source": "MIDDLE_EAST",
+      "target": "BRENT",
+      "relationship": "disrupts"
+    },
+    {
+      "source": "TARIFF",
+      "target": "AAPL",
+      "relationship": "hurts"
+    },
+    {
+      "source": "TARIFF",
+      "target": "TSLA",
+      "relationship": "hurts"
+    },
+    {
+      "source": "TARIFF",
+      "target": "NKE",
+      "relationship": "hurts"
+    },
+    {
+      "source": "CONSUMER_SPEND",
+      "target": "AMZN",
+      "relationship": "benefits"
+    },
+    {
+      "source": "CONSUMER_SPEND",
+      "target": "WMT",
+      "relationship": "benefits"
+    },
+    {
+      "source": "CONSUMER_SPEND",
+      "target": "COST",
+      "relationship": "benefits"
+    },
+    {
+      "source": "CONSUMER_SPEND",
+      "target": "TGT",
+      "relationship": "benefits"
+    },
+    {
+      "source": "HOUSING",
+      "target": "HD",
+      "relationship": "benefits"
+    },
+    {
+      "source": "HOUSING",
+      "target": "LOW",
+      "relationship": "benefits"
+    },
+    {
+      "source": "HOUSING",
+      "target": "DHI",
+      "relationship": "benefits"
+    },
+    {
+      "source": "HOUSING",
+      "target": "LEN",
+      "relationship": "benefits"
+    }
+  ],
+  "stats": {
+    "total_nodes": 73,
+    "total_edges": 92,
+    "built": "2026-04-03T11:36:56.701502"
+  }
+}
