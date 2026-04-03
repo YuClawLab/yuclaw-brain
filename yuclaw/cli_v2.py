@@ -260,7 +260,7 @@ Commands:
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
                                  'signals', 'regime', 'risk', 'dashboard', 'start',
-                                 'learn', 'trade', 'audio', 'chain', 'swarm'])
+                                 'learn', 'trade', 'l2', 'audio', 'chain', 'swarm'])
     parser.add_argument('arg', nargs='*', default=[])
     args = parser.parse_args()
     args.arg = ' '.join(args.arg) if args.arg else ''
@@ -271,7 +271,19 @@ Commands:
         'portfolio': cmd_portfolio, 'track': cmd_track, 'brief': cmd_brief,
     }
 
-    if args.command == 'audio':
+    if args.command == 'l2':
+        from yuclaw.orderbook.microstructure import OrderBookAnalyzer
+        analyzer = OrderBookAnalyzer()
+        if len(sys.argv) > 2:
+            print(analyzer.show(sys.argv[2].upper()))
+        else:
+            try:
+                signals = json.load(open('output/aggregated_signals.json'))
+                tickers = [s['ticker'] for s in signals[:10] if s.get('price', 0) > 0]
+            except:
+                tickers = ['LUNR', 'ASTS', 'DELL', 'NVDA', 'MRNA']
+            analyzer.scan_universe(tickers)
+    elif args.command == 'audio':
         from yuclaw.audio.audio_intel import analyze_audio
         extra = sys.argv[2:]
         if not extra:
