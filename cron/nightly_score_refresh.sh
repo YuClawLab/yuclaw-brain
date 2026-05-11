@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# YUCLAW: nightly score regeneration. Runs 5 upstream engines + aggregator in order.
+# Cron: 0 18 * * 1-5  (18:00 MDT weekdays ≈ ~2h after US equity close)
+# Designed to be idempotent and continue past individual step failures.
+
+LOG=/tmp/yuclaw_nightly.log
+set -uo pipefail
+set -E
+trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND" >> "$LOG"' ERR
+
+YUCLAW_HOME=/home/zhangd2/yuclaw
+PYTHON=/usr/bin/python3
+[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+
+cd "$YUCLAW_HOME"
+
+ts() { date -u +%FT%TZ; }
+log() { echo "[$(ts)] $*" >> "$LOG"; }
+
+run_step() {
+    local name="$1"; shift
+    log "==> $name START"
+    if timeout 600 "$@" >> "$LOG" 2>&1; then
+        log "<== $name OK"
+    else
+        local rc=$?
+        log "<== $name FAILED (rc=$rc)"
+    fi
+}
+
+log "=== nightly_score_refresh start ==="
+
+# Engines run sequentially. Individual failures do not break the chain.
+run_step "run_macro"           "$PYTHON" engines/run_macro.py
+# Expose macro regime as a flat JSON for the many readers that expect macro_regime.json
+# (refresh_dashboard.sh, cli_v2.py, mcp_server, daemon, etc.). One-liner shim.
+run_step "expose_macro_regime" "$PYTHON" -c "import json; d=json.load(open('output/macro_sector_latest.json')); json.dump(d['macro'], open('output/macro_regime.json','w'), indent=2)"
+run_step "run_factor_scan"     "$PYTHON" engines/run_factor_scan.py
+run_step "run_backtest"        "$PYTHON" engines/run_backtest.py
+run_step "run_risk"            "$PYTHON" engines/run_risk.py
+run_step "run_screener"        "$PYTHON" engines/run_screener.py
+run_step "signal_aggregator"   "$PYTHON" yuclaw/modules/signal_aggregator.py
+
+log "=== nightly_score_refresh done ==="
