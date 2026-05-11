@@ -55,11 +55,17 @@ print('State: {} signals'.format(state['stats']['total_signals']))
 # Step 3: Rebuild index.html from data — no JS hydration needed
 python3 rebuild_html.py >> /tmp/dashboard_refresh.log 2>&1
 
-# Step 4: Push
+# Step 4: Push (auto-rebase to heal divergence; push errors stay visible in cron log)
 git add docs/index.html docs/data/dashboard_state.json output/aggregated_signals.json 2>/dev/null
 git diff --cached --quiet || {
     git commit -m "auto: refresh $(date +%H:%M)" 2>/dev/null
-    git push origin main 2>/dev/null
+    git fetch origin
+    if ! git rebase --autostash origin/main; then
+        git rebase --abort 2>/dev/null
+        echo "[$(date)] refresh_dashboard: rebase conflict against origin/main — aborted; push deferred to next run"
+        exit 1
+    fi
+    git push origin main
 }
 
 echo "$(date): Done" >> /tmp/dashboard_refresh.log
