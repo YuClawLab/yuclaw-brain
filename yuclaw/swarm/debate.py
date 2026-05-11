@@ -5,8 +5,8 @@ Bull and Bear argue in parallel, Oracle delivers final verdict.
 import json, os, requests, time, concurrent.futures
 from datetime import datetime
 
-MODEL = os.environ.get('YUCLAW_SUPER_MODEL', '/home/zhangd2/aimo/models/Nemotron-Cascade-2-30B-A3B')
-ENDPOINT = os.environ.get('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
+MODEL = os.environ.get('YUCLAW_SUPER_MODEL', 'nemotron-3-super-local')
+ENDPOINT = os.environ.get('YUCLAW_SUPER_ENDPOINT', 'http://localhost:11434/v1')
 
 BULL_SYSTEM = "You are Agent Alpha (Bull). Argue FORCEFULLY why this trade will succeed. Be specific. Max 3 sentences."
 BEAR_SYSTEM = "You are Agent Omega (Bear). Destroy the Bull's thesis. Find every reason this trade will FAIL. Max 3 sentences."

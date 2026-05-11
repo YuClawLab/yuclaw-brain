@@ -132,8 +132,8 @@ def cmd_ask(question: str):
     if earnings:
         context_parts.append(f"Earnings this week: {list(earnings.keys())}")
     context = "\n".join(context_parts)
-    model = os.getenv('YUCLAW_SUPER_MODEL', 'nemotron-q4km.gguf')
-    endpoint = os.getenv('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
+    model = os.getenv('YUCLAW_SUPER_MODEL', 'nemotron-3-super-local')
+    endpoint = os.getenv('YUCLAW_SUPER_ENDPOINT', 'http://localhost:11434/v1')
     try:
         resp = requests.post(
             f'{endpoint}/chat/completions',

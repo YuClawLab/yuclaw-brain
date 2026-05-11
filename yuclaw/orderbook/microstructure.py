@@ -123,9 +123,14 @@ class OrderBookAnalyzer:
         else:
             liquidity = 'ILLIQUID'
 
-        # Iceberg detection (heuristic: small visible size but high volume)
+        # Iceberg detection (heuristic: small visible size but high volume).
+        # Guard: yfinance bid/ask sizes are not real top-of-book share depth, so the ratio is
+        # meaningless. Report N/A unless we have real L2 data (book['simulated'] == False).
+        using_simulated_l2 = book.get('simulated', False)
         iceberg_score = 0
-        if volume > 0 and total_size > 0:
+        if using_simulated_l2:
+            iceberg_score = None
+        elif volume > 0 and total_size > 0:
             vol_to_size = volume / total_size
             if vol_to_size > 1000:
                 iceberg_score = 0.9
@@ -134,7 +139,7 @@ class OrderBookAnalyzer:
             elif vol_to_size > 100:
                 iceberg_score = 0.4
 
-        iceberg_alert = iceberg_score > 0.6
+        iceberg_alert = "N/A" if iceberg_score is None else (iceberg_score > 0.6)
 
         result = {
             'ticker': ticker,
@@ -167,7 +172,9 @@ class OrderBookAnalyzer:
             try:
                 r = self.analyze(ticker)
                 results.append(r)
-                print(f"  {ticker:6} | Spread: {r['spread_bps']:5.1f}bps | Pressure: {r['pressure']:20} | Liquidity: {r['liquidity']:8} | Iceberg: {'YES' if r['iceberg_alert'] else 'no'}")
+                ib = r['iceberg_alert']
+                ib_str = 'N/A' if ib == 'N/A' else ('YES' if ib else 'no')
+                print(f"  {ticker:6} | Spread: {r['spread_bps']:5.1f}bps | Pressure: {r['pressure']:20} | Liquidity: {r['liquidity']:8} | Iceberg: {ib_str}")
             except Exception as e:
                 print(f"  {ticker:6} | Error: {e}")
 
@@ -194,7 +201,7 @@ class OrderBookAnalyzer:
         output += f"\n  Liquidity: {r['liquidity']}"
         output += f"\n  Volume:    {r['volume']:,}"
 
-        if r['iceberg_alert']:
+        if r['iceberg_alert'] is True:
             output += f"\n\n  ICEBERG ALERT: Hidden institutional activity detected (score: {r['iceberg_score']:.1f})"
 
         if r.get('simulated'):
@@ -228,7 +235,7 @@ if __name__ == '__main__':
         # Summary
         buy_pressure = [r for r in results if 'BUY' in r['pressure']]
         sell_pressure = [r for r in results if 'SELL' in r['pressure']]
-        icebergs = [r for r in results if r['iceberg_alert']]
+        icebergs = [r for r in results if r['iceberg_alert'] is True]
 
         print(f"\nSUMMARY:")
         print(f"  Buy pressure:  {len(buy_pressure)} tickers")

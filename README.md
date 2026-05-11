@@ -60,7 +60,20 @@ yuclaw signals        # Raw signal list
 yuclaw regime         # Market regime only
 yuclaw risk           # Portfolio risk metrics
 yuclaw dashboard      # Open live dashboard
+
+# Added in v2.1.0
+yuclaw learn               # List teaching concepts (calmar, kelly, var, zkp, ...)
+yuclaw learn kelly         # Plain-English explanation of one concept
+yuclaw trade               # Show your $100K paper portfolio
+yuclaw trade BUY NVDA 10   # Paper buy (live yfinance pricing)
+yuclaw trade SELL NVDA 10  # Paper sell
+yuclaw chain NVDA          # Causal-graph 2nd-order trade ideas (73-node graph)
+yuclaw audio URL_OR_FILE   # Whisper transcription + Nemotron sentiment scoring
+yuclaw l2 [TICKER]         # Order-book microstructure (see note below)
+yuclaw swarm               # Bull/Bear/Oracle Nemotron debate via Ollama
 ```
+
+> **Note on `yuclaw l2`:** iceberg detection requires a real L2 data feed — currently returns `N/A` when using yfinance fallback.
 
 ---
 
