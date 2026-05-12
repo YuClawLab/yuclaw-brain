@@ -9,8 +9,8 @@ import os
 import requests
 from datetime import datetime, date
 
-MODEL = os.environ.get('YUCLAW_SUPER_MODEL', 'nemotron-q4km.gguf')
-ENDPOINT = os.environ.get('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
+MODEL = os.environ.get('YUCLAW_SUPER_MODEL', 'nemotron-3-super-local')
+ENDPOINT = os.environ.get('YUCLAW_SUPER_ENDPOINT', 'http://localhost:11434/v1')
 HEARTBEAT_INTERVAL = 60
 ALERT_FILE = 'output/daemon/alerts.json'
 STATE_FILE = 'output/daemon/state.json'
