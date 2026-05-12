@@ -38,7 +38,7 @@ When an LLM says "Calmar: 2.1" — it is guessing.
 - **Top Signal:** LUNR STRONG_BUY +0.933
 - **Best Strategy:** mom_1m_tight Calmar 2.308 Ann.Ret 22.7%
 - **Defensive VaR95:** -0.97% Sharpe 1.34
-- **Track Record:** Building from March 24, 2026
+- **Backtest Results:** Building from March 24, 2026
 
 ---
 

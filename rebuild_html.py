@@ -187,7 +187,7 @@ def rebuild():
     html += f'<div class="grid grid-3"><div class="card"><div class="card-title">SECTOR VELOCITY</div>{sec_rows}</div><div class="card"><div class="card-title">NEMOTRON SENTIMENT</div>{news_rows}</div><div class="card"><div class="card-title">CATALYST CALENDAR</div>{earn_rows}</div></div>'
 
     # Alerts + Memory + Track
-    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">ATROS ALERTS</div>{alert_rows}</div><div class="card"><div class="card-title">AUTODREAM MEMORY</div>{mem_rows}</div><div class="card"><div class="card-title">TRACK RECORD</div><div style="color:#00E676;font-size:12px;margin-bottom:6px">LUNR +14.68% | ASTS +10.44% | DELL +4.01%</div><div style="background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);padding:6px 12px;border-radius:6px;font-size:11px;color:#00E676;margin-top:10px">ZKP Verified — Ethereum Sepolia</div></div></div>'
+    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">ATROS ALERTS</div>{alert_rows}</div><div class="card"><div class="card-title">AUTODREAM MEMORY</div>{mem_rows}</div><div class="card"><div class="card-title">BACKTEST RESULTS</div><div style="color:#00E676;font-size:12px;margin-bottom:6px">LUNR +14.68% | ASTS +10.44% | DELL +4.01%</div><div style="background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);padding:6px 12px;border-radius:6px;font-size:11px;color:#00E676;margin-top:10px">ZKP Verified — Ethereum Sepolia</div></div></div>'
 
     # Disclaimer (legal — not financial advice, no liability)
     html += '<div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); text-align: center; margin-top: 2rem; margin-bottom: 1rem; padding: 0 1rem;">'

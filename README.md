@@ -40,7 +40,7 @@ TOP BUY SIGNALS:
    ASTS   STRONG_BUY   score:+0.687 price:$87.00
    DELL   STRONG_BUY   score:+0.674 price:$176.91
 
-TRACK RECORD: Day 5 accuracy 67%
+BACKTEST RESULTS: Day 5 accuracy 67%
 
 PORTFOLIO ACTION:
    Hold 80%+ cash. Buy only highest conviction signals.
@@ -52,7 +52,7 @@ PORTFOLIO ACTION:
 yuclaw today          # What should I do today? (START HERE)
 yuclaw watchlist      # All signals with prices and actions
 yuclaw portfolio      # Kelly-optimal allocation for your capital
-yuclaw track          # 30-day verified track record
+yuclaw track          # 30-day backtest verification
 yuclaw ask "..."      # Ask Nemotron 120B any financial question
 yuclaw verify LUNR    # Verify signal proof on Ethereum
 yuclaw brief          # Latest institutional brief
@@ -95,7 +95,7 @@ We replace LLM estimates with rigorous, adversarial quantitative validation.
 | **ZKP Audit Trail** | No | No | **On-chain Sepolia** |
 | **Real VaR/Kelly** | No | No | **Historical Sim** |
 | **Local 120B Model** | No | No | **Nemotron DGX** |
-| **Verified Track Record** | No | No | **30-day building** |
+| **Verified Backtest Results** | No | No | **30-day building** |
 | **Adversarial Red Team** | No | No | **Kills bad strategies** |
 | **Dark Pool Engine** | No | No | **ZKP per match** |
 | **Governance Token** | No | No | **YCT live** |
@@ -103,7 +103,7 @@ We replace LLM estimates with rigorous, adversarial quantitative validation.
 
 ---
 
-## Verifiable Track Record (Day 6 of 30)
+## Verifiable Backtest Results (Day 6 of 30)
 
 *Every signal is cryptographically secured on the Ethereum blockchain.*
 
@@ -135,7 +135,7 @@ graph TD
     D --> E[Nemotron 3 Super 120B - Local 19 tok/s Zero cloud]
     E --> F[ZKP Proof - Ethereum Sepolia]
     F --> G[Execution Manager - Levels 0-4]
-    G --> H[Institutional Brief - Dashboard - Track Record]
+    G --> H[Institutional Brief - Dashboard - Backtest Results]
 ```
 
 ### Directory Structure

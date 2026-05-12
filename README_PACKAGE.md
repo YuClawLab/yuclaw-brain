@@ -15,7 +15,7 @@ yuclaw start
 - **ZKP audit trail** — every decision on Ethereum blockchain
 - **Local AI** — Nemotron 120B, zero cloud dependency
 - **Market regime** — CRISIS/RISK_OFF/RISK_ON detection
-- **30-day track record** — verifiable signal performance
+- **30-day backtest results** — verifiable signal performance
 
 ## Quick start
 ```bash
@@ -24,7 +24,7 @@ yuclaw start          # Start all engines
 yuclaw signals        # Show current signals
 yuclaw regime         # Show market regime
 yuclaw brief          # Show institutional brief
-yuclaw track          # Show track record
+yuclaw track          # Show backtest results
 yuclaw dashboard      # Open live dashboard
 ```
 
@@ -36,7 +36,7 @@ SEC XBRL    Macro Regime      Risk Engine
      |              |                |
 Evidence Graph -> Nemotron 120B -> ZKP Proof
      |
-Institutional Brief -> Dashboard -> Track Record
+Institutional Brief -> Dashboard -> Backtest Results
 ```
 
 ## Community

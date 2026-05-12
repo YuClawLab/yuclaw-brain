@@ -135,7 +135,7 @@ def cmd_insider():
 def cmd_track():
     track = _load('output/track_record_v2.json')
     total = track.get('stats', {}).get('total', 0)
-    print(f"\nYUCLAW Track Record")
+    print(f"\nYUCLAW Backtest Results")
     print(f"  Total signals: {total}")
     print(f"  ZKP: Ethereum Sepolia on-chain")
     for s in track.get('signals', [])[-5:]:
@@ -178,7 +178,7 @@ Commands:
   yuclaw earnings   Upcoming earnings calendar
   yuclaw risk       Portfolio risk (VaR/Sharpe/Kelly)
   yuclaw insider    SEC insider trading activity
-  yuclaw track      30-day verifiable track record
+  yuclaw track      30-day backtest verification
   yuclaw zkp        ZKP on-chain proofs
   yuclaw dashboard  Open live dashboard
         """

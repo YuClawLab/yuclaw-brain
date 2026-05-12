@@ -36,7 +36,7 @@ def cmd_today():
         print(f"\nEARNINGS THIS WEEK: {', '.join(list(earnings.keys())[:5])}")
     track = load('output/track_record_verified.json')
     if track:
-        print(f"\nTRACK RECORD: Day {track.get('day', 0)} accuracy {track.get('accuracy', 0):.0%}")
+        print(f"\nBACKTEST RESULTS: Day {track.get('day', 0)} accuracy {track.get('accuracy', 0):.0%}")
     print(f"\nPORTFOLIO ACTION:")
     if regime and regime.get('regime') == 'CRISIS':
         print(f"   Hold 80%+ cash. Max position 5%.")
@@ -86,7 +86,7 @@ def cmd_earnings():
 
 
 def cmd_track():
-    print(f"\nYUCLAW Track Record")
+    print(f"\nYUCLAW Backtest Results")
     print("=" * 50)
     verified = load('output/track_record_verified.json')
     memory = load('output/portfolio_memory_v2.json')
@@ -250,7 +250,7 @@ Commands:
   yuclaw earnings       Earnings this week — Finnhub
   yuclaw watchlist      All signals with prices
   yuclaw portfolio      Kelly allocation + earnings warnings
-  yuclaw track          30-day verified track record
+  yuclaw track          30-day backtest verification
   yuclaw ask "..."      Ask Nemotron 120B
   yuclaw verify LUNR    Ethereum proof
   yuclaw brief          Institutional brief
