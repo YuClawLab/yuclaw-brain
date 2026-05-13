@@ -165,7 +165,29 @@ def rebuild():
         ".live-dot{width:7px;height:7px;background:#00E676;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite}"
         "@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,230,118,0.4)}70%{box-shadow:0 0 0 6px rgba(0,230,118,0)}100%{box-shadow:0 0 0 0 rgba(0,230,118,0)}}"
         ".footer{text-align:center;padding:16px;color:#718096;font-size:11px}.footer a{color:#00E676;text-decoration:none}"
-        "@media(max-width:900px){.grid-4,.grid-3,.grid-custom{grid-template-columns:1fr}}"
+        # Mobile/tablet: stack grids, wrap nav pills, shrink fonts/padding, stack inline Oil grid.
+        # Attribute selectors used for inline-styled divs (Oil 4-col grid + Order-flow overflow wrapper).
+        "@media(max-width:768px){"
+            ".container{padding:12px}"
+            ".grid-4,.grid-3,.grid-custom{grid-template-columns:1fr}"
+            ".header{flex-direction:column;align-items:stretch;gap:12px;padding:12px 14px}"
+            ".header>div{flex-wrap:wrap;justify-content:flex-start}"
+            ".pill{font-size:11px;padding:4px 10px}"
+            ".logo{font-size:17px}"
+            ".card{padding:14px}"
+            ".card-title{font-size:9px;margin-bottom:10px}"
+            ".stat-card{padding:14px}"
+            ".stat-num{font-size:22px}"
+            ".stat-label{font-size:9px}"
+            ".card>div[style*='repeat(4,1fr)']{grid-template-columns:1fr 1fr!important;gap:10px!important}"
+            ".card>div[style*='overflow-y']{overflow-x:auto!important}"
+        "}"
+        "@media(max-width:480px){"
+            ".card>div[style*='repeat(4,1fr)']{grid-template-columns:1fr!important}"
+            ".stat-num{font-size:20px}"
+            "table{font-size:11px}"
+            "th,td{padding:6px 8px!important}"
+        "}"
     )
 
     html = f'<!DOCTYPE html><html lang="en"><head><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="1800"><title>YUCLAW OS</title><style>{css}</style></head><body><div class="container">'
