@@ -8,8 +8,9 @@ set -uo pipefail
 set -E
 trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND" >> "$LOG"' ERR
 
-DASHBOARD_STATE=/home/zhangd2/Yuclaw/docs/data/dashboard_state.json
-[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+DASHBOARD_STATE=/home/zhangd2/yuclaw/docs/data/dashboard_state.json
+# set -a so KEY=value lines in ~/.yuclaw_env auto-export to any subprocess we spawn.
+[[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 now_epoch=$(date +%s)
 status=()

@@ -11,7 +11,8 @@ trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND"
 YUCLAW_HOME=/home/zhangd2/yuclaw
 VENV_DIR="$YUCLAW_HOME/cron/venvs/pytorch_check"
 SYSTEM_PYTHON=/usr/bin/python3
-[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+# set -a so KEY=value lines in ~/.yuclaw_env auto-export to any subprocess.
+[[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 echo "[$(date -u +%FT%TZ)] pytorch_check start" >> "$LOG"
 

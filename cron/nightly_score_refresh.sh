@@ -10,7 +10,8 @@ trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND"
 
 YUCLAW_HOME=/home/zhangd2/yuclaw
 PYTHON=/usr/bin/python3
-[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+# set -a so KEY=value lines in ~/.yuclaw_env auto-export to the Python engine subprocesses.
+[[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 cd "$YUCLAW_HOME"
 

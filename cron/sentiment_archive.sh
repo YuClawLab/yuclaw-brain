@@ -9,7 +9,8 @@ trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND"
 
 YUCLAW_HOME=/home/zhangd2/yuclaw
 PYTHON=/usr/bin/python3
-[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+# set -a so KEY=value lines in ~/.yuclaw_env auto-export to the Python subprocess.
+[[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 if ! curl -fs --max-time 5 http://localhost:11434/api/version >/dev/null 2>&1; then
     echo "[$(date -u +%FT%TZ)] sentiment_archive: Ollama down, skipping" >> "$LOG"
@@ -23,7 +24,7 @@ echo "[$(date -u +%FT%TZ)] sentiment_archive start" >> "$LOG"
 import json, os, re, urllib.request
 from datetime import datetime, timezone
 
-state_path = "/home/zhangd2/Yuclaw/docs/data/dashboard_state.json"
+state_path = "/home/zhangd2/yuclaw/docs/data/dashboard_state.json"
 out_dir = "/home/zhangd2/yuclaw/output/sentiment"
 
 try:

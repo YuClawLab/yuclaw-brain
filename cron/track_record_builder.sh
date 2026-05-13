@@ -9,7 +9,8 @@ trap 'rc=$?; echo "[$(date -u +%FT%TZ)] [ERR rc=$rc line=$LINENO] $BASH_COMMAND"
 
 YUCLAW_HOME=/home/zhangd2/yuclaw
 PYTHON=/usr/bin/python3
-[[ -f "$HOME/.yuclaw_env" ]] && source "$HOME/.yuclaw_env"
+# set -a so KEY=value lines in ~/.yuclaw_env auto-export to the Python subprocess.
+[[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 mkdir -p "$YUCLAW_HOME/output/track_record"
 echo "[$(date -u +%FT%TZ)] track_record_builder start" >> "$LOG"
