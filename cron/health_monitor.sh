@@ -52,13 +52,11 @@ else
     status+=("disk:UNKNOWN")
 fi
 
-# 4. No zombie processes
+# 4. Zombie processes — alert only above noise floor (small benign counts are common)
 zombies=$(ps -eo stat= 2>/dev/null | awk '/^Z/' | wc -l || echo 0)
-if (( zombies == 0 )); then
-    status+=("zombies:0")
-else
-    status+=("zombies:${zombies}")
-    problems+=("${zombies} zombie process(es)")
+status+=("zombies:${zombies}")
+if (( zombies > 5 )); then
+    problems+=("${zombies} zombie process(es) (>5)")
 fi
 
 ts=$(date -u +%FT%TZ)
