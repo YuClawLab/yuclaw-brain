@@ -1,5 +1,5 @@
 import argparse, json, os, sys, glob, requests
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 
 def load(f):
@@ -226,6 +226,220 @@ def cmd_watchlist():
         print(f"{s['ticker']:8} {s.get('signal', ''):14} {s.get('score', 0):+.3f}   ${s.get('price', 0):8.2f}  [{v}]")
 
 
+def _paper_dir():
+    d = os.path.expanduser('~/.yuclaw')
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def _paper_consent_check() -> bool:
+    """First-run consent for yuclaw paper. Saves accept to ~/.yuclaw/paper_consent.json."""
+    path = os.path.join(_paper_dir(), 'paper_consent.json')
+    if os.path.exists(path):
+        try:
+            if json.load(open(path)).get('accepted'):
+                return True
+        except Exception:
+            pass
+    print()
+    print("YUCLAW will place real paper orders against your Alpaca account.")
+    print("Endpoint: paper-api.alpaca.markets (PAPER, not live).")
+    try:
+        ans = input("Continue? [y/N] ").strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        ans = ''
+    if ans != 'y':
+        print("Declined. Run again when ready.")
+        return False
+    with open(path, 'w') as f:
+        json.dump({
+            'accepted': True,
+            'accepted_at': datetime.now().isoformat(),
+            'endpoint': 'paper-api.alpaca.markets',
+        }, f, indent=2)
+    print(f"Consent saved to {path}. This prompt will not appear again.")
+    return True
+
+
+def _paper_audit(record: dict):
+    """Append-only JSONL audit log."""
+    record.setdefault('ts', datetime.now(timezone.utc).isoformat())
+    with open(os.path.join(_paper_dir(), 'orders.jsonl'), 'a') as f:
+        f.write(json.dumps(record) + '\n')
+
+
+def _fmt_et(iso_str: str) -> str:
+    if not iso_str:
+        return 'unknown'
+    try:
+        dt = datetime.fromisoformat(iso_str)
+        return dt.strftime('%H:%M ET (%a %b %d)')
+    except Exception:
+        return iso_str[:16].replace('T', ' ')
+
+
+def _paper_show_status(gateway):
+    acct = gateway.get_account()
+    clock = gateway.get_clock()
+    positions = gateway.get_positions()
+    eq, base = acct['equity'], acct['last_equity']
+    pnl = eq - base
+    pnl_pct = (pnl / base * 100) if base > 0 else 0
+    print(f"\nYUCLAW Paper — Alpaca")
+    print("=" * 50)
+    print(f"  Equity:      ${eq:>12,.2f}")
+    print(f"  Last close:  ${base:>12,.2f}")
+    print(f"  Today P&L:   ${pnl:>+12,.2f}  ({pnl_pct:+.2f}%)")
+    print(f"  Cash:        ${acct['cash']:>12,.2f}")
+    print(f"  Buying pwr:  ${acct['buying_power']:>12,.2f}")
+    print()
+    if clock['is_open']:
+        print(f"  Market:      OPEN  (next close: {_fmt_et(clock['next_close'])})")
+    else:
+        print(f"  Market:      CLOSED (next open: {_fmt_et(clock['next_open'])})")
+    print()
+    if positions:
+        print(f"  Positions ({len(positions)}):")
+        for p in positions:
+            print(f"    {p['ticker']:6}  qty={p['qty']:>5}  entry=${p['avg_entry']:7.2f}  "
+                  f"now=${p['current_price']:7.2f}  P&L ${p['unrealized_pl']:+,.2f}")
+    else:
+        print("  Positions:   none")
+
+
+def _paper_handle_order(gateway, action: str, ticker: str, qty: int, force: bool):
+    """Order pipeline: market hours -> risk gate -> size cap -> submit. Audit at every stop."""
+    from yuclaw.edge.risk_gates import RiskGate
+
+    ticker = ticker.upper()
+    action = action.upper()
+    audit = {
+        'ts':            datetime.now(timezone.utc).isoformat(),
+        'action':        action,
+        'ticker':        ticker,
+        'qty':           qty,
+        'force':         bool(force),
+        'status':        None,
+        'drawdown_pct':  None,
+        'fill_price':    None,
+        'order_id':      None,
+    }
+
+    # 1. Market hours
+    clock = gateway.get_clock()
+    if not clock['is_open']:
+        next_open = _fmt_et(clock['next_open'])
+        print(f"  Market closed. Opens {next_open}.")
+        audit['status'] = 'REJECTED_MARKET_CLOSED'
+        _paper_audit(audit)
+        return
+
+    # 2. Risk gate (drawdown halt / liquidate)
+    acct = gateway.get_account()
+    gate = RiskGate().check(acct['equity'], acct['last_equity'])
+    audit['drawdown_pct'] = gate['drawdown_pct']
+    if gate['action'] == 'HALT':
+        print(f"  HALTED: {gate['reason']}.")
+        print(f"  No new orders accepted until drawdown recovers.")
+        audit['status'] = 'REJECTED_HALT'
+        _paper_audit(audit)
+        return
+    if gate['action'] == 'LIQUIDATE':
+        print(f"  EMERGENCY: {gate['reason']}.")
+        print(f"  Refusing new order. To exit positions manually, run:")
+        print(f"    yuclaw paper liquidate")
+        audit['status'] = 'REJECTED_LIQUIDATE'
+        _paper_audit(audit)
+        return
+
+    # 3. Size cap ($10k notional)
+    try:
+        price = gateway.get_latest_price(ticker)
+    except Exception as e:
+        print(f"  Could not fetch price for {ticker}: {e}")
+        audit['status'] = 'REJECTED_PRICE_LOOKUP'
+        audit['error'] = str(e)[:200]
+        _paper_audit(audit)
+        return
+    notional = price * qty
+    audit['estimated_notional'] = round(notional, 2)
+    if notional > 10000 and not force:
+        print(f"  Order exceeds $10k cap (~${notional:,.2f}). Use --force to override.")
+        audit['status'] = 'REJECTED_SIZE_CAP'
+        _paper_audit(audit)
+        return
+
+    # 4. Submit
+    try:
+        order = gateway.submit_market_order(ticker, action.lower(), qty)
+        print(f"  {action} {qty} {ticker} submitted "
+              f"(id: {(order.get('id') or '')[:8]}..., status: {order.get('status')})")
+        audit['status']   = 'SUBMITTED'
+        audit['order_id'] = order.get('id')
+        _paper_audit(audit)
+    except Exception as e:
+        print(f"  FAILED: {e}")
+        audit['status'] = 'FAILED'
+        audit['error']  = str(e)[:200]
+        _paper_audit(audit)
+
+
+def cmd_paper(extra_argv):
+    """Live Alpaca paper trading. Separate code path from campus simulation."""
+    if not _paper_consent_check():
+        return
+    try:
+        from yuclaw.edge.alpaca_gateway import AlpacaGateway
+        gateway = AlpacaGateway()
+    except RuntimeError as e:
+        print(f"  Alpaca gateway init failed: {e}")
+        return
+
+    force = '--force' in extra_argv
+    args = [a for a in extra_argv if a != '--force']
+
+    if not args:
+        _paper_show_status(gateway)
+        return
+
+    sub = args[0].lower()
+    if sub == 'orders':
+        orders = gateway.get_orders(status='all', limit=10)
+        print(f"\nRecent Alpaca orders ({len(orders)}):")
+        for o in orders:
+            print(f"  {o['submitted_at'][:19]}  {o['side']:4}  {o['qty']:>4} {o['ticker']:6}  "
+                  f"{o['status']:10}  fill ${o['filled_avg_price']:.2f}")
+        return
+    if sub == 'liquidate':
+        try:
+            ans = input("Liquidate ALL open positions? [y/N] ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            ans = ''
+        if ans != 'y':
+            print("  Aborted.")
+            return
+        closes = gateway.liquidate_all()
+        print(f"  {len(closes)} close orders submitted.")
+        return
+    if sub.upper() in ('BUY', 'SELL'):
+        if len(args) != 3:
+            print("Usage: yuclaw paper BUY|SELL TICKER QTY [--force]")
+            return
+        try:
+            qty = int(args[2])
+        except ValueError:
+            print(f"  Invalid qty: {args[2]!r}")
+            return
+        if qty <= 0:
+            print("  qty must be positive")
+            return
+        _paper_handle_order(gateway, sub.upper(), args[1], qty, force)
+        return
+
+    print(f"Unknown paper subcommand: {sub!r}")
+    print("Usage: yuclaw paper [BUY|SELL TICKER QTY [--force] | orders | liquidate]")
+
+
 def cmd_brief():
     files = sorted(glob.glob('output/daily/*.txt'))
     if files:
@@ -260,9 +474,13 @@ Commands:
                         choices=['today', 'sector', 'news', 'earnings', 'watchlist',
                                  'portfolio', 'track', 'ask', 'verify', 'brief',
                                  'signals', 'regime', 'risk', 'dashboard', 'start',
-                                 'learn', 'trade', 'l2', 'audio', 'chain', 'swarm'])
+                                 'learn', 'trade', 'l2', 'audio', 'chain', 'swarm',
+                                 'paper'])
     parser.add_argument('arg', nargs='*', default=[])
-    args = parser.parse_args()
+    # parse_known_args (not parse_args) so subcommand-specific flags like
+    # `yuclaw paper BUY NVDA 10 --force` reach cmd_paper via sys.argv[2:]
+    # instead of being rejected at the top-level argparse layer.
+    args, _unknown = parser.parse_known_args()
     args.arg = ' '.join(args.arg) if args.arg else ''
 
     cmds = {
@@ -334,6 +552,8 @@ Commands:
                     print(f"  Sold {shares} {ticker}. PnL: ${res['pnl']:+,.2f}")
         else:
             print("Usage: yuclaw trade [BUY/SELL] [TICKER] [SHARES]")
+    elif args.command == 'paper':
+        cmd_paper(sys.argv[2:])
     elif args.command == 'ask':
         question = args.arg or ' '.join(sys.argv[2:]) or "What is best trade today?"
         cmd_ask(question)
