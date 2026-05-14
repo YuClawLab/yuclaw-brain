@@ -43,6 +43,12 @@ run_step "run_risk"            "$PYTHON" engines/run_risk.py
 run_step "run_screener"        "$PYTHON" engines/run_screener.py
 run_step "signal_aggregator"   "$PYTHON" yuclaw/modules/signal_aggregator.py
 
+# Sector + earnings: both write output/*.json that rebuild_html.py renders, but
+# neither was previously scheduled — outputs had been frozen at 2026-03-31 for 44 days.
+# Same class of bug as the original oil + signal_aggregator freezes.
+run_step "sector_rotation"     "$PYTHON" -m yuclaw.modules.sector_rotation_v2
+run_step "earnings_engine"     "$PYTHON" -m yuclaw.modules.earnings_engine
+
 # Capture pipeline runtime + measure live Ollama tokens/sec for the dashboard stat cards.
 # Replaces the previously-hardcoded "18.9 TOK/S" and "1.37ms LATENCY" inline strings.
 ELAPSED=$(( $(date +%s) - START_EPOCH ))
