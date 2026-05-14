@@ -66,18 +66,28 @@ class YUCLAWDaemon:
                 print(f"HIGH ALERT: {alert['message']}")
             self.state['last_regime'] = current_regime
 
-        # Signal change detection
+        # Signal change detection.
+        # Prior threshold was 0.4 — so coarse that only first-sight tickers ever
+        # tripped it, and the message printed a misleading "+0.000 -> +X" delta.
+        # Now: distinguish first-sight (no prior score) from real moves, and use
+        # a 0.10 threshold so day-to-day shifts in top-10 actually surface.
         signals = load('output/aggregated_signals.json')
         if isinstance(signals, list):
             for s in signals[:10]:
                 ticker = s['ticker']
                 score = s.get('score', 0)
-                last_score = self.state['last_signals'].get(ticker, 0)
-                if abs(score - last_score) > 0.4:
-                    direction = 'strengthened' if abs(score) > abs(last_score) else 'weakened'
+                prior = self.state['last_signals'].get(ticker)
+                if prior is None:
+                    alerts.append({
+                        'type': 'SIGNAL_NEW', 'severity': 'LOW',
+                        'message': f"{ticker} entered top 10 at {score:+.3f}",
+                        'timestamp': now.isoformat()
+                    })
+                elif abs(score - prior) > 0.10:
+                    direction = 'strengthened' if abs(score) > abs(prior) else 'weakened'
                     alerts.append({
                         'type': 'SIGNAL_CHANGE', 'severity': 'MEDIUM',
-                        'message': f"{ticker} signal {direction}: {last_score:+.3f} -> {score:+.3f}",
+                        'message': f"{ticker} signal {direction}: {prior:+.3f} → {score:+.3f}",
                         'timestamp': now.isoformat()
                     })
                 self.state['last_signals'][ticker] = score
