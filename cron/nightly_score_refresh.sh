@@ -30,6 +30,7 @@ run_step() {
 }
 
 log "=== nightly_score_refresh start ==="
+START_EPOCH=$(date +%s)
 
 # Engines run sequentially. Individual failures do not break the chain.
 run_step "run_macro"           "$PYTHON" engines/run_macro.py
@@ -42,4 +43,9 @@ run_step "run_risk"            "$PYTHON" engines/run_risk.py
 run_step "run_screener"        "$PYTHON" engines/run_screener.py
 run_step "signal_aggregator"   "$PYTHON" yuclaw/modules/signal_aggregator.py
 
-log "=== nightly_score_refresh done ==="
+# Capture pipeline runtime + measure live Ollama tokens/sec for the dashboard stat cards.
+# Replaces the previously-hardcoded "18.9 TOK/S" and "1.37ms LATENCY" inline strings.
+ELAPSED=$(( $(date +%s) - START_EPOCH ))
+run_step "inference_stats"     "$PYTHON" -m yuclaw.utils.inference_speed "$ELAPSED"
+
+log "=== nightly_score_refresh done (cycle=${ELAPSED}s) ==="

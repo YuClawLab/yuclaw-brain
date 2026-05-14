@@ -44,6 +44,21 @@ def rebuild():
             oil = load(os.path.join(oil_dir, files[-1]))
     oil = oil or {}
 
+    # Inference stats — replaces previously-hardcoded "18.9 TOK/S" and "1.37ms LATENCY".
+    # Measured by yuclaw.utils.inference_speed during nightly_score_refresh.sh.
+    inf = load('output/inference_stats.json') or {}
+    tok_per_sec = inf.get('tok_per_sec')
+    tok_display = f"{tok_per_sec:.1f}" if isinstance(tok_per_sec, (int, float)) else "—"
+    cycle_sec = inf.get('signal_cycle_seconds')
+    cycle_display = f"{cycle_sec:.0f}" if isinstance(cycle_sec, (int, float)) else "—"
+    measured_at = inf.get('measured_at', '')
+    measured_label = ''
+    if measured_at:
+        try:
+            measured_label = f" ({measured_at[5:10]} {measured_at[11:16]}Z)"
+        except Exception:
+            measured_label = ''
+
     buys = [s for s in signals if 'BUY' in s.get('signal', '')]
     sells = [s for s in signals if 'SELL' in s.get('signal', '')]
     now = datetime.now().strftime('%Y-%m-%d %H:%M ET')
@@ -196,7 +211,7 @@ def rebuild():
     html += f'<div class="header"><div style="display:flex;align-items:center;gap:12px"><div class="logo">YUCLAW <span>OS</span></div><div style="font-size:11px;color:#718096;font-family:JetBrains Mono"><span class="live-dot"></span>{now}</div></div><div style="display:flex;gap:6px"><a href="https://yuclawlab.github.io/yuclaw-brain" class="pill active">Terminal</a><a href="app.html" class="pill">Chat</a><a href="https://github.com/YuClawLab" class="pill">GitHub</a><a href="https://github.com/YuClawLab/yuclaw-matrix" class="pill">Paper</a><a href="https://pypi.org/project/yuclaw" class="pill">PyPI</a></div></div>'
 
     # Stats
-    html += f'<div class="grid grid-4"><div class="stat-card"><div class="stat-num" style="color:#00E676">{len(buys)}</div><div class="stat-label">Buy Signals</div></div><div class="stat-card"><div class="stat-num">{len(signals)}</div><div class="stat-label">Assets</div></div><div class="stat-card"><div class="stat-num">18.9</div><div class="stat-label">Tok/s</div></div><div class="stat-card"><div class="stat-num">1.37<span style="font-size:14px;color:#718096">ms</span></div><div class="stat-label">Latency</div></div></div>'
+    html += f'<div class="grid grid-4"><div class="stat-card"><div class="stat-num" style="color:#00E676">{len(buys)}</div><div class="stat-label">Buy Signals</div></div><div class="stat-card"><div class="stat-num">{len(signals)}</div><div class="stat-label">Assets</div></div><div class="stat-card"><div class="stat-num">{tok_display}</div><div class="stat-label">Tok/s{measured_label}</div></div><div class="stat-card"><div class="stat-num">{cycle_display}<span style="font-size:14px;color:#718096">s</span></div><div class="stat-label">Signal cycle{measured_label}</div></div></div>'
 
     # Oil
     html += f'<div class="card"><div class="card-title">OIL INTELLIGENCE — EIA + NEMOTRON 120B</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px"><div style="background:#1E232D;border-radius:8px;padding:12px"><div style="font-size:9px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">WTI</div><div style="font-size:20px;font-weight:700;color:#FFF;font-family:monospace">${wti.get("price", 0):.2f}</div></div><div style="background:#1E232D;border-radius:8px;padding:12px"><div style="font-size:9px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Brent</div><div style="font-size:20px;font-weight:700;color:#FFF;font-family:monospace">${brent.get("price", 0):.2f}</div></div><div style="background:#1E232D;border-radius:8px;padding:12px"><div style="font-size:9px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">EIA</div><div style="font-size:20px;font-weight:700;color:{eia_col};font-family:monospace">{eia_dir}</div><div style="font-size:11px;color:#718096">{abs(eia.get("change_mb", 0)):.1f}M bbl</div></div><div style="background:#1E232D;border-radius:8px;padding:12px"><div style="font-size:9px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Equities</div><div style="font-size:13px;color:#FFF;font-family:monospace">XOM ${oil.get("prices", {}).get("ExxonMobil", {}).get("price", 0):.0f} CVX ${oil.get("prices", {}).get("Chevron", {}).get("price", 0):.0f}</div></div></div></div>'
@@ -209,7 +224,7 @@ def rebuild():
     html += f'<div class="grid grid-3"><div class="card"><div class="card-title">SECTOR VELOCITY</div>{sec_rows}</div><div class="card"><div class="card-title">NEMOTRON SENTIMENT</div>{news_rows}</div><div class="card"><div class="card-title">CATALYST CALENDAR</div>{earn_rows}</div></div>'
 
     # Alerts + Memory + Track
-    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">ATROS ALERTS</div>{alert_rows}</div><div class="card"><div class="card-title">AUTODREAM MEMORY</div>{mem_rows}</div><div class="card"><div class="card-title">BACKTEST RESULTS</div><div style="color:#00E676;font-size:12px;margin-bottom:6px">LUNR +14.68% | ASTS +10.44% | DELL +4.01%</div><div style="background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);padding:6px 12px;border-radius:6px;font-size:11px;color:#00E676;margin-top:10px">ZKP Verified — Ethereum Sepolia</div></div></div>'
+    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">ATROS ALERTS</div>{alert_rows}</div><div class="card"><div class="card-title">AUTODREAM MEMORY</div>{mem_rows}</div><div class="card"><div class="card-title">BACKTEST RESULTS</div><div style="color:#00E676;font-size:12px;margin-bottom:6px">LUNR +14.68% | ASTS +10.44% | DELL +4.01%</div><div style="background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);padding:6px 12px;border-radius:6px;font-size:11px;color:#00E676;margin-top:10px">ZKP Verified — Ethereum Sepolia</div><div style="font-size:10px;color:#718096;margin-top:8px"><a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md" style="color:#718096;text-decoration:underline">Methodology &amp; limitations →</a></div></div></div>'
 
     # Disclaimer (legal — not financial advice, no liability)
     html += '<div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); text-align: center; margin-top: 2rem; margin-bottom: 1rem; padding: 0 1rem;">'
@@ -221,7 +236,7 @@ def rebuild():
     html += '</div>'
 
     # Footer
-    html += '<div class="footer">YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> | <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418">SSRN #6461418</a> | <a href="https://pypi.org/project/yuclaw">pip install yuclaw</a> | MIT</div></div></body></html>'
+    html += '<div class="footer">YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> | <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418">SSRN #6461418</a> | <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md">Methodology</a> | <a href="https://pypi.org/project/yuclaw">pip install yuclaw</a> | MIT</div></div></body></html>'
 
     os.makedirs('docs', exist_ok=True)
     with open('docs/index.html', 'w') as f:
