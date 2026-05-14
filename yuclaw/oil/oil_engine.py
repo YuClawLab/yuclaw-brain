@@ -74,8 +74,10 @@ def get_oil_prices() -> dict:
                 import yfinance as yf
                 stock = yf.Ticker(ticker)
                 fi = stock.fast_info
-                p = getattr(fi, 'last_price', None) or getattr(fi, 'previous_close', None) or 0
-                prices[name] = {'price': round(float(p), 2), 'change_pct': 0}
+                p = float(getattr(fi, 'last_price', 0) or 0)
+                prev = float(getattr(fi, 'previous_close', 0) or 0)
+                change_pct = round((p - prev) / prev * 100, 2) if prev else 0
+                prices[name] = {'price': round(p, 2), 'change_pct': change_pct}
             print(f"  {name}: ${prices[name]['price']:.2f} ({prices[name]['change_pct']:+.2f}%)")
         except Exception:
             pass
