@@ -131,7 +131,8 @@ def rebuild():
     # Memory
     mem_rows = ''
     for s in reversed((mem if isinstance(mem, list) else [])[-3:]):
-        synth = str(s.get('nemotron_synthesis', ''))[:80]
+        synth_full = str(s.get('nemotron_synthesis', ''))
+        synth = synth_full[:180] + ('…' if len(synth_full) > 180 else '')
         mem_rows += (
             f'<div style="padding:8px 0;border-bottom:1px solid #1E232D">'
             f'<div style="font-size:10px;color:#718096">{s.get("date", "")}</div>'
@@ -218,10 +219,10 @@ def rebuild():
 
     # Regime + Signals
     html += f'<div class="grid grid-custom"><div style="background:linear-gradient(135deg,{regime_bg});border-radius:12px;padding:22px;color:white"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:0.85;margin-bottom:6px">Macro Regime</div><div style="font-size:34px;font-weight:800;letter-spacing:-1px;margin-bottom:3px">{regime_name}</div><div style="font-size:13px;opacity:0.9;font-family:JetBrains Mono;margin-bottom:14px">{regime_conf:.0%} AI Confidence</div>{regime_impl}<div style="margin-top:14px;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px"><div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;opacity:0.7;margin-bottom:5px">Sector Velocity</div>{sec_vel}</div></div>'
-    html += f'<div class="card"><div class="card-title">LIVE ORDER FLOW — {len(buys)} BUY / {len(sells)} SELL</div><div style="overflow-y:auto;max-height:300px"><table><thead><tr><th>Asset</th><th>Signal</th><th>Score</th><th>Price</th></tr></thead><tbody>{sig_rows}</tbody></table></div></div></div>'
+    html += f'<div class="card"><div class="card-title">LIVE ORDER FLOW — {len(buys)} BUY / {len(sells)} SELL</div><div style="overflow-y:auto;max-height:300px"><table><thead><tr><th>Asset</th><th>Signal</th><th>Score</th><th>Price</th></tr></thead><tbody>{sig_rows}</tbody></table></div><div style="font-size:10px;color:#718096;margin-top:6px;text-align:right"><span style="color:#00E676;font-weight:600">V</span> = Finnhub-verified live price</div></div></div>'
 
     # Sector + News + Earnings
-    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">SECTOR VELOCITY</div>{sec_rows}</div><div class="card"><div class="card-title">NEMOTRON SENTIMENT</div>{news_rows}</div><div class="card"><div class="card-title">CATALYST CALENDAR</div>{earn_rows}</div></div>'
+    html += f'<div class="grid grid-3"><div class="card"><div class="card-title">SECTOR VELOCITY <span style="color:#4A5568;font-weight:400;text-transform:none;letter-spacing:0;font-size:9px">(1-day vs prior close)</span></div>{sec_rows}</div><div class="card"><div class="card-title">NEMOTRON SENTIMENT</div>{news_rows}</div><div class="card"><div class="card-title">CATALYST CALENDAR</div>{earn_rows}</div></div>'
 
     # Alerts + Memory + Track
     html += f'<div class="grid grid-3"><div class="card"><div class="card-title">ATROS ALERTS</div>{alert_rows}</div><div class="card"><div class="card-title">AUTODREAM MEMORY</div>{mem_rows}</div><div class="card"><div class="card-title">BACKTEST RESULTS</div><div style="color:#A0AEC0;font-size:12px;margin-bottom:6px;font-style:italic">Verified backtest results coming this week — see methodology link below.</div><div style="background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);padding:6px 12px;border-radius:6px;font-size:11px;color:#00E676;margin-top:10px">ZKP Verified — Ethereum Sepolia</div><div style="font-size:10px;color:#718096;margin-top:8px"><a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md" style="color:#718096;text-decoration:underline">Methodology &amp; limitations →</a></div></div></div>'
