@@ -92,14 +92,19 @@ class YUCLAWDaemon:
                     })
                 self.state['last_signals'][ticker] = score
 
-        # Track record update
-        track = load('output/track_record_verified.json')
+        # Track record update — read the live builder's output, not the orphaned
+        # track_record_verified.json (frozen 2026-03-24 at day=6). The current
+        # writer track_record_builder.sh produces track_record_latest.json with
+        # schema {day, summary:{avg_outcome_pct, n_with_quote}, ...} — no
+        # "accuracy" field, so message switched to avg outcome %.
+        track = load('output/track_record_latest.json')
         if track:
             day = track.get('day', 0)
             if day > self.state.get('last_track_day', 0):
+                avg = track.get('summary', {}).get('avg_outcome_pct', 0) or 0
                 alerts.append({
                     'type': 'TRACK_UPDATE', 'severity': 'LOW',
-                    'message': f"Track record Day {day}: {track.get('accuracy', 0):.0%} accuracy",
+                    'message': f"Track record Day {day}: {avg:+.2f}% avg outcome",
                     'timestamp': now.isoformat()
                 })
                 self.state['last_track_day'] = day
