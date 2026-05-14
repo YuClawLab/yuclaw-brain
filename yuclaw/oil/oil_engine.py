@@ -23,6 +23,11 @@ def get_eia_inventory() -> dict:
         params = {
             'frequency': 'weekly',
             'data[0]': 'value',
+            # WCESTUS1 = U.S. Weekly Ending Stocks of Crude Oil (excl. SPR), thousand barrels.
+            # Without this facet, EIA returns mixed series (gasoline imports, propane, etc.)
+            # and the script picks up nonsense values (e.g. value=224 MBBL/D for gasoline
+            # imports rendered as "0.1M barrels" on the dashboard).
+            'facets[series][]': 'WCESTUS1',
             'sort[0][column]': 'period',
             'sort[0][direction]': 'desc',
             'offset': 0,
