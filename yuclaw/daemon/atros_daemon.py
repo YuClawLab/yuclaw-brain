@@ -125,14 +125,17 @@ class YUCLAWDaemon:
         try:
             signals = load('output/aggregated_signals.json') or []
             alerts = load(ALERT_FILE) or []
-            track = load('output/track_record_verified.json') or {}
+            # Same orphan-file fix as in heartbeat(): the AutoDream synthesis
+            # prompt was carrying frozen track_day=6 / accuracy=0.67 from the
+            # 2026-03-24 file. Swap to the live writer's output + matching schema.
+            track = load('output/track_record_latest.json') or {}
             today_alerts = [a for a in alerts if a.get('timestamp', '').startswith(today_str)]
             summary = {
                 'date': today_str,
                 'total_signals': len(signals) if isinstance(signals, list) else 0,
                 'alerts_today': len(today_alerts),
                 'track_day': track.get('day', 0),
-                'track_accuracy': track.get('accuracy', 0),
+                'track_avg_outcome_pct': track.get('summary', {}).get('avg_outcome_pct', 0) or 0,
                 'regime': self.state.get('last_regime', 'UNKNOWN')
             }
             try:
