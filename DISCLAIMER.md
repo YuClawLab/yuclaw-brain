@@ -9,3 +9,8 @@ Past performance does not guarantee future results. Trading involves substantial
 YuClawLab, its contributors, and affiliates accept no liability for any losses arising from use of this software.
 
 *For educational and research purposes only. MIT Licensed.*
+
+---
+
+See [Backtest Methodology](docs/methodology/backtest.md) for what the
+dashboard's BACKTEST RESULTS panel does and does not represent.

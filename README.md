@@ -105,6 +105,11 @@ We replace LLM estimates with rigorous, adversarial quantitative validation.
 
 ## Verifiable Backtest Results (Day 6 of 30)
 
+> **Read the [Backtest Methodology page](docs/methodology/backtest.md)** before
+> drawing inferences from these figures. The numbers below are illustrative
+> reference values from project launch and do not auto-update; the live
+> strategy backtest engine output lives in `output/backtest_all.json`.
+
 *Every signal is cryptographically secured on the Ethereum blockchain.*
 
 | Signal | Result | Return | ZKP Block |
