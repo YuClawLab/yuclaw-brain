@@ -120,14 +120,37 @@ Use only the data provided. Be specific."""
         return f"Nemotron unavailable: {e}"
 
 
-def run_oil_pipeline():
+def run_oil_pipeline(generate_brief: bool = True):
+    """
+    Fetch prices + EIA, optionally generate Nemotron brief.
+
+    The brief is a slow LLM call (~60-120s typical, can time out). For the
+    hourly oil cron, pass generate_brief=False to keep latency low; a separate
+    nightly cron (cron/oil_brief.sh) runs the full pipeline with the brief
+    enabled. The brief field is preserved in the saved JSON when skipped so
+    that nightly fills it in.
+    """
     print(f"\n{'=' * 60}")
-    print(f"YUCLAW Oil Intelligence — {date.today()}")
+    print(f"YUCLAW Oil Intelligence — {date.today()}  (brief={'on' if generate_brief else 'off'})")
     print(f"{'=' * 60}")
 
     eia = get_eia_inventory()
     prices = get_oil_prices()
-    brief = generate_oil_brief(eia, prices)
+
+    out_json = f'output/oil/{date.today()}_brief.json'
+    out_txt  = f'output/oil/{date.today()}_brief.txt'
+
+    if generate_brief:
+        brief = generate_oil_brief(eia, prices)
+    else:
+        # Preserve previous brief (e.g., last night's nightly run) if today's file already exists.
+        prior = {}
+        try:
+            with open(out_json) as f:
+                prior = json.load(f)
+        except Exception:
+            pass
+        brief = prior.get('brief', '')
 
     result = {
         'date': date.today().isoformat(),
@@ -138,17 +161,24 @@ def run_oil_pipeline():
     }
 
     os.makedirs('output/oil', exist_ok=True)
-    with open(f'output/oil/{date.today()}_brief.json', 'w') as f:
+    with open(out_json, 'w') as f:
         json.dump(result, f, indent=2)
-    with open(f'output/oil/{date.today()}_brief.txt', 'w') as f:
-        f.write(brief)
+    if generate_brief:
+        with open(out_txt, 'w') as f:
+            f.write(brief)
 
-    print(f"\nBrief ({len(brief)} chars):")
-    print(brief[:500])
+    if generate_brief:
+        print(f"\nBrief ({len(brief)} chars):")
+        print(brief[:500])
     return result
 
 
 if __name__ == '__main__':
+    import sys
     from dotenv import load_dotenv
     load_dotenv()
-    run_oil_pipeline()
+    # Default behavior unchanged (generate brief). cron/oil_engine.sh passes --no-brief
+    # to skip the slow Nemotron call on hourly runs; cron/oil_brief.sh runs without
+    # the flag at 23:00 MDT to refresh the brief once a day.
+    with_brief = '--no-brief' not in sys.argv
+    run_oil_pipeline(generate_brief=with_brief)

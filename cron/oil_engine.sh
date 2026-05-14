@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# YUCLAW: refresh oil intelligence (WTI/Brent prices + EIA inventory + brief).
+# YUCLAW: refresh oil prices + EIA inventory (fast path, no Nemotron brief).
 # Cron: 0 * * * *  (hourly at :00 — oil futures trade ~24/7 so hourly is fine)
-# Output: ~/yuclaw/output/oil/YYYY-MM-DD_brief.json (today's file rewritten each hour).
+# Output: ~/yuclaw/output/oil/YYYY-MM-DD_brief.json (today's file rewritten each hour;
+#         brief field preserved from the most recent nightly cron/oil_brief.sh run).
 
 LOG=/tmp/yuclaw_oil.log
 set -uo pipefail
@@ -14,9 +15,9 @@ PYTHON=/usr/bin/python3
 [[ -f "$HOME/.yuclaw_env" ]] && { set -a; source "$HOME/.yuclaw_env"; set +a; }
 
 cd "$YUCLAW_HOME"
-echo "[$(date -u +%FT%TZ)] oil_engine start" >> "$LOG"
+echo "[$(date -u +%FT%TZ)] oil_engine start (no brief)" >> "$LOG"
 
-# 180s cap: prices fetch is fast (~3s) but Nemotron brief can take up to 2 min
-timeout 180 "$PYTHON" -m yuclaw.oil.oil_engine >> "$LOG" 2>&1
+# 30s cap is plenty for prices + EIA (no LLM call). Brief lives in oil_brief.sh.
+timeout 30 "$PYTHON" -m yuclaw.oil.oil_engine --no-brief >> "$LOG" 2>&1
 
 echo "[$(date -u +%FT%TZ)] oil_engine done" >> "$LOG"
