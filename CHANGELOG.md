@@ -114,13 +114,26 @@ All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachan
 
 ### Honest disclosures
 
-- The dashboard's `LUNR +14.68% | ASTS +10.44% | DELL +4.01%` row is
-  still **hardcoded** in `rebuild_html.py`. The new methodology page
-  documents this and points users to live computed backtest output.
-  Replacement of the hardcoded row with a live computation is open work.
-- Real-measured Tok/s on the DGX Spark + Nemotron 3 Super 120B is
-  **~2.2 tok/s** on a 50-token generation, **not 18.9**. The previous
-  marketing figure is now gone from the dashboard.
+- The dashboard's hardcoded `LUNR +14.68% | ASTS +10.44% | DELL +4.01%`
+  row was **removed** during this release (see fix `ec444da`). The
+  methodology page (`docs/methodology/backtest.md`) documents what the
+  BACKTEST RESULTS panel does and does not represent.
+- Real-measured Tok/s on the DGX Spark with the local LLM is **~2.2–2.7
+  tok/s** on a 50-token generation, **not 18.9**. The previous marketing
+  figure is now gone from the dashboard.
+- **Model identity correction.** The Ollama tag `nemotron-3-super-local`
+  is **Llama 3.1 70B (Q4_K_M, ~42 GB)** with a financial-analyst system
+  prompt, **not** Nemotron 3 Super 120B. The actual Nemotron 3 Super 120B
+  is wired in `yuclaw/core/router.py` as a dormant OpenRouter fallback
+  (the real model is sm_121a-blocked on the vLLM path on this hardware,
+  hence the Ollama-served Llama is the active production LLM). All
+  public-facing surfaces (README, PyPI long_description, dashboard, repo
+  descriptions, org bio) corrected in this release. Audit-log payloads
+  schema-upgraded from `'model': 'nemotron-3-super-120B'` (string literal)
+  to a structured object capturing both the Ollama tag and actual model
+  metadata — see `yuclaw/memory/portfolio_memory_*.py` and
+  `yuclaw/finclaw/full_pipeline.py`. Old on-chain anchors continue to
+  encode the legacy literal; new anchors use the upgraded schema.
 
 ## [2.2.0] — 2026-05-12
 
