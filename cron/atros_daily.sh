@@ -33,3 +33,12 @@ print("auto_dream complete")
 PY
 
 echo "[$(date -u +%FT%TZ)] atros_daily done" >> "$LOG"
+
+# Relay any new ATROS alerts to the Telegram channel. Bot dedupes via its own
+# audit log at ~/.yuclaw/telegram_broadcasts.jsonl using a per-alert watermark
+# (advances only on SENT/DRY_RUN), so re-runs are idempotent. SIGNAL_CHANGE
+# below |delta|=0.20 is filtered out by the bot. TRACK_UPDATE is skipped.
+# 60-second timeout prevents a stuck Telegram call from blocking the cron unit.
+echo "[$(date -u +%FT%TZ)] telegram alerts relay start" >> "$LOG"
+timeout 60 "$PYTHON" -m yuclaw.telegram.broadcast_bot alerts >> "$LOG" 2>&1
+echo "[$(date -u +%FT%TZ)] telegram alerts relay done" >> "$LOG"
