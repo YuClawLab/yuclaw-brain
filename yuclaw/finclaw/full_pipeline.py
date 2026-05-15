@@ -1,6 +1,6 @@
 """
 Full integrated pipeline — all components wired together.
-Signal -> Evidence -> NER -> Portfolio Memory -> Nemotron Brief -> ZKP proof
+Signal -> Evidence -> NER -> Portfolio Memory -> LLM Brief -> ZKP proof
 This is the complete YUCLAW loop.
 """
 import json, os, sys, requests, hashlib
@@ -13,7 +13,7 @@ load_dotenv()
 def run_full_pipeline():
     print("=== YUCLAW Full Integrated Pipeline ===")
     print(f"Date: {date.today()}")
-    print("Components: Signal -> Evidence -> NER -> Memory -> Nemotron -> ZKP")
+    print("Components: Signal -> Evidence -> NER -> Memory -> LLM -> ZKP")
     print("=" * 60)
 
     # Step 1: Load signals
@@ -44,7 +44,7 @@ def run_full_pipeline():
     print(f"Step 4: Portfolio memory updated")
     print(get_memory_context())
 
-    # Step 5: Nemotron synthesis
+    # Step 5: LLM synthesis
     model = os.getenv('YUCLAW_SUPER_MODEL', 'nemotron-q4km.gguf')
     endpoint = os.getenv('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
     top_signals = [f"{s['ticker']} {s['signal']} {s['score']:+.3f}" for s in signals[:3]]
@@ -62,6 +62,11 @@ Generate a 3-paragraph institutional synthesis:
 2. Highest confidence opportunities with evidence
 3. Risk-adjusted recommended actions
 """
+    # Local model wrapper: in current config the YUCLAW_SUPER_MODEL env points
+    # at the 'nemotron-3-super-local' Ollama tag, which is Llama 3.1 70B with a
+    # financial-analyst system prompt — NOT the real Nemotron 3 Super 120B.
+    # Activate the real Nemotron via OpenRouter by setting OPENROUTER_API_KEY
+    # and clearing YUCLAW_SUPER_ENDPOINT (see yuclaw/core/router.py).
     try:
         resp = requests.post(
             f'{endpoint}/chat/completions',
@@ -81,14 +86,26 @@ Generate a 3-paragraph institutional synthesis:
         os.makedirs('output/pipeline', exist_ok=True)
         with open(f'output/pipeline/{date.today()}_synthesis.txt', 'w') as f:
             f.write(synthesis)
-        print(f"\nStep 5: Nemotron synthesis complete")
+        print(f"\nStep 5: LLM synthesis complete")
         print(synthesis[:600])
     except Exception as e:
         print(f"Step 5 error: {e}")
 
     # Step 6: ZKP proof for pipeline run
+    # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain anchors
+    # preserve the legacy 'nemotron-120B' literal; new anchors capture both the
+    # Ollama tag name and actual model metadata.
     pipeline_hash = hashlib.sha256(
-        json.dumps({'signals': top_signals, 'date': str(date.today()), 'model': 'nemotron-120B'}).encode()
+        json.dumps({
+            'signals': top_signals,
+            'date': str(date.today()),
+            'model': {
+                'ollama_tag': 'nemotron-3-super-local',
+                'architecture': 'llama',
+                'parameters_b': 70.6,
+                'quantization': 'Q4_K_M',
+            },
+        }).encode()
     ).hexdigest()
     print(f"\nStep 6: Pipeline ZKP hash: {pipeline_hash[:32]}...")
     print("=" * 60)

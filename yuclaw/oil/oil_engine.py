@@ -1,5 +1,5 @@
 """
-YUCLAW Oil Intelligence — Nemotron 120B + EIA + Finnhub.
+YUCLAW Oil Intelligence — local LLM + EIA + Finnhub.
 Daily 6:30 AM ET brief + Wednesday 10:35 AM EIA drop analysis.
 """
 import requests
@@ -85,7 +85,7 @@ def get_oil_prices() -> dict:
 
 
 def generate_oil_brief(eia: dict, prices: dict) -> str:
-    print("=== Generating Nemotron oil brief ===")
+    print("=== Generating LLM oil brief ===")
     prompt = f"""YUCLAW Oil Intelligence Brief — {date.today()}
 
 EIA Inventory: {eia.get('direction','UNKNOWN')} {abs(eia.get('change_mb',0)):.1f}M barrels (period: {eia.get('period','')})
@@ -119,12 +119,12 @@ Use only the data provided. Be specific."""
         msg = resp.json()['choices'][0]['message']
         return msg.get('content') or msg.get('reasoning_content') or ''
     except Exception as e:
-        return f"Nemotron unavailable: {e}"
+        return f"LLM unavailable: {e}"
 
 
 def run_oil_pipeline(generate_brief: bool = True):
     """
-    Fetch prices + EIA, optionally generate Nemotron brief.
+    Fetch prices + EIA, optionally generate LLM brief.
 
     The brief is a slow LLM call (~60-120s typical, can time out). For the
     hourly oil cron, pass generate_brief=False to keep latency low; a separate
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     from dotenv import load_dotenv
     load_dotenv()
     # Default behavior unchanged (generate brief). cron/oil_engine.sh passes --no-brief
-    # to skip the slow Nemotron call on hourly runs; cron/oil_brief.sh runs without
+    # to skip the slow LLM call on hourly runs; cron/oil_brief.sh runs without
     # the flag at 23:00 MDT to refresh the brief once a day.
     with_brief = '--no-brief' not in sys.argv
     run_oil_pipeline(generate_brief=with_brief)

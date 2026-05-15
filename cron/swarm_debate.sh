@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# YUCLAW: run Bull/Bear/Oracle swarm debate via Ollama Nemotron.
+# YUCLAW: run Bull/Bear/Oracle swarm debate via the local LLM (Llama 3.1 70B
+# served by Ollama as the 'nemotron-3-super-local' tag).
 # Cron: 0 23 * * *  (23:00 MDT ≈ 05:00 UTC during DST, 06:00 UTC after DST ends)
 
 LOG=/tmp/yuclaw_swarm.log

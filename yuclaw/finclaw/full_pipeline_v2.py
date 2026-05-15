@@ -84,8 +84,8 @@ def run_full_pipeline():
         print(f"  {s['ticker']}: {h[:16]}...")
     results['steps']['zkp'] = {'proofs': len(proofs), 'status': 'OK'}
 
-    # Step 7: Nemotron Brief
-    print("\n[7/7] Nemotron brief...")
+    # Step 7: LLM Brief
+    print("\n[7/7] LLM brief...")
     try:
         top = [f"{s['ticker']} {s['signal']} {s['score']:+.3f}" for s in signals[:3]]
         resp = requests.post(f'{endpoint}/chat/completions', json={

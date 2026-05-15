@@ -17,9 +17,11 @@ mkdir -p data/filings output
 
 # Check which mode to use
 if [ -n "$YUCLAW_SUPER_ENDPOINT" ]; then
-    echo "[OK] DGX Spark mode — using local Nemotron at $YUCLAW_SUPER_ENDPOINT"
+    echo "[OK] Local LLM mode — using endpoint at $YUCLAW_SUPER_ENDPOINT"
+    echo "     (default config serves Llama 3.1 70B via Ollama as the 'nemotron-3-super-local' tag;"
+    echo "      vLLM-served Nemotron 3 Super 120B available when sm_121a is supported)"
 elif [ -n "$OPENROUTER_API_KEY" ]; then
-    echo "[OK] OpenRouter mode — using free Nemotron 3 Super API"
+    echo "[OK] OpenRouter mode — using Nemotron 3 Super 120B via cloud API"
 else
     echo ""
     echo "[!] No model endpoint configured."

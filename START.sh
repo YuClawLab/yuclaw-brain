@@ -38,21 +38,35 @@ echo "      Done."
 echo "[4/4] Configuring model..."
 echo ""
 
-# Check if local Nemotron is running
+# Check if a local LLM endpoint is running. Two supported runtimes:
+#   - vLLM Nemotron 3 Super 120B on port 8001 (when sm_121a is supported on the hardware)
+#   - Ollama on port 11434 serving the 'nemotron-3-super-local' tag (Llama 3.1 70B with
+#     a financial-analyst system prompt; this is the current default when vLLM is blocked)
 if curl -s http://localhost:8001/v1/models > /dev/null 2>&1; then
-    echo "      ✅ Local Nemotron 3 Super detected at localhost:8001"
+    echo "      ✅ vLLM Nemotron 3 Super 120B detected at localhost:8001"
     echo "         Mode: DGX Spark local — \$0/token, nothing leaves your machine"
     sed -i 's|^# OPENROUTER_API_KEY.*||g' .env
     grep -q "YUCLAW_SUPER_ENDPOINT" .env || echo "YUCLAW_SUPER_ENDPOINT=http://localhost:8001/v1" >> .env
     grep -q "YUCLAW_NANO_ENDPOINT" .env  || echo "YUCLAW_NANO_ENDPOINT=http://localhost:8002/v1" >> .env
+elif curl -s http://localhost:11434/api/version > /dev/null 2>&1; then
+    echo "      ✅ Ollama detected at localhost:11434 (will serve Llama 3.1 70B as 'nemotron-3-super-local')"
+    echo "         Mode: DGX Spark local — \$0/token, nothing leaves your machine"
+    sed -i 's|^# OPENROUTER_API_KEY.*||g' .env
+    grep -q "YUCLAW_SUPER_ENDPOINT" .env || echo "YUCLAW_SUPER_ENDPOINT=http://localhost:11434/v1" >> .env
+    grep -q "YUCLAW_SUPER_MODEL" .env    || echo "YUCLAW_SUPER_MODEL=nemotron-3-super-local" >> .env
 else
-    echo "      ⚠️  Local model not running."
+    echo "      ⚠️  No local LLM runtime detected."
     echo ""
-    echo "      Two options:"
-    echo "      A) Start Nemotron locally (recommended for DGX Spark):"
+    echo "      Three options:"
+    echo "      A) Start Ollama (works on any DGX Spark, including sm_121a-blocked hardware):"
+    echo "         ollama serve &  &&  ollama pull llama3.1:70b"
+    echo "         (then create a Modelfile with a financial-analyst system prompt and tag it"
+    echo "          as 'nemotron-3-super-local' for compatibility with the existing env config)"
+    echo ""
+    echo "      B) Start vLLM-served Nemotron 3 Super 120B (requires sm_121a support):"
     echo "         See: https://build.nvidia.com/spark/nim-llm"
     echo ""
-    echo "      B) Use free OpenRouter API (no local model needed):"
+    echo "      C) Use the OpenRouter API (no local model needed, calls real Nemotron 3 Super 120B):"
     read -p "         Enter your OpenRouter API key (or press Enter to skip): " OR_KEY
     if [ -n "$OR_KEY" ]; then
         grep -q "OPENROUTER_API_KEY" .env && sed -i "s|OPENROUTER_API_KEY=.*|OPENROUTER_API_KEY=$OR_KEY|" .env || echo "OPENROUTER_API_KEY=$OR_KEY" >> .env

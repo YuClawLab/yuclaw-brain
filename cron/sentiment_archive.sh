@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# YUCLAW: re-score top news headlines with Nemotron via Ollama, archive snapshot.
+# YUCLAW: re-score top news headlines with the local LLM via Ollama (Llama 3.1
+# 70B served as the 'nemotron-3-super-local' tag), archive snapshot.
 # Cron: 0 2,6,10,14,18,22 * * *  (every 4h MDT ≈ 0/4/8/12/16/20 UTC during DST)
 
 LOG=/tmp/yuclaw_sentiment.log

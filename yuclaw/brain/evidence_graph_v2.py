@@ -3,7 +3,7 @@ Evidence Graph v2 — fully wired into daily pipeline.
 Layer 1: Factor scores (RSI, MACD, Bollinger, Momentum)
 Layer 2: Macro regime confirmation
 Layer 3: Risk confirmation (VaR, Sharpe)
-Layer 4: Nemotron 120B analysis
+Layer 4: local LLM analysis (Llama 3.1 70B via Ollama)
 """
 import json, os, requests
 from datetime import date
@@ -65,7 +65,7 @@ class EvidenceGraphV2:
         except Exception:
             pass
 
-        # Layer 4: Nemotron analysis
+        # Layer 4: local LLM analysis
         try:
             resp = requests.post(
                 self.nemotron_url,
@@ -80,9 +80,15 @@ class EvidenceGraphV2:
             analysis = msg.get('content') or msg.get('reasoning_content') or ''
             supports = 'SUPPORTS' in analysis.upper() or 'SUPPORT' in analysis.upper()
             evidence['layers'].append({
-                'layer': 4, 'name': 'Nemotron Analysis',
+                'layer': 4, 'name': 'LLM Analysis',
                 'analysis': analysis[:200], 'supports': supports,
-                'model': 'nemotron-3-super-120B'
+                # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0.
+                'model': {
+                    'ollama_tag': 'nemotron-3-super-local',
+                    'architecture': 'llama',
+                    'parameters_b': 70.6,
+                    'quantization': 'Q4_K_M',
+                },
             })
         except Exception:
             pass

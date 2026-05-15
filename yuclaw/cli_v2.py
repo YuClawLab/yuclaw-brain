@@ -62,7 +62,7 @@ def cmd_sector():
 
 
 def cmd_news():
-    print(f"\nNews Sentiment — Nemotron 120B")
+    print(f"\nNews Sentiment — local LLM")
     print("=" * 50)
     data = load('output/news_sentiment.json')
     if not data:
@@ -111,7 +111,7 @@ def cmd_track():
 
 
 def cmd_ask(question: str):
-    print(f"\nYUCLAW AI — Nemotron 3 Super 120B")
+    print(f"\nYUCLAW AI — Llama 3.1 70B via Ollama")
     print("=" * 50)
     context_parts = []
     signals = load('output/aggregated_signals.json')
@@ -151,7 +151,7 @@ def cmd_ask(question: str):
         text = msg.get('content') or msg.get('reasoning_content') or ''
         print(f"\n{text}")
     except Exception as e:
-        print(f"Nemotron error: {e}")
+        print(f"LLM error: {e}")
 
 
 def cmd_verify(ticker: str):
@@ -460,12 +460,12 @@ def main():
 Commands:
   yuclaw today          What to do RIGHT NOW
   yuclaw sector         Sector rotation — where money moves
-  yuclaw news           News sentiment via Nemotron 120B
+  yuclaw news           News sentiment via local LLM
   yuclaw earnings       Earnings this week — Finnhub
   yuclaw watchlist      All signals with prices
   yuclaw portfolio      Kelly allocation + earnings warnings
   yuclaw track          30-day backtest verification
-  yuclaw ask "..."      Ask Nemotron 120B
+  yuclaw ask "..."      Ask the local LLM
   yuclaw verify LUNR    Ethereum proof
   yuclaw brief          Institutional brief
         """

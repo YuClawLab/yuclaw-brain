@@ -31,7 +31,15 @@ def record_decision(ticker, signal, score, evidence, regime):
         'score': score,
         'evidence_confidence': evidence.get('confidence', 0),
         'regime': regime,
-        'model': 'nemotron-3-super-120B',
+        # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain
+        # anchors preserve the legacy 'nemotron-3-super-120B' literal; new
+        # anchors capture both the Ollama tag name and actual model metadata.
+        'model': {
+            'ollama_tag': 'nemotron-3-super-local',
+            'architecture': 'llama',
+            'parameters_b': 70.6,
+            'quantization': 'Q4_K_M',
+        },
         'outcome': None,
         'return_30d': None,
         'verified': False

@@ -20,7 +20,16 @@ def load(file):
 
 @app.get("/")
 def root():
-    return {"status": "YUCLAW running", "model": "Nemotron 3 Super 120B", "hardware": "DGX Spark GB10"}
+    return {
+        "status": "YUCLAW running",
+        "model": {
+            "ollama_tag": "nemotron-3-super-local",
+            "architecture": "llama",
+            "parameters_b": 70.6,
+            "quantization": "Q4_K_M",
+        },
+        "hardware": "DGX Spark GB10",
+    }
 
 
 @app.get("/regime")
@@ -92,14 +101,19 @@ def track_record():
 def health():
     try:
         resp = requests.get('http://localhost:8001/health', timeout=5)
-        nemotron = resp.status_code == 200
+        llm_up = resp.status_code == 200
     except Exception:
-        nemotron = False
+        llm_up = False
     return {
         "status": "healthy",
-        "nemotron": nemotron,
-        "model": "Nemotron 3 Super 120B",
-        "date": date.today().isoformat()
+        "llm_up": llm_up,
+        "model": {
+            "ollama_tag": "nemotron-3-super-local",
+            "architecture": "llama",
+            "parameters_b": 70.6,
+            "quantization": "Q4_K_M",
+        },
+        "date": date.today().isoformat(),
     }
 
 

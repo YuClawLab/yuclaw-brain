@@ -27,6 +27,13 @@ class Router:
             self._nano_model  = os.getenv("YUCLAW_NANO_MODEL", "nemotron-q4km.gguf")
             print(f"[Router] DGX Spark mode — Super: {self._super_endpoint}")
         elif self._openrouter_key:
+            # NOTE: dormant path in current production config — YUCLAW_SUPER_ENDPOINT
+            # is set, so the local-Ollama branch above wins on init. The local
+            # branch runs Llama 3.1 70B exposed as the "nemotron-3-super-local"
+            # Ollama tag with a financial-analyst system prompt; this OpenRouter
+            # path is the only route to the actual Nemotron 3 Super 120B model
+            # on this stack. Activate by clearing YUCLAW_SUPER_ENDPOINT and
+            # setting OPENROUTER_API_KEY.
             self._mode = "openrouter"
             self._super_endpoint = "https://openrouter.ai/api/v1"
             self._nano_endpoint  = "https://openrouter.ai/api/v1"

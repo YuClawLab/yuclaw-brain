@@ -1,6 +1,6 @@
 """
-Daily synthesis — Portfolio Memory + Nemotron + all signals in one output.
-This is what institutional investors see every morning.
+Daily synthesis — Portfolio Memory + local LLM + all signals in one output.
+Renders into the daily brief and the dashboard's AUTODREAM MEMORY card.
 """
 import json, os, sys, requests
 sys.path.insert(0, '.')

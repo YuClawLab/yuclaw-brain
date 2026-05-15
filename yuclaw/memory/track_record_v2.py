@@ -27,7 +27,15 @@ def record_signal(ticker: str, signal: str, score: float,
         'score': score,
         'price_at_signal': price,
         'context': context or {},
-        'model': 'nemotron-3-super-120B',
+        # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain
+        # anchors preserve the legacy 'nemotron-3-super-120B' literal; new
+        # anchors capture both the Ollama tag name and actual model metadata.
+        'model': {
+            'ollama_tag': 'nemotron-3-super-local',
+            'architecture': 'llama',
+            'parameters_b': 70.6,
+            'quantization': 'Q4_K_M',
+        },
         'verify_date': None,
         'actual_return': None,
         'correct': None

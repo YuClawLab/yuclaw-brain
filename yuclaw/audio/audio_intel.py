@@ -1,13 +1,19 @@
 """
-YUCLAW Audio Intelligence — Whisper transcription + Nemotron sentiment.
+YUCLAW Audio Intelligence — Whisper transcription + local LLM sentiment.
 
 Transcribes earnings calls, FOMC speeches, OPEC conferences.
 Scores sentiment sentence by sentence.
 Detects hawkish/dovish tone before journalists publish articles.
+
+The local LLM is Llama 3.1 70B served by Ollama as the
+'nemotron-3-super-local' tag. The NEMOTRON_URL env var name is preserved
+for backwards compatibility with existing operator configs.
 """
 import json, os, subprocess, time, requests
 from datetime import datetime
 
+# Env-var name preserved for backwards compatibility; the endpoint actually
+# serves Llama 3.1 70B via Ollama unless OPENROUTER_API_KEY is set.
 NEMOTRON_URL = os.environ.get('NEMOTRON_URL', 'http://localhost:8001/v1/chat/completions')
 
 def download_audio(url: str, output_path: str = '/tmp/yuclaw_audio.mp3') -> str:
@@ -32,11 +38,11 @@ def download_audio(url: str, output_path: str = '/tmp/yuclaw_audio.mp3') -> str:
         return ''
 
 def transcribe(audio_path: str, model_size: str = 'base') -> dict:
-    """Transcribe audio using Whisper (CPU to avoid GPU contention with Nemotron)."""
+    """Transcribe audio using Whisper (CPU to avoid GPU contention with the LLM)."""
     try:
         import whisper
         print(f"Loading Whisper {model_size} model...")
-        # Use CPU — GPU is reserved for Nemotron 120B
+        # Use CPU — GPU is reserved for the local LLM (Llama 3.1 70B)
         model = whisper.load_model(model_size, device='cpu')
 
         print(f"Transcribing {audio_path}...")
@@ -64,8 +70,9 @@ def transcribe(audio_path: str, model_size: str = 'base') -> dict:
         return {'error': str(e), 'text': '', 'segments': []}
 
 def score_sentiment(text: str, context: str = 'financial speech') -> dict:
-    """Score sentiment of transcribed text using Nemotron."""
+    """Score sentiment of transcribed text using the local LLM."""
     try:
+        # Model identifier is the Ollama tag — actual weights are Llama 3.1 70B.
         resp = requests.post(NEMOTRON_URL, json={
             'model': 'nemotron-3-super',
             'messages': [
@@ -140,7 +147,7 @@ def analyze_audio(source: str, context: str = 'financial speech') -> dict:
     print(f"Transcript: {len(transcript['text'])} chars, {transcript['duration_sec']}s audio")
 
     # Step 3: Score sentiment
-    print("Scoring sentiment with Nemotron 120B...")
+    print("Scoring sentiment with local LLM...")
     sentiment = score_sentiment(transcript['text'], context)
 
     # Combine results
@@ -193,4 +200,4 @@ if __name__ == '__main__':
         print("  python3 audio_intel.py /tmp/fomc.mp3 'FOMC meeting'")
         print("  python3 audio_intel.py https://youtube.com/watch?v=xxx 'earnings call'")
         print("")
-        print("Whisper + Nemotron 120B pipeline ready.")
+        print("Whisper + local LLM pipeline ready.")

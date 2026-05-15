@@ -34,7 +34,15 @@ class PortfolioMemoryV2:
             'score': signal['score'], 'price_at_signal': signal.get('price', 0),
             'evidence_confidence': evidence.get('confidence', 0) if evidence else 0,
             'verdict': evidence.get('verdict', 'PENDING') if evidence else 'PENDING',
-            'model': 'nemotron-3-super-120B',
+            # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain
+            # anchors preserve the legacy 'nemotron-3-super-120B' literal; new
+            # anchors capture both the Ollama tag name and actual model metadata.
+            'model': {
+                'ollama_tag': 'nemotron-3-super-local',
+                'architecture': 'llama',
+                'parameters_b': 70.6,
+                'quantization': 'Q4_K_M',
+            },
             'verified': False, 'outcome': None, 'return_pct': None
         }
         self.memory['decisions'].append(decision)

@@ -1,5 +1,6 @@
 """
-YUCLAW News Sentiment — Finnhub news + Nemotron 120B scoring.
+YUCLAW News Sentiment — Finnhub news + local LLM scoring (Llama 3.1 70B
+served via Ollama as the 'nemotron-3-super-local' tag).
 """
 import requests
 import json
@@ -66,7 +67,7 @@ def score_with_nemotron(ticker: str, headlines: list) -> dict:
 
 
 def scan_all_sentiment(tickers: list) -> list:
-    print("=== News Sentiment — Nemotron 120B ===")
+    print("=== News Sentiment — local LLM ===")
     results = []
 
     for ticker in tickers:

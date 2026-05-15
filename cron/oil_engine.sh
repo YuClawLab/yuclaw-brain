@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# YUCLAW: refresh oil prices + EIA inventory (fast path, no Nemotron brief).
+# YUCLAW: refresh oil prices + EIA inventory (fast path, no LLM brief).
 # Cron: 0 * * * *  (hourly at :00 — oil futures trade ~24/7 so hourly is fine)
 # Output: ~/yuclaw/output/oil/YYYY-MM-DD_brief.json (today's file rewritten each hour;
 #         brief field preserved from the most recent nightly cron/oil_brief.sh run).

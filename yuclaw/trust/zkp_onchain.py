@@ -89,10 +89,19 @@ def submit_proof_onchain(decision: dict) -> dict:
 
 if __name__ == '__main__':
     print("=== ZKP On-Chain Test ===")
+    # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain anchors
+    # preserve the legacy 'nemotron-120B' literal; new anchors capture both
+    # the Ollama tag and the actual model metadata.
+    _LLM = {
+        'ollama_tag': 'nemotron-3-super-local',
+        'architecture': 'llama',
+        'parameters_b': 70.6,
+        'quantization': 'Q4_K_M',
+    }
     decisions = [
-        {'ticker': 'LUNR', 'signal': 'STRONG_BUY', 'score': 0.933, 'date': '2026-03-24', 'model': 'nemotron-120B'},
-        {'ticker': 'ASTS', 'signal': 'STRONG_BUY', 'score': 0.848, 'date': '2026-03-24', 'model': 'nemotron-120B'},
-        {'ticker': 'MRNA', 'signal': 'STRONG_BUY', 'score': 0.821, 'date': '2026-03-24', 'model': 'nemotron-120B'},
+        {'ticker': 'LUNR', 'signal': 'STRONG_BUY', 'score': 0.933, 'date': '2026-03-24', 'model': _LLM},
+        {'ticker': 'ASTS', 'signal': 'STRONG_BUY', 'score': 0.848, 'date': '2026-03-24', 'model': _LLM},
+        {'ticker': 'MRNA', 'signal': 'STRONG_BUY', 'score': 0.821, 'date': '2026-03-24', 'model': _LLM},
     ]
     for d in decisions:
         result = submit_proof_onchain(d)

@@ -50,7 +50,7 @@ def build_evidence(ticker: str, signal: str, score: float, factors: dict) -> dic
     except Exception:
         pass
 
-    # Layer 4: Nemotron analysis
+    # Layer 4: local LLM analysis
     try:
         model = os.getenv('YUCLAW_SUPER_MODEL', 'nemotron-q4km.gguf')
         endpoint = os.getenv('YUCLAW_SUPER_ENDPOINT', 'http://localhost:8001/v1')
@@ -68,8 +68,15 @@ def build_evidence(ticker: str, signal: str, score: float, factors: dict) -> dic
         analysis = msg.get('content') or msg.get('reasoning_content') or ''
         evidence['evidence_chain'].append({
             'type': 'llm_analysis',
-            'model': 'nemotron-120B',
-            'analysis': analysis[:300]
+            # Schema upgraded 2026-05-14 — see CHANGELOG v2.3.0. Old on-chain
+            # anchors preserve the legacy 'nemotron-120B' literal.
+            'model': {
+                'ollama_tag': 'nemotron-3-super-local',
+                'architecture': 'llama',
+                'parameters_b': 70.6,
+                'quantization': 'Q4_K_M',
+            },
+            'analysis': analysis[:300],
         })
     except Exception:
         pass
