@@ -42,8 +42,8 @@ Hi [Name],
 Quick question: when your AI tool says "Sharpe 1.8" —
 can you verify that number cryptographically?
 
-YUCLAW can. Real backtests. ZKP audit. 120B local LLM.
-No cloud dependency. No token cost.
+YUCLAW: hash-anchored audit trail on Ethereum Sepolia. 70B local LLM
+(Llama 3.1 70B via Ollama). No cloud LLM dependency. No token cost.
 
 30-day pilot available April 23.
 yuclawlab.github.io/yuclaw-brain

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>YUCLAW | Nemotron Chat</title>
+<title>YUCLAW | Chat</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -39,6 +39,7 @@
   .input-wrap button{background:#00E676;color:#0B0E14;border:none;border-radius:8px;padding:0 28px;font-weight:700;font-size:14px;cursor:pointer;transition:background 0.2s}
   .input-wrap button:hover{background:#00C853}
   .typing{color:#718096;font-size:13px;font-family:'JetBrains Mono',monospace;margin-left:52px;animation:blink 1.5s infinite}
+  .disclaimer{max-width:900px;margin:0 auto;font-size:11px;color:#718096;text-align:center;padding:8px 16px}
   @keyframes blink{0%{opacity:0.4}50%{opacity:1}100%{opacity:0.4}}
 </style>
 </head>
@@ -47,7 +48,7 @@
 <div class="header">
   <div style="display:flex;align-items:center;gap:16px">
     <div class="logo">YUCLAW <span>Chat</span></div>
-    <span style="font-size:11px;color:#718096;font-family:'JetBrains Mono',monospace">Nemotron 3 Super 120B</span>
+    <span style="font-size:11px;color:#718096;font-family:'JetBrains Mono',monospace">Local LLM (Llama 3.1 70B via Ollama)</span>
   </div>
   <div class="nav">
     <a href="index.html">Terminal</a>
@@ -60,9 +61,9 @@
   <div class="message ai">
     <div class="avatar ai">Y</div>
     <div class="bubble">
-      <strong>System Initialized.</strong><br><br>
-      I am the YUCLAW Financial Intelligence OS, powered by a local Nemotron 120B model running on DGX Spark GB10.<br><br>
-      I have ingested the latest market state, oil intelligence, and sector velocities. How can I assist with your portfolio today?
+      <strong>Demo chat — canned responses only.</strong><br><br>
+      This page shows example responses to common YUCLAW questions. It does NOT call the live LLM. For real inference, install the package and run <code>yuclaw ask "..."</code> against the local Llama 3.1 70B served via Ollama on DGX Spark GB10.<br><br>
+      <em>Research and education only — not financial advice.</em>
     </div>
   </div>
 </div>
@@ -70,8 +71,8 @@
 <div class="input-area">
   <div class="quick-actions">
     <button class="quick-btn" onclick="ask('What is the current market regime?')">Macro Regime</button>
-    <button class="quick-btn" onclick="ask('Show me the top high-conviction buy signals.')">Top Signals</button>
-    <button class="quick-btn" onclick="ask('What is the latest oil intelligence forecast?')">Oil Forecast</button>
+    <button class="quick-btn" onclick="ask('Show me the top buy signals.')">Top Signals</button>
+    <button class="quick-btn" onclick="ask('What is the latest oil intelligence?')">Oil Brief</button>
     <button class="quick-btn" onclick="ask('Explain Value at Risk (VaR).')">Learn: VaR</button>
     <button class="quick-btn" onclick="ask('Explain the Kelly Criterion.')">Learn: Kelly</button>
   </div>
@@ -79,6 +80,7 @@
     <input type="text" id="userInput" placeholder="Ask about market regime, signals, oil, or finance concepts..." onkeydown="if(event.key==='Enter')sendMessage()">
     <button onclick="sendMessage()">Send</button>
   </div>
+  <div class="disclaimer">YUCLAW is open-source research only. Demo responses are illustrative — see the live dashboard for current data.</div>
 </div>
 
 <script>
@@ -107,7 +109,7 @@ function sendMessage() {
   var typing = document.createElement('div');
   typing.className = 'typing';
   typing.id = 'typing';
-  typing.textContent = '> Nemotron 120B processing...';
+  typing.textContent = '> demo response...';
   chat.appendChild(typing);
   chat.scrollTop = chat.scrollHeight;
 
@@ -115,22 +117,22 @@ function sendMessage() {
     var t = document.getElementById('typing');
     if (t) t.remove();
     addMessage(generateResponse(text), false);
-  }, 1200);
+  }, 600);
 }
 
 function generateResponse(q) {
   q = q.toLowerCase();
 
   if (q.indexOf('regime') >= 0 || q.indexOf('market') >= 0) {
-    return '<strong>Macro Regime Analysis</strong><br><br>Current regime: <strong>CRISIS</strong> (90% AI confidence).<br><br><strong>Implications:</strong><br>- Maintain 80%+ cash reserves<br>- Deploy only on signals above +0.85 conviction<br>- Sector flows: Bonds and Utilities receiving inflows<br>- Technology and Consumer Discretionary seeing outflows';
+    return '<strong>Macro Regime</strong><br><br>YUCLAW classifies markets as CRISIS / RISK_OFF / RISK_ON based on SPY/TLT/GLD/UUP momentum. See the live dashboard for the current classification (refreshed every 30 minutes).<br><br><em>Demo response — see live dashboard for current values.</em>';
   }
 
   if (q.indexOf('signal') >= 0 || q.indexOf('buy') >= 0 || q.indexOf('alpha') >= 0) {
-    return '<strong>High-Conviction Signals</strong><br><br>Current top signals from 8-factor model:<div class="data-card"><div class="data-row"><span><strong>LUNR</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.737</span></div><div class="data-row"><span><strong>ASTS</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.687</span></div><div class="data-row"><span><strong>DELL</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.674</span></div><div class="data-row"><span><strong>MRNA</strong> STRONG_BUY</span><span style="color:#00E676;font-family:monospace">+0.671</span></div></div><br><em>All signals ZKP-verified on Ethereum Sepolia.</em>';
+    return '<strong>Signal Aggregator v2.4</strong><br><br>Top buy signals are scored by a 6-component composite (factor / momentum / ticker_calmar / rsi_health / universe_calmar / portfolio_risk) over a 39-ticker universe. Leveraged ETFs are blocklisted to avoid distorting momentum.<br><br>See the live dashboard for the current top 10, or run <code>yuclaw signals</code> locally after installing.<br><br><em>Selected signal-decision hashes are anchored on Ethereum Sepolia testnet — this is a hash anchor, not a Groth16 zk-SNARK proof. See yuclaw-trust for the honest framing.</em>';
   }
 
   if (q.indexOf('oil') >= 0 || q.indexOf('wti') >= 0 || q.indexOf('brent') >= 0 || q.indexOf('energy') >= 0) {
-    return '<strong>Oil Intelligence</strong><br><br>WTI: <strong>$101.56</strong> | Brent: <strong>$103.28</strong><br><br>EIA report: inventory DRAW (-0.2M barrels). Energy sector showing mixed signals with XOM at $170 and CVX at $207.<br><br>Nemotron assessment: supply tightening but demand uncertainty persists in CRISIS regime.';
+    return '<strong>Oil Intelligence</strong><br><br>YUCLAW pulls WTI/Brent quotes (yfinance) plus EIA weekly inventory and produces a daily LLM-written brief. Energy equities (XOM, CVX, COP, SLB, XLE) are fetched via Finnhub.<br><br>See the OIL INTELLIGENCE card on the live dashboard for current values.<br><br><em>Demo response — actual oil card refreshes hourly.</em>';
   }
 
   if (q.indexOf('var') >= 0 || q.indexOf('value at risk') >= 0) {
@@ -138,22 +140,26 @@ function generateResponse(q) {
   }
 
   if (q.indexOf('kelly') >= 0) {
-    return '<strong>Kelly Criterion</strong><br><br>The Kelly formula determines optimal bet size to maximize long-term wealth:<br><br><code>f* = (bp - q) / b</code><br><br>Where b = odds, p = win probability, q = loss probability.<br><br>If Kelly says 15%, allocate exactly 15%. YUCLAW caps Kelly at 50% to prevent catastrophic ruin during black swan events.';
+    return '<strong>Kelly Criterion</strong><br><br>The Kelly formula determines optimal bet size to maximize long-term wealth:<br><br><code>f* = (bp - q) / b</code><br><br>Where b = odds, p = win probability, q = loss probability.<br><br>If Kelly says 15%, allocate 15%. YUCLAW caps Kelly at 50% to prevent catastrophic ruin during black swan events.';
   }
 
   if (q.indexOf('calmar') >= 0) {
-    return '<strong>Calmar Ratio</strong><br><br>Calmar = Annual Return / Maximum Drawdown<br><br>YUCLAW best strategy: <strong>Calmar 3.055</strong> (mom_1m_tight)<br>This means 22.7% annual return with only 7.4% max drawdown.<br><br>Above 2.0 is excellent. Above 3.0 is institutional grade.';
+    return '<strong>Calmar Ratio</strong><br><br>Calmar = Annual Return / Maximum Drawdown<br><br>YUCLAW\'s strategy backtest produces a Calmar metric in <code>output/backtest_all.json</code>. The exact figure depends on the historical window and the strategy variant.<br><br>Note: the backtest does not currently model transaction costs, slippage, bid/ask, or partial fills — see <code>docs/methodology/backtest.md</code> before drawing inferences from any single Calmar number.';
   }
 
   if (q.indexOf('sector') >= 0) {
-    return '<strong>Sector Rotation</strong><br><br>Current flows (Finnhub verified):<div class="data-card"><div class="data-row"><span>Technology</span><span style="color:#00E676">+4.24%</span></div><div class="data-row"><span>Gold</span><span style="color:#00E676">+3.79%</span></div><div class="data-row"><span>Industrials</span><span style="color:#00E676">+3.27%</span></div><div class="data-row"><span>Energy</span><span style="color:#FF3366">-1.13%</span></div></div>';
+    return '<strong>Sector Rotation</strong><br><br>YUCLAW tracks 14 ETF sectors via Finnhub daily percent change (XLK, XLF, XLE, XLV, XLI, XLP, XLY, XLU, XLB, XLRE, XLC, GLD, TLT, UUP).<br><br>See the SECTOR VELOCITY card on the live dashboard for current 1-day moves.';
   }
 
-  if (q.indexOf('zkp') >= 0 || q.indexOf('proof') >= 0 || q.indexOf('verify') >= 0) {
-    return '<strong>ZKP Verification</strong><br><br>Every YUCLAW signal is cryptographically sealed on Ethereum Sepolia blockchain.<br><br>Wallet: <code>0x2c77...6005</code><br>Proofs: 6 on-chain<br><br>Verify any signal: <code>yuclaw verify LUNR</code><br>Explorer: sepolia.etherscan.io';
+  if (q.indexOf('zkp') >= 0 || q.indexOf('proof') >= 0 || q.indexOf('verify') >= 0 || q.indexOf('hash') >= 0 || q.indexOf('sepolia') >= 0) {
+    return '<strong>Audit anchoring on Sepolia</strong><br><br>YUCLAW anchors selected signal-decision hashes on Ethereum Sepolia testnet. Each anchor is a SHA-256 hash of a decision payload (ticker + signal + score + model metadata + date), submitted in a transaction from <code>0x2c77...6005</code>.<br><br>This establishes timestamped existence of the decision; it does NOT prove strategy correctness in zero knowledge. The Circom compliance circuit in yuclaw-trust is a design specification for that future system, not a runtime artifact.<br><br>Verify any anchored decision on <a href="https://sepolia.etherscan.io" style="color:#00E676">sepolia.etherscan.io</a>.';
   }
 
-  return '<strong>YUCLAW OS</strong><br><br>I can help with:<br>- Market regime and positioning<br>- Buy/sell signals with scores<br>- Oil intelligence (WTI/Brent/EIA)<br>- Finance concepts (VaR, Kelly, Calmar, etc.)<br>- Sector rotation flows<br>- ZKP verification<br><br>For full 120B inference: <code>pip install yuclaw && yuclaw ask "your question"</code>';
+  if (q.indexOf('model') >= 0 || q.indexOf('llm') >= 0 || q.indexOf('llama') >= 0 || q.indexOf('nemotron') >= 0) {
+    return '<strong>Model</strong><br><br>The local LLM is <strong>Llama 3.1 70B</strong> (Q4_K_M quantization, ~42 GB) served by Ollama on NVIDIA DGX Spark GB10. It is configured locally as the <code>nemotron-3-super-local</code> Ollama tag with a financial-analyst system prompt.<br><br>The actual Nemotron 3 Super 120B is wired in <code>yuclaw/core/router.py</code> as a dormant OpenRouter fallback path (the vLLM-served version is sm_121a-blocked on this hardware). Activate by setting <code>OPENROUTER_API_KEY</code>.<br><br>Measured generation speed: ~2.2–2.7 tok/s on 50-token completions.';
+  }
+
+  return '<strong>YUCLAW</strong><br><br>I can help with:<br>- Market regime and positioning<br>- Buy/sell signals with scores<br>- Oil intelligence (WTI/Brent/EIA)<br>- Finance concepts (VaR, Kelly, Calmar, etc.)<br>- Sector rotation flows<br>- Audit anchoring on Sepolia<br>- Model details<br><br>For real LLM inference: <code>pip install yuclaw && yuclaw ask "your question"</code><br><br><em>Research and education only — not financial advice.</em>';
 }
 </script>
 </body>

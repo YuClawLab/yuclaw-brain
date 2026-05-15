@@ -28,7 +28,7 @@ When an LLM says "Calmar: 2.1" — it is guessing.
 | CRT lock-free scheduler | 1.07ms 10K instruments | No | No |
 | Published academic paper | SSRN #6461418 | No | No |
 | Live market regime detection | CRISIS 90% real-time | No | No |
-| 120B local LLM | Nemotron on DGX Spark | No | No |
+| 70B local LLM | Llama 3.1 70B via Ollama on DGX Spark | No | No |
 
 ---
 
@@ -44,7 +44,7 @@ When an LLM says "Calmar: 2.1" — it is guessing.
 
 ## Technology Stack
 
-- **Model:** Nemotron 3 Super 120B — 19 tok/s local
+- **Model:** Llama 3.1 70B (Q4_K_M) via Ollama — 2.7 tok/s local measured (the 'nemotron-3-super-local' Ollama tag is a Llama 3.1 70B with a financial-analyst system prompt; the real Nemotron 3 Super 120B is wired in router.py as a dormant OpenRouter fallback)
 - **Hardware:** NVIDIA DGX Spark GB10 — zero cloud cost
 - **Audit:** zk-SNARK on Base Sepolia testnet
 - **Execution:** C++ FIX gateway (in development)
