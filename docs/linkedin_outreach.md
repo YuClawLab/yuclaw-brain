@@ -1,49 +1,87 @@
-# LinkedIn Outreach Templates — 3 Pilot Users
+# Outreach Templates
 
-## Template 1 — Quant PM
-Subject: YUCLAW — Free 30-day pilot, verifiable track record
+Short templates for sharing YUCLAW with people who might find it useful.
+YUCLAW is free, MIT licensed, research-only — these are not paid-pilot
+recruitment pitches.
 
-Hi [Name],
+---
 
-I am building YUCLAW — a financial intelligence OS that generates
-cryptographically verified signals with real backtests (Calmar 3.055
-from 15 years of actual price data).
+## Template 1 — Quant student or self-directed researcher
 
-Current live signal: LUNR STRONG_BUY +0.933, CRISIS regime 90%.
-Every decision gets a zk-SNARK proof on Base Sepolia.
-
-Looking for 3 institutional pilot users before April 23 launch.
-Zero cost. Full access. 30-day verifiable track record.
-
-Live: yuclawlab.github.io/yuclaw-brain
-Paper: papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418
-
-Interested?
-
-## Template 2 — Compliance Officer
-Subject: ZKP-verified financial AI — cryptographic audit trail
+Subject: YUCLAW — open-source signal-research stack
 
 Hi [Name],
 
-YUCLAW generates cryptographic proofs (zk-SNARKs) for every
-financial decision — on-chain, verifiable, tamper-proof.
+I'm working on YUCLAW — an open-source signal-research stack that runs
+locally on NVIDIA DGX Spark and broadcasts a daily digest to a public
+Telegram channel.
 
-This solves the audit trail problem that blocks AI adoption
-in institutional finance.
+It's free under MIT and intentionally research-focused: a 39-ticker
+universe, hourly oil intelligence, a local LLM (Llama 3.1 70B via
+Ollama) that scores news and writes the daily brief, hash-anchored
+signal-decision audit on Ethereum Sepolia testnet, and an Alpaca paper-
+trading bridge with seven layered safety nets. No live trading is wired.
 
-Looking for compliance-focused pilot users.
-Live demo: yuclawlab.github.io/yuclaw-brain
+If you'd find it useful for your own quant work or coursework, the
+dashboard and signal channel are public:
 
-## Template 3 — CIO
-Subject: The only financial AI with verifiable backtests
+- Live dashboard: yuclawlab.github.io/yuclaw-brain
+- Signal channel: t.me/yuclaw_signals
+- Install: `pip install yuclaw`
+- Methodology + limitations: docs/methodology/backtest.md
+- Related preprint: papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418
+
+The methodology page is the most important link — it documents what the
+backtests do and do not represent before you draw inferences from any
+single Calmar or accuracy number.
+
+If you spot something broken or have an idea, GitHub issues and PRs are
+welcome.
+
+---
+
+## Template 2 — Engineer interested in the stack
+
+Subject: open-source local-LLM financial research stack
 
 Hi [Name],
 
-Quick question: when your AI tool says "Sharpe 1.8" —
-can you verify that number cryptographically?
+I'd be curious for your read on YUCLAW. It's an open-source signal-
+research stack with these pieces:
 
-YUCLAW: hash-anchored audit trail on Ethereum Sepolia. 70B local LLM
-(Llama 3.1 70B via Ollama). No cloud LLM dependency. No token cost.
+- Local LLM inference (Llama 3.1 70B via Ollama on DGX Spark)
+- 6-component signal aggregator over a 39-ticker universe
+- Strategy backtest engine, forward track record, risk metrics
+- Hash-anchored audit log on Ethereum Sepolia testnet
+- Alpaca paper-trading bridge with 7 safety nets
+- Dashboard refreshes every 30 min from cron
+- Telegram broadcast bot (rate-limited, idempotent)
 
-30-day pilot available April 23.
-yuclawlab.github.io/yuclaw-brain
+Source: github.com/YuClawLab/yuclaw-brain
+Dashboard: yuclawlab.github.io/yuclaw-brain
+
+The repo also publishes design specs for two adjacent components:
+yuclaw-matrix (CRT-based concurrent scheduler with an arXiv-style paper)
+and yuclaw-edge (FIX 4.4 client in C++). Neither is currently in the
+production signal flow.
+
+MIT licensed, research and education only. Not financial advice.
+
+---
+
+## Template 3 — Generic share
+
+YUCLAW is an open-source signal-research stack with a local LLM, hash-
+anchored audit log, and a public dashboard. 39-ticker universe, free
+under MIT, research only — not financial advice. Built on NVIDIA DGX
+Spark GB10.
+
+📊 yuclawlab.github.io/yuclaw-brain
+📨 t.me/yuclaw_signals
+📦 pip install yuclaw
+
+---
+
+⚠️ Research and educational software. Not financial advice. AI-generated
+signals may contain errors. Past performance does not predict future
+returns. MIT Licensed.
