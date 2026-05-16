@@ -54,7 +54,8 @@ All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachan
 ### Changed
 
 - **Renamed "Track Record" → "Backtest Results"** across dashboard card,
-  CLI output, README, README_PACKAGE, and institutional one-pager.
+  CLI output, README, README_PACKAGE, and the one-pager (renamed from
+  `institutional_onepager.md` to `onepager.md` in v2.3.0).
   Internal identifiers (`cmd_track`, `'track'` argparse dispatch,
   `output/track_record_*.json` file paths) unchanged.
   ([`f967ab5`](../../commit/f967ab5))
