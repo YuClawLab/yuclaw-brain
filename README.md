@@ -15,7 +15,7 @@
 > via Ollama, hash-anchored audit trail on Ethereum Sepolia, Alpaca paper
 > trading. **Research and education only — not financial advice.**
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Methodology](docs/methodology/backtest.md) · [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418) · [PyPI](https://pypi.org/project/yuclaw)
+[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Pricing](docs/pricing.md) · [Methodology](docs/methodology/backtest.md) · [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418) · [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
 
