@@ -29,7 +29,6 @@ dashboard and signal channel are public:
 - Signal channel: t.me/yuclaw_signals
 - Install: `pip install yuclaw`
 - Methodology + limitations: docs/methodology/backtest.md
-- Related preprint: papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418
 
 The methodology page is the most important link — it documents what the
 backtests do and do not represent before you draw inferences from any

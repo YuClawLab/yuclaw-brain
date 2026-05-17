@@ -70,7 +70,6 @@ bid/ask, or partial fills.
 | Signal channel | [t.me/yuclaw_signals](https://t.me/yuclaw_signals) |
 | PyPI | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
 | GitHub | [github.com/YuClawLab](https://github.com/YuClawLab) |
-| Preprint | [SSRN #6461418](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418) |
 | Methodology | [docs/methodology/backtest.md](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md) |
 
 ---

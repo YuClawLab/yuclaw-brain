@@ -9,13 +9,12 @@
 [![PyPI](https://img.shields.io/badge/PyPI-v2.3.0-orange.svg)](https://pypi.org/project/yuclaw)
 [![DGX Spark](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76b900.svg)](https://nvidia.com)
 [![Ethereum](https://img.shields.io/badge/Anchor-Ethereum%20Sepolia-blue.svg)](https://sepolia.etherscan.io)
-[![SSRN](https://img.shields.io/badge/Paper-SSRN%206461418-red.svg)](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418)
 
 > Open-source AI signal-research platform. Local Llama 3.1 70B inference
 > via Ollama, hash-anchored audit trail on Ethereum Sepolia, Alpaca paper
 > trading. **Research and education only — not financial advice.**
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Pricing](docs/pricing.md) · [Methodology](docs/methodology/backtest.md) · [Paper](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418) · [PyPI](https://pypi.org/project/yuclaw)
+[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Pricing](docs/pricing.md) · [Methodology](docs/methodology/backtest.md) · [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
 
@@ -230,7 +229,6 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 | Twitter | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | GitHub | [YuClawLab](https://github.com/YuClawLab) |
 | PyPI | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
-| Paper | [SSRN #6461418](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418) |
 | Methodology | [docs/methodology/backtest.md](docs/methodology/backtest.md) |
 
 ---

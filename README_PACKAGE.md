@@ -74,6 +74,5 @@ losses arising from use of this software.
 
 - GitHub: https://github.com/YuClawLab
 - Dashboard: https://yuclawlab.github.io/yuclaw-brain
-- Paper: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418
 - Methodology: https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md
 - Disclaimer: https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md

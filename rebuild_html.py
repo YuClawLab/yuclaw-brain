@@ -237,7 +237,7 @@ def rebuild():
     html += '</div>'
 
     # Footer
-    html += '<div class="footer">YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> | <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418">SSRN #6461418</a> | <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md">Methodology</a> | <a href="https://pypi.org/project/yuclaw">pip install yuclaw</a> | MIT</div></div></body></html>'
+    html += '<div class="footer">YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> | <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md">Methodology</a> | <a href="https://pypi.org/project/yuclaw">pip install yuclaw</a> | MIT</div></div></body></html>'
 
     os.makedirs('docs', exist_ok=True)
     with open('docs/index.html', 'w') as f:
