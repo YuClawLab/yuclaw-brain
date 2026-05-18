@@ -38,6 +38,30 @@ COMPANY_TICKERS_MF_URL = "https://www.sec.gov/files/company_tickers_mf.json"
 USER_AGENT = "YuClawLab v3.0 yuclawlab@example.com"
 DB_DSN = "dbname=yuclaw_events"
 
+# Form types we accept into events_raw for LLM extraction. Form 4 (insider
+# transactions) is intentionally OMITTED — it's structured XML, deterministic,
+# and dominates filing volume. A dedicated v3/sources/form4_parser.py (Day 3)
+# handles Form 4 separately at <1ms/row instead of ~120s LLM extraction.
+# Must stay in sync with FORM_TYPES in edgar_backfill.py.
+FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K"}
+
+
+def _entry_form_type(entry: dict) -> str:
+    """Extract the form type from a feedparser atom entry.
+
+    SEC atom feed exposes form as entry.category and as the first tag.
+    Returns empty string if not extractable.
+    """
+    form = entry.get("category", "")
+    if form:
+        return form
+    tags = entry.get("tags") or []
+    if tags and isinstance(tags, list):
+        first = tags[0]
+        if isinstance(first, dict):
+            return first.get("term", "") or ""
+    return ""
+
 
 def _load_universe() -> set[str]:
     u = json.loads(UNIVERSE_PATH.read_text())
@@ -172,6 +196,7 @@ def poll_once() -> dict:
         "unique_ciks": len(cik_map),
         "feed_entries": len(entries),
         "matched_universe": 0,
+        "skipped_form_type": 0,
         "inserted": 0,
         "skipped_dedup": 0,
         "skipped_collision": 0,
@@ -184,6 +209,12 @@ def poll_once() -> dict:
             for entry in entries:
                 cik = _extract_cik(entry)
                 if not cik or cik not in cik_map:
+                    continue
+
+                # Form-type filter — drop Form 4 / unknown form types.
+                form = _entry_form_type(entry)
+                if form not in FORM_TYPES:
+                    stats["skipped_form_type"] += 1
                     continue
 
                 tickers = cik_map[cik]
@@ -220,7 +251,7 @@ def poll_once() -> dict:
                        VALUES (%s, %s, %s, %s, %s)
                        ON CONFLICT (source_url) DO NOTHING
                        RETURNING raw_id""",
-                    (ticker, "edgar", link, raw_text, publish_time),
+                    (ticker, form, link, raw_text, publish_time),
                 )
                 if cur.fetchone():
                     stats["inserted"] += 1

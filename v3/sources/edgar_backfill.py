@@ -37,9 +37,13 @@ from v3.sources.edgar_poll import _load_universe, _cik_lookup, USER_AGENT, DB_DS
 SUBMISSIONS_URL = "https://data.sec.gov/submissions/CIK{cik}.json"
 STATE_PATH = Path(__file__).resolve().parent.parent / "backfill_state.json"
 
-# Form types we ingest. Each ingest adds a row to events_raw; the extraction
-# worker then decides whether the filing contains a material event.
-FORM_TYPES = {"8-K", "10-Q", "10-K", "4", "6-K"}
+# Form types we ingest into events_raw for LLM extraction. Form 4 (insider
+# transactions) is intentionally OMITTED — it's structured XML, deterministic,
+# and dominates filing volume (~70% of universe traffic). A dedicated parser
+# in v3/sources/form4_parser.py (Day 3) handles Form 4 separately at <1ms/row
+# instead of ~120s LLM extraction. Decision recorded in CHANGELOG; reinstate
+# here if Day 3 parser slips and we still want Form 4 coverage via LLM fallback.
+FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K"}
 
 # SEC published cap is 10 req/sec. 0.15s sleep → ~6.6 req/sec, comfortable margin.
 SEC_SLEEP_SECONDS = 0.15
