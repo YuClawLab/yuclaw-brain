@@ -28,7 +28,7 @@ CREATE INDEX idx_events_ticker_time ON events (ticker, available_as_of DESC);
 CREATE INDEX idx_events_type_time ON events (event_type, available_as_of DESC);
 CREATE INDEX idx_events_content_hash ON events (content_hash);
 CREATE INDEX idx_events_parent ON events (parent_event_id) WHERE parent_event_id IS NOT NULL;
-CREATE UNIQUE INDEX idx_events_dedup ON events (content_hash, ticker, date_trunc('day', available_as_of));
+CREATE UNIQUE INDEX idx_events_dedup ON events (content_hash, ticker, (date_trunc('day', available_as_of AT TIME ZONE 'UTC')));
 
 CREATE TABLE events_raw (
     raw_id            BIGSERIAL PRIMARY KEY,
