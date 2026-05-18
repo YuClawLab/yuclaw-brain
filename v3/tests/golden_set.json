@@ -1,0 +1,59 @@
+{
+  "version": "v0.1",
+  "as_of": "2026-05-18",
+  "note": "Bootstrap golden set — 4 entries to validate the test harness. Grow to 20 (4× 8-K material, 3× 10-Q embedded, 3× Form 4, 3× press, 4× boilerplate→no_event, 3× edge cases) by hand from real SEC filings over the next few days. Each entry must be a verbatim excerpt from a real filing or release; do not paraphrase or invent.",
+  "entries": [
+    {
+      "id": "gs001_nvda_guidance_raise",
+      "ticker": "NVDA",
+      "source_type": "press_release",
+      "source_url": "https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-fictional-q4",
+      "raw_text": "NVIDIA today reported revenue for the fourth quarter of $22.10 billion, up 22% from the previous quarter and up 265% from a year ago. For the first quarter, NVIDIA is expecting revenue of $24.0 billion, plus or minus 2%, compared with prior consensus of $22.2 billion.",
+      "expected": {
+        "no_event": false,
+        "event_type": "GUIDANCE_RAISE",
+        "direction": 1,
+        "magnitude_range": [0.5, 0.95],
+        "confidence_floor": 0.6
+      }
+    },
+    {
+      "id": "gs002_tsla_exec_change",
+      "ticker": "TSLA",
+      "source_type": "8-K",
+      "source_url": "https://www.sec.gov/Archives/edgar/fictional/tsla-exec-change-2026",
+      "raw_text": "On June 1, 2026, Elon Musk will step down as Chief Executive Officer of Tesla, Inc. The Board has appointed Chief Financial Officer Vaibhav Taneja as interim Chief Executive Officer effective immediately while the Board conducts a search for a permanent successor.",
+      "expected": {
+        "no_event": false,
+        "event_type": "EXEC_CHANGE",
+        "direction": -1,
+        "magnitude_range": [0.5, 0.95],
+        "confidence_floor": 0.6
+      }
+    },
+    {
+      "id": "gs003_boilerplate_8k_item_701",
+      "ticker": "AAPL",
+      "source_type": "8-K",
+      "source_url": "https://www.sec.gov/Archives/edgar/fictional/aapl-item-701",
+      "raw_text": "Item 7.01 Regulation FD Disclosure. On May 1, 2026, the registrant posted updated investor presentation materials to its website at investor.apple.com. The information furnished pursuant to this Item 7.01 shall not be deemed filed for purposes of Section 18 of the Securities Exchange Act of 1934.",
+      "expected": {
+        "no_event": true
+      }
+    },
+    {
+      "id": "gs004_amd_partnership",
+      "ticker": "AMD",
+      "source_type": "press_release",
+      "source_url": "https://www.amd.com/press/fictional-amd-microsoft-partnership-2026",
+      "raw_text": "Advanced Micro Devices today announced a multi-year strategic partnership with Microsoft to supply MI400-series accelerators powering Azure's next-generation AI infrastructure. The agreement covers a minimum committed purchase of $4 billion over three years, with first shipments scheduled for Q3 2026.",
+      "expected": {
+        "no_event": false,
+        "event_type": "PARTNERSHIP",
+        "direction": 1,
+        "magnitude_range": [0.4, 0.9],
+        "confidence_floor": 0.6
+      }
+    }
+  ]
+}
