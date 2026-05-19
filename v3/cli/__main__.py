@@ -1,0 +1,29 @@
+"""Dispatch entry point so `python3 -m v3.cli why TICKER` works."""
+from __future__ import annotations
+
+import sys
+
+from v3.cli import why as why_cmd
+
+COMMANDS = {
+    "why": why_cmd.main,
+}
+
+
+def main(argv: list[str] | None = None) -> int:
+    if argv is None:
+        argv = sys.argv[1:]
+    if not argv:
+        print(f"usage: python3 -m v3.cli <command> [args]\n"
+              f"commands: {', '.join(sorted(COMMANDS))}", file=sys.stderr)
+        return 2
+    cmd, *rest = argv
+    if cmd not in COMMANDS:
+        print(f"unknown command: {cmd}\n"
+              f"commands: {', '.join(sorted(COMMANDS))}", file=sys.stderr)
+        return 2
+    return COMMANDS[cmd](rest)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

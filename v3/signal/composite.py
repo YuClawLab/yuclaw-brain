@@ -34,17 +34,15 @@ from v3.signal.base import (
     signal_label,
 )
 from v3.signal.components.c1_momentum import C1Momentum
+from v3.signal.components.c2_volume import C2VolumeConfirmation
+from v3.signal.components.c3_sector_velocity import C3SectorVelocity
 from v3.signal.components.c4_macro import C4MacroRegime
+from v3.signal.components.c5_oil_rates_fx import C5OilRatesFX
 from v3.signal.components.c6_event_impact import C6EventImpact
+from v3.signal.components.c7_peer_correlation import C7PeerCorrelation
+from v3.signal.components.c8_cascade_impact import C8CascadeEffect
+from v3.signal.components.c9_model_trust import C9ModelTrust
 from v3.signal.data_loader import fetch_events, load_v2_state
-from v3.signal.stubs import (
-    C2VolumeConfirmation,
-    C3SectorVelocity,
-    C5OilRatesFX,
-    C7PeerCorrelation,
-    C8CascadeEffect,
-    C9ModelTrust,
-)
 
 
 def _build_components() -> dict[str, SignalComponent]:
