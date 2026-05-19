@@ -32,7 +32,17 @@ from v3.extract.sourcelock import validate
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "v1.txt"
 PROMPT_VERSION = "v1"
-RAW_TEXT_MAX_CHARS = 4000
+# Day 3 timeout fix (2026-05-19): empirical Llama 70B latency on real
+# SEC filings was ~250-400s with the old 4000-char cap, blowing past
+# the old 180s httpx timeout. Causes: real filings have denser tokens
+# than synthetic input. Mitigations applied here:
+#   1. Drop prompt cap 4000 → 2500 chars (real material events are in
+#      the first 1-2KB of the doc body anyway)
+#   2. Raise httpx timeout 180 → 600s (10 min ceiling)
+# Yesterday's 90-day backfill produced 255/259 LLM_ERROR: timed out
+# before this fix.
+RAW_TEXT_MAX_CHARS = 2500
+OLLAMA_TIMEOUT_SECONDS = 600.0
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = os.environ.get("YUCLAW_SUPER_MODEL", "yuclaw-llm-70b")
@@ -65,18 +75,22 @@ def _ollama_extract(ticker: str, source_type: str, raw_text: str) -> dict:
             "stream": False,
             "options": {"temperature": 0.0, "num_predict": 600},
         },
-        timeout=180.0,
+        timeout=OLLAMA_TIMEOUT_SECONDS,
     )
     resp.raise_for_status()
     text = (resp.json().get("response") or "").strip()
     text = _FENCE_OPEN.sub("", text)
     text = _FENCE_CLOSE.sub("", text)
-    # The model may emit a JSON object plus stray prose; find the first {...} block
-    if not text.startswith("{"):
-        m = re.search(r"\{.*\}", text, re.DOTALL)
-        if m:
-            text = m.group(0)
-    return json.loads(text)
+    # Robustness against LLM output drift:
+    # - leading prose before the JSON      → seek to first '{'
+    # - trailing prose AFTER the JSON      → raw_decode discards remainder
+    # - markdown fences                    → already stripped above
+    # This handles all three corner cases that broke yesterday's batch.
+    start = text.find("{")
+    if start == -1:
+        raise ValueError(f"no JSON object found in LLM output: {text[:120]!r}")
+    obj, _ = json.JSONDecoder().raw_decode(text[start:])
+    return obj
 
 
 def _content_hash(ticker: str, event_type: str, raw_excerpt: str) -> str:
