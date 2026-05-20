@@ -122,6 +122,12 @@ All inputs are committed to the repo except `price_history` (Yahoo OHLCV redistr
 
 ---
 
-## 8. Disclaimer
+## 8. Data sources + attribution
+
+- **SEC EDGAR (public domain).** Form 4, 8-K, 10-Q, 10-K, and 6-K filings are ingested from the SEC EDGAR API (`data.sec.gov/submissions/`, `www.sec.gov/Archives/edgar/data/`). YUCLAW honors the SEC's 10 req/sec rate limit (we self-throttle to ~6 req/sec) and identifies itself in every request via the `User-Agent` header per [SEC's programmatic-access guidance](https://www.sec.gov/os/accessing-edgar-data). Filing data is public domain; YUCLAW redistributes only short excerpts (≤ 600 chars) needed to substantiate the evidence trail, with full source URLs to the SEC archive.
+- **Yahoo Finance (internal only).** Daily close + volume for outcome computation come from the `yfinance` Python library. This data is **not redistributed** through any v3.0 endpoint, SDK method, or MCP tool — raw OHLCV stays in the internal `price_history` table. Only derived metrics (returns, hit rates, excess returns vs SPY) are published.
+- **YUCLAW-generated data (open).** Composite signals, component scores, LLM-extracted SEC event excerpts, supply-chain edges, cascade children, content hashes, daily roots, and backtest aggregations are YUCLAW's own derivative work — MIT-licensed, freely redistributable.
+
+## 9. Disclaimer
 
 Research / education only. Not investment advice. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.

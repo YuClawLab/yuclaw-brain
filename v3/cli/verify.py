@@ -27,6 +27,13 @@ STATUS_DISPLAY = {
 }
 
 
+COMPLIANCE_FOOTER = (
+    "Research and education only. Not investment advice. "
+    "Signal labels are research classifications, not buy/sell recommendations. "
+    "YUCLAW is not a registered investment adviser."
+)
+
+
 def _format_text(r: dict) -> str:
     head = STATUS_DISPLAY.get(r["status"], r["status"])
     lines = [f"{head}   {r['ticker']} @ {r['date']}"]
@@ -50,6 +57,8 @@ def _format_text(r: dict) -> str:
             lines.append(f"  {r['detail']}")
     lines.append("")
     lines.append(r["note"])
+    lines.append("")
+    lines.append(COMPLIANCE_FOOTER)
     return "\n".join(lines)
 
 

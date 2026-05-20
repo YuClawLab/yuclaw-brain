@@ -57,6 +57,13 @@ def _remove(ticker: str) -> int:
     return 0
 
 
+COMPLIANCE_FOOTER = (
+    "Research and education only. Not investment advice. "
+    "Signal labels are research classifications, not buy/sell recommendations. "
+    "YUCLAW is not a registered investment adviser."
+)
+
+
 def _list() -> int:
     prof = load_profile()
     wl = prof.get("watchlist") or []
@@ -73,6 +80,8 @@ def _list() -> int:
             score = row["total_score"]
             when = row["signal_time"].strftime("%Y-%m-%d")
             print(f"  {t:<6s}  {label:<15s}  score={score:+.3f}   as of {when}")
+    print()
+    print(COMPLIANCE_FOOTER)
     return 0
 
 
