@@ -1,5 +1,5 @@
 """
-Generate the static two-panel page at v3/web/backtest.html.
+Generate the static two-panel page at v3/web/validation.html.
 
 NO JS hydration — data is rendered into the HTML at write time, so a
 visitor sees consistent numbers regardless of whether any cron is running
@@ -8,6 +8,8 @@ behind this rule).
 
 Style matches the live dashboard (~/yuclaw/docs/index.html): dark bg,
 card-style panels, JetBrains Mono numerics, locked compliance footer.
+Every hit-rate cell renders its `n` (eligible-row count) inline so a
+percentage cannot be quoted out of context.
 
 CLI:
     python3 -m v3.track.render_html
@@ -22,15 +24,18 @@ from html import escape
 from pathlib import Path
 from typing import Any
 
-from v3.cli.backtest import COMPLIANCE_FOOTER, POINT_IN_TIME_NOTE
+from v3.cli.validation import COMPLIANCE_FOOTER, POINT_IN_TIME_NOTE
 from v3.track.panels import HORIZONS, build_panels
 
-OUT_DEFAULT = Path(__file__).resolve().parent.parent / "web" / "backtest.html"
+OUT_DEFAULT = Path(__file__).resolve().parent.parent / "web" / "validation.html"
 
 PANEL_HEADERS = {
-    "backtest": "BACKTEST RESULTS — In-Sample Replay",
-    "forward":  "FORWARD TRACKING LEDGER — Out-of-Sample",
+    "in_sample": "IN-SAMPLE EVENT VALIDATION — Replay",
+    "forward":   "FORWARD TRACKING LEDGER — Out-of-Sample",
 }
+
+# Threshold below which a panel cell is labelled "preliminary".
+SMALL_SAMPLE_N = 20
 
 
 def _fmt_pct(x: Any, decimals: int = 1) -> str:
@@ -46,9 +51,9 @@ def _fmt_rate(x: Any) -> str:
 
 
 def _label_color(label: str) -> str:
-    if label in ("STRONG_BUY", "BUY"):
+    if label in ("STRONG_BULLISH", "BULLISH"):
         return "#00E676"
-    if label in ("WEAKENING", "NEGATIVE_EVENT", "DOWNSIDE_WATCH"):
+    if label in ("WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH"):
         return "#FF3366"
     return "#A0AEC0"
 
@@ -77,9 +82,19 @@ def _render_panel_table(panel: dict[str, Any]) -> str:
     """
 
 
+def _fmt_rate_with_n(s: dict[str, Any], n: int) -> str:
+    """Hit rate with eligibility n; "preliminary" tag below SMALL_SAMPLE_N."""
+    hr = s[f"hit_rate_{n}d"]
+    n_elig = s[f"n_eligible_{n}d"]
+    if hr is None:
+        return "—"
+    base = f"{hr*100:.0f}% (n={n_elig})"
+    return base + (" prelim" if 0 < n_elig < SMALL_SAMPLE_N else "")
+
+
 def _render_row(label: str, s: dict[str, Any], color: str, is_overall: bool = False) -> str:
     mat = f"{s['n_matured_1d']}/{s['n_matured_5d']}/{s['n_matured_20d']}"
-    hit = " / ".join(_fmt_rate(s[f"hit_rate_{n}d"]) for n in HORIZONS)
+    hit = " / ".join(_fmt_rate_with_n(s, n) for n in HORIZONS)
     return (
         f"<tr>"
         f"<td style='padding:8px 12px;font-weight:{'700' if is_overall else '600'};color:{color};font-size:13px'>{escape(label)}</td>"
@@ -156,7 +171,7 @@ def render(panels: dict[str, Any]) -> str:
       <strong>DISCLAIMER —</strong> {escape(COMPLIANCE_FOOTER)}
     </div>
 
-    {_render_panel_section("backtest", panels["backtest"], note=POINT_IN_TIME_NOTE)}
+    {_render_panel_section("in_sample", panels["in_sample"], note=POINT_IN_TIME_NOTE)}
     {_render_panel_section("forward",  panels["forward"])}
 
     <div class="card">

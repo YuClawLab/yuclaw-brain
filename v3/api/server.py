@@ -139,9 +139,14 @@ def events(ticker: str, since: Optional[str] = None) -> dict[str, Any]:
             "compliance": dict(COMPLIANCE)}
 
 
-@app.get("/backtest")
-def backtest() -> dict[str, Any]:
-    panels = _backend().backtest()
+@app.get("/validation")
+def validation() -> dict[str, Any]:
+    """In-Sample Event Validation + Forward Tracking Ledger.
+
+    Hit rates in either panel must be presented with their `n` (count)
+    by any consumer of this response — never headline a percentage alone.
+    """
+    panels = _backend().validation()
     out: dict[str, Any] = {}
     for panel_name, df in panels.items():
         if "signal_date" in df.columns:

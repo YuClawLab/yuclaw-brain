@@ -1,10 +1,14 @@
 """
-`yuclaw backtest` — print both panels (in-sample + forward) with locked
-headers, footers, and disclaimer.
+`yuclaw validation` — In-Sample Event Validation + Forward Tracking Ledger.
+
+Prints both panels with locked headers, footers, and disclaimer. Hit rates
+are always shown with their `n` directly attached; small-n panels are
+labelled "preliminary — small sample" so a reader can't take a stat out
+of context.
 
 CLI:
-    python3 -m v3.cli backtest
-    python3 -m v3.cli backtest --json
+    python3 -m v3.cli validation
+    python3 -m v3.cli validation --json
 """
 from __future__ import annotations
 
@@ -26,14 +30,14 @@ POINT_IN_TIME_NOTE = (
     "Note on the in-sample panel: market-data components C1 / C3 / C4 / C5 / C7 "
     "ran at 0.3 confidence because the upstream dashboard cache holds only the "
     "latest snapshot. Evidence components C6 (events), C8 (cascade), C9 (model "
-    "trust) are point-in-time exact. The in-sample backtest therefore primarily "
-    "reflects the evidence layer."
+    "trust) are point-in-time exact. The in-sample event validation therefore "
+    "primarily reflects the evidence layer."
 )
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(prog="yuclaw backtest",
-                                description="Two-panel backtest + forward-tracking report")
+    p = argparse.ArgumentParser(prog="yuclaw validation",
+                                description="In-Sample Event Validation + Forward Tracking Ledger")
     p.add_argument("--json", action="store_true", help="machine-readable output")
     args = p.parse_args(argv)
 

@@ -155,10 +155,12 @@ def time_machine() -> nbf.NotebookNode:
     ])
 
 
-def backtest_analysis() -> nbf.NotebookNode:
+def validation_analysis() -> nbf.NotebookNode:
     return _nb(header(
-        "04 · Backtest analysis",
+        "04 · In-Sample Event Validation",
         "Load the two YUCLAW panels and explore hit rates / median returns. "
+        "Each hit rate is shown alongside its `n` — never quote a percentage "
+        "without its sample size. "
         "**Important caveat**: the in-sample panel was *reconstructed* via "
         "point-in-time replay, with market components running at 0.3 confidence. "
         "Treat it as a check on the **evidence layer** (C6 / C8 / C9), not as a "
@@ -171,15 +173,15 @@ def backtest_analysis() -> nbf.NotebookNode:
             "import matplotlib.pyplot as plt\n"
             "\n"
             "client = yuclaw_py.Client()\n"
-            "panels = client.backtest()\n"
-            "backtest, forward = panels['backtest'], panels['forward']\n"
-            "print(f\"In-sample: {len(backtest)} rows ({backtest['signal_date'].min()} → {backtest['signal_date'].max()})\")\n"
+            "panels = client.validation()\n"
+            "in_sample, forward = panels['in_sample'], panels['forward']\n"
+            "print(f\"In-sample: {len(in_sample)} rows ({in_sample['signal_date'].min()} → {in_sample['signal_date'].max()})\")\n"
             "print(f\"Forward:   {len(forward)} rows ({forward['signal_date'].min()} → {forward['signal_date'].max() if len(forward) else 'n/a'})\")"
         ),
-        _md("## Hit rate by label and horizon (in-sample)"),
+        _md("## Hit rate by label and horizon (in-sample) — always with n"),
         _code(
-            "directional = ['STRONG_BUY', 'BUY', 'WEAKENING', 'NEGATIVE_EVENT', 'DOWNSIDE_WATCH']\n"
-            "sub = backtest[backtest['signal_label'].isin(directional)].copy()\n"
+            "directional = ['STRONG_BULLISH', 'BULLISH', 'WEAKENING', 'NEGATIVE_EVENT', 'BEARISH_WATCH']\n"
+            "sub = in_sample[in_sample['signal_label'].isin(directional)].copy()\n"
             "summary = sub.groupby('signal_label').agg(\n"
             "    n=('snapshot_id', 'count'),\n"
             "    hit_1d=('hit_1d', 'mean'),\n"
@@ -187,7 +189,7 @@ def backtest_analysis() -> nbf.NotebookNode:
             "    hit_20d=('hit_20d', 'mean'),\n"
             "    median_5d=('return_5d', 'median'),\n"
             ").round(3)\n"
-            "summary"
+            "summary  # n column is always visible alongside the hit rates"
         ),
         _md("## Median 5-day return by label"),
         _code(
@@ -263,7 +265,7 @@ def main() -> None:
         ("01_quickstart.ipynb", quickstart()),
         ("02_evidence_layer.ipynb", evidence_layer()),
         ("03_time_machine.ipynb", time_machine()),
-        ("04_backtest_analysis.ipynb", backtest_analysis()),
+        ("04_validation_analysis.ipynb", validation_analysis()),
         ("05_signal_radar.ipynb", signal_radar()),
     ]
     for name, nb in notebooks:

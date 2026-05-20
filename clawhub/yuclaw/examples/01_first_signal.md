@@ -13,7 +13,7 @@ client = yuclaw_py.Client()   # source='postgres' default; needs the local stack
 sig = client.signal("NVDA")
 
 print(f"NVDA: {sig['label']}  score {sig['score']:+.3f}")
-# NVDA: HOLD  score +0.312
+# NVDA: NEUTRAL  score +0.312
 
 # The compliance posture is on every signal-bearing return:
 print(sig["compliance"])

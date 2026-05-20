@@ -11,7 +11,7 @@ python3 -m v3.cli verify NVDA --date 2026-05-20
 ```text
 OK  VERIFIED: signal unaltered since ledger commit   NVDA @ 2026-05-20
     ledger commit:   2379ac8  (2026-05-20 12:43:23 -0600)
-    ledger label:    HOLD  (current: HOLD)
+    ledger label:    NEUTRAL  (current: NEUTRAL)
     content_hash:    5e1897907999...
 
 Verifies record integrity and timing — not investment merit.

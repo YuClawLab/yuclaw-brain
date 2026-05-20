@@ -48,8 +48,8 @@ DEFAULT_PROFILE: dict[str, Any] = {
 # Public signal vocabulary — locked. Used to validate stored labels and
 # to bound profile.set value parsing (alert_threshold must be a float, etc.).
 PUBLIC_LABELS = {
-    "STRONG_BUY", "BUY", "HOLD", "WATCH",
-    "WEAKENING", "NEGATIVE_EVENT", "DOWNSIDE_WATCH",
+    "STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
+    "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH",
     "RISK_ALERT",  # reserved — not currently emitted, but in the locked vocab
 }
 

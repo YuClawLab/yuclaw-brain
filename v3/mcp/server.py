@@ -6,7 +6,7 @@ Exposes seven read-only tools backed directly by the yuclaw_py SDK:
     yuclaw_signal(ticker)
     yuclaw_why(ticker, n_evidence=5)
     yuclaw_replay(ticker, date)
-    yuclaw_backtest()
+    yuclaw_validation()
     yuclaw_events(ticker, since=None)
     yuclaw_universe()
     yuclaw_verify(ticker, date)
@@ -57,8 +57,8 @@ def _stamp(payload: dict[str, Any]) -> dict[str, Any]:
 def yuclaw_signal(ticker: str) -> dict[str, Any]:
     """Latest YUCLAW composite signal for a ticker, plus the 9 component scores.
 
-    Returns label (one of STRONG_BUY / BUY / HOLD / WATCH / WEAKENING /
-    NEGATIVE_EVENT / DOWNSIDE_WATCH / RISK_ALERT — never SELL or SHORT),
+    Returns label (one of STRONG_BULLISH / BULLISH / NEUTRAL / WATCH / WEAKENING /
+    NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT — never SELL or SHORT),
     score in [-1, 1], signal_time, and c1..c9.
 
     Research/education only — not investment advice."""
@@ -100,11 +100,13 @@ def yuclaw_replay(ticker: str, date: str) -> dict[str, Any]:
 
 
 @mcp.tool()
-def yuclaw_backtest() -> dict[str, Any]:
-    """In-sample backtest panel + out-of-sample forward-tracking ledger.
+def yuclaw_validation() -> dict[str, Any]:
+    """In-Sample Event Validation panel + out-of-sample Forward Tracking Ledger.
 
-    Returns two tables (as records lists): `backtest` and `forward`. Each row
+    Returns two tables (as records lists): `in_sample` and `forward`. Each row
     carries return_1d / 5d / 20d, hit_1d / 5d / 20d, and excess returns vs SPY.
+    Hit rates MUST be presented with their `n` (count) — never headline a
+    percentage alone. Small-n panels are preliminary.
 
     Caveat: the in-sample panel was reconstructed via point-in-time replay
     with market components C1/C3/C4/C5/C7 running at 0.3 confidence (the
@@ -113,15 +115,15 @@ def yuclaw_backtest() -> dict[str, Any]:
     (C6/C8/C9). See docs/methodology/backfill.md.
 
     Research/education only — not investment advice."""
-    panels = _CLIENT.backtest()
-    backfill_df = panels["backtest"]
+    panels = _CLIENT.validation()
+    in_sample_df = panels["in_sample"]
     forward_df = panels["forward"]
-    for df in (backfill_df, forward_df):
+    for df in (in_sample_df, forward_df):
         if "signal_date" in df.columns:
             df["signal_date"] = df["signal_date"].astype(str)
     return {
-        "backtest": backfill_df.where(backfill_df.notna(), None).to_dict(orient="records"),
-        "forward":  forward_df.where(forward_df.notna(), None).to_dict(orient="records"),
+        "in_sample": in_sample_df.where(in_sample_df.notna(), None).to_dict(orient="records"),
+        "forward":   forward_df.where(forward_df.notna(), None).to_dict(orient="records"),
         "compliance": dict(COMPLIANCE),
         "compliance_notice": COMPLIANCE_NOTICE,
     }

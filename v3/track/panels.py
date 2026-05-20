@@ -1,12 +1,12 @@
 """
 Two-panel aggregation:
-  - BACKTEST panel       (is_backfill=true)   — in-sample replay
+  - IN-SAMPLE EVENT VALIDATION  (is_backfill=true)   — in-sample replay
   - FORWARD TRACKING     (is_backfill=false)  — live emissions, OOS
 
 Per panel:
   - Per signal_label and overall:
       n_signals             total snapshots
-      n_directional         signals with non-NULL hit (excl. HOLD/WATCH)
+      n_directional         signals with non-NULL hit (excl. NEUTRAL/WATCH)
       n_matured_{1,5,20}d   how many have a non-NULL return_Nd
       hit_rate_{1,5,20}d    over matured + directional only
       median_return_{N}d / mean_return_{N}d
@@ -34,7 +34,7 @@ import psycopg2.extras
 from v3.sources.edgar_poll import DB_DSN
 
 HORIZONS = (1, 5, 20)
-DIRECTIONAL_LABELS = {"STRONG_BUY", "BUY", "WEAKENING", "NEGATIVE_EVENT", "DOWNSIDE_WATCH"}
+DIRECTIONAL_LABELS = {"STRONG_BULLISH", "BULLISH", "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH"}
 
 
 def _safe_median(xs: list[float]) -> Optional[float]:
@@ -84,7 +84,7 @@ def build_panels() -> dict[str, Any]:
         conn.close()
 
     panels: dict[str, Any] = {}
-    for is_backfill, panel_name in [(True, "backtest"), (False, "forward")]:
+    for is_backfill, panel_name in [(True, "in_sample"), (False, "forward")]:
         rows = [r for r in all_rows if r["is_backfill"] is is_backfill]
         labels_present = sorted({r["signal_label"] for r in rows})
         per_label = {}
@@ -106,8 +106,8 @@ def build_panels() -> dict[str, Any]:
 def format_text(panels: dict[str, Any]) -> str:
     lines: list[str] = []
     for panel_name, header in [
-        ("backtest", "BACKTEST RESULTS — In-Sample Replay"),
-        ("forward",  "FORWARD TRACKING LEDGER — Out-of-Sample"),
+        ("in_sample", "IN-SAMPLE EVENT VALIDATION — Replay (n shown alongside every hit-rate)"),
+        ("forward",   "FORWARD TRACKING LEDGER — Out-of-Sample (n shown alongside every hit-rate)"),
     ]:
         p = panels[panel_name]
         lines.append("=" * 90)
@@ -120,32 +120,43 @@ def format_text(panels: dict[str, Any]) -> str:
                      f"{'hit 1d/5d/20d':>20s}  "
                      f"{'median ret 5d':>14s}")
         lines.append("  " + "-" * 86)
-        # Per-label rows
+        # Per-label rows. Hit rate is always paired with eligibility n so a
+        # reader cannot copy "69%" out of context — they see "69% (n=29)".
         for lbl in sorted(p["per_label"]):
             s = p["per_label"][lbl]
             mat = f"{s['n_matured_1d']}/{s['n_matured_5d']}/{s['n_matured_20d']}"
             hit_strs = []
             for n in HORIZONS:
                 hr = s[f"hit_rate_{n}d"]
-                hit_strs.append(f"{hr*100:.0f}%" if hr is not None else "  -")
-            hit = "/".join(hit_strs)
+                n_elig = s[f"n_eligible_{n}d"]
+                if hr is None:
+                    hit_strs.append("    -")
+                else:
+                    hit_strs.append(f"{hr*100:.0f}%(n={n_elig})")
+            hit = " ".join(hit_strs)
             med5 = s["median_return_5d"]
             med5_str = f"{med5*100:+.2f}%" if med5 is not None else "    -"
+            tag = "  preliminary" if 0 < s["n_eligible_5d"] < 20 else ""
             lines.append(f"  {lbl:<16s} {s['n_signals']:>5d} {s['n_directional']:>5d}  "
-                         f"{mat:>20s}  {hit:>20s}  {med5_str:>14s}")
+                         f"{mat:>20s}  {hit:>32s}  {med5_str:>14s}{tag}")
         # Overall row
         s = p["overall"]
         mat = f"{s['n_matured_1d']}/{s['n_matured_5d']}/{s['n_matured_20d']}"
         hit_strs = []
         for n in HORIZONS:
             hr = s[f"hit_rate_{n}d"]
-            hit_strs.append(f"{hr*100:.0f}%" if hr is not None else "  -")
-        hit = "/".join(hit_strs)
+            n_elig = s[f"n_eligible_{n}d"]
+            if hr is None:
+                hit_strs.append("    -")
+            else:
+                hit_strs.append(f"{hr*100:.0f}%(n={n_elig})")
+        hit = " ".join(hit_strs)
         med5 = s["median_return_5d"]
         med5_str = f"{med5*100:+.2f}%" if med5 is not None else "    -"
+        tag = "  preliminary" if 0 < s["n_eligible_5d"] < 20 else ""
         lines.append("  " + "-" * 86)
         lines.append(f"  {'OVERALL':<16s} {s['n_signals']:>5d} {s['n_directional']:>5d}  "
-                     f"{mat:>20s}  {hit:>20s}  {med5_str:>14s}")
+                     f"{mat:>20s}  {hit:>32s}  {med5_str:>14s}{tag}")
         lines.append("")
     return "\n".join(lines)
 

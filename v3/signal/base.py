@@ -46,13 +46,13 @@ assert math.isclose(sum(COMPONENT_WEIGHTS.values()), 1.0, abs_tol=1e-9), \
 
 # Public signal vocabulary (LOCKED). No SELL/SHORT in the public surface.
 SIGNAL_THRESHOLDS: list[tuple[float, str]] = [
-    (0.55, "STRONG_BUY"),
-    (0.40, "BUY"),
-    (0.20, "HOLD"),
+    (0.55, "STRONG_BULLISH"),
+    (0.40, "BULLISH"),
+    (0.20, "NEUTRAL"),
     (0.00, "WATCH"),
     (-0.20, "WEAKENING"),
     (-0.40, "NEGATIVE_EVENT"),
-    (-1.01, "DOWNSIDE_WATCH"),  # catches anything <= -0.40
+    (-1.01, "BEARISH_WATCH"),  # catches anything <= -0.40
 ]
 
 
@@ -61,7 +61,7 @@ def signal_label(total_score: float) -> str:
     for floor, label in SIGNAL_THRESHOLDS:
         if total_score >= floor:
             return label
-    return "DOWNSIDE_WATCH"
+    return "BEARISH_WATCH"
 
 
 # ---------------------------------------------------------------------------

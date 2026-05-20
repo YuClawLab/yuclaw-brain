@@ -6,8 +6,8 @@ summary, plus the single most material recent event for that ticker.
 With an empty watchlist, falls back to the universe-wide top-N absolute-
 score movers and shows a hint to add tickers.
 
-Public vocabulary only: STRONG_BUY / BUY / HOLD / WATCH / WEAKENING /
-NEGATIVE_EVENT / DOWNSIDE_WATCH / RISK_ALERT. No SELL/SHORT anywhere.
+Public vocabulary only: STRONG_BULLISH / BULLISH / NEUTRAL / WATCH / WEAKENING /
+NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT. No SELL/SHORT anywhere.
 
 CLI:
     python3 -m v3.cli brief

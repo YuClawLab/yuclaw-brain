@@ -19,7 +19,7 @@ Exposes seven read-only YUCLAW research tools over the Model Context Protocol (s
 Each tool's MCP description ends with: *"Research/education only — not investment advice."*  
 Each tool response embeds the locked compliance payload `{not_advice, research_only, not_registered_adviser}`.
 
-The only labels that can appear in tool responses are: `STRONG_BUY`, `BUY`, `HOLD`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `DOWNSIDE_WATCH`, `RISK_ALERT`. There is no `SELL` or `SHORT`. The SDK's `_validate_label()` is invoked on every signal-bearing return.
+The only labels that can appear in tool responses are: `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`. There is no `SELL` or `SHORT`. The SDK's `_validate_label()` is invoked on every signal-bearing return.
 
 ## Connecting a client
 

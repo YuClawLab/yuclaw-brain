@@ -6,7 +6,7 @@ license: MIT
 homepage: https://github.com/YuClawLab/yuclaw-brain
 ---
 
-> **Disclaimer — read before using.** YUCLAW is a research and education tool. It is **not** investment advice. Signal labels (`STRONG_BUY`, `BUY`, `HOLD`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `DOWNSIDE_WATCH`, `RISK_ALERT`) are **research classifications**, not buy/sell recommendations — and YUCLAW deliberately publishes **no `SELL` or `SHORT` label**. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is **not a registered investment adviser**.
+> **Disclaimer — read before using.** YUCLAW is a research and education tool. It is **not** investment advice. Signal labels (`STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`) are **research classifications**, not buy/sell recommendations — and YUCLAW deliberately publishes **no `SELL` or `SHORT` label**. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is **not a registered investment adviser**.
 
 ## What YUCLAW is
 
@@ -43,7 +43,7 @@ All three surfaces share the same query layer — they cannot diverge.
 ### `yuclaw why NVDA`
 
 ```text
-NVDA composite score: +0.312  (signal label: HOLD)
+NVDA composite score: +0.312  (signal label: NEUTRAL)
 
 Components (score × weight × confidence):
   C1 Momentum        +0.46   (weight 0.12)
@@ -77,7 +77,7 @@ Compliance: Research only. Not financial advice.
 $ python3 -m v3.cli verify NVDA --date 2026-05-20
 OK  VERIFIED: signal unaltered since ledger commit   NVDA @ 2026-05-20
     ledger commit:   2379ac8  (2026-05-20 12:43:23 -0600)
-    ledger label:    HOLD  (current: HOLD)
+    ledger label:    NEUTRAL  (current: NEUTRAL)
     content_hash:    5e1897907999...
 Verifies record integrity and timing — not investment merit.
 ```
@@ -93,7 +93,7 @@ The single most important caveat: **the in-sample backtest panel was reconstruct
 The only labels YUCLAW publishes — anywhere, in any surface, ever — are:
 
 ```
-STRONG_BUY · BUY · HOLD · WATCH · WEAKENING · NEGATIVE_EVENT · DOWNSIDE_WATCH · RISK_ALERT
+STRONG_BULLISH · BULLISH · NEUTRAL · WATCH · WEAKENING · NEGATIVE_EVENT · BEARISH_WATCH · RISK_ALERT
 ```
 
 There is no `SELL`. There is no `SHORT`. The SDK, the REST API, and the MCP server all run the same `_validate_label()` check before any signal leaves the system — anything outside the locked set is treated as a bug and surfaces an error.

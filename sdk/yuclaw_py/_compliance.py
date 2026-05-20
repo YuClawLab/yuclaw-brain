@@ -19,6 +19,6 @@ COMPLIANCE_NOTICE: str = (
 # Public signal vocabulary — anything outside this set returned by the SDK
 # is a bug.
 PUBLIC_LABELS: tuple[str, ...] = (
-    "STRONG_BUY", "BUY", "HOLD", "WATCH",
-    "WEAKENING", "NEGATIVE_EVENT", "DOWNSIDE_WATCH", "RISK_ALERT",
+    "STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
+    "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT",
 )

@@ -37,6 +37,18 @@ import psycopg2.extras
 from v3.signal.supply_chain import Edge, neighbors, two_hop
 from v3.sources.edgar_poll import DB_DSN
 
+# Only supply and peer edges propagate cascade impact. Cohort edges
+# (intra-sector co-movement) are excluded because they double-count C3
+# sector velocity — the same sector-flow signal would land twice. ETF
+# and macro edges are also excluded: ETFs/indices don't file events, so
+# they're sink-only in practice, but filtering here keeps the rule
+# explicit. Added Day 13c after multicollinearity review.
+CASCADE_TRAVERSAL_KINDS = frozenset(("supply", "peer"))
+
+
+def _filter_traversal(edges: list[Edge]) -> list[Edge]:
+    return [e for e in edges if e.kind in CASCADE_TRAVERSAL_KINDS]
+
 # Cascade-eligible event types — anything that has a real supply-chain
 # transmission story. Insider trades, exec changes, dividends, buybacks
 # don't cascade.
@@ -184,7 +196,7 @@ def process_root(conn, root: dict[str, Any], dry_run: bool) -> dict[str, int]:
         cur = conn.cursor()
 
     # --- depth 1 ---
-    for e1 in neighbors(root_ticker):
+    for e1 in _filter_traversal(neighbors(root_ticker)):
         child_mag = _clip_magnitude(parent_mag * e1.weight * CASCADE_D1_DECAY)
         if child_mag <= 0:
             continue
@@ -222,8 +234,12 @@ def process_root(conn, root: dict[str, Any], dry_run: bool) -> dict[str, int]:
                     depth1_event_ids[tkr] = eid
 
     # --- depth 2 ---
+    # two_hop returns (e1, e2); we filter BOTH legs to supply/peer kinds so
+    # cohort hops don't smuggle multicollinear flow back in at depth 2.
     for e1, e2 in two_hop(root_ticker):
         if e2.target == root_ticker:
+            continue
+        if e1.kind not in CASCADE_TRAVERSAL_KINDS or e2.kind not in CASCADE_TRAVERSAL_KINDS:
             continue
         child_mag = _clip_magnitude(parent_mag * e1.weight * e2.weight * CASCADE_D2_DECAY)
         if child_mag < CASCADE_DE_MINIMIS:

@@ -25,7 +25,7 @@ client = yuclaw_py.Client(source="postgres", dsn="dbname=yuclaw_events")
 # Latest composite signal for a ticker
 sig = client.signal("NVDA")
 print(sig["label"], sig["score"])
-#> HOLD 0.312
+#> NEUTRAL 0.312
 
 # Full `why` — signal + ranked evidence events with source URLs
 why = client.why("NVDA")
@@ -57,7 +57,7 @@ Every signal-bearing return carries a `compliance` dict:
 ```
 
 — and the public vocabulary is strictly:
-`STRONG_BUY`, `BUY`, `HOLD`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `DOWNSIDE_WATCH`, `RISK_ALERT`.
+`STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.
 
 No `SELL`, no `SHORT`. Anywhere.
 

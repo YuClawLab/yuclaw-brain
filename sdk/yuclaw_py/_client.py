@@ -52,7 +52,7 @@ class Client:
     >>> client = yuclaw_py.Client()
     >>> sig = client.signal("NVDA")
     >>> sig["label"], sig["score"]   # doctest: +SKIP
-    ('HOLD', 0.312)
+    ('NEUTRAL', 0.312)
     """
 
     def __init__(
@@ -96,14 +96,15 @@ class Client:
         """
         return _with_compliance(self._backend.replay(ticker, date))
 
-    def backtest(self) -> dict[str, Any]:
-        """Two-panel backtest + forward-tracking report.
+    def validation(self) -> dict[str, Any]:
+        """In-Sample Event Validation + Forward Tracking Ledger.
 
-        Returns ``{"backtest": DataFrame, "forward": DataFrame, "compliance": ...}``.
+        Returns ``{"in_sample": DataFrame, "forward": DataFrame, "compliance": ...}``.
         Each DataFrame is a snapshot of `track_record`. See ``docs/methodology/backfill.md``
-        for in-sample reconstruction caveats.
+        for in-sample reconstruction caveats. Hit rates in these DataFrames must always
+        be reported alongside their `n` (count) — never headline a percentage alone.
         """
-        panels = self._backend.backtest()
+        panels = self._backend.validation()
         return {**panels, "compliance": dict(COMPLIANCE)}
 
     def events(self, ticker: str, since: Optional[str] = None):

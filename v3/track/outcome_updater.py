@@ -38,13 +38,13 @@ SPY_TICKER = "SPY"
 # -1 → expect price down  (hit if return < 0)
 #  0 → non-directional    (hit_Nd = NULL)
 LABEL_DIRECTION: dict[str, int] = {
-    "STRONG_BUY":     +1,
-    "BUY":            +1,
-    "HOLD":            0,
+    "STRONG_BULLISH":     +1,
+    "BULLISH":            +1,
+    "NEUTRAL":            0,
     "WATCH":           0,  # WATCH is "we don't have conviction yet" — not directional
     "WEAKENING":      -1,
     "NEGATIVE_EVENT": -1,
-    "DOWNSIDE_WATCH": -1,
+    "BEARISH_WATCH": -1,
 }
 
 

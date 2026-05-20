@@ -11,7 +11,7 @@ Scoring rule:
     confidence = 0.9 if mom_1m available, else 0.0
 
 MOM_FULL_SCALE = 0.20 is calibrated against the v2.3.0 dashboard: tickers
-the dashboard labels STRONG_BUY tend to have mom_1m in the +15% to +25%
+the dashboard labels STRONG_BULLISH tend to have mom_1m in the +15% to +25%
 range, so saturating at 20% gives a meaningful spread without clipping
 the bulk of the population.
 """

@@ -8,6 +8,19 @@ For each event:
     recency_w = exp(-ln(2) * age_days / HALF_LIFE_DAYS)
     impact    = direction * magnitude * llm_confidence * recency_w
 
+Day 13c addition: the COLLECTIVE signed insider-event impact is clamped
+to ±INSIDER_AGGREGATE_CAP (0.5) before being summed with non-insider
+events. Without the cap, a single Form 4 cluster (e.g. AMD's 24 CEO
+sells in a week) could saturate C6 to ±1.0 and drown out a single
+8-K earnings beat — multi-collinear with the underlying insider
+narrative is fine but it shouldn't dominate the evidence story.
+
+  raw_insider_impact   = sum(impact_i for events of type INSIDER_BUY/SELL)
+  capped_insider_impact = clamp(raw_insider_impact, -CAP, +CAP)
+  other_impact         = sum(impact_i for non-insider events)
+  total_impact         = capped_insider_impact + other_impact
+  score                = tanh(total_impact)
+
 Sum impacts → tanh squash into [-1, 1]. tanh keeps the score bounded even
 when many events stack up.
 
@@ -27,6 +40,8 @@ from v3.signal.data_loader import fetch_events
 HALF_LIFE_DAYS = 7.0          # event halves in weight every 7 days
 CONFIDENCE_FULL_N = 5         # 5+ events in window → full confidence
 LN2 = math.log(2.0)
+INSIDER_AGGREGATE_CAP = 0.5   # collective |insider sum| clamped before tanh
+INSIDER_EVENT_TYPES = frozenset(("INSIDER_BUY", "INSIDER_SELL"))
 
 
 def _ensure_aware(dt: datetime) -> datetime:
@@ -53,7 +68,8 @@ class C6EventImpact(SignalComponent):
 
         as_of_utc = _ensure_aware(as_of)
 
-        total_impact = 0.0
+        insider_impact_sum = 0.0
+        other_impact_sum = 0.0
         contributors = []
         for ev in events:
             avail = _ensure_aware(ev["available_as_of"])
@@ -63,17 +79,28 @@ class C6EventImpact(SignalComponent):
             direction = int(ev.get("direction") or 0)
             ev_conf = float(ev.get("llm_confidence") or 0.0)
             impact = direction * mag * ev_conf * recency_w
-            total_impact += impact
+            etype = ev.get("event_type")
+            is_insider = etype in INSIDER_EVENT_TYPES
+            if is_insider:
+                insider_impact_sum += impact
+            else:
+                other_impact_sum += impact
             contributors.append({
                 "event_id": ev.get("event_id"),
-                "type": ev.get("event_type"),
+                "type": etype,
                 "age_days": round(age_days, 2),
                 "magnitude": mag,
                 "direction": direction,
                 "confidence": ev_conf,
                 "impact": round(impact, 4),
+                "is_insider": is_insider,
             })
 
+        # Cap the collective insider impact so a Form-4 flood can't drown
+        # out a single material 8-K. Non-insider events keep full voice.
+        capped_insider = max(-INSIDER_AGGREGATE_CAP,
+                             min(INSIDER_AGGREGATE_CAP, insider_impact_sum))
+        total_impact = capped_insider + other_impact_sum
         s = math.tanh(total_impact)
         n = len(events)
         comp_conf = min(1.0, n / CONFIDENCE_FULL_N)
@@ -84,14 +111,25 @@ class C6EventImpact(SignalComponent):
         # and by snapshot_writer's evidence trail; top_contributors is the
         # truncated display version).
         all_event_ids = [c["event_id"] for c in contributors if c.get("event_id")]
+        n_insider = sum(1 for c in contributors if c["is_insider"])
+        rationale = (
+            f"{n} event(s) in 30d "
+            f"(insider sum {insider_impact_sum:+.3f} → capped {capped_insider:+.3f}; "
+            f"other sum {other_impact_sum:+.3f}) "
+            f"→ tanh {s:+.3f}"
+        )
         return ComponentResult(
             component=self.component_id,
             score=s,
             confidence=comp_conf,
-            rationale=f"{n} event(s) in 30d → impact sum {total_impact:+.3f} → tanh {s:+.3f}",
+            rationale=rationale,
             details={
                 "n_events": n,
-                "raw_impact_sum": round(total_impact, 4),
+                "n_insider": n_insider,
+                "insider_impact_sum_raw": round(insider_impact_sum, 4),
+                "insider_impact_sum_capped": round(capped_insider, 4),
+                "other_impact_sum": round(other_impact_sum, 4),
+                "total_impact": round(total_impact, 4),
                 "top_contributors": top5,
                 "inputs": {"event_ids": all_event_ids},
             },

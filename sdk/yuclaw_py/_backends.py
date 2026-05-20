@@ -44,7 +44,7 @@ class Backend(ABC):
     @abstractmethod
     def replay(self, ticker: str, date: str) -> dict[str, Any]: ...
     @abstractmethod
-    def backtest(self) -> dict[str, pd.DataFrame]: ...
+    def validation(self) -> dict[str, pd.DataFrame]: ...
     @abstractmethod
     def events(self, ticker: str, since: Optional[str] = None) -> pd.DataFrame: ...
     @abstractmethod
@@ -137,12 +137,12 @@ class PostgresBackend(Backend):
         out["replay_as_of"] = date
         return out
 
-    def backtest(self) -> dict[str, pd.DataFrame]:
+    def validation(self) -> dict[str, pd.DataFrame]:
         with self._conn() as conn:
             df = pd.read_sql("SELECT * FROM track_record ORDER BY signal_date", conn)
-        backfill = df[df["is_backfill"] == True].reset_index(drop=True)
+        in_sample = df[df["is_backfill"] == True].reset_index(drop=True)
         forward = df[df["is_backfill"] == False].reset_index(drop=True)
-        return {"backtest": backfill, "forward": forward}
+        return {"in_sample": in_sample, "forward": forward}
 
     def events(self, ticker: str, since: Optional[str] = None) -> pd.DataFrame:
         sql = (
@@ -209,11 +209,11 @@ class ApiBackend(Backend):
     def replay(self, ticker: str, date: str) -> dict[str, Any]:
         return self._get(f"/replay/{ticker.upper()}", params={"date": date})
 
-    def backtest(self) -> dict[str, pd.DataFrame]:
-        data = self._get("/backtest")
+    def validation(self) -> dict[str, pd.DataFrame]:
+        data = self._get("/validation")
         return {
-            "backtest": pd.DataFrame(data.get("backtest") or []),
-            "forward":  pd.DataFrame(data.get("forward")  or []),
+            "in_sample": pd.DataFrame(data.get("in_sample") or []),
+            "forward":   pd.DataFrame(data.get("forward")   or []),
         }
 
     def events(self, ticker: str, since: Optional[str] = None) -> pd.DataFrame:

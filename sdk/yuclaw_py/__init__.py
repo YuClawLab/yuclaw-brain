@@ -13,8 +13,8 @@ Public surface:
 All signal-bearing returns include a `compliance` dict:
     {"not_advice": True, "research_only": True, "not_registered_adviser": True}
 
-The vocabulary is locked: STRONG_BUY / BUY / HOLD / WATCH / WEAKENING /
-NEGATIVE_EVENT / DOWNSIDE_WATCH / RISK_ALERT. There is no SELL or SHORT.
+The vocabulary is locked: STRONG_BULLISH / BULLISH / NEUTRAL / WATCH / WEAKENING /
+NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT. There is no SELL or SHORT.
 """
 from yuclaw_py._client import Client
 from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE, PUBLIC_LABELS

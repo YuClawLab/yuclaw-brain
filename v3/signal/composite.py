@@ -23,9 +23,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
+import traceback
 from datetime import datetime, timezone
 from typing import Any
+
+_log = logging.getLogger("yuclaw.composite")
 
 from v3.signal.base import (
     COMPONENT_WEIGHTS,
@@ -82,7 +86,7 @@ def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]
             "as_of":                "2026-05-19T13:30:00+00:00",
             "total_score":          0.213,
             "composite_confidence": 0.547,
-            "label":                "HOLD",
+            "label":                "NEUTRAL",
             "n_implemented":        9,
             "n_stubs":              0,
             "components": { ... }
@@ -96,18 +100,32 @@ def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]
 
     components = _build_components()
     results: dict[str, ComponentResult] = {}
+    errored: list[str] = []
     for cid, comp in components.items():
         try:
             results[cid] = comp.score(ticker, as_of, ctx)
         except Exception as e:
-            # A broken component should NOT poison the composite — flag and
-            # mask it out via confidence=0.0.
+            # A broken component should NOT poison the composite — but we
+            # must NOT swallow the error silently either. Day-7→13b: C9
+            # raised UndefinedColumn for six days and nobody noticed because
+            # the rationale string was the only surface. Now we also:
+            #   1. Log via the standard logger with a traceback.
+            #   2. Mark the ComponentResult with `errored=True` in details
+            #      so downstream surfaces (healthcheck, why CLI, MCP) can
+            #      distinguish a real error from a legitimate confidence=0.
+            _log.error(
+                "component %s raised on (%s, %s): %s\n%s",
+                cid, ticker, as_of, e, traceback.format_exc(),
+            )
+            errored.append(cid)
             results[cid] = ComponentResult(
                 component=cid,
                 score=0.0,
                 confidence=0.0,
                 rationale=f"component error: {type(e).__name__}: {str(e)[:120]}",
                 not_implemented=False,
+                details={"errored": True, "error_type": type(e).__name__,
+                         "error_msg": str(e)[:200]},
             )
 
     # Confidence-weighted average
@@ -134,6 +152,7 @@ def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]
         "label": signal_label(total),
         "n_implemented": n_impl,
         "n_stubs": n_stub,
+        "errored_components": errored,
         "components": {cid: r.to_dict() for cid, r in results.items()},
     }
 

@@ -88,9 +88,9 @@ The ledger accumulates indefinitely. There is no end date.
 - **SPY return at horizon N:** the same calculation applied to SPY.
 - **Excess return:** ticker return minus SPY return.
 - **Hit at horizon N:**
-  - **STRONG_BUY / BUY:** hit if return > 0
-  - **WEAKENING / NEGATIVE_EVENT / DOWNSIDE_WATCH:** hit if return < 0
-  - **HOLD / WATCH:** non-directional → `hit_Nd` is `NULL`, excluded from hit-rate denominators
+  - **STRONG_BULLISH / BULLISH:** hit if return > 0
+  - **WEAKENING / NEGATIVE_EVENT / BEARISH_WATCH:** hit if return < 0
+  - **NEUTRAL / WATCH:** non-directional → `hit_Nd` is `NULL`, excluded from hit-rate denominators
 - **Hit rate:** `hits / eligible`, where `eligible` is the count of matured AND directional signals only. **Coverage and skill are never conflated.**
 - **Median return:** computed over matured rows only.
 
