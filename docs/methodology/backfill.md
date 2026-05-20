@@ -123,12 +123,38 @@ All inputs are committed to the repo except `price_history` (Yahoo OHLCV redistr
 
 ---
 
-## 8. Data sources + attribution
+## 8. Scoring range at launch
+
+The composite signal is a confidence-weighted sum across nine components. Five of them (C1 momentum, C3 sector velocity, C4 macro regime, C5 oil/rates/FX, C7 peer correlation) currently operate as **STALE-PROXY** with confidence pinned at 0.3, pending the v3.1 ingestion of historical market data — disclosed in §4 above.
+
+Under the current weights, the C6 insider-aggregate cap (±0.5), and the STALE-PROXY confidence clamp, the theoretical achievable range of the composite is approximately ±0.92 in historical-replay mode and ±0.95–±1.00 in live (OOS) mode. **All eight signal-label thresholds — including STRONG_BULLISH (≥ +0.55) and BEARISH_WATCH (< −0.40) — are reachable** under each scenario; none is structurally dead.
+
+The launch-day dataset, however, exercises a narrow portion of that range. With the regenerated 79-snapshot OOS Day-0 dataset:
+
+| metric | OOS Day 0 (n=79) | In-Sample Replay (n=1027) |
+|---|---|---|
+| empirical max | +0.536 | +0.447 |
+| 99th percentile (high) | +0.531 | +0.421 |
+| 99th percentile (low) | −0.075 | −0.217 |
+| empirical min | −0.088 | −0.419 |
+
+The OOS p99 sits just below the STRONG_BULLISH threshold (+0.531 vs the +0.55 floor); the in-sample maximum (+0.447) is in the BULLISH band, never crossing into STRONG_BULLISH.
+
+Two structural reasons explain the gap between the theoretical maximum and the launch-day empirics:
+
+1. **Evidence base is sparse.** As of launch the `events` table holds 17 LLM-extracted material non-insider events (Form-4 insider transactions are bounded by the C6 insider cap, so they cannot lift the composite past roughly +0.4 alone). High-conviction labels require at least one material non-insider event to align with momentum and macro.
+2. **C9 (model trust) is at cold start.** With no matured `track_record` entries for most tickers, C9 contributes `score = 0` at `confidence = 0.5` — adding to the composite denominator without raising the numerator. This compresses |composite| for every snapshot by a small constant factor relative to a matured C9.
+
+**Consequence at launch:** extreme labels (STRONG_BULLISH, BEARISH_WATCH) are intended to be rare. They require *broad component agreement* plus at least one *material non-insider event*. This is high-conviction gating by construction, not a defect in the scoring math.
+
+This is an **observed property of the launch-day dataset**. We do not claim the distribution will shift in any particular direction as more evidence accumulates — that is unverified and not asserted here.
+
+## 9. Data sources + attribution
 
 - **SEC EDGAR (public domain).** Form 4, 8-K, 10-Q, 10-K, and 6-K filings are ingested from the SEC EDGAR API (`data.sec.gov/submissions/`, `www.sec.gov/Archives/edgar/data/`). YUCLAW honors the SEC's 10 req/sec rate limit (we self-throttle to ~6 req/sec) and identifies itself in every request via the `User-Agent` header per [SEC's programmatic-access guidance](https://www.sec.gov/os/accessing-edgar-data). Filing data is public domain; YUCLAW redistributes only short excerpts (≤ 600 chars) needed to substantiate the evidence trail, with full source URLs to the SEC archive.
 - **Yahoo Finance (internal only).** Daily close + volume for outcome computation come from the `yfinance` Python library. This data is **not redistributed** through any v3.0 endpoint, SDK method, or MCP tool — raw OHLCV stays in the internal `price_history` table. Only derived metrics (returns, hit rates, excess returns vs SPY) are published.
 - **YUCLAW-generated data (open).** Composite signals, component scores, LLM-extracted SEC event excerpts, supply-chain edges, cascade children, content hashes, daily roots, and backtest aggregations are YUCLAW's own derivative work — MIT-licensed, freely redistributable.
 
-## 9. Disclaimer
+## 10. Disclaimer
 
 Research / education only. Not investment advice. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.
