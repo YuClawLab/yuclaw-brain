@@ -168,26 +168,64 @@ class PostgresBackend(Backend):
 
 # ---------------------------------------------------------------------------
 class ApiBackend(Backend):
-    """REST API mode — ships in Day 11. Until then every method raises
-    NotImplementedError with a clear pointer."""
+    """REST API mode — HTTP calls to a YUCLAW server.
+
+    Mirrors the PostgresBackend contract: returns dicts / DataFrames in
+    the exact same shape so the Client layer doesn't need to branch on
+    `source`. JSON arrays for tabular endpoints are rehydrated to
+    pandas DataFrames on this side.
+    """
+
+    DEFAULT_TIMEOUT = 30.0  # seconds — generous so backtest/events don't time out
 
     def __init__(self, base_url: str):
         self.base_url = base_url.rstrip("/")
 
-    def _stub(self, name: str):
-        raise NotImplementedError(
-            f"yuclaw_py.Client.{name}() over REST API ships in v3.0 Day 11. "
-            f"For now use source='postgres' if you have the local pipeline, "
-            f"or watch https://github.com/YuClawLab/yuclaw-brain for the "
-            f"hosted endpoint going live."
+    def _get(self, path: str, params: Optional[dict[str, Any]] = None) -> Any:
+        import requests
+        r = requests.get(
+            f"{self.base_url}{path}",
+            params=params or {},
+            timeout=self.DEFAULT_TIMEOUT,
         )
+        if r.status_code == 404:
+            # Surface as LookupError so the Client layer can format it like
+            # the postgres path does, instead of leaking HTTP semantics.
+            try:
+                detail = r.json().get("detail", r.text)
+            except Exception:
+                detail = r.text
+            raise LookupError(detail)
+        r.raise_for_status()
+        return r.json()
 
-    def signal(self, ticker):                return self._stub("signal")
-    def evidence(self, ticker, limit=5):     return self._stub("why")
-    def replay(self, ticker, date):          return self._stub("replay")
-    def backtest(self):                      return self._stub("backtest")
-    def events(self, ticker, since=None):    return self._stub("events")
-    def universe(self):                      return self._stub("universe")
+    def signal(self, ticker: str) -> dict[str, Any]:
+        return self._get(f"/signal/{ticker.upper()}")
+
+    def evidence(self, ticker: str, limit: int = 5) -> list[dict[str, Any]]:
+        data = self._get(f"/why/{ticker.upper()}", params={"n_evidence": limit})
+        return data.get("evidence") or []
+
+    def replay(self, ticker: str, date: str) -> dict[str, Any]:
+        return self._get(f"/replay/{ticker.upper()}", params={"date": date})
+
+    def backtest(self) -> dict[str, pd.DataFrame]:
+        data = self._get("/backtest")
+        return {
+            "backtest": pd.DataFrame(data.get("backtest") or []),
+            "forward":  pd.DataFrame(data.get("forward")  or []),
+        }
+
+    def events(self, ticker: str, since: Optional[str] = None) -> pd.DataFrame:
+        params: dict[str, Any] = {}
+        if since:
+            params["since"] = since
+        data = self._get(f"/events/{ticker.upper()}", params=params)
+        return pd.DataFrame(data.get("events") or [])
+
+    def universe(self) -> list[str]:
+        data = self._get("/universe")
+        return list(data.get("universe") or [])
 
 
 # ---------------------------------------------------------------------------
