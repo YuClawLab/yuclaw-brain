@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.18"]
+build-backend = "hatchling.build"
+
+[project]
+name = "yuclaw-py"
+version = "3.0.0"
+description = "Python SDK for the YUCLAW open-source financial intelligence platform. Research / education only — not investment advice."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "YuClawLab", email = "yuclawlab@example.com" }]
+keywords = ["yuclaw", "research", "events", "evidence", "backtest", "signal"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business :: Financial",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+  "psycopg2-binary>=2.9",
+  "pandas>=2.0",
+  "requests>=2.28",
+]
+
+[project.optional-dependencies]
+# Extra deps the starter notebooks lean on (matplotlib for backtest plots,
+# jupyter/nbconvert for headless execution). Install with:
+#   pip install "yuclaw-py[notebooks]"
+notebooks = [
+  "matplotlib>=3.5",
+  "jupyter>=1.0",
+  "nbformat>=5.0",
+  "nbconvert>=7.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/YuClawLab/yuclaw-brain"
+Documentation = "https://yuclawlab.github.io/yuclaw-brain/"
+Source = "https://github.com/YuClawLab/yuclaw-brain"
+
+[tool.hatch.build.targets.wheel]
+packages = ["yuclaw_py"]
