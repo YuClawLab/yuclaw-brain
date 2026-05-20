@@ -27,7 +27,11 @@ from typing import Any
 from v3.cli.validation import COMPLIANCE_FOOTER, POINT_IN_TIME_NOTE
 from v3.track.panels import HORIZONS, build_panels
 
-OUT_DEFAULT = Path(__file__).resolve().parent.parent / "web" / "validation.html"
+# Default output now lives under docs/ so GitHub Pages can serve it at
+# /yuclaw-brain/validation.html. v3/web/validation.html (the development
+# output directory) used to be the target but was outside the published
+# folder — moving it here fixed the Day-14b launch-gate 404.
+OUT_DEFAULT = Path(__file__).resolve().parents[2] / "docs" / "validation.html"
 
 PANEL_HEADERS = {
     "in_sample": "IN-SAMPLE EVENT VALIDATION — Replay",
