@@ -1,10 +1,18 @@
-# YUCLAW Backtest Methodology
+# YUCLAW Backtest Methodology (v2.3.0)
 
 > ⚠️ **Read first:** YUCLAW is open-source research software. Numbers on the
 > dashboard are not financial advice. See the project [DISCLAIMER](../../DISCLAIMER.md).
 > If you are evaluating YUCLAW for any real-money decision, read this entire
 > page first and reproduce the figures yourself from the scripts referenced
 > below.
+
+> 📘 **v3.0 readers — go to [`backfill.md`](backfill.md) instead.** This page
+> describes v2.3.0's strategy backtest + early track-record builder. The v3.0
+> evidence-layer Backtest Results + Forward Tracking Ledger have their own
+> methodology document — that's the right starting point for the post-Day-7
+> two-panel report. (v3.0 deliberately publishes no SELL or SHORT label —
+> any references to "SELL signals" below are v2.3.0 strategy-level legs, not
+> public v3.0 vocabulary.)
 
 ## Two layers of "results" exist in this system
 

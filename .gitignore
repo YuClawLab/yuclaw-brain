@@ -54,3 +54,23 @@ output/earnings_calendar.json
 
 # Cron job venvs (multi-GB pytorch nightly install, regenerated on demand)
 cron/venvs/
+v3/sources/cik_cache.json
+v3/sources/*.cache
+v3/backfill_state.json
+
+# v3.0 runtime
+v3/backfill_state.json
+v3/sources/cik_cache.json
+logs/
+profile.json
+
+# SDK build artifacts
+sdk/dist/
+sdk/yuclaw_py.egg-info/
+
+# Raw market-data files (yfinance / Yahoo OHLCV — redistribution-restricted).
+# v3.0's internal price_history table is server-side only; if v2.3.0 cron
+# writes derivative snapshots here, they stay untracked.
+output/real_prices.json
+output/*ohlcv*
+output/yfinance_*
