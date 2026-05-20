@@ -13,13 +13,18 @@ shock to the source ticker should propagate to the target. Anchor cases:
     AMAT → TSM  0.40 — AMAT supplies a major share of TSM's fab equipment
     SPY → any   0.05 — market beta floor; broad sentiment leak only
 
-Directionality:
-    "out" — source's news affects target (TSM down → NVDA worse)
-    "in"  — target's news affects source (covered as separate edge in
-             the opposite direction; we never store reverse direction
-             implicitly)
-    "peer" — bidirectional competitive coupling (good news for one is
-             priced as bad for the other, with the *opposite* sign)
+Directionality / edge kinds:
+    "supply" — source's news affects target same-sign (TSM down → NVDA worse).
+    "peer"   — head-to-head competitive coupling (NVDA↔AMD). One pair = two
+               directed edges, BOTH sign=-1: good news for one is bad for the
+               other.
+    "cohort" — sector co-movement (AAPL EARNINGS_BEAT → MSFT also nudged up).
+               sign=+1 because peers in the same sector typically move
+               together on macro / sector flow. Weight is small (default 0.08)
+               and fanout is N² inside each cohort, so the de minimis filter
+               prunes most of it; only very-high-mag roots reach members.
+    "etf"    — sector ETF → member; XLK movement drags AAPL/MSFT/etc.
+    "macro"  — broad ETF (SPY, QQQ) → ticker; market-beta floor.
 """
 from __future__ import annotations
 
@@ -59,6 +64,28 @@ def _peer(a: str, b: str, w: float) -> tuple[Edge, Edge]:
     )
 
 
+def _cohort(members: list[str], w: float = 0.08) -> list[Edge]:
+    """Same-sector co-movement edges — every member ↔ every other member.
+
+    Distinct from `peer` (which flips sign for direct competitive pairs):
+    cohort edges carry sign=+1 because sector flow generally moves the
+    whole cohort together. Weight is intentionally small (0.08) and
+    fanout is N² inside each cohort, so the depth-1 child magnitude is
+    parent_mag × 0.08 × 0.20 = parent_mag × 0.016 — only roots with
+    magnitude ≥ ~0.5 produce meaningful (≥0.008) children. Depth-2 paths
+    through cohort edges almost always fail the 0.02 de minimis cut.
+    """
+    out: list[Edge] = []
+    seen = set()
+    for a in members:
+        for b in members:
+            if a == b or (a, b) in seen:
+                continue
+            out.append(Edge(source=a, target=b, weight=w, kind="cohort", sign=+1))
+            seen.add((a, b))
+    return out
+
+
 def _etf_member(etf: str, ticker: str, w: float = 0.15) -> Edge:
     """ETF → member: sector ETF moves drag members along same-sign."""
     return Edge(source=etf, target=ticker, weight=w, kind="etf", sign=+1)
@@ -82,6 +109,15 @@ _EDGES += [
     _supply("TSM", "INTC", 0.15),
     _supply("TSM", "MRVL", 0.30),
 ]
+# Server OEMs ↔ GPU suppliers (HPE and DELL ship AI servers using NVDA/AMD parts).
+# DELL→NVDA is a real demand-side leak: Dell GPU shipments → NVDA orders.
+_EDGES += [
+    _supply("DELL", "NVDA", 0.18),
+    _supply("DELL", "AMD", 0.12),
+    _supply("HPE", "NVDA", 0.15),
+    _supply("HPE", "AMD", 0.10),
+]
+_EDGES += list(_peer("HPE", "DELL", 0.25))  # direct server-OEM competitor pair
 # Semicap → foundries / chipmakers
 _EDGES += [
     _supply("AMAT", "TSM", 0.40),
@@ -105,8 +141,14 @@ _EDGES += [
 ]
 
 # Sector ETF → member equities (locked 0.15 unless noted)
+# 2026-05-20: added HPE / DELL / QCOM / CRCL / LUNR / RKLB — these are in
+# universe.json equities but had been missing from the cohort, so they
+# couldn't act as cascade sources via cohort/peer fanout. CRCL/LUNR/RKLB
+# are space-tech adjacencies but tech sector for the purposes of macro
+# regime co-movement.
 _XLK_MEMBERS = ["NVDA", "MSFT", "AAPL", "GOOGL", "META", "AMD", "INTC",
-                "MU", "MRVL", "ARM", "AMAT", "LRCX", "AMZN"]
+                "MU", "MRVL", "ARM", "AMAT", "LRCX", "AMZN",
+                "HPE", "DELL", "QCOM", "CRCL", "LUNR", "RKLB"]
 _EDGES += [_etf_member("XLK", t) for t in _XLK_MEMBERS]
 
 _XLF_MEMBERS = ["JPM", "BAC", "GS", "MS", "WFC", "C", "AXP", "V", "MA", "PYPL"]
@@ -124,6 +166,16 @@ _EDGES += [_etf_member("XLP", t, 0.18) for t in _XLP_MEMBERS]
 # SMH (semis-only ETF) — tighter coupling than XLK
 _SMH_MEMBERS = ["NVDA", "AMD", "INTC", "MU", "MRVL", "ARM", "AMAT", "LRCX"]
 _EDGES += [_etf_member("SMH", t, 0.22) for t in _SMH_MEMBERS]
+
+# Sector co-movement edges (kind="cohort", weight 0.08, sign +1).
+# Without these, equity-source events (e.g. HPE M&A close) have nowhere to
+# cascade — the ETF-only fanout flows ETF→member, not member→peer. Added
+# 2026-05-20 after the first M_AND_A_CLOSE event landed with zero children.
+_EDGES += _cohort(_XLK_MEMBERS)
+_EDGES += _cohort(_XLF_MEMBERS)
+_EDGES += _cohort(_XLE_MEMBERS, w=0.12)  # tighter (5 names, all integrated oil & gas)
+_EDGES += _cohort(_XLV_MEMBERS)
+_EDGES += _cohort(_XLP_MEMBERS, w=0.10)  # tighter (5 staples names)
 
 # Broad ETF → market-beta floor
 _ALL_EQUITIES = set(_XLK_MEMBERS) | set(_XLF_MEMBERS) | set(_XLE_MEMBERS) \
