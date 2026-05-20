@@ -69,13 +69,14 @@ This is by design for v3.0: the v3.0 evidence layer is what's new. v3.1's work i
 
 ## 5. Forward Tracking Ledger
 
-- **Day 0:** 2026-05-20. Live emissions begin here.
-- **Cadence:** the existing `snapshot_writer` cron emits per-ticker snapshots; `outcome_updater` runs daily at 18:30 MDT to compute matured returns.
+- **Day 0:** the launch-day cron run is the first real entry. The pre-launch ledger at `https://github.com/YuClawLab/yuclaw-trust/blob/main/verified_research_ledger.jsonl` was reset to empty in Day-13c (commit [`470fb4f`](https://github.com/YuClawLab/yuclaw-trust/commit/470fb4f)) because the pre-remediation entries were generated against the old label vocabulary and pre-C9-fix scoring. Git history retains the pre-launch test entry at `HEAD~1` for audit.
+- **Cadence:** the daily pipeline cron (`0 17 * * 1-5`) chains: healthcheck → snapshot_writer → outcome_updater → radar → proof.ledger. Each step short-circuits on failure via `&&`.
 - **Maturation:**
   - 1-day outcomes mature next trading day.
   - 5-day outcomes mature ~one trading week later.
-  - 20-day outcomes mature ~one trading month later (mid-June for Day-0 signals).
+  - 20-day outcomes mature ~one trading month later.
 - **At launch:** the Forward panel will show all-zero hit rates with `matured = 0`. This is correct, not a bug.
+- **Reporting rule:** every hit rate is published with its `n` (count of eligible matured rows) directly attached — never headline a percentage alone. Panels with `n_eligible_5d < 20` are tagged "preliminary".
 
 The ledger accumulates indefinitely. There is no end date.
 
