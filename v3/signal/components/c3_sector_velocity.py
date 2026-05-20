@@ -22,6 +22,7 @@ from datetime import datetime
 from typing import Any, Optional
 
 from v3.signal.base import ComponentResult, SignalComponent
+from v3.signal.data_loader import is_historical
 
 # Locked ticker → sector-ETF mapping for the v3.0 universe.
 # Keeps C3 deterministic; replace with a real S&P-classification lookup later.
@@ -115,10 +116,20 @@ class C3SectorVelocity(SignalComponent):
 
         z, pct = result
         s = math.tanh(z / 1.5)
+        historical = is_historical(as_of)
+        confidence = 0.3 if historical else 0.8
+        rationale = f"{target_etf} 1d {pct:+.2f}% (z={z:+.2f}) → score {s:+.3f}"
+        if historical:
+            rationale += " (warning: point-in-time approximation — v2.3.0 dashboard holds latest snapshot only)"
         return ComponentResult(
             component=self.component_id,
             score=s,
-            confidence=0.8,
-            rationale=f"{target_etf} 1d {pct:+.2f}% (z={z:+.2f}) → score {s:+.3f}",
-            details={"sector_etf": target_etf, "change_pct_1d": pct, "z_score": z},
+            confidence=confidence,
+            rationale=rationale,
+            details={
+                "sector_etf": target_etf,
+                "change_pct_1d": pct,
+                "z_score": z,
+                "historical_approximation": historical,
+            },
         )

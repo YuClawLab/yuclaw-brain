@@ -15,7 +15,7 @@ from __future__ import annotations
 import json
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Optional
@@ -37,6 +37,22 @@ V2_STATE_PATH = Path(
 # Window over which events count toward C6. Events older than this contribute
 # nothing — the recency decay handles freshness inside the window.
 EVENT_LOOKBACK_DAYS = 30
+
+# Components that read v2.3.0 dashboard_state.json (C1/C3/C4/C5/C7) only see
+# the *latest* snapshot — no history. For replay calls where as_of is
+# materially older than the dashboard mtime, those components can't deliver
+# true point-in-time data. We treat as_of > 24h before "now" as historical
+# and downgrade their confidence in compose_at().
+HISTORICAL_CUTOFF_SECONDS = 24 * 3600
+
+
+def is_historical(as_of: datetime) -> bool:
+    """True iff `as_of` is far enough in the past that dashboard-derived
+    components can no longer claim point-in-time accuracy."""
+    if as_of.tzinfo is None:
+        as_of = as_of.replace(tzinfo=timezone.utc)
+    delta = (datetime.now(timezone.utc) - as_of).total_seconds()
+    return delta > HISTORICAL_CUTOFF_SECONDS
 
 
 # ---------------------------------------------------------------------------

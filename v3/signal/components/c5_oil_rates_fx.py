@@ -23,7 +23,7 @@ from datetime import datetime
 from typing import Any
 
 from v3.signal.base import ComponentResult, SignalComponent
-from v3.signal.data_loader import get_macro_regime, get_sector_velocity
+from v3.signal.data_loader import get_macro_regime, get_sector_velocity, is_historical
 
 _ENERGY = {"XOM", "CVX", "COP", "SLB", "PSX"}
 _BANKS = {"JPM", "BAC", "GS", "MS", "WFC", "C", "AXP"}
@@ -111,10 +111,16 @@ class C5OilRatesFX(SignalComponent):
         avg = sum(sub_scores) / len(sub_scores)
         # Confidence proportional to how many sub-signals we had
         conf = min(1.0, 0.4 + 0.3 * len(sub_scores))
+        historical = is_historical(as_of)
+        if historical:
+            conf = min(conf, 0.3)
+        rationale = f"{len(sub_scores)} sub-signal(s) → avg {avg:+.3f}"
+        if historical:
+            rationale += " (warning: point-in-time approximation — TLT/UUP/XLE come from latest dashboard only)"
         return ComponentResult(
             component=self.component_id,
             score=avg,
             confidence=conf,
-            rationale=f"{len(sub_scores)} sub-signal(s) → avg {avg:+.3f}",
-            details=contributions,
+            rationale=rationale,
+            details={**contributions, "historical_approximation": historical},
         )

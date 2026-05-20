@@ -21,9 +21,15 @@ from datetime import datetime
 from typing import Any
 
 from v3.signal.base import ComponentResult, SignalComponent
-from v3.signal.data_loader import get_mom_1m
+from v3.signal.data_loader import get_mom_1m, is_historical
 
 MOM_FULL_SCALE = 0.20  # ±20% one-month return → ±1.0 score
+
+# When this component is called with as_of in the past, the underlying
+# dashboard_state.json doesn't carry history — we approximate using whatever
+# the file holds today. Degrade confidence so the composite knows the input
+# is suspect for replays.
+HISTORICAL_CONFIDENCE = 0.3
 
 
 class C1Momentum(SignalComponent):
@@ -43,10 +49,19 @@ class C1Momentum(SignalComponent):
 
         raw = mom_1m / MOM_FULL_SCALE
         s = max(-1.0, min(1.0, raw))
+        historical = is_historical(as_of)
+        confidence = HISTORICAL_CONFIDENCE if historical else 0.9
+        rationale = f"1-month momentum {mom_1m*100:+.2f}% → score {s:+.3f}"
+        if historical:
+            rationale += " (warning: point-in-time approximation — v2.3.0 dashboard holds latest snapshot only)"
         return ComponentResult(
             component=self.component_id,
             score=s,
-            confidence=0.9,
-            rationale=f"1-month momentum {mom_1m*100:+.2f}% → score {s:+.3f}",
-            details={"mom_1m": mom_1m, "full_scale": MOM_FULL_SCALE},
+            confidence=confidence,
+            rationale=rationale,
+            details={
+                "mom_1m": mom_1m,
+                "full_scale": MOM_FULL_SCALE,
+                "historical_approximation": historical,
+            },
         )

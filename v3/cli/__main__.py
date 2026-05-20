@@ -4,9 +4,11 @@ from __future__ import annotations
 import sys
 
 from v3.cli import why as why_cmd
+from v3.cli import replay as replay_cmd
 
 COMMANDS = {
     "why": why_cmd.main,
+    "replay": replay_cmd.main,
 }
 
 

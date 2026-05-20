@@ -22,7 +22,7 @@ from datetime import datetime
 from typing import Any
 
 from v3.signal.base import ComponentResult, SignalComponent
-from v3.signal.data_loader import get_macro_regime
+from v3.signal.data_loader import get_macro_regime, is_historical
 
 _REGIME_SCORE: dict[str, float] = {
     "RISK_ON": 0.6,
@@ -50,10 +50,21 @@ class C4MacroRegime(SignalComponent):
             )
 
         s = _REGIME_SCORE[regime]
+        historical = is_historical(as_of)
+        # Don't amplify v2.3.0 confidence above 0.3 when this is a replay —
+        # the regime label is for "now", not for as_of.
+        out_conf = min(confidence, 0.3) if historical else confidence
+        rationale = f"macro regime {regime} (conf {confidence:.2f}) → score {s:+.2f}"
+        if historical:
+            rationale += " (warning: point-in-time approximation — v2.3.0 regime is latest only)"
         return ComponentResult(
             component=self.component_id,
             score=s,
-            confidence=confidence,
-            rationale=f"macro regime {regime} (conf {confidence:.2f}) → score {s:+.2f}",
-            details={"regime": regime, "raw_confidence": confidence},
+            confidence=out_conf,
+            rationale=rationale,
+            details={
+                "regime": regime,
+                "raw_confidence": confidence,
+                "historical_approximation": historical,
+            },
         )

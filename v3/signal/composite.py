@@ -60,30 +60,38 @@ def _build_components() -> dict[str, SignalComponent]:
     }
 
 
-def compute(ticker: str, as_of: datetime | None = None) -> dict[str, Any]:
-    """Run all nine components, return composite + breakdown.
+def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]:
+    """Run all nine components AT a specific point in time.
+
+    Every component receives `as_of` and is responsible for filtering its
+    inputs by it. C6 / C8 / C9 are genuinely point-in-time (they query the
+    events / signal_snapshots / track_record tables with `available_as_of
+    <= as_of` filters). C1 / C3 / C4 / C5 / C7 read v2.3.0 dashboard_state
+    which has no history — they detect a historical as_of via
+    data_loader.is_historical() and self-degrade to confidence 0.3 with a
+    "point-in-time approximation" warning.
+
+    `conn` is accepted for API symmetry with replay/snapshot writers — the
+    individual components open their own short-lived connections via DB_DSN
+    so this argument is currently informational. Day 5+ optimization will
+    thread it through to avoid the open/close-per-component cost.
 
     Result shape:
         {
-            "ticker":              "NVDA",
-            "as_of":               "2026-05-19T13:30:00+00:00",
-            "total_score":         0.213,
+            "ticker":               "NVDA",
+            "as_of":                "2026-05-19T13:30:00+00:00",
+            "total_score":          0.213,
             "composite_confidence": 0.547,
-            "label":               "HOLD",
-            "n_implemented":       3,
-            "n_stubs":             6,
-            "components": {
-                "c1": {component, score, confidence, rationale, ...},
-                ...
-            }
+            "label":                "HOLD",
+            "n_implemented":        9,
+            "n_stubs":              0,
+            "components": { ... }
         }
     """
-    if as_of is None:
-        as_of = datetime.now(timezone.utc)
-
     ctx: dict[str, Any] = {
         "v2_state": load_v2_state(),
         "events": fetch_events(ticker, as_of),
+        "conn": conn,
     }
 
     components = _build_components()
@@ -113,7 +121,7 @@ def compute(ticker: str, as_of: datetime | None = None) -> dict[str, Any]:
         den += w * r.confidence
 
     total = num / den if den > 0 else 0.0
-    composite_conf = den  # sum of weight*confidence across implemented components
+    composite_conf = den
 
     n_impl = sum(1 for r in results.values() if not r.not_implemented)
     n_stub = sum(1 for r in results.values() if r.not_implemented)
@@ -128,6 +136,14 @@ def compute(ticker: str, as_of: datetime | None = None) -> dict[str, Any]:
         "n_stubs": n_stub,
         "components": {cid: r.to_dict() for cid, r in results.items()},
     }
+
+
+def compute(ticker: str, as_of: datetime | None = None) -> dict[str, Any]:
+    """Back-compat alias. Day 4 callers (snapshot_writer) keep working
+    unchanged. New code should use compose_at()."""
+    if as_of is None:
+        as_of = datetime.now(timezone.utc)
+    return compose_at(ticker, as_of)
 
 
 def _format_human(out: dict[str, Any]) -> str:

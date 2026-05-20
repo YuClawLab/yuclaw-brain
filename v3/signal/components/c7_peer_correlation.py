@@ -25,7 +25,7 @@ from typing import Any
 
 from v3.signal.base import ComponentResult, SignalComponent
 from v3.signal.components.c3_sector_velocity import TICKER_TO_SECTOR_ETF
-from v3.signal.data_loader import get_mom_1m
+from v3.signal.data_loader import get_mom_1m, is_historical
 
 # Per-sector cohort lists — same membership as supply_chain ETF edges.
 _COHORTS: dict[str, list[str]] = {
@@ -92,13 +92,19 @@ class C7PeerCorrelation(SignalComponent):
         s = agree_sign * majority_frac * magnitude_term
 
         conf = min(1.0, len(moms) / len(cohort)) if cohort else 0.0
+        historical = is_historical(as_of)
+        if historical:
+            conf = min(conf, 0.3)
+        rationale = (f"cohort {etf} mean mom {cohort_mean*100:+.2f}%, "
+                     f"majority agree {same_sign}/{len(moms)} → score {s:+.3f}")
+        if historical:
+            rationale += " (warning: point-in-time approximation — cohort moms come from latest dashboard only)"
 
         return ComponentResult(
             component=self.component_id,
             score=s,
             confidence=conf,
-            rationale=(f"cohort {etf} mean mom {cohort_mean*100:+.2f}%, "
-                       f"majority agree {same_sign}/{len(moms)} → score {s:+.3f}"),
+            rationale=rationale,
             details={
                 "sector_etf": etf,
                 "cohort_size_total": len(cohort),
@@ -106,5 +112,6 @@ class C7PeerCorrelation(SignalComponent):
                 "ticker_mom_1m": my_mom,
                 "cohort_mean_mom_1m": cohort_mean,
                 "majority_fraction": majority_frac,
+                "historical_approximation": historical,
             },
         )

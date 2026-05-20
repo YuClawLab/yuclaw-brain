@@ -80,6 +80,10 @@ class C6EventImpact(SignalComponent):
 
         # Cap contributors detail at top-5 by absolute impact for `yuclaw why`.
         top5 = sorted(contributors, key=lambda c: abs(c["impact"]), reverse=True)[:5]
+        # event_ids is the FULL list of inputs (needed by the replay leak audit
+        # and by snapshot_writer's evidence trail; top_contributors is the
+        # truncated display version).
+        all_event_ids = [c["event_id"] for c in contributors if c.get("event_id")]
         return ComponentResult(
             component=self.component_id,
             score=s,
@@ -89,5 +93,6 @@ class C6EventImpact(SignalComponent):
                 "n_events": n,
                 "raw_impact_sum": round(total_impact, 4),
                 "top_contributors": top5,
+                "inputs": {"event_ids": all_event_ids},
             },
         )

@@ -95,6 +95,7 @@ class C8CascadeEffect(SignalComponent):
         n = len(rows)
         conf = max(0.1, min(1.0, n / 3.0))
         top = sorted(contributors, key=lambda c: abs(c["impact"]), reverse=True)[:5]
+        all_event_ids = [c["event_id"] for c in contributors if c.get("event_id")]
         return ComponentResult(
             component=self.component_id,
             score=s,
@@ -105,5 +106,6 @@ class C8CascadeEffect(SignalComponent):
                 "n_cascade_events": n,
                 "raw_impact_sum": round(total, 4),
                 "top_cascades": top,
+                "inputs": {"event_ids": all_event_ids},
             },
         )
