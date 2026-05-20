@@ -2,19 +2,20 @@
 
 # YUCLAW
 
-**Open-Source AI Signal Research Platform**
+**Open-Source Evidence-First Financial Research Platform**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![PyPI](https://img.shields.io/badge/PyPI-v2.3.0-orange.svg)](https://pypi.org/project/yuclaw)
+[![PyPI](https://img.shields.io/badge/PyPI-v3.0.0-orange.svg)](https://pypi.org/project/yuclaw-py)
 [![DGX Spark](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76b900.svg)](https://nvidia.com)
-[![Ethereum](https://img.shields.io/badge/Anchor-Ethereum%20Sepolia-blue.svg)](https://sepolia.etherscan.io)
+[![Verified Research Ledger](https://img.shields.io/badge/Ledger-git--anchored-blue.svg)](https://github.com/YuClawLab/yuclaw-trust)
 
-> Open-source AI signal-research platform. Local Llama 3.1 70B inference
-> via Ollama, hash-anchored audit trail on Ethereum Sepolia, Alpaca paper
-> trading. **Research and education only — not financial advice.**
+> Composite research signals tied to SEC filings, time-machine replay across
+> a 90-day evidence window, and a public git-anchored Verified Research Ledger
+> for tamper evidence. **Research and education only — not investment advice.**
+> Signal labels are research classifications, not buy/sell recommendations.
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Pricing](docs/pricing.md) · [Methodology](docs/methodology/backtest.md) · **[Disclaimer](DISCLAIMER.md)** · [PyPI](https://pypi.org/project/yuclaw)
+[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · **[Disclaimer](DISCLAIMER.md)** · [API Terms](docs/API_TERMS.md) · [PyPI](https://pypi.org/project/yuclaw-py)
 
 </div>
 
@@ -23,56 +24,46 @@
 ## Quick start
 
 ```bash
-pip install yuclaw
-yuclaw today
+pip install yuclaw-py
+python3 -m v3.cli why NVDA
 ```
 
 Sample output:
 ```
-YUCLAW Daily Brief — 2026-05-14
-==================================================
+NVDA composite score: +0.299  (signal label: NEUTRAL)
 
-MARKET: RISK_ON (85% confidence)
-   Overweight equities
-   Reduce bonds/gold
+Components (score × weight × confidence):
+  C1 Momentum        +0.46   (weight 0.12)
+  C2 Volume          +0.00   (weight 0.08)
+  C3 Sector          -0.15   (weight 0.12)
+  C4 Macro           +0.60   (weight 0.15)
+  C5 Oil/Rates/FX    -0.47   (weight 0.05)
+  C6 Event Impact    +0.16   (weight 0.18)
+  C7 Peer Corr       +0.95   (weight 0.10)
+  C8 Cascade         +0.00   (weight 0.12)
+  C9 Model Trust     +0.00   (weight 0.08)
 
-TOP BUY SIGNALS:
-   INTC   STRONG_BUY   score:+0.736 price:$116.74
-   DELL   STRONG_BUY   score:+0.661 price:$247.54
-   AMD    STRONG_BUY   score:+0.614 price:$446.92
+Top contributing events (last 7 days):
+  ↑  +0.02  2026-05-14  M_AND_A_CLOSE (d1 cascade)
+              CASCADE d1 via HPE→NVDA(supply,w=0.15) from HPE: H3C divestiture
+              source: https://www.sec.gov/Archives/edgar/data/1645590/...
 
-Verified backtest results coming this week — see methodology link below.
-
-PORTFOLIO ACTION:
-   Open-source signal output. Consult a licensed advisor before trading.
+Compliance: Research only. Not financial advice. Not a registered investment advisor.
 ```
 
-## Command surface (v2.3.0)
+## v3.0 command surface
 
 ```bash
-yuclaw today          # Daily brief
-yuclaw signals        # Raw signal list (top 20 from aggregator)
-yuclaw regime         # Macro regime (RISK_ON / RISK_OFF / CRISIS)
-yuclaw watchlist      # All signals with prices and actions
-yuclaw portfolio      # Kelly-optimal allocation for your capital
-yuclaw track          # Day-N track record from track_record_builder
-yuclaw brief          # Latest LLM synthesis
-yuclaw ask "..."      # Ask the local LLM any financial question
-yuclaw verify LUNR    # Look up signal hash + Sepolia anchor (when present)
-yuclaw risk           # Portfolio risk metrics (VaR, CVaR, Kelly)
-yuclaw dashboard      # Open live dashboard URL
-yuclaw sector         # Sector-rotation snapshot (1-day vs prior close)
-yuclaw news           # LLM-scored sentiment for top tickers
-yuclaw earnings       # This week's earnings calendar (Finnhub)
-yuclaw learn [topic]  # Plain-English explainers (kelly, calmar, var, …)
-yuclaw chain TICKER   # 2nd-order causal-graph trade-idea generator
-yuclaw audio FILE     # Whisper transcription + LLM sentiment
-yuclaw l2 [TICKER]    # Order-book microstructure (N/A without L2 feed)
-yuclaw swarm          # Bull / Bear / Oracle LLM debate
-yuclaw paper          # Alpaca paper-trading orders (with 7 safety nets)
-yuclaw trade [...]    # $100K paper portfolio simulator (separate from `paper`)
-yuclaw start          # Start all engines
+python3 -m v3.cli why TICKER             # Composite signal + ranked evidence w/ SEC source URLs
+python3 -m v3.cli replay TICKER --date DATE   # Point-in-time signal at end of date
+python3 -m v3.cli validation             # In-sample event validation + forward tracking ledger
+python3 -m v3.cli brief                  # Personalized digest (uses ~/.yuclaw/profile.json)
+python3 -m v3.cli watch add TICKER       # Manage local watchlist
+python3 -m v3.cli verify TICKER --date DATE   # Verified Research Ledger integrity check
+python3 -m v3.cli profile show           # Local preferences
 ```
+
+Public signal vocabulary: `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`. There is no `SELL` or `SHORT` label.
 
 > **`yuclaw l2`**: real iceberg detection requires a Level-2 data feed.
 > Without one, the command returns `N/A` instead of fabricated microstructure.

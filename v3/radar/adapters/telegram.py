@@ -1,15 +1,19 @@
 """
 Telegram adapter — Bot API sendMessage.
 
-SAFETY RAIL: the target channel comes from `RADAR_TELEGRAM_CHANNEL`, NOT
-the live `TELEGRAM_CHANNEL` used by the v2.3.0 daily broadcast. If that
-env var is missing, the adapter reports "not configured" and the orches-
-trator falls through to dry-run logging — never posts to the live
-@yuclaw_signals channel by accident.
+v3.0 launch (Day 14): the v3.0 Signal Radar IS the legitimate owner of
+@yuclaw_signals — the v2.3.0 daily broadcast was retired in the cron
+cutover. The sprint-time safety rail that refused @yuclaw_signals is
+now removed; the channel is what the radar broadcasts to.
 
 Required env vars (loaded from ~/.yuclaw_env by notifier.load_env_file):
-    TELEGRAM_BOT_TOKEN          (shared with the daily broadcast bot)
-    RADAR_TELEGRAM_CHANNEL      (TEST channel id or @handle)
+    TELEGRAM_BOT_TOKEN
+    RADAR_TELEGRAM_CHANNEL      (default channel for radar broadcasts —
+                                 e.g. @yuclaw_signals after Day 14 cutover)
+
+If RADAR_TELEGRAM_CHANNEL is unset, the adapter reports NOT_CONFIGURED
+and the orchestrator falls through to dry-run logging — no message is
+ever sent without an explicitly named channel.
 """
 from __future__ import annotations
 
@@ -19,8 +23,6 @@ from typing import Optional
 import httpx
 
 from v3.radar.notifier import Notifier, load_env_file
-
-LIVE_CHANNEL_VALUE = "@yuclaw_signals"   # never post to this from radar
 
 
 def _bot_token() -> Optional[str]:
@@ -37,14 +39,7 @@ def _channel() -> Optional[str]:
 
 def is_configured() -> bool:
     """Module-level convenience for the smoke-test script."""
-    token = _bot_token()
-    ch = _channel()
-    if not token or not ch:
-        return False
-    if ch == LIVE_CHANNEL_VALUE:
-        # Explicit refusal — radar must not target the live broadcast channel.
-        return False
-    return True
+    return bool(_bot_token() and _channel())
 
 
 class TelegramNotifier(Notifier):
