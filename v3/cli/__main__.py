@@ -6,11 +6,17 @@ import sys
 from v3.cli import why as why_cmd
 from v3.cli import replay as replay_cmd
 from v3.cli import backtest as backtest_cmd
+from v3.cli import profile as profile_cmd
+from v3.cli import watch as watch_cmd
+from v3.cli import brief as brief_cmd
 
 COMMANDS = {
     "why": why_cmd.main,
     "replay": replay_cmd.main,
     "backtest": backtest_cmd.main,
+    "profile": profile_cmd.main,
+    "watch": watch_cmd.main,
+    "brief": brief_cmd.main,
 }
 
 
