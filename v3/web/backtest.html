@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YUCLAW — Backtest + Forward Tracking</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;min-height:100vh}
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:14px 20px;background:#151A23;border:1px solid #1E232D;border-radius:12px}
+    .logo{font-size:20px;font-weight:800;color:#FFF}
+    .logo span{color:#00E676}
+    .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px}
+    .card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#A0AEC0;margin-bottom:8px}
+    .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;margin-bottom:24px;font-size:12px;line-height:1.6;color:#A0AEC0}
+    .disclaimer strong{color:#FBA94B}
+    table th{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:9px 12px;text-align:left;border-bottom:1px solid #2D3748}
+    table td{font-size:13px}
+    table tr:hover td{background:#1A202C}
+    .footer{text-align:center;padding:16px;color:#718096;font-size:11px;margin-top:24px}
+    .footer a{color:#00E676;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="logo">YUCLAW <span>OS</span></div>
+        <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Backtest + Forward Tracking</div>
+      </div>
+      <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">generated 2026-05-20 14:10 UTC</div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>DISCLAIMER —</strong> Research / education only. Not investment advice. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.
+    </div>
+
+    
+    <div class='card' style='margin-bottom:24px'>
+      <div class='card-title'>BACKTEST RESULTS — In-Sample Replay</div>
+      <div style='font-size:12px;color:#A0AEC0;margin-bottom:14px;font-family:JetBrains Mono,monospace'>
+        date range 2026-02-18 → 2026-05-13 &nbsp;·&nbsp; total signals 1027
+        &nbsp;·&nbsp; directional 318
+      </div>
+      <div style='font-size:12px;color:#FBA94B;margin:8px 0 12px 0;'>⚠ Note on the in-sample panel: market-data components C1 / C3 / C4 / C5 / C7 ran at 0.3 confidence because the upstream dashboard cache holds only the latest snapshot. Evidence components C6 (events), C8 (cascade), C9 (model trust) are point-in-time exact. The in-sample backtest therefore primarily reflects the evidence layer.</div>
+      <div style='overflow-x:auto'>
+        
+    <table style='width:100%;border-collapse:collapse'>
+      <thead><tr>
+        <th>label</th><th>n</th><th>directional</th>
+        <th>matured 1d/5d/20d</th>
+        <th>hit 1d/5d/20d</th>
+        <th>median return 5d</th>
+        <th>median excess 5d</th>
+      </tr></thead>
+      <tbody><tr><td style='padding:8px 12px;font-weight:600;color:#00E676;font-size:13px'>BUY</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>83</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>83</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>83/83/44</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>46% / 59% / 86%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.4%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.1%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#FF3366;font-size:13px'>DOWNSIDE_WATCH</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>39</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>39</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>39/39/30</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>59% / 54% / 60%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-1.1%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.1%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#A0AEC0;font-size:13px'>HOLD</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>330</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>330/330/255</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.1%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.3%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#FF3366;font-size:13px'>NEGATIVE_EVENT</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>76</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>76</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>76/76/58</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>58% / 50% / 41%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.1%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.1%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#00E676;font-size:13px'>STRONG_BUY</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>29</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>29</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>29/29/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>45% / 69% / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.9%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.1%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#A0AEC0;font-size:13px'>WATCH</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>379</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>379/379/333</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.1%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.4%</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#FF3366;font-size:13px'>WEAKENING</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>91</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>91</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>91/91/70</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>55% / 45% / 29%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.9%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.2%</td></tr><tr style='border-top:2px solid #2D3748'><td style='padding:8px 12px;font-weight:700;color:#FFF;font-size:13px'>OVERALL</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1027</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>318</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1027/1027/790</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>53% / 53% / 50%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>+0.1%</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>-0.3%</td></tr></tbody>
+    </table>
+    
+      </div>
+    </div>
+    
+    
+    <div class='card' style='margin-bottom:24px'>
+      <div class='card-title'>FORWARD TRACKING LEDGER — Out-of-Sample</div>
+      <div style='font-size:12px;color:#A0AEC0;margin-bottom:14px;font-family:JetBrains Mono,monospace'>
+        date range 2026-05-20 → 2026-05-20 &nbsp;·&nbsp; total signals 79
+        &nbsp;·&nbsp; directional 48
+      </div>
+      
+      <div style='overflow-x:auto'>
+        
+    <table style='width:100%;border-collapse:collapse'>
+      <thead><tr>
+        <th>label</th><th>n</th><th>directional</th>
+        <th>matured 1d/5d/20d</th>
+        <th>hit 1d/5d/20d</th>
+        <th>median return 5d</th>
+        <th>median excess 5d</th>
+      </tr></thead>
+      <tbody><tr><td style='padding:8px 12px;font-weight:600;color:#00E676;font-size:13px'>BUY</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>32</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>32</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#A0AEC0;font-size:13px'>HOLD</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>13</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#FF3366;font-size:13px'>NEGATIVE_EVENT</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#00E676;font-size:13px'>STRONG_BUY</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>10</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>10</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#A0AEC0;font-size:13px'>WATCH</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>18</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr><td style='padding:8px 12px;font-weight:600;color:#FF3366;font-size:13px'>WEAKENING</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>5</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>5</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr><tr style='border-top:2px solid #2D3748'><td style='padding:8px 12px;font-weight:700;color:#FFF;font-size:13px'>OVERALL</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>79</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>48</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0/0/0</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>— / — / —</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>—</td></tr></tbody>
+    </table>
+    
+      </div>
+    </div>
+    
+
+    <div class="card">
+      <div class="card-title">METHODOLOGY</div>
+      <div style="font-size:12px;color:#A0AEC0;line-height:1.7">
+        Full methodology, data sources, limitations, and definitions are documented at
+        <a href="https://github.com/YuClawLab/yuclaw-brain/blob/v3.0-evidence/docs/methodology/backfill.md"
+           style="color:#00E676;text-decoration:none">docs/methodology/backfill.md</a>.
+        Key points: data window is 2026-02-18 to 2026-05-17 (~90 days, all post-Llama 3.1 70B
+        training cutoff); in-sample signals were reconstructed via point-in-time replay
+        (leak-audited, zero future-event leakage); the Forward Tracking Ledger begins
+        2026-05-20 and matures daily — 20-day outcomes mature in mid-June.
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>DISCLAIMER —</strong> Research / education only. Not investment advice. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.
+    </div>
+
+    <div class="footer">
+      YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      <a href="https://github.com/YuClawLab/yuclaw-brain/blob/v3.0-evidence/docs/methodology/backfill.md">Methodology</a> ·
+      MIT
+    </div>
+  </div>
+</body>
+</html>
