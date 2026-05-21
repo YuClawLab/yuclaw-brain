@@ -6,7 +6,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![PyPI](https://img.shields.io/badge/PyPI-v3.0.0-orange.svg)](https://pypi.org/project/yuclaw-py)
+[![PyPI](https://img.shields.io/badge/PyPI--yuclaw--evidence--v3.0.0-orange.svg)](https://pypi.org/project/yuclaw-evidence)
 [![DGX Spark](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76b900.svg)](https://nvidia.com)
 [![Verified Research Ledger](https://img.shields.io/badge/Ledger-git--anchored-blue.svg)](https://github.com/YuClawLab/yuclaw-trust)
 
@@ -15,7 +15,7 @@
 > for tamper evidence. **Research and education only — not investment advice.**
 > Signal labels are research classifications, not buy/sell recommendations.
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · **[Disclaimer](DISCLAIMER.md)** · [API Terms](docs/API_TERMS.md) · [PyPI](https://pypi.org/project/yuclaw-py)
+[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · **[Disclaimer](DISCLAIMER.md)** · [API Terms](docs/API_TERMS.md) · [PyPI](https://pypi.org/project/yuclaw-evidence)
 
 </div>
 
@@ -24,7 +24,7 @@
 ## Quick start
 
 ```bash
-pip install yuclaw-py
+pip install yuclaw-evidence
 python3 -m v3.cli why NVDA
 ```
 

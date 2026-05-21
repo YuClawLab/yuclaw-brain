@@ -22,7 +22,7 @@ Three pillars:
 
 | surface | install | usage |
 |---|---|---|
-| **Python SDK** | `pip install yuclaw-py` | `Client(source="postgres" or "api")` |
+| **Python SDK** | `pip install yuclaw-evidence` | `Client(source="postgres" or "api")` |
 | **REST API** | hosted at YuClawLab (or self-host on `:8088`) | `GET /signal/{ticker}` etc. |
 | **MCP server** | `python3 -m v3.mcp.server` (stdio) | 7 tools in any FastMCP-compatible client |
 

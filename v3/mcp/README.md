@@ -40,7 +40,7 @@ Add this to your MCP servers config:
 ```
 
 The server needs to find:
-- `yuclaw_py` (the SDK, `pip install yuclaw-py`)
+- `yuclaw_py` (the SDK, `pip install yuclaw-evidence`)
 - the `yuclaw_events` Postgres database (the v3.0 operator setup)
 - the `v3.proof` module on its `PYTHONPATH` (running from `cwd=/home/zhangd2/yuclaw-v3` covers this)
 

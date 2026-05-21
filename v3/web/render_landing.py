@@ -152,7 +152,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       <div class="navlinks">
         <a href="validation.html">Validation</a>
         <a href="https://github.com/YuClawLab/yuclaw-brain">GitHub</a>
-        <a href="https://pypi.org/project/yuclaw-py/">PyPI</a>
+        <a href="https://pypi.org/project/yuclaw-evidence/">PyPI</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
         <a href="methodology/backfill.md">Methodology</a>
       </div>
@@ -227,7 +227,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
                   font-family:JetBrains Mono,monospace;font-size:13px;color:#E2E8F0;overflow-x:auto">
-pip install yuclaw-py
+pip install yuclaw-evidence
 python3 -m v3.cli why NVDA          # signal + evidence trail
 python3 -m v3.cli validation        # In-Sample Event Validation + Forward Tracking Ledger
 python3 -m v3.cli verify NVDA --date 2026-05-20</pre>

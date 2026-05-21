@@ -1,4 +1,4 @@
-# yuclaw-py
+# yuclaw-evidence
 
 Python SDK for the [YUCLAW](https://github.com/YuClawLab/yuclaw-brain) open-source financial intelligence platform.
 
@@ -7,9 +7,9 @@ Python SDK for the [YUCLAW](https://github.com/YuClawLab/yuclaw-brain) open-sour
 ## Install
 
 ```bash
-pip install yuclaw-py
+pip install yuclaw-evidence
 # or, with notebook extras (matplotlib + jupyter for `04_backtest_analysis`):
-pip install "yuclaw-py[notebooks]"
+pip install "yuclaw-evidence[notebooks]"
 ```
 
 ## Quickstart

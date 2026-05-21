@@ -3,7 +3,7 @@
 > Research/education only — not investment advice.
 
 ```bash
-pip install yuclaw-py
+pip install yuclaw-evidence
 ```
 
 ```python
