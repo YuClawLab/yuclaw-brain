@@ -1,228 +1,97 @@
-# YUCLAW — Getting Started
+# YUCLAW v3.0 — Quickstart
 
-A five-minute introduction. Install, run a few commands, subscribe to the
-signal channel, optionally point it at a paper-trading account. **For
-research and education only — not financial advice.**
+> Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser.
 
 ---
 
-## What YUCLAW is
+## What you get in five minutes
 
-- An **open-source AI signal generator** for a 39-ticker universe.
-- A **local LLM** (Llama 3.1 70B via Ollama on NVIDIA DGX Spark GB10)
-  scores news and synthesizes daily briefs without sending anything to a
-  cloud model provider.
-- A **tamper-evident audit trail** — selected signal-decision hashes are
-  anchored on Ethereum Sepolia testnet so anyone can confirm a decision
-  existed at a given block height.
-- A **paper-trading bridge** to Alpaca with seven layered safety nets.
-- A **live dashboard** that refreshes every 30 minutes from cron.
+A composite signal for any ticker in the YUCLAW universe (~80 names — equities, sector ETFs, broad ETFs, macro), plus the chain of SEC filings and supply-chain cascades that justify it.
 
-## What YUCLAW is not
+The signal is built from nine independent components (momentum, sector velocity, macro regime, oil/rates/FX, event impact, peer correlation, supply-chain cascade, model trust, volume). Every score traces to publicly verifiable evidence (SEC EDGAR URLs, content hashes anchored in the public [Verified Research Ledger](https://github.com/YuClawLab/yuclaw-trust)).
 
-- It is **not a trading robot**. It computes signals; you decide what to do.
-- It is **not financial advice**. Past performance does not predict future
-  returns and AI signals can be wrong.
-- It does **not** make zero-knowledge proofs of strategy correctness. The
-  hash anchor proves a payload existed on a given block — nothing more.
-- It does **not** trade real money by default. Paper-trading via Alpaca's
-  testnet is the only broker path; live trading is intentionally not wired.
-
----
-
-## 5-minute quickstart
+## Install
 
 ```bash
-pip install yuclaw
-yuclaw today
+pip install yuclaw-evidence
 ```
 
-Sample output:
+The package distribution is named `yuclaw-evidence`; the import is `yuclaw_py`. (Common pattern — `pip install Pillow` → `import PIL`.)
 
-```
-YUCLAW Daily Brief — 2026-05-16
-
-MARKET: RISK_ON (85% confidence)
-   Overweight equities
-   Reduce bonds/gold
-
-TOP BUY SIGNALS:
-   INTC   STRONG_BUY   score:+0.676 price:$115.93
-   DELL   STRONG_BUY   score:+0.657 price:$247.89
-   AMD    STRONG_BUY   score:+0.638 price:$449.70
-
-PORTFOLIO ACTION:
-   Open-source signal output. Consult a licensed advisor before trading.
-```
-
-The three commands most people start with:
+## Core commands
 
 ```bash
-yuclaw today      # Today's market regime + top signals + portfolio note
-yuclaw signals    # Raw top-15 signals with scores and prices
-yuclaw regime     # Just the macro regime (CRISIS / RISK_OFF / RISK_ON)
+python3 -m v3.cli why TICKER
+#   composite signal label + score + 9-component breakdown
+#   + the top-5 evidence events with SEC source URLs
+
+python3 -m v3.cli replay TICKER --date YYYY-MM-DD
+#   point-in-time signal as it would have looked at the end of that date
+#   (only data available on or before that date feeds the composite)
+
+python3 -m v3.cli validation
+#   In-Sample Event Validation panel + Forward Tracking Ledger
+#   hit rates always shown alongside their n; small samples tagged "preliminary"
+
+python3 -m v3.cli verify TICKER --date YYYY-MM-DD
+#   verify a published signal against the git-anchored Verified Research Ledger
+#   confirms record integrity and timing — not investment merit
+
+python3 -m v3.cli brief
+#   personalized digest based on ~/.yuclaw/profile.json (watchlist, alert threshold)
 ```
 
-Browse the full command surface with:
+## SDK
 
-```bash
-yuclaw --help
+```python
+import yuclaw_py
+
+client = yuclaw_py.Client(source="postgres")   # local Postgres mode
+# or
+client = yuclaw_py.Client(source="api", base_url="http://localhost:8088")
+
+sig = client.signal("NVDA")
+print(sig["label"], sig["score"])                 # e.g. NEUTRAL  0.295
+
+why = client.why("NVDA")
+for ev in why["evidence"]:
+    print(ev["event_type"], ev["raw_excerpt"][:80], ev["source_url"])
+
+panels = client.validation()
+panels["in_sample"]   # pandas DataFrame
+panels["forward"]
 ```
 
-A few useful extras:
+Every signal-bearing return carries a `compliance` dict (`{not_advice, research_only, not_registered_adviser}`).
 
-```bash
-yuclaw watchlist            # All current signals with action labels
-yuclaw portfolio            # Kelly-weighted allocation for your capital
-yuclaw track                # Forward track record (day N from cron)
-yuclaw brief                # Latest LLM-written market synthesis
-yuclaw ask "explain LUNR"   # Local LLM answers a question with current context
-yuclaw verify LUNR          # Look up the on-chain anchor for a ticker's hash
-yuclaw sector               # One-day sector rotation snapshot
-yuclaw news                 # Sentiment-scored news for top tickers
-yuclaw earnings             # This week's earnings calendar
-yuclaw learn kelly          # Plain-English explainer for a finance concept
+## Sentiment vocabulary
+
+YUCLAW publishes one of the following labels — and only these — for any signal:
+
+```
+STRONG_BULLISH · BULLISH · NEUTRAL · WATCH · WEAKENING · NEGATIVE_EVENT · BEARISH_WATCH · RISK_ALERT
 ```
 
----
+There is no `SELL` and no `SHORT` label. The SDK's `_validate_label()` is invoked on every signal-bearing return; a non-public label raises `AssertionError`.
 
-## Signal channel — Telegram subscribe
+## Surfaces
 
-A best-effort broadcast feed mirrors the dashboard.
-
-**Channel**: [t.me/yuclaw_signals](https://t.me/yuclaw_signals)
-
-What subscribers receive:
-
-- **Daily digest** at 09:35 ET on weekdays (US market open + 5 minutes):
-  top-5 STRONG_BUY tickers, current macro regime, sector flow snapshot,
-  this week's earnings reporters.
-- **Alerts** when:
-  - A ticker enters the top-10 for the first time (`SIGNAL_NEW`).
-  - A signal score moves by more than 0.20 (`SIGNAL_CHANGE`); smaller
-    moves are filtered to keep noise out of your phone.
-  - The macro regime flips (`REGIME_CHANGE` — RISK_ON ↔ CRISIS, etc.).
-
-The bot is rate-limited to five sends per hour and is idempotent (a
-duplicate broadcast for the same payload is detected and skipped). All
-broadcasts are appended to a local audit log.
-
----
-
-## Reading the dashboard
-
-**Live**: [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain)
-
-Top stat cards:
-
-| Card | Meaning |
+| surface | URL / how |
 |---|---|
-| Buy Signals | Count of tickers classified BUY or STRONG_BUY this cycle |
-| Assets | Total universe size (39 tickers after the leveraged-ETF blocklist) |
-| Tok/s | Live-measured local LLM generation speed on the last cron fire |
-| Signal cycle | Wall-clock seconds for the score-regeneration pipeline |
+| Live landing page | <https://yuclawlab.github.io/yuclaw-brain/> |
+| In-Sample Validation + Forward Tracking | <https://yuclawlab.github.io/yuclaw-brain/validation.html> |
+| Verified Research Ledger (git-anchored) | <https://github.com/YuClawLab/yuclaw-trust> |
+| Methodology | [`docs/methodology/backfill.md`](../methodology/backfill.md) |
+| REST API terms | [`docs/API_TERMS.md`](../API_TERMS.md) |
+| MCP server | [`v3/mcp/README.md`](https://github.com/YuClawLab/yuclaw-brain/blob/main/v3/mcp/README.md) — 7 tools, stdio transport |
+| Issues + source | <https://github.com/YuClawLab/yuclaw-brain> |
 
-Other panels:
+## Honest limits at launch
 
-- **Oil Intelligence** — WTI / Brent / EIA inventory + the two largest
-  US energy equities. Refreshed hourly.
-- **Macro Regime** — colored gradient (green = RISK_ON, red = CRISIS).
-- **Live Order Flow** — top-15 signals with the green **V** badge marking
-  prices that were Finnhub-verified at fetch time.
-- **Sector Velocity** — 1-day vs prior close for 14 ETF sectors.
-- **LLM Sentiment** — local LLM scoring of recent news headlines.
-- **ATROS Alerts** — recent first-sight + score-change + regime-change events.
-- **AutoDream Memory** — daily LLM synthesis (1-2 dense sentences).
-- **Backtest Results** — placeholder pending live-computed methodology;
-  see the methodology page for what is and isn't claimed today.
-
-The green pill at the bottom of the Backtest Results card reads
-**Hash-Anchored — Ethereum Sepolia**. Hover (desktop) for the longer
-explanation: it confirms a decision payload existed at a given block
-height — not a cryptographic proof of strategy correctness.
+- The **in-sample validation panel** was reconstructed via point-in-time replay, not emitted live. Five of nine components (C1 momentum, C3 sector, C4 macro, C5 oil/rates/FX, C7 peer) run at 0.3 confidence on historical replays because the upstream market-data cache holds only the latest snapshot. The in-sample numbers primarily reflect the evidence layer (C6 events / C8 cascade / C9 model trust). v3.1 will land historical market data so the full composite runs point-in-time.
+- The **Forward Tracking Ledger** begins at the launch-day cron run. It will look sparse for the first few weeks (1-day outcomes mature next trading day; 5-day a week later; 20-day a month later). This is correct, not a bug.
+- Extreme labels (STRONG_BULLISH, BEARISH_WATCH) are rare by construction — they require broad component agreement plus at least one material non-insider event. See `docs/methodology/backfill.md` §8.
 
 ---
 
-## Paper trading via Alpaca
-
-YUCLAW includes a broker bridge to [Alpaca's paper-trading API](https://alpaca.markets).
-No live trading is wired; the broker host is hard-checked against the
-paper endpoint at startup.
-
-```bash
-export ALPACA_API_KEY=...        # paper account, not live
-export ALPACA_SECRET_KEY=...
-export ALPACA_BASE_URL=https://paper-api.alpaca.markets
-
-yuclaw paper                     # show account + positions
-yuclaw paper BUY MU 20           # market-buy 20 shares — blocked >$10k notional unless --force
-yuclaw paper SELL MU 20 --force  # override the notional cap
-```
-
-Seven safety nets that run before any order leaves the machine:
-
-1. **Paper-URL guard** — refuses to start if `ALPACA_BASE_URL` is not the
-   paper endpoint.
-2. **Validation ping** — pings `/v2/account` at init; 401 → halt with
-   "regenerate keys".
-3. **Market-hours check** — `/v2/clock` confirms market is open; rejects
-   off-hours orders unless explicitly forced.
-4. **$10k notional cap** — single-order ceiling, override with `--force`.
-5. **First-run consent** — interactive prompt records your acknowledgment
-   to `~/.yuclaw/paper_consent.json` before any order is allowed.
-6. **Audit log** — every order attempt (submitted, rejected, errored) is
-   appended to `~/.yuclaw/orders.jsonl`.
-7. **Drawdown kill switch** — HALT at -3% intraday, LIQUIDATE at -8%
-   against Alpaca's `account.last_equity`.
-
-If you'd rather try the in-process $100K simulator with no broker
-integration at all, use `yuclaw trade` instead.
-
----
-
-## Methodology and limitations
-
-Before you read any single accuracy number, Calmar figure, or top-signal
-score: read the methodology page.
-
-[docs/methodology/backtest.md](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md)
-
-In short:
-
-- Strategy backtest in `output/backtest_all.json` uses historical
-  close-to-close returns. It does **not** model transaction costs,
-  slippage, bid/ask, or partial fills.
-- Forward track record in `output/track_record/dayN.json` captures
-  entry-price-at-signal-time and current price. Same caveats.
-- The dashboard's "Backtest Results" card is currently a placeholder
-  pending the live-computed methodology pass.
-
----
-
-## Disclaimer
-
-YUCLAW is open-source research and educational software. It is **NOT**
-financial advice, investment advice, or a recommendation to buy, sell, or
-hold any security. All signals, scores, and analyses are generated by
-automated AI models and may contain errors.
-
-Past performance does not guarantee future results. Trading involves
-substantial risk of loss. You are solely responsible for your own
-investment decisions. Consult a licensed financial advisor before making
-any investment.
-
-YuClawLab, its contributors, and affiliates accept no liability for any
-losses arising from use of this software.
-
-**For educational and research purposes only. MIT Licensed.**
-
----
-
-| | |
-|:---|:---|
-| Dashboard | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
-| Telegram | [t.me/yuclaw_signals](https://t.me/yuclaw_signals) |
-| PyPI | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
-| GitHub | [github.com/YuClawLab](https://github.com/YuClawLab) |
-| Methodology | [docs/methodology/backtest.md](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/methodology/backtest.md) |
-| Full disclaimer | [DISCLAIMER.md](https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md) |
+> Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.

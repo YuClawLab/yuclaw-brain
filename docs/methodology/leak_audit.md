@@ -58,3 +58,9 @@ C4 reads the latest dashboard regime regardless of `as_of`. Replays on 2026-03-0
 
 1. **Patch C9** to query the actual Day-7 schema: replace `signal_time` → `signal_date`, replace `forward_return / outcome_status` with `return_1d / hit_1d` (or the 5d/20d variants — the existing function uses a single forward-return value, which the Day-7 schema represents per-horizon). Smoke-test with a 100% hit rate ticker.
 2. **Defensive:** add a v3 startup probe that runs each component on a fixed ticker and `assert` no `component_error` rationale comes back. Would have caught this on Day 7 launch.
+
+**Status (Day 13c):** both recommendations shipped. C9 was rewritten against the Day-7 schema (commit `9f49e1f6`) and `v3/signal/healthcheck.py` was added as a pre-step in the daily pipeline cron — any component that raises now short-circuits the chain via `&&` and surfaces in `/tmp/yuclaw_pipeline.log`.
+
+---
+
+> Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.

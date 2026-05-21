@@ -11,7 +11,7 @@ Exposes seven read-only YUCLAW research tools over the Model Context Protocol (s
 | `yuclaw_signal(ticker)` | Latest composite signal + 9 component scores |
 | `yuclaw_why(ticker, n_evidence=5)` | Signal + ranked evidence with source URLs |
 | `yuclaw_replay(ticker, date)` | Point-in-time signal at the end of `date` |
-| `yuclaw_backtest()` | In-sample + forward-tracking panels |
+| `yuclaw_validation()` | In-Sample Event Validation panel + Forward Tracking Ledger |
 | `yuclaw_events(ticker, since=None)` | Raw evidence events for a ticker |
 | `yuclaw_universe()` | The 79 tickers v3.0 tracks |
 | `yuclaw_verify(ticker, date)` | Verified Research Ledger integrity check |
