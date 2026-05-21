@@ -1,13 +1,13 @@
-# Methodology — Backtest + Forward Tracking
+# Methodology — In-Sample Validation + Forward Tracking
 
 **Last updated:** 2026-05-20
 
 This document describes how the two YUCLAW v3.0 panels are produced:
 
-1. **Backtest Results — In-Sample Replay**
+1. **In-Sample Validation Results — Replay**
 2. **Forward Tracking Ledger — Out-of-Sample**
 
-It is the source of truth for anyone reproducing, auditing, or critiquing the numbers shown on `backtest.html`, in the CLI (`python3 -m v3.cli backtest`), or in any future Telegram / social-media post.
+It is the source of truth for anyone reproducing, auditing, or critiquing the numbers shown on `validation.html`, in the CLI (`python3 -m v3.cli validation`), or in any future Telegram / social-media post.
 
 ---
 
@@ -27,7 +27,7 @@ Why this window: the SEC EDGAR backfill that populates the `events` evidence lay
 - **Training cutoff (per Meta model card):** December 2023.
 - **Backfill window vs cutoff:** the earliest backfill date (2026-02-18) is ~26 months *after* the training cutoff.
 
-Therefore the LLM cannot have parametric look-ahead into any event in the backfill — none of the 2026 filings existed when it was trained. This rules out the most common look-ahead failure mode in LLM-driven backtests.
+Therefore the LLM cannot have parametric look-ahead into any event in the backfill — none of the 2026 filings existed when it was trained. This rules out the most common look-ahead failure mode in LLM-driven validation runs.
 
 The Replay engine adds a secondary safeguard: any `as_of` earlier than 2024-07-01 is flagged with an "in LLM training window" warning. The current backfill window does not trigger this flag.
 
@@ -61,7 +61,7 @@ The nine components split into two categories for point-in-time accuracy:
 | Evidence layer | C6 (event impact), C8 (cascade impact), C9 (model trust) | **Exact** — backed by `events`, `signal_snapshots`, `track_record` with `available_as_of` filters. |
 | Market layer | C1 (momentum), C3 (sector velocity), C4 (macro regime), C5 (oil / rates / FX), C7 (peer correlation) | **Approximate** — read v2.3.0 dashboard cache which holds only the latest snapshot. On historical `as_of` they self-degrade to confidence 0.3 with a "point-in-time approximation" warning. |
 
-The in-sample backtest therefore **primarily reflects the evidence layer**. The market components contribute at ~⅓ of their live confidence, so their net effect on composite_score is small.
+The in-sample event validation therefore **primarily reflects the evidence layer**. The market components contribute at ~⅓ of their live confidence, so their net effect on composite_score is small.
 
 This is by design for v3.0: the v3.0 evidence layer is what's new. v3.1's work is to ingest historical price / macro into a time-series table so the market layer can also run point-in-time.
 
@@ -115,8 +115,8 @@ python3 -m v3.signal.snapshot_writer
 python3 -m v3.track.outcome_updater
 
 # 5. aggregate + display
-python3 -m v3.cli backtest
-python3 -m v3.track.render_html      # → v3/web/backtest.html
+python3 -m v3.cli validation
+python3 -m v3.track.render_html      # → docs/validation.html
 ```
 
 All inputs are committed to the repo except `price_history` (Yahoo OHLCV redistribution is restricted). The `outcome_updater` cron (added Day 7) keeps the Forward panel current.
@@ -153,8 +153,8 @@ This is an **observed property of the launch-day dataset**. We do not claim the 
 
 - **SEC EDGAR (public domain).** Form 4, 8-K, 10-Q, 10-K, and 6-K filings are ingested from the SEC EDGAR API (`data.sec.gov/submissions/`, `www.sec.gov/Archives/edgar/data/`). YUCLAW honors the SEC's 10 req/sec rate limit (we self-throttle to ~6 req/sec) and identifies itself in every request via the `User-Agent` header per [SEC's programmatic-access guidance](https://www.sec.gov/os/accessing-edgar-data). Filing data is public domain; YUCLAW redistributes only short excerpts (≤ 600 chars) needed to substantiate the evidence trail, with full source URLs to the SEC archive.
 - **Yahoo Finance (internal only).** Daily close + volume for outcome computation come from the `yfinance` Python library. This data is **not redistributed** through any v3.0 endpoint, SDK method, or MCP tool — raw OHLCV stays in the internal `price_history` table. Only derived metrics (returns, hit rates, excess returns vs SPY) are published.
-- **YUCLAW-generated data (open).** Composite signals, component scores, LLM-extracted SEC event excerpts, supply-chain edges, cascade children, content hashes, daily roots, and backtest aggregations are YUCLAW's own derivative work — MIT-licensed, freely redistributable.
+- **YUCLAW-generated data (open).** Composite signals, component scores, LLM-extracted SEC event excerpts, supply-chain edges, cascade children, content hashes, daily roots, and validation aggregations are YUCLAW's own derivative work — MIT-licensed, freely redistributable.
 
 ## 10. Disclaimer
 
-Research / education only. Not investment advice. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.
+Research / education only. Not investment advice. Past results — in-sample or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.

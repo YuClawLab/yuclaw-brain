@@ -141,7 +141,7 @@ def render(panels: dict[str, Any]) -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YUCLAW — Backtest + Forward Tracking</title>
+  <title>YUCLAW — In-Sample Validation + Forward Tracking</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
@@ -166,7 +166,7 @@ def render(panels: dict[str, Any]) -> str:
     <div class="header">
       <div style="display:flex;align-items:center;gap:14px">
         <div class="logo">YUCLAW <span>OS</span></div>
-        <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Backtest + Forward Tracking</div>
+        <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">In-Sample Validation + Forward Tracking</div>
       </div>
       <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">generated {generated_at}</div>
     </div>

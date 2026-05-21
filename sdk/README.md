@@ -2,13 +2,13 @@
 
 Python SDK for the [YUCLAW](https://github.com/YuClawLab/yuclaw-brain) open-source financial intelligence platform.
 
-> **Disclaimer.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — backtested or forward-tracked — do not predict future performance.
+> **Disclaimer.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.
 
 ## Install
 
 ```bash
 pip install yuclaw-evidence
-# or, with notebook extras (matplotlib + jupyter for `04_backtest_analysis`):
+# or, with notebook extras (matplotlib + jupyter for `04_validation_analysis`):
 pip install "yuclaw-evidence[notebooks]"
 ```
 
@@ -36,9 +36,9 @@ for ev in why["evidence"]:
 hist = client.replay("AMD", date="2026-03-01")
 print(hist["label"], hist["score"])
 
-# Backtest + Forward-tracking ledger as pandas DataFrames
-panels = client.backtest()
-panels["backtest"].head()
+# In-Sample Validation + Forward Tracking Ledger as pandas DataFrames
+panels = client.validation()
+panels["in_sample"].head()
 panels["forward"].head()
 
 # Raw events for a ticker
@@ -68,7 +68,7 @@ No `SELL`, no `SHORT`. Anywhere.
 1. `01_quickstart.ipynb` — install, connect, first signal
 2. `02_evidence_layer.ipynb` — trace a signal to its SEC filings
 3. `03_time_machine.ipynb` — replay across dates, verify point-in-time integrity
-4. `04_backtest_analysis.ipynb` — load the two panels, plot hit rates (with in-sample caveats)
+4. `04_validation_analysis.ipynb` — load the two panels, plot hit rates (with in-sample caveats)
 5. `05_signal_radar.ipynb` — change detection + custom watchlist alert
 
 ## License

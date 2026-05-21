@@ -1,12 +1,14 @@
 """
-yuclaw-py — Python SDK for the YUCLAW research platform.
+yuclaw-evidence — Python SDK for the YUCLAW research platform.
+
+Distribution name on PyPI is `yuclaw-evidence`; import name is `yuclaw_py`.
 
 Public surface:
     Client(source="postgres"|"api", dsn=..., base_url=...)
         .signal(ticker)
         .why(ticker)
         .replay(ticker, date)
-        .backtest()
+        .validation()
         .events(ticker, since=None)
         .universe()
 

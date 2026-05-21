@@ -6,7 +6,7 @@ license: MIT
 homepage: https://github.com/YuClawLab/yuclaw-brain
 ---
 
-> **Disclaimer — read before using.** YUCLAW is a research and education tool. It is **not** investment advice. Signal labels (`STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`) are **research classifications**, not buy/sell recommendations — and YUCLAW deliberately publishes **no `SELL` or `SHORT` label**. Past results — backtested or forward-tracked — do not predict future performance. YUCLAW is **not a registered investment adviser**.
+> **Disclaimer — read before using.** YUCLAW is a research and education tool. It is **not** investment advice. Signal labels (`STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`) are **research classifications**, not buy/sell recommendations — and YUCLAW deliberately publishes **no `SELL` or `SHORT` label**. Past results — in-sample or forward-tracked — do not predict future performance. YUCLAW is **not a registered investment adviser**.
 
 ## What YUCLAW is
 
@@ -33,7 +33,7 @@ All three surfaces share the same query layer — they cannot diverge.
 1. **`signal(ticker)`** — latest composite signal label + score + 9 component scores.
 2. **`why(ticker)`** — signal plus the top-N evidence events that informed it, each with `event_type`, `magnitude`, `direction`, `raw_excerpt`, and `source_url` (SEC archive link).
 3. **`replay(ticker, date)`** — point-in-time signal at the end of `date` (YYYY-MM-DD).
-4. **`backtest()`** — two panels: in-sample replay (Feb–May 2026) and forward-tracking ledger (live since 2026-05-20). Returns hit rates by horizon and excess return vs SPY.
+4. **`validation()`** — two panels: in-sample replay (Feb–May 2026) and forward-tracking ledger (live since 2026-05-20). Returns hit rates by horizon and excess return vs SPY.
 5. **`events(ticker, since)`** — raw evidence events (insider trades, M&A, earnings, etc.) with timestamps and source URLs.
 6. **`universe()`** — the 79 tickers v3.0 tracks.
 7. **`verify(ticker, date)`** — Verified Research Ledger integrity check; returns `VERIFIED` / `INTEGRITY_FAILURE` / `NOT_FOUND`.
@@ -86,7 +86,7 @@ Verifies record integrity and timing — not investment merit.
 
 The full methodology — data window, LLM training cutoff (Llama 3.1 70B, December 2023, well before the 2026 backfill window), in-sample reconstruction limits, hit/return definitions — lives in [`docs/methodology/backfill.md`](https://github.com/YuClawLab/yuclaw-brain/blob/v3.0-evidence/docs/methodology/backfill.md).
 
-The single most important caveat: **the in-sample backtest panel was reconstructed via point-in-time replay, with market components (C1/C3/C4/C5/C7) running at 0.3 confidence** because the upstream market-data cache holds only the latest snapshot. The in-sample numbers therefore primarily reflect the **evidence layer** (C6/C8/C9). v3.1 will land historical market data so the full composite runs point-in-time.
+The single most important caveat: **the in-sample event validation panel was reconstructed via point-in-time replay, with market components (C1/C3/C4/C5/C7) running at 0.3 confidence** because the upstream market-data cache holds only the latest snapshot. The in-sample numbers therefore primarily reflect the **evidence layer** (C6/C8/C9). v3.1 will land historical market data so the full composite runs point-in-time.
 
 ## Locked vocabulary
 
@@ -104,4 +104,4 @@ MIT. See [`LICENSE`](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE
 
 ---
 
-> **Disclaimer.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — backtested or forward-tracked — do not predict future performance.
+> **Disclaimer.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.

@@ -15,7 +15,7 @@ import nbformat as nbf
 DISCLAIMER = (
     "> **Disclaimer.** Research and education only. Not investment advice. "
     "Signal labels are research classifications, not buy/sell recommendations. "
-    "YUCLAW is not a registered investment adviser. Past results — backtested or "
+    "YUCLAW is not a registered investment adviser. Past results — in-sample or "
     "forward-tracked — do not predict future performance."
 )
 
@@ -164,7 +164,7 @@ def validation_analysis() -> nbf.NotebookNode:
         "**Important caveat**: the in-sample panel was *reconstructed* via "
         "point-in-time replay, with market components running at 0.3 confidence. "
         "Treat it as a check on the **evidence layer** (C6 / C8 / C9), not as a "
-        "validated live-trading backtest."
+        "validated live-trading record."
     ) + [
         _md("## Load both panels"),
         _code(

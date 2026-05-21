@@ -22,7 +22,7 @@ from v3.track.panels import build_panels, format_text
 # trivially auditable that we say the same thing everywhere.
 COMPLIANCE_FOOTER = (
     "Research / education only. Not investment advice. Past results — "
-    "backtested or forward-tracked — do not predict future performance. "
+    "in-sample or forward-tracked — do not predict future performance. "
     "YUCLAW is not a registered investment adviser."
 )
 

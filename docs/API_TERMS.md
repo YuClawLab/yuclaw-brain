@@ -11,7 +11,7 @@ By calling the YUCLAW REST API (or using the `yuclaw-py` SDK in `source="api"` m
 
 The YUCLAW API is an **open research tool**. It provides composite research signals, evidence event records, and a Verified Research Ledger. It is **not** investment advice, and **not** a recommendation to buy, sell, or hold any security.
 
-YUCLAW is **not** a registered investment adviser, broker-dealer, exchange, or any other regulated financial entity. Signal labels are research classifications, not buy/sell recommendations. Past results — backtested or forward-tracked — do not predict future performance.
+YUCLAW is **not** a registered investment adviser, broker-dealer, exchange, or any other regulated financial entity. Signal labels are research classifications, not buy/sell recommendations. Past results — in-sample or forward-tracked — do not predict future performance.
 
 If you intend to use API output in any decision involving real money, you are doing so **at your own risk** and should consult a licensed adviser first.
 
@@ -24,7 +24,7 @@ The API is provided **"as is"**, without warranty of any kind. YuClawLab makes n
 You may:
 
 - Call the API for personal research, education, or building open-source tools on top of it.
-- Cache YUCLAW-generated output (signals, components, event excerpts, hashes, backtest metrics) and redistribute it under MIT, provided this disclaimer travels with it.
+- Cache YUCLAW-generated output (signals, components, event excerpts, hashes, validation metrics) and redistribute it under MIT, provided this disclaimer travels with it.
 - Operate trading or alerting systems against API output **at your own risk**, subject to the no-warranty clause above.
 
 You may **not**:
@@ -40,7 +40,7 @@ The API is intended for low-rate research use. As a guideline:
 
 - ≤ 30 requests per minute per IP (steady-state)
 - ≤ 5 concurrent connections per IP
-- Bulk operations (`/backtest`, `/events?since=…`) — please cache, don't re-fetch each request
+- Bulk operations (`/validation`, `/events?since=…`) — please cache, don't re-fetch each request
 
 These limits may change. The API may rate-limit, throttle, or temporarily block clients that exceed them.
 
@@ -50,7 +50,7 @@ These limits may change. The API may rate-limit, throttle, or temporarily block 
 |---|---|---|
 | **SEC EDGAR** (public domain) | Form 4 / 8-K / 10-Q / 10-K / 6-K filings | Excerpts ≤ 600 chars surfaced with full source URLs. SEC's `User-Agent` and 10-req/sec policy honored. |
 | **Yahoo Finance** (via `yfinance`) | Daily close + volume for outcome computation | **Internal only.** Raw OHLCV is never exposed through any API endpoint, SDK method, or MCP tool. Only derived metrics (returns, hit rates, excess returns) are published. |
-| **YUCLAW-generated** | Composite signals, components, supply-chain edges, cascades, content hashes, backtest aggregations | MIT-licensed; freely redistributable with disclaimer. |
+| **YUCLAW-generated** | Composite signals, components, supply-chain edges, cascades, content hashes, validation aggregations | MIT-licensed; freely redistributable with disclaimer. |
 
 The Verified Research Ledger lives in a public git repo at `https://github.com/YuClawLab/yuclaw-trust`. Each day's signals are committed there as content hashes — anyone can call `yuclaw verify TICKER --date YYYY-MM-DD` (or the equivalent MCP tool / SDK method) to confirm a signal hasn't been edited since publication. The ledger verifies record integrity and timing — **not** investment merit.
 
@@ -72,4 +72,4 @@ GitHub issues: <https://github.com/YuClawLab/yuclaw-brain/issues>
 
 ---
 
-**Reminder.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — backtested or forward-tracked — do not predict future performance.
+**Reminder.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.

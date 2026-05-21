@@ -50,7 +50,7 @@ C4 reads the latest dashboard regime regardless of `as_of`. Replays on 2026-03-0
 
 2. **No actual leaks.** Every DB-backed component (C6/C8) honors its `available_as_of <= as_of` filter. The maximum-timestamp instrumentation found no row with `ts > D` in any component's input set.
 
-3. **Dashboard-backed components are stale-proxy by design.** The `is_historical()` guard at `data_loader.py:HISTORICAL_CUTOFF_SECONDS = 24h` works: every replay older than 24h returns those components at conf 0.3. This is acceptable for the v3.0 launch ("the in-sample backtest primarily reflects the evidence layer" — already documented in `backfill.md` §4). v3.1 will land historical market data so C1/C3/C4/C5/C7 can run point-in-time.
+3. **Dashboard-backed components are stale-proxy by design.** The `is_historical()` guard at `data_loader.py:HISTORICAL_CUTOFF_SECONDS = 24h` works: every replay older than 24h returns those components at conf 0.3. This is acceptable for the v3.0 launch ("the in-sample event validation primarily reflects the evidence layer" — already documented in `backfill.md` §4). v3.1 will land historical market data so C1/C3/C4/C5/C7 can run point-in-time.
 
 4. **Five "missing historical_approximation flag" false positives.** These are early-return paths in C1/C5/C7 (no data available for the ticker) that exit before setting the flag. They already return confidence 0 — no leak risk, just an audit-script artifact.
 

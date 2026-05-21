@@ -39,7 +39,7 @@ DISCLAIMER = (
     "Research and education only. Not investment advice. "
     "Signal labels are research classifications, not buy/sell recommendations. "
     "YUCLAW is not a registered investment adviser. "
-    "Past results — backtested or forward-tracked — do not predict future performance."
+    "Past results — in-sample or forward-tracked — do not predict future performance."
 )
 
 
