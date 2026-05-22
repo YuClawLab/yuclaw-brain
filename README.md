@@ -222,8 +222,8 @@ See [`docs/methodology/backfill.md`](docs/methodology/backfill.md) and
 
 Released under the **MIT License** — free for everyone.
 
-*Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B via Ollama · Local inference · Hash-anchored on Ethereum Sepolia*
+*Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B via Ollama · Local inference · Git-anchored [Verified Research Ledger](https://github.com/YuClawLab/yuclaw-trust)*
 
-**[pip install yuclaw](https://pypi.org/project/yuclaw)**
+**[pip install yuclaw-evidence](https://pypi.org/project/yuclaw-evidence)**
 
 </div>
