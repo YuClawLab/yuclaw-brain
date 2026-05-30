@@ -38,7 +38,11 @@ CREATE TABLE events_raw (
     raw_text          TEXT NOT NULL,
     source_publish_time TIMESTAMPTZ,
     fetched_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
-    extraction_status TEXT NOT NULL DEFAULT 'pending'
+    extraction_status TEXT NOT NULL DEFAULT 'pending',
+    -- Canonical SEC accession (NNNNNNNNNN-NN-NNNNNN). Primary dedup key for the
+    -- v2 submissions-API poller (edgar_poll_v2.py): URL-shape-independent, unlike
+    -- source_url. Added 2026-05-30; backfilled onto the 280 pre-existing rows.
+    accession_number  TEXT UNIQUE
 );
 CREATE INDEX idx_raw_status ON events_raw (extraction_status, fetched_at);
 
