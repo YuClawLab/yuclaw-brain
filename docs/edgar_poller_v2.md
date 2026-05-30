@@ -21,7 +21,7 @@ global firehose (latest ~40 filings across all of SEC) and almost never saw our
 | Interval | 300 s (5 min) | respawn-loop `sleep`; `--interval` to override |
 | Lookback | 7 days | `--lookback`; accession dedup covers overlap/outages |
 | Rate | 0.15 s/request | ~6.6 req/s, under SEC's 10/s cap |
-| User-Agent | `YuClawLab vzhang2088@gmail.com` | env `SEC_USER_AGENT` overrides; **must be a real contact** |
+| User-Agent | `YuClawLab vzhang2188@gmail.com` | env `SEC_USER_AGENT` overrides; **must be a real contact** |
 | Form types | 8-K, 10-Q, 10-K, 6-K | Form 4 handled separately |
 | Dedup key | `events_raw.accession_number` UNIQUE | checked before doc-fetch + `ON CONFLICT DO NOTHING` |
 

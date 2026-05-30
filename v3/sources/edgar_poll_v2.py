@@ -51,7 +51,7 @@ from v3.sources.edgar_backfill import (
 
 # SEC requires a real, monitored contact in the User-Agent (NOT @example.com).
 # Env-overridable so it's not hard-coded; default is the configured contact.
-SEC_USER_AGENT = os.environ.get("SEC_USER_AGENT", "YuClawLab vzhang2088@gmail.com")
+SEC_USER_AGENT = os.environ.get("SEC_USER_AGENT", "YuClawLab vzhang2188@gmail.com")
 
 LOOKBACK_DAYS = 7
 POLL_INTERVAL_SECONDS = 300  # 5 minutes
