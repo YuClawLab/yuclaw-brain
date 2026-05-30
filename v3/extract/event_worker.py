@@ -30,8 +30,14 @@ import psycopg2.extras
 
 from v3.extract.sourcelock import validate
 
-PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "v1.txt"
-PROMPT_VERSION = "v1"
+# Order 1D (2026-05-29): switched from v1.txt → v2.txt. v2 adds an explicit
+# 4-step procedure that forces the LLM to locate a contiguous source span and
+# copy it character-for-character before classifying. Recovers 27/45 (60%) of
+# previously R7-rejected events including 5 cascade-eligible (ABT EARNINGS_BEAT,
+# ARM/CVX GUIDANCE_RAISE, INTC M_AND_A_CLOSE, PSX GUIDANCE_CUT) when paired with
+# the html-decode R7 fallback. v1.txt retained in prompts/ for instant rollback.
+PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "v2.txt"
+PROMPT_VERSION = "v2"
 # Day 3 timeout fix (2026-05-19): empirical Llama 70B latency on real
 # SEC filings was ~250-400s with the old 4000-char cap, blowing past
 # the old 180s httpx timeout. Causes: real filings have denser tokens

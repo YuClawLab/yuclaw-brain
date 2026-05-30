@@ -10,6 +10,7 @@ Public API:
 """
 from __future__ import annotations
 
+import html
 import re
 from typing import Optional
 
@@ -42,6 +43,28 @@ def _jaccard(a: str, b: str) -> float:
     if not ta or not tb:
         return 0.0
     return len(ta & tb) / len(ta | tb)
+
+
+# Order 1D — tight typographic-only Unicode→ASCII map for R7's last
+# substring fallback. Covers exactly the substitutions the Order-1C
+# audit observed Llama 70B applying when copying source spans:
+#   NBSP → ASCII space             (12/12 nbsp gap rows)
+#   curly doubles → ASCII "        (3/12 rows, incl. cascade-eligible CVX + INTC)
+#   whitespace run collapse        (HTML render artifact)
+# Deliberately does NOT touch en/em-dashes or curly singles (no gap row
+# needed them) — keeps the substitution surface as small as possible.
+# This is NOT NFKC/NFKD normalization. Cannot turn "raised" into "cut".
+# Corruption probe 0/14 false-accepts verified before commit.
+_FANCY_DOUBLE_QUOTE_RE = re.compile(r"[“”„‟]")
+_WS_RE = re.compile(r"\s+")
+
+
+def _r7_normalize(s: str) -> str:
+    s = s.lower()
+    s = s.replace(" ", " ")           # NBSP → space
+    s = _FANCY_DOUBLE_QUOTE_RE.sub('"', s) # curly doubles → ASCII "
+    s = _WS_RE.sub(" ", s).strip()         # collapse whitespace runs
+    return s
 
 
 def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional[str]]:
@@ -97,11 +120,29 @@ def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional
     if len(excerpt) > 400 or len(excerpt.split()) > 50:
         return False, "R6_excerpt_length"
 
-    # R7 — substring OR Jaccard >= 0.85
+    # R7 — most-restrictive-first cascade. Each fallback fires only if the
+    # prior check did not match. Substring is the canonical check; the two
+    # fallbacks below only relax character encoding, never semantics.
     raw_lc = raw_text.lower()
-    if excerpt.lower().strip() not in raw_lc:
-        if _jaccard(excerpt, raw_text) < 0.85:
-            return False, "R7_excerpt_verifiable"
+    excerpt_lc = excerpt.lower().strip()
+    if excerpt_lc not in raw_lc:
+        # Fallback 1 — HTML-decode the source (see Order 1C-prompt audit).
+        # EDGAR raw_text preserves entities like `&#8220;` / `&#160;`; Llama 70B
+        # occasionally unescapes them when copying. Recovers ~24/45 of the
+        # Order-1C R7 rejections. Cannot change semantic tokens — a flipped
+        # direction word or number still won't appear in the decoded source.
+        raw_decoded_lc = html.unescape(raw_text).lower()
+        if excerpt_lc not in raw_decoded_lc:
+            # Fallback 2 — tight typographic Unicode→ASCII normalize on both
+            # sides (Order 1D). Recovers an additional 3 rows including the
+            # cascade-eligible CVX GUIDANCE_RAISE and INTC M_AND_A_CLOSE that
+            # were blocked by curly double quotes / NBSP. _r7_normalize is a
+            # 3-substitution map — see the function docstring above. Verified
+            # 0/14 false-accepts on the full corruption probe before commit.
+            if _r7_normalize(excerpt) not in _r7_normalize(html.unescape(raw_text)):
+                # Fallback 3 — Jaccard sanity net (kept from original R7).
+                if _jaccard(excerpt, raw_text) < 0.85:
+                    return False, "R7_excerpt_verifiable"
 
     # R8 — advice-language in excerpt or rationale
     rationale = llm_json.get("rationale", "") or ""
