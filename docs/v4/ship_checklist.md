@@ -2,8 +2,9 @@
 
 **Ship date:** 2026-06-03 (Wednesday morning) · **Branch:** `v3.0-evidence` → `main` · **Tag:** `v4.0.0`
 
-Run top to bottom. Do not skip the ⚠️ pre-flight — there is a daily cron that **republishes
-`docs/index.html` to `main`** and will collide with the v4 landing if not handled (see Step 4a).
+Run top to bottom. The daily page-refresh cron is **kept** — its rendered output was rebranded to
+v4 on 2026-06-01 (commit `53328586` on `main`), so it now auto-publishes the v4 dashboard. No disable
+needed (see Step 4a).
 
 ---
 
@@ -16,16 +17,11 @@ These three are not yet decided. Each blocks part of the sequence.
    major-version replacement. *(If not: rename the package and update every `pip install yuclaw`
    reference first — bigger change, not recommended for this ship.)*
 
-2. **Landing-page collision (the big one).** GitHub Pages serves `main` / `/docs`. A cron republishes
-   `docs/index.html` there **daily** — see Step 4a. Decide which page is the live v4 site:
-   - **(A) Minimal v4 landing** (what's on `v3.0-evidence` now): static, "pip install && demo" funnel.
-     → Requires **disabling the page-refresh cron** (Step 4a), else it gets clobbered / the cron's
-     push starts failing on non-fast-forward.
-   - **(B) Keep the auto-refreshed v3.0 79-signal page**: already compliance-clean (0 buy/sell,
-     0 Sepolia, locked vocab, disclaimer present), richer, but v3.0-branded not v4. → Do **not** merge
-     `docs/index.html`; leave the cron running.
-   - Recommendation: **(A)** for the clean v4 funnel, with the cron disabled. Revisit a real v4
-     dashboard in v4.1 (already tracked in `post_funding_followups.md`).
+2. **Landing page — RESOLVED (2026-06-01).** Keep the auto-refreshing dashboard; the renderer
+   `~/yuclaw/v3/web/render_landing.py` was rebranded to v4 (title/brand/version/features, canonical
+   `COMPLIANCE_NOTICE` embedded) and pushed to `main` (commit `53328586`). The live page at
+   https://yuclawlab.github.io/yuclaw-brain/ now serves the v4-branded 79-signal dashboard. No cron
+   disable, no minimal-landing merge. See Step 4a.
 
 3. **Merge strategy.** Merge-commit (preserves the 10-day history) vs squash (one clean `main` commit).
    Recommendation: **merge-commit** — the granular history is part of the story.
@@ -66,23 +62,22 @@ cd ~/yuclaw-v3
 git checkout main && git pull origin main
 git merge --no-ff v3.0-evidence -m "release: YUCLAW v4.0.0 — Agent Research API"
 ```
-> If pre-flight decision #2 = **(B)**, before committing the merge restore the v3.0 landing:
-> `git checkout main -- docs/index.html docs/app.html` so the merge doesn't overwrite it.
+> `docs/index.html` is **cron-owned on `main`** (auto-rendered v4 dashboard). On `v3.0-evidence` it
+> was repurposed to the same v4 render, so the merge should be clean. **If git still flags a
+> `docs/index.html` conflict, always take `main`'s version** (it's the live, freshest cron output):
+> `git checkout --theirs docs/index.html 2>/dev/null || git checkout main -- docs/index.html`.
 
-### Step 4a — ⚠️ Handle the page-refresh cron (only if decision #2 = A)
-The cron `0 17 * * 1-5` (the v3 pipeline) ends with `refresh_v3_pages.sh`, which runs from
-`~/yuclaw` on `main` and does `git add docs/index.html docs/validation.html → commit → push origin main`.
-**After the v4 landing is on `main`, the next weekday 17:00 run will regenerate the v3.0 page and
-either clobber the v4 landing or fail its push (non-fast-forward).** Pick one:
+### Step 4a — Page-refresh cron: KEPT (no disable needed)
+The cron `0 17 * * 1-5` (the v3 pipeline) ends with `refresh_v3_pages.sh`, which renders
+`v3.web.render_landing` → `docs/index.html` and pushes it to `main`. **As of 2026-06-01 that renderer
+emits the v4-branded dashboard** (commit `53328586`), so the auto-refresh now publishes v4. Nothing to
+disable — the dashboard stays live and self-updating at 17:00 weekdays.
 ```bash
-# Option 1 — drop ONLY the page-publish step, keep the data pipeline (recommended):
-crontab -e
-#   edit the 17:00 line to remove the trailing:  && /bin/bash /home/zhangd2/yuclaw/cron/refresh_v3_pages.sh
-# Option 2 — neutralize the script so it renders but never pushes:
-#   comment out the `git push origin main` line in ~/yuclaw/cron/refresh_v3_pages.sh
+# Confirm the live renderer is the v4 one (run anytime):
+grep -c "YUCLAW v4.0" ~/yuclaw/v3/web/render_landing.py    # expect >= 1
+curl -s https://yuclawlab.github.io/yuclaw-brain/ | grep -oE '<title>[^<]*</title>'  # YUCLAW v4.0 …
 ```
-Verify it will no longer publish: `grep -n "git push" ~/yuclaw/cron/refresh_v3_pages.sh` and confirm
-the 17:00 crontab line no longer calls `refresh_v3_pages.sh`.
+Rollback (if the v4 rebrand ever breaks rendering): `git -C ~/yuclaw revert 53328586 && git -C ~/yuclaw push origin main` — the next cron run republishes the prior v3.0 page.
 
 ## Step 5 — Tag `v4.0.0` on the merge commit
 ```bash
@@ -96,12 +91,19 @@ git push origin v4.0.0
 ```
 
 ## Step 7 — Verify the live site
-Open https://yuclawlab.github.io/yuclaw-brain/ (allow ~1 min for Pages to rebuild).
-- Decision (A): shows the minimal **v4.0** landing, `pip install yuclaw && yuclaw demo`, 0 buy/sell.
-- Decision (B): still the v3.0 79-signal page (compliance-clean), unchanged.
+Open https://yuclawlab.github.io/yuclaw-brain/ (allow ~1 min for Pages to rebuild). Expect the
+**v4.0-branded** auto-refresh dashboard: title "YUCLAW v4.0 …", the features line, the 79-signal
+table, canonical compliance, 0 buy/sell.
 ```bash
+curl -s https://yuclawlab.github.io/yuclaw-brain/ | grep -oE '<title>[^<]*</title>'        # YUCLAW v4.0 …
 curl -s https://yuclawlab.github.io/yuclaw-brain/ | grep -ciE 'STRONG_BUY|STRONG_SELL|Sepolia'  # expect 0
 ```
+
+## Step 7b — Telegram daily resume (auto, from Thursday)
+The daily 09:35-ET signal cron was restored 2026-06-01 (date-guarded to first fire **Thu 2026-06-04**).
+⚠️ Before it fires, decide on the v4 format — it still posts `STRONG_BUY` + reads stale state. See
+[`telegram_bot.md`](telegram_bot.md). The Wednesday **launch** broadcast is a separate manual send
+(one-liner in that doc).
 
 ## Step 8 — Publish to PyPI
 ```bash
