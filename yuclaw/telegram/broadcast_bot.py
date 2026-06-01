@@ -179,6 +179,11 @@ def _grade_label(confidence: Optional[float], ev_count: int, strong_count: int) 
     return "Insufficient"
 
 
+# Ranking priority — surface evidence-graded signals before ungraded ones so the
+# digest leads with the best-supported research, not the highest momentum score.
+_GRADE_PRIORITY = {"Grade A": 4, "Grade B": 3, "Grade C": 2, "Insufficient": 1}
+
+
 def _fetch_snapshot_signals() -> list[dict[str, Any]]:
     """Freshest non-backfill snapshot per ticker straight from signal_snapshots,
     with a per-signal strong-evidence count (events with llm_confidence >= 0.7).
@@ -224,9 +229,10 @@ def _fetch_snapshot_signals() -> list[dict[str, Any]]:
 def format_daily() -> str:
     """Daily research-signals digest (v4 format).
 
-    Reads live signal_snapshots, ranks by |score|, and renders each with the
-    LOCKED public label, Evidence Quality Grade, evidence (filing) count, and the
-    public-ledger content hash. No buy/sell vocabulary — ever.
+    Reads live signal_snapshots and renders each with the LOCKED public label,
+    Evidence Quality Grade, evidence (filing) count, and the public-ledger content
+    hash. Ranked grade-first (A>B>C>Insufficient), |score| as tiebreaker, so the
+    digest leads with the best-supported research. No buy/sell vocabulary — ever.
     """
     today = datetime.now().strftime("%a %b %-d")
     rows = _fetch_snapshot_signals()
@@ -236,14 +242,21 @@ def format_daily() -> str:
         data_as_of = today
     else:
         data_as_of = max(r["signal_time"] for r in rows).strftime("%a %b %-d")
-        top = sorted(rows, key=lambda r: abs(r["score"]), reverse=True)[:TOP_N_DAILY]
+        for r in rows:
+            r["grade"] = _grade_label(r["confidence"], r["ev_count"], r["strong_count"])
+        # Grade-first, then |score| — evidence-graded signals surface above
+        # ungraded momentum. Full universe is still covered; this only reorders.
+        top = sorted(
+            rows,
+            key=lambda r: (_GRADE_PRIORITY.get(r["grade"], 0), abs(r["score"])),
+            reverse=True,
+        )[:TOP_N_DAILY]
         body = []
         for r in top:
-            grade = _grade_label(r["confidence"], r["ev_count"], r["strong_count"])
             n = r["ev_count"]
             body.append(
                 f"  {r['ticker']:<5} {r['label']:<15}"
-                f"  ·  {grade}"
+                f"  ·  {r['grade']}"
                 f"  ·  {n} filing{'' if n == 1 else 's'}"
                 f"  ·  ledger {r['hash8']}"
             )
@@ -253,6 +266,7 @@ def format_daily() -> str:
         f"(data as of {data_as_of})",
         "",
         "Top signals — research classifications, not buy/sell:",
+        "(ranked by evidence grade, then composite strength)",
         *body,
         "",
         "Each signal traces to its SEC filings and is hash-anchored in the public ledger.",
