@@ -1,5 +1,5 @@
 """
-Render the YUCLAW v3.0 public landing page to docs/index.html.
+Render the YUCLAW v4.0 public landing page to docs/index.html.
 
 Static, data-baked, NO JS hydration — the v2.3.0 silent-freeze lesson.
 
@@ -35,9 +35,19 @@ PUBLIC_LABELS = {
     "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT",
 }
 
+# Canonical compliance notice — MUST stay byte-identical to
+# v4/api/schema.py::COMPLIANCE_NOTICE (single source of truth, v4 Day 9/Q5).
+COMPLIANCE_NOTICE = (
+    "YUCLAW research output. Not investment advice. "
+    "Past performance does not guarantee future results. "
+    "Signal labels are research classifications, not buy/sell recommendations."
+)
+
+# The rendered disclaimer is the canonical notice PLUS the dashboard's extra
+# protective sentences (registered-adviser + forward-tracked caveats). It must
+# never be weaker than the canonical notice — only additive.
 DISCLAIMER = (
-    "Research and education only. Not investment advice. "
-    "Signal labels are research classifications, not buy/sell recommendations. "
+    COMPLIANCE_NOTICE + " "
     "YUCLAW is not a registered investment adviser. "
     "Past results — in-sample or forward-tracked — do not predict future performance."
 )
@@ -107,8 +117,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v3.0 — Evidence-First Financial AI</title>
-  <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Research only — not investment advice.">
+  <title>YUCLAW v4.0 — Evidence-First Financial AI</title>
+  <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
@@ -117,7 +127,9 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     .header{{margin-bottom:28px;padding:18px 24px;background:#151A23;border:1px solid #1E232D;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}}
     .logo{{font-size:22px;font-weight:800;color:#FFF;letter-spacing:-0.3px}}
     .logo span{{color:#00E676}}
-    .v3{{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;letter-spacing:0.5px;font-family:JetBrains Mono,monospace}}
+    .ver{{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;letter-spacing:0.5px;font-family:JetBrains Mono,monospace}}
+    .features{{margin-top:14px;font-family:JetBrains Mono,monospace;font-size:12px;color:#00E676;letter-spacing:0.3px}}
+    .features span{{color:#718096}}
     .navlinks a{{color:#A0AEC0;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:6px;background:#1E232D;margin-left:6px}}
     .navlinks a:hover{{color:#00E676}}
     .hero{{padding:30px 24px;background:linear-gradient(135deg,#151A23,#1A2334);border:1px solid #1E232D;border-radius:12px;margin-bottom:24px}}
@@ -146,13 +158,13 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <div class="container">
     <div class="header">
       <div>
-        <span class="logo">YUCLAW <span>OS</span></span>
-        <span class="v3">v3.0</span>
+        <span class="logo">YUCLAW</span>
+        <span class="ver">v4.0</span>
       </div>
       <div class="navlinks">
         <a href="validation.html">Validation</a>
         <a href="https://github.com/YuClawLab/yuclaw-brain">GitHub</a>
-        <a href="https://pypi.org/project/yuclaw-evidence/">PyPI</a>
+        <a href="https://pypi.org/project/yuclaw/">PyPI</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
         <a href="methodology/backfill.md">Methodology</a>
       </div>
@@ -161,6 +173,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     <div class="hero">
       <h1>Evidence-First Financial AI</h1>
       <p>Open-source equity research where every composite signal traces back to a verifiable SEC filing or deterministic supply-chain cascade. Replayable point-in-time. Tamper-evidenced via a public git-anchored Verified Research Ledger. Research and education only.</p>
+      <div class="features">Agent Research API <span>·</span> MCP <span>·</span> LangChain/LlamaIndex <span>·</span> pip install yuclaw</div>
     </div>
 
     <div class="disclaimer">
@@ -227,10 +240,10 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
                   font-family:JetBrains Mono,monospace;font-size:13px;color:#E2E8F0;overflow-x:auto">
-pip install yuclaw-evidence
-python3 -m v3.cli why NVDA          # signal + evidence trail
-python3 -m v3.cli validation        # In-Sample Event Validation + Forward Tracking Ledger
-python3 -m v3.cli verify NVDA --date 2026-05-20</pre>
+pip install yuclaw
+yuclaw demo                         # 3-minute guided "Why AMD?" journey
+yuclaw why NVDA                     # signal + evidence trail
+yuclaw verify NVDA --as-of 2026-05-20   # check the public ledger</pre>
       <p style="font-size:12px;color:#718096;margin-top:10px">
         SDK + REST API + MCP server documented at
         <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#00E676">github.com/YuClawLab/yuclaw-brain</a>.
@@ -243,7 +256,7 @@ python3 -m v3.cli verify NVDA --date 2026-05-20</pre>
     </div>
 
     <div class="footer">
-      YUCLAW OS · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v4.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       MIT Licensed
@@ -255,7 +268,7 @@ python3 -m v3.cli verify NVDA --date 2026-05-20</pre>
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Render the YUCLAW v3.0 public landing page")
+    p = argparse.ArgumentParser(description="Render the YUCLAW v4.0 public landing page")
     p.add_argument("--out", default=str(DEFAULT_OUT))
     args = p.parse_args(argv)
     rows, as_of = _fetch_current_signals()
