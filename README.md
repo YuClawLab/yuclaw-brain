@@ -39,7 +39,9 @@ verification against the public Verified Research Ledger. Raw scores are hidden 
 ```bash
 yuclaw why   AMD --as-of 2026-05-20   # structured signal (add --include-score for the composite)
 yuclaw memo  AMD --as-of 2026-05-20   # full research memo with evidence trail
+yuclaw cascade AMD --as-of 2026-05-20 # supply-chain cascade that propagated into AMD
 yuclaw verify AMD --date 2026-05-20   # re-verify the hash against the public ledger
+yuclaw share AMD --as-of 2026-05-20   # generate a shareable, independently-verifiable HTML card
 ```
 
 ---
