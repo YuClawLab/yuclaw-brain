@@ -40,6 +40,9 @@ from typing import Any, Optional
 
 import requests
 
+import psycopg2
+import psycopg2.extras
+
 
 # ---------------------------------------------------------------------------
 # Config (env + paths)
@@ -56,10 +59,30 @@ MACRO_REGIME    = YUCLAW_ROOT / "output/macro_regime.json"
 SECTOR_ROTATION = YUCLAW_ROOT / "output/sector_rotation.json"
 EARNINGS        = YUCLAW_ROOT / "output/earnings_this_week.json"
 
+# v4 daily reads live signals straight from Postgres (NOT the v2.3 dashboard_state.json).
+DB_DSN = os.environ.get("YUCLAW_DB_DSN", "dbname=yuclaw_events")
+TOP_N_DAILY = 6
+LEDGER_URL = "github.com/YuClawLab/yuclaw-trust"
+
+# Locked public vocabulary (v4). Anything outside this set is NEVER broadcast —
+# no STRONG_BUY / BUY / SELL / SHORT, ever.
+PUBLIC_LABELS = {
+    "STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
+    "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT",
+}
+
 DEFAULT_AUDIT_LOG = Path.home() / ".yuclaw" / "telegram_broadcasts.jsonl"
 
+# Canonical compliance notice — MUST stay byte-identical to
+# v4/api/schema.py::COMPLIANCE_NOTICE (single source of truth, v4 Day 9/Q5).
+COMPLIANCE_NOTICE = (
+    "YUCLAW research output. Not investment advice. "
+    "Past performance does not guarantee future results. "
+    "Signal labels are research classifications, not buy/sell recommendations."
+)
+
 FOOTER_LINKS = "📊 yuclawlab.github.io/yuclaw-brain"
-FOOTER_PYPI  = "📦 pip install yuclaw==2.3.0"
+FOOTER_PYPI  = "📦 pip install yuclaw  ·  yuclaw why <TICKER>"
 FOOTER_DISCLAIMER_FULL  = "⚠️ Research only — not financial advice. AI signals may contain errors."
 FOOTER_DISCLAIMER_SHORT = "⚠️ Not financial advice. Research only."
 
@@ -141,84 +164,104 @@ def _load(path: Path) -> Any:
 # Formatters
 # ---------------------------------------------------------------------------
 
+# Evidence Quality Grade — faithful replica of
+# v4/api/schema.py::Confidence.grade_for(). Kept inline so the broadcaster stays
+# dependency-light (no pydantic/v4 import inside the cron job). If the canonical
+# thresholds change, mirror them here.
+def _grade_label(confidence: Optional[float], ev_count: int, strong_count: int) -> str:
+    v = confidence if confidence is not None else 0.0
+    if v >= 0.75 and strong_count >= 3:
+        return "Grade A"
+    if v >= 0.55 and ev_count >= 1:
+        return "Grade B"
+    if v >= 0.30:
+        return "Grade C"
+    return "Insufficient"
+
+
+def _fetch_snapshot_signals() -> list[dict[str, Any]]:
+    """Freshest non-backfill snapshot per ticker straight from signal_snapshots,
+    with a per-signal strong-evidence count (events with llm_confidence >= 0.7).
+
+    This is the SAME table the v4 dashboard + REST API read — today's live data,
+    not the frozen v2.3 dashboard_state.json.
+    """
+    q = """
+        SELECT DISTINCT ON (s.ticker)
+            s.ticker, s.signal_label, s.total_score, s.signal_time,
+            s.composite_confidence,
+            COALESCE(s.content_hash, '') AS content_hash,
+            COALESCE(array_length(s.evidence_event_ids, 1), 0) AS ev_count,
+            (SELECT count(*) FROM events e
+               WHERE e.event_id = ANY(s.evidence_event_ids)
+                 AND e.llm_confidence >= 0.7) AS strong_count
+        FROM signal_snapshots s
+        WHERE s.is_backfill = false
+        ORDER BY s.ticker, s.signal_time DESC
+    """
+    out: list[dict[str, Any]] = []
+    with psycopg2.connect(DB_DSN) as conn, \
+         conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+        cur.execute(q)
+        for r in cur.fetchall():
+            label = (r["signal_label"] or "").upper()
+            if label not in PUBLIC_LABELS:
+                continue  # never broadcast a non-locked label
+            out.append({
+                "ticker": r["ticker"],
+                "label": label,
+                "score": float(r["total_score"] or 0.0),
+                "signal_time": r["signal_time"],
+                "confidence": (float(r["composite_confidence"])
+                               if r["composite_confidence"] is not None else None),
+                "ev_count": int(r["ev_count"] or 0),
+                "strong_count": int(r["strong_count"] or 0),
+                "hash8": (r["content_hash"] or "")[:8] or "—",
+            })
+    return out
+
+
 def format_daily() -> str:
-    """Daily signals digest — top 5 STRONG_BUY + sectors + earnings."""
-    state = _load(DASHBOARD_STATE) or {}
-    signals = state.get("signals") or []
-    regime = state.get("regime") or _load(MACRO_REGIME) or {}
-    sector = state.get("sector") or _load(SECTOR_ROTATION) or {}
-    earnings = state.get("earnings") or _load(EARNINGS) or {}
+    """Daily research-signals digest (v4 format).
 
+    Reads live signal_snapshots, ranks by |score|, and renders each with the
+    LOCKED public label, Evidence Quality Grade, evidence (filing) count, and the
+    public-ledger content hash. No buy/sell vocabulary — ever.
+    """
     today = datetime.now().strftime("%a %b %-d")
-    regime_name = regime.get("regime", "UNKNOWN")
-    regime_conf = float(regime.get("confidence", 0) or 0)
+    rows = _fetch_snapshot_signals()
 
-    strong_buys = [s for s in signals if s.get("signal") == "STRONG_BUY"][:5]
-    sb_lines = []
-    for s in strong_buys:
-        ticker = s.get("ticker", "?")
-        score = float(s.get("score", 0) or 0)
-        price = float(s.get("price", 0) or 0)
-        sb_lines.append(f"  {ticker:<5} {score:+.3f}  ${price:.2f}")
-
-    rot = sector.get("rotation", []) if isinstance(sector, dict) else []
-    inflows = sorted([r for r in rot if r.get("change_pct", 0) > 0],
-                     key=lambda r: -r["change_pct"])[:3]
-    outflows = sorted([r for r in rot if r.get("change_pct", 0) < 0],
-                      key=lambda r: r["change_pct"])[:3]
-    sec_parts = [f"{r['sector']} ↑{r['change_pct']:.1f}%" for r in inflows]
-    sec_parts += [f"{r['sector']} ↓{abs(r['change_pct']):.1f}%" for r in outflows]
-    sec_line = " • ".join(sec_parts) if sec_parts else "(no data)"
-
-    # Earnings: prefer `earnings_date` (ISO date) and recompute days_until at
-    # read time so a snapshot written yesterday at 18:00 MDT doesn't keep
-    # labeling already-reported tickers as "today". Fall back to the stored
-    # `days_until` if `earnings_date` is missing.
-    earn_list = []
-    today_date = datetime.now().date()
-    if isinstance(earnings, dict):
-        for ticker, info in earnings.items():
-            if not isinstance(info, dict):
-                continue
-            d: Optional[int] = None
-            iso = info.get("earnings_date") or info.get("report_date")
-            if iso:
-                try:
-                    d = (datetime.fromisoformat(iso).date() - today_date).days
-                except Exception:
-                    d = None
-            if d is None:
-                d = info.get("days_until")
-            if d is None or d < 0 or d > 5:
-                continue
-            if d == 0:
-                label = "today"
-            elif d == 1:
-                label = "tomorrow"
-            else:
-                label = (datetime.now() + timedelta(days=int(d))).strftime("%a")
-            earn_list.append(f"{ticker} ({label})")
-    earn_line = ", ".join(earn_list) if earn_list else "none"
-
-    sb_header = f"📈 STRONG_BUY top {len(sb_lines)}" if sb_lines else "📈 STRONG_BUY: none"
+    if not rows:
+        body = ["  (no signals available yet)"]
+        data_as_of = today
+    else:
+        data_as_of = max(r["signal_time"] for r in rows).strftime("%a %b %-d")
+        top = sorted(rows, key=lambda r: abs(r["score"]), reverse=True)[:TOP_N_DAILY]
+        body = []
+        for r in top:
+            grade = _grade_label(r["confidence"], r["ev_count"], r["strong_count"])
+            n = r["ev_count"]
+            body.append(
+                f"  {r['ticker']:<5} {r['label']:<15}"
+                f"  ·  {grade}"
+                f"  ·  {n} filing{'' if n == 1 else 's'}"
+                f"  ·  ledger {r['hash8']}"
+            )
 
     parts = [
-        f"🦞 YUCLAW Signals — {today}",
+        f"🦞 YUCLAW Research Signals — {today}",
+        f"(data as of {data_as_of})",
         "",
-        f"Regime: {regime_name} ({regime_conf:.0%})",
+        "Top signals — research classifications, not buy/sell:",
+        *body,
         "",
-        sb_header,
-    ]
-    parts += sb_lines
-    parts += [
+        "Each signal traces to its SEC filings and is hash-anchored in the public ledger.",
+        f"Verify any signal: {LEDGER_URL}",
         "",
-        f"Sectors: {sec_line}",
-        f"Earnings this week: {earn_line}",
-        "",
-        FOOTER_LINKS,
         FOOTER_PYPI,
+        FOOTER_LINKS,
         "",
-        FOOTER_DISCLAIMER_FULL,
+        COMPLIANCE_NOTICE,
     ]
     return "\n".join(parts)
 
@@ -457,8 +500,8 @@ def run_alerts(dry_run: bool, audit_path: Path) -> list[tuple[str, str, str]]:
 HELLO_MESSAGE = (
     "🦞 YUCLAW Signals — channel test\n"
     "\n"
-    "This channel broadcasts AI-generated signals for 39 stocks daily at 09:35 ET "
-    "on weekdays (market open + 5 min).\n"
+    "This channel broadcasts evidence-first research classifications daily at "
+    "09:35 ET on weekdays (market open + 5 min).\n"
     "\n"
     "Subscribers will also receive alerts when:\n"
     "- New tickers enter the top 10\n"
@@ -466,7 +509,7 @@ HELLO_MESSAGE = (
     "- Market regime shifts (RISK_ON ↔ CRISIS)\n"
     "\n"
     "📊 yuclawlab.github.io/yuclaw-brain\n"
-    "📦 pip install yuclaw==2.3.0\n"
+    "📦 pip install yuclaw\n"
     "\n"
     "⚠️ Research and education only. Not financial advice. AI-generated signals "
     "may contain errors. Past performance does not predict future returns."
