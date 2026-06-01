@@ -60,13 +60,14 @@ class Client:
         source: str = "postgres",
         dsn: str = "dbname=yuclaw_events",
         base_url: Optional[str] = None,
+        api_key: Optional[str] = None,
     ) -> None:
         if source == "postgres":
             self._backend: Backend = PostgresBackend(dsn=dsn)
         elif source == "api":
             if not base_url:
                 raise ValueError("source='api' requires base_url")
-            self._backend = ApiBackend(base_url=base_url)
+            self._backend = ApiBackend(base_url=base_url, api_key=api_key)
         else:
             raise ValueError(f"source must be 'postgres' or 'api', got {source!r}")
         self.source = source

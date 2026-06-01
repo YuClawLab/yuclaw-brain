@@ -24,8 +24,9 @@ import logging
 from datetime import datetime, timezone
 from typing import Any, Optional
 
-from fastapi import FastAPI, HTTPException, Query, Response
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 # Reuse the SDK's query backend so API + SDK agree by construction.
 from yuclaw_py._backends import PostgresBackend
@@ -36,6 +37,15 @@ from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE
 from v4.api.builder import build_response
 from v4.api.schema import ResearchResponse
 from v4.memo.generator import MemoOutput, generate_memo
+
+# v4 auth + metering (Day 8) — REST-only.
+from v4.auth import keys as authkeys
+from v4.auth.dependency import (
+    MeteringMiddleware,
+    SignalHTTPError,
+    metered_identity,
+    require_api_key,
+)
 
 _log = logging.getLogger("yuclaw.api")
 
@@ -61,6 +71,14 @@ app.add_middleware(
     allow_methods=["GET", "HEAD", "OPTIONS"],
     allow_headers=["*"],
 )
+# Day 8: log metered requests after the handler (REST-only).
+app.add_middleware(MeteringMiddleware)
+
+
+@app.exception_handler(SignalHTTPError)
+async def _signal_http_error(request: Request, exc: SignalHTTPError) -> JSONResponse:
+    """Render auth/quota denials with their prepared body (compliance-bearing for signal paths)."""
+    return JSONResponse(status_code=exc.status_code, content=exc.content, headers=exc.headers)
 
 
 def _backend() -> PostgresBackend:
@@ -146,8 +164,10 @@ def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
+# Day 8: signal endpoints are metered (anonymous tier allowed; key for full quota).
 @app.get("/v1/signal/{ticker}", response_model=ResearchResponse)
-def v1_signal(ticker: str, include_score: bool = Query(False)) -> ResearchResponse:
+def v1_signal(ticker: str, include_score: bool = Query(False),
+              _id: Optional[str] = Depends(metered_identity)) -> ResearchResponse:
     # Q1: missing data returns a status='no_data' envelope (200), never a bare 404.
     return build_response(ticker, include_score=include_score)
 
@@ -159,6 +179,7 @@ def v1_why(
     include_score: bool = Query(False),
     include_cascade: bool = Query(False, description="Day 6: attach the supply-chain cascade tree"),
     as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
+    _id: Optional[str] = Depends(metered_identity),
 ) -> ResearchResponse:
     return build_response(ticker, as_of=_parse_as_of(as_of), include_score=include_score,
                           include_cascade=include_cascade, n_evidence=n_evidence)
@@ -169,6 +190,7 @@ def v1_cascade(
     ticker: str,
     depth: int = Query(3, ge=1, le=3, description="Max hops 1..3 (locked decay)"),
     as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time"),
+    _id: Optional[str] = Depends(metered_identity),
 ) -> dict[str, Any]:
     """Supply-chain cascade tree that propagated into `ticker`. `cascade: null` if none.
     Edge weights are the public supply_chain.py graph. Research only — not advice."""
@@ -185,11 +207,45 @@ def v1_memo(
     n_evidence: int = Query(20, ge=1, le=50, description="Memo default 20 (Q2)"),
     include_score: bool = Query(False),
     as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
+    _id: Optional[str] = Depends(metered_identity),
 ) -> MemoOutput:
     # Wrapper object: Markdown memo + the full ResearchResponse (compliance inside it).
     # no_data is handled inside generate_memo → always a complete, compliant envelope.
     return generate_memo(ticker, as_of=_parse_as_of(as_of),
                          include_score=include_score, n_evidence=n_evidence)
+
+
+@app.get("/v1/verify/{ticker}")
+def v1_verify(ticker: str, date: str = Query(..., description="YYYY-MM-DD"),
+              _id: Optional[str] = Depends(metered_identity)) -> dict[str, Any]:
+    """Verified Research Ledger integrity check (metered). Research only — not advice."""
+    from v3.proof.verify import verify as proof_verify
+    return {**proof_verify(ticker, date), "compliance": dict(COMPLIANCE)}
+
+
+# --- Always-free, no-auth metadata (Q4) ---
+@app.get("/v1/universe")
+def v1_universe() -> dict[str, Any]:
+    return {"universe": _backend().universe()}
+
+
+@app.get("/v1/openapi.json")
+def v1_openapi() -> dict[str, Any]:
+    return app.openapi()
+
+
+# --- Account endpoints (Q5: NO compliance — pure account info) ---
+@app.get("/v1/keys/info")
+def v1_keys_info(key: authkeys.APIKey = Depends(require_api_key)) -> dict[str, Any]:
+    return {"key_id": key.key_id, "owner_email": key.owner_email,
+            "created_at": key.created_at.isoformat(), "is_active": key.is_active,
+            "daily_limit": authkeys.FREE_TIER_DAILY}
+
+
+@app.get("/v1/keys/usage")
+def v1_keys_usage(days: int = Query(7, ge=1, le=90),
+                  key: authkeys.APIKey = Depends(require_api_key)) -> dict[str, Any]:
+    return authkeys.usage(key.key_id, days=days)
 
 
 @app.get("/replay/{ticker}")

@@ -75,6 +75,15 @@ These are shared blockers, not per-entry-point:
   `YuclawRetriever` maps each evidence item → a `TextNode` with citation metadata (source_url, accession_number,
   ledger_hash, event_type, available_as_of, ticker, as_of) + `yuclaw_function_tools()`. See docs/v4/llamaindex.md.
 
+## Cross-cutting (built after the surfaces)
+- **Cascade History View** — ✅ **COMPLETE (Day 6)**: `v4/api/cascade_builder.py`; CLI `yuclaw cascade`,
+  REST `/v1/cascade`, `?include_cascade`, MCP + wrappers. Public supply_chain.py weights. See docs/v4/cascade.md.
+- **Share-this-Signal** — ✅ **COMPLETE (Day 7)**: `v4/share/`; CLI `yuclaw share` → self-contained,
+  ledger-verifiable HTML card. See docs/v4/share.md.
+- **API keys + lite metering** — ✅ **COMPLETE (Day 8)**: `v4/auth/`; Postgres-backed (`api_keys`,
+  `request_logs`); REST-only (CLI/MCP/in-process never metered); anonymous 20/day/IP + keyed 100/day;
+  429 carries a compliance-bearing `rate_limited` envelope. CLI `yuclaw keys`. See docs/v4/api_keys.md.
+
 ## Suggested sequencing
 1. Shared assembler + data-gap fixes (1–7 above) — the real work.
 2. REST `/v1` (tomorrow's order) — validates the contract end-to-end.

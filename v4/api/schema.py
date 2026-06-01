@@ -243,8 +243,11 @@ class ResearchResponse(BaseModel):
     schema_version: str = Field(SCHEMA_VERSION, description="Schema contract version")
     status: str = Field(
         "ok",
-        description="Q1: 'ok' = a signal was found; 'no_data' = no snapshot for (ticker, as_of) — "
-                    "still a full envelope with empty evidence and a required compliance block.",
+        description="'ok' = a signal was found; 'no_data' = no snapshot for (ticker, as_of); "
+                    "'rate_limited' = quota exceeded. ALL carry the required compliance block.",
+    )
+    retry_after: Optional[int] = Field(
+        None, ge=0, description="Seconds to wait before retrying (set only when status='rate_limited').",
     )
 
     # --- identity / point-in-time ---
@@ -303,8 +306,8 @@ class ResearchResponse(BaseModel):
 
     @model_validator(mode="after")
     def _check_invariants(self) -> "ResearchResponse":
-        if self.status not in ("ok", "no_data"):
-            raise ValueError(f"status must be 'ok' or 'no_data', got {self.status!r}")
+        if self.status not in ("ok", "no_data", "rate_limited"):
+            raise ValueError(f"status must be 'ok'|'no_data'|'rate_limited', got {self.status!r}")
         # A real ('ok') response must carry the full component anatomy.
         if self.status == "ok" and not self.components:
             raise ValueError("status='ok' requires a non-empty components list")
@@ -366,6 +369,34 @@ class ResearchResponse(BaseModel):
             evidence=[],
             confidence=Confidence(value=0.0, grade=EvidenceGrade.INSUFFICIENT, basis="no data"),
             limitations=[reason, *DEFAULT_LIMITATIONS],
+            ledger_hash="0" * 64,
+            compliance=Compliance(model_id=model_id, prompt_version=prompt_version),
+        )
+        return resp.with_sealed_ledger_hash()
+
+    # ---- Q4/Q5 rate-limited envelope (compliance REQUIRED — it's a denied signal request) ----
+    @classmethod
+    def rate_limited(
+        cls,
+        ticker: str,
+        *,
+        retry_after: int = 3600,
+        reason: str = "Daily request quota exceeded.",
+        model_id: str = "yuclaw-llm-70b",
+        prompt_version: str = "v2",
+    ) -> "ResearchResponse":
+        """A full, schema-valid 429 envelope — never a bare error. Carries compliance."""
+        resp = cls(
+            status="rate_limited",
+            retry_after=retry_after,
+            ticker=ticker.upper(),
+            as_of=datetime.now(timezone.utc),
+            replay_id=f"{ticker.upper()}@rate_limited",
+            signal=SignalLabel.NEUTRAL,
+            components=[],
+            evidence=[],
+            confidence=Confidence(value=0.0, grade=EvidenceGrade.INSUFFICIENT, basis="rate limited"),
+            limitations=[reason, f"Retry after {retry_after}s.", *DEFAULT_LIMITATIONS],
             ledger_hash="0" * 64,
             compliance=Compliance(model_id=model_id, prompt_version=prompt_version),
         )

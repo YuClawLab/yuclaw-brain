@@ -62,17 +62,18 @@ class YuclawWhyTool(BaseTool):
     args_schema: Type[BaseModel] = _WhyArgs
     base_url: str = DEFAULT_BASE_URL
     timeout: float = DEFAULT_TIMEOUT
+    api_key: Optional[str] = None
 
     def _run(self, ticker: str, as_of: Optional[str] = None, include_score: bool = False,
              include_cascade: bool = False, include_memo: bool = False, **_: Any) -> dict[str, Any]:
         if include_memo:
             memo = get_memo(ticker, as_of=as_of, include_score=include_score,
-                            base_url=self.base_url, timeout=self.timeout)
+                            base_url=self.base_url, timeout=self.timeout, api_key=self.api_key)
             out = dict(memo["response"])
             out["memo_markdown"] = memo["markdown"]
             return out
-        return get_why(ticker, as_of=as_of, include_score=include_score,
-                       include_cascade=include_cascade, base_url=self.base_url, timeout=self.timeout)
+        return get_why(ticker, as_of=as_of, include_score=include_score, include_cascade=include_cascade,
+                       base_url=self.base_url, timeout=self.timeout, api_key=self.api_key)
 
 
 class YuclawMemoTool(BaseTool):
@@ -86,11 +87,12 @@ class YuclawMemoTool(BaseTool):
     args_schema: Type[BaseModel] = _MemoArgs
     base_url: str = DEFAULT_BASE_URL
     timeout: float = DEFAULT_TIMEOUT
+    api_key: Optional[str] = None
 
     def _run(self, ticker: str, as_of: Optional[str] = None,
              include_score: bool = False, n_evidence: int = 20, **_: Any) -> dict[str, Any]:
-        return get_memo(ticker, as_of=as_of, include_score=include_score,
-                        n_evidence=n_evidence, base_url=self.base_url, timeout=self.timeout)
+        return get_memo(ticker, as_of=as_of, include_score=include_score, n_evidence=n_evidence,
+                        base_url=self.base_url, timeout=self.timeout, api_key=self.api_key)
 
 
 __all__ = ["YuclawWhyTool", "YuclawMemoTool"]

@@ -27,9 +27,11 @@ EVIDENCE_FIRST_BLURB = (
 )
 
 
-def _get(base_url: str, path: str, params: dict[str, Any], timeout: float) -> dict[str, Any]:
+def _get(base_url: str, path: str, params: dict[str, Any], timeout: float,
+         api_key: Optional[str] = None) -> dict[str, Any]:
     clean = {k: v for k, v in params.items() if v is not None}
-    r = httpx.get(f"{base_url.rstrip('/')}{path}", params=clean, timeout=timeout)
+    headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
+    r = httpx.get(f"{base_url.rstrip('/')}{path}", params=clean, headers=headers, timeout=timeout)
     r.raise_for_status()
     return r.json()
 
@@ -42,10 +44,12 @@ def get_why(
     include_cascade: bool = False,
     base_url: str = DEFAULT_BASE_URL,
     timeout: float = DEFAULT_TIMEOUT,
+    api_key: Optional[str] = None,
 ) -> dict[str, Any]:
     """GET /v1/why → ResearchResponse dict (status='no_data' envelope if absent)."""
     return _get(base_url, f"/v1/why/{ticker.upper()}",
-                {"as_of": as_of, "include_score": include_score, "include_cascade": include_cascade}, timeout)
+                {"as_of": as_of, "include_score": include_score, "include_cascade": include_cascade},
+                timeout, api_key)
 
 
 def get_memo(
@@ -56,7 +60,9 @@ def get_memo(
     n_evidence: int = 20,
     base_url: str = DEFAULT_BASE_URL,
     timeout: float = DEFAULT_TIMEOUT,
+    api_key: Optional[str] = None,
 ) -> dict[str, Any]:
     """GET /v1/memo → MemoOutput dict {ticker, signal, grade, mode, markdown, response}."""
     return _get(base_url, f"/v1/memo/{ticker.upper()}",
-                {"as_of": as_of, "include_score": include_score, "n_evidence": n_evidence}, timeout)
+                {"as_of": as_of, "include_score": include_score, "n_evidence": n_evidence},
+                timeout, api_key)

@@ -44,6 +44,11 @@ yuclaw verify AMD --date 2026-05-20   # re-verify the hash against the public le
 yuclaw share AMD --as-of 2026-05-20   # generate a shareable, independently-verifiable HTML card
 ```
 
+The CLI (and the in-process SDK / MCP) is **never metered** — self-hosting is unlimited and
+offline. The hosted REST API works anonymously (20 req/day/IP); for a higher quota
+(100 req/day) request a key with `yuclaw keys create` and pass `--api-key` / `Authorization:
+Bearer`. See [docs/v4/api_keys.md](docs/v4/api_keys.md).
+
 ---
 
 ## Quick start

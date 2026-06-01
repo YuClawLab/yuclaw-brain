@@ -59,17 +59,19 @@ class YuclawRetriever(BaseRetriever):
         include_score: bool = False,
         base_url: str = DEFAULT_BASE_URL,
         timeout: float = DEFAULT_TIMEOUT,
+        api_key: Optional[str] = None,
     ) -> None:
         self._as_of = as_of
         self._include_score = include_score
         self._base_url = base_url
         self._timeout = timeout
+        self._api_key = api_key
         super().__init__()
 
     def _retrieve(self, query_bundle: QueryBundle) -> list[NodeWithScore]:
         ticker = query_bundle.query_str.strip().upper()
         why = get_why(ticker, as_of=self._as_of, include_score=self._include_score,
-                      base_url=self._base_url, timeout=self._timeout)
+                      base_url=self._base_url, timeout=self._timeout, api_key=self._api_key)
         out: list[NodeWithScore] = []
         for e in why.get("evidence", []):
             text = (e.get("raw_excerpt")
@@ -100,16 +102,17 @@ def yuclaw_function_tools(
     include_score: bool = False,
     base_url: str = DEFAULT_BASE_URL,
     timeout: float = DEFAULT_TIMEOUT,
+    api_key: Optional[str] = None,
 ) -> list[FunctionTool]:
     """Build [yuclaw_why, yuclaw_memo] FunctionTools for a LlamaIndex agent."""
 
     def yuclaw_why(ticker: str, as_of: Optional[str] = None, include_cascade: bool = False) -> dict[str, Any]:
-        return get_why(ticker, as_of=as_of, include_score=include_score,
-                       include_cascade=include_cascade, base_url=base_url, timeout=timeout)
+        return get_why(ticker, as_of=as_of, include_score=include_score, include_cascade=include_cascade,
+                       base_url=base_url, timeout=timeout, api_key=api_key)
 
     def yuclaw_memo(ticker: str, as_of: Optional[str] = None, n_evidence: int = 20) -> dict[str, Any]:
-        return get_memo(ticker, as_of=as_of, include_score=include_score,
-                        n_evidence=n_evidence, base_url=base_url, timeout=timeout)
+        return get_memo(ticker, as_of=as_of, include_score=include_score, n_evidence=n_evidence,
+                        base_url=base_url, timeout=timeout, api_key=api_key)
 
     why_tool = FunctionTool.from_defaults(
         fn=yuclaw_why, name="yuclaw_why",
@@ -123,9 +126,10 @@ def yuclaw_function_tools(
 
 
 def YuclawTool(*, include_score: bool = False, base_url: str = DEFAULT_BASE_URL,
-               timeout: float = DEFAULT_TIMEOUT) -> FunctionTool:
+               timeout: float = DEFAULT_TIMEOUT, api_key: Optional[str] = None) -> FunctionTool:
     """Convenience: the yuclaw_why FunctionTool."""
-    return yuclaw_function_tools(include_score=include_score, base_url=base_url, timeout=timeout)[0]
+    return yuclaw_function_tools(include_score=include_score, base_url=base_url,
+                                 timeout=timeout, api_key=api_key)[0]
 
 
 __all__ = ["YuclawRetriever", "yuclaw_function_tools", "YuclawTool"]
