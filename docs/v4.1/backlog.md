@@ -20,7 +20,7 @@ market-data dependency below.
 
 ---
 
-## 1. Repoint stale market-data components  — TOP PRIORITY
+## 1. Repoint stale market-data components  — ⭐ HIGHEST PRIORITY (target: land within 2 weeks of v4.0 ship)
 
 Components **C1/C3/C4/C5/C7** (price momentum, sector velocity, macro regime, oil/rates/fx, peer
 correlation) read `~/yuclaw/docs/data/dashboard_state.json` via
@@ -29,10 +29,25 @@ correlation) read `~/yuclaw/docs/data/dashboard_state.json` via
 compute from ~12-day-old market data, depressing their per-component confidence and dragging
 `composite_confidence` to ~0.28–0.30 for the ~44 borderline tickers — right under the grade-C cliff.
 
-**Options:** (a) restore/replace the dashboard refresh so `dashboard_state.json` updates daily;
-(b) repoint these components at a live source; (c) compute live (cached prices) inside the components.
-**Impact:** likely lifts many of the 44 borderline tickers over 0.30 → C, materially improving the
-grade distribution. **Effort:** medium.
+**Dual benefit — this is why it's #1:** fixing it (a) lifts many of the 44 borderline tickers over
+0.30 → C, materially improving the grade distribution AND (b) restores actual **signal freshness** —
+today 5 of 9 components run on 12-day-old prices/momentum/macro (only the C6 evidence layer is live).
+It is the single highest-leverage post-launch fix: it improves both the headline grade story and the
+underlying signal quality.
+
+**Concrete first task (the investigation, before any rebuild):**
+1. Determine **why** the `dashboard_state.json` refresh stopped — find the retired cron/script
+   (start: `~/yuclaw/refresh_dashboard.sh`, `engines/run_screener.py`, the v2.3 pipeline) and when/why
+   it was removed (crontab history, git log, the v2.3 retirement during the v4 cleanup).
+2. **Document the original mechanism** end-to-end: what wrote `dashboard_state.json`, on what schedule,
+   from what data source (yfinance? cached prices?), and which fields C1/C3/C4/C5/C7 actually consume.
+3. **Propose 3 implementation paths** with effort/risk for each:
+   - (a) **Restore** the v2.3 refresh cron (fastest; re-couples to retired v2.3 code).
+   - (b) **Repoint** the 5 components to a live source / small fresh-price service (clean separation).
+   - (c) **Compute live** inside the components from cached EDGAR/price data (most self-contained;
+     biggest change).
+
+**Effort:** medium. **Target:** within 2 weeks of v4.0 ship.
 
 ## 2. Broaden EDGAR event coverage
 

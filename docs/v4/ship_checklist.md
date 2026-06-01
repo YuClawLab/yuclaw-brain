@@ -28,6 +28,24 @@ These three are not yet decided. Each blocks part of the sequence.
 
 ---
 
+## Step 0 — Grade distribution sanity (start of ship day)
+The daily 17:00 cron already refreshes `signal_snapshots` with anatomy+grades, but re-run it at ship
+time so the launch reflects the freshest data, and confirm the distribution hasn't regressed from the
+2026-06-01 baseline (**7 B · 24 C · 48 Insufficient**, all 79 with anatomy).
+```bash
+cd ~/yuclaw-v3 && python3 -m v3.signal.snapshot_writer      # full universe; ~minutes
+psql "dbname=yuclaw_events" -c "
+WITH latest AS (SELECT DISTINCT ON (ticker) ticker, composite_confidence c,
+  COALESCE(array_length(evidence_event_ids,1),0) ev,
+  (SELECT count(*) FROM events e WHERE e.event_id = ANY(s.evidence_event_ids) AND e.llm_confidence>=0.7) strong
+  FROM signal_snapshots s WHERE is_backfill=false ORDER BY ticker, signal_time DESC)
+SELECT CASE WHEN coalesce(c,0)>=0.75 AND strong>=3 THEN 'A' WHEN coalesce(c,0)>=0.55 AND ev>=1 THEN 'B'
+            WHEN coalesce(c,0)>=0.30 THEN 'C' ELSE 'Insufficient' END grade, count(*)
+FROM latest GROUP BY 1 ORDER BY 1;"
+```
+Expect: **all 79 carry anatomy**, with ≥~30 at Grade C or better (B+C). YELLOW launch is fine; if it
+**regressed** (e.g. anatomy NULL again, or B+C collapses toward 0), STOP and investigate before shipping.
+
 ## Step 1 — PHASE A re-verify (clean run)
 ```bash
 cd ~/yuclaw-v3
@@ -134,7 +152,20 @@ gh release create v4.0.0 dist/yuclaw-4.0.0* -t "YUCLAW v4.0.0 — Agent Research
 
 ## Step 11 — (optional) Announce — VinZhang's manual call
 After watching the dashboard for ~1 hour, post `drafts/v4.0.0_x_thread.md` (X) and
-`drafts/v4.0.0_telegram.md` (Telegram). Not automated.
+`drafts/v4.0.0_telegram.md` (Telegram). Not automated. Both now carry the **YELLOW evidence-transparency
+caveat** (X tweet 4/8; Telegram line above the compliance footer) — keep it in; it's the honest framing,
+not an apology.
+
+## Step 12 — End of ship day: confirm Thursday auto-fire still date-guards
+The daily Telegram cron is set to first fire **Thu 2026-06-04 07:35 MDT** in the **v4 format**. Before
+logging off ship day, confirm the guard is intact so nothing posts early and the resume is the v4 format:
+```bash
+crontab -l | grep "broadcast_bot daily"          # exists, guarded >= 20260604, \% escaping intact
+for d in 20260602 20260603 20260604; do echo "$d: $( [ "$d" -ge 20260604 ] && echo FIRES || echo blocked ); done
+cd ~/yuclaw && set -a && . ~/.yuclaw_env && set +a && python3 -m yuclaw.telegram.broadcast_bot daily --dry-run | head -6
+```
+Expect: one guarded line; 06-02/06-03 blocked, 06-04 FIRES; dry-run shows the v4 header + grade-first
+signals. Then verify the real post on **Thu ~07:36 ET** per Step 7b.
 
 ---
 
