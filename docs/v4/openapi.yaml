@@ -72,6 +72,42 @@ paths:
           default: false
       responses:
         '200': *id002
+  /v1/memo/{ticker}:
+    get:
+      operationId: getMemo
+      summary: Markdown research memo + the full ResearchResponse (Day 3). no_data-safe.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: *id001
+      - name: include_score
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: n_evidence
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 50
+      - name: as_of
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Memo wrapper (Markdown + ResearchResponse)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoOutput'
 components:
   schemas:
     ResearchResponse:
@@ -82,6 +118,12 @@ components:
           default: v4.0
           description: Schema contract version
           title: Schema Version
+          type: string
+        status:
+          default: ok
+          description: 'Q1: ''ok'' = a signal was found; ''no_data'' = no snapshot for (ticker, as_of)
+            — still a full envelope with empty evidence and a required compliance block.'
+          title: Status
           type: string
         ticker:
           description: Uppercase ticker
@@ -105,9 +147,17 @@ components:
           - type: string
           - type: 'null'
           default: null
-          description: 'If the label diverges from the score-derived band, why (Q1: e.g. ''RISK_ALERT:
-            REGULATORY_ACTION/LAWSUIT within 30d''). None when label == score band.'
+          description: 'If the label diverges from the score-derived band, why (e.g. ''RISK_ALERT: REGULATORY_ACTION/LAWSUIT
+            within 30d''). None when label == score band.'
           title: Signal Overlay
+        overlay_trigger:
+          anyOf:
+          - $ref: '#/components/schemas/Evidence'
+          - type: 'null'
+          default: null
+          description: 'Q3: the specific event that triggered an overlay (e.g. the REGULATORY_ACTION/LAWSUIT
+            that forced RISK_ALERT). Also present in `evidence`; denormalized here so the memo can lead
+            with the headline event. None when no overlay applied.'
         score:
           anyOf:
           - maximum: 1.0
@@ -124,10 +174,9 @@ components:
           title: Is Backfill
           type: boolean
         components:
-          description: C1–C9 component anatomies
+          description: C1–C9 component anatomies (all 9 when status='ok'; empty for status='no_data')
           items:
             $ref: '#/components/schemas/Component'
-          minItems: 1
           title: Components
           type: array
         evidence:
@@ -177,6 +226,38 @@ components:
       title: ResearchResponse
       type: object
       x-schema-version: v4.0
+    MemoOutput:
+      properties:
+        ticker:
+          title: Ticker
+          type: string
+        as_of:
+          format: date-time
+          title: As Of
+          type: string
+        signal:
+          $ref: '#/components/schemas/SignalLabel'
+        grade:
+          $ref: '#/components/schemas/EvidenceGrade'
+        mode:
+          description: full | evidence_limited | no_data
+          title: Mode
+          type: string
+        markdown:
+          title: Markdown
+          type: string
+        response:
+          $ref: '#/components/schemas/ResearchResponse'
+      required:
+      - ticker
+      - as_of
+      - signal
+      - grade
+      - mode
+      - markdown
+      - response
+      title: MemoOutput
+      type: object
     Compliance:
       additionalProperties: false
       description: 'REQUIRED on every response. Mirrors sdk COMPLIANCE + adds v4 metadata.

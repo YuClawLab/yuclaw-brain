@@ -28,7 +28,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional
 
@@ -204,6 +204,11 @@ class ResearchResponse(BaseModel):
     model_config = ConfigDict(extra="forbid", json_schema_extra={"x-schema-version": SCHEMA_VERSION})
 
     schema_version: str = Field(SCHEMA_VERSION, description="Schema contract version")
+    status: str = Field(
+        "ok",
+        description="Q1: 'ok' = a signal was found; 'no_data' = no snapshot for (ticker, as_of) — "
+                    "still a full envelope with empty evidence and a required compliance block.",
+    )
 
     # --- identity / point-in-time ---
     ticker: str = Field(..., pattern=r"^[A-Z][A-Z0-9.\-]{0,9}$", description="Uppercase ticker")
@@ -214,8 +219,14 @@ class ResearchResponse(BaseModel):
     signal: SignalLabel = Field(..., description="Locked public vocabulary label")
     signal_overlay: Optional[str] = Field(
         None,
-        description="If the label diverges from the score-derived band, why (Q1: e.g. "
+        description="If the label diverges from the score-derived band, why (e.g. "
                     "'RISK_ALERT: REGULATORY_ACTION/LAWSUIT within 30d'). None when label == score band.",
+    )
+    overlay_trigger: Optional[Evidence] = Field(
+        None,
+        description="Q3: the specific event that triggered an overlay (e.g. the REGULATORY_ACTION/LAWSUIT "
+                    "that forced RISK_ALERT). Also present in `evidence`; denormalized here so the memo can "
+                    "lead with the headline event. None when no overlay applied.",
     )
     score: Optional[float] = Field(
         None, ge=-1.0, le=1.0,
@@ -225,7 +236,9 @@ class ResearchResponse(BaseModel):
     is_backfill: bool = Field(False, description="True if as_of is historical/backfilled rather than live")
 
     # --- anatomy ---
-    components: list[Component] = Field(..., min_length=1, description="C1–C9 component anatomies")
+    components: list[Component] = Field(
+        ..., description="C1–C9 component anatomies (all 9 when status='ok'; empty for status='no_data')",
+    )
     evidence: list[Evidence] = Field(
         ..., description="Source events backing the signal (required key; may be empty for technical-only signals)",
     )
@@ -247,8 +260,13 @@ class ResearchResponse(BaseModel):
     compliance: Compliance = Field(..., description="Required not-advice / provenance block")
 
     @model_validator(mode="after")
-    def _evidence_ids_resolve(self) -> "ResearchResponse":
-        """Invariant 5: every Component.evidence_id must exist in `evidence`."""
+    def _check_invariants(self) -> "ResearchResponse":
+        if self.status not in ("ok", "no_data"):
+            raise ValueError(f"status must be 'ok' or 'no_data', got {self.status!r}")
+        # A real ('ok') response must carry the full component anatomy.
+        if self.status == "ok" and not self.components:
+            raise ValueError("status='ok' requires a non-empty components list")
+        # Invariant: every Component.evidence_id must exist in `evidence`.
         known = {e.event_id for e in self.evidence}
         for c in self.components:
             missing = [eid for eid in c.evidence_ids if eid not in known]
@@ -278,6 +296,38 @@ class ResearchResponse(BaseModel):
 
     def verify_ledger_hash(self) -> bool:
         return self.ledger_hash == self.compute_ledger_hash()
+
+    # ---- Q1 no-data envelope ----
+    @classmethod
+    def no_data(
+        cls,
+        ticker: str,
+        *,
+        as_of: Optional[datetime] = None,
+        reason: str = "No signal snapshot exists for this ticker at the requested time.",
+        model_id: str = "yuclaw-llm-70b",
+        prompt_version: str = "v2",
+    ) -> "ResearchResponse":
+        """A full, schema-valid envelope for the 'no data' case (Q1) — never a bare 404.
+
+        status='no_data', empty components/evidence, NEUTRAL placeholder, Insufficient
+        grade, and the REQUIRED compliance block. ledger_hash is sealed over it.
+        """
+        when = as_of or datetime.now(timezone.utc)
+        resp = cls(
+            status="no_data",
+            ticker=ticker.upper(),
+            as_of=when,
+            replay_id=f"{ticker.upper()}@no_data",
+            signal=SignalLabel.NEUTRAL,
+            components=[],
+            evidence=[],
+            confidence=Confidence(value=0.0, grade=EvidenceGrade.INSUFFICIENT, basis="no data"),
+            limitations=[reason, *DEFAULT_LIMITATIONS],
+            ledger_hash="0" * 64,
+            compliance=Compliance(model_id=model_id, prompt_version=prompt_version),
+        )
+        return resp.with_sealed_ledger_hash()
 
 
 __all__ = [

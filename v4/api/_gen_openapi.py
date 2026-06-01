@@ -1,10 +1,13 @@
 """Generate docs/v4/openapi.yaml from the Pydantic schema (run: python3 -m v4.api._gen_openapi)."""
 import yaml
 from v4.api.schema import ResearchResponse, SCHEMA_VERSION
+from v4.memo.generator import MemoOutput
 
 js = ResearchResponse.model_json_schema(ref_template="#/components/schemas/{model}")
 defs = js.pop("$defs", {})
-schemas = {"ResearchResponse": js, **defs}
+mjs = MemoOutput.model_json_schema(ref_template="#/components/schemas/{model}")
+mdefs = mjs.pop("$defs", {})
+schemas = {"ResearchResponse": js, "MemoOutput": mjs, **defs, **mdefs}
 
 DESC = (
     "ONE response contract (ResearchResponse) for every v4 surface. Research "
@@ -48,6 +51,19 @@ openapi = {
                 {"name": "include_score", "in": "query", "required": False,
                  "schema": {"type": "boolean", "default": False}}],
             "responses": RESP200}},
+        "/v1/memo/{ticker}": {"get": {
+            "operationId": "getMemo",
+            "summary": "Markdown research memo + the full ResearchResponse (Day 3). no_data-safe.",
+            "parameters": [
+                {"name": "ticker", "in": "path", "required": True, "schema": TICKER},
+                {"name": "include_score", "in": "query", "required": False,
+                 "schema": {"type": "boolean", "default": False}},
+                {"name": "n_evidence", "in": "query", "required": False,
+                 "schema": {"type": "integer", "default": 20, "minimum": 1, "maximum": 50}},
+                {"name": "as_of", "in": "query", "required": False,
+                 "schema": {"type": "string", "format": "date-time"}}],
+            "responses": {"200": {"description": "Memo wrapper (Markdown + ResearchResponse)",
+                          "content": {"application/json": {"schema": {"$ref": "#/components/schemas/MemoOutput"}}}}}}},
     },
     "components": {"schemas": schemas},
 }

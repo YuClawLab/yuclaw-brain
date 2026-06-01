@@ -10,6 +10,7 @@ from v3.cli import profile as profile_cmd
 from v3.cli import watch as watch_cmd
 from v3.cli import brief as brief_cmd
 from v3.cli import verify as verify_cmd
+from v4.memo import cli as memo_cmd
 
 COMMANDS = {
     "why": why_cmd.main,
@@ -19,6 +20,7 @@ COMMANDS = {
     "watch": watch_cmd.main,
     "brief": brief_cmd.main,
     "verify": verify_cmd.main,
+    "memo": memo_cmd.main,
 }
 
 

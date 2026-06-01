@@ -32,9 +32,10 @@ from yuclaw_py._backends import PostgresBackend
 from yuclaw_py._client import _validate_label
 from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE
 
-# v4 unified contract — the single assembler + schema (Day 2).
+# v4 unified contract — the single assembler + schema (Day 2) + memo (Day 3).
 from v4.api.builder import build_response
 from v4.api.schema import ResearchResponse
+from v4.memo.generator import MemoOutput, generate_memo
 
 _log = logging.getLogger("yuclaw.api")
 
@@ -143,10 +144,8 @@ def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
 
 @app.get("/v1/signal/{ticker}", response_model=ResearchResponse)
 def v1_signal(ticker: str, include_score: bool = Query(False)) -> ResearchResponse:
-    try:
-        return build_response(ticker, include_score=include_score)
-    except LookupError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    # Q1: missing data returns a status='no_data' envelope (200), never a bare 404.
+    return build_response(ticker, include_score=include_score)
 
 
 @app.get("/v1/why/{ticker}", response_model=ResearchResponse)
@@ -156,11 +155,21 @@ def v1_why(
     include_score: bool = Query(False),
     as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
 ) -> ResearchResponse:
-    try:
-        return build_response(ticker, as_of=_parse_as_of(as_of),
-                              include_score=include_score, n_evidence=n_evidence)
-    except LookupError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    return build_response(ticker, as_of=_parse_as_of(as_of),
+                          include_score=include_score, n_evidence=n_evidence)
+
+
+@app.get("/v1/memo/{ticker}", response_model=MemoOutput)
+def v1_memo(
+    ticker: str,
+    n_evidence: int = Query(20, ge=1, le=50, description="Memo default 20 (Q2)"),
+    include_score: bool = Query(False),
+    as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
+) -> MemoOutput:
+    # Wrapper object: Markdown memo + the full ResearchResponse (compliance inside it).
+    # no_data is handled inside generate_memo → always a complete, compliant envelope.
+    return generate_memo(ticker, as_of=_parse_as_of(as_of),
+                         include_score=include_score, n_evidence=n_evidence)
 
 
 @app.get("/replay/{ticker}")

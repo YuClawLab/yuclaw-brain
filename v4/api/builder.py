@@ -247,8 +247,10 @@ def build_response(
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             snap = _fetch_snapshot(cur, ticker, as_of)
             if snap is None:
-                raise LookupError(f"no snapshot for {ticker}"
-                                  + (f" at or before {as_of.isoformat()}" if as_of else ""))
+                # Q1: no bare 404 — return a full schema-valid no_data envelope.
+                reason = (f"No signal snapshot exists for {ticker}"
+                          + (f" at or before {as_of.isoformat()}." if as_of else " yet."))
+                return ResearchResponse.no_data(ticker, as_of=as_of, reason=reason)
 
             pit = snap["available_as_of"]  # point-in-time the signal is valid as of
             anatomy, composite_conf = _resolve_anatomy(snap, ticker, pit, conn)
@@ -278,18 +280,20 @@ def build_response(
                 implemented=implemented,
             ))
 
-        # --- Q1 RISK_ALERT overlay ---
+        # --- Q1 RISK_ALERT overlay (+ Q3 structured trigger) ---
         score_label = snap["signal_label"]
         signal = SignalLabel(score_label)
         overlay: Optional[str] = None
+        overlay_trigger: Optional[Evidence] = None
         cutoff = pit - timedelta(days=RISK_OVERLAY_WINDOW_DAYS)
-        risk_hits = sorted({
-            e.event_type for e in evidence
-            if e.event_type in RISK_OVERLAY_EVENT_TYPES and e.available_as_of >= cutoff
-        })
-        if risk_hits:
+        risk_events = [e for e in evidence
+                       if e.event_type in RISK_OVERLAY_EVENT_TYPES and e.available_as_of >= cutoff]
+        if risk_events:
             signal = SignalLabel.RISK_ALERT
-            overlay = f"RISK_ALERT: {'/'.join(risk_hits)} within {RISK_OVERLAY_WINDOW_DAYS}d"
+            hits = sorted({e.event_type for e in risk_events})
+            overlay = f"RISK_ALERT: {'/'.join(hits)} within {RISK_OVERLAY_WINDOW_DAYS}d"
+            # Q3: lead with the most recent triggering event.
+            overlay_trigger = max(risk_events, key=lambda e: e.available_as_of)
 
         # --- confidence + grade ---
         if composite_conf is None:
@@ -321,11 +325,13 @@ def build_response(
         prompt_version = prompts.most_common(1)[0][0] if prompts else _DEFAULT_PROMPT_VERSION
 
         resp = ResearchResponse(
+            status="ok",
             ticker=ticker,
             as_of=pit,
             replay_id=snap["snapshot_id"],
             signal=signal,
             signal_overlay=overlay,
+            overlay_trigger=overlay_trigger,
             score=(round(float(snap["total_score"]), 4) if include_score else None),
             is_backfill=bool(snap.get("is_backfill")),
             components=components,

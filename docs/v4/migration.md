@@ -67,8 +67,9 @@ These are shared blockers, not per-entry-point:
 ---
 
 ## New v4 consumers (build directly on the schema — no migration, just adoption)
-- **Memo Generator** — constructs the full memo from one `ResearchResponse` (see self-review: it has signal,
-  scored components with rationale, graded evidence with excerpts+links, limitations, compliance). Effort: **M**.
+- **Memo Generator** — ✅ **COMPLETE (Day 3)**: `v4/memo/generator.py::generate_memo()` renders Markdown from one
+  `ResearchResponse` (full / evidence-limited / no_data / RISK_ALERT modes). Entry points: CLI
+  `python3 -m v3.cli memo TICKER` and REST `GET /v1/memo/{ticker}` (→ `MemoOutput` wrapper). Score-off validated.
 - **LangChain tool wrapper** — wrap `build_response`; return `.model_dump_json()`; map `limitations`+`compliance`
   into the tool description so the agent surfaces caveats. Effort: **S**.
 - **LlamaIndex tool wrapper** — same as LangChain; expose `ledger_hash`/`replay_id` as node metadata for citations. Effort: **S**.
