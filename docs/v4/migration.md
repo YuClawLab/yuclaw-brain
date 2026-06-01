@@ -41,19 +41,19 @@ These are shared blockers, not per-entry-point:
 - Smoke-tested AMD/NVDA/ABT: schema-valid, ledger_hash recomputes, evidence_ids resolve, compliance present.
 - TODO (later): 404 currently returns FastAPI's default detail; add a compliance-bearing error envelope.
 
-## 2. MCP — `v3/mcp/server.py` → MCP v2  ·  Effort: **S** (after core)
-- `yuclaw_why` / `yuclaw_signal` tools return `build_response(...).model_dump(mode="json")`.
-- Drop the local `_stamp()`/`_validate_label()`; the schema's `SignalLabel` enum enforces vocab.
-- Update tool docstrings to advertise `replay_id`, `ledger_hash`, `confidence.grade`, `limitations`.
-- Agents gain a self-contained, verifiable answer (evidence + hashes) with no second call.
-- Keep tool names stable; only the payload shape grows (additive for existing consumers).
+## 2. MCP — `v3/mcp/server.py`  ·  ✅ **COMPLETE (Day 4)** — see docs/v4/mcp_v2.md
+- DONE: `yuclaw_why` (structured `ResearchResponse`) + `yuclaw_memo` (`MemoOutput`), both via
+  `build_response`/`generate_memo`; local `_stamp()`/`_validate_label()` removed.
+- DONE: both accept `ticker`, `as_of`, `include_score` (default off); `yuclaw_memo` also `n_evidence` (20/50).
+- DONE: server-level instructions carry the evidence-first/compliance reminder; `no_data` envelope returned consistently.
+- Dropped (subsumed): `yuclaw_signal`→`yuclaw_why`, `yuclaw_replay`→`yuclaw_why(as_of=)`, `yuclaw_events`→evidence array.
+  Retained auxiliary: `yuclaw_universe`, `yuclaw_validation`, `yuclaw_verify`.
 
-## 3. Python SDK — `sdk/yuclaw_py/` → v4  ·  Effort: **M**
-- `Client.why()/signal()` return a typed `ResearchResponse` (import the Pydantic model) instead of a raw dict.
-- `PostgresBackend` + `ApiBackend` both delegate to the shared assembler (postgres) / pass-through (api).
-- `_compliance.PUBLIC_LABELS` stays as the cross-check; `SignalLabel` becomes the canonical source.
-- Back-comat: offer `.model_dump()` and keep dict-style access via a thin shim for one minor version.
-- `client.events()` DataFrame is unaffected (separate surface).
+## 3. Python SDK — `sdk/yuclaw_py/`  ·  ⏳ **DEFERRED** (not in Day 4 scope)
+- The legacy `yuclaw_py.Client.why()/signal()` dict API is **unchanged**. The MCP server uses the Client only
+  for auxiliary `universe`/`validation` (not signals). The agent-facing "SDK" is now the LangChain/LlamaIndex
+  wrappers in `v4/integrations/` (below), which return the unified schema. Migrating the Client itself to return
+  a typed `ResearchResponse` (with a dict-shim for back-compat) remains a small, separate task.
 
 ## 4. CLI — `v3/cli/why.py`  ·  Effort: **M** (most divergent today)
 - `--json` must emit `ResearchResponse` (today it emits raw `signal_snapshots` columns:
@@ -70,9 +70,12 @@ These are shared blockers, not per-entry-point:
 - **Memo Generator** — ✅ **COMPLETE (Day 3)**: `v4/memo/generator.py::generate_memo()` renders Markdown from one
   `ResearchResponse` (full / evidence-limited / no_data / RISK_ALERT modes). Entry points: CLI
   `python3 -m v3.cli memo TICKER` and REST `GET /v1/memo/{ticker}` (→ `MemoOutput` wrapper). Score-off validated.
-- **LangChain tool wrapper** — wrap `build_response`; return `.model_dump_json()`; map `limitations`+`compliance`
-  into the tool description so the agent surfaces caveats. Effort: **S**.
-- **LlamaIndex tool wrapper** — same as LangChain; expose `ledger_hash`/`replay_id` as node metadata for citations. Effort: **S**.
+- **LangChain tool wrapper** — ✅ **COMPLETE (Day 4)**: `v4/integrations/langchain_yuclaw.py` —
+  `YuclawWhyTool` (structured) + `YuclawMemoTool`; HTTP over `/v1/why`, `/v1/memo`; `include_score`/`include_memo`
+  args; evidence-first tool descriptions. See docs/v4/langchain.md.
+- **LlamaIndex tool wrapper** — ✅ **COMPLETE (Day 4)**: `v4/integrations/llamaindex_yuclaw.py` —
+  `YuclawRetriever` maps each evidence item → a `TextNode` with citation metadata (source_url, accession_number,
+  ledger_hash, event_type, available_as_of, ticker, as_of) + `yuclaw_function_tools()`. See docs/v4/llamaindex.md.
 
 ## Suggested sequencing
 1. Shared assembler + data-gap fixes (1–7 above) — the real work.
