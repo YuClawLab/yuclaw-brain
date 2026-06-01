@@ -58,4 +58,7 @@ packages = ["v3", "v4"]
 "sdk/yuclaw_py" = "yuclaw_py"
 
 [tool.hatch.build.targets.sdist]
-include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE"]
+include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "docs"]
+# Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
+# or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
+exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc"]
