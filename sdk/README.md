@@ -2,7 +2,7 @@
 
 Python SDK for the [YUCLAW](https://github.com/YuClawLab/yuclaw-brain) open-source financial intelligence platform.
 
-> **Disclaimer.** Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser. Past results — backtested or forward-tracked — do not predict future performance.
+> **Disclaimer.** YUCLAW research output. Not investment advice. Past performance does not guarantee future results. Signal labels are research classifications, not buy/sell recommendations.
 
 ## Install
 

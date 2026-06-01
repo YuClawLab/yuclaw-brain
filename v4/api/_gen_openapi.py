@@ -1,6 +1,6 @@
 """Generate docs/v4/openapi.yaml from the Pydantic schema (run: python3 -m v4.api._gen_openapi)."""
 import yaml
-from v4.api.schema import ResearchResponse, SCHEMA_VERSION
+from v4.api.schema import COMPLIANCE_NOTICE, ResearchResponse, SCHEMA_VERSION
 from v4.memo.generator import MemoOutput
 
 js = ResearchResponse.model_json_schema(ref_template="#/components/schemas/{model}")
@@ -10,6 +10,7 @@ mdefs = mjs.pop("$defs", {})
 schemas = {"ResearchResponse": js, "MemoOutput": mjs, **defs, **mdefs}
 
 DESC = (
+    COMPLIANCE_NOTICE + "\n\n"
     "ONE response contract (ResearchResponse) for every v4 surface. Research "
     "classifications, NOT buy/sell. Required compliance block (draft-v0 wording pending legal). "
     "Q1: RISK_ALERT risk-overlay on recent REGULATORY_ACTION/LAWSUIT can diverge signal from score. "

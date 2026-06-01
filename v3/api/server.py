@@ -31,7 +31,8 @@ from fastapi.responses import JSONResponse
 # Reuse the SDK's query backend so API + SDK agree by construction.
 from yuclaw_py._backends import PostgresBackend
 from yuclaw_py._client import _validate_label
-from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE
+from yuclaw_py._compliance import COMPLIANCE
+from v4.api.schema import COMPLIANCE_NOTICE  # canonical not-advice wording (Day 9)
 
 # v4 unified contract — the single assembler + schema (Day 2) + memo (Day 3).
 from v4.api.builder import build_response
@@ -55,11 +56,7 @@ DSN = "dbname=yuclaw_events"
 app = FastAPI(
     title="YUCLAW API",
     version=API_VERSION,
-    description=(
-        "Research / education only. Not investment advice. "
-        "Signal labels are research classifications, not buy/sell recommendations. "
-        "YUCLAW is not a registered investment adviser."
-    ),
+    description=COMPLIANCE_NOTICE,  # canonical (Day 9 single source of truth)
 )
 
 # CORS: allow the dashboard origin (github pages), the SDK from anywhere,
@@ -108,16 +105,16 @@ def health() -> dict[str, Any]:
             db_ok = cur.fetchone()[0] == 1
     except Exception as e:
         _log.warning("health DB probe failed: %s", e)
+    # Day 9 (Q2): metadata endpoint — NO compliance block (reserved for signal data).
     return {"status": "ok" if db_ok else "degraded",
             "db_ok": db_ok,
-            "version": API_VERSION,
-            "compliance": dict(COMPLIANCE)}
+            "version": API_VERSION}
 
 
 @app.get("/universe")
 def universe() -> dict[str, Any]:
-    return {"universe": _backend().universe(),
-            "compliance": dict(COMPLIANCE)}
+    # Metadata — NO compliance block (Q2).
+    return {"universe": _backend().universe()}
 
 
 def _deprecate(response: Response, successor: str) -> None:

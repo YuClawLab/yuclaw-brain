@@ -2,19 +2,21 @@
 
 # YUCLAW
 
-**Open-Source AI Signal Research Platform**
+**Evidence-first financial research — every signal traced to its filings, verifiable by anyone.**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![PyPI](https://img.shields.io/badge/PyPI-v2.3.0-orange.svg)](https://pypi.org/project/yuclaw)
-[![DGX Spark](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76b900.svg)](https://nvidia.com)
-[![Ethereum](https://img.shields.io/badge/Anchor-Ethereum%20Sepolia-blue.svg)](https://sepolia.etherscan.io)
+[![PyPI](https://img.shields.io/badge/PyPI-yuclaw-orange.svg)](https://pypi.org/project/yuclaw)
+[![Agent-native](https://img.shields.io/badge/Agents-MCP%20%C2%B7%20LangChain%20%C2%B7%20LlamaIndex-7c4dff.svg)](#use-it-from-an-agent)
 
-> Open-source AI signal-research platform. Local Llama 3.1 70B inference
-> via Ollama, hash-anchored audit trail on Ethereum Sepolia, Alpaca paper
-> trading. **Research and education only — not financial advice.**
+> An open-source research engine that turns SEC filings into **research
+> classifications** (never buy/sell calls). Every signal links to its source
+> filings, carries an Evidence Quality grade, and is hash-anchored in a public,
+> git-anchored ledger so anyone can independently verify it.
+>
+> **Research and education only. Not investment advice.**
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Pricing](docs/pricing.md) · [Methodology](docs/methodology/backtest.md) · **[Disclaimer](DISCLAIMER.md)** · [PyPI](https://pypi.org/project/yuclaw)
+[Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · [Disclaimer](DISCLAIMER.md) · [Public ledger](https://github.com/YuClawLab/yuclaw-trust) · [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
 
@@ -22,276 +24,127 @@
 
 ## Try it in 3 minutes
 
-YUCLAW v4 is **evidence-first**: every signal is a research classification (never buy/sell),
-traced to its SEC filings and verifiable against a public, git-anchored ledger.
-
 ```bash
 pip install yuclaw
 yuclaw demo
 ```
 
-`yuclaw demo` runs a guided 3-minute journey on a real, frozen signal — the structured
-signal and what drives it, the full research memo with every claim linked to an SEC filing
-(accession number + ledger hash), a deterministic point-in-time replay, and an independent
-verification against the public Verified Research Ledger. Raw scores are hidden by default
-(research, not numeric recommendations).
+`yuclaw demo` is a guided, ~3-minute journey on a real, frozen signal: it shows the
+structured signal and what drives it, the full research memo with every claim linked to
+an SEC filing (accession number + ledger hash), a deterministic point-in-time replay, and
+an independent verification against the public ledger. Raw scores are hidden by default —
+**research, not numeric recommendations**.
 
 ```bash
-yuclaw why   AMD --as-of 2026-05-20   # structured signal (add --include-score for the composite)
-yuclaw memo  AMD --as-of 2026-05-20   # full research memo with evidence trail
-yuclaw cascade AMD --as-of 2026-05-20 # supply-chain cascade that propagated into AMD
-yuclaw verify AMD --date 2026-05-20   # re-verify the hash against the public ledger
-yuclaw share AMD --as-of 2026-05-20   # generate a shareable, independently-verifiable HTML card
+yuclaw why     AMD --as-of 2026-05-20   # structured signal (add --include-score for the composite)
+yuclaw memo    AMD --as-of 2026-05-20   # full research memo with evidence trail
+yuclaw cascade AMD --as-of 2026-05-20   # supply-chain cascade that propagated into AMD
+yuclaw verify  AMD --date 2026-05-20    # re-verify the hash against the public ledger
+yuclaw share   AMD --as-of 2026-05-20   # a self-contained, independently-verifiable HTML card
 ```
 
 The CLI (and the in-process SDK / MCP) is **never metered** — self-hosting is unlimited and
-offline. The hosted REST API works anonymously (20 req/day/IP); for a higher quota
-(100 req/day) request a key with `yuclaw keys create` and pass `--api-key` / `Authorization:
-Bearer`. See [docs/v4/api_keys.md](docs/v4/api_keys.md).
+offline. The hosted REST API works anonymously (20 req/day/IP); a key raises the quota to
+100/day (`yuclaw keys create`).
 
 ---
 
-## Quick start
+## What YUCLAW is — and is not
+
+- It produces **research classifications**: `STRONG_BULLISH · BULLISH · NEUTRAL · WATCH ·
+  WEAKENING · NEGATIVE_EVENT · BEARISH_WATCH · RISK_ALERT`. There is **no SELL/SHORT/BUY**
+  vocabulary — these are research labels, not recommendations.
+- Every signal is **explainable and verifiable**: a 9-component anatomy with rationale, an
+  evidence trail where each item carries a `source_url` + SEC `accession_number` +
+  `ledger_hash`, and a point-in-time `replay_id`.
+- A **tamper-evidence record**: signal content hashes are committed to a public,
+  **git-anchored** Verified Research Ledger ([yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust)).
+  Anyone can recompute a hash from the public filings and confirm a signal was unaltered.
+- It is **not** a trading bot, **not** investment advice, and makes **no** zero-knowledge or
+  cryptographic proof of strategy correctness — the ledger proves *integrity & timing*, nothing more.
+
+---
+
+## Capabilities
+
+| Surface | What you get |
+|---|---|
+| **CLI** | `yuclaw demo · why · memo · cascade · share · verify · keys` |
+| **REST** | `GET /v1/{why,signal,memo,cascade,verify}/{ticker}` → one unified `ResearchResponse`; `/v1/share`, `/v1/keys/*` |
+| **MCP** | `yuclaw_why` (structured), `yuclaw_memo` (markdown) + `yuclaw_universe/validation/verify` — drop into Claude Desktop |
+| **Agents** | LangChain `YuclawWhyTool`/`YuclawMemoTool`; LlamaIndex `YuclawRetriever` (each evidence item → a citable node) |
+| **SDK** | `yuclaw_py.Client` (local Postgres or hosted API) |
+
+Every surface returns the **same contract** — see [docs/v4/openapi.yaml](docs/v4/openapi.yaml)
+and [docs/v4/migration.md](docs/v4/migration.md).
+
+### Use it from an agent
+```python
+from v4.integrations.langchain_yuclaw import YuclawWhyTool, YuclawMemoTool
+agent = create_react_agent(llm, [YuclawWhyTool(), YuclawMemoTool()])
+
+from v4.integrations.llamaindex_yuclaw import YuclawRetriever
+nodes = YuclawRetriever().retrieve("AMD")   # one citable node per source filing
+```
+See [docs/v4/mcp_v2.md](docs/v4/mcp_v2.md), [docs/v4/langchain.md](docs/v4/langchain.md),
+[docs/v4/llamaindex.md](docs/v4/llamaindex.md), [docs/v4/api_keys.md](docs/v4/api_keys.md).
+
+---
+
+## Why a bounded ~80-name universe?
+
+YUCLAW tracks **~80 names** (49 equities + 15 sector ETFs + 5 broad ETFs + 10 macro indices),
+not the whole market. The thesis is depth over breadth: a bounded universe lets every signal
+be backed by **actually-read primary filings** and a curated supply-chain influence graph,
+rather than thin coverage across thousands of tickers. The universe is explicit in
+`v3/universe.json` and expands deliberately (see Roadmap).
+
+---
+
+## Verification
+
+Every signal's content hash is committed to the public git-anchored ledger. To verify:
 
 ```bash
-pip install yuclaw
-yuclaw today
+yuclaw verify AMD --date 2026-05-20
+# ✓ VERIFIED — recomputed hash matches the public ledger entry (commit 8a67ba7).
 ```
 
-Sample output:
-```
-YUCLAW Daily Brief — 2026-05-14
-==================================================
-
-MARKET: RISK_ON (85% confidence)
-   Overweight equities
-   Reduce bonds/gold
-
-TOP BUY SIGNALS:
-   INTC   STRONG_BUY   score:+0.736 price:$116.74
-   DELL   STRONG_BUY   score:+0.661 price:$247.54
-   AMD    STRONG_BUY   score:+0.614 price:$446.92
-
-Verified backtest results coming this week — see methodology link below.
-
-PORTFOLIO ACTION:
-   Open-source signal output. Consult a licensed advisor before trading.
-```
-
-## Command surface (v2.3.0)
-
-```bash
-yuclaw today          # Daily brief
-yuclaw signals        # Raw signal list (top 20 from aggregator)
-yuclaw regime         # Macro regime (RISK_ON / RISK_OFF / CRISIS)
-yuclaw watchlist      # All signals with prices and actions
-yuclaw portfolio      # Kelly-optimal allocation for your capital
-yuclaw track          # Day-N track record from track_record_builder
-yuclaw brief          # Latest LLM synthesis
-yuclaw ask "..."      # Ask the local LLM any financial question
-yuclaw verify LUNR    # Look up signal hash + Sepolia anchor (when present)
-yuclaw risk           # Portfolio risk metrics (VaR, CVaR, Kelly)
-yuclaw dashboard      # Open live dashboard URL
-yuclaw sector         # Sector-rotation snapshot (1-day vs prior close)
-yuclaw news           # LLM-scored sentiment for top tickers
-yuclaw earnings       # This week's earnings calendar (Finnhub)
-yuclaw learn [topic]  # Plain-English explainers (kelly, calmar, var, …)
-yuclaw chain TICKER   # 2nd-order causal-graph trade-idea generator
-yuclaw audio FILE     # Whisper transcription + LLM sentiment
-yuclaw l2 [TICKER]    # Order-book microstructure (N/A without L2 feed)
-yuclaw swarm          # Bull / Bear / Oracle LLM debate
-yuclaw paper          # Alpaca paper-trading orders (with 7 safety nets)
-yuclaw trade [...]    # $100K paper portfolio simulator (separate from `paper`)
-yuclaw start          # Start all engines
-```
-
-> **`yuclaw l2`**: real iceberg detection requires a Level-2 data feed.
-> Without one, the command returns `N/A` instead of fabricated microstructure.
+The `yuclaw share` card embeds the same hash + a "Verify independently →" link, so a
+recipient can confirm a signal without trusting us. See
+[yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) for the honest framing of what
+hash-anchoring does (integrity & timing) and does not (it is **not** a proof of strategy merit).
 
 ---
 
-## Live dashboard
+## Compliance
 
-**[yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain)** — refreshes every 30 minutes from cron.
+> **YUCLAW research output. Not investment advice. Past performance does not guarantee
+> future results. Signal labels are research classifications, not buy/sell recommendations.**
 
----
-
-## What YUCLAW gives you
-
-- **Real signals** — factor-scored buy/sell across a **39-ticker universe**
-  (leveraged ETFs blocklisted to avoid distorting momentum).
-- **Backtest engine** — strategy backtest output in `output/backtest_all.json`,
-  with explicit limitations documented in
-  [`docs/methodology/backtest.md`](docs/methodology/backtest.md).
-- **Hash-anchored audit trail** — selected signal-decision hashes anchored on
-  Ethereum Sepolia testnet by the ZKP module. See
-  [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) for the honest
-  framing of what's hash-only vs. zk-SNARK.
-- **Local LLM inference** — Llama 3.1 70B (Q4_K_M, 42 GB) via Ollama on
-  NVIDIA DGX Spark GB10, configured locally as the `nemotron-3-super-local`
-  Ollama tag with a financial-analyst system prompt. **Zero cloud LLM
-  dependency.** (Note: Finnhub is used as the cloud price/news data source.
-  Real Nemotron 3 Super 120B via OpenRouter is wired in `yuclaw/core/router.py`
-  as a dormant fallback path; activate by setting `OPENROUTER_API_KEY`.)
-- **Macro regime detector** — CRISIS / RISK_OFF / RISK_ON classification from
-  SPY/TLT/GLD/UUP momentum.
-- **Alpaca paper-trading bridge** — `yuclaw paper` ships with seven safety
-  nets (paper-URL guard, validation ping, market-hours check, $10K notional
-  cap, first-run consent, append-only audit log, drawdown kill switch).
-- **Forward track record** — `cron/track_record_builder.sh` writes a fresh
-  daily entry to `output/track_record/dayN.json` after market close.
+This notice is the single source of truth (`v4/api/schema.py::COMPLIANCE_NOTICE`, tag
+`draft-v0`) and is attached to every signal-data response (including denials). See
+[DISCLAIMER.md](DISCLAIMER.md). Full disclosure: the wording is a conservative placeholder
+pending a post-funding securities-law review.
 
 ---
 
-## Methodology and limitations
+## Roadmap
 
-The dashboard's **BACKTEST RESULTS** card and the `yuclaw track` command both
-read from a pipeline whose limitations are documented in
-[`docs/methodology/backtest.md`](docs/methodology/backtest.md). In short:
-
-- The forward track record (`track_record_latest.json`) currently captures
-  entry price = signal-time price, but the entry-price-vs-current-price
-  comparison assumes zero transaction cost and zero slippage.
-- The strategy backtest (`engines/run_backtest.py`) produces a Calmar metric
-  on historical close-to-close returns. It does not model bid/ask, fills,
-  partials, or financing costs.
-- Anyone reading a single accuracy or Calmar number on the dashboard should
-  read the methodology page before drawing inferences.
-
-**No table of headline % returns appears in this README.** The
-"verified backtest results" panel on the dashboard is currently a neutral
-placeholder pending live computation from `track_record_verified.json` (see
-that file's known schema mismatch — being addressed).
+- **v4 (shipped):** unified `ResearchResponse`, REST + MCP + LangChain/LlamaIndex, Memo
+  Generator, Cascade History View, Share-this-Signal card, API keys + lite metering, the
+  3-minute demo, and the compliance regression guard.
+- **v4.1 (deferred):** multi-LLM extraction & cross-checking, Whisper audio ingestion, a
+  larger universe, hosted share links, and a public bearish/short research lane (carefully
+  scoped — still research classifications, never recommendations).
 
 ---
 
-## System architecture
+## License & contributing
 
-```mermaid
-graph TD
-    A[Market Data: Finnhub + yfinance, 39 tickers] --> B[Factor Library: RSI, MACD, Bollinger, momentum]
-    B --> C[Signal Aggregator v2.4: 6-component composite]
-    C --> D[Risk Engine: VaR, CVaR, Kelly]
-    D --> E[Macro Regime Detector]
-    E --> F[Llama 3.1 70B - Local via Ollama]
-    F --> G[Hash Anchor: Ethereum Sepolia]
-    G --> H[Dashboard + Daily Brief + Forward Track Record]
-```
+MIT. Issues and PRs welcome at
+[github.com/YuClawLab/yuclaw-brain](https://github.com/YuClawLab/yuclaw-brain). The compliance
+regression test (`tests/test_compliance_regression.py`) runs on every PR — new endpoints must
+keep the compliance block on signal responses.
 
-### Directory structure
-
-```
-yuclaw/
-  modules/       Signal aggregator, macro regime detection, sector rotation
-  factors/       Factor library — RSI, MACD, Bollinger
-  risk/          VaR, CVaR, Kelly criterion
-  brain/         Evidence Graph v2, financial NER
-  edge/          Broker gateways (Alpaca REST today, FIX-via-yuclaw-edge planned)
-  daemon/        ATROS: alerts + AutoDream daily synthesis
-  oil/           Oil intelligence (EIA + LLM brief)
-  utils/         Inference-speed measurement, helpers
-  trust/         ZKP module (hash anchors today; zk-SNARK on roadmap)
-  openclaw/      OpenClaw skill + MCP server
-docs/methodology/  Backtest methodology disclosure
-cron/            Scheduled engines (see Operations table below)
-engines/         Strategy backtest, factor scan, screener
-```
-
----
-
-## Operations — what's actually scheduled
-
-This is the live cron table as of v2.3.0. Frequencies are read from
-`crontab -l`, not aspirational.
-
-| Engine | Frequency | Output |
-|:---|:---:|:---|
-| Dashboard refresh | every 30 min | `docs/index.html` (auto-pushed) |
-| Health monitor | every 30 min | `/tmp/yuclaw_health.log` |
-| Ollama check | every 30 min | sanity ping to local Ollama |
-| Sentiment archive | every 4 hours | `output/sentiment/*.json` |
-| Oil intelligence | hourly | `output/oil/YYYY-MM-DD_brief.json` |
-| Swarm debate | nightly 23:00 MDT | `output/swarm/YYYY-MM-DD.json` |
-| Nightly score regeneration | weekdays 18:00 MDT | aggregator + sector + earnings |
-| ATROS daemon | daily 18:15 MDT | alert + AutoDream summary |
-| Track record | daily 16:30 MDT | `output/track_record/dayN.json` |
-| PyTorch check | daily 22:00 MDT | dependency sanity |
-| Oil brief | nightly 23:00 MDT | LLM oil synthesis |
-
-Modules **not currently in active cron** but present in the codebase:
-Dark Pool engine, evidence graph v2, FinSkills marketplace, YCT governance
-token. These are research modules — outputs in `output/` exist but are not
-auto-refreshed.
-
----
-
-## Hardware
-
-- **GPU**: NVIDIA Grace Blackwell GB10 (128 GB unified memory)
-- **LLM**: Llama 3.1 70B (Q4_K_M, ~42 GB on GPU, 80 layers) served via
-  Ollama. Exposed locally as the `nemotron-3-super-local` Ollama tag with a
-  financial-analyst system prompt. The real Nemotron 3 Super 120B is wired
-  in `yuclaw/core/router.py` as a dormant OpenRouter fallback (sm_121a-blocked
-  on the vLLM path); the active production path uses Llama 3.1 70B locally.
-- **Measured generation speed**: ~2.2–2.7 tok/s on 50-token completions
-  (rendered live in the dashboard's TOK/S stat card — `output/inference_stats.json`
-  is rewritten by every nightly cron run).
-- **Signal cycle**: ~39 s end-to-end for the score-regeneration pipeline.
-
----
-
-## OpenClaw integration
-
-```bash
-# As an OpenClaw skill
-bash <(curl -s https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/yuclaw/openclaw/install.sh)
-
-# Or as MCP server
-python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
-```
-
----
-
-## Community
-
-| | |
-|:---|:---|
-| Dashboard | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
-| Twitter | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
-| GitHub | [YuClawLab](https://github.com/YuClawLab) |
-| PyPI | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
-| Methodology | [docs/methodology/backtest.md](docs/methodology/backtest.md) |
-
----
-
-## ⚠️ Disclaimer
-
-YUCLAW is open-source research and educational software. **It is NOT
-financial advice, investment advice, or a recommendation to buy, sell, or
-hold any security.** All signals, scores, and analyses are generated by
-automated AI models and may contain errors.
-
-Past performance does not guarantee future results. Trading involves
-substantial risk of loss. You are solely responsible for your own
-investment decisions. Consult a licensed financial advisor before making
-any investment.
-
-YuClawLab, its contributors, and affiliates accept no liability for any
-losses arising from use of this software.
-
-*For educational and research purposes only. MIT Licensed.*
-
-See [`docs/methodology/backtest.md`](docs/methodology/backtest.md) and
-[`DISCLAIMER.md`](DISCLAIMER.md) for the long-form versions.
-
----
-
-<div align="center">
-
-Released under the **MIT License** — free for everyone.
-
-*Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B via Ollama · Local inference · Hash-anchored on Ethereum Sepolia*
-
-**[pip install yuclaw](https://pypi.org/project/yuclaw)**
-
-</div>
+*Built with local Llama 3.1 70B inference (Ollama) on NVIDIA GB10. Research and education only — not investment advice.*

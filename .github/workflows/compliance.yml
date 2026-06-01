@@ -1,0 +1,51 @@
+name: compliance-regression
+
+# Compliance gate (v4 Day 9): every signal-data response must carry the compliance
+# block; metadata/account responses must not. This guard runs on every PR.
+#
+# NOTE: the test needs a Postgres `yuclaw_events` DB seeded with v3 snapshots/events
+# (the integration fixtures). In CI this requires a Postgres service + a seed step;
+# until that seed is wired, run locally:  python3 -m pytest tests/test_compliance_regression.py -v
+
+on:
+  pull_request:
+    paths:
+      - "v3/api/**"
+      - "v4/**"
+      - "sdk/**"
+      - "tests/test_compliance_regression.py"
+  push:
+    branches: [v3.0-evidence, main]
+
+jobs:
+  compliance:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: yuclaw_events
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Install deps
+        run: pip install fastapi httpx pytest psycopg2-binary pydantic jinja2 pandas
+      - name: Apply schema + migrations
+        run: |
+          export PGPASSWORD=postgres
+          psql -h localhost -U postgres -d yuclaw_events -f v3/schema.sql || true
+          for m in v3/migrations/*.sql; do psql -h localhost -U postgres -d yuclaw_events -f "$m" || true; done
+        # TODO: add a seed step that loads representative snapshots/events so the
+        # signal endpoints return data (otherwise they return no_data — which the
+        # test still validates carries compliance).
+      - name: Compliance regression
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+        run: python3 -m pytest tests/test_compliance_regression.py -v

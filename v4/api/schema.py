@@ -36,6 +36,20 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 SCHEMA_VERSION = "v4.0"
 
+# ─────────────────────────────────────────────────────────────────────────────
+# CANONICAL not-advice wording — the SINGLE source of truth (Day 9 / Q5).
+# Every surface (Compliance.notice, memo footer, share card, OpenAPI description,
+# DISCLAIMER.md, README) must reference or match this verbatim. Do NOT weaken it —
+# it is the load-bearing legal language. Versioned by COMPLIANCE_TEXT_VERSION so a
+# future lawyer-reviewed swap (draft-v0 → v1) is a one-line change.
+# ─────────────────────────────────────────────────────────────────────────────
+COMPLIANCE_NOTICE = (
+    "YUCLAW research output. Not investment advice. "
+    "Past performance does not guarantee future results. "
+    "Signal labels are research classifications, not buy/sell recommendations."
+)
+COMPLIANCE_TEXT_VERSION = "draft-v0"
+
 
 # --------------------------------------------------------------------------- #
 # Locked vocabularies
@@ -172,16 +186,14 @@ class Compliance(BaseModel):
     not_advice: bool = Field(True, description="Always true")
     research_only: bool = Field(True, description="Always true")
     not_registered_adviser: bool = Field(True, description="Always true")
-    # Q4: conservative wording, marked PLACEHOLDER pending securities review. Swapping
-    # in lawyer-reviewed text is a one-field change + a bump of compliance_text_version.
+    # Single source of truth: the canonical COMPLIANCE_NOTICE constant (Day 9 / Q5).
+    # PLACEHOLDER (draft-v0) — conservative; swap to lawyer-reviewed text post-funding.
     notice: str = Field(
-        "This is research output, not investment advice. "
-        "Past performance does not guarantee future results. "
-        "Not a recommendation to buy or sell any security.",
-        description="Not-advice notice. PLACEHOLDER (draft-v0) pending securities review.",
+        COMPLIANCE_NOTICE,
+        description="Canonical not-advice notice (== schema.COMPLIANCE_NOTICE). PLACEHOLDER pending review.",
     )
     compliance_text_version: str = Field(
-        "draft-v0",
+        COMPLIANCE_TEXT_VERSION,
         description="Version tag for `notice`. 'draft-v0' = pre-legal-review placeholder.",
     )
     jurisdiction: str = Field("US", description="Regulatory jurisdiction the notice is written for")
@@ -404,7 +416,8 @@ class ResearchResponse(BaseModel):
 
 
 __all__ = [
-    "SCHEMA_VERSION", "SignalLabel", "EvidenceGrade", "COMPONENT_NAMES",
+    "SCHEMA_VERSION", "COMPLIANCE_NOTICE", "COMPLIANCE_TEXT_VERSION",
+    "SignalLabel", "EvidenceGrade", "COMPONENT_NAMES",
     "DEFAULT_LIMITATIONS", "Component", "Evidence", "Confidence", "Compliance",
     "CascadeEdge", "CascadeNode",
     "ResearchResponse",

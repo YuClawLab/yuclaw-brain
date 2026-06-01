@@ -134,11 +134,9 @@
 
     <div class="meta">replay_id <code>{{ replay_id }}</code> · model {{ model_id }} / prompt {{ prompt_version }} · jurisdiction {{ jurisdiction }}</div>
 
-    <!-- COMPLIANCE footer (repeat) -->
+    <!-- COMPLIANCE footer (canonical COMPLIANCE_NOTICE) -->
     <div class="foot">
-      <b>YUCLAW research output. Not investment advice.</b>
-      Past performance does not guarantee future results.
-      Signal labels are research classifications, not buy/sell recommendations.
+      {{ compliance_notice }}
       Compliance text version: {{ compliance_text_version }}.
     </div>
   </div>

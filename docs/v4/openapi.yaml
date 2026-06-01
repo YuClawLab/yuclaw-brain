@@ -3,11 +3,15 @@ info:
   title: YuClaw Agent Research API
   version: v4.0
   summary: Unified, point-in-time, evidence-anchored research signals.
-  description: 'ONE response contract (ResearchResponse) for every v4 surface. Research classifications,
-    NOT buy/sell. Required compliance block (draft-v0 wording pending legal). Q1: RISK_ALERT risk-overlay
-    on recent REGULATORY_ACTION/LAWSUIT can diverge signal from score. Q2: score gated (REST/MCP opt-in
-    via include_score; SDK/CLI on). Q3: ledger_hash (self SHA-256) + ledger_anchor_url (git-anchored ledger).
-    Grade: A=conf>=0.75 & >=3 strong events; B=conf>=0.55 & >=1; C=conf>=0.30; else Insufficient.'
+  description: 'YUCLAW research output. Not investment advice. Past performance does not guarantee future
+    results. Signal labels are research classifications, not buy/sell recommendations.
+
+
+    ONE response contract (ResearchResponse) for every v4 surface. Research classifications, NOT buy/sell.
+    Required compliance block (draft-v0 wording pending legal). Q1: RISK_ALERT risk-overlay on recent
+    REGULATORY_ACTION/LAWSUIT can diverge signal from score. Q2: score gated (REST/MCP opt-in via include_score;
+    SDK/CLI on). Q3: ledger_hash (self SHA-256) + ledger_anchor_url (git-anchored ledger). Grade: A=conf>=0.75
+    & >=3 strong events; B=conf>=0.55 & >=1; C=conf>=0.30; else Insufficient.'
   x-not-advice: Research and education only. Not investment advice.
 servers:
 - url: https://api.yuclaw.com
@@ -167,10 +171,18 @@ components:
           type: string
         status:
           default: ok
-          description: 'Q1: ''ok'' = a signal was found; ''no_data'' = no snapshot for (ticker, as_of)
-            — still a full envelope with empty evidence and a required compliance block.'
+          description: '''ok'' = a signal was found; ''no_data'' = no snapshot for (ticker, as_of); ''rate_limited''
+            = quota exceeded. ALL carry the required compliance block.'
           title: Status
           type: string
+        retry_after:
+          anyOf:
+          - minimum: 0
+            type: integer
+          - type: 'null'
+          default: null
+          description: Seconds to wait before retrying (set only when status='rate_limited').
+          title: Retry After
         ticker:
           description: Uppercase ticker
           pattern: ^[A-Z][A-Z0-9.\-]{0,9}$
@@ -439,9 +451,10 @@ components:
           title: Not Registered Adviser
           type: boolean
         notice:
-          default: This is research output, not investment advice. Past performance does not guarantee
-            future results. Not a recommendation to buy or sell any security.
-          description: Not-advice notice. PLACEHOLDER (draft-v0) pending securities review.
+          default: YUCLAW research output. Not investment advice. Past performance does not guarantee
+            future results. Signal labels are research classifications, not buy/sell recommendations.
+          description: Canonical not-advice notice (== schema.COMPLIANCE_NOTICE). PLACEHOLDER pending
+            review.
           title: Notice
           type: string
         compliance_text_version:

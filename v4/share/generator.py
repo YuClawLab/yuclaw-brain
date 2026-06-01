@@ -20,7 +20,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from v3.proof.verify import verify as proof_verify
 from v4.api.builder import DSN, build_response
-from v4.api.schema import ResearchResponse
+from v4.api.schema import COMPLIANCE_NOTICE, ResearchResponse
 
 _TEMPLATE_DIR = Path(__file__).resolve().parent / "templates"
 _INSIDER = {"INSIDER_BUY", "INSIDER_SELL"}
@@ -134,6 +134,7 @@ def _card_context(resp: ResearchResponse, verification: dict) -> dict:
         "prompt_version": resp.compliance.prompt_version,
         "jurisdiction": resp.compliance.jurisdiction,
         "compliance_text_version": resp.compliance.compliance_text_version,
+        "compliance_notice": COMPLIANCE_NOTICE,   # canonical (Day 9 single source of truth)
         # OG / Twitter
         "og_title": og_title, "og_description": og_desc, "og_image": None,
         "twitter_card": "summary",
