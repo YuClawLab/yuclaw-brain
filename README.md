@@ -20,6 +20,30 @@
 
 ---
 
+## Try it in 3 minutes
+
+YUCLAW v4 is **evidence-first**: every signal is a research classification (never buy/sell),
+traced to its SEC filings and verifiable against a public, git-anchored ledger.
+
+```bash
+pip install yuclaw
+yuclaw demo
+```
+
+`yuclaw demo` runs a guided 3-minute journey on a real, frozen signal — the structured
+signal and what drives it, the full research memo with every claim linked to an SEC filing
+(accession number + ledger hash), a deterministic point-in-time replay, and an independent
+verification against the public Verified Research Ledger. Raw scores are hidden by default
+(research, not numeric recommendations).
+
+```bash
+yuclaw why   AMD --as-of 2026-05-20   # structured signal (add --include-score for the composite)
+yuclaw memo  AMD --as-of 2026-05-20   # full research memo with evidence trail
+yuclaw verify AMD --date 2026-05-20   # re-verify the hash against the public ledger
+```
+
+---
+
 ## Quick start
 
 ```bash

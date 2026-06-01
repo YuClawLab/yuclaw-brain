@@ -96,15 +96,17 @@ def _clean_excerpt(s: Optional[str]) -> str:
 
 _INSIDER = {"INSIDER_BUY", "INSIDER_SELL"}
 
-# Strips the trailing component-score verdict ("→ score +1.000", "→ tanh -0.31")
-# from rationale when score is gated off, so the qualitative descriptor stands alone.
-_SCORE_TAIL_RE = re.compile(r"\s*→\s*(?:score|tanh|avg)\s*[+\-]?\d*\.?\d+\s*$", re.IGNORECASE)
+# Strips the component-score verdict ("→ score +1.000", "→ tanh -0.31") from
+# rationale when score is gated off, so the qualitative descriptor stands alone.
+# Not anchored to end: a trailing "(warning: …)" can follow the verdict.
+_SCORE_VERDICT_RE = re.compile(r"\s*→\s*(?:score|tanh|avg)\s*[+\-]?\d*\.?\d+", re.IGNORECASE)
 
 
 def _clean_rationale(rationale: str, include_score: bool) -> str:
     if include_score or not rationale:
         return rationale
-    return _SCORE_TAIL_RE.sub("", rationale).strip()
+    cleaned = _SCORE_VERDICT_RE.sub("", rationale)
+    return re.sub(r"\s{2,}", " ", cleaned).strip()
 
 
 # --------------------------------------------------------------------------- #

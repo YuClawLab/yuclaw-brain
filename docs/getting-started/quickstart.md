@@ -6,6 +6,34 @@ research and education only — not financial advice.**
 
 ---
 
+## Try it in 3 minutes
+
+The fastest way to understand YUCLAW v4 — two commands from nothing:
+
+```bash
+pip install yuclaw
+yuclaw demo
+```
+
+`yuclaw demo` is a guided 3-minute journey on a real, frozen signal: the structured
+signal and its drivers, the full research memo with every claim linked to an SEC filing
+(`accession_number` + `ledger_hash`), a deterministic point-in-time replay, and an
+independent verification against the public, git-anchored Verified Research Ledger.
+
+Then explore the same signal yourself:
+
+```bash
+yuclaw why   AMD --as-of 2026-05-20   # structured signal (research classification, never buy/sell)
+yuclaw why   AMD --as-of 2026-05-20 --include-score   # opt in to the raw composite score
+yuclaw memo  AMD --as-of 2026-05-20   # full research memo
+yuclaw verify AMD --date 2026-05-20   # re-verify the integrity hash against the public ledger
+```
+
+Every response carries a required compliance block and explicit limitations; a missing
+ticker returns a `status: "no_data"` envelope, never a fabricated signal.
+
+---
+
 ## What YUCLAW is
 
 - An **open-source AI signal generator** for a 39-ticker universe.

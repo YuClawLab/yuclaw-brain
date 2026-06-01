@@ -55,14 +55,12 @@ These are shared blockers, not per-entry-point:
   wrappers in `v4/integrations/` (below), which return the unified schema. Migrating the Client itself to return
   a typed `ResearchResponse` (with a dict-shim for back-compat) remains a small, separate task.
 
-## 4. CLI — `v3/cli/why.py`  ·  Effort: **M** (most divergent today)
-- `--json` must emit `ResearchResponse` (today it emits raw `signal_snapshots` columns:
-  `signal_label`/`total_score`/`c1_price_momentum...`, evidence key `type`). This is a breaking
-  rename → gate behind `--schema v4` for one release, then flip default.
-- Text renderer reads from the `ResearchResponse` object (components now carry real rationale +
-  evidence_ids — fixes the current empty-rationale placeholder at `why.py:138-146`).
-- Add a `Grade: A/B/C` line and the `limitations` list to the text output.
-- Reuse the assembler; drop the bespoke `_fetch_latest_snapshot` / `_fetch_top_events` SQL.
+## 4. CLI  ·  ✅ **COMPLETE (Day 3 + Day 5)**
+- DONE: `python3 -m v3.cli why` is now the v4 structured renderer (`v4/api/why_cli.py`) over
+  `build_response` — signal + grade + qualitative anatomy + evidence + ledger anchor; `--as-of`
+  (bare date = end-of-day), `--include-score` (default off), `--n-evidence`, `--json`.
+- DONE: `python3 -m v3.cli memo` (Day 3) and `python3 -m v3.cli demo` (Day 5, the 3-minute journey).
+- The legacy `v3/cli/why.py` renderer is retired from dispatch (kept in-tree for reference).
 
 ---
 

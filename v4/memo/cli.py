@@ -16,6 +16,9 @@ from v4.memo.generator import MEMO_N_EVIDENCE, MEMO_N_EVIDENCE_MAX, generate_mem
 def _parse_as_of(raw: Optional[str]) -> Optional[datetime]:
     if not raw:
         return None
+    # Bare date → end of that day (captures that day's intraday snapshot).
+    if len(raw) == 10 and raw.count("-") == 2:
+        raw = f"{raw}T23:59:59-06:00"
     try:
         dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
     except ValueError:
