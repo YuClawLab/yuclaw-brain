@@ -21,15 +21,20 @@ Run locally:
 from __future__ import annotations
 
 import logging
+from datetime import datetime, timezone
 from typing import Any, Optional
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 # Reuse the SDK's query backend so API + SDK agree by construction.
 from yuclaw_py._backends import PostgresBackend
 from yuclaw_py._client import _validate_label
 from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE
+
+# v4 unified contract — the single assembler + schema (Day 2).
+from v4.api.builder import build_response
+from v4.api.schema import ResearchResponse
 
 _log = logging.getLogger("yuclaw.api")
 
@@ -96,22 +101,66 @@ def universe() -> dict[str, Any]:
             "compliance": dict(COMPLIANCE)}
 
 
-@app.get("/signal/{ticker}")
-def signal(ticker: str) -> dict[str, Any]:
+def _deprecate(response: Response, successor: str) -> None:
+    """RFC 8594 deprecation signaling on a legacy v3 route."""
+    response.headers["Deprecation"] = "true"
+    response.headers["Link"] = f'<{successor}>; rel="successor-version"'
+
+
+@app.get("/signal/{ticker}", deprecated=True)
+def signal(ticker: str, response: Response) -> dict[str, Any]:
+    _deprecate(response, f"/v1/signal/{ticker.upper()}")
     try:
         return _stamp(_backend().signal(ticker))
     except LookupError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@app.get("/why/{ticker}")
-def why(ticker: str, n_evidence: int = Query(5, ge=1, le=20)) -> dict[str, Any]:
+@app.get("/why/{ticker}", deprecated=True)
+def why(ticker: str, response: Response, n_evidence: int = Query(5, ge=1, le=20)) -> dict[str, Any]:
+    _deprecate(response, f"/v1/why/{ticker.upper()}")
     try:
         sig = _backend().signal(ticker)
     except LookupError as e:
         raise HTTPException(status_code=404, detail=str(e))
     evidence = _backend().evidence(ticker, limit=n_evidence)
     return _stamp({**sig, "evidence": evidence})
+
+
+# --------------------------------------------------------------------------- #
+# v4 unified contract (Day 2). Both return the single ResearchResponse.
+# Q2: score is gated OFF by default for REST; opt in with ?include_score=true.
+# --------------------------------------------------------------------------- #
+def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
+    if not as_of:
+        return None
+    try:
+        dt = datetime.fromisoformat(as_of.replace("Z", "+00:00"))
+    except ValueError:
+        raise HTTPException(status_code=400, detail=f"as_of must be ISO-8601: {as_of!r}")
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
+@app.get("/v1/signal/{ticker}", response_model=ResearchResponse)
+def v1_signal(ticker: str, include_score: bool = Query(False)) -> ResearchResponse:
+    try:
+        return build_response(ticker, include_score=include_score)
+    except LookupError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@app.get("/v1/why/{ticker}", response_model=ResearchResponse)
+def v1_why(
+    ticker: str,
+    n_evidence: int = Query(10, ge=1, le=50),
+    include_score: bool = Query(False),
+    as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
+) -> ResearchResponse:
+    try:
+        return build_response(ticker, as_of=_parse_as_of(as_of),
+                              include_score=include_score, n_evidence=n_evidence)
+    except LookupError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 @app.get("/replay/{ticker}")

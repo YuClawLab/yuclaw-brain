@@ -35,20 +35,16 @@ Optional: `score` (composite −1..1), `is_backfill`, `schema_version`.
 4. **Redundant/vestigial?** Minimal. `score` and `Component.weight` are arguably derivable/static but are kept
    so a consumer needs nothing beyond the response. Nothing removed as dead.
 
-## Open questions for VinZhang (could not resolve alone)
-1. **RISK_ALERT trigger.** It's in the locked vocab but v3 never emits it (score→label table maps the other 7).
-   In v4, is RISK_ALERT a *risk overlay* that overrides the score-based label on certain event types
-   (REGULATORY_ACTION, LAWSUIT, …), or a score band? This decides whether `signal` can diverge from `score`.
-2. **Expose raw `score`?** I kept the −1..1 composite as an optional field (memo headline, back-compat). Product/
-   legal may prefer label+grade only (less "advice-like precision"). Easy to drop if so.
-3. **ledger_hash anchoring.** Is a self-computed SHA-256 enough for "verifiable", or must the signal-level hash
-   be anchored to the git-anchored ledger (`v3/proof/`) / an external timestamp (RFC3161 / chain)? Affects
-   `replay_id` semantics.
-4. **Compliance text sufficiency (legal).** Does the notice + limitations need an explicit "no fiduciary
-   relationship / past performance is not indicative" clause and per-jurisdiction variants? Not mine to draft.
-5. **Component anatomy: persist vs recompute.** For faithful point-in-time replay, per-component
-   rationale/evidence_ids must be reconstructable as-of. Recompute-at-request can drift if component logic
-   changes; persisting a `component_anatomy` JSONB guarantees fidelity but grows `signal_snapshots`. Tradeoff
-   decision needed before replay is trusted.
+## Open questions — RESOLVED in Day 2 (decisions applied)
+1. **RISK_ALERT trigger** → *risk overlay*: recent (≤30d) REGULATORY_ACTION/LAWSUIT events force RISK_ALERT,
+   overriding the score band. `signal` can diverge from `score`; transparency via `signal_overlay`. (builder.py)
+2. **Expose raw `score`** → optional, **gated**: default OFF for REST/MCP (`include_score`), ON for SDK/CLI. (Q2)
+3. **ledger_hash anchoring** → keep self-computed SHA-256 **and** add `ledger_anchor_url` to the git-anchored
+   ledger (`v3/proof/`). Both, no external timestamping yet. Anchor URL excluded from the content hash.
+4. **Compliance text** → conservative **PLACEHOLDER** wording now ("not investment advice / past performance /
+   not a recommendation"), tagged `compliance_text_version="draft-v0"` for a trivial post-legal swap. Not blocking.
+5. **Component anatomy** → **PERSIST** (replay fidelity > storage). Added `signal_snapshots.component_anatomy`
+   (jsonb) + `composite_confidence` (migration 2026-05-31); writer populates going forward; builder recomputes
+   via `compose_at` for pre-v4 rows.
 
 No feature code yet — tomorrow's order builds the REST endpoint against this locked schema.

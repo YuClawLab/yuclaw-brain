@@ -32,12 +32,14 @@ These are shared blockers, not per-entry-point:
 
 ---
 
-## 1. REST — `v3/api/server.py` → `v4` router  ·  Effort: **S** (after core)
-- Add `GET /v1/why/{ticker}` and `/v1/signal/{ticker}` returning `ResearchResponse`.
-- Replace the hand-built dict in `_stamp()` with `build_response(...).model_dump(mode="json")`.
-- Keep v3 `/signal` `/why` paths alive (deprecated) for one release; new paths under `/v1`.
-- FastAPI: set `response_model=ResearchResponse` so OpenAPI auto-matches `docs/v4/openapi.yaml`.
-- 404 path must still emit a `compliance` block (schema allows an error envelope variant — add later).
+## 1. REST — `v3/api/server.py`  ·  ✅ **COMPLETE (Day 2)**
+- DONE: `GET /v1/why/{ticker}` and `/v1/signal/{ticker}` return `ResearchResponse` via
+  `build_response(...)` with FastAPI `response_model=ResearchResponse`.
+- DONE: v3 `/signal` `/why` kept alive, marked `deprecated=True` + RFC 8594 headers
+  (`Deprecation: true`, `Link: …; rel="successor-version"`).
+- DONE: Q2 score gating via `?include_score=true`; `?as_of=` for point-in-time replay on `/v1/why`.
+- Smoke-tested AMD/NVDA/ABT: schema-valid, ledger_hash recomputes, evidence_ids resolve, compliance present.
+- TODO (later): 404 currently returns FastAPI's default detail; add a compliance-bearing error envelope.
 
 ## 2. MCP — `v3/mcp/server.py` → MCP v2  ·  Effort: **S** (after core)
 - `yuclaw_why` / `yuclaw_signal` tools return `build_response(...).model_dump(mode="json")`.

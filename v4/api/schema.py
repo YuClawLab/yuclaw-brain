@@ -86,7 +86,7 @@ DEFAULT_LIMITATIONS: tuple[str, ...] = (
     "This is a research classification, not a price target, recommendation, or solicitation.",
     "Point-in-time as of `as_of`; filings or market data after that instant are not reflected.",
     "Does not incorporate options flow, intraday microstructure, or private/non-public information.",
-    "Insider Form 4 transactions are tracked separately and are not part of the composite score.",
+    "Insider Form 4 transactions feed the C6 Event Impact component under a capped weight; they are not scored as a standalone insider signal.",
     "Signal quality depends on evidence coverage; see `confidence.grade` and `components[].confidence`.",
 )
 
@@ -172,11 +172,17 @@ class Compliance(BaseModel):
     not_advice: bool = Field(True, description="Always true")
     research_only: bool = Field(True, description="Always true")
     not_registered_adviser: bool = Field(True, description="Always true")
+    # Q4: conservative wording, marked PLACEHOLDER pending securities review. Swapping
+    # in lawyer-reviewed text is a one-field change + a bump of compliance_text_version.
     notice: str = Field(
-        "Research and education only. Not investment advice. "
-        "Signal labels are research classifications, not buy/sell recommendations. "
-        "YUCLAW is not a registered investment adviser.",
-        description="Locked not-advice notice (mirrors sdk COMPLIANCE_NOTICE).",
+        "This is research output, not investment advice. "
+        "Past performance does not guarantee future results. "
+        "Not a recommendation to buy or sell any security.",
+        description="Not-advice notice. PLACEHOLDER (draft-v0) pending securities review.",
+    )
+    compliance_text_version: str = Field(
+        "draft-v0",
+        description="Version tag for `notice`. 'draft-v0' = pre-legal-review placeholder.",
     )
     jurisdiction: str = Field("US", description="Regulatory jurisdiction the notice is written for")
     model_id: str = Field(..., description="Extraction model id (e.g. yuclaw-llm-70b)")
@@ -206,9 +212,15 @@ class ResearchResponse(BaseModel):
 
     # --- the signal ---
     signal: SignalLabel = Field(..., description="Locked public vocabulary label")
+    signal_overlay: Optional[str] = Field(
+        None,
+        description="If the label diverges from the score-derived band, why (Q1: e.g. "
+                    "'RISK_ALERT: REGULATORY_ACTION/LAWSUIT within 30d'). None when label == score band.",
+    )
     score: Optional[float] = Field(
         None, ge=-1.0, le=1.0,
-        description="Composite directional score [-1,1] (v3 total_score). Optional; the label is primary.",
+        description="Composite directional score [-1,1] (v3 total_score). Q2: gated — default OFF for "
+                    "REST/MCP (opt in via include_score), default ON for SDK/CLI. None when not included.",
     )
     is_backfill: bool = Field(False, description="True if as_of is historical/backfilled rather than live")
 
@@ -224,6 +236,12 @@ class ResearchResponse(BaseModel):
 
     # --- integrity ---
     ledger_hash: str = Field(..., description="SHA-256 over the canonical response (verification anchor)")
+    ledger_anchor_url: Optional[str] = Field(
+        None,
+        description="Q3: URL to this signal's entry in the git-anchored Verified Research Ledger "
+                    "(v3/proof/). Null if the ledger run has not published this (ticker, date) yet. "
+                    "Excluded from the ledger_hash so publication state does not change the content hash.",
+    )
 
     # --- regulatory (REQUIRED) ---
     compliance: Compliance = Field(..., description="Required not-advice / provenance block")
@@ -240,8 +258,13 @@ class ResearchResponse(BaseModel):
 
     # ---- integrity helpers ----
     def canonical_payload(self) -> dict:
-        """Deterministic dict for hashing — excludes the ledger_hash field itself."""
-        d = self.model_dump(mode="json", exclude={"ledger_hash"})
+        """Deterministic dict for hashing — excludes ledger_hash and ledger_anchor_url.
+
+        ledger_anchor_url is publication metadata (it embeds a git commit that may be
+        written after the signal); excluding it keeps the content hash stable and
+        reproducible regardless of whether/when the ledger entry was published.
+        """
+        d = self.model_dump(mode="json", exclude={"ledger_hash", "ledger_anchor_url"})
         return d
 
     def compute_ledger_hash(self) -> str:

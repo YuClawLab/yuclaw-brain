@@ -77,6 +77,33 @@ def _evidence_event_ids(components: dict[str, Any]) -> list[str]:
     return [x for x in ids if not (x in seen or seen.add(x))]
 
 
+def _trimmed_anatomy(components: dict[str, Any]) -> dict[str, Any]:
+    """v4 (Q5): public per-component anatomy persisted for replay fidelity.
+
+    Trimmed — score/confidence/rationale/evidence_ids only. The internal `details`
+    dict (impact weights, is_insider, …) is intentionally NOT persisted, matching
+    the schema invariant that components never expose internals.
+    """
+    out: dict[str, Any] = {}
+    for cid, c in components.items():
+        details = c.get("details", {}) or {}
+        eids: list[str] = []
+        for key in ("top_contributors", "top_cascades"):
+            for x in details.get(key, []) or []:
+                if isinstance(x, dict) and x.get("event_id"):
+                    eids.append(x["event_id"])
+        seen: set[str] = set()
+        eids = [e for e in eids if not (e in seen or seen.add(e))]
+        out[cid] = {
+            "score": c.get("score"),
+            "confidence": c.get("confidence"),
+            "rationale": c.get("rationale", "") or "",
+            "evidence_ids": eids,
+            "not_implemented": bool(c.get("not_implemented", False)),
+        }
+    return out
+
+
 def write_snapshot(ticker: str, as_of: datetime) -> dict[str, Any]:
     """Compute composite + INSERT one row. Returns the result dict + status."""
     result = compute(ticker, as_of)
@@ -86,6 +113,8 @@ def write_snapshot(ticker: str, as_of: datetime) -> dict[str, Any]:
     components_scores = {cid: c["score"] for cid, c in result["components"].items()}
     ch = _content_hash(snap_id, result["total_score"], components_scores)
     evidence_ids = _evidence_event_ids(result["components"])
+    anatomy = _trimmed_anatomy(result["components"])          # v4 Q5
+    composite_conf = result.get("composite_confidence")        # v4 Q5
 
     is_backfill = as_of < (datetime.now(timezone.utc) - timedelta(hours=LIVE_WINDOW_HOURS))
 
@@ -101,7 +130,7 @@ def write_snapshot(ticker: str, as_of: datetime) -> dict[str, Any]:
                        c4_macro_regime, c5_oil_rates_fx, c6_event_impact,
                        c7_peer_correlation, c8_cascade_effect, c9_model_trust,
                        evidence_event_ids, content_hash, compliance_payload,
-                       is_backfill
+                       is_backfill, component_anatomy, composite_confidence
                    ) VALUES (
                        %s, %s, %s, %s,
                        %s, %s,
@@ -109,7 +138,7 @@ def write_snapshot(ticker: str, as_of: datetime) -> dict[str, Any]:
                        %s, %s, %s,
                        %s, %s, %s,
                        %s, %s, %s,
-                       %s
+                       %s, %s, %s
                    )
                    ON CONFLICT (snapshot_id) DO NOTHING""",
                 (
@@ -120,7 +149,7 @@ def write_snapshot(ticker: str, as_of: datetime) -> dict[str, Any]:
                     components_scores["c7"], components_scores["c8"], components_scores["c9"],
                     evidence_ids if evidence_ids else None,
                     ch, json.dumps(COMPLIANCE_PAYLOAD),
-                    is_backfill,
+                    is_backfill, json.dumps(anatomy), composite_conf,
                 ),
             )
             conn.commit()
