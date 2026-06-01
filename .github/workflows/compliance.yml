@@ -34,18 +34,21 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Install deps
-        run: pip install fastapi httpx pytest psycopg2-binary pydantic jinja2 pandas
-      - name: Apply schema + migrations
+        run: |
+          pip install fastapi httpx pytest psycopg2-binary pydantic jinja2 pandas \
+                      click feedparser tenacity requests
+          pip install ./sdk        # yuclaw_py (imported by the server + tests)
+      - name: Apply schema + migrations + seed
         run: |
           export PGPASSWORD=postgres
           psql -h localhost -U postgres -d yuclaw_events -f v3/schema.sql || true
+          # migrations are for upgrading old DBs; some columns already exist in schema.sql — ignore those.
           for m in v3/migrations/*.sql; do psql -h localhost -U postgres -d yuclaw_events -f "$m" || true; done
-        # TODO: add a seed step that loads representative snapshots/events so the
-        # signal endpoints return data (otherwise they return no_data — which the
-        # test still validates carries compliance).
+          psql -h localhost -U postgres -d yuclaw_events -f tests/fixtures/v4_seed.sql
       - name: Compliance regression
         env:
           PGHOST: localhost
           PGUSER: postgres
           PGPASSWORD: postgres
+          PYTHONPATH: ${{ github.workspace }}    # makes v3/ and v4/ importable
         run: python3 -m pytest tests/test_compliance_regression.py -v

@@ -145,11 +145,11 @@ match any specific historical snapshot, by design.
    strategies might use position sizing tied to volatility regime, etc.
 4. **No transaction-level audit.** Each backtest is end-of-day; intraday
    execution effects (gaps, halts) are not simulated.
-5. **The "ZKP Verified — Ethereum Sepolia" caption** under the BACKTEST
-   RESULTS card refers to cryptographic timestamping of signal hashes on
-   the Sepolia testnet via `yuclaw-trust`. It does NOT verify backtest
-   accuracy. ZKP only proves "this signal hash existed at this block height" —
-   it does not validate the underlying analytical claim.
+5. **Ledger verification is integrity, not merit.** Signal content hashes are
+   committed to the public, git-anchored Verified Research Ledger (`yuclaw-trust`).
+   This proves a signal was unaltered since publication and existed at a given
+   time — it does **not** verify backtest accuracy or validate the underlying
+   analytical claim. (v4 uses a git-anchored ledger; earlier on-chain framing is retired.)
 
 ## Open issues this page is intended to surface
 
