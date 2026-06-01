@@ -20,6 +20,7 @@ fields (raw_excerpt is the SourceLock-verified text; component internals are not
 from __future__ import annotations
 
 import html
+import re
 from datetime import datetime
 from typing import Optional
 
@@ -95,6 +96,16 @@ def _clean_excerpt(s: Optional[str]) -> str:
 
 _INSIDER = {"INSIDER_BUY", "INSIDER_SELL"}
 
+# Strips the trailing component-score verdict ("→ score +1.000", "→ tanh -0.31")
+# from rationale when score is gated off, so the qualitative descriptor stands alone.
+_SCORE_TAIL_RE = re.compile(r"\s*→\s*(?:score|tanh|avg)\s*[+\-]?\d*\.?\d+\s*$", re.IGNORECASE)
+
+
+def _clean_rationale(rationale: str, include_score: bool) -> str:
+    if include_score or not rationale:
+        return rationale
+    return _SCORE_TAIL_RE.sub("", rationale).strip()
+
 
 # --------------------------------------------------------------------------- #
 # section renderers
@@ -144,8 +155,9 @@ def _render_anatomy(components: list[Component], include_score: bool, brief: boo
         head = f"- **{c.name} ({c.key.upper()})** — {_qual(c.score)}"
         if include_score:
             head += f" (score {c.score:+.2f}, confidence {c.confidence:.2f}, weight {c.weight:.2f})"
-        if c.rationale:
-            head += f". {c.rationale}"
+        rat = _clean_rationale(c.rationale, include_score)
+        if rat:
+            head += f". {rat}"
         lines.append(head)
     if brief and len(impl) > 4:
         lines.append(f"- _…and {len(impl) - 4} more components._")
