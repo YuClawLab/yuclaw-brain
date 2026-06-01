@@ -31,6 +31,13 @@ paths:
         schema:
           type: boolean
           default: false
+      - name: include_cascade
+        in: query
+        required: false
+        description: 'Day 6: attach the supply-chain cascade tree (default false).'
+        schema:
+          type: boolean
+          default: false
       - name: n_evidence
         in: query
         required: false
@@ -55,6 +62,45 @@ paths:
                 $ref: '#/components/schemas/ResearchResponse'
         '404':
           description: No snapshot for ticker
+  /v1/cascade/{ticker}:
+    get:
+      operationId: getCascade
+      summary: Supply-chain cascade tree that propagated into a ticker (Day 6). cascade=null if none.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: *id001
+      - name: depth
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 3
+          minimum: 1
+          maximum: 3
+      - name: as_of
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Cascade tree wrapper (cascade may be null)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticker:
+                    type: string
+                  cascade:
+                    oneOf:
+                    - $ref: '#/components/schemas/CascadeNode'
+                    - type: 'null'
+                  compliance:
+                    type: object
   /v1/signal/{ticker}:
     get:
       operationId: getSignal
@@ -186,6 +232,13 @@ components:
             $ref: '#/components/schemas/Evidence'
           title: Evidence
           type: array
+        cascade:
+          anyOf:
+          - $ref: '#/components/schemas/CascadeNode'
+          - type: 'null'
+          default: null
+          description: 'Day 6: supply-chain cascade tree that propagated into this ticker. Present ONLY
+            when include_cascade=True (like score/memo). None when not requested or no cascade exists.'
         confidence:
           $ref: '#/components/schemas/Confidence'
           description: Composite confidence + Evidence Quality Grade
@@ -257,6 +310,109 @@ components:
       - markdown
       - response
       title: MemoOutput
+      type: object
+    CascadeEdge:
+      additionalProperties: false
+      description: 'One propagation edge: a parent event''s shock flowing to a child ticker.'
+      properties:
+        parent_event_id:
+          title: Parent Event Id
+          type: string
+        child_event_id:
+          title: Child Event Id
+          type: string
+        parent_ticker:
+          description: Source of the shock
+          title: Parent Ticker
+          type: string
+        child_ticker:
+          description: Affected ticker
+          title: Child Ticker
+          type: string
+        parent_event_type:
+          title: Parent Event Type
+          type: string
+        child_event_type:
+          title: Child Event Type
+          type: string
+        relationship_type:
+          description: supply | peer | cohort | etf | macro
+          title: Relationship Type
+          type: string
+        edge_weight:
+          description: Transmission strength from supply_chain.py
+          maximum: 1.0
+          minimum: 0.0
+          title: Edge Weight
+          type: number
+        depth:
+          description: Hops from the root event (1..3)
+          maximum: 3
+          minimum: 1
+          title: Depth
+          type: integer
+        decay_factor:
+          description: Locked depth decay (d1=0.20, d2=0.04)
+          maximum: 1.0
+          minimum: 0.0
+          title: Decay Factor
+          type: number
+        contribution:
+          description: Child event magnitude = parent_mag·∏weights·decay
+          maximum: 1.0
+          minimum: 0.0
+          title: Contribution
+          type: number
+      required:
+      - parent_event_id
+      - child_event_id
+      - parent_ticker
+      - child_ticker
+      - parent_event_type
+      - child_event_type
+      - relationship_type
+      - edge_weight
+      - depth
+      - decay_factor
+      - contribution
+      title: CascadeEdge
+      type: object
+    CascadeNode:
+      additionalProperties: false
+      description: 'A cascade tree rooted at an originating event, as a flat edge list.
+
+
+        `event` is the root (depth-0) originating event; `edges` is every propagation
+
+        edge in the tree (each carries parent/child ids + depth, so the tree is fully
+
+        reconstructable). Edge weights/relationships come only from the public
+
+        supply_chain.py graph.'
+      properties:
+        event:
+          $ref: '#/components/schemas/Evidence'
+          description: The root (depth-0) originating event
+        depth:
+          default: 0
+          description: Root depth (always 0)
+          title: Depth
+          type: integer
+        edges:
+          description: All propagation edges (depth 1..3)
+          items:
+            $ref: '#/components/schemas/CascadeEdge'
+          title: Edges
+          type: array
+        warnings:
+          description: e.g. 'cycle detected at event X', multi-root notes
+          items:
+            type: string
+          title: Warnings
+          type: array
+      required:
+      - event
+      title: CascadeNode
       type: object
     Compliance:
       additionalProperties: false

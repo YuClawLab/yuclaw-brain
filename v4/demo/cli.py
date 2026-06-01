@@ -128,7 +128,7 @@ def _preflight(ticker: str, target: str) -> Optional[tuple[str, datetime]]:
 # --------------------------------------------------------------------------- #
 # journey
 # --------------------------------------------------------------------------- #
-def run(ticker: str, target: str, no_pause: bool) -> int:
+def run(ticker: str, target: str, no_pause: bool, show_cascade: bool = False) -> int:
     click.echo()
     click.secho("  ╔" + "═" * 56 + "╗", fg="cyan")
     click.secho("  ║   YUCLAW — 3-Minute Guided Journey" + " " * 21 + "║", fg="cyan", bold=True)
@@ -163,6 +163,21 @@ def run(ticker: str, target: str, no_pause: bool) -> int:
     memo = generate_memo(ticker, as_of=as_of, include_score=False, n_evidence=20)
     click.echo(memo.markdown)
     _pause(4.0, no_pause)
+
+    # STEP 3.5 — cascade (opt-in via --show-cascade; not part of the default 3-min journey)
+    if show_cascade:
+        from v4.api.cascade_builder import build_cascade
+        from v4.api.cascade_cli import render as render_cascade
+        _header("3.5", "How an upstream event cascaded in", "~30s")
+        _cmd(f"yuclaw cascade {ticker} --as-of {cmd_date}")
+        node = build_cascade(ticker, as_of=as_of, depth=3)
+        if node:
+            click.echo(render_cascade(node, ticker))
+            click.echo()
+            click.secho("  ↑ Edge weights are the public supply_chain.py graph — no hidden model.", dim=True)
+        else:
+            click.secho(f"  No supply-chain cascade reached {ticker} as of {cmd_date}.", fg="yellow")
+        _pause(3.0, no_pause)
 
     # STEP 4 — replay determinism
     _header(4, "Point-in-time replay is deterministic", "~30s")
@@ -220,8 +235,10 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--ticker", default=TICKER)
     p.add_argument("--target-date", default=TARGET_DATE)
     p.add_argument("--no-pause", action="store_true", help="no sleeps (CI / piping)")
+    p.add_argument("--show-cascade", action="store_true",
+                   help="add an opt-in Step 3.5 showing the supply-chain cascade tree")
     a = p.parse_args(argv)
-    return run(a.ticker.upper(), a.target_date, a.no_pause)
+    return run(a.ticker.upper(), a.target_date, a.no_pause, show_cascade=a.show_cascade)
 
 
 if __name__ == "__main__":

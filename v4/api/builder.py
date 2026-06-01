@@ -229,6 +229,8 @@ def build_response(
     as_of: Optional[datetime] = None,
     *,
     include_score: bool = False,
+    include_cascade: bool = False,
+    cascade_depth: int = 3,
     n_evidence: int = DEFAULT_N_EVIDENCE,
     dsn: str = DSN,
     conn: Optional[Any] = None,
@@ -237,7 +239,8 @@ def build_response(
 
     as_of=None → latest live snapshot; as_of=<dt> → most recent at-or-before (replay).
     include_score (Q2): REST/MCP pass False by default (opt-in), SDK/CLI pass True.
-    Raises LookupError if no snapshot exists for the ticker.
+    include_cascade (Day 6): attach the supply-chain cascade tree (None if none).
+    Returns a status='no_data' envelope if no snapshot exists for the ticker.
     """
     ticker = ticker.upper()
     own_conn = conn is None
@@ -324,6 +327,12 @@ def build_response(
         model_id = models.most_common(1)[0][0] if models else _DEFAULT_MODEL_ID
         prompt_version = prompts.most_common(1)[0][0] if prompts else _DEFAULT_PROMPT_VERSION
 
+        # --- Day 6: optional cascade tree (lazy import avoids a circular dep) ---
+        cascade = None
+        if include_cascade:
+            from v4.api.cascade_builder import build_cascade
+            cascade = build_cascade(ticker, as_of=pit, depth=cascade_depth, conn=conn)
+
         resp = ResearchResponse(
             status="ok",
             ticker=ticker,
@@ -336,6 +345,7 @@ def build_response(
             is_backfill=bool(snap.get("is_backfill")),
             components=components,
             evidence=evidence,
+            cascade=cascade,
             confidence=confidence,
             limitations=limitations,
             ledger_hash="0" * 64,  # sealed below

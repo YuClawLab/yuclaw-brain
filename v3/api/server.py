@@ -135,6 +135,10 @@ def why(ticker: str, response: Response, n_evidence: int = Query(5, ge=1, le=20)
 def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
     if not as_of:
         return None
+    # Bare date → end of that day (captures that day's intraday snapshot), matching
+    # the CLI and `yuclaw verify <date>`.
+    if len(as_of) == 10 and as_of.count("-") == 2:
+        as_of = f"{as_of}T23:59:59-06:00"
     try:
         dt = datetime.fromisoformat(as_of.replace("Z", "+00:00"))
     except ValueError:
@@ -153,10 +157,26 @@ def v1_why(
     ticker: str,
     n_evidence: int = Query(10, ge=1, le=50),
     include_score: bool = Query(False),
+    include_cascade: bool = Query(False, description="Day 6: attach the supply-chain cascade tree"),
     as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time replay"),
 ) -> ResearchResponse:
-    return build_response(ticker, as_of=_parse_as_of(as_of),
-                          include_score=include_score, n_evidence=n_evidence)
+    return build_response(ticker, as_of=_parse_as_of(as_of), include_score=include_score,
+                          include_cascade=include_cascade, n_evidence=n_evidence)
+
+
+@app.get("/v1/cascade/{ticker}")
+def v1_cascade(
+    ticker: str,
+    depth: int = Query(3, ge=1, le=3, description="Max hops 1..3 (locked decay)"),
+    as_of: Optional[str] = Query(None, description="ISO-8601 instant for point-in-time"),
+) -> dict[str, Any]:
+    """Supply-chain cascade tree that propagated into `ticker`. `cascade: null` if none.
+    Edge weights are the public supply_chain.py graph. Research only — not advice."""
+    from v4.api.cascade_builder import build_cascade
+    node = build_cascade(ticker, as_of=_parse_as_of(as_of), depth=depth)
+    return {"ticker": ticker.upper(),
+            "cascade": (node.model_dump(mode="json") if node else None),
+            "compliance": dict(COMPLIANCE)}
 
 
 @app.get("/v1/memo/{ticker}", response_model=MemoOutput)

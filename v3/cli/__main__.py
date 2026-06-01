@@ -11,11 +11,13 @@ from v3.cli import brief as brief_cmd
 from v3.cli import verify as verify_cmd
 from v4.memo import cli as memo_cmd
 from v4.api import why_cli as why_cmd          # v4 structured `why` (Day 5)
+from v4.api import cascade_cli as cascade_cmd  # `yuclaw cascade` (Day 6)
 from v4.demo import cli as demo_cmd            # `yuclaw demo` guided journey (Day 5)
 
 COMMANDS = {
     "why": why_cmd.main,
     "memo": memo_cmd.main,
+    "cascade": cascade_cmd.main,
     "demo": demo_cmd.main,
     "replay": replay_cmd.main,
     "validation": validation_cmd.main,

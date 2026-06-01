@@ -40,6 +40,7 @@ class _WhyArgs(BaseModel):
     ticker: str = Field(..., description="Ticker symbol, e.g. 'AMD'")
     as_of: Optional[str] = Field(None, description="ISO-8601 instant for point-in-time replay")
     include_score: bool = Field(False, description="Include the raw composite score (default off)")
+    include_cascade: bool = Field(False, description="Attach the supply-chain cascade tree (default off)")
     include_memo: bool = Field(False, description="Also attach a rendered Markdown memo under 'memo_markdown'")
 
 
@@ -62,8 +63,8 @@ class YuclawWhyTool(BaseTool):
     base_url: str = DEFAULT_BASE_URL
     timeout: float = DEFAULT_TIMEOUT
 
-    def _run(self, ticker: str, as_of: Optional[str] = None,
-             include_score: bool = False, include_memo: bool = False, **_: Any) -> dict[str, Any]:
+    def _run(self, ticker: str, as_of: Optional[str] = None, include_score: bool = False,
+             include_cascade: bool = False, include_memo: bool = False, **_: Any) -> dict[str, Any]:
         if include_memo:
             memo = get_memo(ticker, as_of=as_of, include_score=include_score,
                             base_url=self.base_url, timeout=self.timeout)
@@ -71,7 +72,7 @@ class YuclawWhyTool(BaseTool):
             out["memo_markdown"] = memo["markdown"]
             return out
         return get_why(ticker, as_of=as_of, include_score=include_score,
-                       base_url=self.base_url, timeout=self.timeout)
+                       include_cascade=include_cascade, base_url=self.base_url, timeout=self.timeout)
 
 
 class YuclawMemoTool(BaseTool):

@@ -39,12 +39,13 @@ def get_why(
     *,
     as_of: Optional[str] = None,
     include_score: bool = False,
+    include_cascade: bool = False,
     base_url: str = DEFAULT_BASE_URL,
     timeout: float = DEFAULT_TIMEOUT,
 ) -> dict[str, Any]:
     """GET /v1/why → ResearchResponse dict (status='no_data' envelope if absent)."""
     return _get(base_url, f"/v1/why/{ticker.upper()}",
-                {"as_of": as_of, "include_score": include_score}, timeout)
+                {"as_of": as_of, "include_score": include_score, "include_cascade": include_cascade}, timeout)
 
 
 def get_memo(

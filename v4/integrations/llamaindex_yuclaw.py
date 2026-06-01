@@ -103,9 +103,9 @@ def yuclaw_function_tools(
 ) -> list[FunctionTool]:
     """Build [yuclaw_why, yuclaw_memo] FunctionTools for a LlamaIndex agent."""
 
-    def yuclaw_why(ticker: str, as_of: Optional[str] = None) -> dict[str, Any]:
+    def yuclaw_why(ticker: str, as_of: Optional[str] = None, include_cascade: bool = False) -> dict[str, Any]:
         return get_why(ticker, as_of=as_of, include_score=include_score,
-                       base_url=base_url, timeout=timeout)
+                       include_cascade=include_cascade, base_url=base_url, timeout=timeout)
 
     def yuclaw_memo(ticker: str, as_of: Optional[str] = None, n_evidence: int = 20) -> dict[str, Any]:
         return get_memo(ticker, as_of=as_of, include_score=include_score,

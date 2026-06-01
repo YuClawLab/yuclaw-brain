@@ -61,7 +61,8 @@ def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
 # ---------------------------------------------------------------------------
 @mcp.tool()
 def yuclaw_why(
-    ticker: str, as_of: Optional[str] = None, include_score: bool = False
+    ticker: str, as_of: Optional[str] = None,
+    include_score: bool = False, include_cascade: bool = False,
 ) -> dict[str, Any]:
     """Structured, evidence-first research signal for a ticker (the full ResearchResponse).
 
@@ -76,10 +77,13 @@ def yuclaw_why(
         as_of: optional ISO-8601 instant for point-in-time replay (default: latest).
         include_score: default False — the label + grade lead; set True to also return
             the raw composite score.
+        include_cascade: default False — set True to attach the `cascade` supply-chain
+            propagation tree (which upstream event reached this ticker, with public edge weights).
 
     Missing data returns a full status='no_data' envelope (with compliance), not an error.
     Research/education only — not investment advice."""
-    resp = build_response(ticker, as_of=_parse_as_of(as_of), include_score=include_score)
+    resp = build_response(ticker, as_of=_parse_as_of(as_of),
+                          include_score=include_score, include_cascade=include_cascade)
     return resp.model_dump(mode="json")
 
 

@@ -197,6 +197,43 @@ class Compliance(BaseModel):
 
 
 # --------------------------------------------------------------------------- #
+# Cascade History View (Day 6) — all fields are PUBLIC (hardcoded supply_chain.py
+# graph + public events). No internal-only scoring is exposed here.
+# --------------------------------------------------------------------------- #
+class CascadeEdge(BaseModel):
+    """One propagation edge: a parent event's shock flowing to a child ticker."""
+    model_config = ConfigDict(extra="forbid")
+
+    parent_event_id: str
+    child_event_id: str
+    parent_ticker: str = Field(..., description="Source of the shock")
+    child_ticker: str = Field(..., description="Affected ticker")
+    parent_event_type: str
+    child_event_type: str
+    relationship_type: str = Field(..., description="supply | peer | cohort | etf | macro")
+    edge_weight: float = Field(..., ge=0.0, le=1.0, description="Transmission strength from supply_chain.py")
+    depth: int = Field(..., ge=1, le=3, description="Hops from the root event (1..3)")
+    decay_factor: float = Field(..., ge=0.0, le=1.0, description="Locked depth decay (d1=0.20, d2=0.04)")
+    contribution: float = Field(..., ge=0.0, le=1.0, description="Child event magnitude = parent_mag·∏weights·decay")
+
+
+class CascadeNode(BaseModel):
+    """A cascade tree rooted at an originating event, as a flat edge list.
+
+    `event` is the root (depth-0) originating event; `edges` is every propagation
+    edge in the tree (each carries parent/child ids + depth, so the tree is fully
+    reconstructable). Edge weights/relationships come only from the public
+    supply_chain.py graph.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    event: Evidence = Field(..., description="The root (depth-0) originating event")
+    depth: int = Field(0, description="Root depth (always 0)")
+    edges: list[CascadeEdge] = Field(default_factory=list, description="All propagation edges (depth 1..3)")
+    warnings: list[str] = Field(default_factory=list, description="e.g. 'cycle detected at event X', multi-root notes")
+
+
+# --------------------------------------------------------------------------- #
 # Top-level response
 # --------------------------------------------------------------------------- #
 class ResearchResponse(BaseModel):
@@ -241,6 +278,11 @@ class ResearchResponse(BaseModel):
     )
     evidence: list[Evidence] = Field(
         ..., description="Source events backing the signal (required key; may be empty for technical-only signals)",
+    )
+    cascade: Optional["CascadeNode"] = Field(
+        None,
+        description="Day 6: supply-chain cascade tree that propagated into this ticker. Present ONLY when "
+                    "include_cascade=True (like score/memo). None when not requested or no cascade exists.",
     )
 
     # --- confidence / honesty ---
@@ -333,5 +375,6 @@ class ResearchResponse(BaseModel):
 __all__ = [
     "SCHEMA_VERSION", "SignalLabel", "EvidenceGrade", "COMPONENT_NAMES",
     "DEFAULT_LIMITATIONS", "Component", "Evidence", "Confidence", "Compliance",
+    "CascadeEdge", "CascadeNode",
     "ResearchResponse",
 ]
