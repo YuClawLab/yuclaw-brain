@@ -100,10 +100,18 @@ curl -s https://yuclawlab.github.io/yuclaw-brain/ | grep -ciE 'STRONG_BUY|STRONG
 ```
 
 ## Step 7b — Telegram daily resume (auto, from Thursday)
-The daily 09:35-ET signal cron was restored 2026-06-01 (date-guarded to first fire **Thu 2026-06-04**).
-⚠️ Before it fires, decide on the v4 format — it still posts `STRONG_BUY` + reads stale state. See
-[`telegram_bot.md`](telegram_bot.md). The Wednesday **launch** broadcast is a separate manual send
-(one-liner in that doc).
+The daily 09:35-ET cron was restored 2026-06-01 (date-guarded to first fire **Thu 2026-06-04**) and its
+format is now **v4** (main commit `90bf0770`): 8 locked labels, live `signal_snapshots`, evidence grade
++ ledger hash, canonical compliance — 0 buy/sell. The Wednesday **launch** broadcast is a separate
+manual send (one-liner in [`telegram_bot.md`](telegram_bot.md)).
+
+**Thursday 2026-06-04 ~07:36 ET — manual verification (do this):** open `@yuclaw_signals` and confirm
+the auto-post is the **v4 format** (header "🦞 YUCLAW Research Signals", per-signal Grade + filing count
++ `ledger …`, canonical compliance line) and **not** the old `STRONG_BUY top 5` v2.3 format. If it
+didn't post, check `/tmp/yuclaw_telegram.log`. Optional pre-check anytime:
+```bash
+cd ~/yuclaw && set -a && . ~/.yuclaw_env && set +a && python3 -m yuclaw.telegram.broadcast_bot daily --dry-run
+```
 
 ## Step 8 — Publish to PyPI
 ```bash

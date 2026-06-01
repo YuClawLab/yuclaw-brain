@@ -39,20 +39,38 @@ The date-guard means **no auto-post Tue 06-02 or Wed 06-03** (Wednesday's launch
 send), and the daily **resumes automatically Thursday 06-04** onward. Crontab backed up to
 `/tmp/crontab.backup.*` before the change.
 
-### ⚠️ Decide BEFORE Thursday — the daily format is still v2.3
-A `--dry-run` shows the daily would currently post:
-- `📈 STRONG_BUY top 5 …` — **`STRONG_BUY` is a v4-banned label.** v4's whole posture is research
-  classifications, never buy/sell. Posting STRONG_BUY to the channel right after the v4 launch
-  contradicts the launch.
-- It reads `~/yuclaw/docs/data/dashboard_state.json`, which is **stale (frozen since 2026-05-20)** —
-  it would stamp 2-week-old signals with today's date.
-- Footer says `pip install yuclaw==2.3.0`.
+### ✅ Daily format updated to v4 (2026-06-01, main commit `90bf0770`)
+`format_daily()` in `~/yuclaw/yuclaw/telegram/broadcast_bot.py` was rewritten:
+- reads **live `signal_snapshots`** from Postgres (same source as the v4 dashboard / REST API) — no
+  more stale `dashboard_state.json`;
+- renders only the **8 locked labels** (non-locked labels are skipped, never broadcast);
+- per signal: **Evidence Quality Grade** (faithful inline replica of `grade_for`), filing count, and
+  the public-ledger content hash + a verify link;
+- footer `pip install yuclaw`; bottom line is the canonical `COMPLIANCE_NOTICE`.
 
-Per the Day-11 order the format was **not** changed today (documentation only). **Recommendation:**
-do a small v4 format pass before Thursday — map to the v4 vocabulary (the 8 locked labels), read from
-the live `signal_snapshots` (the same source the v4 dashboard uses), add an evidence/ledger link, and
-bump the footer to `pip install yuclaw`. ~30 min. Say the word and it's done.
-If you'd rather pause instead of resuming the v2.3 format, comment the cron line out.
+Dry-run verified: **0 STRONG_BUY/SELL/SHORT, 0 v2.3 refs**, current date stamp, evidence + compliance
+present, 957 chars (< 4096). Sample output:
+
+```
+🦞 YUCLAW Research Signals — Mon Jun 1
+(data as of Sun May 31)
+
+Top signals — research classifications, not buy/sell:
+  COP   STRONG_BULLISH    ·  Insufficient  ·  0 filings  ·  ledger ef956973
+  XOM   STRONG_BULLISH    ·  Insufficient  ·  0 filings  ·  ledger 2659f0ea
+  …
+Each signal traces to its SEC filings and is hash-anchored in the public ledger.
+Verify any signal: github.com/YuClawLab/yuclaw-trust
+
+📦 pip install yuclaw  ·  yuclaw why <TICKER>
+📊 yuclawlab.github.io/yuclaw-brain
+
+YUCLAW research output. Not investment advice. Past performance does not guarantee future results. Signal labels are research classifications, not buy/sell recommendations.
+```
+
+> Note: signals are ranked by |score| (objective, no cherry-picking). Today's highest-score names
+> happen to be Evidence-grade *Insufficient* (0 filings) — that's honest: the grade transparently
+> shows when a directional label is thin on evidence. Thursday's live data may differ.
 
 ## Send-capability test
 
