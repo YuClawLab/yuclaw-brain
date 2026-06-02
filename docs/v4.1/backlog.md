@@ -20,6 +20,41 @@ market-data dependency below.
 
 ---
 
+## 0. Reconcile `v3.0-evidence` and `main` branches  — ⭐⭐ TOP PRIORITY (target: within 1 week of v4.0 ship)
+
+**Why:** v4.0 shipped 2026-06-02 by tagging `v3.0-evidence` (the canonical v4 tree) — the merge into
+`main` was **deliberately deferred** because a `--no-ff` merge produced **120 conflicts**. main and
+v3.0-evidence diverged for ~2 weeks (123 vs 22 commits off base `ef570aa5`): v3.0-evidence archived the
+whole v2.3 tree to `archive/v2/`, while main kept it live, accrued daily cron commits, and received
+three v4 operational commits **made directly on main**. PyPI + the live dashboard already serve v4;
+only main's default-branch *view* lags. No functional impact — purely a repo-structure inconsistency.
+
+**Specific decisions required (do not auto-resolve):**
+1. **Permanent home of `yuclaw/telegram/broadcast_bot.py`** — the live v4 Telegram broadcaster the daily
+   cron imports as `yuclaw.telegram.broadcast_bot`. On v3.0-evidence the whole `yuclaw/` package is
+   archived to `archive/v2/`, so a naive merge would **archive the live broadcaster and break the cron**.
+   Decide: keep it at `yuclaw/telegram/` (partial-archive exception), or move to a v4 path (e.g.
+   `v4/telegram/`) and update the cron.
+2. **Permanent home of `v3/web/render_landing.py`** — the dashboard renderer the page-refresh cron runs.
+   Currently main-only (not on v3.0-evidence). Decide its canonical location and keep the cron working.
+3. **Canonical post-v4 directory structure** — what stays at root, what lives under `archive/v2/`.
+4. **Cron continuity** — guarantee both the dashboard refresh cron (`refresh_v3_pages.sh` →
+   `v3.web.render_landing`) and the Telegram daily cron (`yuclaw.telegram.broadcast_bot`) keep importing
+   and running through *any* restructure.
+
+**Strategy:** fresh branch off `main`; cherry-pick v3.0-evidence's changes selectively; resolve each
+conflict by **explicit written policy** (v4 doc rewrites → take v3.0-evidence; `docs/index.html` →
+keep main's cron-owned page; legacy tree → archive; live operational files → keep at a working,
+importable location); **full smoke-test of every cron** before push; **Gemini architectural review**
+of the reconciliation plan before merge.
+
+**Target:** within 1 week of v4.0 ship. **Risk if delayed:** ongoing visible inconsistency between
+`main` and PyPI/dashboard, but **no functional impact** (all live crons run from their current
+locations on the un-merged main). A `MAIN_BRANCH_NOTICE.md` is committed at main root pointing users to
+the v4.0.0 tag / PyPI / `v3.0-evidence` in the meantime.
+
+---
+
 ## 1. Repoint stale market-data components  — ⭐ HIGHEST PRIORITY (target: land within 2 weeks of v4.0 ship)
 
 Components **C1/C3/C4/C5/C7** (price momentum, sector velocity, macro regime, oil/rates/fx, peer
