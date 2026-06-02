@@ -112,7 +112,13 @@ def build_cascade(
 
     own = conn is None
     if own:
-        conn = psycopg2.connect(dsn)
+        try:
+            conn = psycopg2.connect(dsn)
+        except psycopg2.OperationalError:
+            from v4.demo.fixture_loader import fixture_conn_or_none
+            conn = fixture_conn_or_none(ticker, as_of)
+            if conn is None:
+                return None  # cascade is optional — no backend, no fixture → no tree
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             # The ticker's cascade-child events (leaves on the path into `ticker`).

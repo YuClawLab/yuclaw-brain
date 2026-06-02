@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "yuclaw"
-version = "4.0.0"
+version = "4.0.1"
 description = "Evidence-first financial research — every signal traced to its SEC filings and verifiable against a public, git-anchored ledger. CLI + REST + MCP + LangChain/LlamaIndex. Research / education only — not investment advice."
 readme = "README.md"
 license = { text = "MIT" }
@@ -56,6 +56,8 @@ packages = ["v3", "v4"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "sdk/yuclaw_py" = "yuclaw_py"
+# Note: v4/demo/fixtures/*.json (the bundled zero-backend demo signal) are packaged
+# automatically as data files under the v4 package — no force-include needed.
 
 [tool.hatch.build.targets.sdist]
 include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "docs"]

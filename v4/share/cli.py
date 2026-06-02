@@ -35,11 +35,15 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--output", help="output path (default ./share-{TICKER}-{date}.html)")
     a = p.parse_args(argv)
 
-    path = generate_share_card(
-        a.ticker, as_of=_parse_as_of(a.as_of),
-        include_score=a.include_score, include_cascade=a.include_cascade,
-        output_path=a.output,
-    )
+    try:
+        path = generate_share_card(
+            a.ticker, as_of=_parse_as_of(a.as_of),
+            include_score=a.include_score, include_cascade=a.include_cascade,
+            output_path=a.output,
+        )
+    except RuntimeError as e:
+        print(str(e), file=sys.stderr)
+        return 1
     print(f"Card saved to {path}.")
     print("Upload to GitHub Pages, share on X/Reddit, or open locally — "
           "anyone can re-verify the signal at the embedded ledger URL.")

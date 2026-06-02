@@ -245,7 +245,16 @@ def build_response(
     ticker = ticker.upper()
     own_conn = conn is None
     if own_conn:
-        conn = psycopg2.connect(dsn)
+        try:
+            conn = psycopg2.connect(dsn)
+        except psycopg2.OperationalError:
+            # Zero-backend fallback: the bundled demo signal (AMD @ 2026-05-20)
+            # is served from fixtures so `pip install yuclaw && yuclaw demo` works
+            # offline. Any other ticker/date offline → a helpful backend hint.
+            from v4.demo.fixture_loader import fixture_conn_or_none, BACKEND_HINT
+            conn = fixture_conn_or_none(ticker, as_of)
+            if conn is None:
+                raise RuntimeError(BACKEND_HINT) from None
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             snap = _fetch_snapshot(cur, ticker, as_of)
@@ -333,6 +342,12 @@ def build_response(
             from v4.api.cascade_builder import build_cascade
             cascade = build_cascade(ticker, as_of=pit, depth=cascade_depth, conn=conn)
 
+        # ledger anchor URL: git permalink when a live ledger repo is present;
+        # in offline fixture mode, the frozen URL bundled with the fixture.
+        anchor_url = _ledger_anchor_url(ticker, pit.date().isoformat())
+        if anchor_url is None and getattr(conn, "is_fixture", False):
+            anchor_url = getattr(conn, "ledger_anchor_url", None)
+
         resp = ResearchResponse(
             status="ok",
             ticker=ticker,
@@ -349,7 +364,7 @@ def build_response(
             confidence=confidence,
             limitations=limitations,
             ledger_hash="0" * 64,  # sealed below
-            ledger_anchor_url=_ledger_anchor_url(ticker, pit.date().isoformat()),
+            ledger_anchor_url=anchor_url,
             compliance=Compliance(model_id=model_id, prompt_version=prompt_version),
         )
         return resp.with_sealed_ledger_hash()

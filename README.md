@@ -35,6 +35,11 @@ an SEC filing (accession number + ledger hash), a deterministic point-in-time re
 an independent verification against the public ledger. Raw scores are hidden by default —
 **research, not numeric recommendations**.
 
+**Zero config** — the demo runs entirely offline against a bundled, frozen capture of the
+canonical AMD signal, including the byte-identical ledger-hash check. Running signals for
+**any** ticker or date (live `why`/`memo`/`share`/`cascade`) needs a local backend — see
+[`docs/v4/backend_setup.md`](docs/v4/backend_setup.md).
+
 ```bash
 yuclaw why     AMD --as-of 2026-05-20   # structured signal (add --include-score for the composite)
 yuclaw memo    AMD --as-of 2026-05-20   # full research memo with evidence trail

@@ -2,6 +2,27 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.0.1] — 2026-06-02
+
+### Added
+
+- **Bundled zero-backend demo.** `pip install yuclaw && yuclaw demo` now runs the full
+  ~3-minute guided journey **offline** against the canonical **AMD @ 2026-05-20** signal —
+  including the ledger-verification step, which recomputes the **byte-identical**
+  `content_hash` (`fe7ca6df…`) committed to the public ledger. No local Postgres required.
+  The demo-targeted commands (`why`, `memo`, `share`, `verify`, `cascade`) also resolve this
+  one signal offline; any other ticker/date prints a clear backend-setup hint instead of an error.
+  - New `v4/demo/fixtures/` (snapshot + events + ledger entry, ~10 KB) and
+    `v4/demo/fixture_loader.py` (a read-only psycopg2-shaped shim).
+  - Fallback triggers **only** when Postgres is unreachable — the live backend path is unchanged.
+
+### Changed
+
+- README: the demo is now presented as truly zero-config; the Postgres requirement is noted only
+  for live signals across the full universe (`docs/v4/backend_setup.md`).
+
+> 4.0.0 was functional but required a local backend for the demo; **4.0.1 is the recommended install.**
+
 ## [4.0.0] — 2026-06-03
 
 v4.0 is the **Agent Research API** release. YUCLAW reads SEC filings and turns them

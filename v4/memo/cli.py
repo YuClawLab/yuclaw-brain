@@ -37,8 +37,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--json", action="store_true", help="emit MemoOutput JSON instead of Markdown")
     a = p.parse_args(argv)
 
-    m = generate_memo(a.ticker, as_of=_parse_as_of(a.as_of),
-                      include_score=a.include_score, n_evidence=a.n_evidence)
+    try:
+        m = generate_memo(a.ticker, as_of=_parse_as_of(a.as_of),
+                          include_score=a.include_score, n_evidence=a.n_evidence)
+    except RuntimeError as e:
+        print(str(e), file=sys.stderr)
+        return 1
     print(m.model_dump_json(indent=2) if a.json else m.markdown)
     return 0
 

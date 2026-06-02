@@ -2,7 +2,9 @@
 `yuclaw demo` — the 3-minute guided journey.
 
 A real signal, traced to its SEC filings, point-in-time replayed, and verified
-against the public git-anchored ledger. 100% real data — no synthetic fixtures.
+against the public git-anchored ledger. Uses the live backend when present; with
+no backend it replays a bundled frozen capture of the SAME signal — the verify
+step recomputes the identical content_hash committed to the public ledger.
 
     python3 -m v3.cli demo                 # full paced journey
     python3 -m v3.cli demo --no-pause      # no sleeps (CI / piping)
@@ -98,21 +100,33 @@ def _resolve_date(ticker: str, target: str) -> tuple[Optional[str], str]:
 
 
 def _preflight(ticker: str, target: str) -> Optional[tuple[str, datetime]]:
+    from v4.demo.fixture_loader import available as fx_available, FIXTURE_TICKER, FIXTURE_DATE
     click.secho("  Pre-flight checks", bold=True)
-    # 1. DB
+    offline = False
+    # 1. DB — or fall back to the bundled fixture (zero-config first experience)
     try:
         with psycopg2.connect(DSN) as c, c.cursor() as cur:
             cur.execute("SELECT 1")
         click.secho("   ✓ database reachable", fg="green")
-    except Exception as e:
-        click.secho(f"   ✗ database not reachable: {e}", fg="red")
-        click.secho("     Start the v3.0 pipeline / Postgres and retry.", fg="yellow")
-        return None
-    # 2. Ledger date
-    d, note = _resolve_date(ticker, target)
-    if not d:
-        click.secho(f"   ✗ {note}", fg="red")
-        return None
+    except Exception:
+        if fx_available() and ticker.upper() == FIXTURE_TICKER:
+            offline = True
+            click.secho("   ✓ no backend detected — replaying the bundled demo signal "
+                        "offline (zero-config)", fg="green")
+        else:
+            click.secho(f"   ✗ no backend, and no bundled fixture for {ticker}.", fg="red")
+            click.secho(f"     The offline demo covers {FIXTURE_TICKER} only — run plain "
+                        f"`yuclaw demo`, or set up Postgres (docs/v4/backend_setup.md).",
+                        fg="yellow")
+            return None
+    # 2. Ledger date (fixed for the bundled signal; resolved from the ledger when live)
+    if offline:
+        d, note = FIXTURE_DATE, "bundled offline fixture"
+    else:
+        d, note = _resolve_date(ticker, target)
+        if not d:
+            click.secho(f"   ✗ {note}", fg="red")
+            return None
     click.secho(f"   ✓ ledger entry for {ticker} {d} ({note})", fg="green")
     # 3. Ollama (advisory — demo uses a cached snapshot, no live LLM call)
     try:
@@ -197,7 +211,7 @@ def run(ticker: str, target: str, no_pause: bool, show_cascade: bool = False) ->
     when = (v.get("commit") or {}).get("committed_at", "?")
     click.echo("  The hash committed to the public git-anchored Verified Research Ledger:")
     click.secho(f"    {v.get('ledger_hash','')}", fg="blue")
-    click.echo("  matches the hash we just recomputed from the live database:")
+    click.echo("  matches the hash we just recomputed from the source data:")
     click.secho(f"    {rc}", fg="magenta")
     click.echo()
     if ok:

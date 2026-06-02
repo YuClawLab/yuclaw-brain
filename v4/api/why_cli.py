@@ -75,8 +75,12 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--json", action="store_true", help="emit the ResearchResponse JSON")
     a = p.parse_args(argv)
 
-    resp = build_response(a.ticker, as_of=_parse_as_of(a.as_of),
-                          include_score=a.include_score, n_evidence=a.n_evidence)
+    try:
+        resp = build_response(a.ticker, as_of=_parse_as_of(a.as_of),
+                              include_score=a.include_score, n_evidence=a.n_evidence)
+    except RuntimeError as e:
+        print(str(e), file=sys.stderr)
+        return 1
     if a.json:
         print(resp.model_dump_json(indent=2))
     else:
