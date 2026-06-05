@@ -1,17 +1,23 @@
 """
-Render the YUCLAW v4.0 public landing page to docs/index.html.
+Render the YUCLAW v4.0.1 public landing page to docs/index.html.
 
 Static, data-baked, NO JS hydration — the v2.3.0 silent-freeze lesson.
 
 The landing page is the FACE of the project at https://yuclawlab.github.io/yuclaw-brain/.
-It carries:
-  - Header with tagline
-  - Short "what YUCLAW is" paragraph
-  - "How it works" — four bullets
-  - "Current signals" table (latest OOS snapshots, new sentiment vocabulary only)
+v4.1 layout (friends' feedback: lead with the data, collapse the prose):
+  - Minimal header: logo + version badge + nav
+  - Minimal hero: one-line tagline + install line (no dense paragraph up top)
+  - One-line disclaimer, ALWAYS visible (no click required)
+  - "Current signals" table — the HERO, directly under the header
+  - Public signal vocabulary legend (label compliance, kept visible)
+  - "How it works" — four bullets, in a collapsed <details> accordion
+  - "Full disclaimer & methodology" — the full DISCLAIMER (verbatim) plus the
+    descriptive methodology paragraph, in a collapsed <details> accordion
+  - Install card + footer
   - Links to validation page, GitHub, PyPI, ledger, REST API
-  - Disclaimer at the top AND bottom
 
+All compliance text is preserved verbatim — only relocated, never deleted.
+Accordions use native <details>/<summary> (no JS, GitHub-Pages-safe, accessible).
 No performance numbers anywhere on the homepage. None.
 """
 from __future__ import annotations
@@ -117,32 +123,42 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v4.0 — Evidence-First Financial AI</title>
+  <title>YUCLAW v4.0.1 — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
     body{{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;line-height:1.6}}
     .container{{max-width:1100px;margin:0 auto;padding:24px}}
-    .header{{margin-bottom:28px;padding:18px 24px;background:#151A23;border:1px solid #1E232D;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}}
+    .header{{margin-bottom:18px;padding:18px 24px;background:#151A23;border:1px solid #1E232D;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}}
     .logo{{font-size:22px;font-weight:800;color:#FFF;letter-spacing:-0.3px}}
     .logo span{{color:#00E676}}
     .ver{{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;letter-spacing:0.5px;font-family:JetBrains Mono,monospace}}
-    .features{{margin-top:14px;font-family:JetBrains Mono,monospace;font-size:12px;color:#00E676;letter-spacing:0.3px}}
+    .features{{margin-top:12px;font-family:JetBrains Mono,monospace;font-size:12px;color:#00E676;letter-spacing:0.3px}}
     .features span{{color:#718096}}
     .navlinks a{{color:#A0AEC0;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:6px;background:#1E232D;margin-left:6px}}
     .navlinks a:hover{{color:#00E676}}
-    .hero{{padding:30px 24px;background:linear-gradient(135deg,#151A23,#1A2334);border:1px solid #1E232D;border-radius:12px;margin-bottom:24px}}
-    .hero h1{{font-size:34px;font-weight:800;color:#FFF;margin-bottom:12px;letter-spacing:-1px}}
-    .hero p{{font-size:15px;color:#A0AEC0;max-width:720px}}
-    .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;margin-bottom:24px;font-size:12px;line-height:1.55;color:#A0AEC0}}
+    .hero-min{{padding:26px 24px;background:linear-gradient(135deg,#151A23,#1A2334);border:1px solid #1E232D;border-radius:12px;margin-bottom:16px}}
+    .hero-min h1{{font-size:30px;font-weight:800;color:#FFF;margin-bottom:6px;letter-spacing:-1px}}
+    .tagline{{font-size:15px;color:#A0AEC0}}
+    .disclaimer-line{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;margin-bottom:22px;font-size:12px;line-height:1.55;color:#A0AEC0}}
+    .disclaimer-line strong{{color:#FBA94B}}
+    .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}}
     .disclaimer strong{{color:#FBA94B}}
     .card{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}}
     .card-title{{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#A0AEC0;margin-bottom:14px}}
+    .acc{{background:#151A23;border:1px solid #1E232D;border-radius:12px;margin-bottom:20px;overflow:hidden}}
+    .acc>summary{{list-style:none;cursor:pointer;padding:18px 22px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#A0AEC0;display:flex;align-items:center;gap:10px;user-select:none}}
+    .acc>summary::-webkit-details-marker{{display:none}}
+    .acc>summary::before{{content:"▸";color:#00E676;font-size:12px}}
+    .acc[open]>summary::before{{content:"▾"}}
+    .acc>summary:hover{{color:#00E676}}
+    .acc-body{{padding:0 22px 22px}}
     .bullets{{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}}
     .bullet{{background:#1A2030;border-radius:8px;padding:14px 16px}}
     .bullet h3{{font-size:13px;font-weight:700;color:#00E676;margin-bottom:5px;font-family:JetBrains Mono,monospace}}
     .bullet p{{font-size:13px;color:#A0AEC0;line-height:1.55}}
+    .method-para{{font-size:14px;color:#A0AEC0;max-width:760px;margin-bottom:16px}}
     table{{width:100%;border-collapse:collapse}}
     th{{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:9px 14px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.8px}}
     td{{font-size:13px}}
@@ -151,7 +167,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     .footer{{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:24px}}
     .footer a{{color:#00E676;text-decoration:none}}
     code{{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}}
-    @media(max-width:640px){{.bullets{{grid-template-columns:1fr}}.hero h1{{font-size:26px}}}}
+    @media(max-width:640px){{.bullets{{grid-template-columns:1fr}}.hero-min h1{{font-size:24px}}}}
   </style>
 </head>
 <body>
@@ -159,7 +175,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     <div class="header">
       <div>
         <span class="logo">YUCLAW</span>
-        <span class="ver">v4.0</span>
+        <span class="ver">v4.0.1</span>
       </div>
       <div class="navlinks">
         <a href="validation.html">Validation</a>
@@ -170,36 +186,14 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       </div>
     </div>
 
-    <div class="hero">
+    <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>
-      <p>Open-source equity research where every composite signal traces back to a verifiable SEC filing or deterministic supply-chain cascade. Replayable point-in-time. Tamper-evidenced via a public git-anchored Verified Research Ledger. Research and education only.</p>
+      <p class="tagline">Every signal traces to a real SEC filing.</p>
       <div class="features">Agent Research API <span>·</span> MCP <span>·</span> LangChain/LlamaIndex <span>·</span> pip install yuclaw</div>
     </div>
 
-    <div class="disclaimer">
-      <strong>Disclaimer —</strong> {escape(DISCLAIMER)}
-    </div>
-
-    <div class="card">
-      <div class="card-title">How it works</div>
-      <div class="bullets">
-        <div class="bullet">
-          <h3>1 · Evidence layer</h3>
-          <p>SEC EDGAR filings (Form 4, 8-K, 10-Q, 10-K, 6-K) are extracted with a local Llama 3.1 70B model. A deterministic SourceLock Guard validates every extraction against the source text before any signal sees it.</p>
-        </div>
-        <div class="bullet">
-          <h3>2 · Composite scoring</h3>
-          <p>Nine components combine into a confidence-weighted composite. C6 event impact carries the highest weight (0.18) — by design, the evidence layer leads.</p>
-        </div>
-        <div class="bullet">
-          <h3>3 · Time-machine replay</h3>
-          <p>Any signal can be recomputed as of a past date. Point-in-time filtering (<code>available_as_of &lt;= as_of</code>) is leak-audited; reproducible via the <code>yuclaw replay</code> CLI or REST API.</p>
-        </div>
-        <div class="bullet">
-          <h3>4 · Verified Research Ledger</h3>
-          <p>Each day's published signals have their content hashes committed to a public git repo (<a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#00E676">yuclaw-trust</a>). Anyone can call <code>yuclaw verify</code> to confirm a signal hasn't been edited since publication.</p>
-        </div>
-      </div>
+    <div class="disclaimer-line">
+      <strong>Disclaimer —</strong> Research &amp; education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations.
     </div>
 
     <div class="card">
@@ -236,6 +230,40 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       </p>
     </div>
 
+    <details class="acc">
+      <summary>How it works</summary>
+      <div class="acc-body">
+        <div class="bullets">
+          <div class="bullet">
+            <h3>1 · Evidence layer</h3>
+            <p>SEC EDGAR filings (Form 4, 8-K, 10-Q, 10-K, 6-K) are extracted with a local Llama 3.1 70B model. A deterministic SourceLock Guard validates every extraction against the source text before any signal sees it.</p>
+          </div>
+          <div class="bullet">
+            <h3>2 · Composite scoring</h3>
+            <p>Nine components combine into a confidence-weighted composite. C6 event impact carries the highest weight (0.18) — by design, the evidence layer leads.</p>
+          </div>
+          <div class="bullet">
+            <h3>3 · Time-machine replay</h3>
+            <p>Any signal can be recomputed as of a past date. Point-in-time filtering (<code>available_as_of &lt;= as_of</code>) is leak-audited; reproducible via the <code>yuclaw replay</code> CLI or REST API.</p>
+          </div>
+          <div class="bullet">
+            <h3>4 · Verified Research Ledger</h3>
+            <p>Each day's published signals have their content hashes committed to a public git repo (<a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#00E676">yuclaw-trust</a>). Anyone can call <code>yuclaw verify</code> to confirm a signal hasn't been edited since publication.</p>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Full disclaimer &amp; methodology</summary>
+      <div class="acc-body">
+        <p class="method-para">Open-source equity research where every composite signal traces back to a verifiable SEC filing or deterministic supply-chain cascade. Replayable point-in-time. Tamper-evidenced via a public git-anchored Verified Research Ledger. Research and education only.</p>
+        <div class="disclaimer">
+          <strong>Disclaimer —</strong> {escape(DISCLAIMER)}
+        </div>
+      </div>
+    </details>
+
     <div class="card">
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
@@ -251,12 +279,8 @@ yuclaw verify NVDA --as-of 2026-05-20   # check the public ledger</pre>
       </p>
     </div>
 
-    <div class="disclaimer">
-      <strong>Disclaimer —</strong> {escape(DISCLAIMER)}
-    </div>
-
     <div class="footer">
-      YUCLAW v4.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v4.0.1 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       MIT Licensed
