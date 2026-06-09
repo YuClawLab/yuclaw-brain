@@ -78,3 +78,10 @@ output/yfinance_*
 # Env backups must never land in the public repo.
 .env.bak*
 *.env.bak*
+
+# Internal dashboard state — read by the signal pipeline (data_loader.py ->
+# C1/C3/C4/C5/C7) and monitored by health_monitor.sh, but must NOT be published:
+# it carries raw Finnhub-verified prices (ToS redistribution) and legacy buy/sell
+# labels. Lives under docs/ (the Pages-published dir) for historical reasons but
+# stays untracked so it is never served. See data provenance audit 2026-06.
+docs/data/
