@@ -137,3 +137,27 @@ is present but NOT used (pending PyTorch sm_121a).
 deliberately does **not** add a cron or a persistent daemon — a full backfill is
 a separate, watched session. The real-data timing confirms Llama latency
 (10–19s/filing warm), not the queue, is the throughput constraint to plan around.
+
+## D15 — Day-3A: SKIP LOCKED proven under true parallelism
+
+Validated with 2/4/8 concurrent workers (own pools, barrier start, batch_size=1)
+draining 60 synthetic jobs: **0 double-claims**, even distribution, no lost/stuck
+jobs, no deadlock, ~0.1–0.25s per round. The exactly-once claim guarantee the
+backfill relies on holds under genuine concurrency. See `concurrency.md`.
+
+## D16 — Day-3A: retry/dead-letter validated; logic lives in core.mark_failed
+
+13/13 checks: under-max failure → `pending` (claim released, attempts++),
+at-max → `dead_letter` (no infinite retry), `last_error`/`failed_at` set,
+`list_dead_letter()` correct, transient-fail-then-succeed recovers. The
+retry/dead-letter LOGIC is entirely in `core.mark_failed`; the worker only calls
+it on exception (proven end-to-end via a bogus-accession job that dead-letters).
+
+## D17 — Day-3A: Llama concurrency is parallel-but-sublinear (backfill input)
+
+Earlier assumption (from Day-2 logs) was `OLLAMA_NUM_PARALLEL=1` → serialization.
+**Observed otherwise:** 2 concurrent generate calls overlap (~15.6s) → Ollama
+serves them in parallel. BUT each call runs ~2× slower under contention, so 2
+workers give ≈1.6× throughput, not 2×. The single GB10 is the bottleneck.
+Decision for Day 3B backfill: small worker count (≈2), budget on Llama latency
+under contention, don't expect linear scaling from more workers on one GPU.
