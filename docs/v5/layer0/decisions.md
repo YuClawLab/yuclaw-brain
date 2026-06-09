@@ -103,3 +103,37 @@ forked from `v3.0-evidence` — chosen over branching in place because the prima
 `v3.0-evidence`, contrary to the task's assumption) and carries live `output/`
 artifacts. A dedicated worktree leaves both the `main` and `v3.0-evidence`
 checkouts untouched.
+
+## D11 — Day-2 worker: result_token_id is a uuid4 placeholder
+
+The worker (`worker.py`) calls `mark_succeeded(job_id, result_token_id=uuid4())`.
+There is **no tokens table to FK to yet** — Layer 2 (evidence tokens) does not
+exist. The `result_token_id` column already accepts a UUID, so Day 2 stores a
+throwaway uuid4 to exercise the full success path. When Layer 2 lands, this is
+replaced by the real token id (and a FK / lineage may be added). Documented so a
+later reader doesn't mistake the uuid4 for a real token reference.
+
+## D12 — Day-2 extraction prompt is a minimal scaffold
+
+`EXTRACTION_PROMPT` extracts only `event_type` + one-sentence `summary` +
+`affected_ticker`, with Ollama `format=json` and `num_predict=256`. This is a
+**proof-of-pipeline** prompt, deliberately small and fast — NOT the real v5
+extraction. The real multi-specialist extraction is Layer 1 (swarm) work and
+will replace this prompt wholesale. Kept minimal so Day 2 proves the
+queue→worker→Llama→queue loop on real data without conflating it with extraction
+quality.
+
+## D13 — Model tag: `yuclaw-llm-70b:latest` (not `llama3.1:70b`)
+
+The Day-2 order said `llama3.1:70b`, but there is **no such tag on this box**.
+The live 70B is `yuclaw-llm-70b:latest` (42.5 GB, Q4_K_M, 70.6B — the renamed
+compliance tag carried over from v3.0). The worker defaults to
+`yuclaw-llm-70b:latest` (override via `YUCLAW_V5_MODEL`). `nemotron-3-super-local`
+is present but NOT used (pending PyTorch sm_121a).
+
+## D14 — Worker is session-only, not a daemon
+
+`run()` polls a bounded number of times on an empty queue then exits. Day 2
+deliberately does **not** add a cron or a persistent daemon — a full backfill is
+a separate, watched session. The real-data timing confirms Llama latency
+(10–19s/filing warm), not the queue, is the throughput constraint to plan around.
