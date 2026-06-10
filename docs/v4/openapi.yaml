@@ -1,0 +1,677 @@
+openapi: 3.1.0
+info:
+  title: YuClaw Agent Research API
+  version: v4.0
+  summary: Unified, point-in-time, evidence-anchored research signals.
+  description: 'YUCLAW research output. Not investment advice. Past performance does not guarantee future
+    results. Signal labels are research classifications, not buy/sell recommendations.
+
+
+    ONE response contract (ResearchResponse) for every v4 surface. Research classifications, NOT buy/sell.
+    Required compliance block (draft-v0 wording pending legal). Q1: RISK_ALERT risk-overlay on recent
+    REGULATORY_ACTION/LAWSUIT can diverge signal from score. Q2: score gated (REST/MCP opt-in via include_score;
+    SDK/CLI on). Q3: ledger_hash (self SHA-256) + ledger_anchor_url (git-anchored ledger). Grade: A=conf>=0.75
+    & >=3 strong events; B=conf>=0.55 & >=1; C=conf>=0.30; else Insufficient.'
+  x-not-advice: Research and education only. Not investment advice.
+servers:
+- url: https://api.yuclaw.com
+  description: production (planned)
+paths:
+  /v1/why/{ticker}:
+    get:
+      operationId: getWhy
+      summary: Full research signal + evidence + component anatomy.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: &id001
+          type: string
+          pattern: ^[A-Z][A-Z0-9.\-]{0,9}$
+      - name: include_score
+        in: query
+        required: false
+        description: 'Q2: expose composite score (default false).'
+        schema:
+          type: boolean
+          default: false
+      - name: include_cascade
+        in: query
+        required: false
+        description: 'Day 6: attach the supply-chain cascade tree (default false).'
+        schema:
+          type: boolean
+          default: false
+      - name: n_evidence
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 50
+      - name: as_of
+        in: query
+        required: false
+        description: ISO-8601 instant for point-in-time replay.
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200': &id002
+          description: Unified research response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResearchResponse'
+        '404':
+          description: No snapshot for ticker
+  /v1/cascade/{ticker}:
+    get:
+      operationId: getCascade
+      summary: Supply-chain cascade tree that propagated into a ticker (Day 6). cascade=null if none.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: *id001
+      - name: depth
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 3
+          minimum: 1
+          maximum: 3
+      - name: as_of
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Cascade tree wrapper (cascade may be null)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticker:
+                    type: string
+                  cascade:
+                    oneOf:
+                    - $ref: '#/components/schemas/CascadeNode'
+                    - type: 'null'
+                  compliance:
+                    type: object
+  /v1/signal/{ticker}:
+    get:
+      operationId: getSignal
+      summary: Same ResearchResponse; lightweight latest view.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: *id001
+      - name: include_score
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200': *id002
+  /v1/memo/{ticker}:
+    get:
+      operationId: getMemo
+      summary: Markdown research memo + the full ResearchResponse (Day 3). no_data-safe.
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        schema: *id001
+      - name: include_score
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: n_evidence
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 50
+      - name: as_of
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Memo wrapper (Markdown + ResearchResponse)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoOutput'
+components:
+  schemas:
+    ResearchResponse:
+      additionalProperties: false
+      description: The single unified response. Every v4 surface returns exactly this shape.
+      properties:
+        schema_version:
+          default: v4.0
+          description: Schema contract version
+          title: Schema Version
+          type: string
+        status:
+          default: ok
+          description: '''ok'' = a signal was found; ''no_data'' = no snapshot for (ticker, as_of); ''rate_limited''
+            = quota exceeded. ALL carry the required compliance block.'
+          title: Status
+          type: string
+        retry_after:
+          anyOf:
+          - minimum: 0
+            type: integer
+          - type: 'null'
+          default: null
+          description: Seconds to wait before retrying (set only when status='rate_limited').
+          title: Retry After
+        ticker:
+          description: Uppercase ticker
+          pattern: ^[A-Z][A-Z0-9.\-]{0,9}$
+          title: Ticker
+          type: string
+        as_of:
+          description: Point-in-time instant this signal reflects (ISO-8601, tz-aware)
+          format: date-time
+          title: As Of
+          type: string
+        replay_id:
+          description: Opaque handle to reconstruct this exact response point-in-time
+          title: Replay Id
+          type: string
+        signal:
+          $ref: '#/components/schemas/SignalLabel'
+          description: Locked public vocabulary label
+        signal_overlay:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: 'If the label diverges from the score-derived band, why (e.g. ''RISK_ALERT: REGULATORY_ACTION/LAWSUIT
+            within 30d''). None when label == score band.'
+          title: Signal Overlay
+        overlay_trigger:
+          anyOf:
+          - $ref: '#/components/schemas/Evidence'
+          - type: 'null'
+          default: null
+          description: 'Q3: the specific event that triggered an overlay (e.g. the REGULATORY_ACTION/LAWSUIT
+            that forced RISK_ALERT). Also present in `evidence`; denormalized here so the memo can lead
+            with the headline event. None when no overlay applied.'
+        score:
+          anyOf:
+          - maximum: 1.0
+            minimum: -1.0
+            type: number
+          - type: 'null'
+          default: null
+          description: 'Composite directional score [-1,1] (v3 total_score). Q2: gated — default OFF for
+            REST/MCP (opt in via include_score), default ON for SDK/CLI. None when not included.'
+          title: Score
+        is_backfill:
+          default: false
+          description: True if as_of is historical/backfilled rather than live
+          title: Is Backfill
+          type: boolean
+        components:
+          description: C1–C9 component anatomies (all 9 when status='ok'; empty for status='no_data')
+          items:
+            $ref: '#/components/schemas/Component'
+          title: Components
+          type: array
+        evidence:
+          description: Source events backing the signal (required key; may be empty for technical-only
+            signals)
+          items:
+            $ref: '#/components/schemas/Evidence'
+          title: Evidence
+          type: array
+        cascade:
+          anyOf:
+          - $ref: '#/components/schemas/CascadeNode'
+          - type: 'null'
+          default: null
+          description: 'Day 6: supply-chain cascade tree that propagated into this ticker. Present ONLY
+            when include_cascade=True (like score/memo). None when not requested or no cascade exists.'
+        confidence:
+          $ref: '#/components/schemas/Confidence'
+          description: Composite confidence + Evidence Quality Grade
+        limitations:
+          description: Explicit caveats — what this does NOT consider
+          items:
+            type: string
+          minItems: 1
+          title: Limitations
+          type: array
+        ledger_hash:
+          description: SHA-256 over the canonical response (verification anchor)
+          title: Ledger Hash
+          type: string
+        ledger_anchor_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: 'Q3: URL to this signal''s entry in the git-anchored Verified Research Ledger (v3/proof/).
+            Null if the ledger run has not published this (ticker, date) yet. Excluded from the ledger_hash
+            so publication state does not change the content hash.'
+          title: Ledger Anchor Url
+        compliance:
+          $ref: '#/components/schemas/Compliance'
+          description: Required not-advice / provenance block
+      required:
+      - ticker
+      - as_of
+      - replay_id
+      - signal
+      - components
+      - evidence
+      - confidence
+      - limitations
+      - ledger_hash
+      - compliance
+      title: ResearchResponse
+      type: object
+      x-schema-version: v4.0
+    MemoOutput:
+      properties:
+        ticker:
+          title: Ticker
+          type: string
+        as_of:
+          format: date-time
+          title: As Of
+          type: string
+        signal:
+          $ref: '#/components/schemas/SignalLabel'
+        grade:
+          $ref: '#/components/schemas/EvidenceGrade'
+        mode:
+          description: full | evidence_limited | no_data
+          title: Mode
+          type: string
+        markdown:
+          title: Markdown
+          type: string
+        response:
+          $ref: '#/components/schemas/ResearchResponse'
+      required:
+      - ticker
+      - as_of
+      - signal
+      - grade
+      - mode
+      - markdown
+      - response
+      title: MemoOutput
+      type: object
+    CascadeEdge:
+      additionalProperties: false
+      description: 'One propagation edge: a parent event''s shock flowing to a child ticker.'
+      properties:
+        parent_event_id:
+          title: Parent Event Id
+          type: string
+        child_event_id:
+          title: Child Event Id
+          type: string
+        parent_ticker:
+          description: Source of the shock
+          title: Parent Ticker
+          type: string
+        child_ticker:
+          description: Affected ticker
+          title: Child Ticker
+          type: string
+        parent_event_type:
+          title: Parent Event Type
+          type: string
+        child_event_type:
+          title: Child Event Type
+          type: string
+        relationship_type:
+          description: supply | peer | cohort | etf | macro
+          title: Relationship Type
+          type: string
+        edge_weight:
+          description: Transmission strength from supply_chain.py
+          maximum: 1.0
+          minimum: 0.0
+          title: Edge Weight
+          type: number
+        depth:
+          description: Hops from the root event (1..3)
+          maximum: 3
+          minimum: 1
+          title: Depth
+          type: integer
+        decay_factor:
+          description: Locked depth decay (d1=0.20, d2=0.04)
+          maximum: 1.0
+          minimum: 0.0
+          title: Decay Factor
+          type: number
+        contribution:
+          description: Child event magnitude = parent_mag·∏weights·decay
+          maximum: 1.0
+          minimum: 0.0
+          title: Contribution
+          type: number
+      required:
+      - parent_event_id
+      - child_event_id
+      - parent_ticker
+      - child_ticker
+      - parent_event_type
+      - child_event_type
+      - relationship_type
+      - edge_weight
+      - depth
+      - decay_factor
+      - contribution
+      title: CascadeEdge
+      type: object
+    CascadeNode:
+      additionalProperties: false
+      description: 'A cascade tree rooted at an originating event, as a flat edge list.
+
+
+        `event` is the root (depth-0) originating event; `edges` is every propagation
+
+        edge in the tree (each carries parent/child ids + depth, so the tree is fully
+
+        reconstructable). Edge weights/relationships come only from the public
+
+        supply_chain.py graph.'
+      properties:
+        event:
+          $ref: '#/components/schemas/Evidence'
+          description: The root (depth-0) originating event
+        depth:
+          default: 0
+          description: Root depth (always 0)
+          title: Depth
+          type: integer
+        edges:
+          description: All propagation edges (depth 1..3)
+          items:
+            $ref: '#/components/schemas/CascadeEdge'
+          title: Edges
+          type: array
+        warnings:
+          description: e.g. 'cycle detected at event X', multi-root notes
+          items:
+            type: string
+          title: Warnings
+          type: array
+      required:
+      - event
+      title: CascadeNode
+      type: object
+    Compliance:
+      additionalProperties: false
+      description: 'REQUIRED on every response. Mirrors sdk COMPLIANCE + adds v4 metadata.
+
+
+        Hard regulatory constraint: this object is non-optional. A securities reviewer
+
+        must be able to read it and conclude the response is research, not advice.'
+      properties:
+        not_advice:
+          default: true
+          description: Always true
+          title: Not Advice
+          type: boolean
+        research_only:
+          default: true
+          description: Always true
+          title: Research Only
+          type: boolean
+        not_registered_adviser:
+          default: true
+          description: Always true
+          title: Not Registered Adviser
+          type: boolean
+        notice:
+          default: YUCLAW research output. Not investment advice. Past performance does not guarantee
+            future results. Signal labels are research classifications, not buy/sell recommendations.
+          description: Canonical not-advice notice (== schema.COMPLIANCE_NOTICE). PLACEHOLDER pending
+            review.
+          title: Notice
+          type: string
+        compliance_text_version:
+          default: draft-v0
+          description: Version tag for `notice`. 'draft-v0' = pre-legal-review placeholder.
+          title: Compliance Text Version
+          type: string
+        jurisdiction:
+          default: US
+          description: Regulatory jurisdiction the notice is written for
+          title: Jurisdiction
+          type: string
+        model_id:
+          description: Extraction model id (e.g. yuclaw-llm-70b)
+          title: Model Id
+          type: string
+        prompt_version:
+          description: Extraction prompt version (e.g. v2)
+          title: Prompt Version
+          type: string
+      required:
+      - model_id
+      - prompt_version
+      title: Compliance
+      type: object
+    Component:
+      additionalProperties: false
+      description: One C1–C9 component anatomy. Internal `details` are deliberately excluded.
+      properties:
+        key:
+          description: Component id, c1..c9
+          pattern: ^c[1-9]$
+          title: Key
+          type: string
+        name:
+          description: Human-readable component name
+          title: Name
+          type: string
+        score:
+          description: Directional score [-1,1]
+          maximum: 1.0
+          minimum: -1.0
+          title: Score
+          type: number
+        confidence:
+          description: Component self-confidence [0,1]
+          maximum: 1.0
+          minimum: 0.0
+          title: Confidence
+          type: number
+        weight:
+          description: Composite weight (v3 COMPONENT_WEIGHTS)
+          maximum: 1.0
+          minimum: 0.0
+          title: Weight
+          type: number
+        rationale:
+          default: ''
+          description: Short human-readable justification
+          title: Rationale
+          type: string
+        evidence_ids:
+          description: event_ids (in this response's `evidence`) that fed this component; empty for purely
+            technical/macro components (C1–C5, C7, C9).
+          items:
+            type: string
+          title: Evidence Ids
+          type: array
+        implemented:
+          default: true
+          description: False if this component is a stub (confidence forced 0)
+          title: Implemented
+          type: boolean
+      required:
+      - key
+      - name
+      - score
+      - confidence
+      - weight
+      title: Component
+      type: object
+    Confidence:
+      additionalProperties: false
+      description: Overall confidence + bucketed Evidence Quality Grade.
+      properties:
+        value:
+          description: Composite confidence [0,1] (v3 composite_confidence)
+          maximum: 1.0
+          minimum: 0.0
+          title: Value
+          type: number
+        grade:
+          $ref: '#/components/schemas/EvidenceGrade'
+          description: Bucketed Evidence Quality Grade
+        basis:
+          default: ''
+          description: One-line explanation of how the grade was derived
+          title: Basis
+          type: string
+      required:
+      - value
+      - grade
+      title: Confidence
+      type: object
+    Evidence:
+      additionalProperties: false
+      description: A single source event backing the signal. raw_excerpt is SourceLock-verified.
+      properties:
+        event_id:
+          description: Stable event identifier
+          title: Event Id
+          type: string
+        event_type:
+          description: Locked extraction vocabulary (R2-validated)
+          title: Event Type
+          type: string
+        source_url:
+          description: Canonical source (e.g. SEC primary document)
+          title: Source Url
+          type: string
+        accession_number:
+          anyOf:
+          - pattern: ^\d{10}-\d{2}-\d{6}$
+            type: string
+          - type: 'null'
+          default: null
+          description: SEC accession (canonical) when source is an EDGAR filing; null otherwise.
+          title: Accession Number
+        ledger_hash:
+          description: Per-event integrity hash (events.content_hash) — ledger anchor
+          title: Ledger Hash
+          type: string
+        available_as_of:
+          description: When this evidence became knowable (point-in-time)
+          format: date-time
+          title: Available As Of
+          type: string
+        raw_excerpt:
+          anyOf:
+          - maxLength: 400
+            type: string
+          - type: 'null'
+          default: null
+          description: Verbatim, SourceLock-verified excerpt from the source (<=400 chars).
+          title: Raw Excerpt
+        direction:
+          anyOf:
+          - maximum: 1
+            minimum: -1
+            type: integer
+          - type: 'null'
+          default: null
+          description: -1/0/1 directional sign
+          title: Direction
+        magnitude:
+          anyOf:
+          - maximum: 1.0
+            minimum: 0.0
+            type: number
+          - type: 'null'
+          default: null
+          description: Event magnitude [0,1]
+          title: Magnitude
+        llm_confidence:
+          anyOf:
+          - maximum: 1.0
+            minimum: 0.0
+            type: number
+          - type: 'null'
+          default: null
+          description: Extraction confidence [0,1]
+          title: Llm Confidence
+        cascade_depth:
+          anyOf:
+          - minimum: 0
+            type: integer
+          - type: 'null'
+          default: null
+          description: Depth if a cascade child, else null/0
+          title: Cascade Depth
+      required:
+      - event_id
+      - event_type
+      - source_url
+      - ledger_hash
+      - available_as_of
+      title: Evidence
+      type: object
+    EvidenceGrade:
+      description: 'Bucketed Evidence Quality Grade (per ChatGPT review).
+
+
+        Communicates *how well-supported* the signal is, independent of direction.
+
+        Deriving rule lives in `Confidence.grade_for()` — deterministic, auditable.'
+      enum:
+      - A
+      - B
+      - C
+      - Insufficient
+      title: EvidenceGrade
+      type: string
+    SignalLabel:
+      description: 'The locked public signal vocabulary (mirrors sdk.yuclaw_py PUBLIC_LABELS).
+
+
+        Ordered most-bullish → most-bearish. These are RESEARCH CLASSIFICATIONS, not
+
+        buy/sell recommendations. SELL / SHORT / BUY are intentionally absent.'
+      enum:
+      - STRONG_BULLISH
+      - BULLISH
+      - NEUTRAL
+      - WATCH
+      - WEAKENING
+      - RISK_ALERT
+      - NEGATIVE_EVENT
+      - BEARISH_WATCH
+      title: SignalLabel
+      type: string

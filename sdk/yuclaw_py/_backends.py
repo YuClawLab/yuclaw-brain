@@ -178,14 +178,17 @@ class ApiBackend(Backend):
 
     DEFAULT_TIMEOUT = 30.0  # seconds — generous so backtest/events don't time out
 
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, api_key: Optional[str] = None):
         self.base_url = base_url.rstrip("/")
+        self.api_key = api_key
 
     def _get(self, path: str, params: Optional[dict[str, Any]] = None) -> Any:
         import requests
+        headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
         r = requests.get(
             f"{self.base_url}{path}",
             params=params or {},
+            headers=headers,
             timeout=self.DEFAULT_TIMEOUT,
         )
         if r.status_code == 404:

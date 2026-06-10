@@ -1,0 +1,99 @@
+{
+ "snapshot_id": "snap_AMD_7ef67e8ba3ed32b5",
+ "ticker": "AMD",
+ "signal_time": "2026-05-20T17:00:01.437768-06:00",
+ "available_as_of": "2026-05-20T17:00:01.437768-06:00",
+ "signal_label": "WATCH",
+ "total_score": 0.1536,
+ "c1_price_momentum": 1.0,
+ "c2_volume_confirm": 0.0,
+ "c3_sector_velocity": -0.34801817,
+ "c4_macro_regime": 0.6,
+ "c5_oil_rates_fx": -0.56489956,
+ "c6_event_impact": -0.45793387,
+ "c7_peer_correlation": 0.9422543,
+ "c8_cascade_effect": 0.0027932415,
+ "c9_model_trust": -0.6,
+ "evidence_event_ids": [
+  "AMD_F4_000000248826000096_11",
+  "AMD_F4_000000248826000096_12",
+  "AMD_F4_000000248826000096_14",
+  "AMD_F4_000000248826000096_13",
+  "AMD_F4_000000248826000096_16",
+  "CASCADE_AMD_d1_8264eb263ca6c5a0"
+ ],
+ "content_hash": "fe7ca6df321910409fd514edb63922ac06606904f46b8b6564c97e8d4c3195e6",
+ "compliance_payload": {
+  "version": "v3.0",
+  "research_only": true,
+  "not_financial_advice": true,
+  "no_execution_recommendation": true
+ },
+ "is_backfill": false,
+ "created_at": "2026-05-20T17:00:01.534124-06:00",
+ "component_anatomy": {
+  "c1": {
+   "confidence": 0.3,
+   "rationale": "1-month momentum +52.40% \u2192 score +1.000 (warning: point-in-time approximation \u2014 v2.3.0 dashboard holds latest snapshot only)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c2": {
+   "confidence": 0.0,
+   "rationale": "volume feed not yet wired (Day 5)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c3": {
+   "confidence": 0.3,
+   "rationale": "XLK 1d -1.80% (z=-0.54) \u2192 score -0.348 (warning: point-in-time approximation \u2014 v2.3.0 dashboard holds latest snapshot only)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c4": {
+   "confidence": 0.3,
+   "rationale": "macro regime RISK_ON (conf 0.85) \u2192 score +0.60 (warning: point-in-time approximation \u2014 v2.3.0 regime is latest only)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c5": {
+   "confidence": 0.3,
+   "rationale": "1 sub-signal(s) \u2192 avg -0.565 (warning: point-in-time approximation \u2014 TLT/UUP/XLE come from latest dashboard only)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c6": {
+   "confidence": 1.0,
+   "rationale": "27 event(s) in 30d (insider sum -6.525 \u2192 capped -0.500; other sum +0.529) \u2192 tanh +0.029",
+   "evidence_ids": [
+    "AMD_F4_000000248826000096_11",
+    "AMD_F4_000000248826000096_12",
+    "AMD_F4_000000248826000096_14",
+    "AMD_F4_000000248826000096_13",
+    "AMD_F4_000000248826000096_16"
+   ],
+   "not_implemented": false
+  },
+  "c7": {
+   "confidence": 0.3,
+   "rationale": "cohort XLK mean mom +26.37%, majority agree 9/9 \u2192 score +0.942 (warning: point-in-time approximation \u2014 cohort moms come from latest dashboard only)",
+   "evidence_ids": [],
+   "not_implemented": false
+  },
+  "c8": {
+   "confidence": 0.3333333333333333,
+   "rationale": "1 cascade event(s) \u2192 impact sum +0.003 \u2192 tanh +0.003",
+   "evidence_ids": [
+    "CASCADE_AMD_d1_8264eb263ca6c5a0"
+   ],
+   "not_implemented": false
+  },
+  "c9": {
+   "confidence": 0.3,
+   "rationale": "hit rate 1/5 = 20.0% \u2192 score -0.600",
+   "evidence_ids": [],
+   "not_implemented": false
+  }
+ },
+ "composite_confidence": 0.406
+}

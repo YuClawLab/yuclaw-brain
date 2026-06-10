@@ -1,175 +1,164 @@
 """
-YUCLAW MCP server (stdio).
+YUCLAW MCP v2 server (stdio) — on the unified v4 schema.
 
-Exposes seven read-only tools backed directly by the yuclaw_py SDK:
+Two PRIMARY research tools, both produced by the single v4 assembler
+(v4.api.builder.build_response) — no local response stamping, no divergence:
 
-    yuclaw_signal(ticker)
-    yuclaw_why(ticker, n_evidence=5)
-    yuclaw_replay(ticker, date)
-    yuclaw_validation()
-    yuclaw_events(ticker, since=None)
-    yuclaw_universe()
-    yuclaw_verify(ticker, date)
+    yuclaw_why(ticker, as_of=None, include_score=False)
+        → structured ResearchResponse (signal + 9 components + evidence + ledger hashes)
+    yuclaw_memo(ticker, as_of=None, include_score=False, n_evidence=20)
+        → MemoOutput (Markdown research memo + the compact ResearchResponse)
 
-Every tool response embeds the locked compliance payload
-    {"not_advice": True, "research_only": True, "not_registered_adviser": True}
-and the public-label validator from the SDK refuses to emit any label
-outside the locked vocabulary (no SELL, no SHORT — ever).
+Plus three AUXILIARY read-only tools retained from v3 (distinct utilities, not
+research signals): yuclaw_universe, yuclaw_validation, yuclaw_verify.
 
-Each tool's MCP description ends with the locked footer text
-"Research/education only — not investment advice." baked into the
-docstring at definition time so MCP clients see it when they list tools.
+Every research response carries a REQUIRED compliance block. Signal labels are
+research classifications — never SELL or SHORT. Missing data returns a full
+status='no_data' envelope (with compliance), never a bare error.
 
 Run:
-    python3 -m v3.mcp.server                # stdio mode (Claude Desktop, etc.)
+    python3 -m v3.mcp.server            # stdio (Claude Desktop, etc.)
 """
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from typing import Any, Optional
 
 from mcp.server.fastmcp import FastMCP
 
 import yuclaw_py
-from yuclaw_py._client import _validate_label
-from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE
+from yuclaw_py._compliance import COMPLIANCE
 
 from v3.proof.verify import verify as proof_verify
+from v4.api.builder import build_response
+from v4.memo.generator import generate_memo
 
-mcp = FastMCP("yuclaw")
+_INSTRUCTIONS = (
+    "YUCLAW is an evidence-first financial research tool. Every signal is a RESEARCH "
+    "CLASSIFICATION, not investment advice and never a buy/sell/short recommendation. "
+    "Every claim is backed by a source SEC filing and a ledger hash; surface those when "
+    "you cite YUCLAW. Always preserve the `compliance` block and `limitations` from any "
+    "response in what you show the user. When `status` is 'no_data', say so plainly — do "
+    "not invent a signal."
+)
 
-# Single Client instance — psycopg2 connections inside PostgresBackend are
-# short-lived (open/close per call), so this is safe to share.
+mcp = FastMCP("yuclaw", instructions=_INSTRUCTIONS)
+
+# Auxiliary tools still read via the SDK Client (universe/validation are not signals).
 _CLIENT = yuclaw_py.Client(source="postgres", dsn="dbname=yuclaw_events")
+_DSN = "dbname=yuclaw_events"
 
 
-def _stamp(payload: dict[str, Any]) -> dict[str, Any]:
-    """Add compliance + notice to a signal-bearing response."""
-    if "label" in payload:
-        _validate_label(payload["label"])
-    out = dict(payload)
-    out["compliance"] = dict(COMPLIANCE)
-    out["compliance_notice"] = COMPLIANCE_NOTICE
-    return out
+def _parse_as_of(as_of: Optional[str]) -> Optional[datetime]:
+    if not as_of:
+        return None
+    dt = datetime.fromisoformat(as_of.replace("Z", "+00:00"))
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
 # ---------------------------------------------------------------------------
+# PRIMARY research tools (unified schema)
+# ---------------------------------------------------------------------------
 @mcp.tool()
-def yuclaw_signal(ticker: str) -> dict[str, Any]:
-    """Latest YUCLAW composite signal for a ticker, plus the 9 component scores.
+def yuclaw_why(
+    ticker: str, as_of: Optional[str] = None,
+    include_score: bool = False, include_cascade: bool = False,
+) -> dict[str, Any]:
+    """Structured, evidence-first research signal for a ticker (the full ResearchResponse).
 
-    Returns label (one of STRONG_BULLISH / BULLISH / NEUTRAL / WATCH / WEAKENING /
-    NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT — never SELL or SHORT),
-    score in [-1, 1], signal_time, and c1..c9.
+    Returns the locked signal label (STRONG_BULLISH / BULLISH / NEUTRAL / WATCH /
+    WEAKENING / RISK_ALERT / NEGATIVE_EVENT / BEARISH_WATCH — never SELL or SHORT),
+    a graded confidence (A/B/C/Insufficient), the 9 component anatomies with rationale,
+    and an `evidence` array where EVERY item carries a source_url, SEC accession_number,
+    and ledger_hash so the answer is independently verifiable.
 
+    Args:
+        ticker: e.g. "AMD".
+        as_of: optional ISO-8601 instant for point-in-time replay (default: latest).
+        include_score: default False — the label + grade lead; set True to also return
+            the raw composite score.
+        include_cascade: default False — set True to attach the `cascade` supply-chain
+            propagation tree (which upstream event reached this ticker, with public edge weights).
+
+    Missing data returns a full status='no_data' envelope (with compliance), not an error.
     Research/education only — not investment advice."""
-    try:
-        return _stamp(_CLIENT.signal(ticker))
-    except LookupError as e:
-        return {"error": "not_found", "detail": str(e), "compliance": dict(COMPLIANCE)}
-
-
-@mcp.tool()
-def yuclaw_why(ticker: str, n_evidence: int = 5) -> dict[str, Any]:
-    """Signal for `ticker` plus the top `n_evidence` material events that informed it,
-    each with event_type, magnitude, direction, raw_excerpt, and source_url.
-
-    The evidence trail is what makes this signal explainable, not the score alone.
-
-    Research/education only — not investment advice."""
-    try:
-        return _stamp(_CLIENT.why(ticker, n_evidence=n_evidence))
-    except LookupError as e:
-        return {"error": "not_found", "detail": str(e), "compliance": dict(COMPLIANCE)}
-
-
-@mcp.tool()
-def yuclaw_replay(ticker: str, date: str) -> dict[str, Any]:
-    """Point-in-time YUCLAW signal as it would have looked at the end of `date`
-    (YYYY-MM-DD). Uses only data available on or before that date.
-
-    Useful for evidence-trail reproducibility checks. Returns the same shape as
-    yuclaw_signal plus a `replay_as_of` field.
-
-    Research/education only — not investment advice."""
-    try:
-        return _stamp(_CLIENT.replay(ticker, date))
-    except LookupError as e:
-        return {"error": "not_found", "detail": str(e), "compliance": dict(COMPLIANCE)}
-    except ValueError as e:
-        return {"error": "bad_date", "detail": str(e), "compliance": dict(COMPLIANCE)}
+    resp = build_response(ticker, as_of=_parse_as_of(as_of),
+                          include_score=include_score, include_cascade=include_cascade)
+    return resp.model_dump(mode="json")
 
 
 @mcp.tool()
-def yuclaw_validation() -> dict[str, Any]:
-    """In-Sample Event Validation panel + out-of-sample Forward Tracking Ledger.
+def yuclaw_memo(
+    ticker: str,
+    as_of: Optional[str] = None,
+    include_score: bool = False,
+    n_evidence: int = 20,
+) -> dict[str, Any]:
+    """A ready-to-read Markdown research memo for a ticker, plus the compact ResearchResponse.
 
-    Returns two tables (as records lists): `in_sample` and `forward`. Each row
-    carries return_1d / 5d / 20d, hit_1d / 5d / 20d, and excess returns vs SPY.
-    Hit rates MUST be presented with their `n` (count) — never headline a
-    percentage alone. Small-n panels are preliminary.
+    The memo leads with the signal + Evidence Quality Grade, explains each component, lists
+    the numbered evidence trail (with source filings + ledger hashes), states explicit
+    limitations, and ends with the required compliance notice. Insufficient-grade tickers
+    render as a conservative "evidence-limited research note"; RISK_ALERT tickers lead with
+    the triggering regulatory/legal event.
 
-    Caveat: the in-sample panel was reconstructed via point-in-time replay
-    with market components C1/C3/C4/C5/C7 running at 0.3 confidence (the
-    upstream dashboard cache holds only the latest market snapshot). The
-    in-sample numbers therefore primarily reflect the evidence layer
-    (C6/C8/C9). See docs/methodology/backfill.md.
+    Args:
+        ticker: e.g. "AMD".
+        as_of: optional ISO-8601 instant for point-in-time replay.
+        include_score: default False (memos are score-free prose); True surfaces numbers.
+        n_evidence: evidence items to include (default 20, capped at 50).
 
+    Returns {ticker, signal, grade, mode, markdown, response}. The `response` holds the
+    structured ResearchResponse including the compliance block.
     Research/education only — not investment advice."""
-    panels = _CLIENT.validation()
-    in_sample_df = panels["in_sample"]
-    forward_df = panels["forward"]
-    for df in (in_sample_df, forward_df):
-        if "signal_date" in df.columns:
-            df["signal_date"] = df["signal_date"].astype(str)
-    return {
-        "in_sample": in_sample_df.where(in_sample_df.notna(), None).to_dict(orient="records"),
-        "forward":   forward_df.where(forward_df.notna(), None).to_dict(orient="records"),
-        "compliance": dict(COMPLIANCE),
-        "compliance_notice": COMPLIANCE_NOTICE,
-    }
+    memo = generate_memo(ticker, as_of=_parse_as_of(as_of),
+                         include_score=include_score, n_evidence=n_evidence)
+    return memo.model_dump(mode="json")
 
 
-@mcp.tool()
-def yuclaw_events(ticker: str, since: Optional[str] = None) -> dict[str, Any]:
-    """Evidence events for `ticker` (SEC filings, insider trades, M&A, cascade
-    children). `since` is an optional ISO date — only events with
-    available_as_of >= since are returned.
-
-    Each event row includes the source_url so it can be traced back to the SEC
-    filing or other primary record.
-
-    Research/education only — not investment advice."""
-    df = _CLIENT.events(ticker, since=since)
-    if "available_as_of" in df.columns:
-        df["available_as_of"] = df["available_as_of"].astype(str)
-    return {
-        "ticker": ticker.upper(),
-        "n": len(df),
-        "events": df.where(df.notna(), None).to_dict(orient="records"),
-        "compliance": dict(COMPLIANCE),
-    }
-
-
+# ---------------------------------------------------------------------------
+# AUXILIARY read-only tools (retained from v3)
+# ---------------------------------------------------------------------------
 @mcp.tool()
 def yuclaw_universe() -> dict[str, Any]:
-    """The list of tickers YUCLAW v3.0 tracks (equities + sector ETFs +
-    broad ETFs + macro).
+    """The tickers YUCLAW tracks (equities + sector ETFs + broad ETFs + macro).
 
     Research/education only — not investment advice."""
     return {"universe": _CLIENT.universe(), "compliance": dict(COMPLIANCE)}
 
 
 @mcp.tool()
-def yuclaw_verify(ticker: str, date: str) -> dict[str, Any]:
-    """Verified Research Ledger check for `ticker` on `date`.
+def yuclaw_validation() -> dict[str, Any]:
+    """In-Sample Event Validation panel + out-of-sample Forward Tracking Ledger.
 
-    Looks up the ledger entry, recomputes the content_hash from the live
-    database row, and reports VERIFIED / INTEGRITY_FAILURE / NOT_FOUND.
-    Verifies record integrity and timing — not investment merit.
+    Returns two record lists: `in_sample` and `forward` (return_1d/5d/20d, hit_1d/5d/20d,
+    excess vs SPY). Hit rates MUST be shown with their `n` — never headline a percentage
+    alone; small-n panels are preliminary. See docs/methodology/backfill.md for the
+    in-sample reconstruction caveat.
 
     Research/education only — not investment advice."""
-    result = proof_verify(ticker, date)
-    return {**result, "compliance": dict(COMPLIANCE)}
+    panels = _CLIENT.validation()
+    out: dict[str, Any] = {}
+    for name in ("in_sample", "forward"):
+        df = panels[name]
+        if "signal_date" in df.columns:
+            df = df.copy()
+            df["signal_date"] = df["signal_date"].astype(str)
+        out[name] = df.where(df.notna(), None).to_dict(orient="records")
+    out["compliance"] = dict(COMPLIANCE)
+    return out
+
+
+@mcp.tool()
+def yuclaw_verify(ticker: str, date: str) -> dict[str, Any]:
+    """Verified Research Ledger check for `ticker` on `date` (YYYY-MM-DD).
+
+    Recomputes the content_hash from the live row and reports VERIFIED /
+    INTEGRITY_FAILURE / NOT_FOUND. Verifies record integrity and timing — not
+    investment merit.
+
+    Research/education only — not investment advice."""
+    return {**proof_verify(ticker, date), "compliance": dict(COMPLIANCE)}
 
 
 # ---------------------------------------------------------------------------

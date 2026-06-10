@@ -2,6 +2,82 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.0.1] — 2026-06-02
+
+### Added
+
+- **Bundled zero-backend demo.** `pip install yuclaw && yuclaw demo` now runs the full
+  ~3-minute guided journey **offline** against the canonical **AMD @ 2026-05-20** signal —
+  including the ledger-verification step, which recomputes the **byte-identical**
+  `content_hash` (`fe7ca6df…`) committed to the public ledger. No local Postgres required.
+  The demo-targeted commands (`why`, `memo`, `share`, `verify`, `cascade`) also resolve this
+  one signal offline; any other ticker/date prints a clear backend-setup hint instead of an error.
+  - New `v4/demo/fixtures/` (snapshot + events + ledger entry, ~10 KB) and
+    `v4/demo/fixture_loader.py` (a read-only psycopg2-shaped shim).
+  - Fallback triggers **only** when Postgres is unreachable — the live backend path is unchanged.
+
+### Changed
+
+- README: the demo is now presented as truly zero-config; the Postgres requirement is noted only
+  for live signals across the full universe (`docs/v4/backend_setup.md`).
+
+> 4.0.0 was functional but required a local backend for the demo; **4.0.1 is the recommended install.**
+
+## [4.0.0] — 2026-06-03
+
+v4.0 is the **Agent Research API** release. YUCLAW reads SEC filings and turns them
+into *research classifications* with linked source evidence, an evidence-quality grade,
+and a point-in-time hash anchored in a public git ledger — never buy/sell calls. This is
+a major version: the package now installs the v3 evidence pipeline + the v4 API/CLI/SDK,
+and the legacy v2.x momentum/trading stack is archived (see "Removed").
+
+### Added
+
+- **Unified response contract** (`v4/api/schema.py`) — a single Pydantic v2 `ResearchResponse`
+  every surface returns: signal label (8-label locked vocabulary, no buy/sell), per-component
+  anatomy (C1–C9 with score/confidence/rationale/evidence/`not_implemented`), composite
+  confidence, evidence list, cascade, compliance block, and a `ledger_hash`. `no_data()` /
+  `rate_limited()` factories; `extra="forbid"`.
+- **REST API** (`v3/api/server.py`) — `/v1/signal`, `/v1/why`, `/v1/cascade`, `/v1/memo`,
+  `/v1/share`, plus `/v1/verify`, `/v1/universe`, `/v1/openapi.json`, `/health`. Built on the
+  shared `build_response()` builder so REST/CLI/MCP/SDK never diverge.
+- **Memo Generator** — narrative research memo rendered from the locked schema (CLI `yuclaw memo`).
+- **Agent-native interfaces** — MCP v2 server (`mcp.server.fastmcp.FastMCP`) plus
+  LangChain (`BaseTool`) and LlamaIndex (`BaseRetriever` / `FunctionTool`) wrappers, so a signal
+  is a first-class tool/retriever for AI agents.
+- **`yuclaw demo`** — a ~3-minute guided "Why AMD?" journey on a real frozen signal: traced to
+  its filings, point-in-time replayed, and verified against the public ledger.
+- **Cascade History View** (`yuclaw cascade`) — supply/peer/cohort/etf/macro propagation across
+  a hardcoded public edge graph, with decay and a de-minimis filter.
+- **Share-this-Signal** (`yuclaw share`) — a self-contained, compliance-carrying HTML card.
+- **API keys + metering** (`v4/auth/`) — SHA-256-hashed keys, free/anon daily tiers,
+  per-request logging, `/v1/keys/info` + `/v1/keys/usage`, `429` with `retry_after`.
+- **Single-source compliance** — canonical `COMPLIANCE_NOTICE` constant (version `draft-v0`);
+  present on every signal response (including `401`/`429`), absent on metadata/account responses.
+  Guarded by `tests/test_compliance_regression.py` (21 assertions).
+- **Self-contained packaging** — `pip install yuclaw` now installs v3 + v4 + the `yuclaw_py` SDK;
+  entry point `yuclaw` → `v4.cli:main`. Optional extras: `[api]`, `[mcp]`, `[agents]`.
+
+### Changed
+
+- `yuclaw` console entry point repointed from the v2.x trading CLI to the v4 research CLI.
+- README / quickstart / DISCLAIMER reconciled to the canonical compliance wording; ~80-name
+  research universe; all surfaces inherit the one `COMPLIANCE_NOTICE` constant.
+- GitHub-Pages landing replaced with a minimal v4 page (`pip install yuclaw && yuclaw demo`).
+
+### Removed
+
+- The legacy **v2.x momentum/trading stack** (the `yuclaw/` monolith, `engines/`, `output/`,
+  `data/`, `finclaw/`, `rebuild_html.py`, marketing one-pagers) is moved to `archive/v2/`
+  (history preserved) and is **not** packaged or served. It used the older buy/sell vocabulary
+  and on-chain anchoring framing that v4.0 deliberately moved away from.
+
+### Verification posture
+
+- Verification is **integrity, not merit**: a signal's content hash is committed to the public,
+  git-anchored Verified Research Ledger (`yuclaw-trust`). This proves a signal existed at a given
+  time and is unaltered since publication — it does **not** validate the underlying analytical claim.
+
 ## [2.3.0] — 2026-05-14
 
 ### Added

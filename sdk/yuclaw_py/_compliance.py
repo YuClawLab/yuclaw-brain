@@ -11,9 +11,11 @@ COMPLIANCE: dict[str, bool] = {
 }
 
 COMPLIANCE_NOTICE: str = (
-    "Research and education only. Not investment advice. "
-    "Signal labels are research classifications, not buy/sell recommendations. "
-    "YUCLAW is not a registered investment adviser."
+    # Must match v4/api/schema.py::COMPLIANCE_NOTICE verbatim (the SDK is standalone,
+    # so the canonical text is duplicated rather than imported). Day 9.
+    "YUCLAW research output. Not investment advice. "
+    "Past performance does not guarantee future results. "
+    "Signal labels are research classifications, not buy/sell recommendations."
 )
 
 # Public signal vocabulary — anything outside this set returned by the SDK

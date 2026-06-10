@@ -33,6 +33,10 @@ def _read_ledger_entry(ticker: str, date_str: str) -> tuple[Optional[dict[str, A
                                                              Optional[dict[str, Any]]]:
     """Returns (block_for_date, entry_for_ticker) or (None, None)."""
     if not LEDGER_FILE.exists():
+        # Zero-backend fallback: the bundled demo ledger entry (AMD @ 2026-05-20).
+        from v4.demo.fixture_loader import matches_date, fixture_ledger_block_and_entry
+        if matches_date(ticker, date_str):
+            return fixture_ledger_block_and_entry(date_str)
         return None, None
     for line in LEDGER_FILE.read_text().splitlines():
         line = line.strip()
@@ -52,18 +56,25 @@ def _read_ledger_entry(ticker: str, date_str: str) -> tuple[Optional[dict[str, A
 
 
 def _fetch_snapshot_row(ticker: str, date_str: str) -> Optional[dict[str, Any]]:
-    with psycopg2.connect(DB_DSN) as conn, \
-         conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-        cur.execute(
-            """SELECT * FROM signal_snapshots
-               WHERE ticker = %s
-                 AND is_backfill = false
-                 AND (signal_time AT TIME ZONE 'UTC')::date = %s
-               ORDER BY signal_time DESC LIMIT 1""",
-            (ticker.upper(), date_str),
-        )
-        row = cur.fetchone()
-    return dict(row) if row else None
+    try:
+        with psycopg2.connect(DB_DSN) as conn, \
+             conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            cur.execute(
+                """SELECT * FROM signal_snapshots
+                   WHERE ticker = %s
+                     AND is_backfill = false
+                     AND (signal_time AT TIME ZONE 'UTC')::date = %s
+                   ORDER BY signal_time DESC LIMIT 1""",
+                (ticker.upper(), date_str),
+            )
+            row = cur.fetchone()
+        return dict(row) if row else None
+    except psycopg2.OperationalError:
+        # Zero-backend fallback for the bundled demo snapshot.
+        from v4.demo.fixture_loader import matches_date, fixture_snapshot_row
+        if matches_date(ticker, date_str):
+            return fixture_snapshot_row()
+        raise
 
 
 def _git_commit_meta(commit_hash: Optional[str]) -> Optional[dict[str, str]]:
@@ -129,6 +140,11 @@ def verify(ticker: str, date_str: str) -> dict[str, Any]:
         return out
 
     meta = _git_commit_meta(entry["content_hash"])
+    if meta is None:
+        # offline fixture mode: surface the committed-at recorded in the fixture
+        from v4.demo.fixture_loader import matches_date, fixture_commit_meta
+        if matches_date(ticker, date_str):
+            meta = fixture_commit_meta()
     out["status"] = "VERIFIED"
     out["commit"] = meta
     return out

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YUCLAW: {{ ticker }} — {{ signal_human }} ({{ grade_letter }})</title>
+<meta name="description" content="{{ og_description }}">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:description" content="{{ og_description }}">
+{% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+{% if ledger_anchor_url %}<meta property="og:url" content="{{ ledger_anchor_url }}">{% endif %}
+<!-- Twitter -->
+<meta name="twitter:card" content="{{ twitter_card }}">
+<meta name="twitter:title" content="{{ og_title }}">
+<meta name="twitter:description" content="{{ og_description }}">
+<style>
+  :root { --ink:#1a1d21; --muted:#5a6675; --line:#e6e9ee; --bg:#ffffff;
+          --accent:#0f6e8c; --signal:{{ signal_color }}; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#eef1f5; color:var(--ink);
+         font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .wrap { max-width:800px; margin:24px auto; padding:0 16px; }
+  .card { background:var(--bg); border:1px solid var(--line); border-radius:14px; overflow:hidden;
+          box-shadow:0 6px 24px rgba(20,30,45,.08); }
+  /* Persistent compliance banner — kept above the fold so it survives a preview crop */
+  .compliance-top { background:#fbfaf2; border-bottom:1px solid #efe9d4; color:#6b5e2e;
+                    padding:10px 22px; font-size:12.5px; line-height:1.45; }
+  .compliance-top b { color:#7a6a2e; }
+  .head { padding:22px 24px 6px; display:flex; justify-content:space-between; align-items:baseline; }
+  .brand { font-weight:800; letter-spacing:.14em; color:var(--muted); font-size:12px; }
+  .asof { color:var(--muted); font-size:12.5px; }
+  .signal-row { padding:2px 24px 4px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .ticker { font-size:34px; font-weight:800; }
+  .label { font-size:20px; font-weight:700; color:var(--signal);
+           border:2px solid var(--signal); border-radius:999px; padding:3px 14px; }
+  .grade { font-size:13px; color:var(--muted); }
+  .summary { padding:2px 24px 14px; color:var(--muted); font-size:14px; }
+  .section { padding:6px 24px; }
+  .section h3 { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+                margin:14px 0 8px; }
+  .ev { border-top:1px solid var(--line); padding:9px 0; font-size:14px; }
+  .ev:first-of-type { border-top:none; }
+  .ev .t { font-weight:600; }
+  .ev .m { color:var(--muted); font-size:12.5px; }
+  .ev a { color:var(--accent); text-decoration:none; }
+  .ev a:hover { text-decoration:underline; }
+  .cascade { font-size:13.5px; color:var(--ink); }
+  .cascade .edge { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12.5px;
+                   color:var(--muted); padding:2px 0; }
+  .ledger { margin:14px 24px; padding:14px 16px; background:#f6f8fa; border:1px solid var(--line);
+            border-radius:10px; }
+  .ledger .k { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .hash { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:14px;
+          color:var(--ink); word-break:break-all; }
+  .verify { display:inline-block; margin-top:10px; font-weight:700; color:#fff; background:var(--accent);
+            padding:8px 16px; border-radius:8px; text-decoration:none; }
+  .verify:hover { background:#0c5a73; }
+  .meta { padding:6px 24px 0; color:var(--muted); font-size:12px; }
+  .foot { padding:14px 24px 20px; border-top:1px solid var(--line); margin-top:8px;
+          color:var(--muted); font-size:12px; }
+  .foot b { color:var(--ink); }
+  @media (max-width:520px){ .ticker{font-size:28px} .label{font-size:17px} .head,.signal-row,.summary,.section,.meta{padding-left:16px;padding-right:16px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <!-- COMPLIANCE: persistent, above the fold (Q4) -->
+    <div class="compliance-top">
+      <b>YUCLAW research output. Not investment advice.</b><br>
+      Past performance does not guarantee future results. <span style="opacity:.7">({{ compliance_text_version }})</span>
+    </div>
+
+    <div class="head">
+      <span class="brand">YUCLAW · EVIDENCE-FIRST RESEARCH</span>
+      <span class="asof">as of {{ as_of_date }} · point-in-time</span>
+    </div>
+    <div class="signal-row">
+      <span class="ticker">{{ ticker }}</span>
+      <span class="label">{{ signal_human }}</span>
+      <span class="grade">Evidence {{ grade_human }}</span>
+    </div>
+    <div class="summary">
+      {{ n_evidence }} source event{{ 's' if n_evidence != 1 else '' }}, each traceable to an SEC filing.
+      {% if score is not none %}<br>Composite score: <b>{{ '%+.3f'|format(score) }}</b>.{% endif %}
+    </div>
+
+    {% if status == 'no_data' %}
+    <div class="section"><p class="ev m">No signal snapshot exists for {{ ticker }} at this date. This is an
+      honest empty state — not a hidden or suppressed result.</p></div>
+    {% else %}
+    <div class="section">
+      <h3>Top evidence</h3>
+      {% for e in evidence %}
+      <div class="ev">
+        <div class="t">{{ e.title }}{% if e.date %} <span class="m">· {{ e.date }}</span>{% endif %}</div>
+        <div class="m">
+          {% if e.accession_number %}accession {{ e.accession_number }} · {% endif %}
+          {% if e.source_url %}<a href="{{ e.source_url }}" rel="noopener">source filing →</a>{% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if cascade %}
+    <div class="section cascade">
+      <h3>Supply-chain cascade</h3>
+      <div>Rooted at <b>{{ cascade.root_ticker }} {{ cascade.root_type }}</b> ({{ cascade.root_date }}):</div>
+      {% for ed in cascade.edges %}
+      <div class="edge">d{{ ed.depth }}  {{ ed.parent_ticker }} → {{ ed.child_ticker }}  {{ ed.relationship_type }}  w={{ ed.edge_weight }} × decay {{ ed.decay_factor }} → {{ '%.4f'|format(ed.contribution) }}</div>
+      {% endfor %}
+      <div class="m" style="margin-top:6px">Edge weights are the public supply_chain.py graph.</div>
+    </div>
+    {% endif %}
+
+    {% if ledger_hash %}
+    <div class="ledger">
+      <div class="k">Verified Research Ledger hash (SHA-256)</div>
+      <div class="hash" title="{{ ledger_hash }}">{{ ledger_hash_short }}</div>
+      {% if verified %}
+      <div class="meta" style="padding-left:0;color:#2e7d4f">✓ Verified — unaltered since published{% if verify_commit %} (commit {{ verify_commit }}{% if verify_committed_at %}, {{ verify_committed_at }}{% endif %}){% endif %}.</div>
+      {% endif %}
+      {% if ledger_anchor_url %}
+      <a class="verify" href="{{ ledger_anchor_url }}" rel="noopener">Verify independently →</a>
+      <div class="meta" style="padding-left:0">Recompute this hash from the public SEC filings and compare it to the git-anchored ledger entry.</div>
+      {% else %}
+      <div class="meta" style="padding-left:0">Ledger entry not yet published for this date.</div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <div class="meta">replay_id <code>{{ replay_id }}</code> · model {{ model_id }} / prompt {{ prompt_version }} · jurisdiction {{ jurisdiction }}</div>
+
+    <!-- COMPLIANCE footer (canonical COMPLIANCE_NOTICE) -->
+    <div class="foot">
+      {{ compliance_notice }}
+      Compliance text version: {{ compliance_text_version }}.
+    </div>
+  </div>
+</div>
+</body>
+</html>
