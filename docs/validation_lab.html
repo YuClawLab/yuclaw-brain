@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YUCLAW · Signal Validation Lab</title>
+  <meta name="description" content="Research cohort analysis (Fama-French-style decile event study) of YUCLAW composite signals. Hypothetical research illustration — not investment advice.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;line-height:1.6}
+    .container{max-width:1080px;margin:0 auto;padding:24px}
+    .header{margin-bottom:16px;padding:18px 24px;background:#151A23;border:1px solid #1E232D;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .logo{font-size:20px;font-weight:800;color:#FFF;letter-spacing:-0.3px}
+    .logo span{color:#00E676}
+    .ver{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;font-family:JetBrains Mono,monospace}
+    .navlinks a{color:#A0AEC0;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:6px;background:#1E232D;margin-left:6px}
+    .navlinks a:hover{color:#00E676}
+    .disclaimer-line{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;margin-bottom:22px;font-size:12px;line-height:1.55;color:#A0AEC0}
+    .disclaimer-line strong{color:#FBA94B}
+    .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}
+    .disclaimer strong{color:#FBA94B}
+    .panel{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}
+    .panel-title{font-size:13px;font-weight:700;color:#FFF;margin-bottom:4px}
+    .panel-sub{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:14px}
+    .lead-tag{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.5px;margin-left:8px}
+    .caveat-tag{display:inline-block;background:#FBA94B20;color:#FBA94B;border:1px solid #FBA94B80;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:0.5px;margin-left:8px}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:8px 12px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.6px}
+    td{font-size:13px;border-bottom:1px solid #1A2030}
+    code{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}
+    details.acc{background:#151A23;border:1px solid #1E232D;border-radius:12px;margin-bottom:20px;overflow:hidden}
+    details.acc>summary{list-style:none;cursor:pointer;padding:16px 22px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#A0AEC0}
+    details.acc>summary::-webkit-details-marker{display:none}
+    details.acc>summary::before{content:"▸";color:#00E676;margin-right:8px}
+    details.acc[open]>summary::before{content:"▾"}
+    .acc-body{padding:0 22px 20px;font-size:13px;color:#A0AEC0}
+    .footer{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:8px}
+    .footer a{color:#00E676;text-decoration:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div><span class="logo">YUCLAW</span> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.0.1</span></div>
+      <div class="navlinks">
+        <a href="index.html">Dashboard</a>
+        <a href="methodology/validation_lab.md">Methodology</a>
+        <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
+      </div>
+    </div>
+
+    <div class="disclaimer-line">
+      <strong>Disclaimer —</strong> Research cohort analysis — hypothetical illustration, not investment advice, not performance advertising. Classifications, not recommendations.
+    </div>
+
+    <p style="font-size:14px;color:#A0AEC0;margin-bottom:18px;max-width:780px">
+      A Fama–French-style <strong>decile-cohort event study</strong>: does YUCLAW's composite
+      signal <em>score</em> carry forward information about subsequent realized returns? Cohorts
+      are grouped by score decile or signal label and tracked as equal-weighted research cohorts.
+      Derived statistics only — no raw prices. This is an event study, not portfolio management.
+    </p>
+
+    <div class="panel">
+      <div class="panel-title">Panel 1 · Forward (Out-of-Sample)<span class="lead-tag">LOOK-AHEAD-FREE</span></div>
+      <div class="panel-sub">is_backfill = false · Day 0 = 2026-05-18 · the honest panel</div>
+      
+      <div style="background:#1A2030;border-radius:8px;padding:18px;border-left:3px solid #FBA94B">
+        <div style="color:#FBA94B;font-weight:700;font-size:13px;margin-bottom:8px">Insufficient forward price data — panel not yet evaluable</div>
+        <p style="font-size:13px;color:#A0AEC0;line-height:1.6">
+          Forward signals exist (16 rebalance dates,
+          2026-05-20 → 2026-06-09),
+          but internal <code>price_history</code> coverage currently ends
+          <code>2026-05-20</code>. Measuring a cohort's
+          <em>forward</em> return requires closing prices <em>after</em> the signal date,
+          and none are available past the coverage end — so <strong>0 forward periods are
+          evaluable</strong>. No external data was fetched or synthesized to fill this gap.
+          This panel will populate once the price feed resumes (a separate, tracked
+          data-freshness item).
+        </p>
+        <p style="font-size:12px;color:#718096;margin-top:10px">Forward Day 0 = 2026-05-18.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Panel 2 · In-Sample Replay<span class="caveat-tag">PARAMETRIC LOOK-AHEAD</span></div>
+      <div class="panel-sub">is_backfill = true · 13 rebalances · 65 trading days · signals 2026-02-18 → 2026-05-13</div>
+      <p style="font-size:12px;color:#FBA94B;margin-bottom:12px">⚠ The evidence-extraction model's training cutoff overlaps this window — in-sample results carry an unavoidable parametric look-ahead bias and are systematically optimistic. A <em>replay</em>, not a forecast.</p>
+
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Decile cohorts vs SPY (primary, robust ~8-name cohorts)</div>
+      <svg viewBox="0 0 900 340" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="In-sample decile cohorts vs SPY"><line x1="56" y1="257.9" x2="720" y2="257.9" stroke="#2D3748" stroke-dasharray="3,3"/><text x="726" y="261.9" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">0%</text><text x="6" y="310.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-4.5%</text><text x="6" y="32.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+21.6%</text><polyline points="56.0,257.9 107.1,248.3 158.2,256.5 209.2,229.1 260.3,226.8 311.4,165.7 362.5,162.4 413.5,121.2 464.6,131.2 515.7,161.2 566.8,96.9 617.8,82.8 668.9,68.8 720.0,28.0" fill="none" stroke="#00E676" stroke-width="2"/><line x1="734" y1="34" x2="750" y2="34" stroke="#00E676" stroke-width="3"/><text x="754" y="38" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">Top decile +21.6%</text><polyline points="56.0,257.9 107.1,235.5 158.2,235.3 209.2,255.6 260.3,279.7 311.4,283.6 362.5,301.3 413.5,292.1 464.6,241.5 515.7,195.0 566.8,226.8 617.8,172.8 668.9,104.8 720.0,147.7" fill="none" stroke="#FF3366" stroke-width="2"/><line x1="734" y1="52" x2="750" y2="52" stroke="#FF3366" stroke-width="3"/><text x="754" y="56" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">Bottom decile +10.4%</text><polyline points="56.0,257.9 107.1,247.3 158.2,259.7 209.2,273.4 260.3,296.4 311.4,303.6 362.5,306.0 413.5,273.9 464.6,236.8 515.7,219.4 566.8,218.8 617.8,184.4 668.9,171.2 720.0,182.7" fill="none" stroke="#A0AEC0" stroke-width="2"/><line x1="734" y1="70" x2="750" y2="70" stroke="#A0AEC0" stroke-width="3"/><text x="754" y="74" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY +7.1%</text></svg>
+      <table>
+        <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>
+        <tbody><tr><td style='padding:8px 12px;color:#E2E8F0'>Top-decile cohort (by composite score)</td><td style='padding:8px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>+21.65%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-3.34%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>2.45%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>62%</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>8/8/8</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0'>Bottom-decile cohort (by composite score)</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>+10.38%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-6.09%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>3.31%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>54%</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>8/8/8</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0'>SPY benchmark (broad-market reference)</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+7.08%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-5.47%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1.89%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>—</td></tr></tbody>
+      </table>
+
+      <div style="margin-top:18px;padding:12px 14px;background:#1A2030;border-radius:8px">
+        <div style="font-size:12px;color:#E2E8F0;font-weight:600">Top-minus-bottom cohort spread (research spread statistic — not a position, not tradeable)</div>
+        <div style="font-size:13px;color:#7C4DFF;font-family:JetBrains Mono,monospace;margin-top:4px">cumulative +8.34% · max drawdown -12.84%</div>
+      </div>
+      <svg viewBox="0 0 900 340" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="Top-minus-bottom cohort spread"><line x1="56" y1="276.0" x2="720" y2="276.0" stroke="#2D3748" stroke-dasharray="3,3"/><text x="726" y="280.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">0%</text><text x="6" y="310.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-2.0%</text><text x="6" y="32.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+16.4%</text><polyline points="56.0,276.0 107.1,294.2 158.2,306.0 209.2,240.0 260.3,201.7 311.4,107.1 362.5,73.6 413.5,28.0 464.6,129.3 515.7,242.7 566.8,113.4 617.8,176.7 668.9,254.0 720.0,149.9" fill="none" stroke="#7C4DFF" stroke-width="2"/><line x1="734" y1="34" x2="750" y2="34" stroke="#7C4DFF" stroke-width="3"/><text x="754" y="38" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">Top−Bottom spread +8.3%</text></svg>
+
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">Label cohorts vs SPY (secondary — small, variable membership; illustrative only)</div>
+      <svg viewBox="0 0 900 340" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="In-sample label cohorts vs SPY"><line x1="56" y1="292.2" x2="720" y2="292.2" stroke="#2D3748" stroke-dasharray="3,3"/><text x="726" y="296.2" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">0%</text><text x="6" y="310.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-4.5%</text><text x="6" y="32.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+86.8%</text><polyline points="56.0,292.2 107.1,291.6 158.2,295.4 209.2,283.8 260.3,278.6 311.4,251.9 362.5,253.1 413.5,195.9 464.6,155.2 515.7,153.0 566.8,45.1 617.8,66.5 668.9,64.5 720.0,28.0" fill="none" stroke="#4DD0E1" stroke-width="2"/><line x1="734" y1="34" x2="750" y2="34" stroke="#4DD0E1" stroke-width="3"/><text x="754" y="38" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">Bullish-labeled +86.8%</text><polyline points="56.0,292.2 107.1,284.7 158.2,288.3 209.2,294.2 260.3,298.6 311.4,293.7 362.5,301.4 413.5,291.8 464.6,279.2 515.7,262.7 566.8,273.2 617.8,255.5 668.9,239.9 720.0,253.5" fill="none" stroke="#FBA94B" stroke-width="2"/><line x1="734" y1="52" x2="750" y2="52" stroke="#FBA94B" stroke-width="3"/><text x="754" y="56" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">Cautious-labeled +12.7%</text><polyline points="56.0,292.2 107.1,289.2 158.2,292.7 209.2,296.6 260.3,303.3 311.4,305.3 362.5,306.0 413.5,296.8 464.6,286.2 515.7,281.2 566.8,281.0 617.8,271.1 668.9,267.4 720.0,270.7" fill="none" stroke="#A0AEC0" stroke-width="2"/><line x1="734" y1="70" x2="750" y2="70" stroke="#A0AEC0" stroke-width="3"/><text x="754" y="74" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY +7.1%</text></svg>
+      <table>
+        <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>
+        <tbody><tr><td style='padding:8px 12px;color:#E2E8F0'>Bullish-labeled cohort (STRONG_BULLISH + BULLISH) <span style="color:#FBA94B">⚠ thin</span></td><td style='padding:8px 12px;color:#4DD0E1;font-family:JetBrains Mono,monospace'>+86.81%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-3.87%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>8.03%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>54%</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>1/3/10</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0'>Cautious-labeled cohort (WEAKENING / NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT)</td><td style='padding:8px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+12.72%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-5.36%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>3.41%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>69%</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>4/12/26</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0'>SPY benchmark (broad-market reference)</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+7.08%</td><td style='padding:8px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>-5.47%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>1.89%</td><td style='padding:8px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>—</td><td style='padding:8px 12px;color:#718096;font-family:JetBrains Mono,monospace'>—</td></tr></tbody>
+      </table>
+      <p style="font-size:11px;color:#718096;margin-top:10px">⚠ Label cohorts can be as small as a single name on some dates (see n column); small-n figures are statistically noisy and shown for illustration only. The decile cohorts above are the robust comparison.</p>
+    </div>
+
+    <details class="acc">
+      <summary>Methodology summary</summary>
+      <div class="acc-body">
+        <p>Equal-weighted cohorts, rebalanced at each signal date, ranked by composite <code>total_score</code>; top/bottom decile (~10%). Returns are close-to-close from internal <code>price_history</code> (derived statistics only — raw prices never shown). Benchmark: SPY. Two panels (forward OOS, in-sample replay) are never blended. Annualized figures are intentionally omitted — annualizing a ~3-month window is misleading; cumulative return over N trading days is shown instead. Full methodology, including the in-sample look-ahead disclosure and the forward-window data limitation, is in <a href="methodology/validation_lab.md" style="color:#00E676">methodology/validation_lab.md</a>.</p>
+      </div>
+    </details>
+
+    <div class="disclaimer">
+      <strong>Disclaimer —</strong> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications, not recommendations. Past results — in-sample or forward-tracked — do not predict future performance.
+    </div>
+
+    <div class="footer">
+      YUCLAW Signal Validation Lab · built 2026-06-10 04:01 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+    </div>
+  </div>
+</body>
+</html>
