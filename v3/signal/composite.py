@@ -46,7 +46,7 @@ from v3.signal.components.c6_event_impact import C6EventImpact
 from v3.signal.components.c7_peer_correlation import C7PeerCorrelation
 from v3.signal.components.c8_cascade_impact import C8CascadeEffect
 from v3.signal.components.c9_model_trust import C9ModelTrust
-from v3.signal.data_loader import fetch_events, load_v2_state
+from v3.signal.data_loader import build_live_state, fetch_events, load_v2_state
 
 
 def _build_components() -> dict[str, SignalComponent]:
@@ -64,16 +64,21 @@ def _build_components() -> dict[str, SignalComponent]:
     }
 
 
-def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]:
+def compose_at(ticker: str, as_of: datetime, conn: Any = None,
+               v2_state_override: dict[str, Any] | None = None) -> dict[str, Any]:
     """Run all nine components AT a specific point in time.
 
     Every component receives `as_of` and is responsible for filtering its
-    inputs by it. C6 / C8 / C9 are genuinely point-in-time (they query the
-    events / signal_snapshots / track_record tables with `available_as_of
-    <= as_of` filters). C1 / C3 / C4 / C5 / C7 read v2.3.0 dashboard_state
-    which has no history — they detect a historical as_of via
-    data_loader.is_historical() and self-degrade to confidence 0.3 with a
-    "point-in-time approximation" warning.
+    inputs by it. C6 / C8 / C9 are genuinely point-in-time (events /
+    signal_snapshots / track_record with `available_as_of <= as_of`).
+
+    v4.2: C1 / C3 / C5(sector) / C7 now read LIVE price_history via
+    build_live_state() — prices, 1-month momentum, and sector 1-day change are
+    recomputed from fresh closes (component math unchanged). C4 (and C5's macro
+    input) read the FROZEN macro regime (its only upstream is the dead v2.3
+    macro engine, a no-touch Finnhub path) — passed through with a staleness
+    disclosure flag. `v2_state_override` lets the parity test inject the old
+    frozen dashboard_state.json for old-vs-new comparison.
 
     `conn` is accepted for API symmetry with replay/snapshot writers — the
     individual components open their own short-lived connections via DB_DSN
@@ -93,7 +98,8 @@ def compose_at(ticker: str, as_of: datetime, conn: Any = None) -> dict[str, Any]
         }
     """
     ctx: dict[str, Any] = {
-        "v2_state": load_v2_state(),
+        "v2_state": v2_state_override if v2_state_override is not None
+        else build_live_state(as_of, conn),
         "events": fetch_events(ticker, as_of),
         "conn": conn,
     }

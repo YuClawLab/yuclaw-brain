@@ -139,6 +139,106 @@ def get_sector_velocity(state: dict[str, Any], etf: str) -> Optional[dict[str, A
 
 
 # ---------------------------------------------------------------------------
+# v4.2 — LIVE state from Postgres price_history (replaces the frozen
+# dashboard_state.json for all price-derived fields). The frozen JSON's writers
+# (refresh_dashboard.sh / price_verifier.py) are unscheduled; price_history is
+# now refreshed daily (cron/price_history_daily.sh). Macro regime is FROZEN with
+# explicit staleness disclosure: its only upstream is the dead v2.3 macro engine
+# (a Finnhub path we must not touch), and it cannot be price-derived without
+# changing C4's math. This is a plumbing/source migration — component math is
+# unchanged (C1 still parses mom_1m, C3 still z-scores change_pct, C4 still maps
+# the regime label).
+# ---------------------------------------------------------------------------
+MOM_LOOKBACK_TD = 22  # trading days for 1-month momentum (calibrated to v2.3 mom_1m)
+
+# Sector ETFs C3 compares; recomputed 1-day change from price_history.
+_SECTOR_ETFS = {"XLK", "XLF", "XLE", "XLV", "XLU", "XLI", "XLY",
+                "XLP", "XLB", "XLRE", "XLC", "SMH", "KRE", "IBB", "XBI"}
+
+C4_FREEZE_DISCLOSURE = (
+    "C4 macro-regime input temporarily frozen as of 2026-05-18 with staleness "
+    "disclosure, pending macro engine restoration."
+)
+
+
+def _frozen_macro_regime() -> dict[str, Any]:
+    """Last-known macro regime, FROZEN with disclosure. C4/C5's only upstream is
+    the dead v2.3 macro engine (Finnhub path, no-touch); regime cannot be
+    price-derived without changing C4's math, so we pass through the last-known
+    value (read-only) and flag it stale. Reporting/healthcheck reads the flag."""
+    try:
+        s = json.loads(V2_STATE_PATH.read_text())
+        r = dict(s.get("regime") or {})
+    except Exception:
+        r = {}
+    r["_frozen"] = True
+    r["_frozen_disclosure"] = C4_FREEZE_DISCLOSURE
+    return r
+
+
+def build_live_state(as_of: datetime, conn: Optional[Any] = None) -> dict[str, Any]:
+    """Construct the v2-state-shaped dict from LIVE price_history.
+
+    Point-in-time: only trade_date <= as_of is used (safe for replay + parity).
+    Produces the same fields the components consume — signals[].price,
+    signals[].reasoning 'mom_1m=...%', sector.rotation[].change_pct — recomputed
+    from fresh closes, plus the frozen macro regime. Component math is untouched.
+
+    FAILS LOUD: if price_history has no rows as of `as_of`, raises rather than
+    silently serving stale data (the whole point of this migration).
+    """
+    as_of_date = as_of.date() if hasattr(as_of, "date") else as_of
+    own = conn is None
+    if own:
+        conn = psycopg2.connect(DB_DSN)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT ticker, trade_date, close FROM price_history "
+                "WHERE trade_date <= %s AND close IS NOT NULL "
+                "ORDER BY ticker, trade_date",
+                (as_of_date,),
+            )
+            rows = cur.fetchall()
+    finally:
+        if own:
+            conn.close()
+
+    if not rows:
+        raise RuntimeError(
+            f"price_history has no rows as of {as_of_date} — refusing to serve "
+            f"stale signal inputs (fail-loud; check cron/price_history_daily.sh)")
+
+    closes: dict[str, list[tuple[Any, float]]] = {}
+    for tk, d, c in rows:
+        closes.setdefault(tk, []).append((d, float(c)))
+
+    signals: list[dict[str, Any]] = []
+    rotation: list[dict[str, Any]] = []
+    for tk, series in closes.items():
+        latest_close = series[-1][1]
+        mom_1m = None
+        if len(series) > MOM_LOOKBACK_TD:
+            ref_close = series[-1 - MOM_LOOKBACK_TD][1]
+            if ref_close:
+                mom_1m = latest_close / ref_close - 1.0
+        reasoning = [f"mom_1m={mom_1m*100:+.2f}%"] if mom_1m is not None else []
+        signals.append({"ticker": tk, "price": latest_close, "reasoning": reasoning})
+        if tk in _SECTOR_ETFS and len(series) >= 2 and series[-2][1]:
+            change_pct = (series[-1][1] / series[-2][1] - 1.0) * 100.0
+            rotation.append({"etf": tk, "change_pct": round(change_pct, 4)})
+
+    return {
+        "signals": signals,
+        "sector": {"rotation": rotation},
+        "regime": _frozen_macro_regime(),
+        "_source": "live:price_history",
+        "_as_of": str(as_of_date),
+        "_freshness_max_date": str(max(d for s in closes.values() for d, _ in s)),
+    }
+
+
+# ---------------------------------------------------------------------------
 # v3.0 events table
 # ---------------------------------------------------------------------------
 def fetch_events(ticker: str, as_of: datetime, lookback_days: int = EVENT_LOOKBACK_DAYS) -> list[dict[str, Any]]:

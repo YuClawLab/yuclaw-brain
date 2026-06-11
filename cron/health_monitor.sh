@@ -16,19 +16,23 @@ now_epoch=$(date +%s)
 status=()
 problems=()
 
-# 1. dashboard_state.json modified within last 60 min
-if [[ -f "$DASHBOARD_STATE" ]]; then
-    mod_epoch=$(stat -c %Y "$DASHBOARD_STATE" 2>/dev/null || echo 0)
-    age_min=$(( (now_epoch - mod_epoch) / 60 ))
-    if (( age_min <= 60 )); then
-        status+=("dashboard:OK(${age_min}m)")
+# 1. price_history freshness — the real signal-input freshness since the v4.2
+# C1-C7 migration (signals now compute from price_history via build_live_state;
+# dashboard_state.json is retired as a signal input, so its mtime is no longer
+# a meaningful health signal). Allow up to 4 days to cover weekends/holidays.
+ph_max=$(psql -d yuclaw_events -tAc "SELECT max(trade_date) FROM price_history" 2>/dev/null | tr -d '[:space:]')
+if [[ -n "$ph_max" ]]; then
+    ph_epoch=$(date -d "$ph_max" +%s 2>/dev/null || echo 0)
+    age_days=$(( (now_epoch - ph_epoch) / 86400 ))
+    if (( age_days <= 4 )); then
+        status+=("prices:OK(${ph_max})")
     else
-        status+=("dashboard:STALE(${age_min}m)")
-        problems+=("dashboard_state.json stale: ${age_min}m old (>60m)")
+        status+=("prices:STALE(${age_days}d)")
+        problems+=("price_history stale: latest ${ph_max} (${age_days}d, >4d) — check cron/price_history_daily.sh")
     fi
 else
-    status+=("dashboard:MISSING")
-    problems+=("dashboard_state.json missing at ${DASHBOARD_STATE}")
+    status+=("prices:MISSING")
+    problems+=("price_history empty/unreadable")
 fi
 
 # 2. Ollama responding on 11434
