@@ -79,17 +79,28 @@ SPY). Descriptive statistics only.
 single-year figure; we show the actual cumulative return and the window length
 (N trading days) instead.
 
-## Data coverage & the forward-window limitation
+## Data coverage & the forward window
 
 - **In-sample:** signal dates 2026-02-18 → 2026-05-13 (13 rebalances), evaluated
-  against prices through 2026-05-20 — a real ~65-trading-day window. Populated.
-- **Forward:** signal dates 2026-05-20 → 2026-06-09 (16 rebalances). However
-  `price_history` coverage currently **ends 2026-05-20**, so there are **no
-  post-signal closing prices** against which to measure forward cohort returns
-  yet. The forward panel therefore reports **insufficient data** rather than a
-  fabricated curve. It will populate once `price_history` resumes (a separate,
-  tracked data-freshness item; not addressed here). No external data was fetched
-  or synthesized to fill this gap.
+  against prices through 2026-05-20 — a real ~65-trading-day window.
+- **Forward:** signal dates 2026-05-20 → 2026-06-10 (16 rebalances), now
+  evaluable against fresh `price_history` (the daily feed was restored
+  2026-06-10). **Early forward period — ~16 trading days, NOT yet statistically
+  meaningful**: a window this short cannot support inference and is shown only as
+  a directional illustration that accrues as the forward record lengthens. This
+  caveat is rendered prominently on the forward panel.
+
+## C4 macro-regime freeze disclosure
+
+As of the v4.2 signal-data migration, the price-derived component inputs (C1
+momentum, C3 sector velocity, C7 peer correlation) read live `price_history`.
+The **C4 macro-regime input is temporarily frozen as of 2026-05-18 with staleness
+disclosure, pending macro engine restoration** — its only upstream is the
+retired v2.3 macro engine, and it cannot be price-derived without altering the
+component's math. Cohorts in this Lab are formed from the composite `total_score`,
+which therefore carries a frozen macro-regime contribution over the forward
+window; this is disclosed for full transparency and does not affect the
+score-decile ranking's directional interpretation.
 
 ## Reproducibility
 

@@ -136,9 +136,36 @@ def render() -> str:
     fwd, ins = data["forward"], data["in_sample"]
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    # ---- Forward panel (leads; honest insufficient-data state) ----
+    # ---- Forward panel (leads). Now evaluable (price feed restored). ----
     if fwd["evaluable"]:
-        fwd_body = "<p>forward panel populated</p>"  # not reached with current data
+        n_td = fwd["span_trading_days"]
+        fwd_primary_svg = svg_chart(build_series(fwd, PRIMARY_ORDER),
+                                    title="Forward OOS decile cohorts vs SPY")
+        fwd_spread_pts = [(0, 1.0)] + [(i + 1, p["cum"]) for i, p in enumerate(fwd["spread_series"])]
+        fwd_spread_svg = svg_chart([{"name": "spread", "short": "Top−Bottom spread",
+                                     "color": "#7C4DFF", "pts": fwd_spread_pts}],
+                                   title="Forward top-minus-bottom spread")
+        fwd_body = f"""
+      <div style="background:#2A1A1A;border-radius:8px;padding:14px 18px;border-left:3px solid #FBA94B;margin-bottom:14px">
+        <div style="color:#FBA94B;font-weight:700;font-size:13px">⚠ Early forward period — {n_td} trading days. Not yet statistically meaningful.</div>
+        <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
+          Forward Day 0 = {escape(FORWARD_DAY0.isoformat())}; signals
+          {escape(str(fwd['signal_date_range'][0]))} → {escape(str(fwd['signal_date_range'][1]))}.
+          A {n_td}-trading-day out-of-sample window is far too short for any statistical
+          inference — this is a directional illustration shown for transparency as the
+          forward record accrues, not evidence of skill.
+        </p>
+      </div>
+      {fwd_primary_svg}
+      <table>
+        <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>
+        <tbody>{metric_rows(fwd, PRIMARY_ORDER)}</tbody>
+      </table>
+      <div style="margin-top:14px;padding:12px 14px;background:#151A23;border-radius:8px">
+        <div style="font-size:12px;color:#E2E8F0;font-weight:600">Top-minus-bottom cohort spread (research spread statistic — not a position, not tradeable)</div>
+        <div style="font-size:13px;color:#7C4DFF;font-family:JetBrains Mono,monospace;margin-top:4px">cumulative {_pct(fwd['spread_metrics']['cumulative_return'])} · max drawdown {_pct(fwd['spread_metrics']['max_drawdown'])}</div>
+      </div>
+      {fwd_spread_svg}"""
     else:
         fwd_body = f"""
       <div style="background:#1A2030;border-radius:8px;padding:18px;border-left:3px solid #FBA94B">
