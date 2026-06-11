@@ -179,6 +179,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       </div>
       <div class="navlinks">
         <a href="validation.html">Validation</a>
+        <a href="validation_lab.html">Validation Lab</a>
         <a href="https://github.com/YuClawLab/yuclaw-brain">GitHub</a>
         <a href="https://pypi.org/project/yuclaw/">PyPI</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
