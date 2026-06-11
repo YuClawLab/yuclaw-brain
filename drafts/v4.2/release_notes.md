@@ -15,8 +15,9 @@ never displayed or exported.
 
 - **Forward (Out-of-Sample)** — look-ahead-free, Day 0 = 2026-05-18.
   > ⚠ **Early forward period — 16 trading days. Not yet statistically meaningful.** A window this short cannot support inference; shown as a directional illustration that accrues as the record lengthens.
-  Over the first 16 trading days: top-decile cohort **+6.5%**, bottom-decile
-  **−0.8%**, SPY benchmark **+0.4%**, top-minus-bottom cohort spread **+7.1%**.
+  Over the first 16 trading days (as of 2026-06-11): top-decile cohort **+6.3%**,
+  bottom-decile **−0.7%**, SPY benchmark **+0.4%**, top-minus-bottom cohort spread
+  **+6.7%**. (These early figures move as the window grows — see the caveat above.)
 - **In-Sample Replay** — carries an explicit **parametric look-ahead disclosure**
   (the evidence-extraction model's training cutoff overlaps this window, so
   in-sample results are systematically optimistic — a replay, not a forecast).
