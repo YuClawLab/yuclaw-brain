@@ -13,10 +13,10 @@ The signal is built from nine independent components (momentum, sector velocity,
 ## Install
 
 ```bash
-pip install yuclaw-evidence
+pip install yuclaw
 ```
 
-The package distribution is named `yuclaw-evidence`; the import is `yuclaw_py`. (Common pattern — `pip install Pillow` → `import PIL`.)
+The package distribution is named `yuclaw`; the import is `yuclaw_py`. (Common pattern — `pip install Pillow` → `import PIL`.)
 
 ## Core commands
 

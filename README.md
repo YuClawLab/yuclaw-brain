@@ -6,7 +6,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![PyPI](https://img.shields.io/badge/PyPI--yuclaw--evidence--v3.0.0-orange.svg)](https://pypi.org/project/yuclaw-evidence)
+[![PyPI](https://img.shields.io/badge/PyPI--yuclaw--evidence--v3.0.0-orange.svg)](https://pypi.org/project/yuclaw)
 [![DGX Spark](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76b900.svg)](https://nvidia.com)
 [![Verified Research Ledger](https://img.shields.io/badge/Ledger-git--anchored-blue.svg)](https://github.com/YuClawLab/yuclaw-trust)
 
@@ -15,7 +15,7 @@
 > for tamper evidence. **Research and education only — not investment advice.**
 > Signal labels are research classifications, not buy/sell recommendations.
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · **[Disclaimer](DISCLAIMER.md)** · [API Terms](docs/API_TERMS.md) · [PyPI](https://pypi.org/project/yuclaw-evidence)
+[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) · [Quickstart](docs/getting-started/quickstart.md) · [Methodology](docs/methodology/backfill.md) · **[Disclaimer](DISCLAIMER.md)** · [API Terms](docs/API_TERMS.md) · [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
 
@@ -24,7 +24,7 @@
 ## Quick start
 
 ```bash
-pip install yuclaw-evidence
+pip install yuclaw
 python3 -m v3.cli why NVDA
 ```
 
@@ -72,7 +72,33 @@ Public signal vocabulary: `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAK
 
 ## Live dashboard
 
-**[yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain)** — refreshes every 30 minutes from cron.
+**[yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain)** — re-rendered daily after the close from the v3 pipeline.
+
+---
+
+## Signal Validation Lab
+
+A Fama–French-style **decile-cohort event study** of whether YUCLAW's composite
+score carries forward information — built from feedback by Prof. Deng Shijie
+(Georgia Tech). It is **research cohort analysis, not portfolio management**:
+cohorts are grouped by score decile or signal label (never by trade direction),
+tracked as equal-weighted research cohorts, and only **derived statistics**
+(returns, spreads, drawdowns) are shown — never raw prices. Two panels are kept
+strictly separate: a look-ahead-free **Forward (OOS)** panel and an **In-Sample
+Replay** panel (which carries an explicit parametric look-ahead disclosure). The
+forward window is still early and is labelled "not yet statistically meaningful".
+Methodology: [`docs/methodology/validation_lab.md`](docs/methodology/validation_lab.md).
+*Hypothetical research illustration — not investment advice, not performance advertising.*
+
+---
+
+## v5 — ClawFactory (in development)
+
+v5 "ClawFactory" is an eleven-layer evidence-extraction architecture in
+development. **Layer 0 (the durable, multi-node evidence job queue) is complete
+and public** on branch [`v5-layer0-foundation`](https://github.com/YuClawLab/yuclaw-brain/tree/v5-layer0-foundation)
+— proven on a 281-filing real-data backfill (281/281 succeeded, 0 dead-letter).
+Target: July 1. No v5 feature beyond Layer 0 is built yet.
 
 ---
 
@@ -83,7 +109,7 @@ Public signal vocabulary: `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAK
 - **Time-machine replay.** Any signal can be recomputed as of a past date with point-in-time filtering (`available_as_of <= as_of`). Leak-audited; reproducible via the `yuclaw replay` CLI / REST `/replay` / MCP `yuclaw_replay`.
 - **In-Sample Event Validation + Forward Tracking Ledger.** Two clearly separated panels: in-sample is replay-reconstructed (~1,000 snapshots over a 90-day window), forward is live-emitted from launch onward. Hit rates always reported alongside their `n` — never a headline percentage alone.
 - **Verified Research Ledger.** Each day's signal hashes are committed to a public git repo ([yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust)). Anyone can `yuclaw verify TICKER --date DATE` to confirm a signal hasn't been edited since publication. This verifies *record integrity and timing* — not investment merit.
-- **Multi-surface access.** Python SDK (`pip install yuclaw-evidence`, import as `yuclaw_py`), REST API, FastMCP stdio server (7 tools), CLI (`yuclaw why / replay / validation / brief / watch / verify / profile`).
+- **Multi-surface access.** Python SDK (`pip install yuclaw`, import as `yuclaw_py`), REST API, FastMCP stdio server (7 tools), CLI (`yuclaw why / replay / validation / brief / watch / verify / profile`).
 - **Local LLM inference.** Llama 3.1 70B (Q4_K_M, ~42 GB) via Ollama on NVIDIA DGX Spark GB10. Zero cloud LLM dependency for extraction. SEC EDGAR is the only external data source for the evidence layer.
 - **~80-ticker universe.** Equities + sector ETFs + broad ETFs + macro instruments.
 
@@ -94,7 +120,7 @@ Public signal vocabulary: `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`, `WEAK
 Full methodology lives in [`docs/methodology/backfill.md`](docs/methodology/backfill.md). The honest limits at launch:
 
 - **In-sample is replay reconstruction, not a live backtest.** The In-Sample Event Validation panel was materialized after the fact by the replay engine — not emitted live.
-- **5 of 9 components are point-in-time approximations.** C1 momentum, C3 sector velocity, C4 macro regime, C5 oil/rates/FX, C7 peer correlation read a market-data cache that holds only the latest snapshot. On historical replays they self-degrade to confidence 0.3 with an explicit warning. C6 event impact, C8 cascade, and C9 model trust are point-in-time exact in-sample. v3.1 will land historical market data so the full composite runs point-in-time.
+- **Fresh-data pipeline (v4.2).** C1 momentum, C3 sector velocity, C5 (sector input), and C7 peer correlation now read **live `price_history`** (a daily yfinance feed restored 2026-06-10), so the price-derived components are current rather than reading a frozen cache. **C4 macro regime is temporarily frozen as of 2026-05-18 with a staleness disclosure, pending macro engine restoration** — its only upstream is the retired v2.3 macro engine and it cannot be price-derived without changing the component's math. C6 event impact, C8 cascade, and C9 model trust remain point-in-time exact. On historical replays the price-derived components still carry point-in-time caveats.
 - **Forward Tracking Ledger starts at n=0.** Launch is Day 0. 1-day outcomes mature next trading day; 5-day a week later; 20-day a month later. The forward panel looks sparse for the first few weeks — correct, not a bug.
 - **Extreme labels are rare by construction.** STRONG_BULLISH and BEARISH_WATCH require broad component agreement plus at least one material non-insider event. Day-0 OOS 99th percentile sits at +0.531, just below the +0.55 STRONG_BULLISH floor. See `docs/methodology/backfill.md` §8 for the full reachability analysis.
 
@@ -131,7 +157,7 @@ v3/
   mcp/          FastMCP stdio server (7 tools)
   cli/          why / replay / validation / brief / watch / verify / profile
   signal/healthcheck.py    Daily pipeline gate
-sdk/            yuclaw-evidence — public SDK (pip install yuclaw-evidence)
+sdk/            yuclaw — public SDK (pip install yuclaw)
 docs/methodology/backfill.md  v3.0 methodology + limitations + leak audit
 ```
 
@@ -191,7 +217,7 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 | Dashboard | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
 | Twitter | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | GitHub | [YuClawLab](https://github.com/YuClawLab) |
-| PyPI (v3.0) | [pypi.org/project/yuclaw-evidence](https://pypi.org/project/yuclaw-evidence) |
+| PyPI | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
 | Methodology (v3.0) | [docs/methodology/backfill.md](docs/methodology/backfill.md) |
 
 ---
@@ -224,6 +250,6 @@ Released under the **MIT License** — free for everyone.
 
 *Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B via Ollama · Local inference · Git-anchored [Verified Research Ledger](https://github.com/YuClawLab/yuclaw-trust)*
 
-**[pip install yuclaw-evidence](https://pypi.org/project/yuclaw-evidence)**
+**[pip install yuclaw](https://pypi.org/project/yuclaw)**
 
 </div>
