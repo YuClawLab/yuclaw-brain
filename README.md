@@ -98,7 +98,9 @@ v5 "ClawFactory" is an eleven-layer evidence-extraction architecture in
 development. **Layer 0 (the durable, multi-node evidence job queue) is complete
 and public** on branch [`v5-layer0-foundation`](https://github.com/YuClawLab/yuclaw-brain/tree/v5-layer0-foundation)
 — proven on a 281-filing real-data backfill (281/281 succeeded, 0 dead-letter).
-Target: July 1. No v5 feature beyond Layer 0 is built yet.
+Target: July 1. No v5 feature beyond Layer 0 is built yet. Full roadmap (all
+eleven layers + the three locked values):
+[ClawFactory announcement](drafts/v4.2/clawfactory_announcement.md).
 
 ---
 
