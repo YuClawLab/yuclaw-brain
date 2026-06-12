@@ -76,9 +76,14 @@ class SwarmOrchestrator:
             job_id = str(job["job_id"])
             payload = job["payload"] or {}
             if payload.get("trace_id") != trace_id:
-                # not from this dispatch — should not happen on an idle queue;
-                # fail loudly rather than execute a foreign job.
-                self.queue.mark_failed(job_id, "claimed foreign job in Day-1 dispatch")
+                # Not from this dispatch. Day-1 assumes an idle, single-dispatch
+                # queue, so this only happens when a PRIOR dispatch left a job
+                # pending (e.g. a retry after a failure). RELEASE it intact for
+                # its rightful claimant — never mark_failed, which would charge
+                # that job an attempt and wrongly drive a neighbour toward
+                # dead_letter. We still fail loudly here: robustly draining a
+                # contended/leftover queue is later-day Layer-1 work.
+                self.queue.release(job_id, worker_id)
                 raise SwarmDispatchError(f"claimed foreign swarm_agent job {job_id}")
             role = payload["agent_role"]
             self.queue.mark_running(job_id, worker_id)

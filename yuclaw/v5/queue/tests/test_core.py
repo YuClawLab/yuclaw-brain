@@ -180,6 +180,32 @@ def test_mark_failed_retries(q):
     assert job_id in dl_ids
 
 
+def test_release_returns_job_intact(q):
+    """release() hands a claimed job back to pending WITHOUT charging an attempt
+    (unlike mark_failed), and only the holding worker may release it."""
+    job_type = jt("release")
+    job_id = q.enqueue(job_type, {"z": 1})
+    claimed = q.claim_next("worker-R1", job_types=[job_type])
+    assert claimed and claimed[0]["claimed_by"] == "worker-R1"
+
+    # A different worker cannot release someone else's job.
+    assert q.release(job_id, "worker-OTHER") is False
+    assert q.get_job(job_id)["state"] == "claimed"
+
+    # The holder releases it: back to pending, no attempt charged, no error.
+    assert q.release(job_id, "worker-R1") is True
+    row = q.get_job(job_id)
+    assert row["state"] == "pending"
+    assert row["attempts"] == 0          # NOT incremented (cf. mark_failed)
+    assert row["claimed_by"] is None
+    assert row["claimed_at"] is None
+    assert row["last_error"] is None
+
+    # And it is immediately re-claimable by anyone.
+    reclaimed = q.claim_next("worker-R2", job_types=[job_type])
+    assert reclaimed and str(reclaimed[0]["job_id"]) == job_id
+
+
 def test_available_as_of_recorded_at_claim_time(q):
     job_type = jt("avail")
     # Case 1: no available_as_of at enqueue -> stamped at claim time.

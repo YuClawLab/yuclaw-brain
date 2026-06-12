@@ -38,6 +38,12 @@ MAX_FILING_CHARS = 6000
 # keeps the model fully on GPU and lets concurrent calls actually parallelise.
 # This is a per-REQUEST option (options.num_ctx), not an Ollama service change.
 NUM_CTX = int(os.environ.get("YUCLAW_V5_NUM_CTX", "8192"))
+# Token budget for an agent's JSON answer. 420 was too tight: when an 8B gets
+# verbose in evidence_cited, the format=json grammar runs out of tokens mid-string
+# and emits TRUNCATED (invalid) JSON, which json.loads rejects and fails the whole
+# filing (observed on the Day-1 3-filing batch: "Unterminated string"). The schema
+# is small; 768 gives ~2x headroom. Synthesis keeps its own (640) budget.
+AGENT_NUM_PREDICT = int(os.environ.get("YUCLAW_V5_AGENT_NUM_PREDICT", "768"))
 
 # --------------------------------------------------------------------------
 # Output schemas (the contract every consumer can rely on)
@@ -219,7 +225,8 @@ class SwarmAgent:
     def run(self, filing_text: str) -> dict:
         raw, elapsed, eval_count = ollama_generate(
             self.model, self.build_prompt(filing_text), url=self.url,
-            timeout=self.timeout, num_predict=420, temperature=self.temperature)
+            timeout=self.timeout, num_predict=AGENT_NUM_PREDICT,
+            temperature=self.temperature)
         out, warns = validate_agent_output(raw)
         return {
             "agent_role": self.role, "prompt_version": PROMPT_VERSION,

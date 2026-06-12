@@ -335,6 +335,34 @@ class EvidenceJobQueue:
         )
         return ok
 
+    def release(
+        self, job_id: str, worker_id: str, conn: Optional[Any] = None
+    ) -> bool:
+        """Return a job a worker holds back to ``pending`` WITHOUT counting an
+        attempt or recording an error.
+
+        Use when a worker claims a job it should not process (e.g. a job that
+        belongs to a different dispatch/owner) and wants to hand it back intact
+        for its rightful claimant. Distinct from ``mark_failed``, which charges
+        an attempt and drives toward ``dead_letter``.
+        """
+        sql = f"""
+            UPDATE {TABLE}
+            SET state = 'pending',
+                claimed_by = NULL,
+                claimed_at = NULL
+            WHERE job_id = %s::uuid
+              AND state IN ('claimed', 'running')
+              AND claimed_by = %s
+            RETURNING job_id
+        """
+        with self._connection(conn) as c:
+            with c.cursor() as cur:
+                cur.execute(sql, (job_id, worker_id))
+                ok = cur.fetchone() is not None
+        logger.info("release job_id=%s worker=%s ok=%s", job_id, worker_id, ok)
+        return ok
+
     # -- reads -------------------------------------------------------------
 
     def get_job(self, job_id: str, conn: Optional[Any] = None) -> Optional[dict]:
