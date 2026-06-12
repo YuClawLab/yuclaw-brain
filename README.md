@@ -87,6 +87,7 @@ tracked as equal-weighted research cohorts, and only **derived statistics**
 strictly separate: a look-ahead-free **Forward (OOS)** panel and an **In-Sample
 Replay** panel (which carries an explicit parametric look-ahead disclosure). The
 forward window is still early and is labelled "not yet statistically meaningful".
+Live: [Signal Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
 Methodology: [`docs/methodology/validation_lab.md`](docs/methodology/validation_lab.md).
 *Hypothetical research illustration — not investment advice, not performance advertising.*
 
