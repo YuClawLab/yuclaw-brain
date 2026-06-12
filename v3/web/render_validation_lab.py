@@ -237,7 +237,7 @@ def render() -> str:
 <body>
   <div class="container">
     <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.0.1</span></div>
+      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.2.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="methodology/validation_lab.md">Methodology</a>
