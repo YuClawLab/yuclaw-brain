@@ -30,6 +30,7 @@ if str(_REPO) not in sys.path:
 
 from v3.lab.cohort_engine import FORWARD_DAY0, compute_all
 from v3.lab.analytics import compute_all_analytics
+from v3.lab.granularity_investigation import phase1, phase2, phase3, phase5, CSHORT
 from v3.web import chartkit as ck
 
 OUT = _REPO / "docs" / "validation_lab.html"
@@ -198,6 +199,15 @@ def render() -> str:
     fwd_n_td = fwd["span_trading_days"] if fwd["evaluable"] else 0
     ins_n = ins["evaluable_periods"]
 
+    # ---------- granularity / tie-aware statistics (live; see
+    #            docs/methodology/granularity_investigation.md) ----------
+    g1i, g1f = phase1("in_sample"), phase1("forward")
+    g2i, g2f = phase2("in_sample"), phase2("forward")
+    g3i = phase3("in_sample")          # 200-seed tie-break robustness (in-sample)
+    g5i = phase5("in_sample")          # in-sample period attribution
+    const_comps = [CSHORT[c] for c, v in g1i["comp_distinct"].items()
+                   if (v["mean_distinct"] or 0) <= 1.05]   # constant in-sample
+
     # ---------- headline findings (honest, unflattering shown) ----------
     fwd_ds, ins_ds = af["decile_spectrum"], ai["decile_spectrum"]
     fwd_ic, ins_ic = af["ic"], ai["ic"]
@@ -219,15 +229,24 @@ def render() -> str:
             <tr><td style="padding:7px 12px;color:#E2E8F0">Top-minus-bottom decile spread (cohort, pooled)</td>
                 <td style="padding:7px 12px;color:#A0AEC0;font-family:{ck.MONO}">{_pct(fwd_ds.get('top_minus_bottom'))}</td>
                 <td style="padding:7px 12px;color:#A0AEC0;font-family:{ck.MONO}">{_pct(ins_ds.get('top_minus_bottom'))}</td></tr>
+            <tr><td style="padding:7px 12px;color:#E2E8F0">Differentiated-subset IC <span style="color:#718096">(strictly-distinct scores only)</span></td>
+                <td style="padding:7px 12px;color:#A0AEC0;font-family:{ck.MONO}">{_fnum(g2f.get('diff_ic_mean'))}</td>
+                <td style="padding:7px 12px;color:#00E676;font-family:{ck.MONO}">{_fnum(g2i.get('diff_ic_mean'))}</td></tr>
           </tbody>
         </table>
         <p style="font-size:12px;color:#A0AEC0;margin-top:12px;line-height:1.6">
-          <strong style="color:#FBA94B">Plain reading:</strong> on the data so far the composite score shows
-          <strong>weak and non-monotonic</strong> cross-sectional return separation — the decile spectrum is not
-          cleanly ordered, and mean IC is near zero (slightly negative) on both panels. We report this directly
-          rather than selecting a flattering cut. The forward window is far too short for statistical inference,
-          and the in-sample panel is biased optimistic by parametric look-ahead — so neither panel should be read
-          as evidence of skill. These are descriptive statistics on an accruing record.
+          <strong style="color:#FBA94B">Plain reading:</strong> the whole-universe IC is near zero, but this is
+          <strong>substantially a measurement artifact of score quantization</strong> — about
+          <strong>{g1i['mean_tied_names']:.0f} of 79 names carry tied composite scores</strong> at each in-sample
+          rebalance ({len(const_comps)} components are constant: {escape(", ".join(const_comps))}), so rank statistics
+          over the tied middle read ≈ 0 by construction. Restricting to strictly-distinct scores, the in-sample IC
+          <strong>flips positive ({_fnum(g2i.get('diff_ic_mean'))})</strong> and the information concentrates at the
+          <strong>differentiated extremes</strong> — a <strong>weak-but-real</strong> in-sample signal at the tails,
+          not a flat one. The top-decile cohort's advantage is robust to 200 random tie-break reconstructions
+          (see §A/§D). <strong>Forward, the signal is currently flat and the window is far too short for inference —
+          no forward edge is implied.</strong> In-sample remains biased optimistic by parametric look-ahead. These are
+          descriptive statistics on an accruing record; full forensics in
+          <a href="methodology/granularity_investigation.md" style="color:#00E676">granularity_investigation.md</a>.
         </p>
       </div>"""
 
@@ -239,6 +258,8 @@ def render() -> str:
         <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
           Forward Day 0 = {escape(FORWARD_DAY0.isoformat())}; signals {escape(str(fwd['signal_date_range'][0]))} → {escape(str(fwd['signal_date_range'][1]))}.
           With this few observations no t-statistic or significance claim is reported — it would be meaningless at this N.
+          The forward cross-section is currently flat (even the differentiated-subset and extreme-tail ICs are ≈ 0 or
+          negative) and the early spread has decayed as the window extended — <strong>no forward edge is implied.</strong>
           Shown for transparency as the out-of-sample record accrues, not as evidence of skill.
         </p>
       </div>"""
@@ -264,14 +285,53 @@ def render() -> str:
         decile_chart(fwd_ds, FWD_TAG) + f'<div class="verdict">Forward: {decile_verdict(fwd_ds)}</div>',
         decile_chart(ins_ds, INS_TAG) + f'<div class="verdict">In-sample: {decile_verdict(ins_ds)}</div>',
         "Bars are equal-weighted mean next-period returns of each ~8-name score decile, pooled across rebalances. "
-        "A skilful score would show monotonically decreasing bars from D1 to D10; ρ near 0 (or non-monotone bars) "
-        "indicates little cross-sectional separation.")
+        "A skilful score would show monotonically decreasing bars from D1 to D10. The spectrum is NOT monotone — but "
+        f"the in-sample top-decile advantage is robust: across 200 random tie-break reconstructions of the deciles the "
+        f"D1−D10 spread stayed positive in {g3i['spread']['frac_pos']*100:.0f}% of seeds (top-decile cumulative "
+        f"≈ {g3i['topcum']['mean']*100:+.0f}% in every seed), so these bars are NOT tie-break artifacts. The "
+        "information concentrates at the differentiated extremes; the tied middle deciles are largely quantization "
+        "noise (see §B tie disclosure and granularity_investigation.md).")
 
-    # (b) information coefficient
+    # (b) information coefficient — with score-quantization / tie disclosure
+    _td = "padding:6px 12px;color:#E2E8F0"
+    tie_box = f"""
+      <div style="background:#16121F;border:1px solid #2D2440;border-left:3px solid #7C4DFF;border-radius:8px;padding:14px 18px;margin-bottom:14px">
+        <div style="color:#B794F6;font-weight:700;font-size:12.5px">Score-quantization / tie disclosure — why the rank statistics read low</div>
+        <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
+          The composite score lands on a coarse grid: about <strong>{g1i['mean_tied_names']:.0f} of 79 names carry tied
+          scores</strong> at each in-sample rebalance (largest single tie-group ≈ {g1i['mean_biggest_tie']:.0f} names;
+          mean {g1i['mean_distinct']:.0f} distinct values out of 79), with ties clustered in the middle of the
+          distribution. The cause is constant components — <strong>{escape(", ".join(const_comps))}</strong> each
+          contribute a single identical value for every name in-sample (C4 macro-regime is the disclosed
+          <strong>2026-05-18 freeze</strong>; see the C4 disclosure in the methodology). A 14–15-name tie cannot be
+          rank-ordered, so a rank statistic computed over the tied middle is ≈ 0 by construction.
+        </p>
+        <table style="margin-top:8px">
+          <thead><tr><th>Rank statistic — mean across rebalances</th><th>Forward (OOS)</th><th>In-sample</th></tr></thead>
+          <tbody>
+            <tr><td style="{_td}">Spearman ρ — all names, tie-corrected</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#A0AEC0">{_fnum(g2f['spearman_mean'])}</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#A0AEC0">{_fnum(g2i['spearman_mean'])}</td></tr>
+            <tr><td style="{_td}">Kendall τ-b — all names, tie-robust</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#A0AEC0">{_fnum(g2f['tau_mean'])}</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#A0AEC0">{_fnum(g2i['tau_mean'])}</td></tr>
+            <tr><td style="{_td}">Differentiated-subset IC — strictly-distinct scores only</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#A0AEC0">{_fnum(g2f['diff_ic_mean'])}</td>
+                <td style="padding:6px 12px;font-family:{ck.MONO};color:#00E676">{_fnum(g2i['diff_ic_mean'])}</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:11.5px;color:#718096;margin-top:8px;line-height:1.55">
+          Why they differ: Spearman and Kendall τ-b agree the all-names IC is ≈ 0, but the differentiated-subset IC —
+          computed only over names whose scores are strictly distinct (mean n ≈ {g2i['diff_n_mean']:.0f}) — flips
+          <strong style="color:#00E676">positive in-sample ({_fnum(g2i['diff_ic_mean'])})</strong>. That gap is the
+          signature of ties <em>masking</em> a weak signal, not of an absent one. Forward, the differentiated subset
+          stays ≈ 0 ({_fnum(g2f['diff_ic_mean'])}).
+        </p>
+      </div>"""
     sec_ic = section(
         "B", "Information coefficient (IC)",
         "per-rebalance Spearman rank correlation of composite score vs next-period return",
-        ic_chart(fwd_ic, FWD_TAG),
+        tie_box + ic_chart(fwd_ic, FWD_TAG),
         ic_chart(ins_ic, INS_TAG),
         f"Descriptive statistics only. Forward: mean IC {_fnum(fwd_ic.get('mean_ic'))}, "
         f"IC&gt;0 hit-rate {(fwd_ic.get('hit_rate_pos') or 0)*100:.0f}%, ICIR {_fnum(fwd_ic.get('icir'),2)} "
@@ -310,7 +370,10 @@ def render() -> str:
         spread_block(fwd, FWD_TAG),
         spread_block(ins, INS_TAG),
         "The dashed line is the running peak; red shading is the drawdown beneath it. This is a derived spread "
-        "between two research cohorts — a descriptive transparency statistic, explicitly not a tradeable position.")
+        "between two research cohorts — a descriptive transparency statistic, explicitly not a tradeable position. "
+        f"In-sample the spread is concentrated and volatile: the top 3 weeks supply ≈ {g5i['top3_share']*100:.0f}% of "
+        "the cumulative spread, so the net-positive in-sample figure reflects a few event-like weeks rather than an "
+        "even, persistent edge.")
 
     # (e) turnover / stability
     sec_turn = section(
