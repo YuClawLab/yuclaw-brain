@@ -100,7 +100,13 @@ class SwarmOrchestrator:
 
     # -- dispatch --------------------------------------------------------
     def dispatch(self, accession: str, raw_text: Optional[str] = None,
-                 persist: bool = True) -> dict:
+                 persist: bool = True, synthesize: bool = True) -> dict:
+        """Run the swarm on one filing.
+
+        synthesize=False runs ONLY the 3 grounded agents (+ grading) and returns
+        — no 70B synthesis, no persist. Used by the Day-2 prompt-iteration loop,
+        where the target metric is per-agent grounding and synthesis is wasted cost.
+        """
         t_start = time.perf_counter()
         text = raw_text or self._fetch_filing_text(accession)
         if not text:
@@ -131,7 +137,28 @@ class SwarmOrchestrator:
         if set(by_role) != set(ROLES):
             raise SwarmDispatchError(f"expected roles {ROLES}, got {sorted(by_role)}")
 
-        # 3. synthesis (70B) via the queue
+        grounding_summary = self._grounding_summary(by_role)
+
+        # Agent-only path (prompt iteration): stop here, no synthesis / persist.
+        if not synthesize:
+            return {
+                "accession_number": accession, "prompt_version": PROMPT_VERSION,
+                "trace_id": trace_id, "filing_len": len(text),
+                "agents": by_role, "synthesis": None,
+                "agent_job_ids": agent_job_ids, "synth_job_id": None,
+                "grounding_summary": grounding_summary,
+                "citation_ledger": self._build_ledger(accession, by_role, None),
+                "timings": {
+                    "concurrent_agent_wall_secs": round(concurrent_wall, 2),
+                    "agent_secs": {r: by_role[r]["llama_secs"] for r in ROLES},
+                    "total_swarm_secs": round(time.perf_counter() - t_start, 2),
+                    "synthesis_secs": None,
+                },
+                "model_tags": {"agents": self.agent_model, "synthesis": None,
+                               "prompt_version": PROMPT_VERSION},
+            }
+
+        # 3. synthesis (70B) via the queue — receives ONLY grounded claims.
         synth_job_id = self.queue.enqueue(
             SYNTH_JOB_TYPE,
             {"accession_number": accession, "prompt_version": PROMPT_VERSION,
@@ -152,6 +179,13 @@ class SwarmOrchestrator:
             raise SwarmDispatchError(f"synthesis failed: {e}") from e
         self.queue.mark_succeeded(synth_job_id, result_token_id=new_token_id())
 
+        ledger = self._build_ledger(accession, by_role, synth)
+        grounding_summary["synthesis_citations_total"] = \
+            synth["synth_citation_grounding"]["citations_total"]
+        grounding_summary["synthesis_citations_verified"] = \
+            synth["synth_citation_grounding"]["citations_verified"]
+        grounding_summary["ledger_span_count"] = len(ledger["spans"])
+
         total = time.perf_counter() - t_start
         timings = {
             "total_swarm_secs": round(total, 2),
@@ -166,11 +200,43 @@ class SwarmOrchestrator:
             "trace_id": trace_id, "filing_len": len(text),
             "agents": by_role, "synthesis": synth,
             "agent_job_ids": agent_job_ids, "synth_job_id": synth_job_id,
+            "grounding_summary": grounding_summary, "citation_ledger": ledger,
             "timings": timings, "model_tags": model_tags,
         }
         if persist:
             self._persist(assembled)
         return assembled
+
+    # -- grounding aggregation -------------------------------------------
+    @staticmethod
+    def _grounding_summary(by_role: dict) -> dict:
+        keys = ("grounding_rate", "points_grounded", "points_total",
+                "points_discarded", "citations_total", "citations_verified")
+        return {"per_agent": {
+            r: {k: by_role[r]["grounding"][k] for k in keys} for r in ROLES}}
+
+    @staticmethod
+    def _build_ledger(accession: str, by_role: dict, synth: Optional[dict]) -> dict:
+        """Proto evidence token: accession + the union of verified spans, deduped
+        by (start, end), tagged with their source agent."""
+        spans, seen = [], set()
+
+        def add(source: str, led: list) -> None:
+            for e in led:
+                key = (e["start"], e["end"])
+                if key in seen:
+                    continue
+                seen.add(key)
+                spans.append({"source": source, "quote": e["quote"],
+                              "start": e["start"], "end": e["end"],
+                              "match_type": e["match_type"]})
+
+        for role in ROLES:
+            add(role, by_role[role]["grounding"]["ledger"])
+        if synth:
+            add("synthesis", synth["synth_citation_grounding"]["ledger"])
+        return {"accession_number": accession, "prompt_version": PROMPT_VERSION,
+                "spans": spans}
 
     # -- persistence (yuclaw_v5 only) ------------------------------------
     def _persist(self, a: dict) -> None:
@@ -182,14 +248,16 @@ class SwarmOrchestrator:
                     INSERT INTO yuclaw_v5.swarm_outputs
                         (accession_number, prompt_version, bull_output, bear_output,
                          skeptic_output, synthesis_output, timings, model_tags,
-                         agent_job_ids, synth_job_id)
-                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::uuid)
+                         agent_job_ids, synth_job_id, grounding_summary, citation_ledger)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s::uuid,%s,%s)
                     ON CONFLICT (accession_number, prompt_version) DO UPDATE SET
                         bull_output=EXCLUDED.bull_output, bear_output=EXCLUDED.bear_output,
                         skeptic_output=EXCLUDED.skeptic_output,
                         synthesis_output=EXCLUDED.synthesis_output,
                         timings=EXCLUDED.timings, model_tags=EXCLUDED.model_tags,
                         agent_job_ids=EXCLUDED.agent_job_ids, synth_job_id=EXCLUDED.synth_job_id,
+                        grounding_summary=EXCLUDED.grounding_summary,
+                        citation_ledger=EXCLUDED.citation_ledger,
                         created_at=now()
                     """,
                     (a["accession_number"], a["prompt_version"],
@@ -199,6 +267,8 @@ class SwarmOrchestrator:
                      psycopg2.extras.Json(a["synthesis"]),
                      psycopg2.extras.Json(a["timings"]),
                      psycopg2.extras.Json(a["model_tags"]),
-                     psycopg2.extras.Json(a["agent_job_ids"]), a["synth_job_id"]))
+                     psycopg2.extras.Json(a["agent_job_ids"]), a["synth_job_id"],
+                     psycopg2.extras.Json(a["grounding_summary"]),
+                     psycopg2.extras.Json(a["citation_ledger"])))
         finally:
             cn.close()
