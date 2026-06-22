@@ -25,6 +25,7 @@ from typing import Any, Optional
 import requests
 
 from yuclaw.v5.swarm.grounding import grade_agent
+from yuclaw.v5.swarm.worker import call_worker, WORKER_MODEL
 
 PROMPT_VERSION = "v2"
 
@@ -313,7 +314,7 @@ class SwarmAgent:
     """Base 8B debate agent. Subclasses set ``role``."""
     role: str = "base"
 
-    def __init__(self, model: str = AGENT_MODEL, *, url: str = OLLAMA_URL,
+    def __init__(self, model: str = WORKER_MODEL, *, url: str = OLLAMA_URL,
                  timeout: float = AGENT_TIMEOUT, temperature: float = AGENT_TEMPERATURE):
         self.model, self.url, self.timeout, self.temperature = model, url, timeout, temperature
 
@@ -322,10 +323,11 @@ class SwarmAgent:
         return ROLE_PROMPTS[self.role].replace("{text}", filing_text[:MAX_FILING_CHARS])
 
     def run(self, filing_text: str) -> dict:
-        raw, elapsed, eval_count = ollama_generate(
-            self.model, self.build_prompt(filing_text), url=self.url,
-            timeout=self.timeout, num_predict=AGENT_NUM_PREDICT,
-            temperature=self.temperature)
+        # Model-agnostic worker path (/api/chat + think:false). WORKER_MODEL is the
+        # single config value; the 70B Synthesis adjudicator stays on its own path.
+        raw, elapsed, eval_count = call_worker(
+            self.build_prompt(filing_text), model=self.model, url=self.url,
+            num_predict=AGENT_NUM_PREDICT, temperature=self.temperature, timeout=self.timeout)
         out, warns = validate_agent_output(raw)
         # Ground the output against the SAME text slice the agent read, so quote
         # offsets are consistent. The verifier is deterministic; no LLM here.

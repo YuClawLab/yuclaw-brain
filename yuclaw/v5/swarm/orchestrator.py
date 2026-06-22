@@ -28,8 +28,9 @@ import psycopg2.extras
 
 from yuclaw.v5.queue.core import DEFAULT_DSN, EvidenceJobQueue, new_token_id
 from yuclaw.v5.swarm.agents import (
-    AGENT_MODEL, AGENT_REGISTRY, PROMPT_VERSION, SYNTH_MODEL, SynthesisAgent,
+    AGENT_REGISTRY, PROMPT_VERSION, SYNTH_MODEL, SynthesisAgent,
 )
+from yuclaw.v5.swarm.worker import WORKER_MODEL
 
 AGENT_JOB_TYPE = "swarm_agent"
 SYNTH_JOB_TYPE = "swarm_synthesis"
@@ -42,7 +43,7 @@ class SwarmDispatchError(RuntimeError):
 
 class SwarmOrchestrator:
     def __init__(self, queue: Optional[EvidenceJobQueue] = None, dsn: str = DEFAULT_DSN,
-                 agent_model: str = AGENT_MODEL, synth_model: str = SYNTH_MODEL):
+                 agent_model: str = WORKER_MODEL, synth_model: str = SYNTH_MODEL):
         self.dsn = dsn
         self.queue = queue or EvidenceJobQueue(dsn=dsn)
         self.agent_model = agent_model
