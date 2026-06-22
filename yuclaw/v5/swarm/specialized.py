@@ -16,6 +16,7 @@ buy/sell/short instruction. Synthesis model (70B) is unchanged from Day 2/3.
 from __future__ import annotations
 
 import json
+import os
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -30,14 +31,38 @@ ROLES = ("bull", "bear", "skeptic")
 _RISK_SCORE = {"low": 0, "medium": 1, "high": 2, "elevated": 2}
 _SCORE_LEVEL = {0: "low", 1: "medium", 2: "high"}
 
+# Day-5C recalibration: how the per-agent risk_view levels combine into the ONE C6 flag.
+# Day-5B used "max" — any single agent at "high" flagged the filing, so the structurally
+# pessimistic Bear (high 93% of the time, Day-5C diagnosis) saturated "elevated" at 89%.
+# "count2" (DEFAULT) requires >= 2 agents at "high": no single flooder can trigger the flag.
+# At N=27 this cut the elevated base rate 89% -> 30% AND flipped discrimination to the correct
+# sign with a real normal arm (fwd-20d vol +0.0078, n_norm 3 -> 19). See docs/v5/layer1/day5c.
+_RISK_AGG = os.environ.get("YUCLAW_RISK_AGG", "count2").strip().lower()
+
 
 # --------------------------------------------------------------------------
 # C6 risk channel
 # --------------------------------------------------------------------------
+def _agg_elevated(scores: list[int], agg: str) -> bool:
+    """Combine per-agent risk scores (low=0/medium=1/high=2) into the C6 elevated decision.
+    Discrimination, not sensitivity: 'elevated' must be RARE and mean something (Day-5C)."""
+    if not scores:
+        return False
+    if agg == "max":                         # Day-5B baseline — saturates (any single high flags)
+        return max(scores) >= 2
+    if agg == "mean":                         # graded continuous score >= threshold
+        thr = float(os.environ.get("YUCLAW_RISK_MEAN_T", "1.34"))
+        return (sum(scores) / len(scores)) >= thr
+    # default "count2": >= 2 agents at high — no lone flooder (e.g. Bear) can trigger it
+    return sum(1 for x in scores if x >= 2) >= 2
+
+
 def _risk_channel(base: dict, specialists: dict) -> dict:
     """Aggregate risk_view across base + specialists into ONE risk channel, separate from
-    direction. Level = max severity seen; flag 'elevated' if any high. The Insider specialist
-    is a C6 risk gate: if it fired, its risk drives the flag even when directions stay neutral."""
+    direction. The flag combines per-agent risk by YUCLAW_RISK_AGG (default 'count2', the
+    Day-5C winner — see _RISK_AGG note above). The Insider specialist is a C6 risk gate: if it
+    fired with an insider-sell cluster, its risk drives the flag even when directions stay
+    neutral (an OR-override on top of the aggregation)."""
     drivers: list[str] = []
     scores: list[int] = []
     contributors: dict[str, str] = {}
@@ -51,12 +76,15 @@ def _risk_channel(base: dict, specialists: dict) -> dict:
             if str(d).strip():
                 drivers.append(str(d).strip())
     max_score = max(scores) if scores else 0
+    mean_score = (sum(scores) / len(scores)) if scores else 0.0
     insider = "insider" in specialists
     insider_lvl = ((specialists.get("insider", {}).get("output") or {}).get("risk_view") or {}).get("level", "")
     insider_gate = insider and _RISK_SCORE.get((insider_lvl or "").lower(), 0) >= 2
-    flag = "elevated" if (max_score >= 2 or insider_gate) else "normal"
+    flag = "elevated" if (_agg_elevated(scores, _RISK_AGG) or insider_gate) else "normal"
     return {
         "level": _SCORE_LEVEL[max_score],
+        "score": round(mean_score, 3),      # graded continuous risk score (transparency)
+        "agg": _RISK_AGG,                   # which aggregation produced the flag
         "flag": flag,                       # elevated | normal — a RESEARCH flag, not a trade
         "drivers": sorted(set(drivers))[:8],
         "contributors": contributors,       # which agent/specialist reported which level
