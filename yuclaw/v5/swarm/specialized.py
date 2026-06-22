@@ -143,7 +143,7 @@ def _specialist_brief(specialists: dict) -> str:
 def run_specialized(accession: str, narrative_text: str, *, dsn: str = "dbname=yuclaw_events",
                     synthesize: bool = True) -> dict:
     t0 = time.perf_counter()
-    spawned = spawn_specialists(accession, dsn)
+    spawned = spawn_specialists(accession, dsn, narrative_text=narrative_text)
     spawn_keys = [s["key"] for s in spawned]
 
     # Build the full worker set: base 3 + spawned specialists.
