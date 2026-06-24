@@ -1,0 +1,13 @@
+[Unit]
+Description=YUCLAW event-worker drain cadence (guarded, every 15 min when box is free)
+
+[Timer]
+# First run 5 min after boot, then 15 min after each run finishes. The guard in
+# event_worker_guarded.sh makes each tick a no-op when a swarm/model stack owns
+# the box, so this is safe to leave enabled at boot.
+OnBootSec=5min
+OnUnitInactiveSec=15min
+Persistent=false
+
+[Install]
+WantedBy=timers.target

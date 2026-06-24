@@ -216,11 +216,16 @@ def backfill_ticker(
 
                 cur.execute(
                     """INSERT INTO events_raw
-                           (ticker, source_type, source_url, raw_text, source_publish_time)
-                       VALUES (%s, %s, %s, %s, %s)
-                       ON CONFLICT (source_url) DO NOTHING
+                           (ticker, source_type, source_url, raw_text,
+                            source_publish_time, accession_number)
+                       VALUES (%s, %s, %s, %s, %s, %s)
+                       -- Populate accession_number (canonical, dashed) so backfill
+                       -- rows match the live poller's accession dedup and are valid
+                       -- for the v5 corpus query. Untargeted ON CONFLICT covers BOTH
+                       -- the source_url and accession_number unique constraints.
+                       ON CONFLICT DO NOTHING
                        RETURNING raw_id""",
-                    (ticker, f["form"], src_url, raw_text, f["publish_time"]),
+                    (ticker, f["form"], src_url, raw_text, f["publish_time"], f["accession"]),
                 )
                 if cur.fetchone():
                     stats["inserted"] += 1

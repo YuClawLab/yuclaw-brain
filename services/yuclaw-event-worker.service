@@ -1,0 +1,16 @@
+[Unit]
+Description=YUCLAW event-extraction worker (guarded 70B drain of events_raw -> public.events)
+Documentation=file:/home/zhangd2/yuclaw/services/event_worker_guarded.sh
+After=network-online.target
+
+[Service]
+# oneshot: drain one guarded batch then exit. Re-triggered by the .timer.
+# No Restart= — a busy-box skip exits 0; the timer handles cadence. This is what
+# keeps the worker from "auto-resurrecting" on top of a swarm that owns the GPU.
+Type=oneshot
+WorkingDirectory=/home/zhangd2/yuclaw
+Environment=PYTHONPATH=/home/zhangd2/yuclaw
+Environment=YUCLAW_SUPER_MODEL=yuclaw-llm-70b
+ExecStart=/home/zhangd2/yuclaw/services/event_worker_guarded.sh
+StandardOutput=append:/tmp/yuclaw_event_worker.log
+StandardError=append:/tmp/yuclaw_event_worker.log

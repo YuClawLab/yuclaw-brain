@@ -1,0 +1,24 @@
+[Unit]
+Description=YUCLAW EDGAR live poller (v3 edgar_poll_v2 — 5-min submissions sweep, 79-CIK universe)
+Documentation=file:/home/zhangd2/yuclaw/docs/edgar_live_poller_design.md
+After=network-online.target
+Wants=network-online.target
+# Never give up restarting — this is the service whose silent death froze ingestion 20 days.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=/home/zhangd2/yuclaw
+Environment=PYTHONPATH=/home/zhangd2/yuclaw
+# Quoted: the value has spaces; unquoted, systemd would truncate at "YuClawLab".
+Environment="SEC_USER_AGENT=YuClawLab research vzhang2099@gmail.com"
+ExecStart=/usr/bin/python3 -m v3.sources.edgar_poll_v2
+Restart=always
+RestartSec=30
+# Sweep heartbeat — every 5-min sweep prints a line here even when 0 new filings,
+# so the freshness alarm can detect a down/hung poller without weekend false positives.
+StandardOutput=append:/tmp/yuclaw_edgar_poller.log
+StandardError=append:/tmp/yuclaw_edgar_poller.log
+
+[Install]
+WantedBy=default.target

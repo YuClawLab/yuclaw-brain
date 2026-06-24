@@ -43,6 +43,28 @@ else
     problems+=("Ollama not responding on :11434")
 fi
 
+# 2b. EDGAR ingestion liveness — the silent 20-day outage detector.
+# Primary signal is the poller's SWEEP HEARTBEAT (it logs every 5-min sweep even
+# with 0 new filings), NOT max(events_raw.fetched_at): the latter goes stale on
+# quiet weekends and would false-alarm. A stale sweep log => poller down/hung.
+POLLER_LOG=/tmp/yuclaw_edgar_poller.log
+if [[ -f "$POLLER_LOG" ]]; then
+    sweep_epoch=$(stat -c %Y "$POLLER_LOG" 2>/dev/null || echo 0)
+    sweep_age=$(( (now_epoch - sweep_epoch) / 60 ))   # minutes since last sweep line
+    if (( sweep_age <= 20 )); then
+        status+=("ingest:OK(${sweep_age}m)")
+    else
+        status+=("ingest:STALE(${sweep_age}m)")
+        problems+=("EDGAR poller not sweeping for ${sweep_age}m (>20m) — likely down/hung. Check: systemctl --user status yuclaw-edgar-poller")
+    fi
+else
+    status+=("ingest:NO-HEARTBEAT")
+    problems+=("EDGAR poller sweep log ${POLLER_LOG} missing — poller never started? Check: systemctl --user status yuclaw-edgar-poller")
+fi
+# Secondary (visibility only, no alarm — weekends legitimately have no new filings):
+raw_max=$(psql -d yuclaw_events -tAc "SELECT max(fetched_at)::date FROM events_raw" 2>/dev/null | tr -d '[:space:]')
+[[ -n "$raw_max" ]] && status+=("raw_last:${raw_max}")
+
 # 3. Disk usage < 90% on /
 disk_pct=$(df -P / 2>/dev/null | awk 'NR==2 {gsub("%",""); print $5}')
 if [[ -n "${disk_pct:-}" ]]; then

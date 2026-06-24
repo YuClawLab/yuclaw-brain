@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 import time
@@ -33,9 +34,11 @@ EDGAR_FEED_URL = "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&out
 COMPANY_TICKERS_URL = "https://www.sec.gov/files/company_tickers.json"
 # Mutual funds + ETFs (different SEC index, e.g. XLK / SPY / TLT)
 COMPANY_TICKERS_MF_URL = "https://www.sec.gov/files/company_tickers_mf.json"
-# SEC requires a contact User-Agent on programmatic access:
+# SEC requires a REAL contact User-Agent on programmatic access:
 # https://www.sec.gov/os/accessing-edgar-data
-USER_AGENT = "YuClawLab v3.0 yuclawlab@example.com"
+# Env-driven (same SEC_USER_AGENT var the v2 poller uses) so poller + backfill
+# share one real contact; default is a real address, not a placeholder domain.
+USER_AGENT = os.environ.get("SEC_USER_AGENT", "YuClawLab research vzhang2099@gmail.com")
 DB_DSN = "dbname=yuclaw_events"
 
 # Form types we accept into events_raw for LLM extraction. Form 4 (insider

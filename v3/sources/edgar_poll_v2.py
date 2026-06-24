@@ -180,7 +180,11 @@ def poll_once(tickers: list[str], cik_map: dict, dry_run: bool,
                            (ticker, source_type, source_url, raw_text,
                             source_publish_time, accession_number)
                        VALUES (%s, %s, %s, %s, %s, %s)
-                       ON CONFLICT (accession_number) DO NOTHING
+                       -- events_raw has TWO unique constraints (accession_number
+                       -- AND source_url). Use untargeted ON CONFLICT so a match on
+                       -- EITHER is a clean no-op, not a UniqueViolation that aborts
+                       -- the sweep (e.g. backfill rows whose accession differs/NULL).
+                       ON CONFLICT DO NOTHING
                        RETURNING raw_id""",
                     (ticker, f["form"], src_url, raw_text, f["publish_time"], accession),
                 )
