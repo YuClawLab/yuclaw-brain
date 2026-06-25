@@ -29,6 +29,7 @@ import psycopg2
 import psycopg2.extras
 
 from v3.extract.sourcelock import validate
+from v3.extract import reclassify_live
 
 # Order 1D (2026-05-29): switched from v1.txt → v2.txt. v2 adds an explicit
 # 4-step procedure that forces the LLM to locate a contiguous source span and
@@ -118,13 +119,18 @@ def process_batch(limit: int = 5) -> dict:
         "errors": 0,
     }
 
+    # Accepted events to re-classify (the "rescue") AFTER the events txn commits, so the
+    # live re-classifier sees a committed event and its write to event_type_corrected stays
+    # additive / outside the worker's transaction. (taxonomy fix, 2026-06-24)
+    to_reclassify: list[dict] = []
+
     conn = psycopg2.connect(DB_DSN)
     conn.autocommit = False
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute(
                 """SELECT raw_id, ticker, source_type, source_url,
-                          raw_text, source_publish_time
+                          raw_text, source_publish_time, accession_number
                    FROM events_raw
                    WHERE extraction_status='pending'
                    ORDER BY fetched_at
@@ -219,6 +225,11 @@ def process_batch(limit: int = 5) -> dict:
                     (row["raw_id"],),
                 )
                 stats["accepted"] += 1
+                to_reclassify.append({
+                    "event_id": eid, "accession": row["accession_number"], "ticker": ticker,
+                    "v4_type": llm_json["event_type"], "excerpt": llm_json["raw_excerpt"],
+                    "source_url": row["source_url"],
+                })
 
             conn.commit()
     except Exception:
@@ -226,6 +237,21 @@ def process_batch(limit: int = 5) -> dict:
         raise
     finally:
         conn.close()
+
+    # Live re-classify rescue (additive to event_type_corrected; never mutates events).
+    # Best-effort: a re-class failure must not fail ingestion — the event is already
+    # committed and the corrected layer can be rebuilt by the batch re-classifier.
+    for r in to_reclassify:
+        try:
+            res = reclassify_live.reclassify_one(
+                r["event_id"], r["accession"], r["ticker"], r["v4_type"],
+                r["excerpt"], r["source_url"])
+            if res["changed"]:
+                print(f"[event_worker] reclassify {r['ticker']} {r['v4_type']} -> "
+                      f"{res['corrected_event_type']} ({res['source']})", flush=True)
+        except Exception as e:
+            print(f"[event_worker] reclassify FAILED for {r['event_id']}: "
+                  f"{type(e).__name__}: {e}", file=sys.stderr, flush=True)
 
     return stats
 
