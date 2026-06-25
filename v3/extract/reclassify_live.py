@@ -49,7 +49,7 @@ _RULES = [
     ("EARNINGS_RESULT", re.compile(
         r"(financial results for|results for (?:its|the) (?:first|second|third|fourth) quarter|"
         r"announced its (?:financial|quarterly) results|reported (?:net|total) revenue|earnings per share)", re.I)),
-    ("REGULATORY", re.compile(
+    ("REGULATORY_ACTION", re.compile(  # consumers (L1 query + SPAWN_MAP) key on REGULATORY_ACTION
         r"(consent decree|settlement agreement|regulatory action|department of justice|"
         r"securities and exchange commission[^.]{0,40}(?:investigation|action)|antitrust)", re.I)),
     ("DIVIDEND", re.compile(

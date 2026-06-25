@@ -62,9 +62,11 @@ no duplicate event created (producer is `temperature=0`).
 
 ## Known follow-ups (NOT done here — out of scope)
 
-- The `_RULES` `REGULATORY` label does not match the consumers' `REGULATORY_ACTION`; an
-  `OTHER_MATERIAL`-buried regulatory event would rescue to a still-unmatched `REGULATORY`. Copied
-  verbatim to preserve batch reproduction; worth reconciling in a taxonomy-tuning pass.
+- ~~The `_RULES` `REGULATORY` label does not match the consumers' `REGULATORY_ACTION`.~~
+  **FIXED 2026-06-24** — the regulatory rescue label is now `REGULATORY_ACTION` in BOTH copies
+  (`reclassify_live.py` on main + the v5 batch `reclassify.py`); reproduction gate held (97/97),
+  and an `OTHER_MATERIAL`-buried regulatory event now rescues to a consumer-matched
+  `REGULATORY_ACTION` that spawns regulatory + litigation. (Was latent: 0 events were leaking yet.)
 - Tightening the producer prompt so financings/earnings stop landing in `OTHER_MATERIAL` in the
   first place is a **separate** task (the rescue is the safety net, not the cure).
 
