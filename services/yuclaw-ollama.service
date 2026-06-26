@@ -1,0 +1,24 @@
+[Unit]
+Description=YUCLAW prod Ollama daemon (0.22.1) with context cap — serves the resident 70B + Gemma worker + 12 crons
+Documentation=file:/home/zhangd2/start-ollama.sh
+After=network-online.target
+Wants=network-online.target
+# Never stop restarting — this daemon was the last unsupervised production fragility.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+# THE WHOLE POINT: the context cap lives in the unit, not in ~/start-ollama.sh, so it can
+# never silently revert. Without it the 0.22 vram-auto-context loads the 70B at 262144 ctx
+# = 95.4GiB (vs 45.8GiB at 8192), which would OOM a coexisting Gemma worker.
+Environment=OLLAMA_CONTEXT_LENGTH=8192
+# Same binary (symlink -> ~/ollama-0.22/bin/ollama, 0.22.1) and default models dir
+# (~/.ollama/models) as the hand-launched daemon.
+ExecStart=/home/zhangd2/bin/ollama serve
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/zhangd2/ollama-serve.log
+StandardError=append:/home/zhangd2/ollama-serve.log
+
+[Install]
+WantedBy=default.target
