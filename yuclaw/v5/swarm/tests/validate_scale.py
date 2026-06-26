@@ -88,11 +88,15 @@ def _acquire_text(f: dict) -> tuple[str | None, str]:
     if n:
         return n, "existing"
     et = f["et"]
+    # PROSE-FIRST (Order B): try the exhibit extractor for ANY 8-K, not just earnings types —
+    # FINANCING/M&A/governance 8-Ks also carry prose exhibits (press releases, indentures,
+    # credit agreements). raw_cover (XBRL/cover soup, grounds ~0.34) stays the fallback when no
+    # usable exhibit exists (e.g. M&A 8-Ks whose substance is in the body, not an exhibit).
     try:
-        if et in EARNINGS_TYPES:
+        if f["form"] == "8-K" or et in EARNINGS_TYPES:
             rec = extract_exhibit(f["acc"], persist=False)
             if sanity_ok(rec)[0]:
-                return rec["narrative_text"], "exhibit99"
+                return rec["narrative_text"], "exhibit"
         if f["form"] in ("10-K", "10-Q"):
             rec = extract_and_store(f["acc"], persist=False)
             if sanity_ok(rec)[0]:
