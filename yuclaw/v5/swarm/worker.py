@@ -22,8 +22,13 @@ from typing import Any, Optional
 
 import requests
 
+# Default worker is Gemma 4 (the validated +29% grounding win; Order-3 swap 2026-06-25).
+# Requires prod Ollama >= 0.20 (now 0.22.1) and WORKER_THINK=false (default below).
+# Footprint is safe: WORKER_NUM_CTX=8192 keeps Gemma ~20GiB so it coexists with the
+# capped 70B (~46GiB) inside 128GiB. Override via YUCLAW_V5_WORKER_MODEL=llama3.1:8b.
 WORKER_MODEL = os.environ.get(
-    "YUCLAW_V5_WORKER_MODEL", os.environ.get("YUCLAW_V5_AGENT_MODEL", "llama3.1:8b"))
+    "YUCLAW_V5_WORKER_MODEL",
+    os.environ.get("YUCLAW_V5_AGENT_MODEL", "gemma4:26b-a4b-it-q4_K_M"))
 WORKER_URL = os.environ.get(
     "YUCLAW_V5_WORKER_URL",
     os.environ.get("YUCLAW_V5_OLLAMA_URL", "http://localhost:11434")).rstrip("/")
