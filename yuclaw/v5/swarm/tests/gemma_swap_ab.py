@@ -29,7 +29,8 @@ def main() -> int:
           and (((res["specialists"][k]["output"].get("return_view") or {}).get("direction") or "").lower()
                not in ("neutral", "mixed", ""))]
     allgr = base_gr + spec_gr
-    synth = res.get("synthesis") or {}
+    # synthesis output is nested under ['synthesis']['output'] (validated _validate_day4_synth)
+    synth = (res.get("synthesis") or {}).get("output") or {}
     rc = synth.get("return_channel") or {}
     rk = synth.get("risk_channel") or {}
     print(f"  base grounding   : {[round(x,2) for x in base_gr]}  mean={st.mean(base_gr):.3f}")
