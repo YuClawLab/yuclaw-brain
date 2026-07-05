@@ -7,7 +7,8 @@
 # (docs/ops/resilience.md):
 #   1. kernel.panic=10 + panic_on_oops=1   (panic reboots instead of hanging)
 #   2. systemd hardware watchdog, 60s      (sbsa_gwdt resets a hung kernel)
-#   3. narrow sudoers grant                (self-heal cron may restart tailscaled)
+#   3. narrow sudoers grants               (self-heal crons: restart tailscaled;
+#                                           reconnect wlP9s9 / reload mt7925e)
 #
 # Idempotent — safe to re-run. NO REBOOT performed or required: sysctl
 # applies live, the watchdog arms via `systemctl daemon-reexec`, sudoers is

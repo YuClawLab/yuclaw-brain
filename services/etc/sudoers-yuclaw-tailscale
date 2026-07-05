@@ -4,3 +4,13 @@
 # Installed to /etc/sudoers.d/yuclaw-tailscale (0440, visudo-validated) by
 # services/install_root_resilience.sh.
 zhangd2 ALL=(root) NOPASSWD: /usr/bin/systemctl restart tailscaled
+
+# YUCLAW link self-heal (services/net_selfheal.sh): the Jun-26 root cause was
+# NetworkManager blocking WiFi autoconnect after a 'no-secrets' failure (mesh
+# flap -> 4-way-handshake stall -> headless box has no secret agent), leaving
+# wlP9s9 down 7 days on healthy hardware. Recovery is exactly one profile
+# reconnect, plus a driver-module reload pair as the second rung. Exact-match
+# commands only — no wildcards, no other nmcli/modprobe invocations permitted.
+zhangd2 ALL=(root) NOPASSWD: /usr/bin/nmcli -w 30 connection up SHAW-379D
+zhangd2 ALL=(root) NOPASSWD: /usr/sbin/modprobe -r mt7925e
+zhangd2 ALL=(root) NOPASSWD: /usr/sbin/modprobe mt7925e

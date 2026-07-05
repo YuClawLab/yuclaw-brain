@@ -6,7 +6,20 @@ Tailscale died with it, so the box — still powered, still "running" — was
 unreachable for 7 days until a physical power-cycle on 2026-07-03. Nothing
 alerted, because all monitoring lived ON the box.
 
-Three protection layers now exist. Boot behavior was verified **by
+**Link-layer root cause (from the kernel + NetworkManager journals):** the
+durable failure was the WiFi link itself. 03:19:45 MDT the SHAW-379D mesh
+dropped the association; over the next 3 minutes wlP9s9 bounced between the
+two mesh BSSIDs (deauth Reason 2 `PREV_AUTH_NOT_VALID`, auth timeouts); at
+03:22:53 a 4-way handshake stalled and NetworkManager took its "disconnected
+during association, asking for new key" path. Headless box → no secret agent
+→ `no secrets: No agents were available` → activation failed `no-secrets` →
+**NM blocked autoconnect for the profile**. The link then stayed down until
+the on-site reconnect at Jul-3 15:39 — 7 days — on healthy hardware (no
+firmware crash, no mt7925e/PCIe errors in the journal). One
+`nmcli connection up SHAW-379D` (clears the block, retries stored secrets)
+would have restored it at any point. Layer 4 closes exactly this gap.
+
+Four protection layers now exist. Boot behavior was verified **by
 inspection only** — no reboot was performed during this order.
 
 ## Layer 1 — Self-rescue for true hangs (Part A)
@@ -72,9 +85,40 @@ Optional second channels, staged but needing VinZhang:
    `services/spark3941_monitor.sh` on spark-3941 by hand (instructions in
    the file header; spark-d89d has no SSH trust to it).
 
+## Layer 4 — WiFi link self-heal (Part D, added 2026-07-05)
+
+Companion to the tailscale self-heal, one layer down the stack: tailscaled
+cannot come back if the underlying link is down and NM refuses to reconnect.
+
+- **Cron `*/5`** runs `services/net_selfheal.sh`. Healthy = default IPv4
+  route present AND wlP9s9 in NM state `connected`. Healthy → exits silently,
+  touches nothing (an upstream ISP outage with the link up is deliberately
+  NOT a trigger — never cycle a working link; it carries the only access).
+- **Trigger:** link continuously unhealthy >5 min. Recovery ladder:
+  (a) `nmcli -w 30 connection up SHAW-379D` — clears the autoconnect block
+  and retries the stored PSK (the exact Jun-26 fix); (b) if still down,
+  `modprobe -r mt7925e` + `modprobe mt7925e`, then reconnect again.
+- **Rate limit:** one attempt per 30 min, stamped before acting. Never
+  reboots, never restarts NetworkManager. Log: `/tmp/yuclaw_net_selfheal.log`.
+- **Sudoers:** three exact-match NOPASSWD lines in the same
+  `etc/sudoers-yuclaw-tailscale` file (nmcli reconnect + modprobe pair);
+  until the installer is re-run the script logs `SKIP` and exits 0.
+- **Dry run** (read-only, safe anytime):
+  `sh ~/yuclaw/services/net_selfheal.sh --dry-run` → on a healthy link prints
+  `link healthy, no action` plus grant status.
+- **Honest test boundary:** the recovery branch (nmcli up / driver reload)
+  has never been executed — running it against a healthy link is forbidden
+  by the standing safety rule. Its first real execution will be the next
+  actual link outage. The decision logic (health check, 5-min persistence,
+  rate limit, grant check) is what dry-run inspection verified.
+
 ## Known gaps / escalations
 
-- **Root installer not yet run** — needs the sudo password once (see Layer 1).
+- **Root installer run on 2026-07-04** (verified by inspection:
+  `kernel.panic=10`, `panic_on_oops=1`, `RuntimeWatchdogUSec=1min`,
+  tailscaled sudoers grant live). **Re-run needed once** to pick up the
+  Layer 4 sudoers lines added 2026-07-05:
+  `sudo sh /home/zhangd2/yuclaw/services/install_root_resilience.sh`
 - **If the box hangs harder than the watchdog** (or before the installer
   runs): only remedy is physical power. A smart plug on spark-d89d's PSU is
   the recommended last-resort actuator.
