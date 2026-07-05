@@ -30,6 +30,11 @@ DSN = "dbname=yuclaw_events"
 FORWARD_DAY0 = date(2026, 5, 18)
 BENCHMARK = "SPY"                 # broad-market benchmark (present in price_history)
 DECILE_FRACTION = 0.10           # top/bottom decile by composite total_score
+# Inclusion rule: a signal date only defines a decile ranking if it scored at
+# least this many universe tickers. Guards against anomalous partial-universe
+# days (e.g. 2026-05-31, a Sunday ad-hoc run that wrote 3 tickers) where a
+# "decile" would be a single name. Skipped dates are counted and disclosed.
+MIN_UNIVERSE_FOR_DECILES = 40
 TRADING_DAYS_PER_YEAR = 252
 BULLISH_LABELS = ("STRONG_BULLISH", "BULLISH")
 CAUTIOUS_LABELS = ("WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT")
@@ -144,7 +149,8 @@ def compute_panel(panel: str) -> dict[str, Any]:
     bench_px = prices.get(BENCHMARK, {})
 
     rebal_dates = sorted(snaps.keys())
-    cohorts = ("top_decile", "bottom_decile", "bullish_labeled", "cautious_labeled", "benchmark")
+    cohorts = ("top_decile", "bottom_decile", "bullish_labeled", "cautious_labeled",
+               "universe_ew", "benchmark")
     series: dict[str, list[dict[str, Any]]] = {c: [] for c in cohorts}
     period_rets: dict[str, list[float]] = {c: [] for c in cohorts}
     spread_periods: list[float] = []
@@ -153,22 +159,39 @@ def compute_panel(panel: str) -> dict[str, Any]:
     spread_series: list[dict[str, Any]] = []
     evaluable_periods = 0
     last_exit_date = None
+    first_entry_date = None
+    universe_sizes: list[int] = []   # snapshot tickers per evaluable rebalance
+    priced_counts: list[int] = []    # of those, tickers with both entry+exit closes
+    skipped_partial_days = 0         # rebalance dates excluded by the inclusion rule
+
+    # Terminal exit for the panel's last rebalance: forward holds to the last
+    # available trade date; in-sample is CAPPED at forward Day 0 so the two
+    # panels' return windows never overlap (the replay must not keep accruing
+    # forward-era returns under its final in-sample cohort).
+    if panel == "in_sample":
+        terminal_exit = _entry_date(trade_dates, FORWARD_DAY0)
+    else:
+        terminal_exit = trade_dates[-1] if trade_dates else None
 
     for i, rd in enumerate(rebal_dates):
         d0 = _entry_date(trade_dates, rd)
-        # exit at the entry date of the next rebalance, else last available trade date
+        # exit at the entry date of the next rebalance, else the panel's terminal exit
         nxt = rebal_dates[i + 1] if i + 1 < len(rebal_dates) else None
-        d1 = _entry_date(trade_dates, nxt) if nxt else (trade_dates[-1] if trade_dates else None)
+        d1 = _entry_date(trade_dates, nxt) if nxt else terminal_exit
         if d0 is None or d1 is None or d1 <= d0:
             continue  # no evaluable forward price window for this rebalance
 
         day = snaps[rd]
+        if len(day) < MIN_UNIVERSE_FOR_DECILES:
+            skipped_partial_days += 1
+            continue
         top, bottom = _decile_members(day)
         members = {
             "top_decile": top,
             "bottom_decile": bottom,
             "bullish_labeled": _label_members(day, BULLISH_LABELS),
             "cautious_labeled": _label_members(day, CAUTIOUS_LABELS),
+            "universe_ew": list(day.keys()),
         }
 
         def cohort_ret(tickers: list[str]) -> float | None:
@@ -181,6 +204,12 @@ def compute_panel(panel: str) -> dict[str, Any]:
             continue
         evaluable_periods += 1
         last_exit_date = d1
+        if first_entry_date is None:
+            first_entry_date = d0
+        universe_sizes.append(len(day))
+        priced_counts.append(sum(
+            1 for tk in day
+            if _period_return(prices.get(tk, {}), d0, d1) is not None))
 
         rets = {c: cohort_ret(members[c]) if c != "benchmark" else bench_ret
                 for c in cohorts}
@@ -234,6 +263,8 @@ def compute_panel(panel: str) -> dict[str, Any]:
         }
 
     spread_curve = [pt["cum"] for pt in spread_series]
+    sizes_sorted = sorted(universe_sizes)
+    priced_sorted = sorted(priced_counts)
     return {
         "panel": panel,
         "evaluable": True,
@@ -241,7 +272,17 @@ def compute_panel(panel: str) -> dict[str, Any]:
         "span_trading_days": span_td,
         "rebalance_dates": len(rebal_dates),
         "signal_date_range": [rebal_dates[0].isoformat(), rebal_dates[-1].isoformat()],
+        "first_entry_date": first_entry_date.isoformat(),
+        "last_exit_date": last_exit_date.isoformat(),
         "price_coverage_end": trade_dates[-1].isoformat(),
+        "skipped_partial_days": skipped_partial_days,
+        "min_universe_for_deciles": MIN_UNIVERSE_FOR_DECILES,
+        "universe_coverage": {
+            "size_min": sizes_sorted[0], "size_median": sizes_sorted[len(sizes_sorted) // 2],
+            "size_max": sizes_sorted[-1],
+            "priced_min": priced_sorted[0], "priced_median": priced_sorted[len(priced_sorted) // 2],
+            "priced_max": priced_sorted[-1],
+        },
         "benchmark": BENCHMARK,
         "series": series,
         "spread_series": spread_series,
@@ -252,6 +293,61 @@ def compute_panel(panel: str) -> dict[str, Any]:
             "volatility_periodic": _stdev(spread_periods),
         },
     }
+
+
+# Evidence Quality Grade — faithful replica of v4/api/schema.py::Confidence
+# .grade_for() (same inline-replica practice as yuclaw/telegram/broadcast_bot.py,
+# so this module stays psycopg2-only). If the canonical thresholds change,
+# mirror them here.
+def _grade_label(confidence: float | None, ev_count: int, strong_count: int) -> str:
+    v = confidence if confidence is not None else 0.0
+    if v >= 0.75 and strong_count >= 3:
+        return "Grade A"
+    if v >= 0.55 and ev_count >= 1:
+        return "Grade B"
+    if v >= 0.30:
+        return "Grade C"
+    return "Insufficient"
+
+
+def current_top_decile() -> dict[str, Any]:
+    """Latest forward snapshot day's top-decile membership with evidence grades.
+
+    Derived/classification data only (scores, locked labels, grades) — no prices.
+    """
+    q = """
+        SELECT s.ticker, s.total_score, s.signal_label, s.composite_confidence,
+               COALESCE(array_length(s.evidence_event_ids, 1), 0) AS ev_count,
+               (SELECT count(*) FROM events e
+                  WHERE e.event_id = ANY(s.evidence_event_ids)
+                    AND e.llm_confidence >= 0.7) AS strong_count
+        FROM signal_snapshots s
+        WHERE s.is_backfill = false
+          AND s.signal_time::date = (SELECT max(signal_time::date)
+                                     FROM signal_snapshots WHERE is_backfill = false)
+        ORDER BY s.total_score DESC
+    """
+    with _connect() as cn, cn.cursor() as cur:
+        cur.execute("SELECT max(signal_time::date) FROM signal_snapshots "
+                    "WHERE is_backfill = false")
+        as_of = cur.fetchone()[0]
+        cur.execute(q)
+        rows = cur.fetchall()
+    n = len(rows)
+    k = max(1, round(n * DECILE_FRACTION))
+    members = [
+        {
+            "ticker": tk,
+            "score": float(score),
+            "label": label,
+            "grade": _grade_label(
+                float(conf) if conf is not None else None, int(evc or 0), int(sc or 0)),
+            "ev_count": int(evc or 0),
+        }
+        for tk, score, label, conf, evc, sc in rows[:k]
+    ]
+    return {"as_of": as_of.isoformat() if as_of else None,
+            "universe_n": n, "k": k, "members": members}
 
 
 def compute_all() -> dict[str, Any]:

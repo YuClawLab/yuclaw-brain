@@ -35,6 +35,28 @@ else
     problems+=("price_history empty/unreadable")
 fi
 
+# 1b. Validation Lab build freshness — the page is rebuilt by the daily
+# 17:00 MDT pipeline (refresh_v3_pages.sh); a stale file means the chain broke.
+# Threshold 48h; widened to 76h on Sun/Mon because the pipeline runs Mon-Fri
+# only (Friday's build is legitimately ~72h old by Monday afternoon).
+LAB_PAGE=/home/zhangd2/yuclaw/docs/validation_lab.html
+lab_limit_h=48
+dow=$(date +%u)   # 1=Mon .. 7=Sun
+if (( dow == 7 || dow == 1 )); then lab_limit_h=76; fi
+if [[ -f "$LAB_PAGE" ]]; then
+    lab_epoch=$(stat -c %Y "$LAB_PAGE" 2>/dev/null || echo 0)
+    lab_age_h=$(( (now_epoch - lab_epoch) / 3600 ))
+    if (( lab_age_h <= lab_limit_h )); then
+        status+=("lab:OK(${lab_age_h}h)")
+    else
+        status+=("lab:STALE(${lab_age_h}h)")
+        problems+=("validation_lab.html build is ${lab_age_h}h old (>${lab_limit_h}h) — daily pipeline / refresh_v3_pages.sh likely failed. Check /tmp/yuclaw_pipeline.log")
+    fi
+else
+    status+=("lab:MISSING")
+    problems+=("docs/validation_lab.html missing — render_validation_lab never ran?")
+fi
+
 # 2. Ollama responding on 11434
 if curl -fs --max-time 5 http://localhost:11434/api/version >/dev/null 2>&1; then
     status+=("ollama:OK")

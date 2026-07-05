@@ -42,16 +42,36 @@ noisy and shown for illustration only; cohort sizes (min/median/max) are
 disclosed alongside every label-cohort figure and thin cohorts are flagged. The
 **decile cohorts** (always ~8 names) are the robust primary comparison.
 
+## Universe & inclusion rule (v2 methodology, 2026-07-05)
+
+The research universe is **79 tickers** (`v3/universe.json`): 49 U.S. large-cap
+equities, 15 sector ETFs, 5 broad-market ETFs, and 10 macro ETFs/ETNs (rates,
+metals, dollar, China/EM, volatility). All 79 are scored daily.
+
+- **Date inclusion:** a signal date enters the decile study only if it scored at
+  least `MIN_UNIVERSE_FOR_DECILES = 40` universe tickers. A "decile" of a
+  handful of names is meaningless; anomalous partial-universe dates are excluded
+  and the exclusion count is disclosed on the page (currently one: 2026-05-31, a
+  non-trading Sunday on which an ad-hoc run scored 3 tickers).
+- **Ticker inclusion:** within an included date, a ticker contributes to its
+  cohort's period return only if closing prices exist at both the entry and the
+  exit date. Priced coverage (min/median/max per rebalance) is disclosed.
+
 ## Construction rules (fixed, documented constants)
 
-- **Rebalance:** at every distinct signal date in the panel.
+- **Rebalance:** at every distinct signal date in the panel (subject to the
+  inclusion rule above).
 - **Weighting:** equal-weight within each cohort.
 - **Holding:** each cohort is held from its rebalance date to the next rebalance
-  date (chained into a cumulative series); the final period runs to the last
-  available price date.
-- **Decile fraction:** 10% (`DECILE_FRACTION = 0.10`).
-- **Benchmark:** **SPY** — a broad-market reference present in `price_history`
-  over the study window. SPY is a benchmark for context only.
+  date (chained into a cumulative series). The **forward** panel's final period
+  runs to the last available price date; the **in-sample** panel's final period
+  is **capped at forward Day 0 (2026-05-18)** so the two panels' return windows
+  never overlap (without the cap, the replay's last cohort would keep accruing
+  forward-era returns).
+- **Decile fraction:** 10% (`DECILE_FRACTION = 0.10`) — 8 of 79 names.
+- **References:** the **equal-weight universe cohort** (all scored tickers,
+  identical rebalance schedule — the like-for-like internal reference) and
+  **SPY** (external broad-market context). Both are references only.
 - **Returns:** close-to-close, `close[exit]/close[entry] − 1` per name, averaged
   equally within the cohort.
 
@@ -81,14 +101,37 @@ single-year figure; we show the actual cumulative return and the window length
 
 ## Data coverage & the forward window
 
-- **In-sample:** signal dates 2026-02-18 → 2026-05-13 (13 rebalances), evaluated
-  against prices through 2026-05-20 — a real ~65-trading-day window.
-- **Forward:** signal dates 2026-05-20 → 2026-06-10 (16 rebalances), now
-  evaluable against fresh `price_history` (the daily feed was restored
-  2026-06-10). **Early forward period — ~16 trading days, NOT yet statistically
-  meaningful**: a window this short cannot support inference and is shown only as
-  a directional illustration that accrues as the forward record lengthens. This
-  caveat is rendered prominently on the forward panel.
+- **In-sample:** signal dates 2026-02-18 → 2026-05-13 (13 rebalances), return
+  window 2026-02-18 → 2026-05-18 (capped at forward Day 0; 63 trading days).
+- **Forward:** signal dates from 2026-05-20, evaluated against daily
+  `price_history` through the last completed trading day. **Early forward
+  period — NOT yet statistically meaningful**: a window this short cannot
+  support inference and is shown only as a directional illustration that accrues
+  as the forward record lengthens. This caveat is rendered prominently on the
+  forward panel, with the current window dates and rebalance count.
+
+## Freshness & regeneration
+
+The page is rebuilt **daily** by the post-close pipeline
+(`cron/refresh_v3_pages.sh`, 17:00 MDT chain) and carries a visible freshness
+stamp ("Data through <last trading day> · last build <UTC>"). A health-monitor
+check alerts if the build is more than 48 hours old (76h allowance across
+weekends, since the pipeline runs Mon–Fri). Before 2026-07-05 the page was a
+one-time v4.2 artifact and went stale; that failure mode is now structurally
+closed.
+
+## Infrastructure outage disclosure (Jun 26 – Jul 3, 2026)
+
+A network outage on the research host interrupted external data feeds. Daily
+signal snapshots continued to be written on-box, point-in-time, throughout the
+window — but from Jun 26 to Jul 2 their price-derived component inputs were
+frozen at Jun 25 closes (the price feed was unreachable), and public pages were
+not republished during the outage. Price history and SEC filing ingestion were
+restored and backfilled on 2026-07-03, and the filing window was re-checked
+against EDGAR on 2026-07-05 (no missing filings). **No snapshot or ledger row
+was retroactively edited** — the outage-window snapshots stand exactly as
+written, stale inputs and all. Fabricating retroactive point-in-time data would
+invalidate the replayable ledger; disclosed staleness is the honest record.
 
 ## C4 macro-regime freeze disclosure
 
