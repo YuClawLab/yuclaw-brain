@@ -110,6 +110,58 @@ single-year figure; we show the actual cumulative return and the window length
   as the forward record lengthens. This caveat is rendered prominently on the
   forward panel, with the current window dates and rebalance count.
 
+## Statistical rigor panel (Panel 3, added 2026-07-05)
+
+Every statistic carries its n and window; the two panels are never blended.
+
+- **Spread tests** — per-rebalance arithmetic spreads (top − bottom decile;
+  top decile − equal-weight universe): mean per period, percentile-bootstrap
+  95% CI (10,000 i.i.d. resamples of rebalance periods, fixed seed 20260518),
+  one-sample t vs 0 with exact Student-t p-values.
+- **Information coefficient** — per-signal-date cross-sectional Spearman IC of
+  composite score vs realized 1/5/20-day forward returns (track-record
+  outcomes, as-of matured), Fama–MacBeth mean across dates. Because
+  consecutive daily signal dates share most of a multi-day return window, the
+  IC series is serially correlated and the naive t overstates significance:
+  t-stats are **Newey–West (Bartlett) HAC-corrected** with lag =
+  ceil(horizon / average date spacing) − 1. Horizons whose T provides fewer
+  than ~3 independent blocks are flagged descriptive-only.
+- **Market model** — OLS of top-decile per-period cohort returns on the
+  equal-weight universe and (separately) SPY: alpha per period and annualized
+  via the panel's average holding period, beta, t(alpha), R², n. A **power
+  note** states the minimum detectable |alpha| (80% power, 5% level) at the
+  current n, so "not significant" is quantified rather than asserted.
+
+Honest reading as of first publication: at current sample sizes, no forward
+spread, IC, or alpha is significant at 5% once overlap is corrected. That is
+the finding, and the panel recomputes daily as the record accrues.
+
+## Reproducibility (replay bundle)
+
+`docs/replay/lab_replay_bundle.json` (regenerated daily) + `tools/replay_lab.py`
+(Python ≥3.10, stdlib only) reproduce the Lab's core tables off-box: cohorts are
+rebuilt from bundled scores, statistics recomputed (same bootstrap seed), and
+every forward snapshot's sha-256 leaf hash is recomputed from disclosed derived
+inputs and rolled into daily roots matched against the public yuclaw-trust
+ledger. **Compliant data path:** the bundle contains YUCLAW-derived data only —
+scores, locked labels, component scores, content hashes, derived period
+returns. No raw vendor OHLCV rows are exported (data-provider terms); analyses
+requiring raw prices need the user's own licensed feed.
+
+## AI-ETF Evidence module (docs/etf_evidence.html, added 2026-07-05)
+
+Theme-level evidence aggregation + event study on SMH constituents that are
+EDGAR filers in the 79-ticker universe (8 of 26 disclosed holdings, ≈50% of
+fund weight, holdings as of 2026-07-03). Foreign-domiciled constituents
+(20-F/6-K filers) and foreign-holdings ETFs (KORU-class) are out of
+methodological scope: no EDGAR event substrate. CARs use two abnormal-return
+models shown side by side — a peer model (EW of the other covered
+constituents; removes the sector factor) and the classic SPY market model —
+with events deduplicated to one observation per (ticker, type, direction, day)
+and eras (backfill vs live-detected) never blended. The first published result
+is adverse to the "evidence precedes price adjustment" hypothesis at the
+current sample and is displayed as measured.
+
 ## Freshness & regeneration
 
 The page is rebuilt **daily** by the post-close pipeline

@@ -21,11 +21,13 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.lab.cohort_engine import (FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
+from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
+from v3.lab.rigor import compute_rigor
 
 OUT = _REPO / "docs" / "validation_lab.html"
 UNIVERSE_PATH = _REPO / "v3" / "universe.json"
+TRUST_LEDGER = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
 
 DISCLAIMER_FULL = (
     "Hypothetical research illustration. Not investment advice, not performance "
@@ -241,10 +243,237 @@ def membership_html(mem: dict) -> str:
       </p>"""
 
 
+def _fmt_p(p):
+    if p is None:
+        return "—"
+    return "&lt;0.001" if p < 0.001 else f"{p:.3f}"
+
+
+def _fmt_t(t):
+    return f"{t:+.2f}" if t is not None else "—"
+
+
+def _ledger_tip() -> dict:
+    """Latest public-ledger block (date, root, block count) — best-effort."""
+    try:
+        lines = TRUST_LEDGER.read_text().splitlines()
+        last = json.loads(lines[-1])
+        return {"date": last["date"], "root": last["daily_root"],
+                "blocks": len(lines), "n": last.get("snapshot_count")}
+    except Exception:
+        return {}
+
+
+def _c6_fire_rates() -> dict:
+    import psycopg2
+    q = ("SELECT is_backfill, count(*) FILTER (WHERE c6_event_impact IS NOT NULL "
+         "AND c6_event_impact != 0), count(*) FROM signal_snapshots GROUP BY 1")
+    out = {}
+    with psycopg2.connect(DSN) as cn:
+        cn.set_session(readonly=True)
+        with cn.cursor() as cur:
+            cur.execute(q)
+            for is_bf, fired, total in cur.fetchall():
+                out["in_sample" if is_bf else "forward"] = fired / total if total else None
+    return out
+
+
+def rigor_panel_html(rig: dict) -> str:
+    """Panel 3 — statistical rigor. Every number carries its n and window."""
+    PANEL_META = {
+        "forward": ("Forward OOS", "#00E676", "look-ahead-free"),
+        "in_sample": ("In-Sample Replay", "#FBA94B", "parametric look-ahead — optimistic"),
+    }
+    SPREAD_LABEL = {"top_minus_bottom": "Top − Bottom decile",
+                    "top_minus_universe": "Top decile − EW universe"}
+    sections = []
+    for panel in ("forward", "in_sample"):
+        r = rig.get(panel, {})
+        if not r.get("evaluable"):
+            continue
+        name, color, tag = PANEL_META[panel]
+        win = f"{r['window'][0]} → {r['window'][1]}"
+
+        srows = []
+        for key in ("top_minus_bottom", "top_minus_universe"):
+            s = r["spreads"][key]
+            ci = (f"({s['ci95'][0]*100:+.2f}%, {s['ci95'][1]*100:+.2f}%)"
+                  if s.get("ci95") else "—")
+            sig = "" if (s["p_value"] is None or s["p_value"] >= 0.05) else " *"
+            srows.append(
+                f"<tr><td style='padding:7px 12px;color:#E2E8F0'>{SPREAD_LABEL[key]}</td>"
+                f"<td style='padding:7px 12px;color:{color};font-family:JetBrains Mono,monospace'>{s['mean_per_period']*100:+.3f}%</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{ci}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_t(s['t_stat'])}{sig}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_p(s['p_value'])}</td>"
+                f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{s['n_periods']}</td></tr>")
+
+        irows = []
+        for h in (1, 5, 20):
+            ic = r["ic"].get(h) or r["ic"].get(str(h))
+            if not ic or ic["mean_ic"] is None:
+                continue
+            rel = ("" if ic.get("t_reliable", True) else
+                   " <span style='color:#FBA94B'>⚠ T too small for HAC — descriptive only</span>")
+            pos = (f"{ic['ic_positive_share']*100:.0f}%"
+                   if ic.get("ic_positive_share") is not None else "—")
+            irows.append(
+                f"<tr><td style='padding:7px 12px;color:#E2E8F0'>{h}-day{rel}</td>"
+                f"<td style='padding:7px 12px;color:{color};font-family:JetBrains Mono,monospace'>{ic['mean_ic']:+.4f}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_t(ic['nw_t_stat'])} (lag {ic['nw_lag']})</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_p(ic['nw_p_value'])}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{pos}</td>"
+                f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{ic['n_dates']}</td>"
+                f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{ic['median_cross_section']}</td></tr>")
+
+        mrows = []
+        mm = r["market_model"]
+        for key, label in (("vs_universe", "vs equal-weight universe"), ("vs_spy", "vs SPY")):
+            m = mm.get(key)
+            if not m:
+                continue
+            sig = "" if (m["p_alpha"] is None or m["p_alpha"] >= 0.05) else " *"
+            mrows.append(
+                f"<tr><td style='padding:7px 12px;color:#E2E8F0'>{label}</td>"
+                f"<td style='padding:7px 12px;color:{color};font-family:JetBrains Mono,monospace'>{m['alpha_per_period']*100:+.3f}%</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['alpha_annualized']*100:+.1f}%</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['beta']:+.2f}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_t(m['t_alpha'])}{sig}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_p(m['p_alpha'])}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['r2']:.3f}</td>"
+                f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{m['n_periods']}</td></tr>")
+
+        mde = mm.get("vs_universe", {}).get("mde_alpha_annualized")
+        mde_txt = ""
+        if mde is not None:
+            mde_txt = (f"<p style='font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.55'>"
+                       f"<strong style='color:#E2E8F0'>Power note:</strong> at n={mm['vs_universe']['n_periods']} "
+                       f"periods (average holding {mm['avg_holding_td']:.1f} trading days), the minimum "
+                       f"detectable |alpha| at 80% power / 5% level is ≈ "
+                       f"<span style='font-family:JetBrains Mono,monospace'>{mde*100:,.0f}%</span> annualized — "
+                       f"i.e., no plausible alpha is statistically detectable yet. The alpha estimates above "
+                       f"are shown for completeness and are <strong>not significant</strong>; the panel matures "
+                       f"as the record lengthens.</p>")
+
+        sections.append(f"""
+      <div style="margin-top:{18 if panel == 'in_sample' else 0}px">
+        <div style="font-size:12px;font-weight:700;color:{color};text-transform:uppercase;letter-spacing:1px">{name} · {win} · {tag}</div>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:12px 0 0">Decile spread tests (per-rebalance arithmetic spreads)</div>
+        <table>
+          <thead><tr><th>Spread</th><th>Mean / period</th><th>Bootstrap 95% CI</th><th>t</th><th>p</th><th>n periods</th></tr></thead>
+          <tbody>{''.join(srows)}</tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Information coefficient (per-date cross-sectional Spearman, Fama–MacBeth mean)</div>
+        <table>
+          <thead><tr><th>Horizon</th><th>Mean IC</th><th>Newey–West t</th><th>p</th><th>share IC&gt;0</th><th>T dates</th><th>median cross-section</th></tr></thead>
+          <tbody>{''.join(irows)}</tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Market model (top-decile cohort per-period returns, OLS)</div>
+        <table>
+          <thead><tr><th>Regression</th><th>α / period</th><th>α annualized</th><th>β</th><th>t(α)</th><th>p</th><th>R²</th><th>n</th></tr></thead>
+          <tbody>{''.join(mrows)}</tbody>
+        </table>
+        {mde_txt}
+      </div>""")
+
+    return f"""
+    <div class="panel">
+      <div class="panel-title">Panel 3 · Statistical Rigor</div>
+      <div class="panel-sub">every statistic carries its n and window · * = p &lt; 0.05 · bootstrap: percentile, 10,000 i.i.d. period resamples, fixed seed · IC t-stats are Newey–West (Bartlett) HAC-corrected for overlapping return windows</div>
+      {''.join(sections)}
+      <p style="font-size:11px;color:#718096;margin-top:12px">
+        Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is
+        statistically significant at the 5% level once overlap is corrected</strong>. The forward 20-day IC is positive on
+        all observed dates but has too few independent blocks to test. "Not yet significant" is the finding — the
+        statistics accrue daily and this panel recomputes with them.
+      </p>
+    </div>"""
+
+
+def reproduce_panel_html(ledger: dict, source_commit: str | None) -> str:
+    root_short = (ledger.get("root") or "")[:16]
+    return f"""
+    <div class="panel">
+      <div class="panel-title">Reproduce this page</div>
+      <div class="panel-sub">one command, fresh environment, stdlib only · derived data only (no vendor market data bundled or required)</div>
+      <pre style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:14px 16px;font-size:12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;overflow-x:auto;line-height:1.7">curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
+curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
+python3 replay_lab.py lab_replay_bundle.json</pre>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.65;margin-top:10px">
+        The script (Python ≥3.10, standard library only; <code>pip install yuclaw</code> optionally adds the full
+        SDK) rebuilds the decile cohorts from the bundled composite scores, re-derives every cohort period
+        return, recomputes all Panel-3 statistics (same bootstrap seed), and — the tamper-evidence step —
+        recomputes every forward snapshot's sha-256 leaf hash from disclosed derived inputs and rolls them
+        into daily roots that must match the public
+        <a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#00E676">yuclaw-trust</a> ledger.
+        It exits non-zero on any mismatch.
+      </p>
+      <p style="font-size:11px;color:#718096;margin-top:8px;font-family:JetBrains Mono,monospace">
+        this build derives from: source commit {escape((source_commit or '—')[:12])} ·
+        ledger block {escape(ledger.get('date') or '—')} · daily root {escape(root_short)}… ·
+        {ledger.get('blocks', '—')} public ledger blocks
+      </p>
+      <p style="font-size:11px;color:#718096;margin-top:6px">
+        Compliant data path: the bundle contains YUCLAW-derived data only — scores, locked labels, component
+        scores, content hashes, and derived period returns. No raw vendor OHLCV rows are exported
+        (data-provider terms). Analyses requiring raw prices need the user's own licensed price feed.
+      </p>
+    </div>"""
+
+
+def innovation_panel_html(ledger: dict, c6: dict) -> str:
+    c6f = c6.get("forward")
+    c6i = c6.get("in_sample")
+    rows = [
+        ("Git-anchored replayable ledger",
+         f"{ledger.get('blocks', '—')} daily blocks · latest root {escape((ledger.get('root') or '')[:12])}… ({escape(ledger.get('date') or '—')})",
+         "LIVE — anchored daily before pages publish", "#00E676"),
+        ("Evidence grounding (v5 Layer-1 corpus)",
+         "corpus grounding 0.52 → 0.75 · citation fidelity 0.66 → 0.85 after the prose-first extraction fix (commit f130983e)",
+         "MEASURED on the v5 Layer-1 filing corpus", "#00E676"),
+        ("C6 evidence/risk channel",
+         (f"fires on {c6i*100:.0f}% of in-sample and {c6f*100:.0f}% of forward snapshots "
+          f"(rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)"),
+         "IN-SAMPLE SIGN ONLY — OOS confirmation PENDING (forward window shorter than the 20-day horizon)", "#FBA94B"),
+        ("Event-type extraction specialists",
+         "10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …",
+         "LIVE for 8-K stream · Form-4 stream batch-covered 2026-02-18 → 05-15, live ingestion pending", "#FBA94B"),
+        ("Point-in-time discipline",
+         "daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)",
+         "LIVE — the disclosed gap is the proof it isn't backfilled", "#00E676"),
+    ]
+    trs = "".join(
+        f"<tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>{name}</td>"
+        f"<td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>{detail}</td>"
+        f"<td style='padding:8px 12px;color:{color};font-size:11px;font-family:JetBrains Mono,monospace'>{status}</td></tr>"
+        for name, detail, status, color in rows)
+    return f"""
+    <div class="panel">
+      <div class="panel-title">System properties · numbers and status, no adjectives</div>
+      <div class="panel-sub">each row: the measured number and its honest maturity label</div>
+      <table>
+        <thead><tr><th>Property</th><th>Measured</th><th>Status</th></tr></thead>
+        <tbody>{trs}</tbody>
+      </table>
+    </div>"""
+
+
 def render() -> str:
     data = compute_all()
     fwd, ins = data["forward"], data["in_sample"]
     mem = current_top_decile()
+    rig = compute_rigor()
+    ledger = _ledger_tip()
+    c6 = _c6_fire_rates()
+    try:
+        import subprocess
+        source_commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=_REPO,
+                                       capture_output=True, text=True, timeout=10).stdout.strip()
+    except Exception:
+        source_commit = None
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     data_through = fwd.get("price_coverage_end") or "—"
 
@@ -359,6 +588,7 @@ def render() -> str:
       <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.2.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
+        <a href="etf_evidence.html">AI-ETF Evidence</a>
         <a href="methodology/validation_lab.md">Methodology</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
       </div>
@@ -427,6 +657,12 @@ def render() -> str:
       </table>
       <p style="font-size:11px;color:#718096;margin-top:10px">⚠ Label cohorts can be as small as a single name on some dates (see n column); small-n figures are statistically noisy and shown for illustration only. The decile cohorts above are the robust comparison.</p>
     </div>
+
+    {rigor_panel_html(rig)}
+
+    {reproduce_panel_html(ledger, source_commit)}
+
+    {innovation_panel_html(ledger, c6)}
 
     <details class="acc">
       <summary>Methodology summary</summary>

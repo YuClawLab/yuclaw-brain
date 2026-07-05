@@ -52,10 +52,12 @@ def load_snapshots(panel: str) -> dict[date, dict[str, dict[str, Any]]]:
     is_backfill = panel == "in_sample"
     out: dict[date, dict[str, dict[str, Any]]] = {}
     with _connect() as cn, cn.cursor() as cur:
+        # trailing signal_time makes intraday re-run days deterministic: the
+        # dict overwrite below keeps the LATEST snapshot per (date, ticker)
         cur.execute(
             "SELECT signal_time::date, ticker, total_score, signal_label "
             "FROM signal_snapshots WHERE is_backfill = %s "
-            "ORDER BY signal_time::date, ticker",
+            "ORDER BY signal_time::date, ticker, signal_time",
             (is_backfill,),
         )
         for d, tk, score, label in cur.fetchall():
@@ -286,6 +288,10 @@ def compute_panel(panel: str) -> dict[str, Any]:
         "benchmark": BENCHMARK,
         "series": series,
         "spread_series": spread_series,
+        # raw per-period cohort returns (index-aligned with series/spread_series
+        # exit dates) — consumed by v3.lab.rigor for spread tests / market model
+        "period_returns": period_rets,
+        "period_dates": [pt["date"] for pt in series["benchmark"]],
         "metrics": {c: metrics(c) for c in cohorts},
         "spread_metrics": {
             "cumulative_return": spread_cum - 1.0,

@@ -30,11 +30,16 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # Validation Lab (added 2026-07-05 — was a one-time v4.2 artifact and went
 # stale; now rebuilt daily so the page's freshness stamp stays honest).
 /usr/bin/python3 -m v3.web.render_validation_lab || exit 6
+# AI-ETF Evidence module + Lab replay bundle (added 2026-07-05, Deng Part 2 —
+# same freshness contract as the Lab).
+/usr/bin/python3 -m v3.web.render_etf_evidence || exit 7
+/usr/bin/python3 -m v3.lab.replay_export || exit 8
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
-/usr/bin/git add docs/index.html docs/validation.html docs/validation_lab.html
+/usr/bin/git add docs/index.html docs/validation.html docs/validation_lab.html \
+                 docs/etf_evidence.html docs/replay/lab_replay_bundle.json
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
