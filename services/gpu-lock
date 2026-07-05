@@ -1,0 +1,112 @@
+#!/bin/sh
+# gpu-lock — exclusive GPU ownership mutex for the DGX Spark (spark-d89d).
+#
+# The GB10 has ONE GPU and 128GB unified memory shared by YUCLAW (prod Ollama
+# 70B, swarm runs) and ad-hoc benchmark work (Zebi). Two model stacks loading
+# at once wedged the box on 2026-06-26 (remote access lost until a Jul-3
+# power cycle). This tool makes GPU ownership explicit and atomic.
+# Standing contract: docs/ops/gpu-exclusivity.md
+#
+# Usage:
+#   gpu-lock acquire <yuclaw|zebi>     take ownership; exit 1 if already held
+#   gpu-lock release <yuclaw|zebi>     release; exit 1 if held by someone else
+#   gpu-lock run <name> -- <cmd...>    acquire, run cmd, release on exit
+#   gpu-lock status                    print owner; exit 0 if free, 1 if held
+#   gpu-lock clear --force             manual override for a stale lock
+#
+# Atomicity: every mutation runs under flock(1) on $LOCKFILE, so two
+# simultaneous acquires cannot both succeed. Ownership persists in $OWNERFILE
+# ("<name> pid=<caller> since=<utc>") until released — flock itself is held
+# only for the duration of each subcommand. /tmp is tmpfs, so locks do not
+# survive a reboot (intended: nobody owns the GPU after boot).
+set -u
+
+LOCKFILE=/tmp/gpu-owner.lock
+OWNERFILE=/tmp/gpu-owner
+
+usage() {
+    sed -n '2,20p' "$0" | grep -E '^#( |$)' | sed 's/^# \{0,1\}//' >&2
+    exit 2
+}
+
+utcnow() { date -u +%Y-%m-%dT%H:%M:%SZ; }
+
+acquire() {
+    # $1=name $2=caller-pid
+    (
+        flock -n 9 || { echo "gpu-lock: another gpu-lock operation in flight, retry" >&2; exit 3; }
+        if [ -s "$OWNERFILE" ]; then
+            echo "gpu-lock: DENIED — GPU held by: $(cat "$OWNERFILE")" >&2
+            exit 1
+        fi
+        printf '%s pid=%s since=%s\n' "$1" "$2" "$(utcnow)" > "$OWNERFILE"
+        echo "gpu-lock: acquired by $1 (caller pid $2)"
+    ) 9>>"$LOCKFILE"
+}
+
+release() {
+    # $1=name
+    (
+        flock -n 9 || { echo "gpu-lock: another gpu-lock operation in flight, retry" >&2; exit 3; }
+        if [ ! -s "$OWNERFILE" ]; then
+            echo "gpu-lock: already free"
+            exit 0
+        fi
+        owner=$(awk '{print $1}' "$OWNERFILE")
+        if [ "$owner" != "$1" ]; then
+            echo "gpu-lock: REFUSED — held by '$owner', not '$1' (gpu-lock clear --force if stale)" >&2
+            exit 1
+        fi
+        rm -f "$OWNERFILE"
+        echo "gpu-lock: released by $1"
+    ) 9>>"$LOCKFILE"
+}
+
+case "${1:-}" in
+    acquire)
+        [ -n "${2:-}" ] || usage
+        acquire "$2" "$PPID"
+        ;;
+    release)
+        [ -n "${2:-}" ] || usage
+        release "$2"
+        ;;
+    run)
+        [ -n "${2:-}" ] || usage
+        name=$2
+        shift 2
+        [ "${1:-}" = "--" ] && shift
+        [ $# -ge 1 ] || usage
+        acquire "$name" "$PPID" || exit 1
+        trap 'release "$name"' EXIT INT TERM
+        "$@"
+        ;;
+    status)
+        if [ -s "$OWNERFILE" ]; then
+            line=$(cat "$OWNERFILE")
+            pid=$(printf '%s' "$line" | sed -n 's/.*pid=\([0-9]*\).*/\1/p')
+            note=""
+            if [ -n "$pid" ] && ! kill -0 "$pid" 2>/dev/null; then
+                note=" [caller pid gone — possibly stale; verify then: gpu-lock clear --force]"
+            fi
+            echo "held: $line$note"
+            exit 1
+        fi
+        echo "free"
+        ;;
+    clear)
+        [ "${2:-}" = "--force" ] || usage
+        (
+            flock -n 9 || exit 3
+            if [ -s "$OWNERFILE" ]; then
+                echo "gpu-lock: FORCE-CLEARED (was: $(cat "$OWNERFILE"))"
+                rm -f "$OWNERFILE"
+            else
+                echo "gpu-lock: already free"
+            fi
+        ) 9>>"$LOCKFILE"
+        ;;
+    *)
+        usage
+        ;;
+esac

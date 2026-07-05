@@ -1,0 +1,6 @@
+# YUCLAW tailscale self-heal (services/tailscale_selfheal.sh): the cron needs
+# exactly ONE root command — restarting tailscaled when it has died with the
+# network otherwise up (the Jun-26 unreachable-box failure mode).
+# Installed to /etc/sudoers.d/yuclaw-tailscale (0440, visudo-validated) by
+# services/install_root_resilience.sh.
+zhangd2 ALL=(root) NOPASSWD: /usr/bin/systemctl restart tailscaled

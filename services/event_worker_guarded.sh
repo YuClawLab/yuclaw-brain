@@ -12,6 +12,14 @@
 #     systemctl --user disable yuclaw-event-worker.timer   # also across reboot
 set -uo pipefail
 
+# 0. The explicit GPU mutex is held (zebi benchmark or a manual swarm run —
+#    see docs/ops/gpu-exclusivity.md). Whoever holds /tmp/gpu-owner owns the
+#    GPU outright; never drain underneath them.
+if [ -s /tmp/gpu-owner ]; then
+    echo "[worker-guard] $(date -u +%FT%TZ) gpu-lock held ($(cat /tmp/gpu-owner)) — skip drain"
+    exit 0
+fi
+
 # 1. A second model stack (NOT prod Ollama) is running.
 NONOLLAMA=$(ps -eo args 2>/dev/null | grep -iE 'llama-server|vllm|sglang|text-generation-launcher' | grep -viE 'ollama' | grep -v grep || true)
 if [ -n "$NONOLLAMA" ]; then
