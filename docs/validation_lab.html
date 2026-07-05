@@ -48,6 +48,7 @@
       <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.2.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
+        <a href="etf_evidence.html">AI-ETF Evidence</a>
         <a href="methodology/validation_lab.md">Methodology</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
       </div>
@@ -55,7 +56,7 @@
 
     <div class="fresh">
       <strong>Data through 2026-07-02</strong> (last completed U.S. trading day) ·
-      regenerated daily after market close · last build 2026-07-05 08:09 UTC
+      regenerated daily after market close · last build 2026-07-05 08:42 UTC
     </div>
 
     <div class="disclaimer-line">
@@ -182,6 +183,101 @@
       <p style="font-size:11px;color:#718096;margin-top:10px">⚠ Label cohorts can be as small as a single name on some dates (see n column); small-n figures are statistically noisy and shown for illustration only. The decile cohorts above are the robust comparison.</p>
     </div>
 
+    
+    <div class="panel">
+      <div class="panel-title">Panel 3 · Statistical Rigor</div>
+      <div class="panel-sub">every statistic carries its n and window · * = p &lt; 0.05 · bootstrap: percentile, 10,000 i.i.d. period resamples, fixed seed · IC t-stats are Newey–West (Bartlett) HAC-corrected for overlapping return windows</div>
+      
+      <div style="margin-top:0px">
+        <div style="font-size:12px;font-weight:700;color:#00E676;text-transform:uppercase;letter-spacing:1px">Forward OOS · 2026-05-20 → 2026-07-02 · look-ahead-free</div>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:12px 0 0">Decile spread tests (per-rebalance arithmetic spreads)</div>
+        <table>
+          <thead><tr><th>Spread</th><th>Mean / period</th><th>Bootstrap 95% CI</th><th>t</th><th>p</th><th>n periods</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>Top − Bottom decile</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>-0.138%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>(-1.00%, +0.71%)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.31</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.758</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>28</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>Top decile − EW universe</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>-0.220%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>(-0.95%, +0.48%)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.59</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.562</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>28</td></tr></tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Information coefficient (per-date cross-sectional Spearman, Fama–MacBeth mean)</div>
+        <table>
+          <thead><tr><th>Horizon</th><th>Mean IC</th><th>Newey–West t</th><th>p</th><th>share IC&gt;0</th><th>T dates</th><th>median cross-section</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>1-day</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>+0.0447</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+1.08 (lag 0)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.290</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>48%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>31</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>5-day</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>+0.0917</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+1.52 (lag 4)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.140</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>67%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>27</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>20-day <span style='color:#FBA94B'>⚠ T too small for HAC — descriptive only</span></td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>+0.1157</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+5.52 (lag 9)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>&lt;0.001</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>100%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>11</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr></tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Market model (top-decile cohort per-period returns, OLS)</div>
+        <table>
+          <thead><tr><th>Regression</th><th>α / period</th><th>α annualized</th><th>β</th><th>t(α)</th><th>p</th><th>R²</th><th>n</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>vs equal-weight universe</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>-0.282%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-48.6%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+1.42</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.74</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.463</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.312</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>28</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>vs SPY</td><td style='padding:7px 12px;color:#00E676;font-family:JetBrains Mono,monospace'>-0.129%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-26.1%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+1.37</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.35</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.728</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.342</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>28</td></tr></tbody>
+        </table>
+        <p style='font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.55'><strong style='color:#E2E8F0'>Power note:</strong> at n=28 periods (average holding 1.1 trading days), the minimum detectable |alpha| at 80% power / 5% level is ≈ <span style='font-family:JetBrains Mono,monospace'>1,208%</span> annualized — i.e., no plausible alpha is statistically detectable yet. The alpha estimates above are shown for completeness and are <strong>not significant</strong>; the panel matures as the record lengthens.</p>
+      </div>
+      <div style="margin-top:18px">
+        <div style="font-size:12px;font-weight:700;color:#FBA94B;text-transform:uppercase;letter-spacing:1px">In-Sample Replay · 2026-02-18 → 2026-05-18 · parametric look-ahead — optimistic</div>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:12px 0 0">Decile spread tests (per-rebalance arithmetic spreads)</div>
+        <table>
+          <thead><tr><th>Spread</th><th>Mean / period</th><th>Bootstrap 95% CI</th><th>t</th><th>p</th><th>n periods</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>Top − Bottom decile</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+0.553%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>(-1.94%, +3.08%)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+0.41</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.686</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>Top decile − EW universe</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+0.586%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>(-0.98%, +2.17%)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+0.70</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.496</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td></tr></tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Information coefficient (per-date cross-sectional Spearman, Fama–MacBeth mean)</div>
+        <table>
+          <thead><tr><th>Horizon</th><th>Mean IC</th><th>Newey–West t</th><th>p</th><th>share IC&gt;0</th><th>T dates</th><th>median cross-section</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>1-day</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+0.0289</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+0.80 (lag 0)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.438</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>54%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>5-day</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+0.0143</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+0.26 (lag 0)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.802</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>62%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>20-day</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>-0.0026</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.04 (lag 3)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.973</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>38%</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>79</td></tr></tbody>
+        </table>
+
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Market model (top-decile cohort per-period returns, OLS)</div>
+        <table>
+          <thead><tr><th>Regression</th><th>α / period</th><th>α annualized</th><th>β</th><th>t(α)</th><th>p</th><th>R²</th><th>n</th></tr></thead>
+          <tbody><tr><td style='padding:7px 12px;color:#E2E8F0'>vs equal-weight universe</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+1.555%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+123.1%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.13</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+1.96</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.075</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.008</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0'>vs SPY</td><td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace'>+1.559%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+123.6%</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>-0.20</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>+2.16</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.054</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>0.024</td><td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>13</td></tr></tbody>
+        </table>
+        <p style='font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.55'><strong style='color:#E2E8F0'>Power note:</strong> at n=13 periods (average holding 4.8 trading days), the minimum detectable |alpha| at 80% power / 5% level is ≈ <span style='font-family:JetBrains Mono,monospace'>245%</span> annualized — i.e., no plausible alpha is statistically detectable yet. The alpha estimates above are shown for completeness and are <strong>not significant</strong>; the panel matures as the record lengthens.</p>
+      </div>
+      <p style="font-size:11px;color:#718096;margin-top:12px">
+        Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is
+        statistically significant at the 5% level once overlap is corrected</strong>. The forward 20-day IC is positive on
+        all observed dates but has too few independent blocks to test. "Not yet significant" is the finding — the
+        statistics accrue daily and this panel recomputes with them.
+      </p>
+    </div>
+
+    
+    <div class="panel">
+      <div class="panel-title">Reproduce this page</div>
+      <div class="panel-sub">one command, fresh environment, stdlib only · derived data only (no vendor market data bundled or required)</div>
+      <pre style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:14px 16px;font-size:12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;overflow-x:auto;line-height:1.7">curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
+curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
+python3 replay_lab.py lab_replay_bundle.json</pre>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.65;margin-top:10px">
+        The script (Python ≥3.10, standard library only; <code>pip install yuclaw</code> optionally adds the full
+        SDK) rebuilds the decile cohorts from the bundled composite scores, re-derives every cohort period
+        return, recomputes all Panel-3 statistics (same bootstrap seed), and — the tamper-evidence step —
+        recomputes every forward snapshot's sha-256 leaf hash from disclosed derived inputs and rolls them
+        into daily roots that must match the public
+        <a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#00E676">yuclaw-trust</a> ledger.
+        It exits non-zero on any mismatch.
+      </p>
+      <p style="font-size:11px;color:#718096;margin-top:8px;font-family:JetBrains Mono,monospace">
+        this build derives from: source commit dce9cf6f3d42 ·
+        ledger block 2026-07-03 · daily root 2467ac80a84a3db4… ·
+        33 public ledger blocks
+      </p>
+      <p style="font-size:11px;color:#718096;margin-top:6px">
+        Compliant data path: the bundle contains YUCLAW-derived data only — scores, locked labels, component
+        scores, content hashes, and derived period returns. No raw vendor OHLCV rows are exported
+        (data-provider terms). Analyses requiring raw prices need the user's own licensed price feed.
+      </p>
+    </div>
+
+    
+    <div class="panel">
+      <div class="panel-title">System properties · numbers and status, no adjectives</div>
+      <div class="panel-sub">each row: the measured number and its honest maturity label</div>
+      <table>
+        <thead><tr><th>Property</th><th>Measured</th><th>Status</th></tr></thead>
+        <tbody><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Git-anchored replayable ledger</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>33 daily blocks · latest root 2467ac80a84a… (2026-07-03)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — anchored daily before pages publish</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Evidence grounding (v5 Layer-1 corpus)</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>corpus grounding 0.52 → 0.75 · citation fidelity 0.66 → 0.85 after the prose-first extraction fix (commit f130983e)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>MEASURED on the v5 Layer-1 filing corpus</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>C6 evidence/risk channel</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>fires on 35% of in-sample and 25% of forward snapshots (rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)</td><td style='padding:8px 12px;color:#FBA94B;font-size:11px;font-family:JetBrains Mono,monospace'>IN-SAMPLE SIGN ONLY — OOS confirmation PENDING (forward window shorter than the 20-day horizon)</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Event-type extraction specialists</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …</td><td style='padding:8px 12px;color:#FBA94B;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE for 8-K stream · Form-4 stream batch-covered 2026-02-18 → 05-15, live ingestion pending</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Point-in-time discipline</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — the disclosed gap is the proof it isn't backfilled</td></tr></tbody>
+      </table>
+    </div>
+
     <details class="acc">
       <summary>Methodology summary</summary>
       <div class="acc-body">
@@ -194,7 +290,7 @@
     </div>
 
     <div class="footer">
-      YUCLAW Signal Validation Lab · data through 2026-07-02 · built 2026-07-05 08:09 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW Signal Validation Lab · data through 2026-07-02 · built 2026-07-05 08:42 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 </body>
