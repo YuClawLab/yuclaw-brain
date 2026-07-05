@@ -1,0 +1,77 @@
+# spark-d89d dead-man watcher — YUCLAW resilience (see docs/ops/resilience.md).
+#
+# The box PATCHes a secret gist every 5 min (services/heartbeat_checkin.sh).
+# This job runs OFF-BOX on GitHub's schedule, checks the gist timestamp, and
+# alerts Telegram when the heartbeat is >15 min stale — catching a
+# 2026-06-26-class outage (box dark, nobody knew for 7 days) in ~15-35 min.
+#
+# Notes:
+# - Scheduled runs only fire from the default branch; GitHub may delay them
+#   a few minutes under load. Detection latency is typically 15-35 min.
+# - A gist-fetch failure fails the RUN (visible in Actions) without alerting:
+#   GitHub-side hiccups must not fake a box outage.
+# - Long outage damping: alert on every run for the first hour, then only in
+#   the first slot of each 6h window (~4 reminders/day).
+name: heartbeat-watch
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+    inputs:
+      force_alert:
+        description: "Send a [TEST]-prefixed alert even if the heartbeat is fresh"
+        required: false
+        default: "false"
+
+permissions: {}
+
+concurrency: heartbeat-watch
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check heartbeat freshness, alert if stale
+        env:
+          GIST_ID: ${{ secrets.HEARTBEAT_GIST_ID }}
+          GIST_TOKEN: ${{ secrets.HEARTBEAT_GIST_TOKEN }}
+          TG_TOKEN: ${{ secrets.HEARTBEAT_TG_TOKEN }}
+          TG_CHAT: ${{ secrets.HEARTBEAT_TG_CHAT }}
+          FORCE: ${{ inputs.force_alert || 'false' }}
+        run: |
+          set -eu
+          content=$(curl -fsS -m 20 -H "Authorization: Bearer $GIST_TOKEN" \
+            "https://api.github.com/gists/$GIST_ID" \
+            | jq -r '.files["spark-d89d-heartbeat.txt"].content')
+          ts=$(printf '%s' "$content" | awk '{print $1}')
+          beat=$(date -u -d "$ts" +%s)
+          now=$(date -u +%s)
+          age=$(( now - beat ))
+          echo "last heartbeat: $ts (${age}s ago)"
+
+          alert=false
+          prefix="SPARK-D89D DOWN?"
+          if [ "$age" -gt 900 ]; then
+            if [ "$age" -le 3600 ] || [ $(( age % 21600 )) -lt 900 ]; then
+              alert=true
+            fi
+            echo "verdict: STALE"
+          else
+            echo "verdict: fresh"
+            if [ "$FORCE" = "true" ]; then
+              alert=true
+              prefix="[TEST] heartbeat-watch:"
+            fi
+          fi
+
+          if [ "$alert" = "true" ]; then
+            msg="$prefix No heartbeat from spark-d89d for $(( age / 60 )) min (last: $ts). Box may be wedged or offline — Jun-26-class outage. Check Tailscale; if unreachable, power-cycle."
+            resp=$(curl -fsS -m 20 "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+              --data-urlencode chat_id="$TG_CHAT" \
+              --data-urlencode text="$msg")
+            echo "telegram response: $resp"
+            printf '%s' "$resp" | grep -q '"ok":true'
+          else
+            echo "no alert sent"
+          fi
