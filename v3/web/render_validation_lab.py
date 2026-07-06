@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
 
@@ -23,6 +23,7 @@ if str(_REPO) not in sys.path:
 
 from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
+from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
 
 OUT = _REPO / "docs" / "validation_lab.html"
@@ -40,15 +41,31 @@ DISCLAIMER_LINE = (
     "not performance advertising. Classifications, not recommendations."
 )
 
-# compliance-safe display names (NO trade-direction language)
+# compliance-safe display names (NO trade-direction language).
+# DISPLAY-LAYER NEUTRALIZATION (this page only): cohorts and signal labels are
+# rendered in research-neutral vocabulary; the locked internal signal labels in
+# snapshots / Telegram / dashboard are unchanged (separate policy).
 COHORT_LABEL = {
-    "top_decile": "Top-decile cohort (by composite score)",
-    "bottom_decile": "Bottom-decile cohort (by composite score)",
-    "bullish_labeled": "Bullish-labeled cohort (STRONG_BULLISH + BULLISH)",
-    "cautious_labeled": "Cautious-labeled cohort (WEAKENING / NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT)",
+    "top_decile": "High-score cohort (top decile by composite score)",
+    "bottom_decile": "Low-score cohort (bottom decile by composite score)",
+    "bullish_labeled": "Positive-label cohort",
+    "cautious_labeled": "Risk-flag cohort",
     "universe_ew": "Equal-weight universe (all scored tickers)",
     "benchmark": "SPY benchmark (broad-market reference)",
 }
+DISPLAY_LABEL = {
+    "STRONG_BULLISH": "POSITIVE_RESEARCH+",
+    "BULLISH": "POSITIVE_RESEARCH",
+    "NEUTRAL": "NEUTRAL",
+    "WEAKENING": "RISK_FLAG (weakening)",
+    "NEGATIVE_EVENT": "RISK_FLAG (event)",
+    "BEARISH_WATCH": "RISK_FLAG (watch)",
+    "RISK_ALERT": "RISK_FLAG (alert)",
+}
+
+
+def display_label(raw: str) -> str:
+    return DISPLAY_LABEL.get((raw or "").upper(), raw)
 COHORT_COLOR = {
     "top_decile": "#00E676",
     "bottom_decile": "#FF3366",
@@ -76,10 +93,12 @@ def _fmt_date(iso: str) -> str:
 
 
 def svg_chart(series: list[dict], dates: list[str], width=900, height=350,
-              baseline=1.0, title="") -> str:
+              baseline=1.0, title="", boundary_idx: int | None = None) -> str:
     """series: [{name,short,color,pts:[(i,cum)],dash?}]; dates: ISO strings
     aligned to x indices 0..max_i. Inline SVG cumulative-return chart with
-    real calendar dates on the x-axis."""
+    real calendar dates on the x-axis. boundary_idx: draw the in-sample /
+    forward regime boundary at that x index (visual continuity only — all
+    statistics remain per-regime)."""
     pad_l, pad_r, pad_t, pad_b = 56, 190, 28, 44
     plot_w, plot_h = width - pad_l - pad_r, height - pad_t - pad_b
     all_cum = [c for s in series for _, c in s["pts"]] + [baseline]
@@ -95,6 +114,23 @@ def svg_chart(series: list[dict], dates: list[str], width=900, height=350,
     parts = [f'<svg viewBox="0 0 {width} {height}" width="100%" '
              f'style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" '
              f'role="img" aria-label="{escape(title)}">']
+    # regime boundary: shaded in-sample region left, forward OOS right
+    if boundary_idx is not None and 0 < boundary_idx <= max_i:
+        bx = X(boundary_idx)
+        parts.append(f'<rect x="{pad_l}" y="{pad_t}" width="{bx-pad_l:.1f}" '
+                     f'height="{plot_h}" fill="#FBA94B" opacity="0.07"/>')
+        parts.append(f'<line x1="{bx:.1f}" y1="{pad_t}" x2="{bx:.1f}" y2="{pad_t+plot_h}" '
+                     f'stroke="#FBA94B" stroke-width="1.5" stroke-dasharray="6,4"/>')
+        if bx - pad_l > 110:
+            parts.append(f'<text x="{(pad_l+bx)/2:.0f}" y="{pad_t+13}" fill="#FBA94B" '
+                         f'font-size="10" text-anchor="middle" opacity="0.9" '
+                         f'font-family="Inter,sans-serif">in-sample replay</text>')
+        if pad_l + plot_w - bx > 130:
+            parts.append(f'<text x="{(bx+pad_l+plot_w)/2:.0f}" y="{pad_t+13}" fill="#00E676" '
+                         f'font-size="10" text-anchor="middle" opacity="0.9" '
+                         f'font-family="Inter,sans-serif">forward out-of-sample</text>')
+        parts.append(f'<text x="{bx:.1f}" y="{pad_t+plot_h-6}" fill="#FBA94B" font-size="9" '
+                     f'text-anchor="middle" font-family="JetBrains Mono,monospace">May 18</text>')
     # baseline (cumulative = 1.0, i.e. 0% return)
     by = Y(baseline)
     parts.append(f'<line x1="{pad_l}" y1="{by:.1f}" x2="{pad_l+plot_w}" y2="{by:.1f}" '
@@ -140,8 +176,8 @@ def svg_chart(series: list[dict], dates: list[str], width=900, height=350,
 
 def build_series(panel: dict, order: list[str]) -> list[dict]:
     out = []
-    SHORT = {"top_decile": "Top decile", "bottom_decile": "Bottom decile",
-             "bullish_labeled": "Bullish-labeled", "cautious_labeled": "Cautious-labeled",
+    SHORT = {"top_decile": "High-score", "bottom_decile": "Low-score",
+             "bullish_labeled": "Positive-label", "cautious_labeled": "Risk-flag",
              "universe_ew": "Universe EW", "benchmark": "SPY"}
     for c in order:
         pts = [(i, p["cum"]) for i, p in enumerate(panel["series"][c])]
@@ -154,6 +190,80 @@ def build_series(panel: dict, order: list[str]) -> list[dict]:
 def panel_dates(panel: dict) -> list[str]:
     """x-axis dates aligned to chart indices: entry date, then each exit date."""
     return [panel["first_entry_date"]] + [p["date"] for p in panel["series"]["benchmark"]]
+
+
+# ---- continuous rolling charts (visual continuity ONLY; stats stay per-regime)
+BOUNDARY_ISO = FORWARD_DAY0.isoformat()
+ROLL_WINDOWS = (("30", 30), ("60", 60), ("90", 90), ("all", None))
+
+
+def continuous_points(ins: dict, fwd: dict, kind: str, cohort: str | None = None) -> list[tuple[str, float]]:
+    """Chain the in-sample series into the forward series at the May-18
+    boundary (forward rebased by the in-sample terminal value). Visual
+    continuity only — no statistic is computed across the boundary."""
+    def pts(panel, anchor):
+        if kind == "spread":
+            raw = [(p["date"], p["cum"]) for p in panel["spread_series"]]
+        else:
+            raw = [(p["date"], p["cum"]) for p in panel["series"][cohort]]
+        return [(panel["first_entry_date"], anchor)] + [(d, anchor * c) for d, c in raw]
+    ins_pts = pts(ins, 1.0)
+    ins_end = ins_pts[-1][1]
+    fwd_pts = pts(fwd, ins_end)
+    return ins_pts + fwd_pts[1:]   # drop fwd anchor (same boundary point)
+
+
+def _window_slice(points: list[tuple[str, float]], days: int | None) -> list[tuple[str, float]]:
+    """Last `days` calendar days (None = all), rebased to 1.0 at window start."""
+    if days is not None:
+        end = date.fromisoformat(points[-1][0])
+        start = end - timedelta(days=days)
+        pts = [(d, v) for d, v in points if date.fromisoformat(d) >= start]
+    else:
+        pts = points
+    if len(pts) < 2:
+        return []
+    base = pts[0][1]
+    return [(d, v / base) for d, v in pts]
+
+
+def rolling_chart_html(chart_id: str, series_defs: list[dict], caption: str,
+                       title: str) -> str:
+    """series_defs: [{points:[(iso,val)], short, color, dash?}]. Emits one SVG
+    per range window + range buttons; a tiny inline script (no CDNs) toggles
+    visibility. Mobile default = 60D, desktop = ALL."""
+    blocks = []
+    for wname, wdays in ROLL_WINDOWS:
+        sliced = [dict(s, w=_window_slice(s["points"], wdays)) for s in series_defs]
+        sliced = [s for s in sliced if s["w"]]
+        if not sliced:
+            continue
+        dates = [d for d, _ in max((s["w"] for s in sliced), key=len)]
+        b_idx = None
+        for i, d in enumerate(dates):
+            if d <= BOUNDARY_ISO:
+                b_idx = i
+        if b_idx == len(dates) - 1:
+            b_idx = None   # boundary at/after window end -> nothing forward to split
+        date_pos = {d: i for i, d in enumerate(dates)}
+        chart_series = [{
+            "name": s["short"], "short": s["short"], "color": s["color"],
+            "dash": s.get("dash"),
+            "pts": [(date_pos[d], v) for d, v in s["w"] if d in date_pos],
+        } for s in sliced]
+        svg = svg_chart(chart_series, dates, title=f"{title} ({wname.upper()}{'D' if wdays else ''})",
+                        boundary_idx=b_idx)
+        blocks.append(f'<div class="rollwin" data-chart="{chart_id}" data-w="{wname}">{svg}</div>')
+    buttons = "".join(
+        f'<button class="rangebtn" data-chart="{chart_id}" data-w="{w}">'
+        f'{w.upper() + ("D" if d else "")}</button>' for w, d in ROLL_WINDOWS)
+    return f"""
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 0 6px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096">{escape(title)}</div>
+        <div class="rangebar">{buttons}</div>
+      </div>
+      {''.join(blocks)}
+      <p style="font-size:11px;color:#718096;margin:6px 0 0">{escape(caption)}</p>"""
 
 
 def metric_rows(panel: dict, order: list[str]) -> str:
@@ -225,12 +335,12 @@ def membership_html(mem: dict) -> str:
         rows.append(
             f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>{escape(m['ticker'])}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['score']:+.4f}</td>"
-            f"<td style='padding:7px 12px;color:#4DD0E1;font-size:12px'>{escape(m['label'])}</td>"
+            f"<td style='padding:7px 12px;color:#4DD0E1;font-size:12px'>{escape(display_label(m['label']))}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-size:12px'>{escape(m['grade'])}</td>"
             f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{m['ev_count']}</td></tr>")
     return f"""
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">
-        Current top-decile cohort membership · as of {escape(mem['as_of'] or '—')} · {mem['k']} of {mem['universe_n']} tickers
+        Current high-score (top-decile) cohort membership · as of {escape(mem['as_of'] or '—')} · {mem['k']} of {mem['universe_n']} tickers
       </div>
       <table>
         <thead><tr><th>Ticker</th><th>Composite score</th><th>Signal label</th><th>Evidence grade</th><th>Filings cited</th></tr></thead>
@@ -313,15 +423,20 @@ def rigor_panel_html(rig: dict) -> str:
             ic = r["ic"].get(h) or r["ic"].get(str(h))
             if not ic or ic["mean_ic"] is None:
                 continue
-            rel = ("" if ic.get("t_reliable", True) else
-                   " <span style='color:#FBA94B'>⚠ T too small for HAC — descriptive only</span>")
+            reliable = ic.get("t_reliable", True)
+            rel = ("" if reliable else
+                   " <span style='color:#FBA94B'>⚠ too few independent blocks</span>")
             pos = (f"{ic['ic_positive_share']*100:.0f}%"
                    if ic.get("ic_positive_share") is not None else "—")
+            p_cell = (_fmt_p(ic["nw_p_value"]) if reliable else
+                      "<span style='color:#FBA94B'>N/A — descriptive only</span>")
+            t_cell = (f"{_fmt_t(ic['nw_t_stat'])} (lag {ic['nw_lag']})" if reliable else
+                      f"<span style='color:#718096'>({_fmt_t(ic['nw_t_stat'])} — not interpretable)</span>")
             irows.append(
                 f"<tr><td style='padding:7px 12px;color:#E2E8F0'>{h}-day{rel}</td>"
                 f"<td style='padding:7px 12px;color:{color};font-family:JetBrains Mono,monospace'>{ic['mean_ic']:+.4f}</td>"
-                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_t(ic['nw_t_stat'])} (lag {ic['nw_lag']})</td>"
-                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_fmt_p(ic['nw_p_value'])}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{t_cell}</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{p_cell}</td>"
                 f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{pos}</td>"
                 f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{ic['n_dates']}</td>"
                 f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{ic['median_cross_section']}</td></tr>")
@@ -346,14 +461,19 @@ def rigor_panel_html(rig: dict) -> str:
         mde = mm.get("vs_universe", {}).get("mde_alpha_annualized")
         mde_txt = ""
         if mde is not None:
-            mde_txt = (f"<p style='font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.55'>"
-                       f"<strong style='color:#E2E8F0'>Power note:</strong> at n={mm['vs_universe']['n_periods']} "
-                       f"periods (average holding {mm['avg_holding_td']:.1f} trading days), the minimum "
-                       f"detectable |alpha| at 80% power / 5% level is ≈ "
-                       f"<span style='font-family:JetBrains Mono,monospace'>{mde*100:,.0f}%</span> annualized — "
-                       f"i.e., no plausible alpha is statistically detectable yet. The alpha estimates above "
-                       f"are shown for completeness and are <strong>not significant</strong>; the panel matures "
-                       f"as the record lengthens.</p>")
+            n_p = mm["vs_universe"]["n_periods"]
+            mde_txt = f"""
+        <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:stretch;margin-top:12px">
+          <div style="flex:1;min-width:260px;background:#1A2030;border:1px solid #2D3748;border-radius:8px;padding:14px 16px">
+            <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Statistical power meter</div>
+            <div style="display:flex;gap:22px;align-items:baseline;margin-top:6px;flex-wrap:wrap">
+              <div><span style="font-size:22px;font-weight:800;color:#FFF;font-family:JetBrains Mono,monospace">n={n_p}</span> <span style="font-size:11px;color:#718096">periods</span></div>
+              <div><span style="font-size:22px;font-weight:800;color:#FBA94B;font-family:JetBrains Mono,monospace">≈{mde*100:,.0f}%</span> <span style="font-size:11px;color:#718096">detectable |α| (annualized, 80% power)</span></div>
+              <div><span style="display:inline-block;background:#FBA94B20;color:#FBA94B;border:1px solid #FBA94B80;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700">UNDERPOWERED</span></div>
+            </div>
+            <p style="font-size:12px;color:#A0AEC0;margin-top:8px">This panel is not failing. It is too young. Alpha estimates are shown for completeness and are <strong style="color:#E2E8F0">not significant</strong>; detectability improves as n accrues daily.</p>
+          </div>
+        </div>"""
 
         sections.append(f"""
       <div style="margin-top:{18 if panel == 'in_sample' else 0}px">
@@ -458,6 +578,248 @@ def innovation_panel_html(ledger: dict, c6: dict) -> str:
         <thead><tr><th>Property</th><th>Measured</th><th>Status</th></tr></thead>
         <tbody>{trs}</tbody>
       </table>
+      <p style="font-size:11px;color:#718096;margin-top:12px;line-height:1.6">
+        <strong style="color:#A0AEC0">Definitions (exact internal rubric, deterministic verifier — no LLM in the loop):</strong><br>
+        <strong style="color:#A0AEC0">Corpus grounding</strong> = points_grounded / points_total across the filing corpus,
+        where an agent key-point is <em>grounded</em> iff it carries ≥1 citation that verifies as a verbatim
+        (whitespace/case-normalized) span of the source filing AND every numeric token in the point
+        appears within those verified quotes; ungrounded points are discarded with the reason recorded.<br>
+        <strong style="color:#A0AEC0">Citation fidelity</strong> = citations_verified / citations_total — the share of quoted
+        spans an agent cites that locate as verbatim spans of the source filing after
+        whitespace/case normalization. Verifier source: <code>v5/swarm/grounding.py</code>.
+      </p>
+    </div>"""
+
+
+# Full outage disclosure — preserved VERBATIM in the Data Integrity Log
+# (presentation compressed to a one-line card up top; substance unchanged).
+OUTAGE_FULL_TEXT = (
+    "Infrastructure note (Jun 26 – Jul 3, 2026) — a network outage on the research host "
+    "interrupted external data feeds. Daily signal snapshots continued to be written on-box, "
+    "point-in-time, throughout the window — but from Jun 26 to Jul 2 their price-derived inputs "
+    "were frozen at Jun 25 closes (the price feed was unreachable), and this page was not "
+    "republished during the outage. Price history and SEC filing ingestion were restored and "
+    "backfilled on Jul 3, and the filing window was re-checked against EDGAR on Jul 5 (no missing "
+    "filings). No snapshot or ledger row was retroactively edited: the outage-window snapshots "
+    "stand exactly as written, stale inputs and all."
+)
+
+
+def status_cards_html(fwd_n: int, ledger: dict) -> str:
+    cards = [
+        ("Forward OOS", f"EARLY · n={fwd_n} periods", "no significant alpha yet — underpowered, accruing daily", "#FBA94B"),
+        ("In-sample replay", "OPTIMISTIC", "parametric look-ahead — educational only, collapsed below", "#FBA94B"),
+        ("Ledger", f"LIVE · {ledger.get('blocks', '—')} blocks", f"git-anchored daily · root {escape((ledger.get('root') or '')[:8])}…", "#00E676"),
+        ("Reproducibility", "ONE-COMMAND VERIFY", "stdlib script reproduces every statistic + ledger roots", "#00E676"),
+    ]
+    tiles = "".join(
+        f'<div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;'
+        f'border-left:3px solid {c};border-radius:10px;padding:12px 16px">'
+        f'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">{escape(t)}</div>'
+        f'<div style="font-size:15px;font-weight:800;color:{c};font-family:JetBrains Mono,monospace;margin:3px 0">{v}</div>'
+        f'<div style="font-size:11px;color:#A0AEC0;line-height:1.45">{d}</div></div>'
+        for t, v, d, c in cards)
+    return f'<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">{tiles}</div>'
+
+
+def honest_reading_html() -> str:
+    return """
+    <div class="panel" style="border-left:3px solid #00E676">
+      <div class="panel-title">Honest reading</div>
+      <p style="font-size:14px;color:#E2E8F0;line-height:1.7;max-width:860px">
+        <strong>No forward alpha has been statistically proven yet.</strong> What is running:
+        the point-in-time infrastructure is live, every daily signal set is anchored to a public,
+        git-committed ledger, and every statistic on this page reproduces from published derived
+        data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
+        out-of-sample proof target — its in-sample sign is known and its forward test is defined
+        below. Everything here is research and education, not investment advice; research
+        classifications, not recommendations.
+      </p>
+    </div>"""
+
+
+def integrity_card_html() -> str:
+    return """
+    <div class="disclaimer-line" style="border-left-color:#4DD0E1">
+      <strong style="color:#4DD0E1">Data integrity note —</strong> Jun 26 – Jul 3 outage disclosed.
+      Price-derived inputs were stale. No snapshots were retroactively edited.
+      <a href="#integrity-log" style="color:#4DD0E1">Full log ↓</a>
+    </div>"""
+
+
+def integrity_log_html() -> str:
+    return f"""
+    <details class="acc" id="integrity-log">
+      <summary>Data Integrity Log</summary>
+      <div class="acc-body">
+        <p style="line-height:1.7">{escape(OUTAGE_FULL_TEXT)}</p>
+        <p style="margin-top:10px;font-size:12px;color:#718096">
+          Policy: disclosures are never deleted; presentation may be compressed, substance may not.
+          Fabricating retroactive point-in-time data would invalidate the replayable ledger; the
+          disclosed staleness is the honest record. See also
+          <a href="methodology/validation_lab.md" style="color:#00E676">methodology</a>.
+        </p>
+      </div>
+    </details>"""
+
+
+def proven_html() -> str:
+    proven = [
+        "Point-in-time snapshot discipline — daily as-of writes, zero retroactive edits (outage window included)",
+        "Git-anchored replayable ledger — daily sha-256 roots committed publicly before pages update",
+        "One-command reproducibility — every statistic + 2,847 leaf hashes re-derive from published data",
+        "Deterministic evidence grounding measurement — corpus grounding 0.75, citation fidelity 0.85 (definitions footnoted below)",
+    ]
+    not_proven = [
+        "Forward alpha — n=28 periods, underpowered; not significant at 5%",
+        "IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only",
+        "Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small",
+        "C6 risk gate out-of-sample — in-sample sign only; forward window still shorter than the test horizon",
+    ]
+    li = lambda xs, c: "".join(f'<li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55">'
+                               f'<span style="color:{c};font-weight:700">{"✓" if c == "#00E676" else "✗"}</span> {x}</li>' for x in xs)
+    return f"""
+    <div class="panel">
+      <div class="panel-title">What is proven · what is not proven</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px">Proven (verifiable today)</div>
+          <ul style="list-style:none">{li(proven, "#00E676")}</ul>
+        </div>
+        <div style="flex:1;min-width:280px">
+          <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#FF3366;margin-bottom:6px">Not proven (open, tracked)</div>
+          <ul style="list-style:none">{li(not_proven, "#FF3366")}</ul>
+        </div>
+      </div>
+    </div>"""
+
+
+def maturity_html(ledger: dict) -> str:
+    gates = [
+        ("Gate 1 · Point-in-time infrastructure + public ledger", "PASSED", "#00E676",
+         f"live since 2026-05-18 · {ledger.get('blocks', '—')} anchored daily blocks"),
+        ("Gate 2 · Honest measurement discipline", "PASSED", "#00E676",
+         "per-regime statistics, HAC-corrected inference, power reporting, adverse results published"),
+        ("Gate 3 · Independent reproducibility", "PASSED (young)", "#00E676",
+         "one-command replay live since 2026-07-05; awaiting first external replication"),
+        ("Gate 4 · Forward statistical significance", "NOT YET", "#FF3366",
+         "no spread, IC, or alpha significant at 5% with adequate power — requires more forward data"),
+        ("Gate 5 · Evidence→price lead, out-of-sample", "NOT YET", "#FF3366",
+         "live-era event sample n=4; needs ≥30 live directional events for a first read"),
+        ("Gate 6 · C6 risk-gate OOS confirmation", "NOT YET", "#FF3366",
+         "forward window must exceed the 20-trading-day test horizon with enough C6-fired snapshots"),
+    ]
+    rows = "".join(
+        f"<tr><td style='padding:8px 12px;color:#E2E8F0;font-size:12px'>{g}</td>"
+        f"<td style='padding:8px 12px'><span style='background:{c}20;color:{c};border:1px solid {c}80;"
+        f"padding:2px 10px;border-radius:4px;font-size:10px;font-weight:700;font-family:JetBrains Mono,monospace'>{s}</span></td>"
+        f"<td style='padding:8px 12px;color:#718096;font-size:12px'>{d}</td></tr>"
+        for g, s, c, d in gates)
+    return f"""
+    <div class="panel">
+      <div class="panel-title">Protocol readiness · maturity gates</div>
+      <div class="panel-sub">infrastructure-ready, statistically young — 3 of 6 gates passed</div>
+      <table><thead><tr><th>Gate</th><th>Status</th><th>Evidence / requirement</th></tr></thead>
+      <tbody>{rows}</tbody></table>
+    </div>"""
+
+
+def challenge_html() -> str:
+    return """
+    <div class="panel">
+      <div class="panel-title">Reproduction challenge</div>
+      <p style="font-size:13px;color:#A0AEC0;line-height:1.7;max-width:860px">
+        Independent replication is invited. Run the three commands in "Reproduce this page";
+        the script exits non-zero on ANY mismatch between recomputed statistics and this page, or
+        between recomputed hash roots and the public ledger. If you find a mismatch, the ledger is
+        broken and we want to know:
+        <a href="https://github.com/YuClawLab/yuclaw-brain/issues" style="color:#00E676">open an issue</a>
+        with the script output. Replications that confirm are equally welcome — independent
+        verification is the point of publishing the bundle.
+      </p>
+    </div>"""
+
+
+def roadmap_html() -> str:
+    return """
+    <div class="panel">
+      <div class="panel-title">Roadmap · Risk Gate Lab (next proof target)</div>
+      <div class="panel-sub">no new claims — the tests are defined before the data can answer them</div>
+      <ul style="list-style:none;font-size:13px;color:#A0AEC0;line-height:1.7">
+        <li style="margin:6px 0">· <strong style="color:#E2E8F0">C6 out-of-sample test</strong>: the evidence/risk channel fires on ~25% of forward snapshots (rare by construction). Defined test: conditional 20-trading-day forward outcomes of C6-fired vs quiet snapshots, evaluable once the forward window exceeds the horizon with sufficient fired n.</li>
+        <li style="margin:6px 0">· <strong style="color:#E2E8F0">Drawdown-vs-evidence-staleness study</strong>: does evidence age (days since last SourceLock-accepted filing) relate to subsequent drawdown? Evidence-age is measured and displayed today (Panel 4); the study runs when the qualified cohort has enough history — it is not fabricated now.</li>
+        <li style="margin:6px 0">· <strong style="color:#E2E8F0">Live Form-4 ingestion</strong>: the insider-evidence stream is batch-covered 2026-02-18 → 05-15; live ingestion restores the event-study's dominant type in the forward era.</li>
+      </ul>
+    </div>"""
+
+
+def panel4_html(q: dict) -> str:
+    if not q.get("evaluable"):
+        return """
+    <div class="panel">
+      <div class="panel-title">Panel 4 · Evidence-Qualified Protocol Candidate</div>
+      <p style="font-size:13px;color:#FBA94B">No qualified rebalances yet — accrues as evidence coverage grows.</p>
+    </div>"""
+    m = q["metrics"]
+    rows = []
+    for mem in q["members"]:
+        age = mem["evidence_age"]
+        stale = (age is not None and age > q["stale_days"])
+        age_txt = (f"{age}d" + (" ⚠ stale" if stale else "")) if age is not None else "— none"
+        rows.append(
+            f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>{escape(mem['ticker'])}</td>"
+            f"<td style='padding:6px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{mem['score']:+.3f}</td>"
+            f"<td style='padding:6px 12px;color:#4DD0E1;font-size:12px'>{escape(display_label(mem['label']))}</td>"
+            f"<td style='padding:6px 12px;color:#A0AEC0;font-size:12px'>{escape(mem['grade'])}</td>"
+            f"<td style='padding:6px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{mem['evc']}</td>"
+            f"<td style='padding:6px 12px;color:{'#FBA94B' if stale else '#A0AEC0'};font-family:JetBrains Mono,monospace;font-size:12px'>{age_txt}</td>"
+            f"<td style='padding:6px 12px;color:#718096;font-family:JetBrains Mono,monospace'>{mem['c6']:+.2f}</td></tr>")
+    stat = lambda label, v: (f'<div class="tile"><div class="v">{v}</div>'
+                             f'<div class="k">{label}</div></div>')
+    return f"""
+    <div class="panel">
+      <div class="panel-title">Panel 4 · Evidence-Qualified Protocol Candidate<span class="lead-tag">FORWARD-ONLY</span></div>
+      <div class="panel-sub">same decile methodology, restricted to names meeting minimum evidence criteria as of each date · window {escape(q['window'][0])} → {escape(q['window'][1])} · {q['evaluable_periods']} rebalances</div>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.6;max-width:860px;margin-bottom:10px">
+        <strong style="color:#E2E8F0">Qualification (point-in-time):</strong> {escape(q['criteria'])}.
+        Evidence-quality fields exist only from the v4.0 launch (2026-06-01), so this panel is
+        structurally forward-only — no in-sample variant is possible without fabricating grades.
+      </p>
+      <div style="display:flex;gap:22px;flex-wrap:wrap;margin-bottom:6px">
+        {stat("qualified pool (median/day)", f"{q['pool']['median']}<span style='font-size:13px;color:#718096'>/{q['universe_n']}</span>")}
+        {stat("evidence coverage", f"{q['coverage_median']*100:.0f}%")}
+        {stat("median evidence age", f"{q['median_evidence_age']}d")}
+        {stat("C6 coverage of pool", f"{q['c6_coverage_mean']*100:.0f}%")}
+      </div>
+      <table>
+        <thead><tr><th>Cohort (n)</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th></tr></thead>
+        <tbody>
+          <tr><td style='padding:7px 12px;color:#E2E8F0'>Qualified pool, equal-weight (n={q['pool']['min']}–{q['pool']['max']}/day)</td><td style='padding:7px 12px;color:#4DD0E1;font-family:JetBrains Mono,monospace'>{_pct(m['qualified_ew']['cumulative_return'])}</td><td style='padding:7px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>{_pct(m['qualified_ew']['max_drawdown'])}</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['qualified_ew']['volatility_periodic']*100:.2f}%</td></tr>
+          <tr><td style='padding:7px 12px;color:#E2E8F0'>Qualified high-score decile (n={q['top_n']['min']}–{q['top_n']['max']}/day) <span style="color:#FBA94B">⚠ too small for inference</span></td><td style='padding:7px 12px;color:#4DD0E1;font-family:JetBrains Mono,monospace'>{_pct(m['qualified_top']['cumulative_return'])}</td><td style='padding:7px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>{_pct(m['qualified_top']['max_drawdown'])}</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['qualified_top']['volatility_periodic']*100:.2f}%</td></tr>
+          <tr><td style='padding:7px 12px;color:#E2E8F0'>Equal-weight universe (n=79, reference)</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{_pct(m['universe_ew']['cumulative_return'])}</td><td style='padding:7px 12px;color:#FF3366;font-family:JetBrains Mono,monospace'>{_pct(m['universe_ew']['max_drawdown'])}</td><td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['universe_ew']['volatility_periodic']*100:.2f}%</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin:10px 0">
+        Honest result: over its first {q['evaluable_periods']} periods the qualified pool
+        <strong style="color:#E2E8F0">trails the universe</strong>
+        ({_pct(m['qualified_ew']['cumulative_return'])} vs {_pct(m['universe_ew']['cumulative_return'])}).
+        The cohort is too young and (at the decile level) too small for inference; it accrues as
+        evidence coverage grows. Criteria will NOT be loosened to fatten n.
+      </p>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 6px">Current qualified membership · as of {escape(q['as_of'])} · {len(q['members'])} names (top {q['k_latest']} = decile cohort)</div>
+      <div style="max-height:340px;overflow-y:auto">
+      <table>
+        <thead><tr><th>Ticker</th><th>Score</th><th>Display label</th><th>Grade</th><th>Cited filings</th><th>Evidence age</th><th>C6</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      </div>
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Evidence age = days since the last SourceLock-accepted filing event for the ticker (stale
+        flag at &gt;{q['stale_days']}d). Limitations: {q['evaluable_periods']} periods; decile cohort of
+        {q['top_n']['min']}–{q['top_n']['max']} names; insider-evidence stream batch-covered through 2026-05-15
+        (live Form-4 ingestion pending) which depresses evidence ages for some names; qualification uses
+        the public grade rubric and is recomputed point-in-time daily.
+      </p>
     </div>"""
 
 
@@ -466,6 +828,7 @@ def render() -> str:
     fwd, ins = data["forward"], data["in_sample"]
     mem = current_top_decile()
     rig = compute_rigor()
+    q = compute_qualified()
     ledger = _ledger_tip()
     c6 = _c6_fire_rates()
     try:
@@ -534,9 +897,32 @@ def render() -> str:
     ins_label_svg = svg_chart(build_series(ins, LABEL_ORDER), ins_dates,
                               title="In-sample label cohorts vs SPY")
     spread_pts = [(0, 1.0)] + [(i + 1, p["cum"]) for i, p in enumerate(ins["spread_series"])]
-    spread_svg = svg_chart([{"name": "spread", "short": "Top−Bottom spread",
+    spread_svg = svg_chart([{"name": "spread", "short": "High−Low spread",
                              "color": "#7C4DFF", "pts": spread_pts}], ins_dates,
-                           title="Top-minus-bottom cohort spread")
+                           title="High-minus-low cohort spread (archived in-sample view)")
+
+    # ---- continuous rolling charts (visual continuity only; stats per-regime)
+    ROLL_CAPTION = ("Continuous for display only: the dashed May-18 line marks the in-sample "
+                    "replay → forward out-of-sample regime boundary. All statistics are computed "
+                    "per-regime and never blended across the boundary. Windows are rebased to "
+                    "their start date.")
+    roll_spread = rolling_chart_html(
+        "roll-spread",
+        [{"points": continuous_points(ins, fwd, "spread"),
+          "short": "High−Low spread", "color": "#7C4DFF"}],
+        caption=ROLL_CAPTION,
+        title="High-minus-low cohort spread — latest rolling record · updated daily after U.S. market close")
+    roll_labels = rolling_chart_html(
+        "roll-labels",
+        [{"points": continuous_points(ins, fwd, "cohort", "bullish_labeled"),
+          "short": "Positive-label", "color": "#4DD0E1"},
+         {"points": continuous_points(ins, fwd, "cohort", "cautious_labeled"),
+          "short": "Risk-flag", "color": "#FBA94B"},
+         {"points": continuous_points(ins, fwd, "cohort", "benchmark"),
+          "short": "SPY", "color": "#A0AEC0", "dash": "7,4"}],
+        caption=ROLL_CAPTION + " Label cohorts have small, variable membership — see the "
+                "archived replay for per-date n.",
+        title="Label cohorts vs SPY — latest rolling record · updated daily after U.S. market close")
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -580,6 +966,14 @@ def render() -> str:
     .acc-body{{padding:0 22px 20px;font-size:13px;color:#A0AEC0}}
     .footer{{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:8px}}
     .footer a{{color:#00E676;text-decoration:none}}
+    .tile{{min-width:130px;margin-right:8px}}
+    .tile .v{{font-size:22px;font-weight:800;color:#FFF;font-family:JetBrains Mono,monospace}}
+    .tile .k{{font-size:10px;color:#718096;text-transform:uppercase;letter-spacing:0.6px}}
+    .rangebar{{display:flex;gap:4px}}
+    .rangebtn{{background:#1E232D;color:#A0AEC0;border:1px solid #2D3748;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:JetBrains Mono,monospace}}
+    .rangebtn.active{{background:#00E67620;color:#00E676;border-color:#00E67680}}
+    .rollwin{{display:none}}
+    .rollwin.active{{display:block}}
   </style>
 </head>
 <body>
@@ -588,7 +982,7 @@ def render() -> str:
       <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.2.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
-        <a href="etf_evidence.html">AI-ETF Evidence</a>
+        <a href="etf_evidence.html">Open Index Evidence</a>
         <a href="methodology/validation_lab.md">Methodology</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
       </div>
@@ -599,9 +993,17 @@ def render() -> str:
       regenerated daily after market close · last build {escape(built)}
     </div>
 
+    {status_cards_html(fwd['evaluable_periods'] if fwd['evaluable'] else 0, ledger)}
+
     <div class="disclaimer-line">
       <strong>Disclaimer —</strong> {escape(DISCLAIMER_LINE)}
     </div>
+
+    {honest_reading_html()}
+
+    {integrity_card_html()}
+
+    {proven_html()}
 
     <p style="font-size:14px;color:#A0AEC0;margin-bottom:18px;max-width:780px">
       A Fama–French-style <strong>decile-cohort event study</strong>: does YUCLAW's composite
@@ -612,31 +1014,33 @@ def render() -> str:
       This is an event study, not portfolio management.
     </p>
 
-    <div class="disclaimer-line" style="border-left-color:#4DD0E1">
-      <strong style="color:#4DD0E1">Infrastructure note (Jun 26 – Jul 3, 2026) —</strong>
-      a network outage on the research host interrupted external data feeds. Daily signal
-      snapshots continued to be written on-box, point-in-time, throughout the window — but from
-      Jun 26 to Jul 2 their price-derived inputs were frozen at Jun 25 closes (the price feed was
-      unreachable), and this page was not republished during the outage. Price history and SEC
-      filing ingestion were restored and backfilled on Jul 3, and the filing window was
-      re-checked against EDGAR on Jul 5 (no missing filings). No snapshot or ledger row was retroactively edited: the outage-window
-      snapshots stand exactly as written, stale inputs and all.
+    <div class="panel">
+      <div class="panel-title">Latest rolling record</div>
+      <div class="panel-sub">continuous display across the regime boundary · statistics stay strictly per-regime</div>
+      <div class="fresh" style="margin-bottom:4px">
+        Updated through <strong>{escape(data_through)}</strong> · last build {escape(built)} · daily after U.S. market close
+      </div>
+      {roll_spread}
+      {roll_labels}
     </div>
 
     {universe_panel_html(fwd)}
 
-    <div class="panel">
+    <div class="panel" style="border:1px solid #00E67640">
       <div class="panel-title">Panel 1 · Forward (Out-of-Sample)<span class="lead-tag">LOOK-AHEAD-FREE</span></div>
       <div class="panel-sub">is_backfill = false · Day 0 = {escape(FORWARD_DAY0.isoformat())} · the honest panel</div>
       {fwd_body}
     </div>
 
-    <div class="panel">
-      <div class="panel-title">Panel 2 · In-Sample Replay<span class="caveat-tag">PARAMETRIC LOOK-AHEAD</span></div>
-      <div class="panel-sub">is_backfill = true · {ins['evaluable_periods']} rebalances · {ins['span_trading_days']} trading days · return window {escape(ins['first_entry_date'])} → {escape(ins['last_exit_date'])}</div>
-      <p style="font-size:12px;color:#FBA94B;margin-bottom:12px">⚠ The evidence-extraction model's training cutoff overlaps this window — in-sample results carry an unavoidable parametric look-ahead bias and are systematically optimistic. A <em>replay</em>, not a forecast. The replay's final holding period is capped at forward Day 0 ({escape(FORWARD_DAY0.isoformat())}) so this panel's return window never overlaps Panel 1's.</p>
+    {panel4_html(q)}
 
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Decile cohorts vs equal-weight universe and SPY (primary, 8-name cohorts)</div>
+    <details class="acc">
+      <summary>Panel 2 · In-Sample Replay — Educational replay only (n={ins['evaluable_periods']} rebalances) · collapsed</summary>
+      <div class="acc-body">
+      <p style="font-size:12px;color:#FBA94B;margin-bottom:12px">⚠ Educational replay only. The evidence-extraction model's training cutoff overlaps this window — in-sample results carry an unavoidable parametric look-ahead bias and are <strong>systematically optimistic</strong>. Label cohorts can be as small as a single name on some dates — treat all label-cohort figures below as illustrative, not evidence. The replay's final holding period is capped at forward Day 0 ({escape(FORWARD_DAY0.isoformat())}) so this window never overlaps Panel 1's.</p>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Archived replay (methodology view) · return window {escape(ins['first_entry_date'])} → {escape(ins['last_exit_date'])} · {ins['span_trading_days']} trading days</div>
+
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Decile cohorts vs equal-weight universe and SPY (n=8-name cohorts)</div>
       {ins_primary_svg}
       <table>
         <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>
@@ -644,23 +1048,31 @@ def render() -> str:
       </table>
 
       <div style="margin-top:18px;padding:12px 14px;background:#1A2030;border-radius:8px">
-        <div style="font-size:12px;color:#E2E8F0;font-weight:600">Top-minus-bottom cohort spread (research spread statistic — not a position, not tradeable)</div>
+        <div style="font-size:12px;color:#E2E8F0;font-weight:600">High-minus-low cohort spread (research spread statistic — not a position, not tradeable)</div>
         <div style="font-size:13px;color:#7C4DFF;font-family:JetBrains Mono,monospace;margin-top:4px">cumulative {_pct(ins['spread_metrics']['cumulative_return'])} · max drawdown {_pct(ins['spread_metrics']['max_drawdown'])}</div>
       </div>
       {spread_svg}
 
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">Label cohorts vs SPY (secondary — small, variable membership; illustrative only)</div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">Label cohorts vs SPY (n= per-date membership in the table below — as small as 1; look-ahead-optimistic figures)</div>
       {ins_label_svg}
       <table>
         <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>
         <tbody>{metric_rows(ins, LABEL_ORDER)}</tbody>
       </table>
-      <p style="font-size:11px;color:#718096;margin-top:10px">⚠ Label cohorts can be as small as a single name on some dates (see n column); small-n figures are statistically noisy and shown for illustration only. The decile cohorts above are the robust comparison.</p>
-    </div>
+      </div>
+    </details>
 
     {rigor_panel_html(rig)}
 
+    {maturity_html(ledger)}
+
     {reproduce_panel_html(ledger, source_commit)}
+
+    {challenge_html()}
+
+    {roadmap_html()}
+
+    {integrity_log_html()}
 
     {innovation_panel_html(ledger, c6)}
 
@@ -679,6 +1091,28 @@ def render() -> str:
       YUCLAW Signal Validation Lab · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
+  <script>
+  (function() {{
+    var mobile = window.matchMedia && window.matchMedia('(max-width: 640px)').matches;
+    var def = mobile ? '60' : 'all';
+    function activate(chart, w) {{
+      var wins = document.querySelectorAll('.rollwin[data-chart="' + chart + '"]');
+      var found = false;
+      wins.forEach(function(el) {{ if (el.dataset.w === w) found = true; }});
+      if (!found) w = 'all';
+      wins.forEach(function(el) {{ el.classList.toggle('active', el.dataset.w === w); }});
+      document.querySelectorAll('.rangebtn[data-chart="' + chart + '"]').forEach(function(b) {{
+        b.classList.toggle('active', b.dataset.w === w);
+      }});
+    }}
+    var charts = {{}};
+    document.querySelectorAll('.rollwin').forEach(function(el) {{ charts[el.dataset.chart] = 1; }});
+    Object.keys(charts).forEach(function(c) {{ activate(c, def); }});
+    document.querySelectorAll('.rangebtn').forEach(function(b) {{
+      b.addEventListener('click', function() {{ activate(b.dataset.chart, b.dataset.w); }});
+    }});
+  }})();
+  </script>
 </body>
 </html>
 """

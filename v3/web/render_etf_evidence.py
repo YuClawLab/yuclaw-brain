@@ -1,4 +1,4 @@
-"""Render the AI-ETF Evidence page to docs/etf_evidence.html.
+"""Render the Open Index Evidence page to docs/etf_evidence.html.
 
 Static, data-baked, self-contained (inline SVG, no JS/CDNs). RESEARCH framing
 throughout: evidence posture + event-study CARs on SMH-class semiconductor
@@ -19,6 +19,19 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
+
+# display-layer neutral vocabulary (matches the Validation Lab; locked internal
+# signal labels are unchanged)
+DISPLAY_LABEL = {
+    "STRONG_BULLISH": "POSITIVE_RESEARCH+", "BULLISH": "POSITIVE_RESEARCH",
+    "NEUTRAL": "NEUTRAL", "WEAKENING": "RISK_FLAG (weakening)",
+    "NEGATIVE_EVENT": "RISK_FLAG (event)", "BEARISH_WATCH": "RISK_FLAG (watch)",
+    "RISK_ALERT": "RISK_FLAG (alert)",
+}
+
+
+def display_label(raw: str) -> str:
+    return DISPLAY_LABEL.get((raw or "").upper(), raw)
 
 OUT = _REPO / "docs" / "etf_evidence.html"
 
@@ -135,7 +148,7 @@ def render() -> str:
         member_rows.append(
             f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>{escape(m['ticker'])}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['weight_pct']:.2f}%</td>"
-            f"<td style='padding:7px 12px;color:#4DD0E1;font-size:12px'>{escape(m['label'])}</td>"
+            f"<td style='padding:7px 12px;color:#4DD0E1;font-size:12px'>{escape(display_label(m['label']))}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['score']:+.3f}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['c6']:+.3f}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-size:12px'>{escape(m['grade'])}</td>"
@@ -180,7 +193,7 @@ def render() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YUCLAW · AI-ETF Evidence Module</title>
+  <title>YUCLAW · Open Index Evidence</title>
   <meta name="description" content="Research event study: EDGAR evidence events on semiconductor-theme ETF constituents. Hypothetical research illustration — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -223,7 +236,7 @@ def render() -> str:
 <body>
   <div class="container">
     <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· AI-ETF Evidence Module</span> <span class="ver">v4.2.0</span></div>
+      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Open Index Evidence</span> <span class="ver">v4.2.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="validation_lab.html">Validation Lab</a>
@@ -248,6 +261,10 @@ def render() -> str:
       cumulative abnormal returns (CAR) around evidence events, with the sector factor removed
       by a peer-benchmark model. The result below is reported exactly as measured, including
       where it is adverse to the hypothesis.
+      <span style="color:#718096;font-size:12px;display:block;margin-top:6px">
+      Scope note: this is research on the SEC-filing <em>constituents</em> of a published index
+      fund's holdings list — an evidence study of companies, not analysis, promotion, or an
+      offering of any fund or product.</span>
     </p>
 
     <div class="panel">
@@ -351,7 +368,7 @@ def render() -> str:
     </div>
 
     <div class="footer">
-      YUCLAW AI-ETF Evidence Module · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW Open Index Evidence · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 </body>

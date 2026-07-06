@@ -162,6 +162,28 @@ and eras (backfill vs live-detected) never blended. The first published result
 is adverse to the "evidence precedes price adjustment" hypothesis at the
 current sample and is displayed as measured.
 
+## Lab v2 display protocol (2026-07-05)
+
+- **Rolling charts:** the public spread and label-cohort charts display a
+  continuous series through the latest daily build, with the in-sample →
+  forward regime boundary marked (dashed line + shaded in-sample region at
+  2026-05-18). The forward segment is rebased at the boundary for visual
+  continuity ONLY; every statistic remains computed strictly per-regime.
+  Range windows (30/60/90 days) are rebased to their window start.
+- **Display-layer label neutralization:** on the public Lab pages cohorts and
+  signal labels render in research-neutral vocabulary (High/Low-score cohort,
+  POSITIVE_RESEARCH / RISK_FLAG). The locked internal signal-label vocabulary
+  in snapshots, the ledger, Telegram, and the dashboard is unchanged.
+- **Panel 4 (Evidence-Qualified Protocol Candidate):** the decile methodology
+  restricted to names qualifying point-in-time on evidence criteria (grade
+  A/B, OR ≥1 cited filing, OR a SourceLock-accepted event within 30 days;
+  grade "Insufficient" excluded). Evidence-quality fields exist only from
+  2026-06-01 (v4.0), so the panel is structurally forward-only. Evidence age =
+  days since the last SourceLock-accepted filing event (stale flag >90d).
+- **Outage disclosure presentation:** compressed to a one-line integrity card;
+  the full text is preserved verbatim in the page's Data Integrity Log.
+  Substance never changes; zero retroactive edits.
+
 ## Freshness & regeneration
 
 The page is rebuilt **daily** by the post-close pipeline
