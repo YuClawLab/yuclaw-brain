@@ -29,7 +29,7 @@ import psycopg2
 import psycopg2.extras
 
 from v3.extract.sourcelock import validate
-from v3.extract import reclassify_live
+from v3.extract import prose_live, reclassify_live
 
 # Order 1D (2026-05-29): switched from v1.txt → v2.txt. v2 adds an explicit
 # 4-step procedure that forces the LLM to locate a contiguous source span and
@@ -123,6 +123,11 @@ def process_batch(limit: int = 5) -> dict:
     # live re-classifier sees a committed event and its write to event_type_corrected stays
     # additive / outside the worker's transaction. (taxonomy fix, 2026-06-24)
     to_reclassify: list[dict] = []
+    # Prose-first ingestion (f130983e port, 2026-07-06): every processed filing —
+    # accepted, rejected, or no-event alike — gets a best-effort prose extraction
+    # AFTER the txn commits, so the production swarm reads exhibit/MD&A prose from
+    # yuclaw_v5.swarm_inputs instead of raw_cover soup. Additive; never blocks.
+    to_prose: list[dict] = []
 
     conn = psycopg2.connect(DB_DSN)
     conn.autocommit = False
@@ -143,6 +148,8 @@ def process_batch(limit: int = 5) -> dict:
             for row in rows:
                 stats["processed"] += 1
                 ticker = row["ticker"] or "?"
+                to_prose.append({"accession": row["accession_number"],
+                                 "form": row["source_type"], "ticker": ticker})
 
                 # 1. LLM call
                 try:
@@ -252,6 +259,13 @@ def process_batch(limit: int = 5) -> dict:
         except Exception as e:
             print(f"[event_worker] reclassify FAILED for {r['event_id']}: "
                   f"{type(e).__name__}: {e}", file=sys.stderr, flush=True)
+
+    # Prose-first persistence (best-effort; ingest_prose never raises).
+    for p in to_prose:
+        status, detail = prose_live.ingest_prose(p["accession"], p["form"])
+        if status not in ("skip", "existing"):
+            print(f"[event_worker] prose {p['ticker']} {p['form']} "
+                  f"{p['accession'] or '?'}: {status} {detail}", flush=True)
 
     return stats
 
