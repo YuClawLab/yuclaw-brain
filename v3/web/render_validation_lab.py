@@ -518,8 +518,13 @@ def reproduce_panel_html(ledger: dict, source_commit: str | None) -> str:
     return f"""
     <div class="panel">
       <div class="panel-title">Reproduce this page</div>
-      <div class="panel-sub">one command, fresh environment, stdlib only · derived data only (no vendor market data bundled or required)</div>
-      <pre style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:14px 16px;font-size:12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;overflow-x:auto;line-height:1.7">curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
+      <div class="panel-sub">one command, fresh environment · derived data only (no vendor market data bundled or required)</div>
+      <pre style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:14px 16px;font-size:12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;overflow-x:auto;line-height:1.7"># packaged (v5.0+)
+pip install yuclaw
+yuclaw replay-lab
+
+# or fully standalone (stdlib only, nothing to install)
+curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
 curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
 python3 replay_lab.py lab_replay_bundle.json</pre>
       <p style="font-size:12px;color:#A0AEC0;line-height:1.65;margin-top:10px">
@@ -557,7 +562,7 @@ def innovation_panel_html(ledger: dict, c6: dict) -> str:
         ("C6 evidence/risk channel",
          (f"fires on {c6i*100:.0f}% of in-sample and {c6f*100:.0f}% of forward snapshots "
           f"(rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)"),
-         "IN-SAMPLE SIGN ONLY — OOS confirmation PENDING (forward window shorter than the 20-day horizon)", "#FBA94B"),
+         "rareness confirmed OOS 2026-07-06 (22% fire, n=9 held-out); sign confirmation pending (elevated arm n=2)", "#FBA94B"),
         ("Event-type extraction specialists",
          "10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …",
          "LIVE for 8-K stream · Form-4 stream batch-covered 2026-02-18 → 05-15, live ingestion pending", "#FBA94B"),
@@ -674,7 +679,7 @@ def proven_html() -> str:
         "Forward alpha — n=28 periods, underpowered; not significant at 5%",
         "IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only",
         "Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small",
-        "C6 risk gate out-of-sample — in-sample sign only; forward window still shorter than the test horizon",
+        "C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2)",
     ]
     li = lambda xs, c: "".join(f'<li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55">'
                                f'<span style="color:{c};font-weight:700">{"✓" if c == "#00E676" else "✗"}</span> {x}</li>' for x in xs)
@@ -707,7 +712,7 @@ def maturity_html(ledger: dict) -> str:
         ("Gate 5 · Evidence→price lead, out-of-sample", "NOT YET", "#FF3366",
          "live-era event sample n=4; needs ≥30 live directional events for a first read"),
         ("Gate 6 · C6 risk-gate OOS confirmation", "NOT YET", "#FF3366",
-         "forward window must exceed the 20-trading-day test horizon with enough C6-fired snapshots"),
+         "rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2)"),
     ]
     rows = "".join(
         f"<tr><td style='padding:8px 12px;color:#E2E8F0;font-size:12px'>{g}</td>"
@@ -979,7 +984,7 @@ def render() -> str:
 <body>
   <div class="container">
     <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v4.2.0</span></div>
+      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v5.0.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="etf_evidence.html">Open Index Evidence</a>

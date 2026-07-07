@@ -6,7 +6,7 @@
 
 ![License MIT](https://img.shields.io/badge/License-MIT-green)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
-![PyPI yuclaw 4.2.0](https://img.shields.io/badge/PyPI-yuclaw%204.2.0-orange)
+![PyPI yuclaw 5.0.0](https://img.shields.io/badge/PyPI-yuclaw%205.0.0-orange)
 ![Hardware DGX Spark GB10](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76B900)
 ![Ledger git-anchored](https://img.shields.io/badge/Ledger-git--anchored-blue)
 

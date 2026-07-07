@@ -21,5 +21,5 @@ NEGATIVE_EVENT / BEARISH_WATCH / RISK_ALERT. There is no SELL or SHORT.
 from yuclaw_py._client import Client
 from yuclaw_py._compliance import COMPLIANCE, COMPLIANCE_NOTICE, PUBLIC_LABELS
 
-__version__ = "3.0.1"
+__version__ = "5.0.0"
 __all__ = ["Client", "COMPLIANCE", "COMPLIANCE_NOTICE", "PUBLIC_LABELS"]

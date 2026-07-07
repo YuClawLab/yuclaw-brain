@@ -1,5 +1,5 @@
 """
-Render the YUCLAW v4.2.0 public landing page to docs/index.html.
+Render the YUCLAW v5.0.0 public landing page to docs/index.html.
 
 Static, data-baked, NO JS hydration — the v2.3.0 silent-freeze lesson.
 
@@ -123,7 +123,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v4.2.0 — Evidence-First Financial AI</title>
+  <title>YUCLAW v5.0.0 — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -175,7 +175,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     <div class="header">
       <div>
         <span class="logo">YUCLAW</span>
-        <span class="ver">v4.2.0</span>
+        <span class="ver">v5.0.0</span>
       </div>
       <div class="navlinks">
         <a href="validation.html">Validation</a>
@@ -281,7 +281,7 @@ yuclaw verify NVDA --as-of 2026-05-20   # check the public ledger</pre>
     </div>
 
     <div class="footer">
-      YUCLAW v4.2.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v5.0.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       MIT Licensed

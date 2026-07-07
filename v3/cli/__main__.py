@@ -18,6 +18,9 @@ COMMANDS: dict[str, str] = {
     "keys": "v4.auth.cli:main",
     "demo": "v4.demo.cli:main",
     "verify": "v3.cli.verify:main",
+    # v5.0: one-command Validation Lab reproduction (packaged mirror of
+    # tools/replay_lab.py — the standalone stdlib script keeps working as-is)
+    "replay-lab": "v3.lab.replay_check:main",
     # legacy v3 helpers (kept available; not part of the documented v4 surface)
     "replay": "v3.cli.replay:main",
     "validation": "v3.cli.validation:main",
@@ -32,9 +35,20 @@ def _resolve(spec: str):
     return getattr(importlib.import_module(mod), attr)
 
 
+def _version() -> str:
+    try:
+        from importlib.metadata import version
+        return version("yuclaw")
+    except Exception:
+        return "unknown (not installed as a distribution)"
+
+
 def main(argv: list[str] | None = None) -> int:
     if argv is None:
         argv = sys.argv[1:]
+    if argv and argv[0] in ("--version", "version", "-V"):
+        print(f"yuclaw {_version()}")
+        return 0
     if not argv:
         print(f"usage: yuclaw <command> [args]\ncommands: {', '.join(sorted(COMMANDS))}",
               file=sys.stderr)

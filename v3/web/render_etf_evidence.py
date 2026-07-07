@@ -236,7 +236,7 @@ def render() -> str:
 <body>
   <div class="container">
     <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Open Index Evidence</span> <span class="ver">v4.2.0</span></div>
+      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Open Index Evidence</span> <span class="ver">v5.0.0</span></div>
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="validation_lab.html">Validation Lab</a>
