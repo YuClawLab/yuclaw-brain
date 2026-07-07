@@ -20,7 +20,7 @@ Signal labels are research classifications, not buy/sell recommendations.
 [Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
 [Quickstart](#sixty-seconds) ·
 [Methodology](docs/methodology/backfill.md) ·
-[**⚠️ Disclaimer**](#-disclaimer) ·
+[**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
 [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
