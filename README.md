@@ -18,6 +18,7 @@ Signal labels are research classifications, not buy/sell recommendations.
 
 [Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) ·
 [Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
+[Open Index Evidence](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) ·
 [Quickstart](#sixty-seconds) ·
 [Methodology](docs/methodology/backfill.md) ·
 [**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
@@ -25,16 +26,22 @@ Signal labels are research classifications, not buy/sell recommendations.
 
 </div>
 
+> [!IMPORTANT]
+> **Research and education only — not investment advice.** Signal labels are research
+> classifications, not buy/sell recommendations. Hypothetical research; past results do
+> not predict future performance.
+
 ---
 
 ## What YUCLAW does
 
 - **Every signal traces to a filing.** Each composite score decomposes into nine components,
-  and every evidence event links to the SEC document it was extracted from — validated
+  and every evidence event links to the SEC document it was extracted from — checked
   against the source text before any signal sees it.
-- **Every snapshot is hashed to a public ledger, never edited.** Daily signal sets are
-  content-hashed and committed to [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust)
-  before pages publish. Outages are disclosed, not backfilled.
+- **Every snapshot is hashed to a public, tamper-evident ledger — git-anchored, never
+  edited.** Daily signal sets are content-hashed and committed to
+  [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) before pages publish.
+  Outages are disclosed, never backfilled.
 - **Every Lab chart is reproducible bit-for-bit.** `yuclaw replay-lab` (or a standalone
   stdlib script) rebuilds the cohorts, recomputes every statistic, and re-derives every
   ledger hash root from published derived data.
@@ -42,6 +49,8 @@ Signal labels are research classifications, not buy/sell recommendations.
 ---
 
 ## Sixty seconds
+
+Ask the engine to show its work:
 
 ```bash
 pip install yuclaw
@@ -70,30 +79,30 @@ Top contributing events (last 7 days):
 Compliance: Research only. Not financial advice. Not a registered investment advisor.
 ```
 
-Then check the receipts yourself:
+Then, check the receipts yourself:
 
 ```bash
 yuclaw replay-lab
 ```
 
 Fetches the public replay bundle and reproduces the Validation Lab off-box. At the v5.0.0
-release the outsider test — a fresh venv with nothing but `pip install yuclaw` — reproduced
-**33 daily ledger roots exactly (2,926 leaf hashes recomputed)** and every published
-statistic, exit 0. It exits non-zero on any mismatch.
+release this ran from a brand-new environment — a fresh venv with nothing but
+`pip install yuclaw` — and reproduced **33 daily ledger roots exactly (2,926 leaf hashes
+recomputed)** and every published statistic, exit 0. It exits non-zero on any mismatch.
 
 ---
 
 ## What shipped in v5.0
 
-| Piece | Measured / shipped | Status |
+| Component | Measured / Shipped | Status |
 |---|---|---|
-| **Layer 0 — evidence job queue** | 281-filing real-data backfill: 281/281 succeeded, 0 dead-letter (`90f23392`) | complete |
-| **Layer 1 — specialist evidence swarm** | 10 event-type specialists: ma, insider, regulatory, supplychain, macro, geopolitical, earningsquality, litigation, sentimentdrift, esg | complete, in production |
-| **Two-tier local inference** | Gemma 4 26B A4B worker (specialists/debate) + Llama 3.1 70B (extraction/synthesis), both via local Ollama | zero cloud LLM dependency |
-| **Prose-first ingestion** | worker persists exhibit/MD&A prose; corpus grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85 (`f130983e`, live port `b1b153a0`) | live |
-| **Live reclassify rescue** | corrected event-type layer reproduces the stored corpus 97/97 (`67487eb2`) | live |
-| **C6 risk channel** | Rare-by-construction confirmed out-of-sample (22% fire rate, n=9 held-out); sign positive at n=2 elevated — accruing. (`c28f8542`, `aba72e89`) | partial: rareness OOS-confirmed, sign pending |
-| **Layers 2–10** | roadmap — **explicitly gated on out-of-sample sign confirmation** for the risk channel | gated, not built |
+| **Layer 0 — evidence job queue** | 281-filing real-data backfill: 281/281 succeeded, 0 dead-letter (`90f23392`) | Complete |
+| **Layer 1 — specialist evidence swarm** | 10 event-type specialists: ma, insider, regulatory, supplychain, macro, geopolitical, earningsquality, litigation, sentimentdrift, esg (`1b2b2e07`, `745df911`) | Complete, in production |
+| **Two-tier local inference** | Gemma 4 26B A4B worker (specialists/debate) + Llama 3.1 70B (extraction/synthesis), both via local Ollama (`21bdbc17`) | Live — zero cloud LLM dependency |
+| **Prose-first ingestion** | worker persists exhibit/MD&A prose; corpus grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85 (`f130983e`, live port `b1b153a0`) | Live |
+| **Live reclassify rescue** | corrected event-type layer reproduces the stored corpus 97/97 (`67487eb2`) | Live |
+| **C6 risk channel** | Rare-by-construction confirmed out-of-sample (22% fire rate, n=9 held-out); sign positive at n=2 elevated — accruing. (`c28f8542`, `aba72e89`) | Partial — sign pending |
+| **Layers 2–10** | roadmap — **explicitly gated on out-of-sample sign confirmation** for the risk channel | Gated, not built |
 
 ---
 
@@ -166,11 +175,11 @@ specialist swarm runs on Gemma 4 26B A4B (selected by A/B against the 8B baselin
 are served by one local Ollama daemon on the DGX Spark — zero cloud LLM dependency. SEC
 EDGAR is the only external data source for the evidence layer.
 
-**Grounded, measured extraction.** A deterministic verifier (no LLM in the loop) checks that
-every agent claim carries a verbatim quote from the filing and that every number in the claim
-appears in those quotes. Measured on the L1 corpus: grounding 0.52 → 0.75 and citation
-fidelity 0.66 → 0.85 after the prose-first fix (measurement commit `f130983e`; production
-port `b1b153a0`).
+**Grounded, measured extraction.** A deterministic verifier checks that every agent claim
+carries a verbatim quote from the filing and that every number in the claim appears in
+those quotes. No LLMs are in the loop for this verification. Measured on the L1 corpus:
+grounding 0.52 → 0.75 and citation fidelity 0.66 → 0.85 after the prose-first fix
+(measurement commit `f130983e`; production port `b1b153a0`).
 
 **Time-machine replay.** Any signal can be recomputed as of a past date with point-in-time
 filtering (`available_as_of <= as_of`). Leak-audited and reproducible via the `replay` CLI,
@@ -280,18 +289,20 @@ docs/methodology/   Methodology + limitations + leak audit + Lab methodology
 
 ## Operations — what's actually running
 
-Read from the live systemd units and `crontab -l`, not aspirational.
+Read from the live systemd units and `crontab -l`, not aspirational:
 
-| Engine | Cadence | What it does |
-|---|---|---|
-| EDGAR poller | systemd, always-on | 5-min submissions sweep over the ~80-CIK universe |
-| Event worker | systemd timer, every 15 min | GPU-guarded drain: 70B extraction + SourceLock + live reclassify + prose-first persistence; exits cleanly when the box is busy |
-| Daily pipeline | weekdays 17:00 MDT | healthcheck → snapshot_writer → outcome_updater → radar → proof.ledger → page regen (landing + validation + **Lab + Open Index Evidence + replay bundle**) |
-| Health monitor | every 30 min | prices, ingestion sweep age, **Lab build age**, disk — alert file on failure |
-| Off-box heartbeat | every 5 min | gist check-in + GitHub Actions dead-man watcher |
-| Network self-heal | every 5–10 min | link/tailscale recovery, never touches a healthy link |
-| Telegram broadcast | daily 07:35 MDT | signal digest to `@yuclaw_signals` |
-| Research crons | hourly–nightly | oil intelligence, sentiment archive, swarm debate (research-side, orthogonal to the signal pipeline) |
+- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep over the ~80-CIK universe.
+- **Event worker** — systemd timer, every 15 min, GPU-guarded: 70B extraction + SourceLock +
+  live reclassify + prose-first persistence. Exits cleanly when the box is busy.
+- **Daily pipeline** — weekdays 17:00 MDT: healthcheck → snapshots → outcomes → radar →
+  ledger → page regeneration (landing, validation, **Lab, Open Index Evidence, replay bundle**).
+- **Health monitor** — every 30 min: prices, ingestion sweep age, **Lab build age
+  (staleness alarm)**, disk; writes an alert file on any failure.
+- **Off-box heartbeat** — every 5 min: gist check-in + GitHub Actions dead-man watcher.
+- **Network self-heal** — every 5–10 min: link/tailscale recovery; never touches a healthy link.
+- **Telegram broadcast** — daily 07:35 MDT signal digest to `@yuclaw_signals`.
+- **Research crons** — hourly–nightly: oil intelligence, sentiment archive, swarm debate
+  (research-side, orthogonal to the signal pipeline).
 
 ---
 
@@ -322,6 +333,8 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 | | |
 |---|---|
 | **Dashboard** | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
+| **Validation Lab** | [validation_lab.html](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) |
+| **Open Index Evidence** | [etf_evidence.html](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
