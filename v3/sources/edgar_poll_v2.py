@@ -215,7 +215,10 @@ def main(argv: list[str] | None = None) -> int:
                    help="filingDate lookback window (days)")
     args = p.parse_args(argv)
 
-    cik_map = _cik_lookup()
+    # Evidence-tier CIKs come from universe metadata, not the SEC ticker map —
+    # OTC proxy lines (WCPRF class) are missing from company_tickers.json.
+    from v3.universe_tiers import evidence_cik_map
+    cik_map = {**_cik_lookup(), **evidence_cik_map()}
     if args.tickers:
         tickers = [t.strip().upper() for t in args.tickers.split(",") if t.strip()]
         missing = [t for t in tickers if t not in cik_map]

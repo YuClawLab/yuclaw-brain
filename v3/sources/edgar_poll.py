@@ -46,7 +46,8 @@ DB_DSN = "dbname=yuclaw_events"
 # and dominates filing volume. A dedicated v3/sources/form4_parser.py (Day 3)
 # handles Form 4 separately at <1ms/row instead of ~120s LLM extraction.
 # Must stay in sync with FORM_TYPES in edgar_backfill.py.
-FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K"}
+# 40-F (MJDS annual report) added 2026-07-14 (Canada Resources evidence tier).
+FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K", "40-F"}
 
 
 def _entry_form_type(entry: dict) -> str:
@@ -67,8 +68,11 @@ def _entry_form_type(entry: dict) -> str:
 
 
 def _load_universe() -> set[str]:
-    u = json.loads(UNIVERSE_PATH.read_text())
-    return set(u["equities"] + u["sector_etfs"] + u["broad_etfs"] + u["macro"])
+    # Ingestion coverage = scoring tier + evidence-only tier (Canada Resources
+    # Phase 2). This function feeds ONLY the pollers/backfill; scoring paths
+    # gate separately on v3.universe_tiers.scoring_universe().
+    from v3.universe_tiers import coverage_universe
+    return coverage_universe()
 
 
 @retry(

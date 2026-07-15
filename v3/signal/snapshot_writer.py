@@ -40,8 +40,11 @@ LIVE_WINDOW_HOURS = 24
 
 
 def _load_universe() -> list[str]:
-    u = json.loads(UNIVERSE_PATH.read_text())
-    return sorted(set(u["equities"] + u["sector_etfs"] + u["broad_etfs"] + u["macro"]))
+    # Positive gate (Canada Resources Phase 2): only the tier explicitly marked
+    # scoring_eligible=true enters scoring. Evidence-tier names must never
+    # receive a signal_snapshots row.
+    from v3.universe_tiers import scoring_universe
+    return sorted(scoring_universe())
 
 
 def _snapshot_id(ticker: str, as_of_iso: str) -> str:

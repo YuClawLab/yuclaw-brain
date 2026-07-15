@@ -52,6 +52,10 @@ _SCRIPT_STYLE_RE = re.compile(r"<(script|style)\b.*?</\1>", re.I | re.S)
 _COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 _TAG_RE = re.compile(r"<[^>]+>")
 _WS_RE = re.compile(r"\s+")
+# Zero-width characters (ZWSP/ZWNJ/ZWJ/word-joiner/BOM). Suncor-class 6-K exhibits pad
+# prose with &#8203; entities; after unescape they survive \s+ collapse, depress
+# alpha_ratio, and break verbatim-substring checks. Removed before whitespace collapse.
+_ZWSP_RE = re.compile("[\\u200b\\u200c\\u200d\\u2060\\ufeff]")
 
 
 # --------------------------------------------------------------------------
@@ -86,6 +90,7 @@ def strip_filing(raw_html: str) -> str:
     s = _COMMENT_RE.sub(" ", s)
     s = _TAG_RE.sub(" ", s)
     s = _html.unescape(s)
+    s = _ZWSP_RE.sub("", s)
     s = _WS_RE.sub(" ", s)
     return s.strip()
 

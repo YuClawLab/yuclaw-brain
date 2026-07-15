@@ -326,6 +326,13 @@ def universe_panel_html(fwd: dict) -> str:
         (min {cov.get('priced_min','—')}, max {cov.get('priced_max','—')}).
         Top/bottom decile = the highest/lowest ~10% of tickers by composite score, i.e. 8 of 79.
       </div>
+      <div style="margin-top:10px;padding:12px 14px;background:#1A2030;border-radius:8px;font-size:12px;color:#A0AEC0;line-height:1.6">
+        <strong style="color:#E2E8F0">Evidence-tier names ({len(u.get("evidence_tier", []))}, Canada Resources).</strong>
+        Evidence-tier names are covered for filings evidence and research dashboards only.
+        They are not scored and are not part of the Lab decile study or the 79-ticker
+        forward-track universe. See the <a href="canada_resources.html">Canada Resources
+        Evidence</a> page and the methodology's evidence-tier boundary section.
+      </div>
     </div>"""
 
 
@@ -988,6 +995,7 @@ def render() -> str:
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="etf_evidence.html">Open Index Evidence</a>
+        <a href="canada_resources.html">Canada Resources Evidence</a>
         <a href="methodology/validation_lab.md">Methodology</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
       </div>

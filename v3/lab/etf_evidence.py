@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import math
 from datetime import date
+from pathlib import Path
 from typing import Any
 
 import psycopg2
@@ -171,9 +172,12 @@ def _daily_returns(px: dict[date, float], dates: list[date]) -> dict[date, float
     return out
 
 
-def event_study() -> dict[str, Any]:
-    ov = overlap_summary()
-    covered = ov["covered"]
+def event_study(covered: list[str] | None = None,
+                insider_note: str | None = None) -> dict[str, Any]:
+    """CAR event study over `covered` constituents (default: the SMH overlap).
+    Same models/dedup/windows regardless of lens — one methodology, many lenses."""
+    if covered is None:
+        covered = overlap_summary()["covered"]
     prices, trade_dates = load_prices()
     spy_ret = _daily_returns(prices.get(MARKET, {}), trade_dates)
     tk_ret = {tk: _daily_returns(prices.get(tk, {}), trade_dates) for tk in covered}
@@ -314,7 +318,8 @@ def event_study() -> dict[str, Any]:
         "pooled_directional": both_models(directional, signed=True),
         "pooled_directional_live": both_models([e for e in directional if e["era"] == "live"], signed=True),
         "pooled_directional_backfill": both_models([e for e in directional if e["era"] == "backfill"], signed=True),
-        "insider_stream_note": ("Form 4 (insider) events are a parsed batch covering "
+        "insider_stream_note": insider_note if insider_note is not None else (
+                                "Form 4 (insider) events are a parsed batch covering "
                                 "2026-02-18 to 2026-05-15; live Form-4 ingestion is a "
                                 "tracked pipeline item, so the live-era sample is 8-K "
                                 "derived and small."),
@@ -324,6 +329,240 @@ def event_study() -> dict[str, Any]:
 
 def compute_all() -> dict[str, Any]:
     return {"rollup": evidence_rollup(), "event_study": event_study()}
+
+
+# ==============================================================================
+# Canada Resources evidence lenses (Phase 2, 2026-07-14) — EVIDENCE TIER ONLY.
+#
+# Per-lens holdings dictionary structure. Primary lenses XEG / ZEO / GDX / URNM;
+# EWC is reference-only (NOT a Canada Resources evidence lens); GDXJ is excluded
+# (52% SEC-filer coverage with a 68-name silent tail — below the honesty bar).
+# Holdings weights come from the committed Phase-1 add-list (issuer/fund
+# disclosures, as-of dated) and are used ONLY to derive internal coverage
+# statistics — no licensed index data is redistributed.
+#
+# These names are NOT scored: no composite scores, no signal_snapshots, no Lab
+# membership (see v3/universe_tiers.py positive gating). The posture below is
+# built from filings evidence (events, prose, grades) alone.
+# ==============================================================================
+
+CANADA_LENS_KEYS = ("XEG", "ZEO", "GDX", "URNM")
+EWC_REFERENCE_ONLY = "EWC"     # reference lens: broad-Canada context, not an evidence lens
+GDXJ_EXCLUDED = "GDXJ"         # excluded: junior-miner coverage/evidence-quality problem
+
+# Measured per-lens coverage from the Phase-1 feasibility study (2026-07-13,
+# docs/research/canada_resources/phase1_feasibility.md). "SEC-filer weight" is
+# the single measured filings-evidence coverage number for Phase 2 — labeled as
+# such, never presented as total-evidence coverage.
+CANADA_LENS_META: dict[str, dict[str, Any]] = {
+    "XEG": {
+        "name": "iShares S&P/TSX Capped Energy Index ETF",
+        "theme": "Canadian oil & gas (cap-weighted)",
+        "holdings_as_of": "2026-07-10",
+        "holdings_source": "BlackRock Canada holdings CSV",
+        "sec_filer_weight_pct": 76.0, "n_names_total": 28, "n_names_covered": 8,
+        "uncovered_scope": ("TSX-only issuers with no current EDGAR reporting — "
+                            "Tourmaline (5.6%), PrairieSky, Peyto, Athabasca and "
+                            "peers; their 2026-era '/ADR' CIKs are F-6 depositary "
+                            "shells, not reporting companies."),
+    },
+    "ZEO": {
+        "name": "BMO Equal Weight Oil & Gas Index ETF",
+        "theme": "Canadian oil & gas (equal-weighted)",
+        "holdings_as_of": "2026-07-09",
+        "holdings_source": "stockanalysis.com (BMO GAM page unavailable at study time)",
+        "sec_filer_weight_pct": 75.0, "n_names_total": 12, "n_names_covered": 9,
+        "uncovered_scope": ("TSX-only issuers with no current EDGAR reporting — "
+                            "ARC Resources (9.0%), Keyera (8.5%)."),
+    },
+    "GDX": {
+        "name": "VanEck Gold Miners ETF",
+        "theme": "Gold miners",
+        "holdings_as_of": "2026-03-31",
+        "holdings_source": "NPORT-P 0001410368-26-054846 (SEC EDGAR)",
+        "sec_filer_weight_pct": 79.0, "n_names_total": 51, "n_names_covered": 28,
+        "uncovered_scope": ("ASX/LSE-listed miners with no EDGAR substrate; part of "
+                            "the lens weight reports outside SEC jurisdiction."),
+    },
+    "URNM": {
+        "name": "Sprott Uranium Miners ETF",
+        "theme": "Uranium miners",
+        "holdings_as_of": "2026-03-31",
+        "holdings_source": "NPORT-P 0001049169-26-001608 (SEC EDGAR)",
+        "sec_filer_weight_pct": 55.0, "n_names_total": 26, "n_names_covered": 9,
+        "uncovered_scope": ("Sprott Physical Uranium Trust (13.6% of the lens) does "
+                            "not file EDGAR and is a physical trust outside ordinary "
+                            "operating-company evidence scope by nature; Kazatomprom "
+                            "(LSE GDR), Yellow Cake plc (LSE) and the ASX cohort "
+                            "(Paladin, Boss, Deep Yellow, Bannerman) have no EDGAR "
+                            "substrate. Coverage is stated at the measured 55% and "
+                            "is not inflated beyond measured scope."),
+    },
+}
+
+_ADDLIST_PATH = (Path(__file__).resolve().parents[2]
+                 / "docs" / "research" / "canada_resources" / "addlist_final.json")
+
+
+def canada_lens_holdings() -> dict[str, dict[str, float]]:
+    """lens -> {US-line ticker: lens weight %} for the covered (SEC-filer) names,
+    from the committed Phase-1 add-list (single source of truth)."""
+    import json
+    add = json.loads(_ADDLIST_PATH.read_text())
+    out: dict[str, dict[str, float]] = {k: {} for k in CANADA_LENS_KEYS}
+    for _cik, v in add["constituents"].items():
+        core = [l for l in v["in"] if l in out]
+        if not core:      # EWC-/GDXJ-only names (some without US lines) are not lens members
+            continue
+        tick = v["us_line"].split(":")[1]
+        for lens in core:
+            out[lens][tick] = float(v["in"][lens])
+    return out
+
+
+def _evidence_tier_meta() -> dict[str, dict[str, Any]]:
+    from v3.universe_tiers import evidence_tier_records
+    return {r["ticker"]: r for r in evidence_tier_records()}
+
+
+def canada_posture(lens: str) -> dict[str, Any]:
+    """Evidence posture for one Canada lens — filings evidence ONLY (no composite
+    scores, no rankings). Insider-derived stats for MJDS/FPI names are EXCLUDED
+    (SEDI substrate, not Form 4), never rendered as zero."""
+    holdings = canada_lens_holdings()[lens]
+    meta = _evidence_tier_meta()
+    tickers = sorted(holdings)
+    with psycopg2.connect(DSN) as cn:
+        cn.set_session(readonly=True)
+        with cn.cursor() as cur:
+            cur.execute(
+                """SELECT ticker, source_type, count(*)
+                   FROM events_raw WHERE ticker = ANY(%s) AND extraction_status='done'
+                   GROUP BY 1, 2""", (tickers,))
+            filed = {}
+            for tk, st, n in cur.fetchall():
+                filed.setdefault(tk, {})[st] = int(n)
+            cur.execute(
+                """SELECT ticker, event_type, count(*), max(event_time::date),
+                          avg(llm_confidence)
+                   FROM events
+                   WHERE event_status='accepted' AND ticker = ANY(%s)
+                   GROUP BY 1, 2""", (tickers,))
+            ev = {}
+            for tk, et, n, last, conf in cur.fetchall():
+                ev.setdefault(tk, {})[et] = {"n": int(n), "last": last.isoformat(),
+                                             "avg_conf": float(conf or 0)}
+            cur.execute(
+                """SELECT er.ticker, count(*)
+                   FROM yuclaw_v5.swarm_inputs si
+                   JOIN public.events_raw er ON er.accession_number = si.accession_number
+                   WHERE er.ticker = ANY(%s) AND si.narrative_section <> 'raw_cover'
+                   GROUP BY 1""", (tickers,))
+            prose = {tk: int(n) for tk, n in cur.fetchall()}
+            # C6 posture (v5 risk channel) where a swarm run exists for a filing
+            cur.execute(
+                """SELECT er.ticker, so.accession_number,
+                          so.grounding_summary->'per_agent' IS NOT NULL
+                   FROM yuclaw_v5.swarm_outputs so
+                   JOIN public.events_raw er ON er.accession_number = so.accession_number
+                   WHERE er.ticker = ANY(%s)""", (tickers,))
+            swarm_runs = {}
+            for tk, acc, _g in cur.fetchall():
+                swarm_runs.setdefault(tk, []).append(acc)
+
+    members = []
+    for tk in tickers:
+        m = meta.get(tk, {})
+        events = ev.get(tk, {})
+        n_events = sum(v["n"] for v in events.values())
+        n_filings = sum(filed.get(tk, {}).values())
+        n_prose = prose.get(tk, 0)
+        # Deterministic evidence grade — coverage depth, not desirability:
+        #   A: accepted events + exhibit/MD&A prose on file
+        #   B: filings ingested + prose, no accepted events yet
+        #   C: filings ingested, cover-only substrate so far
+        #   D: no filings ingested yet (coverage accrues forward)
+        if n_events > 0 and n_prose > 0:
+            grade = "A (events + prose evidence)"
+        elif n_filings > 0 and n_prose > 0:
+            grade = "B (prose evidence, no accepted events yet)"
+        elif n_filings > 0:
+            grade = "C (cover-only substrate so far)"
+        else:
+            grade = "D (no filings ingested yet)"
+        filer_class = m.get("filer_class", "?")
+        insider_scope = ("Form 4 stream (US domestic filer)" if filer_class == "DOMESTIC"
+                         else "Outside current evidence scope — SEDI substrate not currently ingested")
+        members.append({
+            "ticker": tk, "weight_pct": holdings[tk],
+            "sec_name": m.get("sec_name", tk), "filer_class": filer_class,
+            "listing_quality": m.get("listing_quality", "us_primary"),
+            "filings_ingested": filed.get(tk, {}), "n_filings": n_filings,
+            "events": events, "n_events": n_events,
+            "prose_filings": n_prose, "grade": grade,
+            "insider_scope": insider_scope,
+            "c6_swarm_runs": len(swarm_runs.get(tk, [])),
+        })
+    members.sort(key=lambda x: -x["weight_pct"])
+
+    covered_w = sum(holdings.values())
+    return {
+        "lens": lens, **CANADA_LENS_META[lens],
+        "holdings": holdings, "members": members,
+        "covered_weight_pct_of_lens": round(covered_w, 2),
+        "n_covered_names": len(tickers),
+        "events_total": sum(m["n_events"] for m in members),
+        "filings_total": sum(m["n_filings"] for m in members),
+        "prose_total": sum(m["prose_filings"] for m in members),
+    }
+
+
+def canada_event_maturity(lens: str) -> dict[str, Any]:
+    """How many accepted events on this lens have a COMPLETE [-5,+20] post-event
+    window in available price history ('matured'). CAR panels render only when
+    matured events exist; the study accrues forward — no fabricated history."""
+    holdings = canada_lens_holdings()[lens]
+    tickers = sorted(holdings)
+    prices, trade_dates = load_prices()
+    with psycopg2.connect(DSN) as cn:
+        cn.set_session(readonly=True)
+        with cn.cursor() as cur:
+            cur.execute(
+                """SELECT DISTINCT ticker, event_type, direction, event_time::date
+                   FROM events WHERE event_status='accepted' AND ticker = ANY(%s)""",
+                (tickers,))
+            events = cur.fetchall()
+    matured = 0
+    for tk, _et, _dr, d in events:
+        day0_idx = next((i for i, td in enumerate(trade_dates) if td >= d), None)
+        if day0_idx is not None and day0_idx + CAR_POST < len(trade_dates):
+            matured += 1
+    return {"lens": lens, "n_events": len(events), "n_matured": matured}
+
+
+# CAR panels stay hidden below this per-lens matured-event count — a mean path
+# over a handful of events implies a conclusion the sample cannot carry.
+CANADA_CAR_MIN_EVENTS = 5
+
+
+def compute_canada() -> dict[str, Any]:
+    """All Canada lenses: posture always; event study ONLY where matured events
+    clear CANADA_CAR_MIN_EVENTS (else the renderer shows the honest placeholder)."""
+    insider_note = ("Insider-derived statistics are EXCLUDED for MJDS/FPI issuers "
+                    "(SEDI substrate in Canada, not Form 4) — excluded means outside "
+                    "current evidence scope, not observed absence. A Form 4 stream "
+                    "exists only for the US-domestic filers in the lens.")
+    out: dict[str, Any] = {"lenses": {}, "reference_only": EWC_REFERENCE_ONLY,
+                           "excluded": GDXJ_EXCLUDED}
+    for lens in CANADA_LENS_KEYS:
+        posture = canada_posture(lens)
+        maturity = canada_event_maturity(lens)
+        entry: dict[str, Any] = {"posture": posture, "maturity": maturity}
+        if maturity["n_matured"] >= CANADA_CAR_MIN_EVENTS:
+            entry["event_study"] = event_study(
+                covered=sorted(canada_lens_holdings()[lens]), insider_note=insider_note)
+        out["lenses"][lens] = entry
+    return out
 
 
 if __name__ == "__main__":

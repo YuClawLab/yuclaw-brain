@@ -29,10 +29,11 @@ ALWAYS_INCLUDE = {"SPY"}
 
 
 def _all_tickers() -> list[str]:
-    u = json.loads(UNIVERSE_PATH.read_text())
-    tickers = set(u["equities"]) | set(u["sector_etfs"]) | set(u["broad_etfs"]) \
-        | set(u["macro"]) | ALWAYS_INCLUDE
-    return sorted(tickers)
+    # Coverage, not eligibility: price history spans the scoring tier AND the
+    # evidence-only tier (Canada Resources). Scoring stays gated separately in
+    # v3/universe_tiers.scoring_universe().
+    from v3.universe_tiers import coverage_universe
+    return sorted(coverage_universe() | ALWAYS_INCLUDE)
 
 
 def _fetch_one(ticker: str, start: date, end: date) -> list[tuple[str, date, float, int]]:

@@ -151,10 +151,30 @@ def process_batch(limit: int = 5) -> dict:
                 to_prose.append({"accession": row["accession_number"],
                                  "form": row["source_type"], "ticker": ticker})
 
+                # 6-K/40-F are cover-page envelopes: classify on the EXHIBIT prose
+                # (with the cover's exhibit-index one-liner as a typing hint), never
+                # on the cover alone. SourceLock below validates against the SAME
+                # text the LLM saw, so raw_excerpt stays a verbatim substring.
+                # (Canada Resources evidence tier, 2026-07-14.)
+                llm_text = row["raw_text"]
+                if row["source_type"] in ("6-K", "40-F"):
+                    composed = prose_live.compose_foreign_input(
+                        row["accession_number"], row["source_type"], row["raw_text"])
+                    if composed:
+                        llm_text = composed
+                        print(f"[event_worker] {row['source_type']} exhibit-input "
+                              f"{ticker} {row['accession_number']}: hint="
+                              f"{composed.splitlines()[0][:100]!r} chars={len(composed)}",
+                              flush=True)
+                    else:
+                        print(f"[event_worker] {row['source_type']} exhibit-input "
+                              f"{ticker} {row['accession_number']}: UNAVAILABLE — "
+                              f"falling back to raw cover", flush=True)
+
                 # 1. LLM call
                 try:
                     llm_json = _ollama_extract(
-                        ticker, row["source_type"], row["raw_text"]
+                        ticker, row["source_type"], llm_text
                     )
                 except Exception as e:
                     cur.execute(
@@ -179,8 +199,8 @@ def process_batch(limit: int = 5) -> dict:
                     stats["no_event"] += 1
                     continue
 
-                # 3. SourceLock Guard
-                ok, reason = validate(llm_json, row["raw_text"], ticker)
+                # 3. SourceLock Guard (against the text the LLM actually saw)
+                ok, reason = validate(llm_json, llm_text, ticker)
                 if not ok:
                     cur.execute(
                         """INSERT INTO rejected_events

@@ -43,7 +43,9 @@ STATE_PATH = Path(__file__).resolve().parent.parent / "backfill_state.json"
 # in v3/sources/form4_parser.py (Day 3) handles Form 4 separately at <1ms/row
 # instead of ~120s LLM extraction. Decision recorded in CHANGELOG; reinstate
 # here if Day 3 parser slips and we still want Form 4 coverage via LLM fallback.
-FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K"}
+# 40-F (MJDS annual report) added 2026-07-14 for the Canada Resources evidence
+# tier — routed through the annual-report exhibit-narrative prose path.
+FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K", "40-F"}
 
 # SEC published cap is 10 req/sec. 0.15s sleep → ~6.6 req/sec, comfortable margin.
 SEC_SLEEP_SECONDS = 0.15
@@ -97,8 +99,15 @@ def _save_state(state: dict) -> None:
 def _get_universe_tickers() -> list[str]:
     """Active universe tickers (post-deferred filter) that also have a CIK."""
     universe = _load_universe()
-    cik_map = _cik_lookup()
+    cik_map = _merged_cik_map()
     return sorted([t for t in universe if t in cik_map])
+
+
+def _merged_cik_map() -> dict[str, str]:
+    """SEC ticker map + evidence-tier CIK overrides from universe metadata
+    (OTC proxy lines like WCPRF are absent from company_tickers.json)."""
+    from v3.universe_tiers import evidence_cik_map
+    return {**_cik_lookup(), **evidence_cik_map()}
 
 
 def _filter_filings(submissions: dict, start_date: date, end_date: date) -> list[dict]:
@@ -253,7 +262,7 @@ def main(argv: list[str] | None = None) -> int:
         print("[backfill] invalid date. use YYYY-MM-DD", file=sys.stderr)
         return 2
 
-    cik_map = _cik_lookup()
+    cik_map = _merged_cik_map()
     if args.ticker:
         ticker = args.ticker.upper()
         if ticker not in cik_map:

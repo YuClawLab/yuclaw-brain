@@ -224,3 +224,26 @@ score-decile ranking's directional interpretation.
 Engine: `v3/lab/cohort_engine.py`. All constants above are module-level and
 fixed; the engine is read-only on `signal_snapshots` and `price_history`. Every
 number on the page recomputes by running the engine against the database.
+
+## Evidence-tier boundary (Canada Resources, 2026-07-14)
+
+As of 2026-07-14 the universe file carries a second, **evidence-only tier**: 49
+Canada Resources SEC filers (the XEG / ZEO / GDX / URNM core-lens subset of the
+Phase-1 feasibility study, `docs/research/canada_resources/`). Evidence-tier
+names are ingested (6-K / 40-F / 8-K filings), parsed, classified, and shown on
+evidence dashboards — **they are never scored**. They are excluded from
+composite scoring, `signal_snapshots`, the decile study, Lab ranking panels,
+and the 79-ticker forward-track record.
+
+The boundary is enforced by **positive gating** (`v3/universe_tiers.py`): no
+security is scoring-eligible unless its tier is explicitly marked
+`scoring_eligible=true`. The scoring tier remains exactly the Deng-reviewed 79;
+adding coverage mid-record without this boundary would have been a methodology
+event and broken forward comparability. Evidence-tier metadata per name:
+`evidence_eligible=true, scoring_eligible=false, lab_universe=false,
+coverage_vertical=canada_resources`. One name (Whitecap Resources / WCPRF) is
+flagged `listing_quality=low` (OTC proxy line); its price history is not
+treated as equivalent to primary US listings.
+
+Full universe expansion, if it ever happens, is a separate, deliberate,
+disclosed methodology decision — not an implication of this tier.

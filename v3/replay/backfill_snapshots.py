@@ -35,8 +35,10 @@ WEEKDAY_MAP = {"MON": 0, "TUE": 1, "WED": 2, "THU": 3, "FRI": 4}
 
 
 def _load_universe() -> list[str]:
-    u = json.loads(UNIVERSE_PATH.read_text())
-    return sorted(set(u["equities"] + u["sector_etfs"] + u["broad_etfs"] + u["macro"]))
+    # Positive gate (Canada Resources Phase 2): historical re-runs are scoring
+    # writes too — same scoring_eligible=true gate as the live snapshot writer.
+    from v3.universe_tiers import scoring_universe
+    return sorted(scoring_universe())
 
 
 def _weekly_dates(start: date, end: date, weekday: int) -> list[date]:

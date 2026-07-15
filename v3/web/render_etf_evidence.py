@@ -240,6 +240,7 @@ def render() -> str:
       <div class="navlinks">
         <a href="index.html">← Dashboard</a>
         <a href="validation_lab.html">Validation Lab</a>
+        <a href="canada_resources.html">Canada Resources Evidence</a>
         <a href="methodology/validation_lab.md">Methodology</a>
         <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
       </div>
