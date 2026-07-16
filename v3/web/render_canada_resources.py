@@ -28,11 +28,44 @@ from v3.lab.cohort_engine import DSN
 from v3.lab.etf_evidence import (
     CANADA_CAR_MIN_EVENTS, CANADA_LENS_KEYS, compute_canada,
 )
+from v3.universe_tiers import evidence_cik_map
 from v3.web.render_etf_evidence import car_chart
 
 OUT = _REPO / "docs" / "canada_resources.html"
 OIL_DIR = _REPO / "output" / "oil"
 C6_DIR = _REPO / "output" / "swarm" / "canada"
+
+# D-grade names manually verified against EDGAR submissions (all form types,
+# coverage window since 2026-01-01). A listed name genuinely filed nothing in
+# the window — display distinguishes quiet-filer from not-yet-ingested. The
+# grade taxonomy (letter) is unchanged; only the parenthetical differs.
+VERIFIED_QUIET = {"WCPRF": "2026-07-16"}
+
+# Names beyond this count collapse behind a CSS-only expander (top names by
+# lens weight stay visible; every name remains one tap away — nothing is
+# permanently hidden).
+TABLE_COLLAPSE_VISIBLE = 10
+TABLE_COLLAPSE_THRESHOLD = 12
+
+# Plain-language reference lines for the event-type vocabulary as it appears
+# in the constituent tables. Descriptions of the classification labels only —
+# they do not alter the classifications themselves.
+EVENT_TYPE_LEGEND = {
+    "OTHER_MATERIAL": "a development disclosed in a filing that does not fit a more specific category below",
+    "DIVIDEND_CHANGE": "a dividend declaration, increase, decrease, or suspension",
+    "EARNINGS_BEAT": "reported results above the comparison stated in the filing",
+    "EARNINGS_MISS": "reported results below the comparison stated in the filing",
+    "EARNINGS_RESULT": "an earnings release without a stated beat or miss direction",
+    "GUIDANCE_RAISE": "management raised a stated forward target or outlook",
+    "GUIDANCE_CUT": "management lowered a stated forward target or outlook",
+    "BUYBACK_ANNOUNCE": "a share repurchase program announced or renewed",
+    "REGULATORY_ACTION": "a regulator decision, permit, or proceeding disclosed in the filing",
+    "EXEC_CHANGE": "a change in a named executive or board role",
+    "CAPACITY_CHANGE": "a production or capacity change stated in the filing",
+    "M_AND_A_ANNOUNCE": "an acquisition, merger, or disposition announced",
+    "M_AND_A_CLOSE": "a previously announced transaction completed",
+    "CONTRACT_WIN": "a contract or offtake agreement disclosed in the filing",
+}
 
 DISCLAIMER_FULL = (
     "Research-only evidence dashboard. Not investment advice, not performance "
@@ -126,6 +159,7 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
       </div>"""
 
     # ---- posture dashboard ----
+    ciks = evidence_cik_map()
     rows = []
     for m in p["members"]:
         ev_summary = ", ".join(f"{et}×{v['n']}" for et, v in
@@ -133,22 +167,36 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         filed = ", ".join(f"{st}×{n}" for st, n in sorted(m["filings_ingested"].items())) or "—"
         c6m = c6.get(m["ticker"])
         c6_cell = (f"{escape(str(c6m['level']))} / {escape(str(c6m['flag']))}" if c6m
-                   else "<span style='color:#718096'>not yet run</span>")
+                   else "<span class='dim'>not yet run</span>")
         insider_cell = (m["insider_scope"] if m["filer_class"] == "DOMESTIC"
-                        else "<span style='color:#718096'>outside evidence scope (SEDI)</span>")
+                        else "<span class='dim'>outside evidence scope (SEDI)</span>")
         quality = ("<span style='color:#FBA94B'> · low-quality OTC proxy line</span>"
                    if m["listing_quality"] == "low" else "")
+        # EDGAR drill-down: CIK-keyed filing browser (resolves for every name,
+        # OTC proxy lines included); company-name search kept only as fallback.
+        cik = ciks.get(m["ticker"])
+        href = (f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK={cik}"
+                f"&type=&dateb=&owner=include&count=40" if cik else
+                f"https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company="
+                f"{escape(m['ticker'])}&type=6-K&dateb=&owner=include&count=10")
+        # Display-layer only: a D-grade name verified quiet on EDGAR reads as
+        # such, so quiet-filer is distinguished from not-yet-ingested. Letter
+        # taxonomy is untouched.
+        grade = m["grade"]
+        if m["ticker"] in VERIFIED_QUIET and grade.startswith("D ("):
+            grade = (f"D (no EDGAR filings in coverage window; "
+                     f"verified {VERIFIED_QUIET[m['ticker']]})")
         rows.append(
-            f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>"
-            f"<a style='color:#E2E8F0;text-decoration:none' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company={escape(m['ticker'])}&type=6-K&dateb=&owner=include&count=10'>{escape(m['ticker'])}</a>{quality}</td>"
-            f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape(m['sec_name'][:28])}</td>"
-            f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace'>{m['weight_pct']:.2f}%</td>"
-            f"<td style='padding:7px 12px;color:#718096;font-size:11px'>{escape(m['filer_class'])}</td>"
-            f"<td style='padding:7px 12px;color:#718096;font-size:11px'>{escape(filed)}</td>"
-            f"<td style='padding:7px 12px;color:#718096;font-size:11px'>{escape(ev_summary)}</td>"
-            f"<td style='padding:7px 12px;color:{color};font-size:11px'>{escape(m['grade'])}</td>"
-            f"<td style='padding:7px 12px;font-size:11px'>{c6_cell}</td>"
-            f"<td style='padding:7px 12px;font-size:11px'>{insider_cell}</td></tr>")
+            f"<tr><td class='c-tk'>"
+            f"<a class='tk' href='{href}'>{escape(m['ticker'])}</a>{quality}</td>"
+            f"<td class='c-is'>{escape(m['sec_name'][:28])}</td>"
+            f"<td class='c-wt'>{m['weight_pct']:.2f}%</td>"
+            f"<td class='c-sm'>{escape(m['filer_class'])}</td>"
+            f"<td class='c-sm'>{escape(filed)}</td>"
+            f"<td class='c-sm'>{escape(ev_summary)}</td>"
+            f"<td class='c-gr' style='color:{color}'>{escape(grade)}</td>"
+            f"<td class='c-cx'>{c6_cell}</td>"
+            f"<td class='c-cx'>{insider_cell}</td></tr>")
 
     # ---- CAR: panels only with matured events; honest placeholder otherwise ----
     if "event_study" in entry:
@@ -183,8 +231,34 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         Research-side context (oil-intelligence engine, as of {escape(str(oil['as_of']))}): {escape(' · '.join(x for x in (wti, brent) if x))}.
         Context only — does not feed composite scoring and does not alter evidence grades.</div>"""
 
+    thead = ("<thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th>"
+             "<th>Filer class</th><th>Filings ingested</th><th>Constituent events</th>"
+             "<th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>")
+    if len(rows) > TABLE_COLLAPSE_THRESHOLD:
+        # CSS-only expander: top names by lens weight stay visible; the rest
+        # are one tap away. Nothing is permanently hidden.
+        n_hidden = len(rows) - TABLE_COLLAPSE_VISIBLE
+        table_html = f"""
+      <div class="tblwrap"><table>
+        {thead}
+        <tbody>{''.join(rows[:TABLE_COLLAPSE_VISIBLE])}</tbody>
+      </table></div>
+      <details class="expander">
+        <summary>Show all {len(rows)} covered names ({n_hidden} more, sorted by lens weight)</summary>
+        <div class="tblwrap"><table>
+          {thead}
+          <tbody>{''.join(rows[TABLE_COLLAPSE_VISIBLE:])}</tbody>
+        </table></div>
+      </details>"""
+    else:
+        table_html = f"""
+      <div class="tblwrap"><table>
+        {thead}
+        <tbody>{''.join(rows)}</tbody>
+      </table></div>"""
+
     return f"""
-    <div class="panel">
+    <div class="panel" id="lens-{lens}">
       <div class="panel-title" style="color:{color}">{lens} · {escape(p['name'])}</div>
       <div class="panel-sub">{escape(p['theme'])} · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics</div>
       {cov_html}
@@ -195,14 +269,13 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         <div class="tile"><div class="v">{p['prose_total']}</div><div class="k">filings with exhibit/MD&A prose</div></div>
         <div class="tile"><div class="v">{n_c6}/{p['n_covered_names']}</div><div class="k">C6 posture runs</div></div>
       </div>
-      <table>
-        <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
-        <tbody>{''.join(rows)}</tbody>
-      </table>
+      {table_html}
       <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
       (filings, prose, events on file) — they are research classifications of evidence coverage, not
       rankings and not composite scores. Name links open the issuer's EDGAR filing browser (drill-down
       to primary-source filings).</p>
+      <p style="font-size:11px;margin-top:6px"><a class="ref" href="#event-legend">Reading the event types ↑</a>
+      · <a class="ref" href="#top">Back to top ↑</a></p>
       {car_html}
       {oil_html}
     </div>"""
@@ -219,6 +292,21 @@ def render() -> str:
 
     total_names = len({t for lens in CANADA_LENS_KEYS
                        for t in data["lenses"][lens]["posture"]["holdings"]})
+
+    # Sticky lens navigation (display chrome only).
+    lensnav = "".join(
+        f'<a href="#lens-{lens}" style="color:{LENS_COLOR[lens]}">{lens}</a>'
+        for lens in CANADA_LENS_KEYS)
+
+    # Event-type reference built from the types actually present in the
+    # tables (plain-language description per classification label).
+    types_present = sorted({et for lens in CANADA_LENS_KEYS
+                            for m in data["lenses"][lens]["posture"]["members"]
+                            for et in m["events"]})
+    legend_items = "".join(
+        f"<li><code>{escape(et)}</code> — "
+        f"{escape(EVENT_TYPE_LEGEND.get(et, et.replace('_', ' ').lower()))}</li>"
+        for et in types_present)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -245,19 +333,47 @@ def render() -> str:
     .panel{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}}
     .panel-title{{font-size:14px;font-weight:700;color:#FFF;margin-bottom:4px}}
     .panel-sub{{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:14px}}
-    table{{width:100%;border-collapse:collapse;margin-top:14px;display:block;overflow-x:auto}}
+    .tblwrap{{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px}}
+    table{{width:100%;border-collapse:collapse}}
     th{{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:8px 12px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.6px;white-space:nowrap}}
-    td{{font-size:13px;border-bottom:1px solid #1A2030;white-space:nowrap}}
+    td{{font-size:13px;border-bottom:1px solid #1A2030;white-space:nowrap;padding:7px 12px}}
+    td.c-tk{{color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700}}
+    a.tk{{color:#E2E8F0;text-decoration:none}}
+    a.tk:hover{{color:#00E676}}
+    td.c-is{{color:#A0AEC0;font-size:11px}}
+    td.c-wt{{color:#A0AEC0;font-family:JetBrains Mono,monospace}}
+    td.c-sm{{color:#718096;font-size:11px}}
+    td.c-gr,td.c-cx{{font-size:11px}}
+    .dim{{color:#718096}}
+    a.ref{{color:#4DD0E1;text-decoration:none}}
+    svg{{max-width:100%;height:auto}}
+    .lensnav{{position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;background:#0B0E14F2;padding:8px 0;margin-bottom:12px;overflow-x:auto;white-space:nowrap}}
+    .lensnav a{{text-decoration:none;font-size:12px;font-weight:700;font-family:JetBrains Mono,monospace;padding:4px 12px;border-radius:6px;background:#1E232D;border:1px solid #2D3748}}
+    .lensnav .lbl{{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:#718096}}
+    details.infobox{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.7}}
+    details.infobox summary{{cursor:pointer;color:#E2E8F0;font-size:13px;font-weight:600}}
+    details.infobox ul{{margin:8px 0 0 18px}}
+    details.infobox li{{margin-bottom:4px}}
+    details.expander summary{{cursor:pointer;color:#4DD0E1;font-size:12px;padding:8px 2px}}
     code{{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}}
     .footer{{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:8px}}
     .footer a{{color:#00E676;text-decoration:none}}
     .tile{{min-width:120px}}
     .tile .v{{font-size:24px;font-weight:800;color:#FFF;font-family:JetBrains Mono,monospace}}
     .tile .k{{font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:0.6px}}
+    @media (max-width:640px){{
+      .container{{padding:12px}}
+      .header{{padding:14px 16px}}
+      .panel{{padding:16px 14px}}
+      td{{font-size:12px}}
+      .tile{{min-width:96px}}
+      .tile .v{{font-size:20px}}
+      .navlinks a{{margin-left:0;margin-right:6px;display:inline-block;margin-bottom:6px}}
+    }}
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="top">
     <div class="header">
       <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Canada Resources Evidence</span> <span class="ver">v5.0.0</span></div>
       <div class="navlinks">
@@ -267,6 +383,8 @@ def render() -> str:
         <a href="methodology/validation_lab.md">Methodology</a>
       </div>
     </div>
+
+    <div class="lensnav"><span class="lbl">Jump to lens</span>{lensnav}</div>
 
     <div class="fresh">
       <strong>Regenerated daily</strong> with the site refresh chain · last build {escape(built)}
@@ -313,6 +431,34 @@ def render() -> str:
         envelope filings.
       </p>
     </div>
+
+    <details class="infobox" id="reading-this-page">
+      <summary>Reading this page — filing types and terms</summary>
+      <ul>
+        <li><strong style="color:#E2E8F0">MJDS</strong> — the US–Canada Multijurisdictional Disclosure
+            System. Eligible Canadian issuers meet SEC reporting obligations with documents prepared
+            under Canadian rules.</li>
+        <li><strong style="color:#E2E8F0">6-K</strong> — the form a foreign private issuer uses to
+            furnish material information to the SEC between annual reports. Its nearest US-domestic
+            counterpart is the 8-K.</li>
+        <li><strong style="color:#E2E8F0">40-F</strong> — the annual report form for MJDS filers. Its
+            US-domestic counterpart is the 10-K.</li>
+        <li><strong style="color:#E2E8F0">8-K / 10-K / 10-Q</strong> — current-event, annual, and
+            quarterly report forms filed by US-domestic issuers.</li>
+        <li><strong style="color:#E2E8F0">SEDI</strong> — Canada's System for Electronic Disclosure by
+            Insiders. MJDS issuers report insider transactions on SEDI, not on EDGAR Form 4, so insider
+            metrics for those names are outside this page's evidence scope and are marked excluded
+            rather than zero.</li>
+        <li><strong style="color:#E2E8F0">Evidence grades</strong> — describe how much filing evidence
+            is on file for a name (filings ingested, exhibit/MD&amp;A prose, accepted events). They are
+            coverage classifications, not rankings, scores, or recommendations.</li>
+      </ul>
+    </details>
+
+    <details class="infobox" id="event-legend">
+      <summary>Reading the event types</summary>
+      <ul>{legend_items}</ul>
+    </details>
 
     {sections}
 
