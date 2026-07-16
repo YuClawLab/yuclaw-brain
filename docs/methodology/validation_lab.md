@@ -247,3 +247,29 @@ treated as equivalent to primary US listings.
 
 Full universe expansion, if it ever happens, is a separate, deliberate,
 disclosed methodology decision — not an implication of this tier.
+
+## Live Form-4 ingestion (2026-07-16)
+
+Live Form-4 ingestion enabled 2026-07-16. Insider-event stream restored to
+production inputs (batch coverage previously ended 2026-05-15; the gap is
+backfilled with ingestion-time `available_as_of` and cannot affect past
+replays). C6 elevated-arm accrual for the out-of-sample sign study begins from
+this date.
+
+Mechanics: the live EDGAR poller (`v3/sources/edgar_poll_v2.py`) filters
+Form 4 filings out of the same per-CIK submissions sweep it already runs and
+parses them **deterministically** (`v3/sources/form4_parser.py` — structured
+XML, no LLM). Coverage is the US-domestic filers in the scoring universe plus
+the 8 US-domestic Canada evidence-tier names (NEM, CDE, HL, RGLD, SSRM, UEC,
+UUUU, URG); insider events for evidence-tier names feed the evidence layer
+only — positive gating (see the evidence-tier boundary note above) keeps them
+out of scoring. Dedup is by canonical SEC accession number. Parser filters,
+scoring math, C6 weights, and thresholds are unchanged from the batch window
+(open-market P/S only; $50k de minimis; magnitude cap $5M; insider aggregate
+cap ±0.5).
+
+Replay integrity: batch-window events (2026-02-18 → 05-15) carry
+`available_as_of = publish_time` as originally recorded. All events ingested
+from 2026-07-16 onward — live arrivals and the 05-15 → 07-16 gap backfill
+alike — carry `available_as_of = actual ingestion time`, never backdated, so
+no backfilled event can enter a replay dated before its ingestion.

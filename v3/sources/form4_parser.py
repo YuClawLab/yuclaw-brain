@@ -49,6 +49,13 @@ DE_MINIMIS_USD = 50_000
 MAGNITUDE_CAP_USD = 5_000_000
 TRADE_CODES = {"P", "S"}  # P = open-market purchase, S = open-market sale
 
+# Canada evidence-tier names with a real Form-4 substrate (US-domestic filers;
+# order of 2026-07-16). ENB and IMO also carry filer_class=DOMESTIC in the tier
+# metadata but are foreign private issuers exempt from Section 16 — no Form-4
+# stream exists for them. Insider events for these 8 feed the evidence layer
+# only; positive gating (v3/universe_tiers.py) keeps them out of scoring.
+CANADA_FORM4_TICKERS = ("NEM", "CDE", "HL", "RGLD", "SSRM", "UEC", "UUUU", "URG")
+
 
 @retry(
     stop=stop_after_attempt(5),
@@ -215,17 +222,30 @@ def _content_hash(ticker: str, accession: str, tx: dict) -> str:
     return hashlib.sha256(payload.encode()).hexdigest()
 
 
-def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn) -> dict:
-    """Parse one Form 4 filing and insert qualifying rows into events."""
-    stats = {"transactions": 0, "trades": 0, "kept": 0, "de_minimis": 0, "inserted": 0}
+def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn,
+                 as_of_ingestion: bool = False) -> dict:
+    """Parse one Form 4 filing and insert qualifying rows into events.
+
+    as_of_ingestion=True is the LIVE / gap-backfill mode: available_as_of is
+    stamped with the actual ingestion time (never backdated), so a backfilled
+    event can never leak into a past-dated replay. The default (False) keeps
+    the original batch semantics (available_as_of = publish_time) used for the
+    Feb-18 → May-15 historical window.
+    """
+    stats = {"transactions": 0, "trades": 0, "kept": 0, "de_minimis": 0,
+             "inserted": 0, "dedup": 0, "fetch_failed": 0}
 
     xml_url = _find_xml_url(cik, filing["accession"], filing["primary"])
     if not xml_url:
+        # Persistent index failure OR a filing with no XML — flag so the live
+        # poller does NOT ledger the accession and retries next sweep.
+        stats["fetch_failed"] = 1
         return stats
 
     try:
         r = _fetch(xml_url)
     except Exception:
+        stats["fetch_failed"] = 1
         return stats
 
     insider, txs = _parse_form4_xml(r.text)
@@ -246,9 +266,21 @@ def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn) -> di
         return stats
 
     publish_time = filing["publish_time"]
-    available_as_of = publish_time
+    available_as_of = (datetime.now(timezone.utc) if as_of_ingestion
+                       else publish_time)
     with conn.cursor() as cur:
         for idx, tx in accepted:
+            # Accession-level idempotency: event_id is deterministic per
+            # (accession, transaction index). With ingestion-time as-of, a
+            # re-processed filing lands on a different UTC day, so the
+            # (content_hash, ticker, day) ON CONFLICT below cannot catch it —
+            # the explicit pre-check does, and keeps a duplicate from aborting
+            # the batch (same failure shape as the 2026-07-15 worker stall).
+            cur.execute("SELECT 1 FROM events WHERE event_id = %s",
+                        (_event_id(ticker, filing["accession"], idx),))
+            if cur.fetchone():
+                stats["dedup"] += 1
+                continue
             event_type = "INSIDER_BUY" if tx["code"] == "P" else "INSIDER_SELL"
             direction = 1 if tx["code"] == "P" else -1
             magnitude = min(1.0, tx["value"] / MAGNITUDE_CAP_USD)
@@ -288,10 +320,12 @@ def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn) -> di
 
 
 def backfill_form4(ticker: str, cik: str, start_date: date, end_date: date,
-                   dry_run: bool, conn) -> dict:
+                   dry_run: bool, conn, as_of_ingestion: bool = False,
+                   max_filings: int | None = None) -> dict:
     """All Form 4 filings for one ticker in window."""
     stats = {"ticker": ticker, "filings": 0, "transactions": 0, "trades": 0,
-             "kept": 0, "de_minimis": 0, "inserted": 0}
+             "kept": 0, "de_minimis": 0, "inserted": 0, "dedup": 0,
+             "fetch_failed": 0}
 
     try:
         r = _fetch(SUBMISSIONS_URL.format(cik=cik))
@@ -301,14 +335,30 @@ def backfill_form4(ticker: str, cik: str, start_date: date, end_date: date,
         return stats
 
     filings = _filter_form4_filings(submissions, start_date, end_date)
+    if max_filings is not None:
+        filings = filings[:max_filings]
     stats["filings"] = len(filings)
 
     for f in filings:
-        s = parse_filing(cik, ticker, f, dry_run, conn)
-        for k in ("transactions", "trades", "kept", "de_minimis", "inserted"):
+        s = parse_filing(cik, ticker, f, dry_run, conn,
+                         as_of_ingestion=as_of_ingestion)
+        for k in ("transactions", "trades", "kept", "de_minimis",
+                  "inserted", "dedup", "fetch_failed"):
             stats[k] += s[k]
 
     return stats
+
+
+def form4_covered_universe() -> tuple[list[str], dict[str, str]]:
+    """(covered tickers, ticker->cik) for the live Form-4 stream: US-domestic
+    equities in the scoring universe + the 8 Canada evidence-tier names with a
+    Form-4 substrate. Evidence-tier CIKs come from tier metadata (OTC-proxy-
+    safe); positive gating keeps evidence-tier insider events out of scoring."""
+    from v3.universe_tiers import evidence_cik_map
+    cik_map = {**_cik_lookup(), **evidence_cik_map()}
+    tickers = sorted((set(_equities_universe()) | set(CANADA_FORM4_TICKERS))
+                     & set(cik_map))
+    return tickers, cik_map
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -317,6 +367,14 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--end", required=True, help="YYYY-MM-DD")
     p.add_argument("--ticker", help="single ticker (otherwise all equities)")
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--as-of-ingestion", action="store_true",
+                   help="stamp available_as_of with ingestion time (live/gap "
+                        "semantics, never backdated) instead of publish time")
+    p.add_argument("--include-canada8", action="store_true",
+                   help="extend coverage to the 8 US-domestic Canada "
+                        "evidence-tier names (evidence layer only)")
+    p.add_argument("--max-filings", type=int, default=None,
+                   help="cap filings per ticker (smoke batches)")
     args = p.parse_args(argv)
 
     try:
@@ -326,16 +384,20 @@ def main(argv: list[str] | None = None) -> int:
         print("[form4] invalid date. use YYYY-MM-DD", file=sys.stderr)
         return 2
 
-    equities = _equities_universe()
-    cik_map = _cik_lookup()
+    if args.include_canada8:
+        allowed, cik_map = form4_covered_universe()
+        allowed = set(allowed)
+    else:
+        allowed = _equities_universe()
+        cik_map = _cik_lookup()
     if args.ticker:
         t = args.ticker.upper()
-        if t not in equities:
-            print(f"[form4] {t} not in equities universe", file=sys.stderr)
+        if t not in allowed:
+            print(f"[form4] {t} not in covered universe", file=sys.stderr)
             return 2
         tickers = [t]
     else:
-        tickers = sorted([t for t in equities if t in cik_map])
+        tickers = sorted([t for t in allowed if t in cik_map])
 
     print(f"[form4] starting: {len(tickers)} tickers, {start_date} → {end_date}, dry_run={args.dry_run}",
           flush=True)
@@ -343,21 +405,26 @@ def main(argv: list[str] | None = None) -> int:
     conn = psycopg2.connect(DB_DSN)
     conn.autocommit = False
     grand = {"tickers_done": 0, "filings": 0, "transactions": 0, "trades": 0,
-             "kept": 0, "de_minimis": 0, "inserted": 0}
+             "kept": 0, "de_minimis": 0, "inserted": 0, "dedup": 0,
+             "fetch_failed": 0}
     try:
         for t in tickers:
             cik = cik_map[t]
             try:
-                s = backfill_form4(t, cik, start_date, end_date, args.dry_run, conn)
+                s = backfill_form4(t, cik, start_date, end_date, args.dry_run, conn,
+                                   as_of_ingestion=args.as_of_ingestion,
+                                   max_filings=args.max_filings)
             except Exception as e:
                 print(f"[form4] {t}: ERROR {type(e).__name__}: {e}", file=sys.stderr, flush=True)
                 conn.rollback()
                 continue
             print(f"[form4] {t}: filings={s['filings']} trades={s['trades']} "
-                  f"kept={s['kept']} de_minimis={s['de_minimis']} inserted={s['inserted']}",
+                  f"kept={s['kept']} de_minimis={s['de_minimis']} inserted={s['inserted']} "
+                  f"dedup={s['dedup']} fetch_failed={s['fetch_failed']}",
                   flush=True)
             grand["tickers_done"] += 1
-            for k in ("filings", "transactions", "trades", "kept", "de_minimis", "inserted"):
+            for k in ("filings", "transactions", "trades", "kept", "de_minimis",
+                      "inserted", "dedup", "fetch_failed"):
                 grand[k] += s[k]
     finally:
         conn.close()

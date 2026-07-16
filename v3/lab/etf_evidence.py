@@ -491,8 +491,21 @@ def canada_posture(lens: str) -> dict[str, Any]:
         else:
             grade = "D (no filings ingested yet)"
         filer_class = m.get("filer_class", "?")
-        insider_scope = ("Form 4 stream (US domestic filer)" if filer_class == "DOMESTIC"
-                         else "Outside current evidence scope — SEDI substrate not currently ingested")
+        # Live substrate counts, not judgments (Form-4 live ingestion 2026-07-16).
+        # CANADA_FORM4_TICKERS is the authority for a real Form-4 substrate:
+        # ENB/IMO are filer_class=DOMESTIC in tier metadata but Section-16-exempt
+        # FPIs — no Form-4 stream exists for them.
+        from v3.sources.form4_parser import CANADA_FORM4_TICKERS
+        n_insider_ev = sum(v["n"] for et, v in events.items()
+                           if et in ("INSIDER_BUY", "INSIDER_SELL"))
+        if tk in CANADA_FORM4_TICKERS:
+            insider_scope = (f"Form 4 stream, live · {n_insider_ev} insider event(s)"
+                             if n_insider_ev else "Form 4 stream, live · none yet")
+        elif filer_class == "DOMESTIC":
+            insider_scope = ("US-domestic form set, but Section-16-exempt FPI — "
+                             "no Form 4 stream")
+        else:
+            insider_scope = "Outside current evidence scope — SEDI substrate not currently ingested"
         members.append({
             "ticker": tk, "weight_pct": holdings[tk],
             "sec_name": m.get("sec_name", tk), "filer_class": filer_class,

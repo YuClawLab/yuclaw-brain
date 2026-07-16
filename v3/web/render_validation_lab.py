@@ -569,10 +569,10 @@ def innovation_panel_html(ledger: dict, c6: dict) -> str:
         ("C6 evidence/risk channel",
          (f"fires on {c6i*100:.0f}% of in-sample and {c6f*100:.0f}% of forward snapshots "
           f"(rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)"),
-         "rareness confirmed OOS 2026-07-06 (22% fire, n=9 held-out); sign confirmation pending (elevated arm n=2)", "#FBA94B"),
+         "rareness confirmed OOS 2026-07-06 (22% fire, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)", "#FBA94B"),
         ("Event-type extraction specialists",
          "10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …",
-         "LIVE for 8-K stream · Form-4 stream batch-covered 2026-02-18 → 05-15, live ingestion pending", "#FBA94B"),
+         "LIVE for 8-K and Form-4 streams · Form-4 live since 2026-07-16 (batch 2026-02-18 → 05-15; gap backfilled, ingestion-time as-of)", "#00E676"),
         ("Point-in-time discipline",
          "daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)",
          "LIVE — the disclosed gap is the proof it isn't backfilled", "#00E676"),
@@ -614,6 +614,14 @@ OUTAGE_FULL_TEXT = (
     "backfilled on Jul 3, and the filing window was re-checked against EDGAR on Jul 5 (no missing "
     "filings). No snapshot or ledger row was retroactively edited: the outage-window snapshots "
     "stand exactly as written, stale inputs and all."
+)
+
+# Dated methodology note — ships with the enabling code (order of 2026-07-16).
+FORM4_LIVE_TEXT = (
+    "Live Form-4 ingestion enabled 2026-07-16. Insider-event stream restored to "
+    "production inputs (batch coverage previously ended 2026-05-15; the gap is "
+    "backfilled with ingestion-time available_as_of and cannot affect past replays). "
+    "C6 elevated-arm accrual for the out-of-sample sign study begins from this date."
 )
 
 
@@ -665,6 +673,7 @@ def integrity_log_html() -> str:
       <summary>Data Integrity Log</summary>
       <div class="acc-body">
         <p style="line-height:1.7">{escape(OUTAGE_FULL_TEXT)}</p>
+        <p style="line-height:1.7;margin-top:10px">{escape(FORM4_LIVE_TEXT)}</p>
         <p style="margin-top:10px;font-size:12px;color:#718096">
           Policy: disclosures are never deleted; presentation may be compressed, substance may not.
           Fabricating retroactive point-in-time data would invalidate the replayable ledger; the
@@ -686,7 +695,7 @@ def proven_html() -> str:
         "Forward alpha — n=28 periods, underpowered; not significant at 5%",
         "IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only",
         "Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small",
-        "C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2)",
+        "C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)",
     ]
     li = lambda xs, c: "".join(f'<li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55">'
                                f'<span style="color:{c};font-weight:700">{"✓" if c == "#00E676" else "✗"}</span> {x}</li>' for x in xs)
@@ -719,7 +728,7 @@ def maturity_html(ledger: dict) -> str:
         ("Gate 5 · Evidence→price lead, out-of-sample", "NOT YET", "#FF3366",
          "live-era event sample n=4; needs ≥30 live directional events for a first read"),
         ("Gate 6 · C6 risk-gate OOS confirmation", "NOT YET", "#FF3366",
-         "rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2)"),
+         "rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)"),
     ]
     rows = "".join(
         f"<tr><td style='padding:8px 12px;color:#E2E8F0;font-size:12px'>{g}</td>"
@@ -760,7 +769,7 @@ def roadmap_html() -> str:
       <ul style="list-style:none;font-size:13px;color:#A0AEC0;line-height:1.7">
         <li style="margin:6px 0">· <strong style="color:#E2E8F0">C6 out-of-sample test</strong>: the evidence/risk channel fires on ~25% of forward snapshots (rare by construction). Defined test: conditional 20-trading-day forward outcomes of C6-fired vs quiet snapshots, evaluable once the forward window exceeds the horizon with sufficient fired n.</li>
         <li style="margin:6px 0">· <strong style="color:#E2E8F0">Drawdown-vs-evidence-staleness study</strong>: does evidence age (days since last SourceLock-accepted filing) relate to subsequent drawdown? Evidence-age is measured and displayed today (Panel 4); the study runs when the qualified cohort has enough history — it is not fabricated now.</li>
-        <li style="margin:6px 0">· <strong style="color:#E2E8F0">Live Form-4 ingestion</strong>: the insider-evidence stream is batch-covered 2026-02-18 → 05-15; live ingestion restores the event-study's dominant type in the forward era.</li>
+        <li style="margin:6px 0">· <strong style="color:#E2E8F0">Live Form-4 ingestion</strong>: enabled 2026-07-16 — the insider-evidence stream is live in the forward era (batch coverage 2026-02-18 → 05-15; the 05-15 → 07-16 gap is backfilled with ingestion-time available_as_of and cannot affect past replays).</li>
       </ul>
     </div>"""
 
@@ -828,8 +837,9 @@ def panel4_html(q: dict) -> str:
       <p style="font-size:11px;color:#718096;margin-top:8px">
         Evidence age = days since the last SourceLock-accepted filing event for the ticker (stale
         flag at &gt;{q['stale_days']}d). Limitations: {q['evaluable_periods']} periods; decile cohort of
-        {q['top_n']['min']}–{q['top_n']['max']} names; insider-evidence stream batch-covered through 2026-05-15
-        (live Form-4 ingestion pending) which depresses evidence ages for some names; qualification uses
+        {q['top_n']['min']}–{q['top_n']['max']} names; insider-evidence stream live since 2026-07-16 (batch coverage
+        ended 2026-05-15; gap backfilled with ingestion-time as-of) — evidence ages for some names reflect
+        the coverage gap until live events accrue; qualification uses
         the public grade rubric and is recomputed point-in-time daily.
       </p>
     </div>"""

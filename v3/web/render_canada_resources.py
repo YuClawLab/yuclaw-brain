@@ -135,7 +135,9 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
     color = LENS_COLOR[lens]
     tickers = sorted(p["holdings"])
     n_px, n_names = _price_coverage(tickers)
-    n_insider = sum(1 for m in p["members"] if m["filer_class"] == "DOMESTIC")
+    # Real Form-4 substrate only (excludes Section-16-exempt DOMESTIC FPIs like
+    # ENB/IMO) — insider_scope is set from CANADA_FORM4_TICKERS in etf_evidence.
+    n_insider = sum(1 for m in p["members"] if m["insider_scope"].startswith("Form 4 stream"))
     n_c6 = sum(1 for m in p["members"] if m["ticker"] in c6)
 
     # ---- coverage disclosure FIRST (before any dashboard visuals) ----

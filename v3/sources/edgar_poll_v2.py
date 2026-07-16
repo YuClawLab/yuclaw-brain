@@ -21,6 +21,12 @@ Key choices (Order: EDGAR poller fix, 2026-05-30):
                    re-fetching known filings; ON CONFLICT DO NOTHING as final guard
   - User-Agent   : real monitored contact (SEC compliance), env-overridable
   - 429/Retry-After + 403 handled explicitly
+  - Form 4      : (2026-07-16) filings for the covered set (US-domestic scoring
+                  equities + 8 Canada evidence-tier names) are picked out of the
+                  same submissions JSON and parsed DETERMINISTICALLY on arrival
+                  (v3/sources/form4_parser.py — no GPU, never the LLM worker),
+                  available_as_of = ingestion time, accession-deduped via an
+                  events_raw ledger row with extraction_status='done'.
 
 CLI:
     python3 -m v3.sources.edgar_poll_v2 --once            # one sweep, all 64 CIKs
@@ -47,6 +53,15 @@ from v3.sources.edgar_backfill import (
     _filter_filings,
     _archive_url,
     _strip_html,
+)
+# Form 4 is deliberately NOT in FORM_TYPES (never routed to the LLM worker).
+# The live sweep handles it via the deterministic XML parser below — same
+# submissions JSON, no extra submissions requests (order of 2026-07-16).
+from v3.sources.form4_parser import (
+    _archive_dir as _form4_archive_dir,
+    _filter_form4_filings,
+    form4_covered_universe,
+    parse_filing as _parse_form4_filing,
 )
 
 # SEC requires a real, monitored contact in the User-Agent (NOT @example.com).
@@ -120,9 +135,39 @@ def _accession_exists(cur, accession: str) -> bool:
     return cur.fetchone() is not None
 
 
+def _ledger_form4(cur, ticker: str, cik: str, filing: dict, parse_stats: dict) -> None:
+    """Record a processed Form-4 accession in events_raw (extraction_status
+    'done' — the LLM worker only reads 'pending', so the 70B path never sees
+    it). This is the sweep's dedup ledger: without it, a Form 4 with zero
+    qualifying trades leaves no row anywhere and would be re-fetched every
+    sweep for the whole lookback window."""
+    accession = filing["accession"]
+    raw_text = (f"Form 4 filing on {filing['filing_date']}. Parsed deterministically "
+                f"(v3/sources/form4_parser.py): {parse_stats['transactions']} transaction(s), "
+                f"{parse_stats['kept']} qualifying trade(s), "
+                f"{parse_stats['inserted']} event(s) inserted.")
+    cur.execute(
+        """INSERT INTO events_raw
+               (ticker, source_type, source_url, raw_text,
+                source_publish_time, accession_number, extraction_status)
+           VALUES (%s, '4', %s, %s, %s, %s, 'done')
+           ON CONFLICT DO NOTHING""",
+        (ticker, _form4_archive_dir(cik, accession), raw_text,
+         filing["publish_time"], accession),
+    )
+
+
 def poll_once(tickers: list[str], cik_map: dict, dry_run: bool,
-              lookback_days: int = LOOKBACK_DAYS) -> dict:
-    """One sweep over `tickers`. Returns stats dict."""
+              lookback_days: int = LOOKBACK_DAYS,
+              form4_tickers: frozenset | set = frozenset()) -> dict:
+    """One sweep over `tickers`. Returns stats dict.
+
+    For tickers in `form4_tickers` (US-domestic scoring equities + the 8
+    Canada evidence-tier names with a Form-4 substrate), the same submissions
+    JSON is additionally filtered for Form 4 filings, which are parsed
+    deterministically on arrival (no GPU) with available_as_of = ingestion
+    time. Dedup is by canonical accession via the events_raw ledger.
+    """
     end_date = date.today()
     start_date = end_date - timedelta(days=lookback_days)
 
@@ -130,6 +175,8 @@ def poll_once(tickers: list[str], cik_map: dict, dry_run: bool,
         "tickers": len(tickers), "window": f"{start_date}→{end_date}",
         "candidates": 0, "inserted": 0, "skipped_dedup": 0,
         "doc_fetch_stub": 0, "ticker_errors": 0,
+        "form4_candidates": 0, "form4_new": 0, "form4_dedup": 0,
+        "form4_events": 0, "form4_fetch_failed": 0,
     }
 
     conn = None
@@ -195,6 +242,32 @@ def poll_once(tickers: list[str], cik_map: dict, dry_run: bool,
                 else:
                     # Lost an insert race (another sweep) — treat as dedup.
                     stats["skipped_dedup"] += 1
+
+            # ── Form 4 (deterministic, no GPU) — same submissions JSON ──
+            if ticker not in form4_tickers:
+                continue
+            for f4 in _filter_form4_filings(submissions, start_date, end_date):
+                stats["form4_candidates"] += 1
+                if dry_run:
+                    print(f"[dry-run] {ticker:6s} 4     {f4['filing_date']} "
+                          f"{f4['accession']}", flush=True)
+                    continue
+                if _accession_exists(cur, f4["accession"]):
+                    stats["form4_dedup"] += 1
+                    continue
+                s4 = _parse_form4_filing(cik, ticker, f4, False, conn,
+                                         as_of_ingestion=True)
+                if s4["fetch_failed"]:
+                    # transient EDGAR failure — no ledger row, retry next sweep
+                    stats["form4_fetch_failed"] += 1
+                    continue
+                stats["form4_new"] += 1
+                stats["form4_events"] += s4["inserted"]
+                _ledger_form4(cur, ticker, cik, f4, s4)
+                if s4["inserted"]:
+                    print(f"[edgar_poll_v2] NEW {ticker} Form4 {f4['filing_date']} "
+                          f"{f4['accession']} → {s4['inserted']} insider event(s) "
+                          f"(deterministic, as_of=ingestion)", flush=True)
     finally:
         if cur is not None:
             cur.close()
@@ -229,12 +302,19 @@ def main(argv: list[str] | None = None) -> int:
         universe = _load_universe()
         tickers = sorted([t for t in universe if t in cik_map])
 
-    print(f"[edgar_poll_v2] config: tickers={len(tickers)} interval={args.interval}s "
+    # Live Form-4 coverage (2026-07-16): US-domestic scoring equities + the 8
+    # Canada evidence-tier names with a Form-4 substrate. Always a subset of
+    # the sweep — Form 4s are picked out of the same submissions JSON.
+    form4_tickers = frozenset(form4_covered_universe()[0]) & set(tickers)
+
+    print(f"[edgar_poll_v2] config: tickers={len(tickers)} form4_tickers={len(form4_tickers)} "
+          f"interval={args.interval}s "
           f"lookback={args.lookback}d dry_run={args.dry_run} UA={SEC_USER_AGENT!r}", flush=True)
 
     def _sweep() -> dict:
         t0 = time.time()
-        s = poll_once(tickers, cik_map, args.dry_run, args.lookback)
+        s = poll_once(tickers, cik_map, args.dry_run, args.lookback,
+                      form4_tickers=form4_tickers)
         s["latency_s"] = round(time.time() - t0, 1)
         print(f"[edgar_poll_v2] sweep: {s}", flush=True)
         return s
