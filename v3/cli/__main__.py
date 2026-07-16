@@ -21,6 +21,10 @@ COMMANDS: dict[str, str] = {
     # v5.0: one-command Validation Lab reproduction (packaged mirror of
     # tools/replay_lab.py — the standalone stdlib script keeps working as-is)
     "replay-lab": "v3.lab.replay_check:main",
+    # usefulness build (2026-07-16): derived-data exports + lens summaries
+    "events": "v3.cli.events:main",
+    "lens": "v3.cli.lens:main",
+    "export": "v3.cli.export:main",
     # legacy v3 helpers (kept available; not part of the documented v4 surface)
     "replay": "v3.cli.replay:main",
     "validation": "v3.cli.validation:main",

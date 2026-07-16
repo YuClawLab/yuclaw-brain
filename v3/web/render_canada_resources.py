@@ -30,6 +30,9 @@ from v3.lab.etf_evidence import (
 )
 from v3.universe_tiers import evidence_cik_map
 from v3.web.render_etf_evidence import car_chart
+from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+                                  status_block_html as _shared_status_block,
+                                  use_in_research_html as _use_in_research)
 
 OUT = _REPO / "docs" / "canada_resources.html"
 OIL_DIR = _REPO / "output" / "oil"
@@ -259,10 +262,31 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         <tbody>{''.join(rows)}</tbody>
       </table></div>"""
 
+    # Lens summary card (usefulness build 2026-07-16) — one short paragraph,
+    # every number pulled from the SAME `p`/`mat` data this section renders
+    # below, never hand-typed. Sits ABOVE the coverage disclosure, which stays
+    # byte-untouched.
+    major_scope = (p["uncovered_scope"].split(";")[0].split(".")[0]).strip()
+    summary_card = f"""
+      <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid {color};
+                border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
+                color:#A0AEC0;line-height:1.65">
+        <strong style="color:{color}">{lens} in one paragraph.</strong>
+        Filings-evidence coverage is <strong style="color:#E2E8F0">{p['sec_filer_weight_pct']:.0f}% of lens
+        weight</strong> across <strong style="color:#E2E8F0">{p['n_names_covered']} SEC filers</strong>
+        ({p['n_names_total']} names total). On file: <strong style="color:#E2E8F0">{p['filings_total']}
+        filings ingested</strong>, <strong style="color:#E2E8F0">{p['events_total']} accepted evidence
+        events</strong>, of which <strong style="color:#E2E8F0">{mat['n_matured']} have matured</strong> into
+        the event study. Insider (Form 4) data is available for
+        <strong style="color:#E2E8F0">{n_insider} of {p['n_covered_names']}</strong> covered names
+        (US-domestic filers). Major outside-scope block: {escape(major_scope)}.
+      </p>"""
+
     return f"""
     <div class="panel" id="lens-{lens}">
       <div class="panel-title" style="color:{color}">{lens} · {escape(p['name'])}</div>
       <div class="panel-sub">{escape(p['theme'])} · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics</div>
+      {summary_card}
       {cov_html}
       <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
         <div class="tile"><div class="v">{p['n_covered_names']}</div><div class="k">covered SEC filers</div></div>
@@ -464,6 +488,12 @@ def render() -> str:
 
     {sections}
 
+    {_packet_block("canada")}
+
+    {_use_in_research("packets/yuclaw_canada_resources_packet.zip")}
+
+    {_shared_status_block()}
+
     <div class="disclaimer">
       <strong>Disclaimer —</strong> {escape(DISCLAIMER_FULL)}
     </div>
@@ -471,7 +501,8 @@ def render() -> str:
     <div class="footer">
       YUCLAW Canada Resources Evidence · built {escape(built)} ·
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only ·
-      Phase-1 study: <a href="research/canada_resources/phase1_feasibility.md">feasibility &amp; coverage</a>
+      Phase-1 study: <a href="research/canada_resources/phase1_feasibility.md">feasibility &amp; coverage</a> ·
+      example: <a href="examples/evidence_memo_su.md">evidence memo (Suncor)</a>
     </div>
   </div>
 </body>

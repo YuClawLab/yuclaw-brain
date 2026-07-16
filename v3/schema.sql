@@ -22,7 +22,12 @@ CREATE TABLE events (
     prompt_version        TEXT NOT NULL,
     event_status          TEXT NOT NULL DEFAULT 'accepted',
     reject_reason         TEXT,
-    created_at            TIMESTAMPTZ NOT NULL DEFAULT now()
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT now(),
+    -- Display/memo-only event attributes (added 2026-07-16, usefulness build).
+    -- Form-4 enrichment: insider_role, is_director/is_officer/is_ten_pct,
+    -- plan_10b5_1. NEVER read by scoring components — C6 consumes only the
+    -- typed columns above (frozen).
+    attributes            JSONB
 );
 CREATE INDEX idx_events_ticker_time ON events (ticker, available_as_of DESC);
 CREATE INDEX idx_events_type_time ON events (event_type, available_as_of DESC);

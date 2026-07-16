@@ -213,6 +213,53 @@ def _parse_form4_xml(xml_text: str) -> tuple[str, list[dict]]:
     return insider_name, transactions
 
 
+def _parse_form4_owner_attrs(xml_text: str) -> dict:
+    """DISPLAY/MEMO-ONLY attributes from the Form 4 XML (usefulness build,
+    2026-07-16): reporting-person role and the Rule 10b5-1 plan checkbox.
+    Never read by scoring — C6 consumes only the typed event columns (frozen).
+
+    Returns {} on parse failure. Keys:
+        insider_role  — officer title if given, else Director / 10% owner / Other
+        is_director / is_officer / is_ten_pct  — booleans
+        plan_10b5_1   — True when the filing's aff10b5One box is checked
+    """
+    def _truthy(s: str | None) -> bool:
+        return (s or "").strip().lower() in ("1", "true")
+
+    try:
+        root = ET.fromstring(xml_text)
+    except ET.ParseError:
+        return {}
+
+    attrs: dict = {"is_director": False, "is_officer": False,
+                   "is_ten_pct": False, "plan_10b5_1": False}
+    title = ""
+    for el in root.iter():
+        tag = el.tag.split("}")[-1]
+        if tag == "isDirector":
+            attrs["is_director"] = attrs["is_director"] or _truthy(el.text)
+        elif tag == "isOfficer":
+            attrs["is_officer"] = attrs["is_officer"] or _truthy(el.text)
+        elif tag == "isTenPercentOwner":
+            attrs["is_ten_pct"] = attrs["is_ten_pct"] or _truthy(el.text)
+        elif tag == "officerTitle" and el.text and el.text.strip():
+            title = el.text.strip()
+        elif tag == "aff10b5One":
+            attrs["plan_10b5_1"] = attrs["plan_10b5_1"] or _truthy(el.text)
+
+    if attrs["is_officer"] and title:
+        attrs["insider_role"] = title
+    elif attrs["is_officer"]:
+        attrs["insider_role"] = "Officer"
+    elif attrs["is_director"]:
+        attrs["insider_role"] = "Director"
+    elif attrs["is_ten_pct"]:
+        attrs["insider_role"] = "10% owner"
+    else:
+        attrs["insider_role"] = "Other"
+    return attrs
+
+
 def _event_id(ticker: str, accession: str, idx: int) -> str:
     return f"{ticker}_F4_{accession.replace('-', '')}_{idx}"
 
@@ -249,6 +296,7 @@ def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn,
         return stats
 
     insider, txs = _parse_form4_xml(r.text)
+    owner_attrs = _parse_form4_owner_attrs(r.text)  # display/memo only, never scored
     stats["transactions"] = len(txs)
 
     accepted = []
@@ -295,13 +343,13 @@ def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn,
                     event_time, source_publish_time, source_ingested_time,
                     available_as_of, source_type, source_url, raw_excerpt,
                     llm_model, llm_confidence, llm_reasoning,
-                    content_hash, prompt_version, event_status
+                    content_hash, prompt_version, event_status, attributes
                 ) VALUES (
                     %s, %s, %s, %s, %s,
                     %s, %s, now(),
                     %s, %s, %s, %s,
                     %s, %s, %s,
-                    %s, %s, 'accepted'
+                    %s, %s, 'accepted', %s
                 )
                 ON CONFLICT (content_hash, ticker, (date_trunc('day', available_as_of AT TIME ZONE 'UTC')))
                 DO NOTHING
@@ -312,6 +360,7 @@ def parse_filing(cik: str, ticker: str, filing: dict, dry_run: bool, conn,
                 "deterministic-xml-parser", 1.0,
                 f"Form 4 {tx['code']} transaction by {insider}; value ${tx['value']:,.0f}",
                 ch, "form4-v1",
+                json.dumps(owner_attrs) if owner_attrs else None,
             ))
             stats["inserted"] += 1
         conn.commit()

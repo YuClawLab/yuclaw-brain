@@ -25,6 +25,9 @@ from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
 from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
+from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+                                  status_block_html as _shared_status_block,
+                                  use_in_research_html as _use_in_research)
 
 OUT = _REPO / "docs" / "validation_lab.html"
 UNIVERSE_PATH = _REPO / "v3" / "universe.json"
@@ -1090,6 +1093,12 @@ def render() -> str:
     {maturity_html(ledger)}
 
     {reproduce_panel_html(ledger, source_commit)}
+
+    {_packet_block("lab")}
+
+    {_use_in_research("packets/yuclaw_validation_lab_packet.zip")}
+
+    {_shared_status_block()}
 
     {challenge_html()}
 

@@ -113,11 +113,17 @@ yuclaw why TICKER                  # Composite signal + ranked evidence w/ SEC s
 yuclaw replay TICKER --date DATE   # Point-in-time signal at end of date
 yuclaw replay-lab                  # Reproduce the Validation Lab from the public bundle
 yuclaw validation                  # In-sample event validation + forward tracking ledger
+yuclaw events --ticker SU --since 2026-05-01   # Accepted-events export (derived data only)
+yuclaw lens canada --lens XEG      # Lens summary-card data as JSON (same numbers the page renders)
+yuclaw export --lens GDX --format csv          # Lens events export; --page builds the evidence packet
+yuclaw memo --ticker SU --days 30  # Evidence memo — grounded, citation-verified, linted (docs/usage.md)
 yuclaw brief                       # Personalized digest (uses ~/.yuclaw/profile.json)
 yuclaw watch add TICKER            # Manage local watchlist
 yuclaw verify TICKER --date DATE   # Verified Research Ledger integrity check
 yuclaw profile show                # Local preferences
 ```
+
+Worked examples with real output: [docs/usage.md](docs/usage.md).
 
 **Public signal vocabulary:** `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`,
 `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.

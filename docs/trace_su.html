@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YUCLAW — one evidence trace, end to end (Suncor 6-K)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0B0E14;color:#E2E8F0;font-family:Inter,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:14px}
+  .container{max-width:900px;margin:0 auto;padding:28px 20px}
+  a{color:#00E676;text-decoration:none} a:hover{text-decoration:underline}
+  code{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:'JetBrains Mono',monospace;font-size:11.5px}
+  .header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .logo{font-size:19px;font-weight:800;color:#FFF;letter-spacing:1px}
+  .navlinks a{margin-left:14px;font-size:12px;color:#A0AEC0}
+  .disclaimer-line{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;margin-bottom:20px;font-size:12px;line-height:1.55;color:#A0AEC0}
+  .footer{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:13px">· Evidence trace</span>
+      <span style="color:#718096;font-size:11px">v5.0.0</span></div>
+      <div class="navlinks">
+        <a href="index.html">← Dashboard</a>
+        <a href="canada_resources.html">Canada Resources Evidence</a>
+        <a href="validation_lab.html">Validation Lab</a>
+        <a href="replication.html">Replication</a>
+      </div>
+    </div>
+
+    <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">One evidence trace, end to end</h1>
+    <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6">
+      A single real filing — Suncor Energy's Q1-2026 results 6-K — followed through every stage of
+      YUCLAW's evidence pipeline. Every value below is pulled live from the same data the public
+      pages render. Suncor is an <strong>evidence-tier</strong> name: ingested, classified, displayed —
+      never scored.
+    </p>
+
+    <div class="disclaimer-line"><strong>Disclaimer —</strong> Research &amp; education only. Not investment advice. Event types and grades are research classifications, not buy/sell recommendations.</div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-left:3px solid #00E676;
+                border-radius:12px;padding:20px 22px;margin-bottom:14px" id="step1">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#00E676">Step 1</div>
+      <div style="font-size:15px;font-weight:800;color:#FFF;margin:2px 0 2px">SEC filing — SU 6-K</div>
+      <div style="font-size:11.5px;color:#718096;margin-bottom:10px">accession <code>0001104659-26-055746</code> · accepted by EDGAR 2026-05-06 00:45:00-06:00</div>
+      <p style="font-size:12.5px;color:#A0AEC0;line-height:1.65;margin:0">
+        Suncor Energy furnished this 6-K to the SEC. YUCLAW's live poller picked it up from the
+        issuer's EDGAR submissions index and recorded it with a canonical accession number
+        (ingestion status: <code>done</code>).
+        <a href="https://www.sec.gov/Archives/edgar/data/311337/000110465926055746/su-20260505x6k.htm">Open the primary document on sec.gov →</a></p>
+    </div>
+    <div style="background:#151A23;border:1px solid #1E232D;border-left:3px solid #4DD0E1;
+                border-radius:12px;padding:20px 22px;margin-bottom:14px" id="step2">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#4DD0E1">Step 2</div>
+      <div style="font-size:15px;font-weight:800;color:#FFF;margin:2px 0 2px">Exhibit → extracted prose</div>
+      <div style="font-size:11.5px;color:#718096;margin-bottom:10px">6-K filings carry the substance in EX-99.x exhibits; the envelope has no item codes</div>
+      <ul style="list-style:none;padding:0;font-size:12px;color:#A0AEC0"><li style='margin:4px 0'><code>exhibit99</code> — 16,000 characters ingested</li></ul>
+        <div style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:12px 14px;
+                    font-size:11.5px;color:#A0AEC0;line-height:1.6;margin-top:8px;font-family:JetBrains Mono,monospace">
+          EX-99.2 3 su-20260505xex99d2.htm EX-99.2 All financial figures are unaudited and presented in Canadian dollars unless noted otherwise. Production volumes are presented on a working-interest basis, before royalties, except for production volumes from Suncor Energy Inc.’s (Suncor or the company) Libya operations, which are presented on an economic basis. Certain financial measures in this document, including adjusted funds from operations, free funds flow, net debt and adjusted operating earnings are not prescribed by Canadian generally accepted accounting principles (GAAP). For a description of these non-GAAP financial measures, see the advisory section of Suncor’s Management’s Discussion and…
+        </div>
+        <p style="font-size:11px;color:#718096;margin:8px 0 0">Clean exhibit prose, exactly as stored in
+        the extraction substrate (<code>yuclaw_v5.swarm_inputs</code>) — this text, not the raw HTML
+        envelope, is what downstream classification reads.</p>
+    </div>
+    <div style="background:#151A23;border:1px solid #1E232D;border-left:3px solid #7C4DFF;
+                border-radius:12px;padding:20px 22px;margin-bottom:14px" id="step3">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#7C4DFF">Step 3</div>
+      <div style="font-size:15px;font-weight:800;color:#FFF;margin:2px 0 2px">Classified evidence event</div>
+      <div style="font-size:11.5px;color:#718096;margin-bottom:10px">deterministic schema: type · magnitude · direction · confidence · verified excerpt</div>
+      
+        <div style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:12px 14px;margin-top:8px">
+          <div style="font-size:12px"><code>SU_20260506_2759fceebeac</code></div>
+          <div style="font-size:13px;color:#E2E8F0;margin:4px 0">
+            <strong>EARNINGS_BEAT</strong> · magnitude 0.8 · direction +1
+            · extraction confidence 0.9 · status <code>accepted</code>
+          </div>
+          <div style="font-size:12px;color:#A0AEC0;line-height:1.6">
+            <strong style="color:#718096">Verified quote (SourceLock):</strong> “Generated over $4.0 billion in adjusted funds from operations and $2.9 billion in free funds flow.”
+          </div>
+          <div style="font-size:11.5px;color:#718096;line-height:1.6;margin-top:4px">
+            Extractor rationale (yuclaw-llm-70b): The company reported record first quarter upstream production, refining throughput, and refined product sales, indicating a strong earnings beat.
+          </div>
+        </div><p style="font-size:11px;color:#718096;margin:8px 0 0">The excerpt is
+        SourceLock-verified — it must locate verbatim in the filing text or the event is rejected.
+        Event types are research classifications from a locked vocabulary, not recommendations.</p>
+    </div>
+    <div style="background:#151A23;border:1px solid #1E232D;border-left:3px solid #FBA94B;
+                border-radius:12px;padding:20px 22px;margin-bottom:14px" id="step4">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#FBA94B">Step 4</div>
+      <div style="font-size:15px;font-weight:800;color:#FFF;margin:2px 0 2px">Evidence grade (coverage depth)</div>
+      <div style="font-size:11.5px;color:#718096;margin-bottom:10px">the same member record the Canada Resources page renders — pulled live, not copied</div>
+      
+        <p style="font-size:12.5px;color:#A0AEC0;line-height:1.65;margin:0">
+        On the Canada Resources page, SUNCOR ENERGY INC currently carries evidence grade
+        <strong style="color:#E2E8F0">A (events + prose evidence)</strong> — derived deterministically from
+        coverage depth: <strong style="color:#E2E8F0">19</strong> filings ingested,
+        <strong style="color:#E2E8F0">12</strong> with exhibit/MD&amp;A prose,
+        <strong style="color:#E2E8F0">16</strong> accepted events. Grades describe how much
+        evidence is on file, never desirability. Insider substrate: Outside current evidence scope — SEDI substrate not currently ingested.</p>
+    </div>
+    <div style="background:#151A23;border:1px solid #1E232D;border-left:3px solid #FF3366;
+                border-radius:12px;padding:20px 22px;margin-bottom:14px" id="step5">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#FF3366">Step 5</div>
+      <div style="font-size:15px;font-weight:800;color:#FFF;margin:2px 0 2px">C6 posture (risk channel)</div>
+      <div style="font-size:11.5px;color:#718096;margin-bottom:10px">specialist-swarm reading of the same filing — evidence display, never a score</div>
+      
+        <p style="font-size:12.5px;color:#A0AEC0;line-height:1.65;margin:0 0 8px">
+          The v5 specialist swarm read this filing's prose and produced a risk-channel posture —
+          <strong style="color:#E2E8F0">level high / flag normal</strong>
+          (aggregation <code>count2</code>, insider gate
+          <code>false</code>). Posture is display-layer evidence
+          context for the Canada page — it never enters composite scoring for evidence-tier names.
+        </p>
+        <div style="font-size:11.5px;color:#718096">Flagged drivers (counts and classifications, no judgments):</div>
+        <ul style="font-size:11.5px;color:#A0AEC0;margin:4px 0 8px 18px"><li style='margin:2px 0'>Data inconsistency</li><li style='margin:2px 0'>Declining operating cash flow</li><li style='margin:2px 0'>FX volatility on USD debt</li><li style='margin:2px 0'>Inventory valuation volatility</li><li style='margin:2px 0'>Non-GAAP metric reliance</li><li style='margin:2px 0'>Non-GAAP reliance</li><li style='margin:2px 0'>Rising operating expenses</li><li style='margin:2px 0'>currency/FX</li></ul>
+        <div style="font-size:11px;color:#718096">Per-agent contribution: bull: medium · bear: high · skeptic: medium · earningsquality: medium · macro: medium · grounding-verified
+        quotes only (verifier: <code>v5/swarm/grounding.py</code>)</div>
+    </div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">
+      <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Use YUCLAW in your research</div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">1 · Verify the record</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code>.<br>
+            No install: <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/tools/replay_lab.py">tools/replay_lab.py</a>
+            (stdlib only) against the published bundle.<br>
+            Exit 0 = every statistic and ledger root reproduced. <a href="replication.html">How to report a replication →</a>
+          </p>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">2 · Inspect one evidence trace</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            One real Suncor 6-K, end to end:<br>
+            filing → exhibit → extracted prose → event type → grade → C6 posture.<br>
+            <a href="trace_su.html">Open the trace →</a> ·
+            <a href="examples/evidence_memo_su.md">example evidence memo (Suncor) →</a>
+          </p>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">3 · Cite a research lens</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            Every evidence packet ships a ready citation snippet<br>
+            (version, data-through, build date, source commit).<br>
+            <a href="validation_lab.html#evidence-packet">Get the citation →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      YUCLAW evidence trace · SU 6-K <code>0001104659-26-055746</code> ·
+      rebuilt 2026-07-16 08:16 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> ·
+      research &amp; education only
+    </div>
+  </div>
+</body>
+</html>

@@ -28,7 +28,14 @@ def _parse_as_of(raw: Optional[str]) -> Optional[datetime]:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw memo", description="Generate a v4 research memo.")
-    p.add_argument("ticker")
+    p.add_argument("ticker", nargs="?", default=None,
+                   help="positional: legacy signal memo for a scored ticker")
+    p.add_argument("--ticker", dest="evidence_ticker", metavar="TICKER",
+                   help="EVIDENCE MEMO (usefulness build): what changed in this "
+                        "name's filings evidence — deterministic table + grounded, "
+                        "citation-verified narrative. Works for evidence-tier names.")
+    p.add_argument("--days", type=int, default=30,
+                   help="evidence-memo window in days (default 30)")
     p.add_argument("--as-of", help="YYYY-MM-DD (or ISO-8601) point-in-time replay")
     p.add_argument("--include-score", action="store_true",
                    help="surface numeric scores (default off — memos are score-free prose)")
@@ -36,6 +43,19 @@ def main(argv: list[str] | None = None) -> int:
                    help=f"evidence items (default {MEMO_N_EVIDENCE}, max {MEMO_N_EVIDENCE_MAX})")
     p.add_argument("--json", action="store_true", help="emit MemoOutput JSON instead of Markdown")
     a = p.parse_args(argv)
+
+    if a.evidence_ticker:
+        # Evidence memo — on-demand only; the one GPU touchpoint, via gpu-lock.
+        from v4.memo.evidence_memo import MemoGenerationError, generate_evidence_memo
+        try:
+            print(generate_evidence_memo(a.evidence_ticker, days=a.days))
+        except MemoGenerationError as e:
+            print(f"[memo] generation FAILED (memo not produced): {e}", file=sys.stderr)
+            return 1
+        return 0
+
+    if not a.ticker:
+        p.error("provide a positional TICKER (legacy signal memo) or --ticker (evidence memo)")
 
     try:
         m = generate_memo(a.ticker, as_of=_parse_as_of(a.as_of),

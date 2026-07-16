@@ -110,12 +110,15 @@ def _row_html(r: dict[str, Any]) -> str:
 
 
 def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
+    from v3.web.useful_blocks import status_block_html, use_in_research_html
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
     table_body = "".join(_row_html(r) for r in rows) or (
         "<tr><td colspan='3' style='padding:14px;color:#718096;font-style:italic'>"
         "Forward Tracking Ledger Day 0 — first signals materialize at 17:00 MDT cron."
         "</td></tr>")
+    use_research_block = use_in_research_html(None)
+    status_block = status_block_html()
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -267,6 +270,10 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       </div>
     </details>
 
+    {use_research_block}
+
+    {status_block}
+
     <div class="card">
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
@@ -286,6 +293,9 @@ yuclaw verify NVDA --as-of 2026-05-20   # check the public ledger</pre>
       YUCLAW v5.0.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
+      <a href="replication.html">Replication</a> ·
+      <a href="todays_evidence.html">Today's Evidence Changes</a> ·
+      <a href="lane.html">YUCLAW's Lane</a> ·
       MIT Licensed
     </div>
   </div>

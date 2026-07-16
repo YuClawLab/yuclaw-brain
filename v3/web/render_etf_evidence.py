@@ -19,6 +19,9 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
+from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+                                  status_block_html as _shared_status_block,
+                                  use_in_research_html as _use_in_research)
 
 # display-layer neutral vocabulary (matches the Validation Lab; locked internal
 # signal labels are unchanged)
@@ -363,6 +366,12 @@ def render() -> str:
         </p>
       </div>
     </details>
+
+    {_packet_block("open_index")}
+
+    {_use_in_research("packets/yuclaw_open_index_evidence_packet.zip")}
+
+    {_shared_status_block()}
 
     <div class="disclaimer">
       <strong>Disclaimer —</strong> {escape(DISCLAIMER_FULL)}
