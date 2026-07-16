@@ -116,6 +116,7 @@ def process_batch(limit: int = 5) -> dict:
         "accepted": 0,
         "no_event": 0,
         "rejected": 0,
+        "duplicate": 0,
         "errors": 0,
     }
 
@@ -219,6 +220,31 @@ def process_batch(limit: int = 5) -> dict:
                 publish_time = row["source_publish_time"]
                 ch = _content_hash(ticker, llm_json["event_type"], llm_json["raw_excerpt"])
                 eid = _event_id(ticker, ch, publish_time)
+
+                # event_id is built from the LOCAL publish day while the dedup
+                # index below is keyed on the UTC day, so two same-content
+                # filings straddling UTC midnight dodge ON CONFLICT yet collide
+                # on events_pkey — aborting the whole batch and poisoning the
+                # queue head (IAG 2026-02-17 pair, 2026-07-15 stall). Treat an
+                # existing event_id as the duplicate it is: audit + mark done.
+                cur.execute("SELECT 1 FROM events WHERE event_id=%s", (eid,))
+                if cur.fetchone():
+                    cur.execute(
+                        """INSERT INTO rejected_events
+                               (raw_id, ticker, reject_reason, llm_output)
+                           VALUES (%s, %s, %s, %s)""",
+                        (row["raw_id"], ticker,
+                         f"DUPLICATE_EVENT_ID: {eid}", json.dumps(llm_json)),
+                    )
+                    cur.execute(
+                        "UPDATE events_raw SET extraction_status='done' WHERE raw_id=%s",
+                        (row["raw_id"],),
+                    )
+                    stats["duplicate"] += 1
+                    print(f"[event_worker] duplicate event_id {eid} "
+                          f"(raw_id={row['raw_id']}, accession="
+                          f"{row['accession_number']}) — marked done", flush=True)
+                    continue
 
                 cur.execute(
                     """INSERT INTO events (
