@@ -9,6 +9,11 @@ and postures are research classifications, not recommendations.*
 
 Install: `pip install yuclaw`
 
+> The `events` / `lens` / `export` / `memo` subcommands ship in the next PyPI
+> release; until then run them from a checkout: `python3 -m v3.cli ...`
+> (memo: `python3 -m v4.memo.cli ...`). `yuclaw replay-lab` works in the
+> published 5.0.0 today.
+
 ---
 
 ## yuclaw events — accepted-events export

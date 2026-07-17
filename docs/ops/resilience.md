@@ -126,3 +126,4 @@ cannot come back if the underlying link is down and NM refuses to reconnect.
 - The stored git credential (`~/.git-credentials`) lacks `workflow` scope;
   pushes touching `.github/workflows/` must use the gh keyring token
   (`gh auth token`) as done in this order, or the PAT needs the scope added.
+- Pages deploy failure mode added: build-level failure (Jekyll/Liquid), distinct from push-≠-live; `.nojekyll` is the guard.

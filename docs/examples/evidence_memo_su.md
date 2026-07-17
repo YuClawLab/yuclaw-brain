@@ -1,7 +1,7 @@
 # Evidence memo — Suncor Energy Inc (SU)
 
-*Window: last 90 days (2026-04-17 → 2026-07-16) ·
-generated 2026-07-16 08:12 UTC · evidence grade A (events + prose evidence)*
+*Window: last 90 days (2026-04-18 → 2026-07-17) ·
+generated 2026-07-17 04:08 UTC · evidence grade A (events + prose evidence)*
 
 ## Research question
 
@@ -19,11 +19,11 @@ What changed in Suncor Energy Inc's filings evidence over the last 90 days?
 
 ## Change narrative
 
-Over the last 90 days, Suncor Energy Inc's SEC filings indicate that the company released its first quarter financial results on May 5, 2026 [SU_20260421_369d8cdc9530]. The results included adjusted funds from operations of over $4.0 billion and free funds flow of $2.9 billion [SU_20260506_2759fceebeac]. Suncor Energy also declared a dividend on May 5, 2026 [SU_20260505_94896f7ac85f] and reported voting results from its Annual General Meeting on the same day [SU_20260505_737095da0df7]. Additionally, the company filed its Extractive Sector Transparency Measures Act Report for the reporting year January 1, 2025 to December 31, 2025 on May 14, 2026 [SU_20260514_dcaad7aa1c9f].
+On April 21, 2026, Suncor Energy announced it would release its first quarter financial results on May 5, 2026 before 5:00 p.m. MT (7:00 p.m. ET) [SU_20260421_369d8cdc9530]. On May 5, 2026, the company declared a dividend [SU_20260505_94896f7ac85f] and reported voting results from its Annual General Meeting [SU_20260505_737095da0df7]. The same day, Suncor Energy also announced it had generated over $4.0 billion in adjusted funds from operations and $2.9 billion in free funds flow [SU_20260506_2759fceebeac]. On May 14, 2026, the company filed its Extractive Sector Transparency Measures Act Report for the reporting year January 1, 2025 to December 31, 2025 [SU_20260514_dcaad7aa1c9f].
 
 ## Risk-gate note
 
-C6 posture ran on 1 filing(s) in the window; no elevated flag.
+C6 posture ran on 1 filing in the window; no elevated flag.
 
 C6 out-of-sample status (approved wording): rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16).
 

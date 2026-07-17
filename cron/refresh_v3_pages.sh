@@ -48,6 +48,11 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_replication || exit 13
 /usr/bin/python3 -m v3.web.render_lane || exit 14
 
+# Language rail (pages mode): regenerated prose must stay inside the locked
+# public vocabulary. Hard gate before anything is committed — same contract
+# as the deploy-verify gate below (nonzero exit aborts the chain).
+/usr/bin/python3 tools/check_language.py --pages docs/*.html || exit 16
+
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }

@@ -186,6 +186,14 @@ def _kv_list(d: dict, empty: str) -> str:
     return " · ".join(f"{escape(str(k))}×{v}" for k, v in sorted(d.items()))
 
 
+def _form_label(form: str) -> str:
+    """Bare numeric SEC form names ("4", "3", "144", "4/A") read ambiguously in
+    the "<form>×<count>" list — prefix them with "Form". Display-only; the
+    archive JSON keeps the raw form keys."""
+    core = form.split("/")[0]
+    return f"Form {form}" if core.isdigit() else form
+
+
 def render(state: dict, diffs: dict) -> str:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     c = state["counts"]
@@ -224,7 +232,7 @@ def render(state: dict, diffs: dict) -> str:
                 f"<td style='padding:9px 14px;font-size:12.5px;color:#A0AEC0;line-height:1.6'>{body}</td></tr>")
 
     rows = "".join([
-        row("New filings ingested", _kv_list(c["new_filings"], "none")),
+        row("New filings ingested", _kv_list({_form_label(k): v for k, v in c["new_filings"].items()}, "none")),
         row("New accepted events", _kv_list(c["new_events"], "none")),
         row("Grade changes", grade_html),
         row("C6 posture changes", posture_html),

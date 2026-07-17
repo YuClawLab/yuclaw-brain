@@ -84,7 +84,11 @@ RESEARCH_FOOTER = (
 
 _CITE_RE = re.compile(r"\[([A-Za-z0-9_.-]+)\]")
 _NUM_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
-_SENT_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
+# Don't split on abbreviations ("Inc.", "p.m.", "U.S." — any dot-letter-dot
+# tail), and don't split between a terminal period and a citation bracket
+# ("... 2026. [SU_...]") — both orphan a real sentence from its citation and
+# spuriously fail the grounding verifier.
+_SENT_SPLIT_RE = re.compile(r"(?<=[.!?])(?<!Inc\.)(?<!\.[A-Za-z]\.)\s+(?!\[)")
 
 
 class MemoGenerationError(RuntimeError):
@@ -282,11 +286,12 @@ Describe what changed in the company's SEC-filings evidence over the last {ev['d
 
 STRICT RULES — the memo is machine-verified and rejected on any violation:
 1. Write 2 to 5 plain-prose sentences. No headers, no bullets, no preamble.
-2. EVERY sentence must end with one or more citations in square brackets, e.g. ... [{ev['events'][0]['event_id'] if ev['events'] else 'EVENT_ID'}].
+2. EVERY sentence must end with one or more citations in square brackets, placed BEFORE the sentence's final period, e.g. "... on May 5, 2026 [{ev['events'][0]['event_id'] if ev['events'] else 'EVENT_ID'}]."
 3. Cite only event IDs from the list below. Never invent an ID.
 4. Every number you write must appear verbatim in the quoted text of an event you cite in that same sentence. If unsure, write the sentence without the number.
 5. Describe filings evidence only. Never use these words: buy, sell, hold, undervalued, overvalued, top pick, alpha, opportunity, recommend, forecast, outperform, upside, price target. Never give advice or predictions.
 6. Neutral research register: state what was filed and classified, nothing more.
+7. If a quoted excerpt announces a FUTURE action ("will release", "plans to", "intends to"), describe it as an announcement — "announced it would release ..." — never as if the action already happened. The cited event is the announcement, not the occurrence. Keep the future action's date attached to the action ("announced it would release results on May 5, 2026"), never fronted as if it were the announcement date.
 {feedback}
 EVIDENCE ITEMS:
 {chr(10).join(lines)}
@@ -302,6 +307,10 @@ def _date_forms(iso: str) -> str:
         return f"{iso} {d.year} {d.month} {d.day}"
     except ValueError:
         return iso
+
+
+_FUTURE_VERB_RE = re.compile(r"\bwill\s+([a-z]+)")
+_FUTURE_VERB_SKIP = frozenset(("be", "not", "also", "no", "have", "continue", "remain"))
 
 
 def _verify_narrative(narrative: str, ev: dict) -> list[str]:
@@ -326,6 +335,18 @@ def _verify_narrative(narrative: str, ev: dict) -> list[str]:
         ok, missing = _numbers_verified(s, corpus)
         if not ok:
             failures.append(f"number(s) {missing} not found in cited quotes: \"{s[:110]}\"")
+        # Announcement events must never be described as the occurrence itself:
+        # a cited quote saying "will <verb>" may not back a sentence claiming
+        # "<verb>ed" unless the sentence frames it as an announcement.
+        if "announc" not in s.lower():
+            for c in valid:
+                for verb in _FUTURE_VERB_RE.findall(by_id[c]["quote"].lower()):
+                    if verb in _FUTURE_VERB_SKIP:
+                        continue
+                    if re.search(rf"\b{re.escape(verb)}e?d\b", s.lower()):
+                        failures.append(
+                            f"announcement event {c} described as the occurrence — "
+                            f"write \"announced it would {verb} ...\": \"{s[:110]}\"")
     return failures
 
 
@@ -359,14 +380,18 @@ def _generate_narrative(ev: dict, model: str) -> str:
 # --------------------------------------------------------------------------- #
 # deterministic sections
 # --------------------------------------------------------------------------- #
+def _n_filings(n: int) -> str:
+    return f"{n} filing" + ("" if n == 1 else "s")
+
+
 def _risk_gate_note(ev: dict) -> str:
     postures = [e["c6_posture"] for e in ev["events"] if e["c6_posture"] != "—"]
     fired = [p for p in postures if p.endswith("/ elevated")]
     if fired:
-        state = (f"C6 posture flagged **elevated** on {len(fired)} filing(s) in the window "
+        state = (f"C6 posture flagged **elevated** on {_n_filings(len(fired))} in the window "
                  f"(risk display; never a directional signal).")
     elif postures:
-        state = (f"C6 posture ran on {len(postures)} filing(s) in the window; "
+        state = (f"C6 posture ran on {_n_filings(len(postures))} in the window; "
                  f"no elevated flag.")
     else:
         state = "No C6 posture artifact exists for filings in the window."
