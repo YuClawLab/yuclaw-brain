@@ -324,12 +324,28 @@ def _d(s):
 BUNDLE_URL = "https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json"
 
 
+# Exit codes: 0 = reproduced, 1 = statistic/root mismatch, 2 = argparse,
+# 3 = could not fetch the published bundle (network/proxy — not a data problem).
+EXIT_FETCH_FAILED = 3
+
+
+class _FetchError(Exception):
+    pass
+
+
 def _fetch(url: str) -> str:
     import tempfile
+    import urllib.error
     import urllib.request
     print(f"fetching {url} ...")
     req = urllib.request.Request(url, headers={"User-Agent": "yuclaw-replay-lab"})
-    data = urllib.request.urlopen(req, timeout=120).read()
+    try:
+        data = urllib.request.urlopen(req, timeout=120).read()
+    except urllib.error.HTTPError as e:
+        raise _FetchError(f"HTTP {e.code} fetching the replay bundle\n  URL: {url}") from e
+    except (urllib.error.URLError, TimeoutError, OSError) as e:
+        reason = getattr(e, "reason", e)
+        raise _FetchError(f"could not reach the replay-bundle host ({reason})\n  URL: {url}") from e
     tmp = tempfile.NamedTemporaryFile(suffix=".json", delete=False)
     tmp.write(data)
     tmp.close()
@@ -347,7 +363,14 @@ def main(argv=None):
     p.add_argument("--check", action="store_true",
                    help="explicit check mode (same as the default behavior)")
     a = p.parse_args(argv)
-    path = a.bundle or _fetch(BUNDLE_URL)
+    try:
+        path = a.bundle or _fetch(BUNDLE_URL)
+    except _FetchError as e:
+        print(f"\n[replay-lab] bundle fetch failed: {e}\n"
+              f"  Check connectivity/proxy and retry. The bundle is also downloadable\n"
+              f"  manually at {BUNDLE_URL} — then run:\n"
+              f"  yuclaw replay-lab /path/to/lab_replay_bundle.json", file=sys.stderr)
+        return EXIT_FETCH_FAILED
     return _run(path)
 
 

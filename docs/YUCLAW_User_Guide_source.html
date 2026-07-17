@@ -103,8 +103,9 @@ table.ref tr { page-break-inside: avoid; }
 <h2 id="s2"><span class="n">2</span>Install and your first signal</h2>
 <p><b>Requirements:</b> Python 3.10 or newer, <span class="mono">pip</span>, and an internet connection. No GPU is needed to use published signals or reproduce the Validation Lab.</p>
 <div class="term"><span class="p">$</span> pip install yuclaw
-<span class="p">$</span> yuclaw why NVDA</div>
-<p>You will see output shaped like this (abbreviated):</p>
+<span class="p">$</span> yuclaw demo                        <span class="c"># 3-minute guided journey — works offline, zero config</span>
+<span class="p">$</span> yuclaw why AMD --as-of 2026-05-20 <span class="c"># bundled offline signal, no backend needed</span></div>
+<p>Live signals for <b>all</b> tickers need the local backend (<span class="mono">docs/v4/backend_setup.md</span>); the published-data commands &mdash; <span class="mono">replay-lab</span>, <span class="mono">verify</span>, <span class="mono">validation</span> &mdash; work anywhere with no backend. With the backend running, <span class="mono">yuclaw why NVDA</span> produces output shaped like this (backend-mode output, abbreviated):</p>
 <div class="term">NVDA composite score: +0.299  (signal label: NEUTRAL)
 
 Components (score &times; weight &times; confidence):
@@ -216,6 +217,7 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <table class="ref">
   <tr><th>SYMPTOM</th><th>CAUSE &amp; FIX</th></tr>
   <tr><td><span class="mono">events / lens / export / memo</span> not recognized</td><td>Pip 5.0.0 predates these subcommands. Run from a <span class="mono">main</span> checkout: <span class="mono">python3 -m v3.cli ...</span> (Section 2). They ship in the next PyPI release.</td></tr>
+  <tr><td><span class="mono">why TICKER</span> says it needs a backend</td><td>Expected from a bare pip install. Run <span class="mono">yuclaw demo</span> or <span class="mono">yuclaw why AMD --as-of 2026-05-20</span> (bundled offline signal); the published-record commands (<span class="mono">replay-lab</span>, <span class="mono">verify</span>, <span class="mono">validation</span>) work anywhere. Live signals for all tickers: <span class="mono">docs/v4/backend_setup.md</span>.</td></tr>
   <tr><td><span class="mono">replay-lab</span> exits non-zero</td><td>That is the alarm working. Re-run once (transient network), then open a GitHub issue with the replication template &mdash; a reproducible mismatch is a high-value report.</td></tr>
   <tr><td>Dashboard looks stale</td><td>Check the freshness stamp on the page. Pages regenerate daily after U.S. market close; outages are disclosed on the Lab page, never backfilled.</td></tr>
   <tr><td><span class="mono">memo</span> fails without a database</td><td>Memos need the full local deployment (Section 7). Read the demo memo instead, or run the rest of the CLI, which works off published data.</td></tr>

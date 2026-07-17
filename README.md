@@ -52,12 +52,19 @@ Signal labels are research classifications, not buy/sell recommendations.
 
 ## Sixty seconds
 
-Ask the engine to show its work:
-
 ```bash
 pip install yuclaw
-yuclaw why NVDA
+yuclaw demo                        # 3-minute guided journey — works offline, zero config
+yuclaw why AMD --as-of 2026-05-20  # bundled offline signal, no backend needed
 ```
+
+Live signals for **all** tickers need the local backend
+([docs/v4/backend_setup.md](docs/v4/backend_setup.md)); the published-data
+commands — `yuclaw replay-lab`, `yuclaw verify`, `yuclaw validation` — work
+anywhere with no backend.
+
+With the backend running, `yuclaw why NVDA` looks like this (backend-mode
+output):
 
 ```text
 NVDA composite score: +0.299  (signal label: NEUTRAL)
@@ -315,8 +322,10 @@ docs/methodology/   Methodology + limitations + leak audit + Lab methodology
 
 Read from the live systemd units and `crontab -l`, not aspirational:
 
-- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep across the 112-CIK
-  EDGAR universe (79-name scoring universe + 49-filer Canada Resources evidence tier).
+- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep across 127 universe
+  tickers resolving to 112 distinct EDGAR CIKs (79-name scoring universe + 49-filer Canada
+  Resources evidence tier; ETF share classes share issuer-trust CIKs, and one macro
+  instrument has no EDGAR CIK).
 - **Event worker** — systemd timer, every 15 min, GPU-guarded: 70B extraction + SourceLock +
   live reclassify + prose-first persistence. Exits cleanly when the box is busy.
 - **Daily pipeline** — weekdays 17:00 MDT: healthcheck → snapshots → outcomes → radar →

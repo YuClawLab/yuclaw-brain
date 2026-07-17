@@ -186,6 +186,11 @@ def _kv_list(d: dict, empty: str) -> str:
     return " · ".join(f"{escape(str(k))}×{v}" for k, v in sorted(d.items()))
 
 
+def _plural(n: int, noun: str, count: bool = True) -> str:
+    word = noun + ("" if n == 1 else "s")
+    return f"{n} {word}" if count else word
+
+
 def _form_label(form: str) -> str:
     """Bare numeric SEC form names ("4", "3", "144", "4/A") read ambiguously in
     the "<form>×<count>" list — prefix them with "Form". Display-only; the
@@ -237,8 +242,9 @@ def render(state: dict, diffs: dict) -> str:
         row("Grade changes", grade_html),
         row("C6 posture changes", posture_html),
         row("Newly matured CAR events", matured_html),
-        row("Form-4 arrivals", f"{f4['filings']} filing(s) → {f4['buys']} buy / {f4['sells']} sell "
-                               f"event(s) across {f4['tickers']} ticker(s)"),
+        row("Form-4 arrivals", f"{_plural(f4['filings'], 'filing')} → {f4['buys']} buy / {f4['sells']} sell "
+                               f"{_plural(f4['buys'] + f4['sells'], 'event', count=False)} across "
+                               f"{_plural(f4['tickers'], 'ticker')}"),
         row("Failed-ingestion notes", fail_html),
         row("Ledger root", f"block {escape(str(ledger.get('date')))} · "
                            f"<code>{escape(str(ledger.get('root') or '')[:16])}…</code> · "

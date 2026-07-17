@@ -33,6 +33,20 @@ import psycopg2
 import psycopg2.extras
 
 DEFAULT_OUT = Path(__file__).resolve().parents[2] / "docs" / "index.html"
+
+_LEDGER_JSONL = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
+
+
+def _latest_ledger_date() -> str:
+    """Date of the newest Verified Research Ledger block, for the install
+    block's `yuclaw verify` example — a date guaranteed to have an entry.
+    Falls back to a known-good block date if the ledger clone is absent."""
+    try:
+        import json
+        last = _LEDGER_JSONL.read_text().strip().rsplit("\n", 1)[-1]
+        return json.loads(last)["date"]
+    except Exception:
+        return "2026-07-16"
 DB_DSN = "dbname=yuclaw_events"
 
 # Locked sentiment vocabulary — anything outside this set on the homepage is a bug.
@@ -228,7 +242,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         <div class="bullets">
           <div class="bullet">
             <h3>1 · Evidence layer</h3>
-            <p>SEC EDGAR filings (Form 4, 8-K, 10-Q, 10-K, 6-K) are extracted with a local Llama 3.1 70B model. A deterministic SourceLock Guard validates every extraction against the source text before any signal sees it.</p>
+            <p>SEC EDGAR filings (Form 4, 8-K, 10-Q, 10-K, 6-K, 40-F) are extracted with a local Llama 3.1 70B model. A deterministic SourceLock Guard validates every extraction against the source text before any signal sees it.</p>
           </div>
           <div class="bullet">
             <h3>2 · Composite scoring</h3>
@@ -267,7 +281,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 pip install yuclaw
 yuclaw demo                         # 3-minute guided "Why AMD?" journey
 yuclaw why NVDA                     # signal + evidence trail
-yuclaw verify NVDA --as-of 2026-05-20   # check the public ledger</pre>
+yuclaw verify NVDA --date {_latest_ledger_date()}   # check the public ledger</pre>
       <p style="font-size:12px;color:#718096;margin-top:10px">
         SDK + REST API + MCP server documented at
         <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#00E676">github.com/YuClawLab/yuclaw-brain</a>.
