@@ -18,6 +18,7 @@ Signal labels are research classifications, not buy/sell recommendations.
 
 [Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) ·
 [Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
+[Canada Resources Evidence](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html) ·
 [Open Index Evidence](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) ·
 [Quickstart](#sixty-seconds) ·
 [Methodology](docs/methodology/backfill.md) ·
@@ -101,8 +102,9 @@ recomputed)** and every published statistic, exit 0. It exits non-zero on any mi
 | **Two-tier local inference** | Gemma 4 26B A4B worker (specialists/debate) + Llama 3.1 70B (extraction/synthesis), both via local Ollama (`21bdbc17`) | Live — zero cloud LLM dependency |
 | **Prose-first ingestion** | worker persists exhibit/MD&A prose; corpus grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85 (`f130983e`, live port `b1b153a0`) | Live |
 | **Live reclassify rescue** | corrected event-type layer reproduces the stored corpus 97/97 (`67487eb2`) | Live |
-| **C6 risk channel** | Rare-by-construction confirmed out-of-sample (22% fire rate, n=9 held-out); sign positive at n=2 elevated — accruing. (`c28f8542`, `aba72e89`) | Partial — sign pending |
+| **C6 risk channel** | rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16) (`c28f8542`, `aba72e89`) | Partial — sign pending |
 | **Layers 2–10** | roadmap — **explicitly gated on out-of-sample sign confirmation** for the risk channel | Gated, not built |
+| **Canada Resources evidence tier** | 49 SEC filers across XEG/ZEO/GDX/URNM; 6-K/40-F prose path; evidence-only, never scored; MJDS insider scope disclosed ([live dashboard](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html)) | Live |
 
 ---
 
@@ -125,6 +127,10 @@ yuclaw profile show                # Local preferences
 
 Worked examples with real output: [docs/usage.md](docs/usage.md).
 
+> **PyPI 5.0.0 note:** the `events` / `lens` / `export` / `memo` subcommands ship in the
+> next PyPI release; until then run them from a main checkout (`python3 -m v3.cli ...`;
+> memo: `python3 -m v4.memo.cli ...`). Everything else above works in the published 5.0.0.
+
 **Public signal vocabulary:** `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`,
 `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.
 There is no `SELL` or `SHORT` label — these are research classifications, not trade directions.
@@ -134,16 +140,18 @@ There is no `SELL` or `SHORT` label — these are research classifications, not 
 ## How it works
 
 ```
-SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K)
+SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K / 40-F)
         │
         ▼
 systemd poller (always-on, 5-min sweep)
+        │
+        ├──▶  Form 4 → deterministic XML parser (no LLM, zero GPU) → events table
         │
         ▼
 prose-first text acquisition  ← exhibit / MD&A prose persisted; XBRL cover is the fallback
         │
         ▼
-Llama 3.1 70B extraction  +  SourceLock Guard   ← every extraction validated against source text
+Llama 3.1 70B extraction  +  SourceLock Guard   ← every extraction checked against source text
         │
         ▼
 live event-type rescue (corrected-type layer, reproduction 97/97)
@@ -199,7 +207,15 @@ investment merit.
 **Multi-surface access.** Python SDK (`pip install yuclaw`), REST API, FastMCP stdio server
 (7 tools), and CLI.
 
-**~80-ticker universe.** Equities + sector ETFs + broad ETFs + macro instruments.
+**128-name universe.** A 79-name scoring universe (equities + sector ETFs + broad ETFs +
+macro instruments) plus a 49-filer Canada Resources evidence tier — ingested and
+dashboarded, never scored; the boundary is machine-enforced
+(`verify_evidence_tier_boundary`, 21 regression tests).
+
+**Evidence memos.** `yuclaw memo` produces a citable research memo where every sentence
+cites an event ID; a deterministic verifier checks each citation against source text and a
+linter enforces the restricted conclusion vocabulary.
+[Approved demo](docs/examples/evidence_memo_su.md).
 
 ---
 
@@ -224,6 +240,8 @@ to protocol grade in v5.0:
 In the Lab's own words: *"No forward alpha has been statistically proven yet."*
 
 🔬 **Live:** [Signal Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html)
+· [Today's Evidence Digest](https://yuclawlab.github.io/yuclaw-brain/todays_evidence.html)
+· [Independent Replication Log](https://yuclawlab.github.io/yuclaw-brain/replication.html)
 · **Methodology:** [docs/methodology/validation_lab.md](docs/methodology/validation_lab.md)
 
 *Hypothetical research illustration — not investment advice, not performance advertising.*
@@ -244,9 +262,8 @@ The honest limits, stated up front:
   evidence-extraction model's training cutoff overlaps that window, so in-sample results
   carry a parametric look-ahead bias and are systematically optimistic.
 
-- **C6 risk channel is partially confirmed.** Rare-by-construction confirmed out-of-sample
-  (22% fire rate, n=9 held-out); sign positive at n=2 elevated — accruing. The sign
-  confirmation is the gate for Layers 2–10, and it has not been met.
+- **C6 risk channel is partially confirmed.** rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16).
+  The sign confirmation is the gate for Layers 2–10, and it has not been met.
 
 - **C4 macro regime is temporarily frozen as of 2026-05-18** with a staleness disclosure,
   pending macro-engine restoration — its only upstream is the retired v2.3 macro engine, and
@@ -297,7 +314,8 @@ docs/methodology/   Methodology + limitations + leak audit + Lab methodology
 
 Read from the live systemd units and `crontab -l`, not aspirational:
 
-- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep over the ~80-CIK universe.
+- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep across the 112-CIK
+  EDGAR universe (79-name scoring universe + 49-filer Canada Resources evidence tier).
 - **Event worker** — systemd timer, every 15 min, GPU-guarded: 70B extraction + SourceLock +
   live reclassify + prose-first persistence. Exits cleanly when the box is busy.
 - **Daily pipeline** — weekdays 17:00 MDT: healthcheck → snapshots → outcomes → radar →
