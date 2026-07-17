@@ -34,19 +34,6 @@ import psycopg2.extras
 
 DEFAULT_OUT = Path(__file__).resolve().parents[2] / "docs" / "index.html"
 
-_LEDGER_JSONL = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
-
-
-def _latest_ledger_date() -> str:
-    """Date of the newest Verified Research Ledger block, for the install
-    block's `yuclaw verify` example — a date guaranteed to have an entry.
-    Falls back to a known-good block date if the ledger clone is absent."""
-    try:
-        import json
-        last = _LEDGER_JSONL.read_text().strip().rsplit("\n", 1)[-1]
-        return json.loads(last)["date"]
-    except Exception:
-        return "2026-07-16"
 DB_DSN = "dbname=yuclaw_events"
 
 # Locked sentiment vocabulary — anything outside this set on the homepage is a bug.
@@ -280,8 +267,9 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
                   font-family:JetBrains Mono,monospace;font-size:13px;color:#E2E8F0;overflow-x:auto">
 pip install yuclaw
 yuclaw demo                         # 3-minute guided "Why AMD?" journey
-yuclaw why NVDA                     # signal + evidence trail
-yuclaw verify NVDA --date {_latest_ledger_date()}   # check the public ledger</pre>
+yuclaw why AMD --as-of 2026-05-20   # bundled offline signal
+yuclaw verify AMD --date 2026-05-20 # check the ledger record
+# all tickers/dates: connect the local backend — see README</pre>
       <p style="font-size:12px;color:#718096;margin-top:10px">
         SDK + REST API + MCP server documented at
         <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#00E676">github.com/YuClawLab/yuclaw-brain</a>.

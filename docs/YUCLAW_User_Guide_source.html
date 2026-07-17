@@ -165,8 +165,8 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <span class="c"># re-derives every ledger hash root &mdash; exit 0 on exact match, non-zero on ANY mismatch</span></div>
 <p>This runs from a brand-new environment with nothing but the pip install. At the v5.0.0 release it reproduced every published daily ledger root and statistic exactly from a fresh venv. A standalone stdlib script (<span class="mono">tools/replay_lab.py</span>) does the same with no dependencies at all.</p>
 <h3>5.2 &nbsp;Check a specific signal against the public ledger</h3>
-<div class="term"><span class="p">$</span> yuclaw verify NVDA --date 2026-07-10</div>
-<p>Recomputes the signal&rsquo;s hash and checks it against the git-anchored ledger in <span class="mono">yuclaw-trust</span> &mdash; independent confirmation that the record hasn&rsquo;t been edited since publication.</p>
+<div class="term"><span class="p">$</span> yuclaw verify AMD --date 2026-05-20 <span class="c"># works from bare pip — bundled ledger record</span></div>
+<p>Recomputes the signal&rsquo;s hash and checks it against the git-anchored ledger in <span class="mono">yuclaw-trust</span> &mdash; independent confirmation that the record hasn&rsquo;t been edited since publication. For any other ticker/date, clone <span class="mono">github.com/YuClawLab/yuclaw-trust</span> next to your working directory (the full public ledger) or connect the local backend.</p>
 <h3>5.3 &nbsp;Replay any signal as of a past date</h3>
 <div class="term"><span class="p">$</span> yuclaw replay NVDA --date 2026-06-02</div>
 <p>Point-in-time filtering (<span class="mono">available_as_of &le; as_of</span>) guarantees the replay uses only information that existed on that date. The same capability is exposed over REST (<span class="mono">/replay</span>) and MCP (<span class="mono">yuclaw_replay</span>).</p>
