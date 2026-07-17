@@ -24,7 +24,7 @@ from pathlib import Path
 
 import psycopg2
 
-from v3.web.useful_blocks import VERSION
+from v3.web.useful_blocks import VERSION, site_header_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "todays_evidence.html"
@@ -272,16 +272,7 @@ def render(state: dict, diffs: dict) -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:13px">· Today's evidence changes</span>
-      <span style="color:#718096;font-size:11px">{VERSION}</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="canada_resources.html">Canada Resources</a>
-        <a href="etf_evidence.html">Open Index</a>
-      </div>
-    </div>
+    {site_header_html(subtitle="Today's evidence changes")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Today's evidence changes — {escape(state['date'])}</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">

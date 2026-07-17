@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import VERSION, status_block_html
+from v3.web.useful_blocks import VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "lane.html"
@@ -90,16 +90,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:13px">· YUCLAW's lane</span>
-      <span style="color:#718096;font-size:11px">{VERSION}</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="replication.html">Replication</a>
-        <a href="trace_su.html">Evidence trace</a>
-      </div>
-    </div>
+    {site_header_html(subtitle="YUCLAW's lane")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">YUCLAW's lane</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.65;max-width:780px">

@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import VERSION, status_block_html
+from v3.web.useful_blocks import VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "replication.html"
@@ -105,16 +105,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:13px">· Independent Replication</span>
-      <span style="color:#718096;font-size:11px">{VERSION}</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="trace_su.html">Evidence trace</a>
-        <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
-      </div>
-    </div>
+    {site_header_html(subtitle="Independent Replication")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Replicate the record yourself</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">

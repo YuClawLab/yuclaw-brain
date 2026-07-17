@@ -19,7 +19,8 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
-from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+from v3.web.useful_blocks import (site_header_html,
+                                  packet_block_from_manifest as _packet_block,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 
@@ -238,16 +239,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Open Index Evidence</span> <span class="ver">v5.0.0</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="canada_resources.html">Canada Resources Evidence</a>
-        <a href="methodology/validation_lab.md">Methodology</a>
-        <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
-      </div>
-    </div>
+    {site_header_html(subtitle="Open Index Evidence")}
 
     <div class="fresh">
       <strong>Data through {escape(data_through)}</strong> (last completed U.S. trading day) ·

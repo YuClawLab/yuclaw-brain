@@ -30,7 +30,8 @@ from v3.lab.etf_evidence import (
 )
 from v3.universe_tiers import evidence_cik_map
 from v3.web.render_etf_evidence import car_chart
-from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+from v3.web.useful_blocks import (site_header_html,
+                                  packet_block_from_manifest as _packet_block,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 
@@ -400,15 +401,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container" id="top">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Canada Resources Evidence</span> <span class="ver">v5.0.0</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="etf_evidence.html">Open Index Evidence</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="methodology/validation_lab.md">Methodology</a>
-      </div>
-    </div>
+    {site_header_html(subtitle="Canada Resources Evidence")}
 
     <div class="lensnav"><span class="lbl">Jump to lens</span>{lensnav}</div>
 

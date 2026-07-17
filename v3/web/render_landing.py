@@ -110,7 +110,8 @@ def _row_html(r: dict[str, Any]) -> str:
 
 
 def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
-    from v3.web.useful_blocks import status_block_html, use_in_research_html
+    from v3.web.useful_blocks import (site_header_html, status_block_html,
+                                      use_in_research_html)
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
     table_body = "".join(_row_html(r) for r in rows) or (
@@ -175,22 +176,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div>
-        <span class="logo">YUCLAW</span>
-        <span class="ver">v5.0.0</span>
-      </div>
-      <div class="navlinks">
-        <a href="validation.html">Validation</a>
-        <a href="validation_lab.html">Validation Lab</a>
-        <a href="etf_evidence.html">Open Index Evidence</a>
-        <a href="canada_resources.html">Canada Resources Evidence</a>
-        <a href="https://github.com/YuClawLab/yuclaw-brain">GitHub</a>
-        <a href="https://pypi.org/project/yuclaw/">PyPI</a>
-        <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
-        <a href="methodology/backfill.md">Methodology</a>
-      </div>
-    </div>
+    {site_header_html()}
 
     <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>

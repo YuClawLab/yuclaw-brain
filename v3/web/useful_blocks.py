@@ -4,6 +4,8 @@ Shared page blocks for the usefulness build (order of 2026-07-16).
 ONE source file for content that renders on multiple pages, so the copies can
 never drift:
 
+  - site_header_html()       — site-standard header: logo + version badge +
+                               full nav chips (every public page)
   - status_block_html()      — "What is proven / not proven / accruing"
                                (Dashboard + Lab + Canada + Open Index)
   - use_in_research_html()   — "Use YUCLAW in your research" 3-path entry block
@@ -37,6 +39,55 @@ def load_packet_manifest(kind: str) -> dict | None:
         return json.loads(m.read_text()).get(kind)
     except Exception:
         return None
+
+# ---------------------------------------------------------------------------
+# Site-standard header (one source, every page) — YUCLAW + version badge +
+# full nav chips + optional page subtitle + optional right-side stamp.
+# Fully inline-styled so it renders identically regardless of page CSS.
+# ---------------------------------------------------------------------------
+_NAV_CHIPS = (
+    ("Forward Tracking", "validation.html"),
+    ("Validation Lab", "validation_lab.html"),
+    ("Open Index Evidence", "etf_evidence.html"),
+    ("Canada Resources Evidence", "canada_resources.html"),
+    ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
+    ("PyPI", "https://pypi.org/project/yuclaw/"),
+    ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),
+    ("Methodology", "methodology/backfill.md"),
+    ("Home", "index.html"),
+)
+
+
+def site_header_html(subtitle: str = "", stamp: str = "") -> str:
+    """The shared site header. Rendered identically on every page that calls it."""
+    chips = "".join(
+        f'<a href="{href}" style="color:#A0AEC0;text-decoration:none;font-size:12px;'
+        f'padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">'
+        f"{escape(label)}</a>"
+        for label, href in _NAV_CHIPS)
+    sub = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">'
+           f"{escape(subtitle)}</span>") if subtitle else ""
+    right = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;'
+             f'white-space:nowrap">{escape(stamp)}</span>') if stamp else ""
+    return f"""
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+          style="color:#00E676">CLAW</span></span>
+        <span style="display:inline-block;background:#00E67620;color:#00E676;
+                     border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                     font-size:10px;font-weight:700;letter-spacing:0.5px;
+                     font-family:JetBrains Mono,monospace">{escape(VERSION)}</span>
+        {sub}
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        {chips}
+        {right}
+      </div>
+    </div>"""
+
 
 # The approved C6 status sentence. VERBATIM wherever C6 status appears —
 # do not paraphrase, shorten, or update outside a dedicated methodology order.

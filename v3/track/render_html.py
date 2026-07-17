@@ -112,16 +112,21 @@ def _render_row(label: str, s: dict[str, Any], color: str, is_overall: bool = Fa
     )
 
 
-def _render_panel_section(panel_key: str, panel: dict[str, Any], note: str = "") -> str:
+def _render_panel_section(panel_key: str, panel: dict[str, Any], note: str = "",
+                          header_extra: str = "", lead_html: str = "") -> str:
     title = PANEL_HEADERS[panel_key]
     date_range = (f"{panel['date_min']} → {panel['date_max']}"
                   if panel["date_min"] else "(no data)")
     note_block = (
         f"<div style='font-size:12px;color:#FBA94B;margin:8px 0 12px 0;'>"
         f"⚠ {escape(note)}</div>") if note else ""
+    extra = (f" <span style='font-weight:400;text-transform:none;letter-spacing:0;"
+             f"color:#718096;font-family:JetBrains Mono,monospace'>· {escape(header_extra)}"
+             f"</span>") if header_extra else ""
     return f"""
+    {lead_html}
     <div class='card' style='margin-bottom:24px'>
-      <div class='card-title'>{escape(title)}</div>
+      <div class='card-title'>{escape(title)}{extra}</div>
       <div style='font-size:12px;color:#A0AEC0;margin-bottom:14px;font-family:JetBrains Mono,monospace'>
         date range {date_range} &nbsp;·&nbsp; total signals {panel['n_total']}
         &nbsp;·&nbsp; directional {panel['overall']['n_directional']}
@@ -134,14 +139,26 @@ def _render_panel_section(panel_key: str, panel: dict[str, Any], note: str = "")
     """
 
 
+FROZEN_WINDOW_NOTE = (
+    "Frozen historical window (2026-02-18 → 2026-05-13) — this regime closed "
+    "when forward tracking began and is never updated, by design.")
+
+
 def render(panels: dict[str, Any]) -> str:
+    from v3.web.useful_blocks import site_header_html
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    matured_through = panels["forward"].get("matured_through")
+    fwd_extra = f"data through {matured_through}" if matured_through else ""
+    frozen_note = (
+        f"<div style='font-size:12px;color:#718096;margin:0 0 10px 0;padding:10px 14px;"
+        f"background:#10141C;border:1px solid #1E232D;border-radius:8px'>"
+        f"{escape(FROZEN_WINDOW_NOTE)}</div>")
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YUCLAW — In-Sample Validation + Forward Tracking</title>
+  <title>YUCLAW — Forward Tracking + In-Sample Validation</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
@@ -163,20 +180,21 @@ def render(panels: dict[str, Any]) -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div style="display:flex;align-items:center;gap:14px">
-        <div class="logo">YUCLAW <span>OS</span></div>
-        <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">In-Sample Validation + Forward Tracking</div>
-      </div>
-      <div style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">generated {generated_at}</div>
+    {site_header_html(subtitle="Forward Tracking + In-Sample Validation",
+                      stamp=f"generated {generated_at}")}
+
+    <div style="font-size:12px;color:#A0AEC0;margin:0 0 16px 0">
+      Cohort-level event study: <a href="validation_lab.html"
+      style="color:#00E676;text-decoration:none">Validation Lab →</a>
     </div>
 
     <div class="disclaimer">
       <strong>DISCLAIMER —</strong> {escape(COMPLIANCE_FOOTER)}
     </div>
 
-    {_render_panel_section("in_sample", panels["in_sample"], note=POINT_IN_TIME_NOTE)}
-    {_render_panel_section("forward",  panels["forward"])}
+    {_render_panel_section("forward", panels["forward"], header_extra=fwd_extra)}
+    {_render_panel_section("in_sample", panels["in_sample"], note=POINT_IN_TIME_NOTE,
+                           lead_html=frozen_note)}
 
     <div class="card">
       <div class="card-title">METHODOLOGY</div>
@@ -196,7 +214,8 @@ def render(panels: dict[str, Any]) -> str:
     </div>
 
     <div class="footer">
-      YUCLAW OS by <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW by <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      <a href="index.html">Home</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/v3.0-evidence/docs/methodology/backfill.md">Methodology</a> ·
       MIT
     </div>

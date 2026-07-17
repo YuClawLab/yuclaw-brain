@@ -92,11 +92,15 @@ def build_panels() -> dict[str, Any]:
             per_label[lbl] = _summarize([r for r in rows if r["signal_label"] == lbl])
         overall = _summarize(rows)
         date_range = ([r["signal_date"] for r in rows] or [None])
+        matured_dates = [r["signal_date"] for r in rows if r["return_1d"] is not None]
         panels[panel_name] = {
             "is_backfill": is_backfill,
             "n_total": len(rows),
             "date_min": min(date_range) if rows else None,
             "date_max": max(date_range) if rows else None,
+            # Presentation metadata only: latest signal date with a matured
+            # 1d outcome ("data through" stamp). No statistic reads this.
+            "matured_through": max(matured_dates) if matured_dates else None,
             "overall": overall,
             "per_label": per_label,
         }

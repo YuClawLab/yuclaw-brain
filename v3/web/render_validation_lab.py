@@ -25,7 +25,8 @@ from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
 from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
-from v3.web.useful_blocks import (packet_block_from_manifest as _packet_block,
+from v3.web.useful_blocks import (site_header_html,
+                                  packet_block_from_manifest as _packet_block,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 
@@ -1003,15 +1004,11 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <div><a href="index.html" class="logo">YUCLAW</a> <span style="color:#A0AEC0;font-size:14px">· Signal Validation Lab</span> <span class="ver">v5.0.0</span></div>
-      <div class="navlinks">
-        <a href="index.html">← Dashboard</a>
-        <a href="etf_evidence.html">Open Index Evidence</a>
-        <a href="canada_resources.html">Canada Resources Evidence</a>
-        <a href="methodology/validation_lab.md">Methodology</a>
-        <a href="https://github.com/YuClawLab/yuclaw-trust">Ledger</a>
-      </div>
+    {site_header_html(subtitle="Signal Validation Lab")}
+
+    <div style="font-size:12px;color:#A0AEC0;margin:0 0 14px 0">
+      Per-label hit-rate ledger: <a href="validation.html"
+      style="color:#00E676;text-decoration:none">Forward Tracking →</a>
     </div>
 
     <div class="fresh">
