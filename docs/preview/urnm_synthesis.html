@@ -1,0 +1,36 @@
+<!doctype html><meta charset='utf-8'><title>PREVIEW — URNM synthesis</title><body style='background:#0b0f14;color:#E2E8F0;font-family:Inter,sans-serif;padding:30px;max-width:900px;margin:0 auto'><div style="background:#3D2B00;border:2px solid #FBA94B;border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:13px;color:#FBA94B;font-weight:700">PREVIEW — real data, not yet part of the daily build. Unlinked page; delta baseline starts with the next daily snapshot archive.</div><style>
+        .yb-brief{background:#11161d;border:1px solid #232b36;border-radius:10px;
+          padding:18px 20px;color:#c9d4e0;font:14px/1.55 -apple-system,Segoe UI,sans-serif}
+        .yb-brief h3{margin:0 0 2px;color:#e8eef5;font-size:16px}
+        .yb-meta{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#7d8b99}
+        .yb-sec{margin-top:12px}
+        .yb-sec b{display:block;font-size:11px;letter-spacing:.12em;color:#8fb996;margin-bottom:4px}
+        .yb-sec.unc b{color:#c9a25f}
+        .yb-brief li{margin:3px 0 3px 16px}
+        .yb-badge{font-family:ui-monospace,monospace;font-size:10px;border:1px solid #3a4654;
+          border-radius:3px;padding:1px 5px;color:#9fb2c4;margin-left:6px}
+        .yb-queue span{font-family:ui-monospace,monospace;color:#e8eef5}
+        .yb-funnel{font-family:ui-monospace,monospace;font-size:12px;color:#9fb2c4;
+          background:#0d1218;border-radius:6px;padding:8px 10px;margin-top:12px}
+        .yb-frozen{margin-top:12px;font-size:12.5px;color:#c9a25f;border-left:3px solid #c9a25f;
+          padding-left:9px}
+        .yb-hash{margin-top:10px;font-family:ui-monospace,monospace;font-size:10.5px;color:#5f6d7a}
+        </style><div class='yb-brief'><h3>Research Brief — URNM</h3><div class='yb-meta'>build 9b2d1cd4 · data through 2026-07-21 · methodology v5</div><div class='yb-sec'><b>WHAT CHANGED</b><ul><li data-refs='[&quot;funnel.filings_ingested&quot;, &quot;funnel.accepted&quot;, &quot;funnel.matured&quot;]'>Since build 9b2d1cd4, URNM added 0 filings, 0 accepted events, and 0 newly matured events.</li><li data-refs='[&quot;issuers[*].c6_state&quot;]'>No issuer changed C6 state.</li><li data-refs='[&quot;coverage_weight_pct&quot;]'>Coverage weight unchanged.</li><li data-refs='[&quot;ledger.retroactive_edits&quot;]'>Retroactive edits: 0.</li></ul></div><div class='yb-sec'><b>WHAT MATTERS</b><ul><li data-refs='[&quot;issuers[*].events_accepted&quot;, &quot;issuers[*].weight_pct&quot;]'>Evidence is concentrated: CCJ and DNN hold 31% of accepted events and 33.2% of lens weight.</li><li data-refs='[&quot;issuers[*].form4_eligible&quot;, &quot;insider_scope_note&quot;]'>Form 4 coverage: 3/9 covered issuers — most covered Canadian issuers report insider trades through Canada&#x27;s SEDI system, which is not yet ingested.</li></ul></div><div class='yb-sec'><b>WHAT THE EVIDENCE SAYS</b><ul><li data-refs='[&quot;car[+20].peer&quot;, &quot;car[+20].ci&quot;, &quot;car[+20].n&quot;]'>Peer-adjusted event performance is +0.2% at day +20 (95% CI [-2.3%, +2.7%], n=37) — status: DESCRIPTIVE.</li></ul></div><div class='yb-sec unc'><b>WHAT REMAINS UNCERTAIN</b><ul><li data-refs='[&quot;methodology_version&quot;]'>Confidence intervals shown are naive: they assume independent events, while issuer clustering and overlapping windows make them optimistic. Clustered inference is scheduled and will be pre-committed before computation.</li><li data-refs='[&quot;issuers[*].c6_state&quot;]'>C6 sign confirmation remains accruing; posture states are research classifications of evidence rarity, not directional calls.</li></ul></div><div class='yb-sec'><b>INSPECT NEXT</b><div class='yb-meta'>ordered by trigger count — not an investment ranking</div><ul class='yb-queue'></ul></div><div class='yb-funnel'>111 filings → 98 prose → 80 candidates → 80 accepted → 72 deduped → 61 matured → 47 direction-eligible</div><div class='yb-frozen'>Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.</div><div class='yb-hash'>brief 941b964c6059b280 · deterministic synthesis — no generative model · hover any sentence for its backing data fields</div></div><hr style='border-color:#1E232D;margin:26px 0'><style>
+        .yc{background:#11161d;border:1px solid #232b36;border-radius:10px;
+          padding:18px 20px;color:#c9d4e0;font:14px/1.5 -apple-system,Segoe UI,sans-serif;
+          margin-top:14px}
+        .yc h3{margin:0;color:#e8eef5;font-size:16px}
+        .yc .m{font-family:ui-monospace,monospace;font-size:11px;color:#7d8b99}
+        .yc table{border-collapse:collapse;width:100%;margin-top:8px;font-size:13px}
+        .yc th{font-size:10px;letter-spacing:.1em;color:#8fb996;text-align:left;
+          padding:4px 8px;border-bottom:1px solid #232b36}
+        .yc td{padding:5px 8px;border-bottom:1px solid #1a212b;
+          font-family:ui-monospace,monospace;font-size:12px}
+        .yc .b{border:1px solid #3a4654;border-radius:3px;padding:1px 5px;
+          font-size:10px;color:#9fb2c4}
+        .yc .tens{border-left:3px solid #c9a25f;padding-left:10px;margin:8px 0}
+        .yc .tens b{color:#e8eef5}
+        .yc ul{margin:6px 0 0 16px}.yc li{margin:3px 0}
+        .yc .frozen{margin-top:12px;color:#c9a25f;border-left:3px solid #c9a25f;
+          padding-left:9px;font-size:12.5px}
+        </style><div class='yc'><h3>Evidence Decision Canvas — URNM</h3><div class='m'>build 9b2d1cd4 · data through 2026-07-21 · method b717068e17e3f09a (pre-committed clustered-inference spec)</div><table><tr><th>HORIZON</th><th>MEAN</th><th>CLUSTERED CI</th><th>NAIVE CI</th><th>WILD CI</th><th>N / ISSUERS</th><th>MDE 80%</th><th>STATUS</th></tr><tr><td>+5d</td><td>+0.1%</td><td>[-1.4, +1.1]</td><td>[-1.6, +1.8]</td><td>[-1.1, +1.3]</td><td>45 / 7</td><td>1.8%</td><td><span class='b'>UNDERPOWERED</span></td></tr><tr><td>+10d</td><td>-0.3%</td><td>[-1.1, +0.4]</td><td>[-2.1, +1.4]</td><td>[-1.0, +0.3]</td><td>42 / 7</td><td>1.0%</td><td><span class='b'>UNDERPOWERED</span></td></tr><tr><td>+20d</td><td>+0.2%</td><td>[-1.7, +3.1]</td><td>[-2.3, +2.7]</td><td>[-2.1, +2.5]</td><td>37 / 7</td><td>3.4%</td><td><span class='b'>UNDERPOWERED</span></td></tr></table><div class='m' style='margin-top:6px'>median 6 events/issuer · top-3 issuers 65% of sample · clustered CI is primary; naive shown for comparison</div><h3 style='font-size:13px;margin-top:14px'>What would change this conclusion</h3><ul><li>If the effect stays near +0.2%, roughly 822 additional distinct issuers with events (~829 total clusters) would be needed before the clustered CI could exclude zero (1/√G approximation).</li><li>A true effect smaller than the current MDE (3.4% at 80% power) cannot be detected at this sample size — absence of significance is not evidence of absence.</li><li>SEDI ingestion could reveal an insider pattern not visible in the current Form 4 scope, changing the risk-side reading for MJDS issuers.</li><li>If naive and clustered intervals diverge further as events accrue, issuer clustering — not the event effect — is doing the work; per-issuer decomposition becomes the priority.</li></ul><div class='frozen'>Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.</div></div></body>

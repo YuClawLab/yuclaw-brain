@@ -48,6 +48,11 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_replication || exit 13
 /usr/bin/python3 -m v3.web.render_lane || exit 14
 
+# Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
+# output/synthesis/ — the delta baseline for research briefs. Box-local only
+# (not committed); previews under docs/preview are owner-gated, not rebuilt here.
+/usr/bin/python3 tools/yuclaw_synthesis_run.py --archive-only || exit 17
+
 # Language rail (pages mode): regenerated prose must stay inside the locked
 # public vocabulary. Hard gate before anything is committed — same contract
 # as the deploy-verify gate below (nonzero exit aborts the chain).

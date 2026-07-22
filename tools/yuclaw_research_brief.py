@@ -22,7 +22,7 @@ data path; prev snapshot from the previous build's JSON (already archived by
 the daily chain). Renderers: .to_html() for pages, .to_text() for digest/CLI.
 """
 from __future__ import annotations
-import hashlib, html, json, re
+import hashlib, html, json, os, re, tempfile
 from dataclasses import dataclass, field, asdict
 from typing import Optional
 
@@ -375,7 +375,7 @@ if __name__ == "__main__":
     # structural-compliance check (G3): implication constant present, verbatim
     assert IMPLICATION_FROZEN in text and html.escape(IMPLICATION_FROZEN) in html_out
     print(text)
-    open("/home/claude/brief_demo.html", "w").write(
+    open(os.path.join(tempfile.gettempdir(), "brief_demo.html"), "w").write(
         "<body style='background:#0b0f14;padding:30px;max-width:760px'>"
         + html_out + "</body>")
     print("\n[OK] determinism + structural compliance + vocabulary sweep passed"

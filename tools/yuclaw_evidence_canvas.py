@@ -21,7 +21,7 @@ CONTENTS
   6. DecisionCanvas — assembles everything into the §22 canvas (HTML+text).
 """
 from __future__ import annotations
-import hashlib, html, json, math, random
+import hashlib, html, json, math, os, random, tempfile
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -355,7 +355,7 @@ if __name__ == "__main__":
     cv = DecisionCanvas("XEG", "9a4e99f3", "2026-07-16", [inf5, inf20],
                         tens, rows)
     print(cv.to_text())
-    open("/home/claude/canvas_demo.html", "w").write(
+    open(os.path.join(tempfile.gettempdir(), "canvas_demo.html"), "w").write(
         "<body style='background:#0b0f14;padding:30px;max-width:860px'>"
         + cv.to_html() + "</body>")
     print("\n[OK] canvas html written")
