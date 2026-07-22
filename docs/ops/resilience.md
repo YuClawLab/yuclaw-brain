@@ -127,3 +127,4 @@ cannot come back if the underlying link is down and NM refuses to reconnect.
   pushes touching `.github/workflows/` must use the gh keyring token
   (`gh auth token`) as done in this order, or the PAT needs the scope added.
 - Pages deploy failure mode added: build-level failure (Jekyll/Liquid), distinct from push-≠-live; `.nojekyll` is the guard.
+- Jul 22: concurrent Claude Code sessions ran one order in parallel — harmless only because the run was deterministic/idempotent; one-session rule now standing: `tmux ls` before any order, non-idempotent orders (releases, migrations) only into a verified-solo session.
