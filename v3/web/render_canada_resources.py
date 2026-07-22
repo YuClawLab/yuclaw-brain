@@ -158,7 +158,7 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
               (WCPRF is a limited OTC proxy line where present — flagged, not equivalent to primary US listings).</li>
           <li>Event-study eligible coverage: accrues with matured events — {mat['n_matured']} matured of
               {mat['n_events']} accepted events so far on this lens.</li>
-          <li>Insider-data eligible coverage: {n_insider}/{n_names} covered names (US-domestic filers with a
+          <li>Form 4 coverage: {n_insider}/{n_names} covered names (US-domestic filers with a
               Form 4 stream). All other names: outside current evidence scope — SEDI substrate not currently ingested.</li>
         </ul>
         <div style="margin-top:8px"><strong style="color:#E2E8F0">Outside evidence scope:</strong> {escape(p['uncovered_scope'])}</div>
@@ -170,7 +170,11 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
     for m in p["members"]:
         ev_summary = ", ".join(f"{et}×{v['n']}" for et, v in
                                sorted(m["events"].items(), key=lambda kv: -kv[1]["n"])) or "—"
-        filed = ", ".join(f"{st}×{n}" for st, n in sorted(m["filings_ingested"].items())) or "—"
+        # Bare numeric SEC form names ("4", "3", "144") read ambiguously in
+        # "<form>×<count>" cells — prefix with "Form" (same fix as the digest).
+        filed = ", ".join(
+            f"{'Form ' + st if st.split('/')[0].isdigit() else st}×{n}"
+            for st, n in sorted(m["filings_ingested"].items())) or "—"
         c6m = c6.get(m["ticker"])
         c6_cell = (f"{escape(str(c6m['level']))} / {escape(str(c6m['flag']))}" if c6m
                    else "<span class='dim'>not yet run</span>")
@@ -326,6 +330,14 @@ def render() -> str:
     total_names = len({t for lens in CANADA_LENS_KEYS
                        for t in data["lenses"][lens]["posture"]["holdings"]})
 
+    # §24 intro block numbers — all queried, none typed.
+    from v3.universe_tiers import evidence_tier_tickers, scoring_universe
+    n_evidence = len(evidence_tier_tickers())
+    n_scoring = len(scoring_universe())
+    covs = [data["lenses"][lens]["posture"]["sec_filer_weight_pct"]
+            for lens in CANADA_LENS_KEYS]
+    min_coverage, max_coverage = min(covs), max(covs)
+
     # Sticky lens navigation (display chrome only).
     lensnav = "".join(
         f'<a href="#lens-{lens}" style="color:{LENS_COLOR[lens]}">{lens}</a>'
@@ -416,11 +428,18 @@ def render() -> str:
     </div>
 
     <div class="disclaimer">
-      <strong>Research-only. Evidence dashboard. Not investment advice.</strong>
-      This page shows the <strong>evidence posture</strong> of SEC-filing constituents of four published
-      Canada-resources index funds — filings evidence, event records, classifications, grades, and C6
-      posture. Coverage is measured and scoped below, <em>before</em> any dashboard content. Missing data
-      is excluded, not imputed. Forward event studies accrue only when events mature.
+      <strong>Canada Resources Evidence</strong> — A source-traceable research view of four Canadian
+      resource lenses: XEG, ZEO, GDX and URNM. YUCLAW tracks filings, extracts material evidence,
+      classifies events, measures coverage and follows event outcomes as their forward windows mature.
+      Every accepted event links to a primary filing and can be reproduced from the published evidence
+      bundle. These {n_evidence} issuers belong to an evidence-only research tier. They are not included
+      in YUCLAW's {n_scoring}-ticker scoring universe, are not ranked and do not affect the existing
+      forward record. Current research status: filing-weight coverage ranges from {min_coverage:.0f}%
+      to {max_coverage:.0f}%; peer-adjusted event results do not yet establish a reliable return
+      advantage; Form 4 evidence covers only eligible US domestic issuers; C6 sign confirmation is
+      accruing — direction is not yet established; all statistics, source links and ledger roots are
+      available for replay.
+      <br><strong>Research-only. Evidence dashboard. Not investment advice.</strong>
     </div>
 
     <div class="panel">
