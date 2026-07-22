@@ -195,7 +195,8 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         rows.append(
             f"<tr><td class='c-tk'>"
             f"<a class='tk' href='{href}'>{escape(m['ticker'])}</a>{quality}</td>"
-            f"<td class='c-is'>{escape(m['sec_name'][:28])}</td>"
+            f"<td class='c-is' title='{escape(m['sec_name'])}'>"
+            f"{escape(m['sec_name'] if len(m['sec_name']) <= 28 else m['sec_name'][:27] + '…')}</td>"
             f"<td class='c-wt'>{m['weight_pct']:.2f}%</td>"
             f"<td class='c-sm'>{escape(m['filer_class'])}</td>"
             f"<td class='c-sm'>{escape(filed)}</td>"
@@ -267,7 +268,10 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
     # every number pulled from the SAME `p`/`mat` data this section renders
     # below, never hand-typed. Sits ABOVE the coverage disclosure, which stays
     # byte-untouched.
-    major_scope = (p["uncovered_scope"].split(";")[0].split(".")[0]).strip()
+    # First clause of uncovered_scope: split on "; " and on SENTENCE periods
+    # (". " / trailing ".") only — a bare "." split truncates decimals like
+    # "Tourmaline (5.6%)" at the decimal point (the 2026-07-22 clipped-copy bug).
+    major_scope = p["uncovered_scope"].split("; ")[0].split(". ")[0].strip().rstrip(".")
     summary_card = f"""
       <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid {color};
                 border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
@@ -278,15 +282,17 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         ({p['n_names_total']} names total). On file: <strong style="color:#E2E8F0">{p['filings_total']}
         filings ingested</strong>, <strong style="color:#E2E8F0">{p['events_total']} accepted evidence
         events</strong>, of which <strong style="color:#E2E8F0">{mat['n_matured']} have matured</strong> into
-        the event study. Insider (Form 4) data is available for
-        <strong style="color:#E2E8F0">{n_insider} of {p['n_covered_names']}</strong> covered names
-        (US-domestic filers). Major outside-scope block: {escape(major_scope)}.
+        the event study. Form 4 coverage:
+        <strong style="color:#E2E8F0">{n_insider}/{p['n_covered_names']}</strong> — most covered
+        Canadian issuers report insider trades through Canada's SEDI system, which is not yet
+        ingested. Major outside-scope block: {escape(major_scope)}.
       </p>"""
 
     return f"""
     <div class="panel" id="lens-{lens}">
       <div class="panel-title" style="color:{color}">{lens} · {escape(p['name'])}</div>
-      <div class="panel-sub">{escape(p['theme'])} · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics</div>
+      <div class="panel-sub">{escape(p['theme'])} · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics
+        · <a href="todays_evidence.html" style="color:{color};text-transform:none;letter-spacing:0">What changed today →</a></div>
       {summary_card}
       {cov_html}
       <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
@@ -294,7 +300,7 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         <div class="tile"><div class="v">{p['filings_total']}</div><div class="k">filings ingested</div></div>
         <div class="tile"><div class="v">{p['events_total']}</div><div class="k">accepted evidence events</div></div>
         <div class="tile"><div class="v">{p['prose_total']}</div><div class="k">filings with exhibit/MD&A prose</div></div>
-        <div class="tile"><div class="v">{n_c6}/{p['n_covered_names']}</div><div class="k">C6 posture runs</div></div>
+        <div class="tile"><div class="v">{n_c6}/{p['n_covered_names']}</div><div class="k">Issuers with current C6 analysis</div></div>
       </div>
       {table_html}
       <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
