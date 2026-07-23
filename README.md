@@ -135,9 +135,9 @@ yuclaw profile show                # Local preferences
 
 Worked examples with real output: [docs/usage.md](docs/usage.md).
 
-> **PyPI 5.0.0 note:** the `events` / `lens` / `export` / `memo` subcommands ship in the
-> next PyPI release; until then run them from a main checkout (`python3 -m v3.cli ...`;
-> memo: `python3 -m v4.memo.cli ...`). Everything else above works in the published 5.0.0.
+> **PyPI 5.0.x note:** the `events` / `lens` / `export` / `memo` subcommands ship in
+> v5.1; until then run them from a main checkout (`python3 -m v3.cli ...`;
+> memo: `python3 -m v4.memo.cli ...`). Everything else above works in the published 5.0.x.
 
 **Public signal vocabulary:** `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`,
 `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.
