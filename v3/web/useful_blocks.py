@@ -164,10 +164,16 @@ def status_block_html() -> str:
 SUNCOR_TRACE_HREF = "trace_su.html"
 
 
-def use_in_research_html(packet_href: str | None = None) -> str:
+def use_in_research_html(packet_href: str | None = None,
+                         guide_link: bool = False) -> str:
     """Three paths, three lines each. packet_href: this page's evidence packet
-    (None on pages without one — the citation path then links the Lab packet)."""
+    (None on pages without one — the citation path then links the Lab packet).
+    guide_link: landing only — adds the User Guide (PDF) line to the block."""
     cite_href = packet_href or "validation_lab.html#evidence-packet"
+    guide = ('<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
+             '<a href="YUCLAW_User_Guide.pdf">\U0001F4D6 User Guide (PDF)</a>'
+             ' — from pip install to full verification, six pages.</p>'
+             ) if guide_link else ""
     return f"""
     <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">
       <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Use YUCLAW in your research</div>
@@ -199,6 +205,7 @@ def use_in_research_html(packet_href: str | None = None) -> str:
           </p>
         </div>
       </div>
+      {guide}
     </div>"""
 
 

@@ -119,7 +119,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         "<tr><td colspan='3' style='padding:14px;color:#718096;font-style:italic'>"
         "Forward Tracking Ledger Day 0 — first signals materialize at 17:00 MDT cron."
         "</td></tr>")
-    use_research_block = use_in_research_html(None)
+    use_research_block = use_in_research_html(None, guide_link=True)
     status_block = status_block_html()
 
     return f"""<!DOCTYPE html>
@@ -280,6 +280,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     <div class="footer">
       YUCLAW v5.0.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
+      <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       <a href="replication.html">Replication</a> ·
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·
