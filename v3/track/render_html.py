@@ -180,7 +180,7 @@ def render(panels: dict[str, Any]) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Forward Tracking + In-Sample Validation",
+    {site_header_html(subtitle="Forward Tracking + In-Sample Validation", active="validation.html",
                       stamp=f"generated {generated_at}")}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 16px 0">

@@ -278,7 +278,7 @@ def render(state: dict, diffs: dict) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Today's evidence changes")}
+    {site_header_html(subtitle="Today's evidence changes", active="todays_evidence.html")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Today's evidence changes — {escape(state['date'])}</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">

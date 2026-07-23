@@ -1004,7 +1004,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Signal Validation Lab")}
+    {site_header_html(subtitle="Signal Validation Lab", active="validation_lab.html")}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 14px 0">
       Per-label hit-rate ledger: <a href="validation.html"

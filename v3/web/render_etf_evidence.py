@@ -239,7 +239,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Open Index Evidence")}
+    {site_header_html(subtitle="Open Index Evidence", active="etf_evidence.html")}
 
     <div class="fresh">
       <strong>Data through {escape(data_through)}</strong> (last completed U.S. trading day) ·

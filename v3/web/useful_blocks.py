@@ -46,10 +46,10 @@ def load_packet_manifest(kind: str) -> dict | None:
 # Fully inline-styled so it renders identically regardless of page CSS.
 # ---------------------------------------------------------------------------
 _NAV_CHIPS = (
-    ("Forward Tracking", "validation.html"),
     ("Validation Lab", "validation_lab.html"),
     ("Open Index Evidence", "etf_evidence.html"),
     ("Canada Resources Evidence", "canada_resources.html"),
+    ("Forward Tracking", "validation.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
     ("PyPI", "https://pypi.org/project/yuclaw/"),
     ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),
@@ -58,13 +58,21 @@ _NAV_CHIPS = (
 )
 
 
-def site_header_html(subtitle: str = "", stamp: str = "") -> str:
-    """The shared site header. Rendered identically on every page that calls it."""
-    chips = "".join(
-        f'<a href="{href}" style="color:#A0AEC0;text-decoration:none;font-size:12px;'
-        f'padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">'
-        f"{escape(label)}</a>"
-        for label, href in _NAV_CHIPS)
+def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> str:
+    """The shared site header. Rendered identically on every page that calls it.
+    active: this page's output filename (e.g. "validation_lab.html") — the
+    matching nav chip gets the accent treatment + aria-current="page"."""
+    def chip(label: str, href: str) -> str:
+        if href == active:
+            return (f'<a href="{href}" aria-current="page" '
+                    f'style="color:#00E676;text-decoration:none;font-size:12px;'
+                    f'padding:4px 10px;border-radius:6px;background:#00E67614;'
+                    f'border:1px solid #00E67640;white-space:nowrap">'
+                    f"{escape(label)}</a>")
+        return (f'<a href="{href}" style="color:#A0AEC0;text-decoration:none;font-size:12px;'
+                f'padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">'
+                f"{escape(label)}</a>")
+    chips = "".join(chip(label, href) for label, href in _NAV_CHIPS)
     sub = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">'
            f"{escape(subtitle)}</span>") if subtitle else ""
     right = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;'
@@ -74,12 +82,15 @@ def site_header_html(subtitle: str = "", stamp: str = "") -> str:
                 gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
                 border:1px solid #1E232D;border-radius:12px">
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
-          style="color:#00E676">CLAW</span></span>
-        <span style="display:inline-block;background:#00E67620;color:#00E676;
-                     border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
-                     font-size:10px;font-weight:700;letter-spacing:0.5px;
-                     font-family:JetBrains Mono,monospace">{escape(VERSION)}</span>
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">{escape(VERSION)}</span>
+        </a>
         {sub}
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">

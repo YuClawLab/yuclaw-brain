@@ -90,7 +90,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="YUCLAW's lane")}
+    {site_header_html(subtitle="YUCLAW's lane", active="lane.html")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">YUCLAW's lane</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.65;max-width:780px">

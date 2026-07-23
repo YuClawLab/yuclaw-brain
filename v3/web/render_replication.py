@@ -105,7 +105,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Independent Replication")}
+    {site_header_html(subtitle="Independent Replication", active="replication.html")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Replicate the record yourself</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">

@@ -419,7 +419,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container" id="top">
-    {site_header_html(subtitle="Canada Resources Evidence")}
+    {site_header_html(subtitle="Canada Resources Evidence", active="canada_resources.html")}
 
     <div class="lensnav"><span class="lbl">Jump to lens</span>{lensnav}</div>
 

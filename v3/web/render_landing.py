@@ -177,7 +177,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html()}
+    {site_header_html(active="index.html")}
 
     <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>
