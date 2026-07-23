@@ -199,8 +199,9 @@ def _form_label(form: str) -> str:
     return f"Form {form}" if core.isdigit() else form
 
 
-def render(state: dict, diffs: dict) -> str:
-    built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+def _panel_rows(state: dict, diffs: dict) -> str:
+    """The digest table body for one UTC day — shared by the in-progress
+    panel and the last-completed-day panel (rendered from the archive)."""
     c = state["counts"]
 
     if diffs["baseline"]:
@@ -228,15 +229,12 @@ def render(state: dict, diffs: dict) -> str:
     replay = state["replay"]
     replay_color = "#00E676" if replay.get("exit") == 0 else "#FBA94B"
 
-    archive_days = sorted((p.stem for p in ARCHIVE_DIR.glob("????-??-??.json")), reverse=True)
-    archive_links = " · ".join(f'<a href="evidence_changes/{d}.json">{d}</a>' for d in archive_days)
-
     def row(label: str, body: str) -> str:
         return (f"<tr><td style='padding:9px 14px;color:#E2E8F0;font-size:12.5px;font-weight:600;"
                 f"white-space:nowrap;vertical-align:top'>{escape(label)}</td>"
                 f"<td style='padding:9px 14px;font-size:12.5px;color:#A0AEC0;line-height:1.6'>{body}</td></tr>")
 
-    rows = "".join([
+    return "".join([
         row("New filings ingested", _kv_list({_form_label(k): v for k, v in c["new_filings"].items()}, "none")),
         row("New accepted events", _kv_list(c["new_events"], "none")),
         row("Grade changes", grade_html),
@@ -252,6 +250,33 @@ def render(state: dict, diffs: dict) -> str:
         row("Replay status", f"<span style='color:{replay_color};font-weight:700'>"
                              f"{escape(replay['status'])}</span> — stdlib verifier vs the published bundle"),
     ])
+
+
+def render(state: dict, diffs: dict,
+           last_state: dict | None, last_diffs: dict | None) -> str:
+    built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    rows = _panel_rows(state, diffs)
+
+    # Last completed UTC day — rendered from the archived daily JSON, so a
+    # viewer ahead of UTC (for whom "today" is empty by construction early in
+    # the UTC day) always sees one full day of final counts.
+    if last_state:
+        last_date = last_state["date"]
+        last_panel = f"""
+    <div class="panel">
+      <div class="panel-title">Last completed UTC day ({escape(last_date)}) — final counts</div>
+      <p style="font-size:11.5px;color:#718096;margin-bottom:8px">
+        Rendered from the archived daily JSON:
+        <a href="evidence_changes/{escape(last_date)}.json">evidence_changes/{escape(last_date)}.json</a>
+      </p>
+      <table><tbody>{_panel_rows(last_state, last_diffs)}</tbody></table>
+    </div>"""
+    else:
+        last_panel = ""
+
+    archive_days = sorted((p.stem for p in ARCHIVE_DIR.glob("????-??-??.json")), reverse=True)
+    archive_links = " · ".join(f'<a href="evidence_changes/{d}.json">{d}</a>' for d in archive_days)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -288,9 +313,12 @@ def render(state: dict, diffs: dict) -> str:
     </p>
 
     <div class="disclaimer-line"><strong>Disclaimer —</strong> {escape(DISCLAIMER_LINE)}</div>
-
+{last_panel}
     <div class="panel">
-      <div class="panel-title">Changes on {escape(state['date'])} (UTC day)</div>
+      <div class="panel-title">Changes on {escape(state['date'])} (UTC day in progress)</div>
+      <p style="font-size:11.5px;color:#718096;margin-bottom:8px">
+        UTC day in progress — resets at 00:00 UTC; most filings arrive 13:30–22:00 UTC.
+      </p>
       <table><tbody>{rows}</tbody></table>
     </div>
 
@@ -312,9 +340,12 @@ def render(state: dict, diffs: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     today = datetime.now(timezone.utc).date()
     state = gather(today)
-    diffs = _diffs(state, _previous_state(today))
+    last_state = _previous_state(today)
+    diffs = _diffs(state, last_state)
+    last_diffs = (_diffs(last_state, _previous_state(date.fromisoformat(last_state["date"])))
+                  if last_state else None)
     _archive(state)
-    html = render(state, diffs)
+    html = render(state, diffs, last_state, last_diffs)
     OUT.write_text(html)
     print(f"[render_todays_evidence] wrote {OUT} ({len(html)} bytes) "
           f"archive={state['date']} replay={state['replay']['status']}", flush=True)
