@@ -60,6 +60,19 @@ lock_date, params, and result hash. One primary endpoint per component
 METHOD_HASH = hashlib.sha256(METHOD_SPEC.encode()).hexdigest()[:16]
 SEED = 20260722
 
+
+def _registry_guard(pid: str) -> None:
+    """REGISTRY-FIRST: refuse to compute unless the protocol is LOCKED in
+    registry/protocols.jsonl (chain-verified on load). Fails closed when the
+    registry file is absent."""
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    if str(root / "tools") not in sys.path:
+        sys.path.insert(0, str(root / "tools"))
+    from yuclaw_protocol_registry import Registry
+    Registry(str(root / "registry" / "protocols.jsonl")).assert_registered(pid)
+
 # ------------------------------------------------------------------ utils
 def _rank(v):
     idx = sorted(range(len(v)), key=lambda i: v[i])
@@ -303,6 +316,7 @@ class DecompositionLab:
 
     # ------------------------------------------------------------ report
     def run_all(self):
+        _registry_guard(self.protocol_id)
         comps = sorted(self.p.weights)
         out = {"protocol_id": self.protocol_id, "method": METHOD_HASH,
                "primary_endpoint": f"per-component IC at k={self.k}",

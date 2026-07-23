@@ -43,9 +43,24 @@ Reporting rule: cluster CI is primary; naive shown beside it labeled naive.
 If G < 8, all intervals carry UNDERPOWERED regardless of width.
 """
 METHOD_HASH = hashlib.sha256(METHOD_SPEC.encode()).hexdigest()[:16]
+PROTOCOL_ID = hashlib.sha256(
+    (METHOD_SPEC + json.dumps({}, sort_keys=True)).encode()).hexdigest()[:12]
 
 Z975, Z80 = 1.959964, 0.841621
 SEED = 20260717
+
+
+def _registry_guard(pid: str) -> None:
+    """REGISTRY-FIRST: refuse to compute unless the protocol is LOCKED in
+    registry/protocols.jsonl (chain-verified on load). Fails closed when the
+    registry file is absent."""
+    import sys
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    if str(root / "tools") not in sys.path:
+        sys.path.insert(0, str(root / "tools"))
+    from yuclaw_protocol_registry import Registry
+    Registry(str(root / "registry" / "protocols.jsonl")).assert_registered(pid)
 
 # ------------------------------------------------------------ 1. inference
 @dataclass
@@ -69,6 +84,7 @@ class ClusteredCAR:
         self.B, self.rng = B, random.Random(seed)
 
     def run(self) -> CarInference:
+        _registry_guard(PROTOCOL_ID)
         xs = [c for _, c in self.ev]; n = len(xs)
         mean = sum(xs) / n
         sd = math.sqrt(sum((x - mean) ** 2 for x in xs) / (n - 1)) if n > 1 else 0.0

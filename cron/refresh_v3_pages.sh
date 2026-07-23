@@ -61,6 +61,13 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # cut-off paragraphs, dead local links — same hard-gate contract.
 /usr/bin/python3 tools/check_copy_integrity.py docs/*.html || exit 18
 
+# Protocol-registry chain verify (2026-07-23): the pre-registration ledger
+# must load with an intact hash chain — tamper or truncation aborts the chain.
+/usr/bin/python3 -c "import sys; sys.path.insert(0, 'tools'); \
+from yuclaw_protocol_registry import Registry; \
+Registry('registry/protocols.jsonl').verify_chain(); \
+print('[registry] chain OK')" || exit 19
+
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
