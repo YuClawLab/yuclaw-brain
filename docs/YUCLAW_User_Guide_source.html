@@ -129,11 +129,12 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <table class="ref">
   <tr><th>#</th><th>COMPONENT</th><th>WEIGHT</th><th>#</th><th>COMPONENT</th><th>WEIGHT</th></tr>
   <tr><td class="cmd">C1</td><td>Momentum</td><td>0.12</td><td class="cmd">C6</td><td>Event impact (evidence)</td><td><b>0.18</b></td></tr>
-  <tr><td class="cmd">C2</td><td>Volume</td><td>0.08</td><td class="cmd">C7</td><td>Peer correlation</td><td>0.10</td></tr>
+  <tr><td class="cmd">C2</td><td>Volume&thinsp;*</td><td>0.08&thinsp;*</td><td class="cmd">C7</td><td>Peer correlation</td><td>0.10</td></tr>
   <tr><td class="cmd">C3</td><td>Sector velocity</td><td>0.12</td><td class="cmd">C8</td><td>Supply-chain cascade</td><td>0.12</td></tr>
   <tr><td class="cmd">C4</td><td>Macro regime</td><td>0.15</td><td class="cmd">C9</td><td>Model trust</td><td>0.08</td></tr>
   <tr><td class="cmd">C5</td><td>Oil / rates / FX</td><td>0.05</td><td class="cmd"></td><td></td><td></td></tr>
 </table>
+<p style="font-size:7.6pt; color:#5C6670; margin-top:3pt;">* C2 (volume confirm) currently contributes no signal &mdash; confidence-gated to zero since v3.0 pending volume-feed wiring; live composite weights effectively renormalize across the remaining eight components. Repair-vs-deprecation decision scheduled for v5.2.</p>
 <h3>Signal labels</h3>
 <p>The public vocabulary is fixed: <span class="mono">STRONG_BULLISH &middot; BULLISH &middot; NEUTRAL &middot; WATCH &middot; WEAKENING &middot; NEGATIVE_EVENT &middot; BEARISH_WATCH &middot; RISK_ALERT</span>. These bucket the composite score and risk state; exact thresholds are documented in <span class="mono">docs/methodology/backfill.md</span>. Two facts worth knowing: extreme labels (<span class="mono">STRONG_BULLISH</span>, <span class="mono">BEARISH_WATCH</span>) are rare by construction &mdash; they require broad component agreement plus at least one material non-insider event &mdash; and there is deliberately no SELL or SHORT label: these are research classifications, not trade directions.</p>
 <h3>The universe</h3>

@@ -61,6 +61,8 @@ The nine components split into two categories for point-in-time accuracy:
 | Evidence layer | C6 (event impact), C8 (cascade impact), C9 (model trust) | **Exact** — backed by `events`, `signal_snapshots`, `track_record` with `available_as_of` filters. |
 | Market layer | C1 (momentum), C3 (sector velocity), C4 (macro regime), C5 (oil / rates / FX), C7 (peer correlation) | **Approximate** — read v2.3.0 dashboard cache which holds only the latest snapshot. On historical `as_of` they self-degrade to confidence 0.3 with a "point-in-time approximation" warning. |
 
+> **Footnote — C2:** C2 (volume confirm) currently contributes no signal — confidence-gated to zero since v3.0 pending volume-feed wiring; live composite weights effectively renormalize across the remaining eight components. Repair-vs-deprecation decision scheduled for v5.2.
+
 The in-sample event validation therefore **primarily reflects the evidence layer**. The market components contribute at ~⅓ of their live confidence, so their net effect on composite_score is small.
 
 This is by design for v3.0: the v3.0 evidence layer is what's new. v3.1's work is to ingest historical price / macro into a time-series table so the market layer can also run point-in-time.
