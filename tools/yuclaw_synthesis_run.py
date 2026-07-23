@@ -164,7 +164,7 @@ def _lens_grade(members: list[dict]) -> str:
     return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[0][0]
 
 
-def per_event_cars(lens: str) -> dict[int, list[tuple[str, float, int]]]:
+def per_event_cars(lens: str) -> dict[int, list[tuple[str, float, int, str]]]:
     """(issuer, signed peer-model CAR %, day0 trade-date index) per deduped
     directional event at each horizon — the SAME estimation/window/dedup
     methodology as the Lab's event_study (imported constants), reproduced
@@ -196,8 +196,8 @@ def per_event_cars(lens: str) -> dict[int, list[tuple[str, float, int]]]:
                      AND direction <> 0 ORDER BY 4""", (covered,))
             events = cur.fetchall()
 
-    out: dict[int, list[tuple[str, float, int]]] = {h: [] for h in HORIZONS}
-    for tk, _et, direction, ev_date in events:
+    out: dict[int, list[tuple[str, float, int, str]]] = {h: [] for h in HORIZONS}
+    for tk, ev_type, direction, ev_date in events:
         day0 = next((d for d in trade_dates if d >= ev_date), None)
         if day0 is None:
             continue
@@ -224,7 +224,7 @@ def per_event_cars(lens: str) -> dict[int, list[tuple[str, float, int]]]:
             if tau in HORIZONS:
                 car_at[tau] = cum
         for h, v in car_at.items():
-            out[h].append((tk, round(v * 100.0, 4), i0))
+            out[h].append((tk, round(v * 100.0, 4), i0, ev_type))
     return out
 
 
@@ -259,7 +259,7 @@ def build_snapshot(lens: str, build_id: str, data_through: str,
         ev = pooled[h]
         if not ev:
             continue
-        xs = [c for _, c, _i in ev]
+        xs = [c for _, c, *_ in ev]
         n = len(xs)
         mean = sum(xs) / n
         sd = (_math.sqrt(sum((x - mean) ** 2 for x in xs) / (n - 1))
@@ -303,10 +303,10 @@ def _anatomy(ev3: list, h: int) -> dict | None:
     if not n:
         return None
     per: dict[str, int] = {}
-    for tk, _c, _i in ev3:
+    for tk, _c, *_ in ev3:
         per[tk] = per.get(tk, 0) + 1
     counts = sorted(per.values(), reverse=True)
-    iv = [(i - CAR_PRE, i + h) for _t, _c, i in ev3]
+    iv = [(i - CAR_PRE, i + h) for _t, _c, i, *_ in ev3]
     overlapping = sum(
         1 for a, (lo, hi) in enumerate(iv)
         if any(b != a and iv[b][0] <= hi and iv[b][1] >= lo for b in range(n)))
@@ -397,7 +397,9 @@ def _sec_car(infs: list, anat: dict) -> str:
             f"{an.get('n', inf.n_events)} events · {inf.n_clusters} unique issuers · "
             f"median {inf.events_per_cluster_median:g} events/issuer · "
             f"top-3 issuer share {inf.top3_cluster_share_pct}% · "
-            f"window overlap {an.get('overlap_pct', '—')}%</td></tr>")
+            f"window overlap {an.get('overlap_pct', '—')}%<br>"
+            f"<span style='color:#FBA94B'>minimum detectable effect at 80% power: "
+            f"±{inf.mde80_pct:.2f}%</span></td></tr>")
     return (f"{_SEC}{_H}CAR panel — clustered inference + sample anatomy</div>{expl}"
             "<table style='width:100%;border-collapse:collapse;font-size:12.5px'>"
             "<tr style='color:#718096;font-size:10.5px;text-transform:uppercase'>"
@@ -406,6 +408,97 @@ def _sec_car(infs: list, anat: dict) -> str:
             "<td style='padding:7px 10px'>Naive CI (comparison)</td>"
             "<td style='padding:7px 10px'>Sample anatomy</td></tr>"
             + "".join(rows) + "</table></div>")
+
+
+def _sec_types(ev4_20: list, lens: str) -> tuple[str, int]:
+    """№2 — event-type decomposition of the pooled CAR at +20: per-type
+    mean/CI/n via the registered ClusteredCAR machinery, UNDERPOWERED badges
+    where thin. Shows whether the pooled effect concentrates in one event
+    type. Returns (html, n_secondary_cells_computed)."""
+    from yuclaw_evidence_canvas import badge
+    by_type: dict[str, list] = {}
+    for tk, c, _i, et in ev4_20:
+        by_type.setdefault(et, []).append((tk, c))
+    rows, cells = [], 0
+    for et, evs in sorted(by_type.items(), key=lambda kv: (-len(kv[1]), kv[0])):
+        n = len(evs)
+        g = len({t for t, _ in evs})
+        if n >= 2 and g >= 2:
+            inf = ClusteredCAR(evs, 20).run()
+            cells += 1
+            b = badge(inf)
+            mean = f"{inf.mean_pct:+.2f}%"
+            ci = f"[{inf.cluster_ci[0]:+.2f}%, {inf.cluster_ci[1]:+.2f}%]"
+            mde = f"±{inf.mde80_pct:.2f}%"
+        else:
+            b, ci, mde = "UNDERPOWERED", "—", "—"
+            mean = f"{sum(c for _, c in evs) / n:+.2f}%"
+        bcol = {"UNDERPOWERED": "#FBA94B", "DESCRIPTIVE": "#A0AEC0",
+                "PRELIMINARY": "#00E676"}.get(b, "#A0AEC0")
+        rows.append(
+            f"<tr><td style='padding:6px 10px;color:#E2E8F0'>{_e(et)}</td>"
+            f"<td style='padding:6px 10px;font-family:JetBrains Mono,monospace'>{mean}</td>"
+            f"<td style='padding:6px 10px;font-family:JetBrains Mono,monospace'>{ci}</td>"
+            f"<td style='padding:6px 10px'>{n}</td><td style='padding:6px 10px'>{g}</td>"
+            f"<td style='padding:6px 10px;color:{bcol};font-weight:700;font-size:11px'>{b}</td>"
+            f"<td style='padding:6px 10px;font-family:JetBrains Mono,monospace;color:#FBA94B'>{mde}</td></tr>")
+    return ((f"{_SEC}{_H}Event-type decomposition — pooled CAR at +20d</div>"
+             f"{_CAP}Decomposes the pooled +20d CAR by accepted event type — shows whether "
+             f"the pooled effect concentrates in a single type. Cluster CI (issuer-clustered, "
+             f"registered machinery) where the type has ≥2 events across ≥2 issuers; thin "
+             f"types show mean only, badged UNDERPOWERED. MDE = minimum detectable effect at "
+             f"80% power.</p>"
+             "<table style='width:100%;border-collapse:collapse;font-size:12.5px'>"
+             "<tr style='color:#718096;font-size:10.5px;text-transform:uppercase'>"
+             "<td style='padding:6px 10px'>Event type</td><td style='padding:6px 10px'>Mean CAR</td>"
+             "<td style='padding:6px 10px'>Cluster CI</td><td style='padding:6px 10px'>n</td>"
+             "<td style='padding:6px 10px'>Issuers</td><td style='padding:6px 10px'>Badge</td>"
+             "<td style='padding:6px 10px'>MDE (80%)</td></tr>"
+             + "".join(rows) + "</table></div>"), cells)
+
+
+def _render_cross_lens(build_id: str, thru: str) -> tuple[Path, int]:
+    """№6 — cross-lens issuer view: one table of issuers appearing in more
+    than one lens, with per-lens membership + weight and a double-count note.
+    Returns (path, n_multi_lens_issuers)."""
+    hold = {lens: canada_lens_holdings()[lens] for lens in CANADA_LENS_KEYS}
+    issuers: dict[str, dict[str, float]] = {}
+    for lens, h in hold.items():
+        for tk, w in h.items():
+            issuers.setdefault(tk, {})[lens] = w
+    multi = {tk: d for tk, d in issuers.items() if len(d) >= 2}
+    rows = []
+    for tk in sorted(multi, key=lambda k: (-len(multi[k]), k)):
+        cells = "".join(
+            f"<td style='padding:6px 10px;font-family:JetBrains Mono,monospace'>"
+            f"{multi[tk][lens]:.2f}%</td>" if lens in multi[tk]
+            else "<td style='padding:6px 10px;color:#718096'>—</td>"
+            for lens in CANADA_LENS_KEYS)
+        rows.append(f"<tr><td style='padding:6px 10px;font-weight:700;color:#FFF'>{_e(tk)}</td>"
+                    f"<td style='padding:6px 10px'>{len(multi[tk])}</td>{cells}</tr>")
+    heads = "".join(f"<td style='padding:6px 10px'>{_e(lens)} weight</td>"
+                    for lens in CANADA_LENS_KEYS)
+    html_out = (
+        "<!doctype html><meta charset='utf-8'>"
+        "<title>PREVIEW — cross-lens issuers</title>"
+        "<body style='background:#0b0f14;color:#E2E8F0;font-family:Inter,sans-serif;"
+        "padding:30px;max-width:900px;margin:0 auto'>" + BANNER
+        + f"{_SEC}{_H}Cross-lens issuer view — issuers in more than one lens</div>"
+        + f"{_CAP}Build {_e(build_id)} · data through {_e(thru)} · membership and weights "
+        + f"from the same holdings source the public lens cards use.</p>"
+        + "<table style='width:100%;border-collapse:collapse;font-size:12.5px'>"
+        + "<tr style='color:#718096;font-size:10.5px;text-transform:uppercase'>"
+        + f"<td style='padding:6px 10px'>Issuer</td><td style='padding:6px 10px'>Lenses</td>{heads}</tr>"
+        + "".join(rows) + "</table>"
+        + "<p style='font-size:12px;color:#FBA94B;margin-top:12px'><strong>Double-count "
+        "note:</strong> any future aggregate across lenses must dedup these issuers — "
+        "summing per-lens figures counts each of them once per lens they appear in. "
+        "Per-lens statistics on this site are within-lens and unaffected.</p>"
+        "<p style='font-size:11px;color:#718096'>Research &amp; education only. Not "
+        "investment advice. Coverage classifications, not recommendations.</p></body>")
+    out = PREVIEW_DIR / "cross_lens_issuers.html"
+    out.write_text(html_out)
+    return out, len(multi)
 
 
 _GRADE_ORD = {"A": 4, "B": 3, "C": 2, "D": 1}
@@ -580,6 +673,7 @@ def main(argv=None) -> int:
 
     build_id, thru = _build_id(), _data_through()
     print(f"[synthesis] build {build_id} · data through {thru} · method {METHOD_HASH}")
+    run_cells = {"primary": 0, "secondary": 0}
 
     for lens in CANADA_LENS_KEYS:
         pooled = per_event_cars(lens)
@@ -591,7 +685,7 @@ def main(argv=None) -> int:
             continue
 
         brief = ResearchBrief(snap, snap).build()   # current-state-only today
-        infs = [ClusteredCAR([(tk, c) for tk, c, _i in pooled[h]], h).run()
+        infs = [ClusteredCAR([(tk, c) for tk, c, *_ in pooled[h]], h).run()
                 for h in HORIZONS if pooled[h]]
         rows = [{"ticker": i.ticker, "c6_state": i.c6_state,
                  "form4_eligible": i.form4_eligible,
@@ -605,7 +699,11 @@ def main(argv=None) -> int:
         posture = canada_posture(lens)
         aux = _issuer_aux(sorted(canada_lens_holdings()[lens]))
         anat = {h: _anatomy(pooled[h], h) for h in HORIZONS if pooled[h]}
+        types_html, type_cells = _sec_types(pooled[20], lens)
+        run_cells["primary"] += len(infs)
+        run_cells["secondary"] += 4 * len(infs) + type_cells
         sections = (_sec_car(infs, anat)
+                    + types_html
                     + _sec_issuers(posture["members"], aux, thru, lens)
                     + _sec_delta(lens)
                     + _sec_grades(posture["members"], aux, thru))
@@ -626,6 +724,36 @@ def main(argv=None) -> int:
         print("-" * 74)
         print(canvas.to_text())
         print("=" * 74 + "\n")
+
+    if not a.archive_only:
+        # №6 cross-lens issuer view (descriptive; no statistical cells).
+        cross_path, n_multi = _render_cross_lens(build_id, thru)
+        print(f"[synthesis] cross-lens preview -> {cross_path.relative_to(_REPO)} "
+              f"({n_multi} multi-lens issuers)")
+        # Record this full run in the protocol registry — every full render
+        # computes cluster inferences, so every full render is a run.
+        import hashlib as _hl
+        h = _hl.sha256()
+        for lens in CANADA_LENS_KEYS:
+            h.update((PREVIEW_DIR / f"{lens.lower()}_synthesis.html").read_bytes())
+        h.update(cross_path.read_bytes())
+        from yuclaw_protocol_registry import Registry, Run
+        from yuclaw_evidence_canvas import PROTOCOL_ID as _CANVAS_PID
+        from datetime import date as _d, datetime as _dt, timezone as _tz
+        Registry(str(_REPO / "registry" / "protocols.jsonl")).record_run(Run(
+            protocol_id=_CANVAS_PID,
+            run_date=_dt.now(_tz.utc).date().isoformat(),
+            data_window=f"events through {thru}, 4 lenses x horizons +5/+10/+20 "
+                        f"+ per-type decomposition at +20",
+            n_primary_cells=run_cells["primary"],
+            n_secondary_cells=run_cells["secondary"],
+            result_hash=h.hexdigest(),
+            note=f"preview render (build {build_id}); secondary = naive/wild/SE/"
+                 f"MDE per lens-horizon cell + per-type cluster cells; "
+                 f"result_hash = sha256 of the 4 lens previews + cross-lens "
+                 f"preview, in render order"))
+        print(f"[synthesis] registry: run recorded "
+              f"({run_cells['primary']} primary + {run_cells['secondary']} secondary cells)")
     return 0
 
 

@@ -68,6 +68,10 @@ from yuclaw_protocol_registry import Registry; \
 Registry('registry/protocols.jsonl').verify_chain(); \
 print('[registry] chain OK')" || exit 19
 
+# Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
+# shared header, freshness stamp, no dead links/anchors, disclaimer present.
+/usr/bin/python3 tools/check_site_walk.py || exit 20
+
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
