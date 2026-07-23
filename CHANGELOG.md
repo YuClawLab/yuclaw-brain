@@ -2,6 +2,32 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.0.1] — 2026-07-23
+
+Bugs-only patch release. **No new subcommands; no scoring, methodology, or number
+changes.** The pip CLI surface is identical to 5.0.0.
+
+### Fixed
+
+- **`replay-lab`: friendly network-error handling.** A failed bundle fetch now prints
+  the URL tried, the HTTP code or reason, and the manual-download path
+  (`yuclaw replay-lab /path/to/lab_replay_bundle.json`), and exits with a distinct
+  code 3 (0 = reproduced, 1 = mismatch, 2 = usage, 3 = fetch failed) — no tracebacks.
+- **`verify`: WARN wording.** A date/ticker with no ledger entry on this machine now
+  says: "no ledger entry available on this machine — bundled demo: AMD @ 2026-05-20;
+  full-record checks: yuclaw replay-lab or clone yuclaw-trust" (was a bare
+  "no ledger entry", which read as a data problem on fresh installs).
+- **`memo`: help text** clarifies that 5.0.x ships the earlier memo interface
+  (positional ticker, `--as-of`); the evidence-memo CLI (`--ticker`/`--days`,
+  citation-verified) ships in v5.1.
+
+### Changed
+
+- Docs only: caveats that said the `events` / `lens` / `export` / `memo` subcommands
+  ship in "the next PyPI release" now say **v5.1** (5.0.1 ships without them). The
+  packaged README refresh (Canada Resources links, User Guide, Forward Tracking
+  naming) reaches the PyPI project page with this release.
+
 ## [4.0.1] — 2026-06-02
 
 ### Added

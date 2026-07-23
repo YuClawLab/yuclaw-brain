@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YUCLAW · Canada Resources Evidence</title>
+  <meta name="description" content="Research evidence dashboard: SEC-filing evidence on Canada resources ETF constituents. Measured coverage, evidence-tier only — not investment advice.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;line-height:1.6}
+    .container{max-width:1080px;margin:0 auto;padding:24px}
+    .header{margin-bottom:16px;padding:18px 24px;background:#151A23;border:1px solid #1E232D;border-radius:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .logo{font-size:20px;font-weight:800;color:#FFF;letter-spacing:-0.3px;text-decoration:none}
+    a.logo:hover{color:#00E676}
+    .ver{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;font-family:JetBrains Mono,monospace}
+    .navlinks a{color:#A0AEC0;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:6px;background:#1E232D;margin-left:6px}
+    .navlinks a:hover{color:#00E676}
+    .fresh{background:#0F1B14;border:1px solid #00E67640;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#A0AEC0;font-family:JetBrains Mono,monospace}
+    .fresh strong{color:#00E676}
+    .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0;margin-bottom:22px}
+    .disclaimer strong{color:#FBA94B}
+    .panel{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}
+    .panel-title{font-size:14px;font-weight:700;color:#FFF;margin-bottom:4px}
+    .panel-sub{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:14px}
+    .tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:14px}
+    table{width:100%;border-collapse:collapse}
+    th{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:8px 12px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.6px;white-space:nowrap}
+    td{font-size:13px;border-bottom:1px solid #1A2030;white-space:nowrap;padding:7px 12px}
+    td.c-tk{color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700}
+    a.tk{color:#E2E8F0;text-decoration:none}
+    a.tk:hover{color:#00E676}
+    td.c-is{color:#A0AEC0;font-size:11px}
+    td.c-wt{color:#A0AEC0;font-family:JetBrains Mono,monospace}
+    td.c-sm{color:#718096;font-size:11px}
+    td.c-gr,td.c-cx{font-size:11px}
+    .dim{color:#718096}
+    a.ref{color:#4DD0E1;text-decoration:none}
+    svg{max-width:100%;height:auto}
+    .lensnav{position:sticky;top:0;z-index:20;display:flex;gap:8px;align-items:center;background:#0B0E14F2;padding:8px 0;margin-bottom:12px;overflow-x:auto;white-space:nowrap}
+    .lensnav a{text-decoration:none;font-size:12px;font-weight:700;font-family:JetBrains Mono,monospace;padding:4px 12px;border-radius:6px;background:#1E232D;border:1px solid #2D3748}
+    .lensnav .lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:#718096}
+    details.infobox{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.7}
+    details.infobox summary{cursor:pointer;color:#E2E8F0;font-size:13px;font-weight:600}
+    details.infobox ul{margin:8px 0 0 18px}
+    details.infobox li{margin-bottom:4px}
+    details.expander summary{cursor:pointer;color:#4DD0E1;font-size:12px;padding:8px 2px}
+    code{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}
+    .footer{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:8px}
+    .footer a{color:#00E676;text-decoration:none}
+    .tile{min-width:120px}
+    .tile .v{font-size:24px;font-weight:800;color:#FFF;font-family:JetBrains Mono,monospace}
+    .tile .k{font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:0.6px}
+    @media (max-width:640px){
+      .container{padding:12px}
+      .header{padding:14px 16px}
+      .panel{padding:16px 14px}
+      td{font-size:12px}
+      .tile{min-width:96px}
+      .tile .v{font-size:20px}
+      .navlinks a{margin-left:0;margin-right:6px;display:inline-block;margin-bottom:6px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="top">
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.0.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Canada Resources Evidence</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Open Index Evidence</a><a href="canada_resources.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        
+      </div>
+    </div>
+
+    <div class="lensnav"><span class="lbl">Jump to lens</span><a href="#lens-XEG" style="color:#4DD0E1">XEG</a><a href="#lens-ZEO" style="color:#00E676">ZEO</a><a href="#lens-GDX" style="color:#FBA94B">GDX</a><a href="#lens-URNM" style="color:#7C4DFF">URNM</a></div>
+
+    <div class="fresh">
+      <strong>Regenerated daily</strong> with the site refresh chain · last build 2026-07-23 01:50 UTC
+    </div>
+
+    <div class="disclaimer">
+      <strong>Canada Resources Evidence</strong> — A source-traceable research view of four Canadian
+      resource lenses: XEG, ZEO, GDX and URNM. YUCLAW tracks filings, extracts material evidence,
+      classifies events, measures coverage and follows event outcomes as their forward windows mature.
+      Every accepted event links to a primary filing and can be reproduced from the published evidence
+      bundle. These 49 issuers belong to an evidence-only research tier. They are not included
+      in YUCLAW's 79-ticker scoring universe, are not ranked and do not affect the existing
+      forward record. Current research status: filing-weight coverage ranges from 55%
+      to 79%; peer-adjusted event results do not yet establish a reliable return
+      advantage; Form 4 evidence covers only eligible US domestic issuers; C6 sign confirmation is
+      accruing — direction is not yet established; all statistics, source links and ledger roots are
+      available for replay.
+      <br><strong>Research-only. Evidence dashboard. Not investment advice.</strong>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Evidence-tier disclosure &amp; scope boundary</div>
+      <div class="panel-sub">what this page is, and what it deliberately is not</div>
+      <p style="font-size:13px;color:#A0AEC0;line-height:1.7;max-width:860px">
+        The 49 names below form an <strong style="color:#E2E8F0">evidence-only coverage tier</strong>
+        (metadata: <code>evidence_eligible=true</code>, <code>scoring_eligible=false</code>,
+        <code>lab_universe=false</code>, <code>coverage_vertical=canada_resources</code>).
+        They are ingested, parsed, classified, and displayed here — they are
+        <strong style="color:#E2E8F0">never scored</strong>: no composite scores, no
+        <code>signal_snapshots</code> rows, no Lab decile membership, no ranking panels, and no place in
+        the 79-ticker forward-track record. Adding these names to the scoring universe mid-record would
+        have been a methodology event; this vertical stands on filings evidence instead. Research lenses:
+        <strong>XEG</strong>, <strong>ZEO</strong> (oil &amp; gas), <strong>GDX</strong> (gold),
+        <strong>URNM</strong> (uranium). <strong>EWC</strong> is reference-only (broad-Canada context, not an
+        evidence lens). <strong>GDXJ</strong> is excluded — 52% measured SEC-filer coverage with a 68-name
+        silent tail is below the honesty bar for this methodology.
+      </p>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.7;max-width:860px;margin-top:10px">
+        <strong style="color:#E2E8F0">Insider disclosure.</strong> Most Canadian MJDS issuers file insider
+        transactions on <strong>SEDI in Canada, not Form 4 on EDGAR</strong> (the FPI Section 16 exemption
+        applies even to domestic-form foreign filers). Insider-derived metrics are therefore
+        <strong>excluded</strong> for those issuers rather than rendered as zero — zero would imply observed
+        absence; exclusion means outside current evidence scope. A live Form 4 substrate exists only for the
+        US-domestic filers in these lenses (e.g. NEM, CDE, HL, RGLD, SSRM, UEC, UUUU, URG).
+      </p>
+      <p style="font-size:12px;color:#718096;line-height:1.7;max-width:860px;margin-top:10px">
+        Constituent lists and weights are dated issuer/fund disclosures used only to derive the coverage
+        statistics shown; no licensed index data is redistributed, and none of it is presented as YUCLAW's own.
+        Filings evidence: 6-K / 40-F (MJDS), 8-K / 10-K / 10-Q (US-domestic), classified by the same
+        SourceLock-guarded pipeline as the rest of the site, with exhibit-level prose extraction for 6-K/40-F
+        envelope filings.
+      </p>
+    </div>
+
+    <details class="infobox" id="reading-this-page">
+      <summary>Reading this page — filing types and terms</summary>
+      <ul>
+        <li><strong style="color:#E2E8F0">MJDS</strong> — the US–Canada Multijurisdictional Disclosure
+            System. Eligible Canadian issuers meet SEC reporting obligations with documents prepared
+            under Canadian rules.</li>
+        <li><strong style="color:#E2E8F0">6-K</strong> — the form a foreign private issuer uses to
+            furnish material information to the SEC between annual reports. Its nearest US-domestic
+            counterpart is the 8-K.</li>
+        <li><strong style="color:#E2E8F0">40-F</strong> — the annual report form for MJDS filers. Its
+            US-domestic counterpart is the 10-K.</li>
+        <li><strong style="color:#E2E8F0">8-K / 10-K / 10-Q</strong> — current-event, annual, and
+            quarterly report forms filed by US-domestic issuers.</li>
+        <li><strong style="color:#E2E8F0">SEDI</strong> — Canada's System for Electronic Disclosure by
+            Insiders. MJDS issuers report insider transactions on SEDI, not on EDGAR Form 4, so insider
+            metrics for those names are outside this page's evidence scope and are marked excluded
+            rather than zero.</li>
+        <li><strong style="color:#E2E8F0">Evidence grades</strong> — describe how much filing evidence
+            is on file for a name (filings ingested, exhibit/MD&amp;A prose, accepted events). They are
+            coverage classifications, not rankings, scores, or recommendations.</li>
+      </ul>
+    </details>
+
+    <details class="infobox" id="event-legend">
+      <summary>Reading the event types</summary>
+      <ul><li><code>BUYBACK_ANNOUNCE</code> — a share repurchase program announced or renewed</li><li><code>CAPACITY_CHANGE</code> — a production or capacity change stated in the filing</li><li><code>CONTRACT_WIN</code> — a contract or offtake agreement disclosed in the filing</li><li><code>DIVIDEND_CHANGE</code> — a dividend declaration, increase, decrease, or suspension</li><li><code>EARNINGS_BEAT</code> — reported results above the comparison stated in the filing</li><li><code>EXEC_CHANGE</code> — a change in a named executive or board role</li><li><code>GUIDANCE_CUT</code> — management lowered a stated forward target or outlook</li><li><code>GUIDANCE_RAISE</code> — management raised a stated forward target or outlook</li><li><code>INSIDER_BUY</code> — insider buy</li><li><code>INSIDER_SELL</code> — insider sell</li><li><code>M_AND_A_ANNOUNCE</code> — an acquisition, merger, or disposition announced</li><li><code>M_AND_A_CLOSE</code> — a previously announced transaction completed</li><li><code>OTHER_MATERIAL</code> — a development disclosed in a filing that does not fit a more specific category below</li><li><code>PARTNERSHIP</code> — partnership</li><li><code>REGULATORY_ACTION</code> — a regulator decision, permit, or proceeding disclosed in the filing</li></ul>
+    </details>
+
+    
+    <div class="panel" id="lens-XEG">
+      <div class="panel-title" style="color:#4DD0E1">XEG · iShares S&amp;P/TSX Capped Energy Index ETF</div>
+      <div class="panel-sub">Canadian oil &amp; gas (cap-weighted) · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics
+        · <a href="todays_evidence.html" style="color:#4DD0E1;text-transform:none;letter-spacing:0">What changed today →</a></div>
+      
+      <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid #4DD0E1;
+                border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
+                color:#A0AEC0;line-height:1.65">
+        <strong style="color:#4DD0E1">XEG in one paragraph.</strong>
+        Filings-evidence coverage is <strong style="color:#E2E8F0">76% of lens
+        weight</strong> across <strong style="color:#E2E8F0">8 SEC filers</strong>
+        (28 names total). On file: <strong style="color:#E2E8F0">87
+        filings ingested</strong>, <strong style="color:#E2E8F0">71 accepted evidence
+        events</strong>, of which <strong style="color:#E2E8F0">59 have matured</strong> into
+        the event study. Form 4 coverage:
+        <strong style="color:#E2E8F0">0/8</strong> — most covered
+        Canadian issuers report insider trades through Canada's SEDI system, which is not yet
+        ingested. Major outside-scope block: TSX-only issuers with no current EDGAR reporting — Tourmaline (5.6%), PrairieSky, Peyto, Athabasca and peers.
+      </p>
+      
+      <div style="background:#1A2030;border-radius:8px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.65">
+        <strong style="color:#E2E8F0">Measured coverage — XEG (Canadian oil &amp; gas (cap-weighted)).</strong>
+        <ul style="margin:6px 0 0 18px">
+          <li><strong style="color:#4DD0E1">Filings-evidence coverage: 76% of lens weight</strong>
+              (8 of 28 names are current SEC filers) — measured in the
+              Phase-1 feasibility study from BlackRock Canada holdings CSV, holdings as of 2026-07-10.
+              This is the single measured coverage figure for Phase 2; it covers SEC-filing evidence only and
+              is not a total-evidence claim.</li>
+          <li>Price-history coverage: 8/8 covered names have research price history
+              (WCPRF is a limited OTC proxy line where present — flagged, not equivalent to primary US listings).</li>
+          <li>Event-study eligible coverage: accrues with matured events — 59 matured of
+              66 accepted events so far on this lens.</li>
+          <li>Form 4 coverage: 0/8 covered names (US-domestic filers with a
+              Form 4 stream). All other names: outside current evidence scope — SEDI substrate not currently ingested.</li>
+        </ul>
+        <div style="margin-top:8px"><strong style="color:#E2E8F0">Outside evidence scope:</strong> TSX-only issuers with no current EDGAR reporting — Tourmaline (5.6%), PrairieSky, Peyto, Athabasca and peers; their 2026-era &#x27;/ADR&#x27; CIKs are F-6 depositary shells, not reporting companies.</div>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
+        <div class="tile"><div class="v">8</div><div class="k">covered SEC filers</div></div>
+        <div class="tile"><div class="v">87</div><div class="k">filings ingested</div></div>
+        <div class="tile"><div class="v">71</div><div class="k">accepted evidence events</div></div>
+        <div class="tile"><div class="v">64</div><div class="k">filings with exhibit/MD&A prose</div></div>
+        <div class="tile"><div class="v">4/8</div><div class="k">Issuers with current C6 analysis</div></div>
+      </div>
+      
+      <div class="tblwrap"><table>
+        <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
+        <tbody><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000311337&type=&dateb=&owner=include&count=40'>SU</a></td><td class='c-is' title='SUNCOR ENERGY INC'>SUNCOR ENERGY INC</td><td class='c-wt'>25.27%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×19</td><td class='c-sm'>OTHER_MATERIAL×10, EARNINGS_BEAT×2, GUIDANCE_RAISE×2, DIVIDEND_CHANGE×2, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001017413&type=&dateb=&owner=include&count=40'>CNQ</a></td><td class='c-is' title='CANADIAN NATURAL RESOURCES Ltd'>CANADIAN NATURAL RESOURCES …</td><td class='c-wt'>24.49%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×8</td><td class='c-sm'>OTHER_MATERIAL×4, DIVIDEND_CHANGE×3, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'>high / elevated</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001475260&type=&dateb=&owner=include&count=40'>CVE</a></td><td class='c-is' title='CENOVUS ENERGY INC.'>CENOVUS ENERGY INC.</td><td class='c-wt'>12.88%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×9</td><td class='c-sm'>OTHER_MATERIAL×5, REGULATORY_ACTION×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000049938&type=&dateb=&owner=include&count=40'>IMO</a></td><td class='c-is' title='IMPERIAL OIL LTD'>IMPERIAL OIL LTD</td><td class='c-wt'>6.54%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×10</td><td class='c-sm'>OTHER_MATERIAL×8, EXEC_CHANGE×2</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>US-domestic form set, but Section-16-exempt FPI — no Form 4 stream</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001472879&type=&dateb=&owner=include&count=40'>WCPRF</a><span style='color:#FBA94B'> · low-quality OTC proxy line</span></td><td class='c-is' title='WHITECAP RESOURCES INC.'>WHITECAP RESOURCES INC.</td><td class='c-wt'>4.71%</td><td class='c-sm'>MJDS</td><td class='c-sm'>—</td><td class='c-sm'>—</td><td class='c-gr' style='color:#4DD0E1'>D (no EDGAR filings in coverage window; verified 2026-07-16)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001904856&type=&dateb=&owner=include&count=40'>EFXT</a></td><td class='c-is' title='Enerflex Ltd.'>Enerflex Ltd.</td><td class='c-wt'>1.05%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×10</td><td class='c-sm'>OTHER_MATERIAL×7, GUIDANCE_RAISE×2, EXEC_CHANGE×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001279495&type=&dateb=&owner=include&count=40'>BTE</a></td><td class='c-is' title='BAYTEX ENERGY CORP.'>BAYTEX ENERGY CORP.</td><td class='c-wt'>0.92%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×12</td><td class='c-sm'>OTHER_MATERIAL×8, BUYBACK_ANNOUNCE×2, GUIDANCE_RAISE×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'>high / elevated</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001293135&type=&dateb=&owner=include&count=40'>VET</a></td><td class='c-is' title='VERMILION ENERGY INC.'>VERMILION ENERGY INC.</td><td class='c-wt'>0.52%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×11</td><td class='c-sm'>OTHER_MATERIAL×4, GUIDANCE_RAISE×2, M_AND_A_ANNOUNCE×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#4DD0E1'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr></tbody>
+      </table></div>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
+      (filings, prose, events on file) — they are research classifications of evidence coverage, not
+      rankings and not composite scores. Name links open the issuer's EDGAR filing browser (drill-down
+      to primary-source filings).</p>
+      <p style="font-size:11px;margin-top:6px"><a class="ref" href="#event-legend">Reading the event types ↑</a>
+      · <a class="ref" href="#top">Back to top ↑</a></p>
+      
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 8px">
+        Direction-aligned pooled CAR · n=41 events
+        (dedup: 71 filings → 66 events → 66 evaluable)</div>
+      <svg viewBox="0 0 900 360" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="XEG direction-aligned CAR (peer model, 95% CI)"><line x1="60" y1="67.2" x2="690" y2="67.2" stroke="#2D3748" stroke-dasharray="3,3"/><line x1="186.0" y1="26" x2="186.0" y2="314" stroke="#4A5568" stroke-dasharray="5,4"/><text x="186.0" y="18" fill="#A0AEC0" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">event day 0</text><text x="6" y="318.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-15.4%</text><text x="6" y="30.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+2.6%</text><line x1="60" y1="314" x2="690" y2="314" stroke="#2D3748"/><line x1="60.0" y1="314" x2="60.0" y2="319" stroke="#2D3748"/><text x="60.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">-5</text><line x1="186.0" y1="314" x2="186.0" y2="319" stroke="#2D3748"/><text x="186.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+0</text><line x1="312.0" y1="314" x2="312.0" y2="319" stroke="#2D3748"/><text x="312.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+5</text><line x1="438.0" y1="314" x2="438.0" y2="319" stroke="#2D3748"/><text x="438.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+10</text><line x1="564.0" y1="314" x2="564.0" y2="319" stroke="#2D3748"/><text x="564.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+15</text><line x1="690.0" y1="314" x2="690.0" y2="319" stroke="#2D3748"/><text x="690.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+20</text><text x="375" y="348" fill="#718096" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">event-time trading days (τ)</text><polygon points="60.0,60.3 85.2,50.7 110.4,45.5 135.6,48.7 160.8,43.1 186.0,42.7 211.2,33.1 236.4,35.0 261.6,27.7 286.8,26.8 312.0,26.0 337.2,31.8 362.4,28.3 387.6,31.1 412.8,29.9 438.0,38.1 463.2,41.8 488.4,37.6 513.6,39.8 538.8,47.0 564.0,44.7 589.2,44.6 614.4,42.6 639.6,41.8 664.8,39.9 690.0,43.2 690.0,134.9 664.8,130.4 639.6,127.1 614.4,125.3 589.2,130.3 564.0,120.8 538.8,124.3 513.6,117.0 488.4,116.5 463.2,117.1 438.0,106.3 412.8,93.9 387.6,93.4 362.4,87.0 337.2,80.9 312.0,74.4 286.8,71.6 261.6,73.6 236.4,76.8 211.2,78.4 186.0,80.7 160.8,70.8 135.6,73.2 110.4,70.2 85.2,70.9 60.0,70.5" fill="#4DD0E1" opacity="0.16"/><polyline points="60.0,63.9 85.2,69.2 110.4,82.9 135.6,86.7 160.8,101.1 186.0,122.3 211.2,139.5 236.4,141.8 261.6,140.7 286.8,138.2 312.0,145.6 337.2,161.4 362.4,162.5 387.6,170.6 412.8,180.2 438.0,201.0 463.2,207.3 488.4,221.9 513.6,251.3 538.8,261.7 564.0,269.8 589.2,270.4 614.4,263.5 639.6,272.0 664.8,298.3 690.0,314.0" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-dasharray="7,4"/><line x1="704" y1="50" x2="720" y2="50" stroke="#A0AEC0" stroke-width="3" stroke-dasharray="7,4"/><text x="724" y="54" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY model -15.4%</text><polyline points="60.0,65.4 85.2,60.8 110.4,57.9 135.6,61.0 160.8,56.9 186.0,61.7 211.2,55.7 236.4,55.9 261.6,50.6 286.8,49.2 312.0,50.2 337.2,56.3 362.4,57.6 387.6,62.2 412.8,61.9 438.0,72.2 463.2,79.5 488.4,77.0 513.6,78.4 538.8,85.7 564.0,82.7 589.2,87.5 614.4,83.9 639.6,84.5 664.8,85.2 690.0,89.1" fill="none" stroke="#4DD0E1" stroke-width="2.5"/><line x1="704" y1="32" x2="720" y2="32" stroke="#4DD0E1" stroke-width="3"/><text x="724" y="36" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">peer model -1.4%</text><text x="704" y="72" fill="#718096" font-size="9" font-family="JetBrains Mono,monospace">n(τ=+0)=41, n(τ=+10)=39, n(τ=+20)=37</text></svg>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Same event-study methodology as the Open Index
+      Evidence page (peer + SPY models, [−5,+20] window, dedup, disclosed n). CIs assume independent events
+      and are optimistic. Insider-derived statistics are EXCLUDED for MJDS/FPI issuers (SEDI substrate in Canada, not Form 4) — excluded means outside current evidence scope, not observed absence. A Form 4 stream exists only for the US-domestic filers in the lens.</p>
+      
+      <div style="margin-top:10px;padding:9px 14px;background:#10141C;border:1px solid #1E232D;border-radius:8px;font-size:11px;color:#718096">
+        Research-side context (oil-intelligence engine, as of 2026-07-22): WTI 88.08 · Brent 95.67.
+        Context only — does not feed composite scoring and does not alter evidence grades.</div>
+    </div>
+    <div class="panel" id="lens-ZEO">
+      <div class="panel-title" style="color:#00E676">ZEO · BMO Equal Weight Oil &amp; Gas Index ETF</div>
+      <div class="panel-sub">Canadian oil &amp; gas (equal-weighted) · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics
+        · <a href="todays_evidence.html" style="color:#00E676;text-transform:none;letter-spacing:0">What changed today →</a></div>
+      
+      <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid #00E676;
+                border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
+                color:#A0AEC0;line-height:1.65">
+        <strong style="color:#00E676">ZEO in one paragraph.</strong>
+        Filings-evidence coverage is <strong style="color:#E2E8F0">75% of lens
+        weight</strong> across <strong style="color:#E2E8F0">9 SEC filers</strong>
+        (12 names total). On file: <strong style="color:#E2E8F0">102
+        filings ingested</strong>, <strong style="color:#E2E8F0">81 accepted evidence
+        events</strong>, of which <strong style="color:#E2E8F0">72 have matured</strong> into
+        the event study. Form 4 coverage:
+        <strong style="color:#E2E8F0">0/9</strong> — most covered
+        Canadian issuers report insider trades through Canada's SEDI system, which is not yet
+        ingested. Major outside-scope block: TSX-only issuers with no current EDGAR reporting — ARC Resources (9.0%), Keyera (8.5%).
+      </p>
+      
+      <div style="background:#1A2030;border-radius:8px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.65">
+        <strong style="color:#E2E8F0">Measured coverage — ZEO (Canadian oil &amp; gas (equal-weighted)).</strong>
+        <ul style="margin:6px 0 0 18px">
+          <li><strong style="color:#00E676">Filings-evidence coverage: 75% of lens weight</strong>
+              (9 of 12 names are current SEC filers) — measured in the
+              Phase-1 feasibility study from stockanalysis.com (BMO GAM page unavailable at study time), holdings as of 2026-07-09.
+              This is the single measured coverage figure for Phase 2; it covers SEC-filing evidence only and
+              is not a total-evidence claim.</li>
+          <li>Price-history coverage: 9/9 covered names have research price history
+              (WCPRF is a limited OTC proxy line where present — flagged, not equivalent to primary US listings).</li>
+          <li>Event-study eligible coverage: accrues with matured events — 72 matured of
+              76 accepted events so far on this lens.</li>
+          <li>Form 4 coverage: 0/9 covered names (US-domestic filers with a
+              Form 4 stream). All other names: outside current evidence scope — SEDI substrate not currently ingested.</li>
+        </ul>
+        <div style="margin-top:8px"><strong style="color:#E2E8F0">Outside evidence scope:</strong> TSX-only issuers with no current EDGAR reporting — ARC Resources (9.0%), Keyera (8.5%).</div>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
+        <div class="tile"><div class="v">9</div><div class="k">covered SEC filers</div></div>
+        <div class="tile"><div class="v">102</div><div class="k">filings ingested</div></div>
+        <div class="tile"><div class="v">81</div><div class="k">accepted evidence events</div></div>
+        <div class="tile"><div class="v">84</div><div class="k">filings with exhibit/MD&A prose</div></div>
+        <div class="tile"><div class="v">5/9</div><div class="k">Issuers with current C6 analysis</div></div>
+      </div>
+      
+      <div class="tblwrap"><table>
+        <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
+        <tbody><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001475260&type=&dateb=&owner=include&count=40'>CVE</a></td><td class='c-is' title='CENOVUS ENERGY INC.'>CENOVUS ENERGY INC.</td><td class='c-wt'>9.15%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×9</td><td class='c-sm'>OTHER_MATERIAL×5, REGULATORY_ACTION×1</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0002019061&type=&dateb=&owner=include&count=40'>SOBO</a></td><td class='c-is' title='South Bow Corp'>South Bow Corp</td><td class='c-wt'>8.65%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×14</td><td class='c-sm'>OTHER_MATERIAL×8, DIVIDEND_CHANGE×2</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001546066&type=&dateb=&owner=include&count=40'>PBA</a></td><td class='c-is' title='PEMBINA PIPELINE CORP'>PEMBINA PIPELINE CORP</td><td class='c-wt'>8.57%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×15</td><td class='c-sm'>OTHER_MATERIAL×3, DIVIDEND_CHANGE×3, GUIDANCE_RAISE×2, CAPACITY_CHANGE×2, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001232384&type=&dateb=&owner=include&count=40'>TRP</a></td><td class='c-is' title='TC ENERGY CORP'>TC ENERGY CORP</td><td class='c-wt'>8.50%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×11</td><td class='c-sm'>OTHER_MATERIAL×9, DIVIDEND_CHANGE×2</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001472879&type=&dateb=&owner=include&count=40'>WCPRF</a><span style='color:#FBA94B'> · low-quality OTC proxy line</span></td><td class='c-is' title='WHITECAP RESOURCES INC.'>WHITECAP RESOURCES INC.</td><td class='c-wt'>8.42%</td><td class='c-sm'>MJDS</td><td class='c-sm'>—</td><td class='c-sm'>—</td><td class='c-gr' style='color:#00E676'>D (no EDGAR filings in coverage window; verified 2026-07-16)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000311337&type=&dateb=&owner=include&count=40'>SU</a></td><td class='c-is' title='SUNCOR ENERGY INC'>SUNCOR ENERGY INC</td><td class='c-wt'>8.21%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×19</td><td class='c-sm'>OTHER_MATERIAL×10, EARNINGS_BEAT×2, GUIDANCE_RAISE×2, DIVIDEND_CHANGE×2, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000049938&type=&dateb=&owner=include&count=40'>IMO</a></td><td class='c-is' title='IMPERIAL OIL LTD'>IMPERIAL OIL LTD</td><td class='c-wt'>8.10%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×10</td><td class='c-sm'>OTHER_MATERIAL×8, EXEC_CHANGE×2</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>US-domestic form set, but Section-16-exempt FPI — no Form 4 stream</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000895728&type=&dateb=&owner=include&count=40'>ENB</a></td><td class='c-is' title='ENBRIDGE INC'>ENBRIDGE INC</td><td class='c-wt'>8.04%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×6</td><td class='c-sm'>OTHER_MATERIAL×8</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>US-domestic form set, but Section-16-exempt FPI — no Form 4 stream</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001017413&type=&dateb=&owner=include&count=40'>CNQ</a></td><td class='c-is' title='CANADIAN NATURAL RESOURCES Ltd'>CANADIAN NATURAL RESOURCES …</td><td class='c-wt'>7.21%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×8</td><td class='c-sm'>OTHER_MATERIAL×4, DIVIDEND_CHANGE×3, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#00E676'>A (events + prose evidence)</td><td class='c-cx'>high / elevated</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr></tbody>
+      </table></div>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
+      (filings, prose, events on file) — they are research classifications of evidence coverage, not
+      rankings and not composite scores. Name links open the issuer's EDGAR filing browser (drill-down
+      to primary-source filings).</p>
+      <p style="font-size:11px;margin-top:6px"><a class="ref" href="#event-legend">Reading the event types ↑</a>
+      · <a class="ref" href="#top">Back to top ↑</a></p>
+      
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 8px">
+        Direction-aligned pooled CAR · n=50 events
+        (dedup: 81 filings → 76 events → 76 evaluable)</div>
+      <svg viewBox="0 0 900 360" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="ZEO direction-aligned CAR (peer model, 95% CI)"><line x1="60" y1="91.4" x2="690" y2="91.4" stroke="#2D3748" stroke-dasharray="3,3"/><text x="696" y="95.4" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">0%</text><line x1="186.0" y1="26" x2="186.0" y2="314" stroke="#4A5568" stroke-dasharray="5,4"/><text x="186.0" y="18" fill="#A0AEC0" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">event day 0</text><text x="6" y="318.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-6.2%</text><text x="6" y="30.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+1.8%</text><line x1="60" y1="314" x2="690" y2="314" stroke="#2D3748"/><line x1="60.0" y1="314" x2="60.0" y2="319" stroke="#2D3748"/><text x="60.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">-5</text><line x1="186.0" y1="314" x2="186.0" y2="319" stroke="#2D3748"/><text x="186.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+0</text><line x1="312.0" y1="314" x2="312.0" y2="319" stroke="#2D3748"/><text x="312.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+5</text><line x1="438.0" y1="314" x2="438.0" y2="319" stroke="#2D3748"/><text x="438.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+10</text><line x1="564.0" y1="314" x2="564.0" y2="319" stroke="#2D3748"/><text x="564.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+15</text><line x1="690.0" y1="314" x2="690.0" y2="319" stroke="#2D3748"/><text x="690.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+20</text><text x="375" y="348" fill="#718096" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">event-time trading days (τ)</text><polygon points="60.0,84.2 85.2,73.9 110.4,64.1 135.6,62.1 160.8,53.9 186.0,52.7 211.2,55.5 236.4,50.5 261.6,40.4 286.8,37.5 312.0,35.7 337.2,36.5 362.4,35.7 387.6,30.9 412.8,26.0 438.0,33.8 463.2,29.7 488.4,30.5 513.6,30.0 538.8,31.4 564.0,34.5 589.2,42.3 614.4,44.4 639.6,43.3 664.8,40.7 690.0,42.3 690.0,157.2 664.8,155.3 639.6,153.0 614.4,152.2 589.2,147.7 564.0,137.1 538.8,136.2 513.6,138.1 488.4,135.0 463.2,128.0 438.0,126.4 412.8,116.1 387.6,119.1 362.4,124.6 337.2,118.9 312.0,111.2 286.8,105.8 261.6,105.0 236.4,111.4 211.2,111.0 186.0,106.0 160.8,94.8 135.6,101.4 110.4,100.6 85.2,103.1 60.0,107.4" fill="#00E676" opacity="0.16"/><polyline points="60.0,75.9 85.2,84.1 110.4,75.4 135.6,71.1 160.8,94.1 186.0,127.5 211.2,144.2 236.4,136.2 261.6,127.5 286.8,115.4 312.0,113.6 337.2,139.5 362.4,125.1 387.6,135.0 412.8,156.8 438.0,163.3 463.2,177.1 488.4,222.9 513.6,249.9 538.8,259.2 564.0,293.2 589.2,294.8 614.4,289.8 639.6,285.1 664.8,282.1 690.0,314.0" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-dasharray="7,4"/><line x1="704" y1="50" x2="720" y2="50" stroke="#A0AEC0" stroke-width="3" stroke-dasharray="7,4"/><text x="724" y="54" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY model -6.2%</text><polyline points="60.0,95.8 85.2,88.5 110.4,82.4 135.6,81.8 160.8,74.4 186.0,79.3 211.2,83.2 236.4,80.9 261.6,72.7 286.8,71.7 312.0,73.4 337.2,77.7 362.4,80.2 387.6,75.0 412.8,71.0 438.0,80.1 463.2,78.9 488.4,82.7 513.6,84.1 538.8,83.8 564.0,85.8 589.2,95.0 614.4,98.3 639.6,98.2 664.8,98.0 690.0,99.7" fill="none" stroke="#00E676" stroke-width="2.5"/><line x1="704" y1="32" x2="720" y2="32" stroke="#00E676" stroke-width="3"/><text x="724" y="36" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">peer model -0.2%</text><text x="704" y="72" fill="#718096" font-size="9" font-family="JetBrains Mono,monospace">n(τ=+0)=50, n(τ=+10)=47, n(τ=+20)=47</text></svg>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Same event-study methodology as the Open Index
+      Evidence page (peer + SPY models, [−5,+20] window, dedup, disclosed n). CIs assume independent events
+      and are optimistic. Insider-derived statistics are EXCLUDED for MJDS/FPI issuers (SEDI substrate in Canada, not Form 4) — excluded means outside current evidence scope, not observed absence. A Form 4 stream exists only for the US-domestic filers in the lens.</p>
+      
+      <div style="margin-top:10px;padding:9px 14px;background:#10141C;border:1px solid #1E232D;border-radius:8px;font-size:11px;color:#718096">
+        Research-side context (oil-intelligence engine, as of 2026-07-22): WTI 88.08 · Brent 95.67.
+        Context only — does not feed composite scoring and does not alter evidence grades.</div>
+    </div>
+    <div class="panel" id="lens-GDX">
+      <div class="panel-title" style="color:#FBA94B">GDX · VanEck Gold Miners ETF</div>
+      <div class="panel-sub">Gold miners · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics
+        · <a href="todays_evidence.html" style="color:#FBA94B;text-transform:none;letter-spacing:0">What changed today →</a></div>
+      
+      <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid #FBA94B;
+                border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
+                color:#A0AEC0;line-height:1.65">
+        <strong style="color:#FBA94B">GDX in one paragraph.</strong>
+        Filings-evidence coverage is <strong style="color:#E2E8F0">79% of lens
+        weight</strong> across <strong style="color:#E2E8F0">28 SEC filers</strong>
+        (51 names total). On file: <strong style="color:#E2E8F0">523
+        filings ingested</strong>, <strong style="color:#E2E8F0">406 accepted evidence
+        events</strong>, of which <strong style="color:#E2E8F0">340 have matured</strong> into
+        the event study. Form 4 coverage:
+        <strong style="color:#E2E8F0">5/28</strong> — most covered
+        Canadian issuers report insider trades through Canada's SEDI system, which is not yet
+        ingested. Major outside-scope block: ASX/LSE-listed miners with no EDGAR substrate.
+      </p>
+      
+      <div style="background:#1A2030;border-radius:8px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.65">
+        <strong style="color:#E2E8F0">Measured coverage — GDX (Gold miners).</strong>
+        <ul style="margin:6px 0 0 18px">
+          <li><strong style="color:#FBA94B">Filings-evidence coverage: 79% of lens weight</strong>
+              (28 of 51 names are current SEC filers) — measured in the
+              Phase-1 feasibility study from NPORT-P 0001410368-26-054846 (SEC EDGAR), holdings as of 2026-03-31.
+              This is the single measured coverage figure for Phase 2; it covers SEC-filing evidence only and
+              is not a total-evidence claim.</li>
+          <li>Price-history coverage: 28/28 covered names have research price history
+              (WCPRF is a limited OTC proxy line where present — flagged, not equivalent to primary US listings).</li>
+          <li>Event-study eligible coverage: accrues with matured events — 340 matured of
+              379 accepted events so far on this lens.</li>
+          <li>Form 4 coverage: 5/28 covered names (US-domestic filers with a
+              Form 4 stream). All other names: outside current evidence scope — SEDI substrate not currently ingested.</li>
+        </ul>
+        <div style="margin-top:8px"><strong style="color:#E2E8F0">Outside evidence scope:</strong> ASX/LSE-listed miners with no EDGAR substrate; part of the lens weight reports outside SEC jurisdiction.</div>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
+        <div class="tile"><div class="v">28</div><div class="k">covered SEC filers</div></div>
+        <div class="tile"><div class="v">523</div><div class="k">filings ingested</div></div>
+        <div class="tile"><div class="v">406</div><div class="k">accepted evidence events</div></div>
+        <div class="tile"><div class="v">454</div><div class="k">filings with exhibit/MD&A prose</div></div>
+        <div class="tile"><div class="v">14/28</div><div class="k">Issuers with current C6 analysis</div></div>
+      </div>
+      
+      <div class="tblwrap"><table>
+        <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
+        <tbody><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000002809&type=&dateb=&owner=include&count=40'>AEM</a></td><td class='c-is' title='AGNICO EAGLE MINES LTD'>AGNICO EAGLE MINES LTD</td><td class='c-wt'>12.08%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×15</td><td class='c-sm'>OTHER_MATERIAL×3, M_AND_A_ANNOUNCE×3, DIVIDEND_CHANGE×1, GUIDANCE_CUT×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / elevated</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001164727&type=&dateb=&owner=include&count=40'>NEM</a></td><td class='c-is' title='NEWMONT Corp /DE/'>NEWMONT Corp /DE/</td><td class='c-wt'>10.77%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×5</td><td class='c-sm'>OTHER_MATERIAL×5, INSIDER_SELL×3, EXEC_CHANGE×2</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · 3 insider event(s)</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000756894&type=&dateb=&owner=include&count=40'>B</a></td><td class='c-is' title='BARRICK MINING CORP'>BARRICK MINING CORP</td><td class='c-wt'>7.63%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×6</td><td class='c-sm'>OTHER_MATERIAL×6</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001456346&type=&dateb=&owner=include&count=40'>FNV</a></td><td class='c-is' title='FRANCO NEVADA Corp'>FRANCO NEVADA Corp</td><td class='c-wt'>5.16%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×18</td><td class='c-sm'>OTHER_MATERIAL×10, DIVIDEND_CHANGE×2, EARNINGS_BEAT×1, REGULATORY_ACTION×1, EXEC_CHANGE×1, PARTNERSHIP×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001973832&type=&dateb=&owner=include&count=40'>AU</a></td><td class='c-is' title='AngloGold Ashanti PLC'>AngloGold Ashanti PLC</td><td class='c-wt'>5.09%</td><td class='c-sm'>FPI_20F</td><td class='c-sm'>6-K×27</td><td class='c-sm'>OTHER_MATERIAL×14, BUYBACK_ANNOUNCE×2, INSIDER_SELL×2, DIVIDEND_CHANGE×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001323404&type=&dateb=&owner=include&count=40'>WPM</a></td><td class='c-is' title='Wheaton Precious Metals Corp.'>Wheaton Precious Metals Cor…</td><td class='c-wt'>4.89%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×21</td><td class='c-sm'>OTHER_MATERIAL×10, PARTNERSHIP×3, EXEC_CHANGE×2, DIVIDEND_CHANGE×1, M_AND_A_ANNOUNCE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>low / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000701818&type=&dateb=&owner=include&count=40'>KGC</a></td><td class='c-is' title='KINROSS GOLD CORP'>KINROSS GOLD CORP</td><td class='c-wt'>4.68%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×19</td><td class='c-sm'>OTHER_MATERIAL×14, DIVIDEND_CHANGE×1, BUYBACK_ANNOUNCE×1, GUIDANCE_RAISE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001172724&type=&dateb=&owner=include&count=40'>GFI</a></td><td class='c-is' title='GOLD FIELDS LTD'>GOLD FIELDS LTD</td><td class='c-wt'>4.48%</td><td class='c-sm'>FPI_20F</td><td class='c-sm'>6-K×11</td><td class='c-sm'>EXEC_CHANGE×1, OTHER_MATERIAL×1, BUYBACK_ANNOUNCE×1, INSIDER_SELL×1, DIVIDEND_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000771992&type=&dateb=&owner=include&count=40'>PAAS</a></td><td class='c-is' title='PAN AMERICAN SILVER CORP'>PAN AMERICAN SILVER CORP</td><td class='c-wt'>3.19%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×16</td><td class='c-sm'>OTHER_MATERIAL×10, DIVIDEND_CHANGE×1, GUIDANCE_RAISE×1, CAPACITY_CHANGE×1, BUYBACK_ANNOUNCE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001178819&type=&dateb=&owner=include&count=40'>AGI</a></td><td class='c-is' title='ALAMOS GOLD INC'>ALAMOS GOLD INC</td><td class='c-wt'>2.56%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×26</td><td class='c-sm'>OTHER_MATERIAL×15, GUIDANCE_RAISE×2, GUIDANCE_CUT×2, CAPACITY_CHANGE×1, DIVIDEND_CHANGE×1, EXEC_CHANGE×1, REGULATORY_ACTION×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr></tbody>
+      </table></div>
+      <details class="expander">
+        <summary>Show all 28 covered names (18 more, sorted by lens weight)</summary>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
+          <tbody><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000215466&type=&dateb=&owner=include&count=40'>CDE</a></td><td class='c-is' title='Coeur Mining, Inc.'>Coeur Mining, Inc.</td><td class='c-wt'>2.43%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×8</td><td class='c-sm'>OTHER_MATERIAL×3, M_AND_A_CLOSE×2, INSIDER_SELL×1, BUYBACK_ANNOUNCE×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · 1 insider event(s)</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000085535&type=&dateb=&owner=include&count=40'>RGLD</a></td><td class='c-is' title='ROYAL GOLD INC'>ROYAL GOLD INC</td><td class='c-wt'>2.22%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×6</td><td class='c-sm'>OTHER_MATERIAL×5, EXEC_CHANGE×1, GUIDANCE_RAISE×1, INSIDER_SELL×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · 1 insider event(s)</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001756607&type=&dateb=&owner=include&count=40'>EQX</a></td><td class='c-is' title='Equinox Gold Corp.'>Equinox Gold Corp.</td><td class='c-wt'>1.64%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×27</td><td class='c-sm'>OTHER_MATERIAL×9, M_AND_A_ANNOUNCE×5, DIVIDEND_CHANGE×4, M_AND_A_CLOSE×3, CAPACITY_CHANGE×2, GUIDANCE_RAISE×2, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001308648&type=&dateb=&owner=include&count=40'>AG</a></td><td class='c-is' title='FIRST MAJESTIC SILVER CORP'>FIRST MAJESTIC SILVER CORP</td><td class='c-wt'>1.57%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×14</td><td class='c-sm'>OTHER_MATERIAL×8, M_AND_A_ANNOUNCE×1, GUIDANCE_CUT×1, CAPACITY_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001203464&type=&dateb=&owner=include&count=40'>IAG</a></td><td class='c-is' title='IAMGOLD CORP'>IAMGOLD CORP</td><td class='c-wt'>1.32%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×18</td><td class='c-sm'>OTHER_MATERIAL×8, GUIDANCE_RAISE×2</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000719413&type=&dateb=&owner=include&count=40'>HL</a></td><td class='c-is' title='HECLA MINING CO/DE/'>HECLA MINING CO/DE/</td><td class='c-wt'>1.26%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×9</td><td class='c-sm'>OTHER_MATERIAL×8, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · none yet</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001487326&type=&dateb=&owner=include&count=40'>OGC</a></td><td class='c-is' title='OceanaGold Corp'>OceanaGold Corp</td><td class='c-wt'>1.06%</td><td class='c-sm'>MJDS</td><td class='c-sm'>6-K×10</td><td class='c-sm'>OTHER_MATERIAL×4, EXEC_CHANGE×2, GUIDANCE_RAISE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001023514&type=&dateb=&owner=include&count=40'>HMY</a></td><td class='c-is' title='HARMONY GOLD MINING CO LTD'>HARMONY GOLD MINING CO LTD</td><td class='c-wt'>0.99%</td><td class='c-sm'>FPI_20F</td><td class='c-sm'>6-K×14</td><td class='c-sm'>OTHER_MATERIAL×7, GUIDANCE_RAISE×3, DIVIDEND_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000918608&type=&dateb=&owner=include&count=40'>EGO</a></td><td class='c-is' title='ELDORADO GOLD CORP /FI'>ELDORADO GOLD CORP /FI</td><td class='c-wt'>0.88%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×39</td><td class='c-sm'>OTHER_MATERIAL×15, M_AND_A_ANNOUNCE×5, GUIDANCE_RAISE×3, EXEC_CHANGE×3, CAPACITY_CHANGE×3, M_AND_A_CLOSE×1, PARTNERSHIP×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001429937&type=&dateb=&owner=include&count=40'>BTG</a></td><td class='c-is' title='B2GOLD CORP'>B2GOLD CORP</td><td class='c-wt'>0.83%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×18</td><td class='c-sm'>OTHER_MATERIAL×10, CAPACITY_CHANGE×1, EXEC_CHANGE×1, EARNINGS_BEAT×1, BUYBACK_ANNOUNCE×1, DIVIDEND_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000921638&type=&dateb=&owner=include&count=40'>SSRM</a></td><td class='c-is' title='SSR MINING INC.'>SSR MINING INC.</td><td class='c-wt'>0.77%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×9</td><td class='c-sm'>OTHER_MATERIAL×8, M_AND_A_ANNOUNCE×1, M_AND_A_CLOSE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · none yet</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001627272&type=&dateb=&owner=include&count=40'>OR</a></td><td class='c-is' title='OR Royalties Inc.'>OR Royalties Inc.</td><td class='c-wt'>0.69%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×17</td><td class='c-sm'>OTHER_MATERIAL×4, EXEC_CHANGE×3, M_AND_A_ANNOUNCE×1, CAPACITY_CHANGE×1, BUYBACK_ANNOUNCE×1, DIVIDEND_CHANGE×1, EARNINGS_BEAT×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001680056&type=&dateb=&owner=include&count=40'>ORLA</a></td><td class='c-is' title='Orla Mining Ltd.'>Orla Mining Ltd.</td><td class='c-wt'>0.63%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×33</td><td class='c-sm'>OTHER_MATERIAL×17, M_AND_A_ANNOUNCE×3, GUIDANCE_RAISE×3, REGULATORY_ACTION×2, EARNINGS_BEAT×1, M_AND_A_CLOSE×1, DIVIDEND_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>high / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001964504&type=&dateb=&owner=include&count=40'>ARIS</a></td><td class='c-is' title='Aris Mining Corp'>Aris Mining Corp</td><td class='c-wt'>0.58%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×16</td><td class='c-sm'>OTHER_MATERIAL×7, CAPACITY_CHANGE×2, EARNINGS_BEAT×1, GUIDANCE_RAISE×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001854640&type=&dateb=&owner=include&count=40'>CGAU</a></td><td class='c-is' title='Centerra Gold Inc.'>Centerra Gold Inc.</td><td class='c-wt'>0.51%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×22</td><td class='c-sm'>OTHER_MATERIAL×13, DIVIDEND_CHANGE×2, GUIDANCE_RAISE×1, REGULATORY_ACTION×1, CAPACITY_CHANGE×1, EARNINGS_BEAT×1, EXEC_CHANGE×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001277866&type=&dateb=&owner=include&count=40'>EXK</a></td><td class='c-is' title='ENDEAVOUR SILVER CORP'>ENDEAVOUR SILVER CORP</td><td class='c-wt'>0.42%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×15</td><td class='c-sm'>OTHER_MATERIAL×7, CAPACITY_CHANGE×3, GUIDANCE_RAISE×1, M_AND_A_CLOSE×1, EXEC_CHANGE×1, EARNINGS_BEAT×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001341335&type=&dateb=&owner=include&count=40'>FSM</a></td><td class='c-is' title='FORTUNA MINING CORP.'>FORTUNA MINING CORP.</td><td class='c-wt'>0.40%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×27</td><td class='c-sm'>OTHER_MATERIAL×15, GUIDANCE_RAISE×2, CAPACITY_CHANGE×1, REGULATORY_ACTION×1, PARTNERSHIP×1</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001231346&type=&dateb=&owner=include&count=40'>SA</a></td><td class='c-is' title='SEABRIDGE GOLD INC'>SEABRIDGE GOLD INC</td><td class='c-wt'>0.36%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×28</td><td class='c-sm'>OTHER_MATERIAL×12, PARTNERSHIP×2, REGULATORY_ACTION×2, EXEC_CHANGE×2</td><td class='c-gr' style='color:#FBA94B'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr></tbody>
+        </table></div>
+      </details>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
+      (filings, prose, events on file) — they are research classifications of evidence coverage, not
+      rankings and not composite scores. Name links open the issuer's EDGAR filing browser (drill-down
+      to primary-source filings).</p>
+      <p style="font-size:11px;margin-top:6px"><a class="ref" href="#event-legend">Reading the event types ↑</a>
+      · <a class="ref" href="#top">Back to top ↑</a></p>
+      
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 8px">
+        Direction-aligned pooled CAR · n=292 events
+        (dedup: 406 filings → 379 events → 379 evaluable)</div>
+      <svg viewBox="0 0 900 360" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="GDX direction-aligned CAR (peer model, 95% CI)"><line x1="60" y1="58.3" x2="690" y2="58.3" stroke="#2D3748" stroke-dasharray="3,3"/><line x1="186.0" y1="26" x2="186.0" y2="314" stroke="#4A5568" stroke-dasharray="5,4"/><text x="186.0" y="18" fill="#A0AEC0" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">event day 0</text><text x="6" y="318.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-11.3%</text><text x="6" y="30.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+1.4%</text><line x1="60" y1="314" x2="690" y2="314" stroke="#2D3748"/><line x1="60.0" y1="314" x2="60.0" y2="319" stroke="#2D3748"/><text x="60.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">-5</text><line x1="186.0" y1="314" x2="186.0" y2="319" stroke="#2D3748"/><text x="186.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+0</text><line x1="312.0" y1="314" x2="312.0" y2="319" stroke="#2D3748"/><text x="312.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+5</text><line x1="438.0" y1="314" x2="438.0" y2="319" stroke="#2D3748"/><text x="438.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+10</text><line x1="564.0" y1="314" x2="564.0" y2="319" stroke="#2D3748"/><text x="564.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+15</text><line x1="690.0" y1="314" x2="690.0" y2="319" stroke="#2D3748"/><text x="690.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+20</text><text x="375" y="348" fill="#718096" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">event-time trading days (τ)</text><polygon points="60.0,51.1 85.2,50.4 110.4,49.8 135.6,48.9 160.8,47.2 186.0,44.5 211.2,39.1 236.4,37.6 261.6,37.2 286.8,37.4 312.0,33.6 337.2,32.6 362.4,32.0 387.6,30.3 412.8,31.9 438.0,30.6 463.2,26.1 488.4,26.0 513.6,30.0 538.8,31.5 564.0,30.9 589.2,28.6 614.4,28.9 639.6,27.8 664.8,28.3 690.0,29.8 690.0,83.9 664.8,79.3 639.6,76.7 614.4,76.8 589.2,75.0 564.0,76.7 538.8,75.5 513.6,71.9 488.4,66.1 463.2,64.3 438.0,67.9 412.8,67.8 387.6,65.3 362.4,66.4 337.2,66.3 312.0,66.7 286.8,68.9 261.6,66.9 236.4,66.0 211.2,64.9 186.0,67.2 160.8,67.2 135.6,66.5 110.4,64.9 85.2,63.1 60.0,59.9" fill="#FBA94B" opacity="0.16"/><polyline points="60.0,62.5 85.2,63.2 110.4,67.5 135.6,76.7 160.8,83.0 186.0,81.9 211.2,73.6 236.4,79.7 261.6,87.3 286.8,103.9 312.0,108.7 337.2,123.7 362.4,135.6 387.6,148.9 412.8,174.7 438.0,197.1 463.2,206.5 488.4,223.1 513.6,233.4 538.8,251.0 564.0,263.8 589.2,275.2 614.4,281.1 639.6,286.9 664.8,305.5 690.0,314.0" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-dasharray="7,4"/><line x1="704" y1="50" x2="720" y2="50" stroke="#A0AEC0" stroke-width="3" stroke-dasharray="7,4"/><text x="724" y="54" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY model -11.3%</text><polyline points="60.0,55.5 85.2,56.7 110.4,57.4 135.6,57.7 160.8,57.2 186.0,55.9 211.2,52.0 236.4,51.8 261.6,52.0 286.8,53.2 312.0,50.1 337.2,49.5 362.4,49.2 387.6,47.8 412.8,49.8 438.0,49.3 463.2,45.2 488.4,46.1 513.6,50.9 538.8,53.5 564.0,53.8 589.2,51.8 614.4,52.9 639.6,52.3 664.8,53.8 690.0,56.9" fill="none" stroke="#FBA94B" stroke-width="2.5"/><line x1="704" y1="32" x2="720" y2="32" stroke="#FBA94B" stroke-width="3"/><text x="724" y="36" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">peer model +0.1%</text><text x="704" y="72" fill="#718096" font-size="9" font-family="JetBrains Mono,monospace">n(τ=+0)=292, n(τ=+10)=277, n(τ=+20)=261</text></svg>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Same event-study methodology as the Open Index
+      Evidence page (peer + SPY models, [−5,+20] window, dedup, disclosed n). CIs assume independent events
+      and are optimistic. Insider-derived statistics are EXCLUDED for MJDS/FPI issuers (SEDI substrate in Canada, not Form 4) — excluded means outside current evidence scope, not observed absence. A Form 4 stream exists only for the US-domestic filers in the lens.</p>
+      
+    </div>
+    <div class="panel" id="lens-URNM">
+      <div class="panel-title" style="color:#7C4DFF">URNM · Sprott Uranium Miners ETF</div>
+      <div class="panel-sub">Uranium miners · evidence-tier research lens · constituent weights are issuer/fund disclosures used only for internal coverage statistics
+        · <a href="todays_evidence.html" style="color:#7C4DFF;text-transform:none;letter-spacing:0">What changed today →</a></div>
+      
+      <p style="background:#10141C;border:1px solid #1E232D;border-left:3px solid #7C4DFF;
+                border-radius:8px;padding:11px 15px;margin-bottom:12px;font-size:12.5px;
+                color:#A0AEC0;line-height:1.65">
+        <strong style="color:#7C4DFF">URNM in one paragraph.</strong>
+        Filings-evidence coverage is <strong style="color:#E2E8F0">55% of lens
+        weight</strong> across <strong style="color:#E2E8F0">9 SEC filers</strong>
+        (26 names total). On file: <strong style="color:#E2E8F0">111
+        filings ingested</strong>, <strong style="color:#E2E8F0">80 accepted evidence
+        events</strong>, of which <strong style="color:#E2E8F0">61 have matured</strong> into
+        the event study. Form 4 coverage:
+        <strong style="color:#E2E8F0">3/9</strong> — most covered
+        Canadian issuers report insider trades through Canada's SEDI system, which is not yet
+        ingested. Major outside-scope block: Sprott Physical Uranium Trust (13.6% of the lens) does not file EDGAR and is a physical trust outside ordinary operating-company evidence scope by nature.
+      </p>
+      
+      <div style="background:#1A2030;border-radius:8px;padding:14px 18px;margin-bottom:14px;font-size:12px;color:#A0AEC0;line-height:1.65">
+        <strong style="color:#E2E8F0">Measured coverage — URNM (Uranium miners).</strong>
+        <ul style="margin:6px 0 0 18px">
+          <li><strong style="color:#7C4DFF">Filings-evidence coverage: 55% of lens weight</strong>
+              (9 of 26 names are current SEC filers) — measured in the
+              Phase-1 feasibility study from NPORT-P 0001049169-26-001608 (SEC EDGAR), holdings as of 2026-03-31.
+              This is the single measured coverage figure for Phase 2; it covers SEC-filing evidence only and
+              is not a total-evidence claim.</li>
+          <li>Price-history coverage: 9/9 covered names have research price history
+              (WCPRF is a limited OTC proxy line where present — flagged, not equivalent to primary US listings).</li>
+          <li>Event-study eligible coverage: accrues with matured events — 61 matured of
+              72 accepted events so far on this lens.</li>
+          <li>Form 4 coverage: 3/9 covered names (US-domestic filers with a
+              Form 4 stream). All other names: outside current evidence scope — SEDI substrate not currently ingested.</li>
+        </ul>
+        <div style="margin-top:8px"><strong style="color:#E2E8F0">Outside evidence scope:</strong> Sprott Physical Uranium Trust (13.6% of the lens) does not file EDGAR and is a physical trust outside ordinary operating-company evidence scope by nature; Kazatomprom (LSE GDR), Yellow Cake plc (LSE) and the ASX cohort (Paladin, Boss, Deep Yellow, Bannerman) have no EDGAR substrate. Coverage is stated at the measured 55% and is not inflated beyond measured scope.</div>
+      </div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:6px">
+        <div class="tile"><div class="v">9</div><div class="k">covered SEC filers</div></div>
+        <div class="tile"><div class="v">111</div><div class="k">filings ingested</div></div>
+        <div class="tile"><div class="v">80</div><div class="k">accepted evidence events</div></div>
+        <div class="tile"><div class="v">98</div><div class="k">filings with exhibit/MD&A prose</div></div>
+        <div class="tile"><div class="v">4/9</div><div class="k">Issuers with current C6 analysis</div></div>
+      </div>
+      
+      <div class="tblwrap"><table>
+        <thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th><th>Filer class</th><th>Filings ingested</th><th>Constituent events</th><th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>
+        <tbody><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001009001&type=&dateb=&owner=include&count=40'>CCJ</a></td><td class='c-is' title='CAMECO CORP'>CAMECO CORP</td><td class='c-wt'>20.60%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×16</td><td class='c-sm'>OTHER_MATERIAL×7, CAPACITY_CHANGE×4, M_AND_A_CLOSE×1, M_AND_A_ANNOUNCE×1</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001698535&type=&dateb=&owner=include&count=40'>NXE</a></td><td class='c-is' title='NexGen Energy Ltd.'>NexGen Energy Ltd.</td><td class='c-wt'>12.60%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×14</td><td class='c-sm'>OTHER_MATERIAL×8, REGULATORY_ACTION×2, EXEC_CHANGE×1</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001334933&type=&dateb=&owner=include&count=40'>UEC</a></td><td class='c-is' title='URANIUM ENERGY CORP'>URANIUM ENERGY CORP</td><td class='c-wt'>4.91%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-Q×2, 8-K×5</td><td class='c-sm'>OTHER_MATERIAL×5</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · none yet</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001063259&type=&dateb=&owner=include&count=40'>DNN</a></td><td class='c-is' title='DENISON MINES CORP.'>DENISON MINES CORP.</td><td class='c-wt'>4.69%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×16</td><td class='c-sm'>OTHER_MATERIAL×7, CAPACITY_CHANGE×2, REGULATORY_ACTION×2, CONTRACT_WIN×1</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001385849&type=&dateb=&owner=include&count=40'>UUUU</a></td><td class='c-is' title='ENERGY FUELS INC'>ENERGY FUELS INC</td><td class='c-wt'>4.67%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, Form 4×2, 8-K×10</td><td class='c-sm'>OTHER_MATERIAL×5, EXEC_CHANGE×3, INSIDER_BUY×2</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · 2 insider event(s)</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001375205&type=&dateb=&owner=include&count=40'>URG</a></td><td class='c-is' title='UR-ENERGY INC'>UR-ENERGY INC</td><td class='c-wt'>2.49%</td><td class='c-sm'>DOMESTIC</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×4</td><td class='c-sm'>OTHER_MATERIAL×5</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'>Form 4 stream, live · none yet</td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001997377&type=&dateb=&owner=include&count=40'>ISOU</a></td><td class='c-is' title='IsoEnergy Ltd.'>IsoEnergy Ltd.</td><td class='c-wt'>2.00%</td><td class='c-sm'>MJDS</td><td class='c-sm'>40-F×1, 6-K×17</td><td class='c-sm'>OTHER_MATERIAL×10, M_AND_A_CLOSE×1</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'>medium / normal</td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001500881&type=&dateb=&owner=include&count=40'>EU</a></td><td class='c-is' title='enCore Energy Corp.'>enCore Energy Corp.</td><td class='c-wt'>1.65%</td><td class='c-sm'>MJDS</td><td class='c-sm'>10-K×1, 10-Q×1, 8-K×7</td><td class='c-sm'>OTHER_MATERIAL×4, EXEC_CHANGE×3</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr><tr><td class='c-tk'><a class='tk' href='https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001711570&type=&dateb=&owner=include&count=40'>UROY</a></td><td class='c-is' title='Uranium Royalty Corp.'>Uranium Royalty Corp.</td><td class='c-wt'>0.87%</td><td class='c-sm'>MJDS</td><td class='c-sm'>6-K×8</td><td class='c-sm'>OTHER_MATERIAL×3, M_AND_A_ANNOUNCE×2, M_AND_A_CLOSE×1</td><td class='c-gr' style='color:#7C4DFF'>A (events + prose evidence)</td><td class='c-cx'><span class='dim'>not yet run</span></td><td class='c-cx'><span class='dim'>outside evidence scope (SEDI)</span></td></tr></tbody>
+      </table></div>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Evidence grades describe coverage depth
+      (filings, prose, events on file) — they are research classifications of evidence coverage, not
+      rankings and not composite scores. Name links open the issuer's EDGAR filing browser (drill-down
+      to primary-source filings).</p>
+      <p style="font-size:11px;margin-top:6px"><a class="ref" href="#event-legend">Reading the event types ↑</a>
+      · <a class="ref" href="#top">Back to top ↑</a></p>
+      
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 8px">
+        Direction-aligned pooled CAR · n=47 events
+        (dedup: 80 filings → 72 events → 72 evaluable)</div>
+      <svg viewBox="0 0 900 360" width="100%" style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px" role="img" aria-label="URNM direction-aligned CAR (peer model, 95% CI)"><line x1="60" y1="112.5" x2="690" y2="112.5" stroke="#2D3748" stroke-dasharray="3,3"/><text x="696" y="116.5" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">0%</text><line x1="186.0" y1="26" x2="186.0" y2="314" stroke="#4A5568" stroke-dasharray="5,4"/><text x="186.0" y="18" fill="#A0AEC0" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">event day 0</text><text x="6" y="318.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">-7.6%</text><text x="6" y="30.0" fill="#718096" font-size="10" font-family="JetBrains Mono,monospace">+3.2%</text><line x1="60" y1="314" x2="690" y2="314" stroke="#2D3748"/><line x1="60.0" y1="314" x2="60.0" y2="319" stroke="#2D3748"/><text x="60.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">-5</text><line x1="186.0" y1="314" x2="186.0" y2="319" stroke="#2D3748"/><text x="186.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+0</text><line x1="312.0" y1="314" x2="312.0" y2="319" stroke="#2D3748"/><text x="312.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+5</text><line x1="438.0" y1="314" x2="438.0" y2="319" stroke="#2D3748"/><text x="438.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+10</text><line x1="564.0" y1="314" x2="564.0" y2="319" stroke="#2D3748"/><text x="564.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+15</text><line x1="690.0" y1="314" x2="690.0" y2="319" stroke="#2D3748"/><text x="690.0" y="332" fill="#718096" font-size="10" text-anchor="middle" font-family="JetBrains Mono,monospace">+20</text><text x="375" y="348" fill="#718096" font-size="10" text-anchor="middle" font-family="Inter,sans-serif">event-time trading days (τ)</text><polygon points="60.0,96.4 85.2,99.8 110.4,97.7 135.6,95.5 160.8,82.7 186.0,67.2 211.2,65.2 236.4,53.9 261.6,73.9 286.8,63.5 312.0,67.8 337.2,64.5 362.4,73.7 387.6,82.8 412.8,84.1 438.0,74.8 463.2,68.9 488.4,59.9 513.6,46.1 538.8,36.3 564.0,41.9 589.2,39.0 614.4,26.0 639.6,33.9 664.8,40.3 690.0,39.5 690.0,173.5 664.8,178.3 639.6,168.8 614.4,156.0 589.2,157.4 564.0,160.9 538.8,166.8 513.6,166.2 488.4,175.5 463.2,171.7 438.0,168.0 412.8,175.9 387.6,172.2 362.4,165.7 337.2,157.0 312.0,156.6 286.8,151.2 261.6,155.1 236.4,147.4 211.2,146.2 186.0,138.8 160.8,155.2 135.6,153.7 110.4,148.8 85.2,143.7 60.0,128.7" fill="#7C4DFF" opacity="0.16"/><polyline points="60.0,120.4 85.2,145.0 110.4,136.7 135.6,152.7 160.8,135.3 186.0,145.2 211.2,140.7 236.4,151.2 261.6,174.5 286.8,156.4 312.0,146.1 337.2,180.4 362.4,170.0 387.6,194.1 412.8,209.4 438.0,216.9 463.2,211.1 488.4,216.4 513.6,227.3 538.8,250.6 564.0,262.4 589.2,266.9 614.4,265.1 639.6,294.0 664.8,289.3 690.0,314.0" fill="none" stroke="#A0AEC0" stroke-width="2" stroke-dasharray="7,4"/><line x1="704" y1="50" x2="720" y2="50" stroke="#A0AEC0" stroke-width="3" stroke-dasharray="7,4"/><text x="724" y="54" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">SPY model -7.6%</text><polyline points="60.0,112.5 85.2,121.8 110.4,123.2 135.6,124.6 160.8,118.9 186.0,103.0 211.2,105.7 236.4,100.7 261.6,114.5 286.8,107.3 312.0,112.2 337.2,110.7 362.4,119.7 387.6,127.5 412.8,130.0 438.0,121.4 463.2,120.3 488.4,117.7 513.6,106.2 538.8,101.6 564.0,101.4 589.2,98.2 614.4,91.0 639.6,101.4 664.8,109.3 690.0,106.5" fill="none" stroke="#7C4DFF" stroke-width="2.5"/><line x1="704" y1="32" x2="720" y2="32" stroke="#7C4DFF" stroke-width="3"/><text x="724" y="36" fill="#E2E8F0" font-size="10" font-family="JetBrains Mono,monospace">peer model +0.2%</text><text x="704" y="72" fill="#718096" font-size="9" font-family="JetBrains Mono,monospace">n(τ=+0)=47, n(τ=+10)=42, n(τ=+20)=37</text></svg>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Same event-study methodology as the Open Index
+      Evidence page (peer + SPY models, [−5,+20] window, dedup, disclosed n). CIs assume independent events
+      and are optimistic. Insider-derived statistics are EXCLUDED for MJDS/FPI issuers (SEDI substrate in Canada, not Form 4) — excluded means outside current evidence scope, not observed absence. A Form 4 stream exists only for the US-domestic filers in the lens.</p>
+      
+    </div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="evidence-packet">
+      <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Download evidence packet</div>
+      <p style="font-size:12px;color:#A0AEC0;margin:0 0 8px;line-height:1.6">
+        Everything this page derives, as files — YUCLAW-derived data only (derived statistics,
+        counts, classifications; never raw vendor price/options data). Regenerated in the daily chain.
+      </p>
+      <p style="margin:0 0 10px">
+        <a href="packets/yuclaw_canada_resources_packet.zip" download
+           style="display:inline-block;background:#00E676;color:#0B0E14;font-weight:800;font-size:13px;
+                  padding:8px 16px;border-radius:8px;text-decoration:none">Download packet (.zip)</a>
+      </p>
+      <ul style="list-style:none;padding:0;font-size:11.5px;color:#718096;font-family:JetBrains Mono,monospace">
+        <li style='margin:3px 0'>coverage.json</li><li style='margin:3px 0'>events.csv</li><li style='margin:3px 0'>lens_summaries.json</li><li style='margin:3px 0'>scope_disclosures.txt</li>
+        <li style='margin:3px 0'>METADATA.json — data-through, build date, source commit, ledger root, methodology version, scope, known limitations</li>
+        <li style='margin:3px 0'>CITATION.txt — the snippet below</li>
+      </ul>
+      <div style="margin-top:10px;background:#151A23;border:1px solid #1E232D;border-radius:8px;padding:10px 14px">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:4px">Cite this page</div>
+        <code style="font-size:11.5px;line-height:1.5;display:block;white-space:normal">YUCLAW Canada Resources Evidence, v5.0.0, data through 2026-07-22, built 2026-07-23, commit 184469a87365; evidence-tier names excluded from scoring universe.</code>
+      </div>
+    </div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">
+      <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Use YUCLAW in your research</div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap">
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">1 · Verify the record</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code>.<br>
+            No install: <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/tools/replay_lab.py">tools/replay_lab.py</a>
+            (stdlib only) against the published bundle.<br>
+            Exit 0 = every statistic and ledger root reproduced. <a href="replication.html">How to report a replication →</a>
+          </p>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">2 · Inspect one evidence trace</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            One real Suncor 6-K, end to end:<br>
+            filing → exhibit → extracted prose → event type → grade → C6 posture.<br>
+            <a href="trace_su.html">Open the trace →</a> ·
+            <a href="examples/evidence_memo_su.md">example evidence memo (Suncor) →</a>
+          </p>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">3 · Cite a research lens</div>
+          <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
+            Every evidence packet ships a ready citation snippet<br>
+            (version, data-through, build date, source commit).<br>
+            <a href="packets/yuclaw_canada_resources_packet.zip">Get the citation →</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="status-block">
+      <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Status — proven · not proven · accruing</div>
+      <p style="font-size:11.5px;color:#718096;margin:0 0 10px">
+        Rendered from one shared source (<code>v3/web/useful_blocks.py</code>) on every page that shows it,
+        so the copies cannot drift. Statuses are measured, not aspirational.
+      </p>
+      <div style="display:flex;gap:22px;flex-wrap:wrap">
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px">Proven (verifiable today)</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Replay works — one command reproduces every Lab statistic and ledger root from published data</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Ledger anchored daily — sha-256 daily roots committed to a public git repository before pages update</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Evidence traces to filings — every accepted event carries a source URL, accession number, and verified excerpt</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Coverage measured — SEC-filer weight per lens is stated as measured, never rounded up</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Snapshots are point-in-time — daily as-of writes, zero retroactive edits (outage window disclosed, not repaired)</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Evidence-tier names are never scored — enforced by positive gating and a standing negative check</li></ul></div>
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#FF3366;margin-bottom:6px">Not proven</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Forward alpha — no spread, IC, or alpha significant at 5% with adequate power</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> C6 risk-gate sign — rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Peer-model CAR lead — event-study lead over peer models is not established; live-era sample remains small</li></ul></div>
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#FBA94B;margin-bottom:6px">Accruing</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> Forward out-of-sample record — one period per trading day, accruing daily</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> Matured CAR events — each accepted event matures into the event study after its forward window completes</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> C6 elevated arm — live Form-4 ingestion since 2026-07-16 restores the insider stream to production inputs</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> External replications — the replication log accrues as independent runs are reported</li></ul></div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Disclaimer —</strong> Research-only evidence dashboard. Not investment advice, not performance advertising, not an offer or recommendation of any security, fund, or product. Research classifications and measured coverage statistics, not recommendations. Missing data is excluded, not imputed. Forward event studies accrue only when events mature.
+    </div>
+
+    <div class="footer">
+      YUCLAW Canada Resources Evidence · built 2026-07-23 01:50 UTC ·
+      <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only ·
+      Phase-1 study: <a href="research/canada_resources/phase1_feasibility.md">feasibility &amp; coverage</a> ·
+      example: <a href="examples/evidence_memo_su.md">evidence memo (Suncor)</a>
+    </div>
+  </div>
+</body>
+</html>

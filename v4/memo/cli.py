@@ -27,7 +27,11 @@ def _parse_as_of(raw: Optional[str]) -> Optional[datetime]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(prog="yuclaw memo", description="Generate a v4 research memo.")
+    p = argparse.ArgumentParser(
+        prog="yuclaw memo", description="Generate a v4 research memo.",
+        epilog="pip 5.0.x ships this earlier memo interface (positional TICKER, "
+               "--as-of). The evidence-memo CLI (--ticker/--days, "
+               "citation-verified) ships in v5.1.")
     p.add_argument("ticker")
     p.add_argument("--as-of", help="YYYY-MM-DD (or ISO-8601) point-in-time replay")
     p.add_argument("--include-score", action="store_true",

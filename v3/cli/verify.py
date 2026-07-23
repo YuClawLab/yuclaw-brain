@@ -22,7 +22,9 @@ from v3.proof.verify import verify
 STATUS_DISPLAY = {
     "VERIFIED":           "OK  VERIFIED: signal unaltered since ledger commit",
     "INTEGRITY_FAILURE":  "FAIL INTEGRITY: snapshot differs from ledger record",
-    "NOT_FOUND":          "WARN no ledger entry",
+    "NOT_FOUND":          ("WARN no ledger entry available on this machine — "
+                           "bundled demo: AMD @ 2026-05-20; full-record checks: "
+                           "yuclaw replay-lab or clone yuclaw-trust"),
     "INVALID_DATE":       "ERR  invalid date",
 }
 

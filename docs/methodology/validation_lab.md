@@ -224,3 +224,52 @@ score-decile ranking's directional interpretation.
 Engine: `v3/lab/cohort_engine.py`. All constants above are module-level and
 fixed; the engine is read-only on `signal_snapshots` and `price_history`. Every
 number on the page recomputes by running the engine against the database.
+
+## Evidence-tier boundary (Canada Resources, 2026-07-14)
+
+As of 2026-07-14 the universe file carries a second, **evidence-only tier**: 49
+Canada Resources SEC filers (the XEG / ZEO / GDX / URNM core-lens subset of the
+Phase-1 feasibility study, `docs/research/canada_resources/`). Evidence-tier
+names are ingested (6-K / 40-F / 8-K filings), parsed, classified, and shown on
+evidence dashboards — **they are never scored**. They are excluded from
+composite scoring, `signal_snapshots`, the decile study, Lab ranking panels,
+and the 79-ticker forward-track record.
+
+The boundary is enforced by **positive gating** (`v3/universe_tiers.py`): no
+security is scoring-eligible unless its tier is explicitly marked
+`scoring_eligible=true`. The scoring tier remains exactly the Deng-reviewed 79;
+adding coverage mid-record without this boundary would have been a methodology
+event and broken forward comparability. Evidence-tier metadata per name:
+`evidence_eligible=true, scoring_eligible=false, lab_universe=false,
+coverage_vertical=canada_resources`. One name (Whitecap Resources / WCPRF) is
+flagged `listing_quality=low` (OTC proxy line); its price history is not
+treated as equivalent to primary US listings.
+
+Full universe expansion, if it ever happens, is a separate, deliberate,
+disclosed methodology decision — not an implication of this tier.
+
+## Live Form-4 ingestion (2026-07-16)
+
+Live Form-4 ingestion enabled 2026-07-16. Insider-event stream restored to
+production inputs (batch coverage previously ended 2026-05-15; the gap is
+backfilled with ingestion-time `available_as_of` and cannot affect past
+replays). C6 elevated-arm accrual for the out-of-sample sign study begins from
+this date.
+
+Mechanics: the live EDGAR poller (`v3/sources/edgar_poll_v2.py`) filters
+Form 4 filings out of the same per-CIK submissions sweep it already runs and
+parses them **deterministically** (`v3/sources/form4_parser.py` — structured
+XML, no LLM). Coverage is the US-domestic filers in the scoring universe plus
+the 8 US-domestic Canada evidence-tier names (NEM, CDE, HL, RGLD, SSRM, UEC,
+UUUU, URG); insider events for evidence-tier names feed the evidence layer
+only — positive gating (see the evidence-tier boundary note above) keeps them
+out of scoring. Dedup is by canonical SEC accession number. Parser filters,
+scoring math, C6 weights, and thresholds are unchanged from the batch window
+(open-market P/S only; $50k de minimis; magnitude cap $5M; insider aggregate
+cap ±0.5).
+
+Replay integrity: batch-window events (2026-02-18 → 05-15) carry
+`available_as_of = publish_time` as originally recorded. All events ingested
+from 2026-07-16 onward — live arrivals and the 05-15 → 07-16 gap backfill
+alike — carry `available_as_of = actual ingestion time`, never backdated, so
+no backfilled event can enter a replay dated before its ingestion.

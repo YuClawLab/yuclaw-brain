@@ -10,39 +10,61 @@
 ![Hardware DGX Spark GB10](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76B900)
 ![Ledger git-anchored](https://img.shields.io/badge/Ledger-git--anchored-blue)
 
-Composite research signals tied to SEC filings, time-machine replay across a 90-day
-evidence window, and a public git-anchored Verified Research Ledger for tamper evidence.
+Composite research signals tied to SEC filings, a specialist evidence swarm running on
+local models, and a public git-anchored Verified Research Ledger for tamper evidence.
 
 **Research and education only — not investment advice.**
 Signal labels are research classifications, not buy/sell recommendations.
 
 [Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) ·
 [Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
-[Quickstart](#quick-start) ·
+[Canada Resources Evidence](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html) ·
+[Open Index Evidence](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) ·
+[Quickstart](#sixty-seconds) ·
+[📖 User Guide (PDF)](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide.pdf) ·
 [Methodology](docs/methodology/backfill.md) ·
-[**⚠️ Disclaimer**](#-disclaimer) ·
+[**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
 [PyPI](https://pypi.org/project/yuclaw)
 
 </div>
+
+> [!IMPORTANT]
+> **Research and education only — not investment advice.** Signal labels are research
+> classifications, not buy/sell recommendations. Hypothetical research; past results do
+> not predict future performance.
 
 ---
 
 ## What YUCLAW does
 
-Most financial AI tells you *what* it thinks. YUCLAW shows you *why* — and lets anyone
-check the receipt. Every signal traces back to a verifiable SEC filing or a deterministic
-supply-chain cascade, every daily snapshot is content-hashed into a public ledger, and any
-signal can be recomputed as of a past date with point-in-time filtering. No opaque
-"the model said so."
+- **Every signal traces to a filing.** Each composite score decomposes into nine components,
+  and every evidence event links to the SEC document it was extracted from — checked
+  against the source text before any signal sees it.
+- **Every snapshot is hashed to a public, tamper-evident ledger — git-anchored, never
+  edited.** Daily signal sets are content-hashed and committed to
+  [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) before pages publish.
+  Outages are disclosed, never backfilled.
+- **Every Lab chart is reproducible bit-for-bit.** `yuclaw replay-lab` (or a standalone
+  stdlib script) rebuilds the cohorts, recomputes every statistic, and re-derives every
+  ledger hash root from published derived data.
 
 ---
 
-## Quick start
+## Sixty seconds
 
 ```bash
 pip install yuclaw
-yuclaw why NVDA
+yuclaw demo                        # 3-minute guided journey — works offline, zero config
+yuclaw why AMD --as-of 2026-05-20  # bundled offline signal, no backend needed
 ```
+
+Live signals for **all** tickers need the local backend
+([docs/v4/backend_setup.md](docs/v4/backend_setup.md)); the published-data
+commands — `yuclaw replay-lab`, `yuclaw verify`, `yuclaw validation` — work
+anywhere with no backend.
+
+With the backend running, `yuclaw why NVDA` looks like this (backend-mode
+output):
 
 ```text
 NVDA composite score: +0.299  (signal label: NEUTRAL)
@@ -66,17 +88,56 @@ Top contributing events (last 7 days):
 Compliance: Research only. Not financial advice. Not a registered investment advisor.
 ```
 
+Then, check the receipts yourself:
+
+```bash
+yuclaw replay-lab
+```
+
+Fetches the public replay bundle and reproduces the Validation Lab off-box. At the v5.0.0
+release this ran from a brand-new environment — a fresh venv with nothing but
+`pip install yuclaw` — and reproduced **33 daily ledger roots exactly (2,926 leaf hashes
+recomputed)** and every published statistic, exit 0. It exits non-zero on any mismatch.
+
+---
+
+## What shipped in v5.0
+
+| Component | Measured / Shipped | Status |
+|---|---|---|
+| **Layer 0 — evidence job queue** | 281-filing real-data backfill: 281/281 succeeded, 0 dead-letter (`90f23392`) | Complete |
+| **Layer 1 — specialist evidence swarm** | 10 event-type specialists: ma, insider, regulatory, supplychain, macro, geopolitical, earningsquality, litigation, sentimentdrift, esg (`1b2b2e07`, `745df911`) | Complete, in production |
+| **Two-tier local inference** | Gemma 4 26B A4B worker (specialists/debate) + Llama 3.1 70B (extraction/synthesis), both via local Ollama (`21bdbc17`) | Live — zero cloud LLM dependency |
+| **Prose-first ingestion** | worker persists exhibit/MD&A prose; corpus grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85 (`f130983e`, live port `b1b153a0`) | Live |
+| **Live reclassify rescue** | corrected event-type layer reproduces the stored corpus 97/97 (`67487eb2`) | Live |
+| **C6 risk channel** | rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16) (`c28f8542`, `aba72e89`) | Partial — sign pending |
+| **Layers 2–10** | roadmap — **explicitly gated on out-of-sample sign confirmation** for the risk channel | Gated, not built |
+| **Canada Resources evidence tier** | 49 SEC filers across XEG/ZEO/GDX/URNM; 6-K/40-F prose path; evidence-only, never scored; MJDS insider scope disclosed ([live dashboard](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html)) | Live |
+
+---
+
 ### Command surface
 
 ```bash
 yuclaw why TICKER                  # Composite signal + ranked evidence w/ SEC source URLs
 yuclaw replay TICKER --date DATE   # Point-in-time signal at end of date
+yuclaw replay-lab                  # Reproduce the Validation Lab from the public bundle
 yuclaw validation                  # In-sample event validation + forward tracking ledger
+yuclaw events --ticker SU --since 2026-05-01   # Accepted-events export (derived data only)
+yuclaw lens canada --lens XEG      # Lens summary-card data as JSON (same numbers the page renders)
+yuclaw export --lens GDX --format csv          # Lens events export; --page builds the evidence packet
+yuclaw memo --ticker SU --days 30  # Evidence memo — grounded, citation-verified, linted (docs/usage.md)
 yuclaw brief                       # Personalized digest (uses ~/.yuclaw/profile.json)
 yuclaw watch add TICKER            # Manage local watchlist
 yuclaw verify TICKER --date DATE   # Verified Research Ledger integrity check
 yuclaw profile show                # Local preferences
 ```
+
+Worked examples with real output: [docs/usage.md](docs/usage.md).
+
+> **PyPI 5.0.x note:** the `events` / `lens` / `export` / `memo` subcommands ship in
+> v5.1; until then run them from a main checkout (`python3 -m v3.cli ...`;
+> memo: `python3 -m v4.memo.cli ...`). Everything else above works in the published 5.0.x.
 
 **Public signal vocabulary:** `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`,
 `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.
@@ -87,13 +148,28 @@ There is no `SELL` or `SHORT` label — these are research classifications, not 
 ## How it works
 
 ```
-SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K)
+SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K / 40-F)
         │
         ▼
-Local Llama 3.1 70B (Ollama)  +  SourceLock Guard   ← every extraction validated against source text
+systemd poller (always-on, 5-min sweep)
+        │
+        ├──▶  Form 4 → deterministic XML parser (no LLM, zero GPU) → events table
+        │
+        ▼
+prose-first text acquisition  ← exhibit / MD&A prose persisted; XBRL cover is the fallback
+        │
+        ▼
+Llama 3.1 70B extraction  +  SourceLock Guard   ← every extraction checked against source text
+        │
+        ▼
+live event-type rescue (corrected-type layer, reproduction 97/97)
         │
         ▼
 events table  (the evidence layer)
+        │
+        ▼
+Layer-1 specialist swarm (10 specialists, Gemma worker)
+  — risk channel (C6, count≥2) kept SEPARATE from direction
         │
         ▼
 9-component composite  (C1..C9 — C6 event impact carries the highest single weight, 0.18)
@@ -103,7 +179,7 @@ signal_snapshots  (content-hashed)
         │
         ├──▶  Verified Research Ledger  (git-anchored, public)
         ├──▶  Forward Tracking Ledger   (outcomes vs SPY at 1 / 5 / 20 days)
-        ├──▶  Live landing + Validation Lab pages
+        ├──▶  Live landing + Validation Lab pages  (regenerated daily)
         └──▶  SDK / REST / MCP server
 ```
 
@@ -116,62 +192,67 @@ sector velocity, macro regime, oil/rates/FX, event impact, peer correlation, sup
 cascade, model trust — is confidence-weighted. C6 event impact carries the highest single
 weight (0.18), by design: evidence is meant to correct price-only signals, not echo them.
 
-**SEC EDGAR ingestion + SourceLock Guard.** Form 4 / 8-K / 10-Q / 10-K / 6-K filings are
-ingested via local Llama 3.1 70B. A deterministic SourceLock Guard validates every LLM
-extraction against the source text before any signal sees it.
+**Two-tier local inference.** Extraction and synthesis run on Llama 3.1 70B; the Layer-1
+specialist swarm runs on Gemma 4 26B A4B (selected by A/B against the 8B baseline). Both
+are served by one local Ollama daemon on the DGX Spark — zero cloud LLM dependency. SEC
+EDGAR is the only external data source for the evidence layer.
+
+**Grounded, measured extraction.** A deterministic verifier checks that every agent claim
+carries a verbatim quote from the filing and that every number in the claim appears in
+those quotes. No LLMs are in the loop for this verification. Measured on the L1 corpus:
+grounding 0.52 → 0.75 and citation fidelity 0.66 → 0.85 after the prose-first fix
+(measurement commit `f130983e`; production port `b1b153a0`).
 
 **Time-machine replay.** Any signal can be recomputed as of a past date with point-in-time
 filtering (`available_as_of <= as_of`). Leak-audited and reproducible via the `replay` CLI,
 the REST `/replay` endpoint, or the MCP `yuclaw_replay` tool.
 
-**In-Sample Event Validation + Forward Tracking Ledger.** Two clearly separated panels:
-in-sample is replay-reconstructed (~1,000 snapshots over a 90-day window); forward is
-live-emitted from launch onward. Hit rates are always reported alongside their *n* — never
-a headline percentage alone.
-
 **Verified Research Ledger.** Each day's signal hashes are committed to a public git repo
 (`yuclaw-trust`). Run `yuclaw verify TICKER --date DATE` to independently confirm a signal
-hasn't been edited since publication. This verifies record integrity and timing — not
+hasn't been edited since publication. This checks record integrity and timing — not
 investment merit.
 
 **Multi-surface access.** Python SDK (`pip install yuclaw`), REST API, FastMCP stdio server
 (7 tools), and CLI.
 
-**Local LLM inference.** Llama 3.1 70B (Q4_K_M, ~42 GB) via Ollama on NVIDIA DGX Spark GB10.
-Zero cloud LLM dependency for extraction. SEC EDGAR is the only external data source for the
-evidence layer.
+**128-name universe.** A 79-name scoring universe (equities + sector ETFs + broad ETFs +
+macro instruments) plus a 49-filer Canada Resources evidence tier — ingested and
+dashboarded, never scored; the boundary is machine-enforced
+(`verify_evidence_tier_boundary`, 21 regression tests).
 
-**~80-ticker universe.** Equities + sector ETFs + broad ETFs + macro instruments.
+**Evidence memos.** `yuclaw memo` produces a citable research memo where every sentence
+cites an event ID; a deterministic verifier checks each citation against source text and a
+linter enforces the restricted conclusion vocabulary.
+[Approved demo](docs/examples/evidence_memo_su.md).
 
 ---
 
-## Signal Validation Lab
+## Signal Validation Lab (v2)
 
 A Fama–French-style decile-cohort event study of whether YUCLAW's composite score carries
-forward information — built from feedback by **Prof. Deng Shijie (Georgia Tech)**.
+forward information — built from feedback by **Prof. Deng Shijie (Georgia Tech)**, upgraded
+to protocol grade in v5.0:
 
-It is research cohort analysis, not portfolio management: cohorts are grouped by score decile
-or signal label (never by trade direction), tracked as equal-weighted research cohorts, and
-only derived statistics (returns, spreads, drawdowns) are shown — never raw prices. Two panels
-are kept strictly separate: a look-ahead-free **Forward (OOS)** panel and an **In-Sample Replay**
-panel (which carries an explicit parametric look-ahead disclosure). The forward window is still
-early and is labelled *"not yet statistically meaningful."*
+- **Regenerated daily** after U.S. market close, with a freshness stamp on the page and a
+  staleness alarm in the health monitor.
+- **Rolling charts to the latest trading day** with the in-sample → forward regime boundary
+  drawn on-chart; statistics are computed per-regime and **never blended** across it.
+- **Statistical rigor panel:** bootstrap confidence intervals, Newey–West-corrected
+  information coefficients, market-model alpha with its p-value, and a statistical power
+  meter that quantifies what the current n can and cannot detect.
+- **Panel 4 — evidence-qualified candidate cohort**, forward-only by construction, with its
+  honest small-n stated (decile cohort of 2–4 names: "too small for inference").
+- **Maturity gates: 1–3 passed, 4–6 not yet** — printed on the page.
+- **Reproduce this page:** `yuclaw replay-lab` or the standalone stdlib script.
+
+In the Lab's own words: *"No forward alpha has been statistically proven yet."*
 
 🔬 **Live:** [Signal Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html)
+· [Today's Evidence Digest](https://yuclawlab.github.io/yuclaw-brain/todays_evidence.html)
+· [Independent Replication Log](https://yuclawlab.github.io/yuclaw-brain/replication.html)
 · **Methodology:** [docs/methodology/validation_lab.md](docs/methodology/validation_lab.md)
 
 *Hypothetical research illustration — not investment advice, not performance advertising.*
-
----
-
-## v5 — ClawFactory (in development)
-
-v5 "ClawFactory" is an eleven-layer evidence-extraction architecture in development.
-**Layer 0** (the durable, multi-node evidence job queue) is complete and public on branch
-[`v5-layer0-foundation`](https://github.com/YuClawLab/yuclaw-brain/tree/v5-layer0-foundation) —
-proven on a 281-filing real-data backfill (281/281 succeeded, 0 dead-letter). Target: **July 1**.
-No v5 feature beyond Layer 0 is built yet. Full roadmap (all eleven layers + the three locked
-values) is in the [ClawFactory announcement](docs/clawfactory_announcement.md).
 
 ---
 
@@ -180,30 +261,36 @@ values) is in the [ClawFactory announcement](docs/clawfactory_announcement.md).
 Full methodology lives in [docs/methodology/backfill.md](docs/methodology/backfill.md).
 The honest limits, stated up front:
 
+- **The forward record is young.** Forward tracking began 2026-05-20 (forward Day 0 =
+  2026-05-18). Roughly 30 trading days of look-ahead-free history exist as of v5.0 — enough
+  to display, not enough for statistical significance; the Lab's power meter quantifies this.
+
 - **In-sample is replay reconstruction, not a live backtest.** The In-Sample Event Validation
-  panel was materialized after the fact by the replay engine — not emitted live.
+  panel was materialized after the fact by the replay engine — not emitted live — and the
+  evidence-extraction model's training cutoff overlaps that window, so in-sample results
+  carry a parametric look-ahead bias and are systematically optimistic.
 
-- **Fresh-data pipeline (v4.2).** C1 momentum, C3 sector velocity, C5 (sector input), and C7
-  peer correlation read live `price_history` (a daily yfinance feed restored 2026-06-10), so the
-  price-derived components are current rather than reading a frozen cache. **C4 macro regime is
-  temporarily frozen as of 2026-05-18 with a staleness disclosure**, pending macro-engine
-  restoration — its only upstream is the retired v2.3 macro engine, and it cannot be price-derived
-  without changing the component's math. C6 event impact, C8 cascade, and C9 model trust remain
-  point-in-time exact. On historical replays the price-derived components still carry point-in-time
-  caveats.
+- **C6 risk channel is partially confirmed.** rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16).
+  The sign confirmation is the gate for Layers 2–10, and it has not been met.
 
-- **Forward Tracking Ledger starts at n=0.** Launch is Day 0. 1-day outcomes mature next trading
-  day; 5-day a week later; 20-day a month later. The forward panel looks sparse for the first few
-  weeks — correct, not a bug.
+- **C4 macro regime is temporarily frozen as of 2026-05-18** with a staleness disclosure,
+  pending macro-engine restoration — its only upstream is the retired v2.3 macro engine, and
+  it cannot be price-derived without changing the component's math. C1/C3/C5/C7 read live
+  `price_history`; C6/C8/C9 remain point-in-time exact.
 
-- **Extreme labels are rare by construction.** `STRONG_BULLISH` and `BEARISH_WATCH` require broad
-  component agreement plus at least one material non-insider event. Day-0 OOS 99th percentile sits
-  at +0.531, just below the +0.55 `STRONG_BULLISH` floor. See backfill.md §8 for the full
-  reachability analysis.
+- **Extreme labels are rare by construction.** `STRONG_BULLISH` and `BEARISH_WATCH` require
+  broad component agreement plus at least one material non-insider event. Day-0 OOS 99th
+  percentile sat at +0.531, just below the +0.55 `STRONG_BULLISH` floor. See backfill.md §8.
 
-- **No table of headline % returns appears in this README.** Hit rates in both panels are reported
-  alongside their *n*; small-*n* panels are tagged "preliminary." See the
-  [live validation page](https://yuclawlab.github.io/yuclaw-brain/validation.html) for current numbers.
+- **Jun 26 – Jul 3, 2026 outage — disclosed, not patched.** A network outage froze
+  price-derived inputs at Jun 25 closes while snapshots continued point-in-time on-box.
+  Feeds were restored and re-checked against EDGAR (no missing filings); **no snapshot or
+  ledger row was retroactively edited.** The full log is on the Lab page.
+
+- **No table of headline % returns appears in this README.** Hit rates in both panels are
+  reported alongside their *n*; small-*n* panels are tagged. See the
+  [live validation page](https://yuclawlab.github.io/yuclaw-brain/validation.html) for
+  current numbers.
 
 ---
 
@@ -213,50 +300,53 @@ The honest limits, stated up front:
 v3/
   signal/      9-component composite (C1..C9), supply-chain graph, cascade engine
   sources/     SEC EDGAR poller + backfill + Form 4 deterministic parser
-  extract/     LLM extraction + SourceLock Guard
+  extract/     LLM extraction + SourceLock Guard + prose-first acquisition + live reclassify
+  lab/         Validation Lab engines: cohorts, rigor stats, event study, replay bundle
   replay/      Time-machine replay engine
   track/       price_history + outcome_updater + In-Sample Validation panels
   proof/       Verified Research Ledger writer + verifier
   radar/       Change detector + Telegram / Email / Slack adapters
   api/         FastAPI REST server
   mcp/         FastMCP stdio server (7 tools)
-  cli/         why / replay / validation / brief / watch / verify / profile
+  cli/         why / replay / replay-lab / validation / brief / watch / verify / profile
+yuclaw/v5/     ClawFactory Layers 0–1: job queue, specialist swarm, grounding verifier
+services/      systemd units + guarded worker + heartbeat + network self-heal
 sdk/           yuclaw — public SDK (pip install yuclaw)
-docs/methodology/backfill.md   Methodology + limitations + leak audit
+tools/         replay_lab.py — standalone stdlib reproduction script
+docs/methodology/   Methodology + limitations + leak audit + Lab methodology
 ```
 
 ---
 
-## Operations — what's actually scheduled
+## Operations — what's actually running
 
-The live cron table. Frequencies are read from `crontab -l`, not aspirational.
+Read from the live systemd units and `crontab -l`, not aspirational:
 
-| Engine | Frequency | What it does |
-|---|---|---|
-| Daily pipeline | weekdays 17:00 MDT | healthcheck → snapshot_writer → outcome_updater → radar → proof.ledger → refresh_v3_pages — single chained pipeline, `&&` short-circuits on failure |
-| Telegram broadcast | daily 07:35 MDT | daily signal digest to `@yuclaw_signals` |
-| Ollama check | every 30 min | sanity ping to local Ollama |
-| Health monitor | every 30 min | `/tmp/yuclaw_health.log` |
-| Sentiment archive | every 4 hours | `output/sentiment/*.json` (research-side, orthogonal to the signal pipeline) |
-| Oil intelligence | hourly | `output/oil/YYYY-MM-DD_brief.json` (research-side) |
-| Oil brief | nightly 23:00 MDT | LLM oil synthesis (research-side) |
-| Swarm debate | nightly 23:00 MDT | Bull / Bear / Oracle LLM debate (research-side) |
-| PyTorch check | daily 22:00 MDT | dependency sanity |
-
-The daily signal pipeline runs from the canonical `main` checkout. In addition to the scheduled
-07:35 digest, `v3.radar.run` posts to `@yuclaw_signals` when material changes are detected.
+- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep across 127 universe
+  tickers resolving to 112 distinct EDGAR CIKs (79-name scoring universe + 49-filer Canada
+  Resources evidence tier; ETF share classes share issuer-trust CIKs, and one macro
+  instrument has no EDGAR CIK).
+- **Event worker** — systemd timer, every 15 min, GPU-guarded: 70B extraction + SourceLock +
+  live reclassify + prose-first persistence. Exits cleanly when the box is busy.
+- **Daily pipeline** — weekdays 17:00 MDT: healthcheck → snapshots → outcomes → radar →
+  ledger → page regeneration (landing, validation, **Lab, Open Index Evidence, replay bundle**).
+- **Health monitor** — every 30 min: prices, ingestion sweep age, **Lab build age
+  (staleness alarm)**, disk; writes an alert file on any failure.
+- **Off-box heartbeat** — every 5 min: gist check-in + GitHub Actions dead-man watcher.
+- **Network self-heal** — every 5–10 min: link/tailscale recovery; never touches a healthy link.
+- **Telegram broadcast** — daily 07:35 MDT signal digest to `@yuclaw_signals`.
+- **Research crons** — hourly–nightly: oil intelligence, sentiment archive, swarm debate
+  (research-side, orthogonal to the signal pipeline).
 
 ---
 
 ## Hardware
 
-- **GPU:** NVIDIA Grace Blackwell GB10 (128 GB unified memory)
-- **LLM:** Llama 3.1 70B (Q4_K_M, ~42 GB on GPU, 80 layers) served via Ollama, with a
-  financial-analyst system prompt. This is the active production path — the only model used for
-  extraction.
-- **Measured generation speed:** ~2.2–2.7 tok/s on 50-token completions (rendered live in the
-  dashboard's TOK/S stat card; `output/inference_stats.json` is rewritten by every nightly cron run).
-- **Signal cycle:** ~39 s end-to-end for the score-regeneration pipeline.
+- **GPU:** NVIDIA Grace Blackwell GB10 (128 GB unified memory), single box.
+- **Models resident:** Llama 3.1 70B (Q4_K_M, 42 GB weights, ≈46 GB resident with its
+  pinned context budget) + Gemma 4 26B A4B (17 GB weights, ≈20 GB resident) — both served
+  by one local Ollama daemon under an explicit GPU mutex + memory-cap contract.
+- **All local.** No cloud LLM calls anywhere in the pipeline.
 
 ---
 
@@ -277,6 +367,9 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 | | |
 |---|---|
 | **Dashboard** | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
+| **Validation Lab** | [validation_lab.html](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) |
+| **Open Index Evidence** | [etf_evidence.html](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) |
+| **📖 User Guide (PDF)** | [YUCLAW_User_Guide.pdf](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
@@ -307,7 +400,7 @@ For educational and research purposes only. See
 
 **Released under the MIT License — free for everyone.**
 
-Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B via Ollama · Local inference · Git-anchored Verified Research Ledger
+Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B + Gemma 4 26B via Ollama · Local inference · Git-anchored Verified Research Ledger
 
 `pip install yuclaw`
 

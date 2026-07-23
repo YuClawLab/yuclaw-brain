@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@page {
+  size: letter;
+  margin: 0.70in 0.62in 0.80in 0.62in;
+  @top-right { content: "YUCLAW User Guide · v5.0"; font-family: "Liberation Mono"; font-size: 7pt; color: #5C6670; }
+  @bottom-left { content: "Research and education only — not investment advice"; font-family: "Liberation Mono"; font-size: 6.8pt; color: #5C6670; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font-family: "Liberation Mono"; font-size: 6.8pt; color: #5C6670; }
+}
+@page :first { @top-right { content: none; } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Liberation Sans"; color: #182430; font-size: 8.9pt; line-height: 1.45; }
+
+.band { height: 5pt; background: #1F6F4A; margin: -0.70in -0.62in 14pt -0.62in; }
+.masthead { display: flex; justify-content: space-between; align-items: baseline; }
+.wordmark { font-family: "Liberation Serif"; font-weight: bold; font-size: 26pt; letter-spacing: 0.5pt; }
+.wordmark .claw { color: #1F6F4A; }
+.doctitle { text-align: right; }
+.doctitle b { font-family: "Liberation Serif"; font-size: 14pt; }
+.doctitle .sub { display: block; color: #5C6670; font-size: 8.2pt; }
+.citeline { margin-top: 8pt; font-family: "Liberation Mono"; font-size: 7.3pt; color: #3B4854;
+  background: #EFEDE6; border: 0.6pt solid #D8D5CC; padding: 3.5pt 6pt; }
+.lead { margin-top: 10pt; font-family: "Liberation Serif"; font-size: 10pt; line-height: 1.5; }
+
+.notice { margin-top: 10pt; border: 1.2pt solid #9A6A1F; background: #F7F1E4; padding: 7pt 9pt; font-size: 8.6pt; }
+.notice b.t { color: #9A6A1F; }
+
+h2 { font-family: "Liberation Serif"; font-size: 13pt; margin: 16pt 0 5pt 0; page-break-after: avoid; }
+h2 .n { font-family: "Liberation Mono"; font-size: 9pt; color: #FBFAF7; background: #182430; padding: 1.5pt 6pt; margin-right: 7pt; vertical-align: 2pt; }
+h3 { font-family: "Liberation Sans"; font-weight: bold; font-size: 9.6pt; margin: 9pt 0 3pt 0; page-break-after: avoid; }
+p { margin: 4pt 0; }
+ul { margin: 3pt 0 3pt 14pt; }
+li { margin-bottom: 2.6pt; }
+.mono { font-family: "Liberation Mono"; font-size: 8.1pt; }
+code { font-family: "Liberation Mono"; font-size: 8.1pt; background: #EFEDE6; padding: 0.5pt 3pt; }
+
+.term { font-family: "Liberation Mono"; font-size: 7.8pt; background: #182430; color: #E8E4DA;
+  padding: 6pt 8pt; margin: 5pt 0; line-height: 1.5; page-break-inside: avoid; white-space: pre-wrap; }
+.term .p { color: #7FC79E; }
+.term .c { color: #8FA0AE; }
+
+table.ref { width: 100%; border-collapse: collapse; margin: 5pt 0; page-break-inside: avoid; }
+table.ref th { font-family: "Liberation Mono"; font-size: 7.4pt; letter-spacing: 0.8pt; text-align: left;
+  padding: 3.5pt 6pt; background: #182430; color: #FBFAF7; }
+table.ref td { border: 0.6pt solid #D8D5CC; padding: 3.5pt 6pt; font-size: 8.4pt; vertical-align: top; }
+table.ref td.cmd { font-family: "Liberation Mono"; font-size: 7.6pt; white-space: nowrap; background: #F5F3EE; }
+table.ref tr { page-break-inside: avoid; }
+
+.callout { border-left: 2.6pt solid #1F6F4A; background: #F2F5F1; padding: 5pt 8pt; margin: 6pt 0; font-size: 8.5pt; page-break-inside: avoid; }
+.callout.amber { border-left-color: #9A6A1F; background: #F7F1E4; }
+
+.toc { margin-top: 10pt; border: 1pt solid #182430; padding: 9pt 11pt; }
+.toc .t { font-family: "Liberation Mono"; font-size: 7.6pt; font-weight: bold; letter-spacing: 1.4pt; margin-bottom: 5pt; }
+.toc a { text-decoration: none; color: #182430; display: block; font-size: 8.8pt; margin-bottom: 2.6pt; }
+.toc a .n { font-family: "Liberation Mono"; font-size: 7.6pt; color: #1F6F4A; font-weight: bold; margin-right: 6pt; }
+.toc a::after { content: leader(" · ") " " target-counter(attr(href), page); font-family: "Liberation Mono"; font-size: 7.6pt; color: #5C6670; }
+
+.disc { border: 1.2pt solid #182430; padding: 8pt 10pt; margin-top: 8pt; font-size: 8.3pt; page-break-inside: avoid; }
+.small { font-size: 7.8pt; color: #5C6670; }
+.pagebreak { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<div class="band"></div>
+<div class="masthead">
+  <div class="wordmark">YU<span class="claw">CLAW</span></div>
+  <div class="doctitle"><b>User Guide</b><span class="sub">v5.0 series &middot; July 2026 &middot; github.com/YuClawLab/yuclaw-brain</span></div>
+</div>
+<div class="citeline">Open-source, evidence-first financial research &middot; MIT license &middot; local inference, zero cloud LLM calls &middot; git-anchored Verified Research Ledger</div>
+
+<div class="lead">This guide takes you from <span class="mono">pip install</span> to reading signals, tracing evidence to SEC filings, reproducing the published record on your own machine, and using the dashboards, exports, and programmatic surfaces. It assumes basic command-line familiarity and nothing else.</div>
+
+<div class="notice"><b class="t">Read this first.</b> YUCLAW is research and educational software. It is <b>not</b> financial advice, investment advice, or a recommendation to buy, sell, or hold any security. Signal labels are research classifications, not trade directions &mdash; there is no SELL or SHORT label anywhere in the system. Outputs are generated by automated models and may contain errors. The full disclaimer is in Section 10 and DISCLAIMER.md.</div>
+
+<div class="toc">
+  <div class="t">CONTENTS</div>
+  <a href="#s1"><span class="n">1</span>What YUCLAW is (and is not)</a>
+  <a href="#s2"><span class="n">2</span>Install and your first signal</a>
+  <a href="#s3"><span class="n">3</span>Reading a signal</a>
+  <a href="#s4"><span class="n">4</span>Command reference</a>
+  <a href="#s5"><span class="n">5</span>Verify everything yourself</a>
+  <a href="#s6"><span class="n">6</span>Dashboards and daily surfaces</a>
+  <a href="#s7"><span class="n">7</span>Evidence memos and data exports</a>
+  <a href="#s8"><span class="n">8</span>Programmatic access: SDK, REST, MCP</a>
+  <a href="#s9"><span class="n">9</span>Honest limitations</a>
+  <a href="#s10"><span class="n">10</span>Troubleshooting, support, and disclaimer</a>
+</div>
+
+<h2 id="s1"><span class="n">1</span>What YUCLAW is (and is not)</h2>
+<p>YUCLAW ingests SEC filings (Form 4, 8-K, 10-Q, 10-K, 6-K, 40-F), extracts typed evidence events with a locally hosted LLM, checks every extraction against the source text with a deterministic verifier, and combines the evidence with market context into a nine-component composite research signal. Every day&rsquo;s signal set is content-hashed and committed to a public git repository (<span class="mono">yuclaw-trust</span>) before pages publish &mdash; so the record is tamper-evident and independently checkable.</p>
+<p><b>Three design commitments define the project:</b></p>
+<ul>
+  <li><b>Every signal traces to a filing.</b> Each composite decomposes into its components, and every evidence event links to the SEC document it came from.</li>
+  <li><b>Every snapshot is hashed to a public ledger.</b> Git-anchored, never edited. Outages are disclosed, never backfilled.</li>
+  <li><b>Every published chart is reproducible.</b> <code>yuclaw replay-lab</code> rebuilds the cohorts and recomputes every statistic and ledger hash from published derived data, and exits non-zero on any mismatch.</li>
+</ul>
+<p><b>What YUCLAW is not:</b> it is not a trading system, does not connect to any broker, does not manage money, and does not produce buy/sell recommendations. The ingestion and extraction pipeline runs on the project&rsquo;s own hardware (a single NVIDIA DGX-class node); as a user you consume the published, hash-anchored outputs through the CLI, SDK, REST API, MCP server, and dashboards.</p>
+
+<h2 id="s2"><span class="n">2</span>Install and your first signal</h2>
+<p><b>Requirements:</b> Python 3.10 or newer, <span class="mono">pip</span>, and an internet connection. No GPU is needed to use published signals or reproduce the Validation Lab.</p>
+<div class="term"><span class="p">$</span> pip install yuclaw
+<span class="p">$</span> yuclaw demo                        <span class="c"># 3-minute guided journey — works offline, zero config</span>
+<span class="p">$</span> yuclaw why AMD --as-of 2026-05-20 <span class="c"># bundled offline signal, no backend needed</span></div>
+<p>Live signals for <b>all</b> tickers need the local backend (<span class="mono">docs/v4/backend_setup.md</span>); the published-data commands &mdash; <span class="mono">replay-lab</span>, <span class="mono">verify</span>, <span class="mono">validation</span> &mdash; work anywhere with no backend. With the backend running, <span class="mono">yuclaw why NVDA</span> produces output shaped like this (backend-mode output, abbreviated):</p>
+<div class="term">NVDA composite score: +0.299  (signal label: NEUTRAL)
+
+Components (score &times; weight &times; confidence):
+  C1 Momentum        +0.46   (weight 0.12)
+  C4 Macro           +0.60   (weight 0.15)
+  C6 Event Impact    +0.16   (weight 0.18)
+  <span class="c">... (all nine components listed)</span>
+
+Top contributing events (last 7 days):
+  &#8593;  +0.02  2026-05-14  M_AND_A_CLOSE (d1 cascade)
+              CASCADE d1 via HPE&rarr;NVDA (supply, w=0.15) from HPE: H3C divestiture
+              source: https://www.sec.gov/Archives/edgar/data/1645590/...
+
+Compliance: Research only. Not financial advice. Not a registered investment advisor.</div>
+<p>Three things to notice: the label (<span class="mono">NEUTRAL</span>) is a research classification of the composite score; each component&rsquo;s contribution is shown with its weight; and every contributing event carries a link to the SEC document it was extracted from. If you take one habit from this guide, take this one: <b>follow the source links.</b> The engine is built to show its work &mdash; make it.</p>
+<div class="callout amber"><b>Version note (5.0.x).</b> The pip-installed 5.0.x releases predate the <code>events</code>, <code>lens</code>, <code>export</code>, and <code>memo</code> subcommands &mdash; they ship in v5.1. To use them today, run from a checkout of <span class="mono">main</span>: <span class="mono">git clone https://github.com/YuClawLab/yuclaw-brain</span> and invoke <span class="mono">python3 -m v3.cli ...</span>. Everything else in this guide works from the pip install.</div>
+
+<h2 id="s3"><span class="n">3</span>Reading a signal</h2>
+<h3>The nine components</h3>
+<p>The composite is a confidence-weighted sum of nine components. C6 (event impact) carries the highest single weight by design: evidence is meant to correct price-only signals, not echo them.</p>
+<table class="ref">
+  <tr><th>#</th><th>COMPONENT</th><th>WEIGHT</th><th>#</th><th>COMPONENT</th><th>WEIGHT</th></tr>
+  <tr><td class="cmd">C1</td><td>Momentum</td><td>0.12</td><td class="cmd">C6</td><td>Event impact (evidence)</td><td><b>0.18</b></td></tr>
+  <tr><td class="cmd">C2</td><td>Volume&thinsp;*</td><td>0.08&thinsp;*</td><td class="cmd">C7</td><td>Peer correlation</td><td>0.10</td></tr>
+  <tr><td class="cmd">C3</td><td>Sector velocity</td><td>0.12</td><td class="cmd">C8</td><td>Supply-chain cascade</td><td>0.12</td></tr>
+  <tr><td class="cmd">C4</td><td>Macro regime</td><td>0.15</td><td class="cmd">C9</td><td>Model trust</td><td>0.08</td></tr>
+  <tr><td class="cmd">C5</td><td>Oil / rates / FX</td><td>0.05</td><td class="cmd"></td><td></td><td></td></tr>
+</table>
+<p style="font-size:7.6pt; color:#5C6670; margin-top:3pt;">* C2 (volume confirm) currently contributes no signal &mdash; confidence-gated to zero since v3.0 pending volume-feed wiring; live composite weights effectively renormalize across the remaining eight components. Repair-vs-deprecation decision scheduled for v5.2.</p>
+<h3>Signal labels</h3>
+<p>The public vocabulary is fixed: <span class="mono">STRONG_BULLISH &middot; BULLISH &middot; NEUTRAL &middot; WATCH &middot; WEAKENING &middot; NEGATIVE_EVENT &middot; BEARISH_WATCH &middot; RISK_ALERT</span>. These bucket the composite score and risk state; exact thresholds are documented in <span class="mono">docs/methodology/backfill.md</span>. Two facts worth knowing: extreme labels (<span class="mono">STRONG_BULLISH</span>, <span class="mono">BEARISH_WATCH</span>) are rare by construction &mdash; they require broad component agreement plus at least one material non-insider event &mdash; and there is deliberately no SELL or SHORT label: these are research classifications, not trade directions.</p>
+<h3>The universe</h3>
+<p>Signals cover a 79-name scoring universe (equities, sector ETFs, broad ETFs, macro instruments). Separately, a 49-filer <b>Canada Resources evidence tier</b> (XEG / ZEO / GDX / URNM constituents) is ingested and dashboarded but never scored &mdash; the boundary is machine-enforced and regression-tested. See Section 6.</p>
+
+<h2 id="s4"><span class="n">4</span>Command reference</h2>
+<table class="ref">
+  <tr><th>COMMAND</th><th>WHAT IT DOES</th></tr>
+  <tr><td class="cmd">yuclaw why TICKER</td><td>Composite signal + ranked evidence with SEC source URLs.</td></tr>
+  <tr><td class="cmd">yuclaw replay TICKER --date DATE</td><td>Point-in-time signal as of the end of DATE (leak-audited; uses only data available then).</td></tr>
+  <tr><td class="cmd">yuclaw replay-lab</td><td>Reproduce the entire Validation Lab from the public bundle; exit 0 = exact match.</td></tr>
+  <tr><td class="cmd">yuclaw validation</td><td>In-Sample Event Validation panels + forward tracking ledger.</td></tr>
+  <tr><td class="cmd">yuclaw verify TICKER --date DATE</td><td>Verified Research Ledger integrity check: confirms a signal hasn&rsquo;t been edited since publication. Checks record integrity and timing &mdash; not investment merit.</td></tr>
+  <tr><td class="cmd">yuclaw events --ticker SU --since DATE</td><td>Accepted-events export (derived data only).*</td></tr>
+  <tr><td class="cmd">yuclaw lens canada --lens XEG</td><td>Canada lens summary-card data as JSON &mdash; the same numbers the page renders.*</td></tr>
+  <tr><td class="cmd">yuclaw export --lens GDX --format csv</td><td>Lens events export; <span class="mono">--page</span> builds the evidence packet.*</td></tr>
+  <tr><td class="cmd">yuclaw memo --ticker SU --days 30</td><td>Evidence memo &mdash; grounded, citation-checked, linted. Requires a full local deployment (Section 7).*</td></tr>
+  <tr><td class="cmd">yuclaw brief</td><td>Personalized digest (uses ~/.yuclaw/profile.json).</td></tr>
+  <tr><td class="cmd">yuclaw watch add TICKER</td><td>Manage your local watchlist.</td></tr>
+  <tr><td class="cmd">yuclaw profile show</td><td>Show local preferences.</td></tr>
+</table>
+<p class="small">* Ships in v5.1; run from a <span class="mono">main</span> checkout meanwhile (see the version note in Section 2). Worked examples with real output: <span class="mono">docs/usage.md</span>.</p>
+
+<h2 id="s5"><span class="n">5</span>Verify everything yourself</h2>
+<p>YUCLAW&rsquo;s central claim is not that its signals are good &mdash; that is for the data to prove or disprove in public. The claim is that <b>nothing is unverifiable</b>. Three tools back it:</p>
+<h3>5.1 &nbsp;Reproduce the Validation Lab</h3>
+<div class="term"><span class="p">$</span> yuclaw replay-lab
+<span class="c"># fetches the public replay bundle, rebuilds cohorts, recomputes every statistic,</span>
+<span class="c"># re-derives every ledger hash root &mdash; exit 0 on exact match, non-zero on ANY mismatch</span></div>
+<p>This runs from a brand-new environment with nothing but the pip install. At the v5.0.0 release it reproduced every published daily ledger root and statistic exactly from a fresh venv. A standalone stdlib script (<span class="mono">tools/replay_lab.py</span>) does the same with no dependencies at all.</p>
+<h3>5.2 &nbsp;Check a specific signal against the public ledger</h3>
+<div class="term"><span class="p">$</span> yuclaw verify AMD --date 2026-05-20 <span class="c"># works from bare pip — bundled ledger record</span></div>
+<p>Recomputes the signal&rsquo;s hash and checks it against the git-anchored ledger in <span class="mono">yuclaw-trust</span> &mdash; independent confirmation that the record hasn&rsquo;t been edited since publication. For any other ticker/date, clone <span class="mono">github.com/YuClawLab/yuclaw-trust</span> next to your working directory (the full public ledger) or connect the local backend.</p>
+<h3>5.3 &nbsp;Replay any signal as of a past date</h3>
+<div class="term"><span class="p">$</span> yuclaw replay NVDA --date 2026-06-02</div>
+<p>Point-in-time filtering (<span class="mono">available_as_of &le; as_of</span>) guarantees the replay uses only information that existed on that date. The same capability is exposed over REST (<span class="mono">/replay</span>) and MCP (<span class="mono">yuclaw_replay</span>).</p>
+<h3>5.4 &nbsp;Publish your replication</h3>
+<p>If you run a reproduction, the project wants your result &mdash; pass or fail. Open a GitHub issue using the replication template (it asks for OS, Python version, command, output hash, and result). Accepted reports appear on the public <b>Independent Replication Log</b>. A failed reproduction is a bug report of the highest value: the verifier exiting non-zero is exactly the alarm it exists to raise.</p>
+
+<h2 id="s6"><span class="n">6</span>Dashboards and daily surfaces</h2>
+<table class="ref">
+  <tr><th>SURFACE</th><th>URL / HANDLE</th><th>WHAT&rsquo;S ON IT</th></tr>
+  <tr><td>Live Dashboard</td><td class="cmd">yuclawlab.github.io/yuclaw-brain</td><td>Current signal set, regenerated daily after U.S. close.</td></tr>
+  <tr><td>Validation Lab</td><td class="cmd">.../validation_lab.html</td><td>Decile-cohort event study; bootstrap CIs, Newey&ndash;West ICs, power meter; maturity gates printed on-page.</td></tr>
+  <tr><td>Canada Resources Evidence</td><td class="cmd">.../canada_resources.html</td><td>Evidence dashboards for XEG / ZEO / GDX / URNM filers; 6-K/40-F prose path.</td></tr>
+  <tr><td>Open Index Evidence</td><td class="cmd">.../etf_evidence.html</td><td>Index/ETF-level evidence views.</td></tr>
+  <tr><td>Today&rsquo;s Evidence Digest</td><td class="cmd">.../todays_evidence.html</td><td>Daily change log: new filings, accepted events, posture changes, ledger root, replay status.</td></tr>
+  <tr><td>Independent Replication Log</td><td class="cmd">.../replication.html</td><td>External reproductions of the record (honestly empty until someone submits one).</td></tr>
+  <tr><td>Telegram digest</td><td class="cmd">@yuclaw_signals</td><td>Daily signal digest, 07:35 MT.</td></tr>
+</table>
+<div class="callout"><b>Reading the Canada Resources page.</b> The Canada tier is evidence-only: its names are ingested and dashboarded but never enter the scoring universe or the Lab&rsquo;s decile study. One disclosure worth understanding: most Canadian cross-listed (MJDS) filers report insider trades on Canada&rsquo;s SEDI system, not SEC Form 4 &mdash; so insider-derived statistics are marked <i>outside evidence scope</i> for those names rather than shown as misleading zeros. Coverage percentages and grades are printed per lens; thin coverage is excluded rather than padded.</div>
+<p>Every page carries a freshness stamp. If the pipeline has an outage, the gap is disclosed on the page and never backfilled &mdash; a visible gap is the honest state of the record.</p>
+
+<h2 id="s7"><span class="n">7</span>Evidence memos and data exports</h2>
+<h3>Evidence memos</h3>
+<p><code>yuclaw memo --ticker SU --days 30</code> produces a short research memo in which <b>every sentence cites an event ID</b> that resolves to a filing excerpt. Generation uses the local LLM; verification does not: a deterministic verifier checks each citation against source text, and a linter enforces a restricted conclusion vocabulary plus the research-only footer. Memos require a full local deployment (events database + local models) &mdash; pip-only users can read the approved demo at <span class="mono">docs/examples/evidence_memo_su.md</span> to see the exact output shape.</p>
+<h3>Evidence packets and exports</h3>
+<p><code>yuclaw export --lens GDX --page</code> builds an evidence packet: a zip of typed events, verified excerpts, and replay data, each carrying citation metadata (<span class="mono">data_through, build_date, source_commit, ledger_root, methodology_version, scope_note, known_limitations</span>) so anything you quote downstream stays traceable.</p>
+<div class="callout amber"><b>Export rule.</b> Exports contain <b>derived YUCLAW data only</b> &mdash; typed events extracted from public SEC filings, scores, hashes, and the track record. Raw third-party market data (vendor price and options feeds) is never redistributed, per those vendors&rsquo; terms. Citation format for research use: &ldquo;YUCLAW v5.0.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; the packet metadata gives you the exact string.</div>
+
+<h2 id="s8"><span class="n">8</span>Programmatic access: SDK, REST, MCP</h2>
+<ul>
+  <li><b>Python SDK</b> &mdash; <code>pip install yuclaw</code>; the same signal, replay, and verify surfaces as the CLI, importable.</li>
+  <li><b>REST API</b> &mdash; FastAPI server (<span class="mono">v3/api/</span>) including the <span class="mono">/replay</span> endpoint for point-in-time queries.</li>
+  <li><b>MCP server</b> &mdash; FastMCP stdio server exposing 7 tools (including <span class="mono">yuclaw_replay</span>), for use from MCP-capable AI clients.</li>
+  <li><b>OpenClaw skill</b> &mdash; install via <span class="mono">yuclaw/openclaw/install.sh</span>, or run <span class="mono">python3 yuclaw/openclaw/mcp_server.py</span> (port 8002).</li>
+</ul>
+<p>All inference in the pipeline is local to the project&rsquo;s node (Llama 3.1 70B + Gemma via one Ollama daemon) &mdash; there are no cloud LLM calls anywhere, and SEC EDGAR is the evidence layer&rsquo;s only external data source.</p>
+
+<h2 id="s9"><span class="n">9</span>Honest limitations</h2>
+<p>These are stated up front on the site and repeated here because a user guide that hides them would defeat the project&rsquo;s point. Full detail: <span class="mono">docs/methodology/backfill.md</span>.</p>
+<ul>
+  <li><b>The forward record is young.</b> Look-ahead-free forward tracking began 2026-05-20. In the Lab&rsquo;s own words: &ldquo;No forward alpha has been statistically proven yet.&rdquo; The on-page power meter quantifies what the current sample can and cannot detect.</li>
+  <li><b>In-sample results are optimistic by construction.</b> The In-Sample Event Validation panel was reconstructed after the fact by the replay engine, and the extraction model&rsquo;s training window overlaps it &mdash; treat in-sample numbers as an upper bound, not a promise.</li>
+  <li><b>C6 risk channel is partially confirmed.</b> C6 risk channel: rare-by-construction confirmed OOS (22% fire rate, n=9 held-out); sign positive at n=2 elevated &mdash; accruing. Deeper architecture layers are gated on that confirmation.</li>
+  <li><b>C4 macro regime is temporarily frozen</b> (as of 2026-05-18, with an on-page staleness disclosure) pending macro-engine restoration.</li>
+  <li><b>Small samples are labeled.</b> Panels with too few observations for inference say so on the page; no headline return tables appear without their n.</li>
+</ul>
+
+<h2 id="s10"><span class="n">10</span>Troubleshooting, support, and disclaimer</h2>
+<table class="ref">
+  <tr><th>SYMPTOM</th><th>CAUSE &amp; FIX</th></tr>
+  <tr><td><span class="mono">events / lens / export / memo</span> not recognized</td><td>Pip 5.0.x predates these subcommands. Run from a <span class="mono">main</span> checkout: <span class="mono">python3 -m v3.cli ...</span> (Section 2). They ship in v5.1.</td></tr>
+  <tr><td><span class="mono">why TICKER</span> says it needs a backend</td><td>Expected from a bare pip install. Run <span class="mono">yuclaw demo</span> or <span class="mono">yuclaw why AMD --as-of 2026-05-20</span> (bundled offline signal); the published-record commands (<span class="mono">replay-lab</span>, <span class="mono">verify</span>, <span class="mono">validation</span>) work anywhere. Live signals for all tickers: <span class="mono">docs/v4/backend_setup.md</span>.</td></tr>
+  <tr><td><span class="mono">replay-lab</span> exits non-zero</td><td>That is the alarm working. Re-run once (transient network), then open a GitHub issue with the replication template &mdash; a reproducible mismatch is a high-value report.</td></tr>
+  <tr><td>Dashboard looks stale</td><td>Check the freshness stamp on the page. Pages regenerate daily after U.S. market close; outages are disclosed on the Lab page, never backfilled.</td></tr>
+  <tr><td><span class="mono">memo</span> fails without a database</td><td>Memos need the full local deployment (Section 7). Read the demo memo instead, or run the rest of the CLI, which works off published data.</td></tr>
+  <tr><td>Questions, bugs, ideas</td><td>GitHub issues on <span class="mono">YuClawLab/yuclaw-brain</span> &middot; X: @Vincenzhang2026.</td></tr>
+</table>
+<div class="disc"><b>&#9888; Disclaimer.</b> YUCLAW is open-source research and educational software. It is NOT financial advice, investment advice, or a recommendation to buy, sell, or hold any security. All signals, scores, and analyses are generated by automated AI models and may contain errors. Past performance does not guarantee future results. Trading involves substantial risk of loss. You are solely responsible for your own investment decisions; consult a licensed financial advisor before making any investment. YuClawLab, its contributors, and affiliates accept no liability for any losses arising from use of this software. Long-form versions: <span class="mono">DISCLAIMER.md</span> and <span class="mono">docs/methodology/backfill.md</span>. Released under the MIT License.</div>
+<p class="small" style="margin-top:6pt;">YUCLAW User Guide &middot; written for the v5.0 series &middot; the repository README and docs/ are authoritative where this guide and newer releases differ.</p>
+
+<h2 id="sA"><span class="n">A</span>Appendix — quick reference card</h2>
+<p class="small">Print this page and keep it near the terminal.</p>
+<div style="display:flex; gap:10pt; margin-top:4pt;">
+  <div style="flex:1.15; border:1pt solid #182430; padding:7pt 9pt;">
+    <div style="font-family:'Liberation Mono'; font-size:7.4pt; font-weight:bold; letter-spacing:1.2pt; margin-bottom:4pt;">COMMANDS</div>
+    <div class="mono" style="font-size:7.5pt; line-height:1.75;">
+yuclaw why TICKER<br>
+yuclaw replay TICKER --date DATE<br>
+yuclaw replay-lab<br>
+yuclaw validation<br>
+yuclaw verify TICKER --date DATE<br>
+yuclaw events --ticker SU --since DATE&nbsp;*<br>
+yuclaw lens canada --lens XEG&nbsp;*<br>
+yuclaw export --lens GDX --format csv&nbsp;*<br>
+yuclaw memo --ticker SU --days 30&nbsp;*&dagger;<br>
+yuclaw brief &middot; watch add &middot; profile show
+    </div>
+    <div class="small" style="margin-top:4pt;">* ships in v5.1; run <span class="mono">python3 -m v3.cli</span> from a main checkout meanwhile &nbsp;&dagger; needs full local deployment</div>
+  </div>
+  <div style="flex:1; border:1pt solid #182430; padding:7pt 9pt;">
+    <div style="font-family:'Liberation Mono'; font-size:7.4pt; font-weight:bold; letter-spacing:1.2pt; margin-bottom:4pt;">SURFACES</div>
+    <div class="mono" style="font-size:7.5pt; line-height:1.75;">
+yuclawlab.github.io/yuclaw-brain<br>
+&nbsp;&nbsp;/validation_lab.html<br>
+&nbsp;&nbsp;/canada_resources.html<br>
+&nbsp;&nbsp;/etf_evidence.html<br>
+&nbsp;&nbsp;/todays_evidence.html<br>
+&nbsp;&nbsp;/replication.html<br>
+github.com/YuClawLab/yuclaw-brain<br>
+pypi.org/project/yuclaw<br>
+Telegram: @yuclaw_signals (07:35 MT)
+    </div>
+    <div style="font-family:'Liberation Mono'; font-size:7.4pt; font-weight:bold; letter-spacing:1.2pt; margin:6pt 0 3pt 0;">CITE YUCLAW</div>
+    <div class="small">&ldquo;YUCLAW v5.0.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; exact values ship in every evidence-packet METADATA.json.</div>
+  </div>
+</div>
+<div class="callout" style="margin-top:8pt;"><b>The one habit:</b> follow the source links. Every event in every signal resolves to a SEC filing &mdash; the engine is built to show its work. Make it.</div>
+
+</body>
+</html>
