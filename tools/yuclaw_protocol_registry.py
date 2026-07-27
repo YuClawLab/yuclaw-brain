@@ -57,13 +57,39 @@ class Run:
 class Registry:
     """Chained JSONL store. Lines: {kind, payload, prev_hash, line_hash}."""
 
-    def __init__(self, path: str):
+    # The one canonical chain. user_defined/client protocols structurally
+    # cannot enter this file (guard in __init__ + register, self-tested).
+    CANONICAL_PATH = os.path.join(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__))), "registry", "protocols.jsonl")
+
+    def __init__(self, path: str, namespace: str | None = None):
+        """namespace: 'canonical' | 'client' | None (inferred).
+        Explicit 'canonical' on a non-canonical path is refused, and
+        explicit 'client' on the canonical path is refused — isolation in
+        code, not convention. Inferred: the canonical path is 'canonical';
+        any other path is 'open' (tests/scratch, no register restrictions
+        beyond the canonical user_defined ban which is path-based)."""
+        is_canon_path = os.path.abspath(path) == self.CANONICAL_PATH
+        if namespace == "canonical" and not is_canon_path:
+            raise ValueError(
+                "namespace='canonical' refused: only registry/protocols.jsonl "
+                f"is the canonical chain (got {path})")
+        if namespace == "client" and is_canon_path:
+            raise ValueError(
+                "namespace='client' refused on the canonical registry path — "
+                "client work never enters registry/protocols.jsonl")
+        self.namespace = namespace or ("canonical" if is_canon_path else "open")
         self.path = path
         self._lines = []
         if os.path.exists(path):
             with open(path) as f:
                 self._lines = [json.loads(l) for l in f if l.strip()]
             self.verify_chain()
+
+    @staticmethod
+    def _is_user_defined(p) -> bool:
+        blob = f"{p.name} {p.spec_summary}".lower()
+        return "user_defined" in blob or "non_canonical" in blob
 
     # ---- chain
     def _tip(self) -> str:
@@ -96,6 +122,16 @@ class Registry:
     def register(self, p: Protocol) -> str:
         if len(p.secondary_endpoints) < 0 or not p.primary_endpoint:
             raise ValueError("exactly one primary endpoint required")
+        if self.namespace == "canonical" and self._is_user_defined(p):
+            raise ValueError(
+                "REFUSED: user_defined/non_canonical protocols structurally "
+                "cannot enter the canonical registry (registry/protocols.jsonl); "
+                "use a client-namespace chain file")
+        if self.namespace == "client" and not self._is_user_defined(p):
+            raise ValueError(
+                "REFUSED: client-namespace chains accept only protocols "
+                "marked user_defined/non_canonical; canonical protocols live "
+                "only in registry/protocols.jsonl")
         if self.get_protocol(p.protocol_id):
             raise ValueError(f"{p.protocol_id} already registered — "
                              "protocols are immutable; register a new version "
@@ -230,10 +266,37 @@ def _selftest(tmp="/tmp/_reg_test.jsonl"):
     assert sig2 == [True, True, True, False, False], f"T6b BH mask {sig2}"
     # T7: reload + chain verify after all operations
     Registry(tmp).verify_chain()
+    # T8: namespace isolation — both refusals, in code not convention
+    #  (a) canonical namespace refused on a client path
+    try:
+        Registry(tmp, namespace="canonical")
+        raise AssertionError("T8a canonical namespace accepted client path")
+    except ValueError: pass
+    #  (b) client namespace refused on the canonical path
+    try:
+        Registry(Registry.CANONICAL_PATH, namespace="client")
+        raise AssertionError("T8b client namespace accepted canonical path")
+    except ValueError: pass
+    #  (c) user_defined protocol refused by the canonical registry
+    pc = Protocol("cafe00000001", "CLIENT test [user_defined, non_canonical]",
+                  "hash", "user_defined client lens", "client IC", [],
+                  "2026-07-27")
+    try:
+        Registry(Registry.CANONICAL_PATH).register(pc)
+        raise AssertionError("T8c user_defined entered the canonical registry")
+    except ValueError: pass
+    #  (d) canonical-style protocol refused by a client-namespace chain
+    tmp3 = tmp + ".client"
+    if os.path.exists(tmp3): os.remove(tmp3)
+    try:
+        Registry(tmp3, namespace="client").register(p1)
+        raise AssertionError("T8d canonical protocol entered a client chain")
+    except ValueError: pass
     return reg2
 
 if __name__ == "__main__":
     reg = _selftest()
     print("[OK] T1 immutability · T2 registry-first enforcement · T3 ledger "
-          "math · T4 tamper detection · T5 supersession · T6 BH · T7 chain")
+          "math · T4 tamper detection · T5 supersession · T6 BH · T7 chain "
+          "· T8 namespace isolation (4 refusals)")
     print(json.dumps(reg.test_ledger(), indent=1))
