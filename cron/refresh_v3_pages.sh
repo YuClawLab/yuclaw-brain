@@ -68,6 +68,10 @@ from yuclaw_protocol_registry import Registry; \
 Registry('registry/protocols.jsonl').verify_chain(); \
 print('[registry] chain OK')" || exit 19
 
+# Monday board (2026-07-27): internal status page, generate-only, never
+# deployed, never fatal to the public chain.
+/usr/bin/python3 tools/yuclaw_board.py || echo "[refresh_v3_pages] board generation failed (non-fatal)"
+
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
@@ -87,7 +91,14 @@ if /usr/bin/git diff --cached --quiet; then
 fi
 
 /usr/bin/git commit -m "auto: v3.0 page refresh $TS" || exit 4
-/usr/bin/git push origin main || exit 5
+# Push-race fix (order of 2026-07-27; the race fired Fri Jul 24 and hid an
+# undeployed build until Sunday): rebase immediately before push, retry once
+# after re-rebase, and on double failure alarm loudly (marker + Telegram)
+# with distinct exit codes instead of a silent exit-5.
+chmod +x /home/zhangd2/yuclaw/cron/push_alert.sh 2>/dev/null || true
+. /home/zhangd2/yuclaw/cron/lib_push_retry.sh
+push_with_retry origin main /tmp/yuclaw_push_failed.marker \
+    /home/zhangd2/yuclaw/cron/push_alert.sh || exit $?
 echo "[refresh_v3_pages] pushed at $TS"
 
 # Deploy-verify: push ≠ live. Poll the public site until every artifact is

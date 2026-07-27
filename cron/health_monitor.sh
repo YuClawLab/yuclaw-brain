@@ -57,6 +57,17 @@ else
     problems+=("docs/validation_lab.html missing — render_validation_lab never ran?")
 fi
 
+# 1c. Chain push-failure marker (push-race fix, 2026-07-27) — written by
+# cron/lib_push_retry.sh when the page chain committed but could not push;
+# cleared automatically on the next successful push.
+PUSH_MARKER=/tmp/yuclaw_push_failed.marker
+if [[ -f "$PUSH_MARKER" ]]; then
+    status+=("push:FAILED")
+    problems+=("chain push failure marker present — pages rendered but NOT deployed: $(head -1 "$PUSH_MARKER")")
+else
+    status+=("push:OK")
+fi
+
 # 2. Ollama responding on 11434
 if curl -fs --max-time 5 http://localhost:11434/api/version >/dev/null 2>&1; then
     status+=("ollama:OK")
