@@ -709,6 +709,47 @@ percentiles mean the real value is unremarkable within its null. All cells ledge
 Falsification Battery v1.</div>"""
 
 
+def _sec_momentum(lens: str) -> str:
+    """Pre-event momentum conditioning panel (sharper-hypothesis Part B) —
+    reads the recorded run artifact; skips when absent."""
+    p = _REPO / "output" / "oie" / "momentum_conditioning.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    r = data["results"].get(lens)
+    if not r:
+        return ""
+    rows = []
+    for wk, lbl in (("W60", "prior 60d"), ("W20", "prior 20d")):
+        c = r.get(wk) or {}
+        if "difference" not in c:
+            continue
+        d = c["difference"]
+        rows.append(
+            f"<tr><td style='padding:6px 10px;border-top:1px solid #1E232D'>{lbl}</td>"
+            f"<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{c['median_rel_momentum_pct']:+.1f}%</td>"
+            f"<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{c['outperformed']['value_pct']:+.2f}% (n={c['outperformed']['n']})</td>"
+            f"<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{c['underperformed']['value_pct']:+.2f}% (n={c['underperformed']['n']})</td>"
+            f"<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{d['value']:+.2f}pp</td>"
+            f"<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace;color:#FBA94B'>({d['envelope'][0]:+.2f}, {d['envelope'][1]:+.2f})</td></tr>")
+    if not rows:
+        return ""
+    return f"""
+<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>Pre-event momentum conditioning · pooled CAR at +20</h2>
+<div style='font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px'>
+protocol {data['protocol_id']} · median split by prior issuer-vs-peer relative momentum · registered before computation</div>
+<table style='width:100%;border-collapse:collapse;font-size:12px'>
+<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>
+<th style='padding:6px 10px'>Window</th><th style='padding:6px 10px'>Median rel-mom</th>
+<th style='padding:6px 10px'>Outperformed half</th><th style='padding:6px 10px'>Underperformed half</th>
+<th style='padding:6px 10px'>Difference</th><th style='padding:6px 10px'>Envelope</th></tr>
+{''.join(rows)}
+</table>
+<div style='font-size:11px;color:#718096;margin-top:8px'>
+Secondary, exploratory, ledger-counted; extremity read two-sided. A negative difference means prior
+outperformers deliver more adverse aligned CARs — a reversal structure, not event information.</div>"""
+
+
 def _sec_taxonomy(lens: str) -> str:
     """Form-4 transaction-code taxonomy panel (ORDER v5.1 Part C) — display
     only, deterministic XML parse; skips when the taxonomy has not been built."""
@@ -817,6 +858,7 @@ def main(argv=None) -> int:
         sections = (_sec_car(infs, anat)
                     + types_html
                     + _sec_falsification(lens)
+                    + _sec_momentum(lens)
                     + _sec_taxonomy(lens)
                     + _sec_issuers(posture["members"], aux, thru, lens)
                     + _sec_delta(lens)

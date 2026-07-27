@@ -159,6 +159,110 @@ def taxonomy_html() -> str:
                   f"built {escape(data['built_utc'])}", body)
 
 
+# ------------------------------------------------- sale-type decomposition
+def sale_type_html() -> str:
+    p = _REPO / "output" / "oie" / "sale_type_split.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    bf, ae = data["results"]["backfill"], data["results"]["all_era"]
+
+    def cls_row(name, c, n):
+        if not c:
+            return (f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{name}</td>"
+                    f"<td style='padding:7px 12px;color:#718096' colspan='5'>n={n} — not computable</td></tr>")
+        sh = c["shuffle"]
+        return (f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{name}</td>"
+                f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{n}</td>"
+                f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>{c['mean_pct']:+.2f}%</td>"
+                f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>({c['envelope'][0]:+.2f}, {c['envelope'][1]:+.2f})</td>"
+                f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape(c['badge'])}</td>"
+                f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-weight:700'>{sh['percentile_in_null']:.3f} <span style='color:#718096;font-weight:400'>(null {sh['null']['mean']:+.2f}±{sh['null']['sd']:.2f})</span></td></tr>")
+
+    d = bf.get("difference", {})
+    diff_row = ""
+    if d:
+        diff_row = (f"<tr style='background:#1A2334'><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>discretionary − plan</td>"
+                    f"<td style='padding:7px 12px;color:#718096'>—</td>"
+                    f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>{d['value']:+.2f}pp</td>"
+                    f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>({d['envelope'][0]:+.2f}, {d['envelope'][1]:+.2f})</td>"
+                    f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>envelope includes 0</td><td></td></tr>")
+    fm = data["fm_mechanical"]
+    body = f"""
+      <table>
+        <thead><tr><th>Class (backfill era)</th><th>n event-days</th><th>E4 CAR +20d</th><th>Envelope</th><th>Badge</th><th>Date-shuffle percentile</th></tr></thead>
+        <tbody>
+          {cls_row("S · discretionary", bf["discretionary"], bf["n_discretionary"])}
+          {cls_row("S · Rule 10b5-1 plan", bf["plan"], bf["n_plan"])}
+          {diff_row}
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:12px;line-height:1.6">
+        <strong style="color:#E2E8F0">The decisive cell:</strong> the discretionary class sits at the
+        {bf['discretionary']['shuffle']['percentile_in_null']:.0%} point of its own date-shuffle null —
+        no evidence that discretionary selling carries timing information that plan selling lacks, at this
+        sample. Point estimates even run the other way (plan more adverse than discretionary in the backfill
+        era), with every interval UNDERPOWERED and the difference envelope spanning zero — thin-but-honest.
+        All-era sensitivity: discretionary {ae['discretionary']['mean_pct']:+.2f}% (shuffle
+        {ae['discretionary']['shuffle']['percentile_in_null']:.3f}), plan {ae['plan']['mean_pct']:+.2f}%
+        (shuffle {ae['plan']['shuffle']['percentile_in_null']:.3f}).
+        F/M-mechanical class: {fm['n']} events — {escape(fm['reason'])}.
+        Class = S-mass dollar majority per event day (filing-level 10b5-1 checkbox); unclassified days:
+        {data['unclassified_event_days_total']}.
+      </p>"""
+    return _panel("Sale-type decomposition · discretionary vs plan (registered)",
+                  f"protocol {escape(data['protocol_id'])} · registered before computation · "
+                  "two-sided extremity, exploratory beyond the primary", body)
+
+
+# ------------------------------------------------- momentum conditioning
+def momentum_html() -> str:
+    p = _REPO / "output" / "oie" / "momentum_conditioning.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    r = data["results"]["SMH-E4"]
+    rows = []
+    for wk, lbl in (("W60", "prior 60d (PRIMARY diff)"), ("W20", "prior 20d")):
+        c = r[wk]
+        if "difference" not in c:
+            continue
+        d = c["difference"]
+        hl = " style='background:#1A2334'" if wk == "W60" else ""
+        rows.append(
+            f"<tr{hl}><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{lbl}</td>"
+            f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{c['median_rel_momentum_pct']:+.1f}%</td>"
+            f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>{c['outperformed']['value_pct']:+.2f}% (n={c['outperformed']['n']})</td>"
+            f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{c['underperformed']['value_pct']:+.2f}% (n={c['underperformed']['n']})</td>"
+            f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>{d['value']:+.2f}pp</td>"
+            f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>({d['envelope'][0]:+.2f}, {d['envelope'][1]:+.2f})</td></tr>")
+    lens_bits = []
+    for lens in ("XEG", "ZEO", "GDX", "URNM"):
+        c = data["results"][lens]["W60"]
+        if "difference" in c:
+            d = c["difference"]
+            ex = d["envelope"][1] < 0 or d["envelope"][0] > 0
+            lens_bits.append(f"{lens} {d['value']:+.1f}pp "
+                             f"({'excludes' if ex else 'includes'} 0)")
+    body = f"""
+      <table>
+        <thead><tr><th>Window</th><th>Median rel-momentum</th><th>Outperformed half · E4</th><th>Underperformed half · E4</th><th>Difference</th><th>Envelope</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:12px;line-height:1.6">
+        <strong style="color:#E2E8F0">Reading:</strong> the registered primary (W=60 difference) is
+        inconclusive — the envelope spans zero. The secondary cross-lens picture is more coherent: at W=60
+        the outperformed-minus-underperformed difference is negative in every lens
+        ({escape(' · '.join(lens_bits))}), i.e. prior-60-day winners systematically deliver more adverse
+        aligned CARs than prior losers across unrelated sectors — consistent with a market-wide 60-day
+        reversal structure, not event-specific information. The pattern vanishes at W=20. Secondary cells
+        are exploratory and ledger-counted; extremity is read two-sided.
+      </p>"""
+    return _panel("Pre-event momentum conditioning (registered)",
+                  f"protocol {escape(data['protocol_id'])} · median split by prior issuer-vs-peer "
+                  "relative momentum · registered before computation", body)
+
+
 # ---------------------------------------------------------------- Part D
 def funnel_html() -> str:
     cov = overlap_summary()["covered"]
@@ -354,8 +458,9 @@ def main() -> int:
     es = event_study()
     est = run_estimands(es)
 
-    extra = (falsification_html() + taxonomy_html() + funnel_html()
-             + holdings_html() + cross_etf_html())
+    extra = (falsification_html() + sale_type_html() + momentum_html()
+             + taxonomy_html() + funnel_html() + holdings_html()
+             + cross_etf_html())
     render_preview(proto, verdict, facts, anatomy, top, br, states, est,
                    es, run_line, extra_html=extra)
     print("[v5.1] smh_lens.html re-rendered with falsification / taxonomy / "
