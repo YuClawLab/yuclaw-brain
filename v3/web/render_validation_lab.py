@@ -30,6 +30,7 @@ from v3.web.useful_blocks import (site_header_html,
                                   public_label as display_label,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
+from v3.web.oie_v51_blocks import lab_clustered_block as _v51_clustered
 
 OUT = _REPO / "docs" / "validation_lab.html"
 UNIVERSE_PATH = _REPO / "v3" / "universe.json"
@@ -497,6 +498,7 @@ def rigor_panel_html(rig: dict) -> str:
           <tbody>{''.join(mrows)}</tbody>
         </table>
         {mde_txt}
+        {_v51_clustered() if panel == "forward" else ""}
       </div>""")
 
     return f"""

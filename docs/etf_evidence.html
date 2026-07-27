@@ -75,7 +75,7 @@
 
     <div class="fresh">
       <strong>Data through 2026-07-24</strong> (last completed U.S. trading day) ·
-      regenerated daily after market close · last build 2026-07-27 01:01 UTC
+      regenerated daily after market close · last build 2026-07-27 01:48 UTC
     </div>
 
     <div class="disclaimer-line">
@@ -138,7 +138,7 @@
       <div class="panel-sub">market-model CAR, window [−5, +20] event-time days · dedup: 472 filings → 116 distinct (ticker, type, day) events → 94 with a ≥30-obs estimation window</div>
 
       <div style="background:#2A1A1A;border-radius:8px;padding:14px 18px;border-left:3px solid #FBA94B;margin-bottom:14px">
-        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the current event-level estimator; issuer- and date-clustered confirmation pending.</div>
+        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the event-level estimator; issuer- and date-clustered confirmation completed — the adverse point estimate persists under all four registered weightings but is statistically supported only under event weighting (issuer-, ETF-, and capped-weighted envelopes include zero). The event-date-shuffle null places the primary capped estimand at an unremarkable percentile: era-generic direction alignment, not event-timed information.</div>
         <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
           Direction-aligned pooled CAR (peer model, n=45 events) is
           <strong style="color:#FF3366">-12.0%</strong> at τ=+20
@@ -184,6 +184,85 @@
         and are statistically uninformative. Form 4 (insider) events are a parsed batch covering 2026-02-18 to 2026-05-15; live Form-4 ingestion is a tracked pipeline item, so the live-era sample is 8-K derived and small.
       </p>
     </div>
+
+    <div class="panel" id="estimands"><div class="panel-title">Multi-estimand direction-aligned CAR · backfill era (registered)</div><div class="panel-sub">protocol 15052741ba2a · method 5bff6b284b05c718 · registered before computation · recorded run artifact</div>
+      <table>
+        <thead><tr><th>Estimand</th><th>Mean CAR +20d</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th><th>Badge</th></tr></thead>
+        <tbody><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E1 event-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-12.00%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-18.61, -3.08)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-20.66, -5.39)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-20.66, -3.08)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>PRELIMINARY</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E2 issuer-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-6.23%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-14.09, +1.04)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-16.02, -1.29)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-16.02, +1.04)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E3 ETF-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-5.02%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-11.60, +1.09)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-14.44, +1.92)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-14.44, +1.92)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr style='background:#1A2334'><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E4 capped-ETF-weighted — PRIMARY</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-5.88%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-13.65, +2.01)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-15.80, -0.90)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-15.80, +2.01)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr></tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        The adverse point estimate persists under all four registered weightings; it is statistically
+        supported only under event weighting. Under issuer weighting the conservative envelope
+        (-16.02, +1.04) includes zero — the adverse headline draws
+        real strength from event-count concentration in a few insider-sale-heavy issuers.
+        Envelope = wider of the issuer-/date-cluster bootstrap CIs; formal two-way clustering pending.
+      </p></div>
+
+    <div class="panel" id="falsification"><div class="panel-title">Falsification battery · SMH-E4</div><div class="panel-sub">N=1000 per null · seed 20260727</div>
+      <table>
+        <thead><tr><th>Test</th><th>Real value</th><th>Null mean ± sd</th><th>Null 2.5–97.5%</th><th>Percentile of real in null</th></tr></thead>
+        <tbody>
+        <tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>Event-date shuffle</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>-5.88%</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>-6.72% ± 3.43</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#718096'>(-13.10, +0.86)</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-weight:700'>0.620</td></tr>
+        <tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>Direction sign-flip</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>-5.88%</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>+0.13% ± 3.94</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#718096'>(-7.54, +7.69)</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-weight:700'>0.060</td></tr>
+        <tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>Pre-event placebo (−20d)</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>+3.30%</td>
+        <td style='padding:7px 12px;color:#718096;font-size:11px' colspan='2'>located in the date-shuffle null · 20 of 45 events dropped (shifted day0 pre-dates usable estimation history — disclosed)</td>
+        <td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-weight:700'>0.997</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Two-sided extremity: percentiles near 0 and near 100 are both extreme; mid-range percentiles mean
+        the real value is unremarkable within its null. Exploratory; every cell ledger-counted under
+        Falsification Battery v1 (protocol df92008643c8, registered before computation).
+      </p></div>
+
+    <div class="panel" id="taxonomy"><div class="panel-title">Form-4 transaction taxonomy · covered members</div><div class="panel-sub">built 2026-07-27 01:42 UTC · display-only</div>
+      <table>
+        <thead><tr><th>Code class</th><th>Transactions</th><th>Share</th><th>$ mass (non-deriv rows)</th></tr></thead>
+        <tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>S · discretionary open-market sale</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>91</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>15.6%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>$734,841,227</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>S · Rule 10b5-1 plan sale</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>358</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>61.3%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>$590,052,676</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>F · tax-withholding disposition (mechanical)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>29</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>5.0%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>$126,803,074</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>M · option exercise / conversion (mechanical)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>86</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>14.7%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>—</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>A · award / grant (mechanical)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>14</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2.4%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>—</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>other codes</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>6</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>1.0%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>—</td></tr></tbody>
+      </table>
+      <div style="font-size:11px;color:#718096;margin:14px 0 4px;text-transform:uppercase;letter-spacing:1px">Top-3 members by ingested events</div>
+      <table>
+        <thead><tr><th>Ticker</th><th>Ingested events</th><th>S discretionary</th><th>S 10b5-1</th><th>F withholding</th><th>M+A mechanical</th></tr></thead>
+        <tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>MU</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>160</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>6</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>159</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>0</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>0</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>AMD</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>87</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>4</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>83</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>1</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>13</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>LRCX</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>51</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>5</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>47</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>0</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>14</td></tr></tbody>
+      </table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Deterministic XML parse of 607 ingested filings; 10b5-1 is the filing-level
+        checkbox; dollar mass from non-derivative rows only. Display-only — zero LLM, scoring inputs
+        untouched. Research classifications, not recommendations.
+      </p></div>
+
+    <div class="panel" id="funnel"><div class="panel-title">Live maturity funnel · covered sleeve</div><div class="panel-sub">live-era pipeline stages, recomputed at render time</div>
+      <table><thead><tr><th>Stage</th><th>Count</th></tr></thead><tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Live filings polled (events_raw, covered tickers)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>62</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Candidate events since forward Day 0 (2026-05-18)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>266</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Accepted</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>266</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Deduped (ticker · type · direction · day)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>49</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Direction-classified (direction ≠ 0)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>45</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Completed +5d windows</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>44</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Completed +10d windows</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>41</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Completed +20d windows</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>33</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Distinct issuers (directional)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>8</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Distinct event dates (directional)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>30</td></tr></tbody></table>
+      <div style="font-size:11px;color:#718096;margin:14px 0 4px;text-transform:uppercase;letter-spacing:1px">Minimum clusters for live-era standalone inference (locked badge floors) vs current</div>
+      <table><thead><tr><th>Requirement</th><th>Current / required</th><th>Status</th></tr></thead><tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>events with +20d window</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>33 / 10</td><td style='padding:6px 12px;font-size:12px'><span style='color:#00E676'>met</span></td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>distinct issuers</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>8 / 8</td><td style='padding:6px 12px;font-size:12px'><span style='color:#00E676'>met</span></td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>distinct event dates</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>30 / 10</td><td style='padding:6px 12px;font-size:12px'><span style='color:#00E676'>met</span></td></tr></tbody></table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Point-in-time pipeline counts; the live era is never blended with the backfill era in any statistic.</p></div>
+
+    <div class="panel" id="holdings"><div class="panel-title">Holdings intelligence</div><div class="panel-sub">provenance and freshness of the constituent snapshot</div>
+      <table><tbody>
+        <tr><td style='padding:6px 12px;color:#718096;font-size:12px'>Holdings as-of date (issuer disclosure)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>2026-07-03</td></tr>
+        <tr><td style='padding:6px 12px;color:#718096;font-size:12px'>Retrieved into the evidence store</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>2026-07-05</td></tr>
+        <tr><td style='padding:6px 12px;color:#718096;font-size:12px'>Snapshot age today</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B'>24 days</td></tr>
+        <tr><td style='padding:6px 12px;color:#718096;font-size:12px'>Disclosed holdings / weight</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>25 names · 100.01%</td></tr>
+      </tbody></table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        <strong style="color:#E2E8F0">Renormalization statement:</strong> posture and E3/E4 estimand weights
+        renormalize issuer fund weights over the covered 50.24% sleeve only; no statistic on this page
+        weights by full-fund share. Constituent weights are dated issuer disclosures, not market data.
+      </p>
+      <p style="font-size:11px;color:#718096;margin-top:6px">
+        Rounding footnote: the issuer's disclosed weights sum to 100.01%, so the undisclosed residual
+        computes to -0.01% — shown as measured, an artifact of the issuer's
+        two-decimal rounding, not a data error.
+      </p></div>
 
     <details class="acc">
       <summary>Methodology summary</summary>
@@ -286,7 +365,7 @@
     </div>
 
     <div class="footer">
-      YUCLAW SMH Covered-Constituent Evidence Lens · data through 2026-07-24 · built 2026-07-27 01:01 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW SMH Covered-Constituent Evidence Lens · data through 2026-07-24 · built 2026-07-27 01:48 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 </body>

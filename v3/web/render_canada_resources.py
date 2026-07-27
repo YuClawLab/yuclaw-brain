@@ -34,6 +34,7 @@ from v3.web.useful_blocks import (site_header_html,
                                   packet_block_from_manifest as _packet_block,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
+from v3.web import oie_v51_blocks as _v51
 
 OUT = _REPO / "docs" / "canada_resources.html"
 OIL_DIR = _REPO / "output" / "oil"
@@ -505,6 +506,12 @@ def render() -> str:
     </details>
 
     {sections}
+
+    {_v51.falsification_panel("XEG", pid="falsification-xeg")}
+    {_v51.falsification_panel("ZEO", pid="falsification-zeo")}
+    {_v51.falsification_panel("GDX", pid="falsification-gdx")}
+    {_v51.falsification_panel("URNM", pid="falsification-urnm")}
+    {_v51.taxonomy_panel("GDX", pid="taxonomy-gdx")}
 
     {_packet_block("canada")}
 
