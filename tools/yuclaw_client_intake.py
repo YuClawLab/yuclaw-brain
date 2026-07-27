@@ -8,7 +8,10 @@ not rejected). Every failure produces a clear one-line message with row
 numbers; the CLI exits non-zero with no traceback, ever.
 
 Checks:
-  C1 columns      — required columns present (case-insensitive match)
+  C1 columns      — required columns present (case-insensitive match);
+                    UNKNOWN extra columns are REJECTED (custody rule: we
+                    never silently carry client data we did not ask for;
+                    only as_of / generated_at are accepted extras)
   C2 dates        — ISO YYYY-MM-DD, parseable
   C3 values       — finite floats (NaN/inf/empty/text refused)
   C4 duplicates   — one row per (ticker, date)
@@ -67,6 +70,14 @@ def validate(path: str | Path) -> tuple[list[dict], dict]:
             [f"missing required column(s): {', '.join(missing)} — expected "
              f"header: date,ticker,signal_value (found: {', '.join(cols) or 'none'})"])
     colmap = {c.strip().lower(): c for c in reader.fieldnames}
+    allowed = set(REQUIRED) | {"as_of", "generated_at"}
+    unknown = [c for c in cols if c not in allowed]
+    if unknown:
+        raise IntakeError(
+            [f"unexpected column(s): {', '.join(unknown)} — we only accept "
+             "date,ticker,signal_value (optional: as_of or generated_at). "
+             "Please remove other data before submitting; we never carry "
+             "client columns we did not ask for."])
     as_of_col = next((colmap[c] for c in ("as_of", "generated_at")
                       if c in colmap), None)
 
@@ -109,10 +120,7 @@ def validate(path: str | Path) -> tuple[list[dict], dict]:
             dup_rows.append(n)
             continue
         seen[key] = n
-        rows.append({"date": d, "ticker": tk, "signal_value": v,
-                     **{k: v2 for k, v2 in raw.items()
-                        if k not in (colmap["date"], colmap["ticker"],
-                                     colmap["signal_value"])}})
+        rows.append({"date": d, "ticker": tk, "signal_value": v})
 
     problems = []
     if bad_date:

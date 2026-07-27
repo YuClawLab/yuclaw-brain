@@ -42,7 +42,7 @@ for p in (str(_REPO), str(_REPO / "tools")):
 import psycopg2
 
 from yuclaw_protocol_registry import Protocol, Registry, Run, protocol_id
-from yuclaw_etf_lens import LensFacts, WeightedClusteredCAR, admit
+from yuclaw_etf_lens import LensFacts, WeightedClusteredCAR, admit_client
 from yuclaw_falsification import TargetGrid, battery
 from yuclaw_client_signal_lab import run_suite
 
@@ -332,10 +332,11 @@ def main() -> int:
         price_coverage_pct=round(100 * n_priced / len(picks), 1),
         substrate_disclosed=True, reproduction_bundle=True,
         live_protocol_registered=True)
-    verdict = admit(facts)
+    verdict = admit_client(facts)
     stamps["5_bundle_admission"] = now() - t0
-    print(f"[byos] re-admission with reproduction bundle: {verdict['label']} "
-          f"N_eff={verdict['effective_issuers']}")
+    print(f"[byos] re-admission (client standard): {verdict['label']} "
+          f"N_eff={verdict['effective_issuers']} "
+          f"(canonical would be: {verdict.get('canonical_label_would_be')})")
 
     # ---- 6. memo (md + pdf) --------------------------------------------------
     results = {"facts": vars(facts), "verdict": verdict, "estimands": est,

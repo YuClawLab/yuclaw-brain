@@ -136,6 +136,41 @@ def admit(f: LensFacts, t: AdmissionThresholds = AdmissionThresholds()):
                               "beside every lens statistic")
     return out
 
+CLIENT_STANDARD_SPEC = """
+CLIENT-LENS ADMISSION STANDARD — v1 (locked; supersede via registry only)
+Ruling: user_defined (client-namespace) lenses CAP at EXPLORATORY (CLIENT).
+MEASURED and above are reserved for canonical public lenses. Rationale:
+client baskets self-select full coverage — every submitted name is 'covered'
+by construction — so coverage thresholds designed for partial-coverage
+public lenses (where covered weight is a measured, adversarial quantity)
+overstate maturity when applied to user-defined input. A client lens can
+earn higher standing only through a future versioned client-standard
+requiring sustained live accrual and an executed (not merely shipped)
+reproduction. NOT_ADMITTED reasons apply unchanged; concentration flags and
+the capped-estimand requirement carry through. Standard entry — no runs are
+ever recorded against it (uncomputed class, like the thresholds themselves).
+"""
+CLIENT_STANDARD_HASH = hashlib.sha256(CLIENT_STANDARD_SPEC.encode()).hexdigest()[:16]
+
+
+def admit_client(f: LensFacts, t: AdmissionThresholds = AdmissionThresholds()):
+    """Client-namespace ruling: same gates as admit(), but any admitted
+    verdict is capped at EXPLORATORY (CLIENT) per CLIENT_STANDARD_SPEC."""
+    out = admit(f, t)
+    if out["label"] == "NOT_ADMITTED":
+        return out
+    capped = dict(out)
+    capped["canonical_label_would_be"] = out["label"]
+    capped["label"] = ("EXPLORATORY (CLIENT, CONCENTRATION-LIMITED)"
+                       if "CONCENTRATION-LIMITED" in out["label"]
+                       else "EXPLORATORY (CLIENT)")
+    capped["note"] = ("user_defined lens: capped at EXPLORATORY (CLIENT) — "
+                      "MEASURED and above reserved for canonical public "
+                      "lenses (Client-lens admission standard v1). "
+                      + out.get("note", ""))
+    return capped
+
+
 # ------------------------------------------------------- anatomy §6 / §19
 @dataclass
 class UncoveredSlice:
@@ -302,13 +337,26 @@ def _selftest():
     # T7 determinism
     assert wc3.run("event") == WeightedClusteredCAR(
         ev3, {f"C{i}": 11.1 for i in range(9)}, B=400).run("event")
+    # T8 client cap: facts that would earn MEASURED can NEVER emit MEASURED
+    # through the client ruling — EXPLORATORY (CLIENT) is the ceiling.
+    meas2 = dict(base); meas2.update(covered_weight_pct=70, covered_issuers=12,
+        covered_weights=[10, 9, 8, 8, 7, 6, 6, 5, 4, 3, 2, 2],
+        live_protocol_registered=True)
+    assert admit(LensFacts(**meas2))["label"] == "MEASURED"
+    ac = admit_client(LensFacts(**meas2))
+    assert ac["label"] == "EXPLORATORY (CLIENT)", ac
+    assert ac["canonical_label_would_be"] == "MEASURED"
+    assert "MEASURED" not in admit_client(LensFacts(**base))["label"]
+    bad2 = dict(base); bad2["covered_weight_pct"] = 49.9
+    assert admit_client(LensFacts(**bad2))["label"] == "NOT_ADMITTED"
     return r2
 
 if __name__ == "__main__":
     r = _selftest()
     print("[OK] T1 effective-N · T2 admission boundaries · T3 anatomy identity "
           "· T4 equal-case agreement · T5 concentration sensitivity · "
-          "T6 dependence widens envelope · T7 determinism")
+          "T6 dependence widens envelope · T7 determinism · "
+          "T8 client cap (user_defined never MEASURED)")
     print(f"[OK] METHOD_HASH={METHOD_HASH}  (register before real lens data)\n")
     for k, res in r.items():
         print(f"{k:>7}: mean={res.mean_pct:+.2f}%  naive{res.naive_ci}  "
