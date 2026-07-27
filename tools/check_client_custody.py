@@ -76,8 +76,11 @@ def main(argv=None) -> int:
     tracked = subprocess.run(["git", "ls-files"], cwd=_REPO,
                              capture_output=True, text=True).stdout.splitlines()
     for path in tracked:
+        base = path.rsplit("/", 1)[-1]
+        # prefix match, mirroring K3's glob semantics: client DATA files start
+        # with the marker; committed tools are yuclaw_-prefixed and never match
         if any(path.startswith(d + "/") for d in CLIENT_DIRS) or \
-                any(m in path.rsplit("/", 1)[-1] for m in CLIENT_FILE_MARKERS):
+                any(base.startswith(m) for m in CLIENT_FILE_MARKERS):
             problems.append(f"K2: client data path tracked in git: {path}")
 
     # K3
