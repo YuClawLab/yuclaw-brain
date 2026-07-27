@@ -197,7 +197,7 @@ def _ci(t):  # (lo, hi) -> string
 
 
 def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
-                   es, run_line_hash):
+                   es, run_line_hash, extra_html: str = ""):
     built = utc_now()
     e = est["backfill"]
     order = [("event", "E1 event-weighted (each event counts once)"),
@@ -345,6 +345,8 @@ def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
         Envelope = wider of the issuer-/date-cluster bootstrap CIs; formal two-way clustering pending — stated, not faked.
       </p>
     </div>
+
+    {extra_html}
 
     <div class="panel">
       <div class="panel-title">Provenance</div>

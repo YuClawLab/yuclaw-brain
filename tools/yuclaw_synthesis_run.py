@@ -665,6 +665,118 @@ function synthFilter(tid, q) {
 </script>"""
 
 
+def _sec_falsification(lens: str) -> str:
+    """Falsification Battery v1 panel (ORDER v5.1 Part B) — reads the recorded
+    run artifact; skips silently when the battery has not run on this box."""
+    p = _REPO / "output" / "oie" / "falsification_run.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    panel = data["panels"].get(lens)
+    if not panel:
+        return ""
+    ds, sf, pl = (panel["date_shuffle"], panel["sign_flip"],
+                  panel["placebo_minus20d"])
+    drop = (f" · {pl['dropped']} events dropped (shifted day0 ineligible)"
+            if pl["dropped"] else "")
+    return f"""
+<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>Falsification battery · pooled CAR at +20</h2>
+<div style='font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px'>
+protocol {data['protocol_id']} · N={data['n_null']} per null · seed {data['seed']} · registered before computation</div>
+<table style='width:100%;border-collapse:collapse;font-size:12px'>
+<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>
+<th style='padding:6px 10px'>Test</th><th style='padding:6px 10px'>Real value</th>
+<th style='padding:6px 10px'>Null mean ± sd</th><th style='padding:6px 10px'>Null 2.5–97.5%</th>
+<th style='padding:6px 10px'>Percentile of real in null</th></tr>
+<tr><td style='padding:6px 10px;border-top:1px solid #1E232D'>Event-date shuffle</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{panel['real_pct']:+.2f}%</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{ds['null']['mean']:+.2f}% ± {ds['null']['sd']:.2f}</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>({ds['null']['p2_5']:+.2f}, {ds['null']['p97_5']:+.2f})</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace;color:#4DD0E1'>{ds['percentile_in_null']:.3f}</td></tr>
+<tr><td style='padding:6px 10px;border-top:1px solid #1E232D'>Direction sign-flip</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{panel['real_pct']:+.2f}%</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{sf['null']['mean']:+.2f}% ± {sf['null']['sd']:.2f}</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>({sf['null']['p2_5']:+.2f}, {sf['null']['p97_5']:+.2f})</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace;color:#4DD0E1'>{sf['percentile_in_null']:.3f}</td></tr>
+<tr><td style='padding:6px 10px;border-top:1px solid #1E232D'>Pre-event placebo (−20d)</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace'>{pl['value_pct']:+.2f}%</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;color:#718096' colspan='2'>located in the date-shuffle null{drop}</td>
+<td style='padding:6px 10px;border-top:1px solid #1E232D;font-family:monospace;color:#4DD0E1'>{pl['percentile_in_shuffle_null']:.3f}</td></tr>
+</table>
+<div style='font-size:11px;color:#718096;margin-top:8px'>
+Two-sided extremity, exploratory: percentiles near 0 and near 100 are both extreme; mid-range
+percentiles mean the real value is unremarkable within its null. All cells ledger-counted under
+Falsification Battery v1.</div>"""
+
+
+def _sec_taxonomy(lens: str) -> str:
+    """Form-4 transaction-code taxonomy panel (ORDER v5.1 Part C) — display
+    only, deterministic XML parse; skips when the taxonomy has not been built."""
+    p = _REPO / "output" / "oie" / "form4_taxonomy.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    roll = data["lenses"].get(lens)
+    if not roll:
+        return ""
+    c = roll["tx_counts"]
+    total = sum(c.values())
+    if total == 0:
+        return ("<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>"
+                "Form-4 transaction taxonomy</h2>"
+                "<p style='font-size:12px;color:#718096'>No ingested Form-4 "
+                "substrate for this lens's members (MJDS/FPI insider filings "
+                "are outside current evidence scope — SEDI substrate not "
+                "ingested).</p>")
+    v = roll["value_usd"]
+    label = {"S_discretionary": "S · discretionary open-market sale",
+             "S_plan_10b5_1": "S · Rule 10b5-1 plan sale",
+             "F_tax_withholding": "F · tax-withholding disposition (mechanical)",
+             "M_exercise": "M · option exercise / conversion (mechanical)",
+             "A_award": "A · award / grant (mechanical)",
+             "D_to_issuer": "D · disposition to issuer",
+             "P_purchase": "P · open-market purchase", "other": "other codes"}
+    rows = "".join(
+        f"<tr><td style='padding:5px 10px;border-top:1px solid #1E232D'>{label[k]}</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{c[k]}</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{c[k]/total*100:.1f}%</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace;color:#718096'>"
+        f"{('$' + format(v[k], ',')) if k in v else '—'}</td></tr>"
+        for k in data["classes"] if c[k])
+    top3 = roll["top3_by_events"]
+    t3 = []
+    for tk in top3:
+        m = roll["members"][tk]
+        mc = m["tx_counts"]
+        t3.append(f"<tr><td style='padding:5px 10px;border-top:1px solid #1E232D;font-weight:700'>{tk}</td>"
+                  f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{m['ingested_events']}</td>"
+                  f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{mc['S_discretionary']}</td>"
+                  f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{mc['S_plan_10b5_1']}</td>"
+                  f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{mc['F_tax_withholding']}</td>"
+                  f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{mc['M_exercise'] + mc['A_award']}</td></tr>")
+    return f"""
+<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>Form-4 transaction taxonomy · covered members</h2>
+<div style='font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px'>
+deterministic XML parse of {data['n_filings']} ingested filings · display-only, zero LLM, scoring inputs untouched · built {data['built_utc']}</div>
+<table style='width:100%;border-collapse:collapse;font-size:12px'>
+<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>
+<th style='padding:5px 10px'>Code class</th><th style='padding:5px 10px'>Transactions</th>
+<th style='padding:5px 10px'>Share</th><th style='padding:5px 10px'>$ mass (non-deriv rows)</th></tr>
+{rows}
+</table>
+<div style='font-size:11px;color:#718096;margin:12px 0 4px;text-transform:uppercase;letter-spacing:1px'>Top-3 members by ingested events</div>
+<table style='width:100%;border-collapse:collapse;font-size:12px'>
+<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>
+<th style='padding:5px 10px'>Ticker</th><th style='padding:5px 10px'>Ingested events</th>
+<th style='padding:5px 10px'>S discretionary</th><th style='padding:5px 10px'>S 10b5-1 plan</th>
+<th style='padding:5px 10px'>F withholding</th><th style='padding:5px 10px'>M+A mechanical</th></tr>
+{''.join(t3)}
+</table>
+<div style='font-size:11px;color:#718096;margin-top:8px'>
+10b5-1 is the filing-level checkbox. Counts cover both transaction tables; dollar mass from
+non-derivative rows only. Research classifications, not recommendations.</div>"""
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--archive-only", action="store_true",
@@ -704,6 +816,8 @@ def main(argv=None) -> int:
         run_cells["secondary"] += 4 * len(infs) + type_cells
         sections = (_sec_car(infs, anat)
                     + types_html
+                    + _sec_falsification(lens)
+                    + _sec_taxonomy(lens)
                     + _sec_issuers(posture["members"], aux, thru, lens)
                     + _sec_delta(lens)
                     + _sec_grades(posture["members"], aux, thru))
