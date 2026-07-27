@@ -302,7 +302,41 @@ def event_study(covered: list[str] | None = None,
         by_type[et] = both_models([e for e in per_event if e["type"] == et], signed=False)
 
     directional = [e for e in per_event if e["direction"] != 0]
+
+    def _car_at_tau(e: dict, model: str, tau_target: int, signed: bool) -> float | None:
+        """CAR at tau_target with the same walk as car_curve: accumulate from
+        -CAR_PRE in order, path ends at the first gap after it starts."""
+        ars = e.get(f"ars_{model}")
+        if not ars:
+            return None
+        sign = e["direction"] if signed else 1
+        cum, reached = 0.0, False
+        for tau in range(-CAR_PRE, CAR_POST + 1):
+            if tau not in ars:
+                if tau > min(ars):
+                    break
+                continue
+            cum += ars[tau] * sign
+            if tau == tau_target:
+                reached = True
+                break
+        return cum if reached else None
+
+    # per-event rows for downstream registered estimators (ETF lens engine):
+    # direction-aligned peer-model CAR at tau=+20; aggregate-consumers ignore it
+    per_event_rows = []
+    for e in directional:
+        car20 = _car_at_tau(e, "peer", CAR_POST, signed=True)
+        if car20 is None:
+            continue
+        per_event_rows.append({
+            "ticker": e["ticker"], "date": e["date"], "type": e["type"],
+            "direction": e["direction"], "era": e["era"],
+            "car20_peer_aligned_pct": round(car20 * 100.0, 4),
+        })
+
     return {
+        "per_event_rows": per_event_rows,
         "params": {"window": [-CAR_PRE, CAR_POST],
                    "models": {"peer": "EW of the other covered constituents (sector factor removed)",
                               "spy": f"{MARKET} classic market model"},
