@@ -26,6 +26,22 @@ from pathlib import Path
 
 VERSION = "v5.0.0"
 
+# Locked public signal vocabulary — the ONLY signal labels any public page may
+# render (mirrors the homepage "Public signal vocabulary" legend). Pages render
+# these verbatim; display-layer remaps that invent labels outside this set
+# (e.g. "RISK_FLAG (weakening)") are a bug — label-audit order of 2026-07-26.
+PUBLIC_LABELS = {
+    "STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
+    "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT",
+}
+
+
+def public_label(raw: str) -> str:
+    """Render a signal label from the locked vocabulary, verbatim.
+    Anything outside the set renders as "(?)" — never an invented label."""
+    lbl = (raw or "").upper()
+    return lbl if lbl in PUBLIC_LABELS else "(?)"
+
 _PACKETS_DIR = Path(__file__).resolve().parents[2] / "docs" / "packets"
 
 
@@ -47,7 +63,7 @@ def load_packet_manifest(kind: str) -> dict | None:
 # ---------------------------------------------------------------------------
 _NAV_CHIPS = (
     ("Validation Lab", "validation_lab.html"),
-    ("Open Index Evidence", "etf_evidence.html"),
+    ("SMH Evidence Lens", "etf_evidence.html"),
     ("Canada Resources Evidence", "canada_resources.html"),
     ("Forward Tracking", "validation.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),

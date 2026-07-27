@@ -36,11 +36,9 @@ DEFAULT_OUT = Path(__file__).resolve().parents[2] / "docs" / "index.html"
 
 DB_DSN = "dbname=yuclaw_events"
 
-# Locked sentiment vocabulary — anything outside this set on the homepage is a bug.
-PUBLIC_LABELS = {
-    "STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
-    "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH", "RISK_ALERT",
-}
+# Locked sentiment vocabulary — anything outside this set on the homepage is a
+# bug. Single source: useful_blocks.PUBLIC_LABELS (shared by every renderer).
+from v3.web.useful_blocks import PUBLIC_LABELS  # noqa: E402
 
 # Canonical compliance notice — MUST stay byte-identical to
 # v4/api/schema.py::COMPLIANCE_NOTICE (single source of truth, v4 Day 9/Q5).
@@ -192,13 +190,20 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     <div class="card">
       <div class="card-title">Current signals — Forward Tracking Ledger</div>
       <table>
+        <caption style="caption-side:top;text-align:left;font-size:12px;color:#A0AEC0;padding:0 0 10px">
+          Current research classifications — not recommendations</caption>
         <thead>
-          <tr><th>Ticker</th><th>Signal label</th><th>Score</th></tr>
+          <tr><th>Ticker</th><th>Signal label</th>
+          <th title="Composite research score — not an expected return, a probability, a price target, or a recommendation.">Score
+          <span aria-hidden="true" style="cursor:help;color:#718096">ⓘ</span></th></tr>
         </thead>
         <tbody>
           {table_body}
         </tbody>
       </table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Score = composite research score. It is not an expected return, a probability,
+        a price target, or a recommendation.</p>
       <div class="as-of">data as of {escape(as_of_str)} · landing page rebuilt {escape(rebuilt)}</div>
     </div>
 

@@ -53,7 +53,7 @@ PACKETS = {
         ],
     },
     "open_index": {
-        "page_label": "Open Index Evidence",
+        "page_label": "SMH Covered-Constituent Evidence Lens",
         "zip": "yuclaw_open_index_evidence_packet.zip",
         "scope_note": ("SMH holdings ∩ the 79-ticker scoring universe (US EDGAR filers only). "
                        "Event-study statistics are derived abnormal-return aggregates; "

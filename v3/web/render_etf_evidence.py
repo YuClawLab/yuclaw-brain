@@ -1,4 +1,4 @@
-"""Render the Open Index Evidence page to docs/etf_evidence.html.
+"""Render the SMH Covered-Constituent Evidence Lens page to docs/etf_evidence.html.
 
 Static, data-baked, self-contained (inline SVG, no JS/CDNs). RESEARCH framing
 throughout: evidence posture + event-study CARs on SMH-class semiconductor
@@ -21,21 +21,14 @@ if str(_REPO) not in sys.path:
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
 from v3.web.useful_blocks import (site_header_html,
                                   packet_block_from_manifest as _packet_block,
+                                  public_label as display_label,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 
-# display-layer neutral vocabulary (matches the Validation Lab; locked internal
-# signal labels are unchanged)
-DISPLAY_LABEL = {
-    "STRONG_BULLISH": "POSITIVE_RESEARCH+", "BULLISH": "POSITIVE_RESEARCH",
-    "NEUTRAL": "NEUTRAL", "WEAKENING": "RISK_FLAG (weakening)",
-    "NEGATIVE_EVENT": "RISK_FLAG (event)", "BEARISH_WATCH": "RISK_FLAG (watch)",
-    "RISK_ALERT": "RISK_FLAG (alert)",
-}
-
-
-def display_label(raw: str) -> str:
-    return DISPLAY_LABEL.get((raw or "").upper(), raw)
+# Signal labels render VERBATIM from the locked public vocabulary
+# (useful_blocks.PUBLIC_LABELS — the homepage legend). The previous
+# display-layer remap ("POSITIVE_RESEARCH+", "RISK_FLAG (…)") invented
+# labels outside the locked set and was removed per the 2026-07-26 label audit.
 
 OUT = _REPO / "docs" / "etf_evidence.html"
 
@@ -197,8 +190,8 @@ def render() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YUCLAW · Open Index Evidence</title>
-  <meta name="description" content="Research event study: EDGAR evidence events on semiconductor-theme ETF constituents. Hypothetical research illustration — not investment advice.">
+  <title>YUCLAW · SMH Covered-Constituent Evidence Lens</title>
+  <meta name="description" content="Research event study: EDGAR evidence events on the YUCLAW-covered share of disclosed SMH weight. Hypothetical research illustration — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
@@ -239,7 +232,13 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Open Index Evidence", active="etf_evidence.html")}
+    {site_header_html(subtitle="SMH Covered-Constituent Evidence Lens", active="etf_evidence.html")}
+
+    <h1 style="font-size:26px;font-weight:800;color:#FFF;letter-spacing:-0.5px;margin-bottom:4px">
+      SMH Covered-Constituent Evidence Lens</h1>
+    <p style="font-size:14px;color:#A0AEC0;margin-bottom:16px;max-width:820px">
+      Evidence analysis of the YUCLAW-covered {ov['covered_weight_pct']}% of disclosed SMH weight.
+      This is not a full-fund inference.</p>
 
     <div class="fresh">
       <strong>Data through {escape(data_through)}</strong> (last completed U.S. trading day) ·
@@ -274,11 +273,16 @@ def render() -> str:
       </div>
       <p style="font-size:12px;color:#A0AEC0;line-height:1.6;max-width:820px">
         <strong style="color:#E2E8F0">Why not 100%?</strong> {len(ov['uncovered'])} disclosed constituents are outside the
-        universe, including the foreign-domiciled issuers {', '.join(ov['foreign_uncovered'])} — they file
-        annual 20-F / occasional 6-K, not the 8-K + Form 4 event stream this pipeline consumes, so they
-        produce almost no EDGAR event substrate. The same constraint puts <strong style="color:#E2E8F0">foreign-holdings
-        ETFs (e.g. KORU-class country funds) methodologically out of scope</strong>: their constituents do not
-        file EDGAR at all, so there is no evidence stream to aggregate — a scope statement, not a caveat.
+        universe, including the foreign-domiciled issuers {', '.join(ov['foreign_uncovered'])}. These file on
+        the foreign-private-issuer track — 6-K current reports plus 20-F (or 40-F under MJDS) annual
+        reports — rather than the 8-K + Form 4 stream this page's event study consumes. That is a coverage
+        boundary of this lens, not a pipeline limitation: YUCLAW already ingests the 6-K/40-F path, with
+        exhibit-level prose extraction, in the
+        <a href="canada_resources.html" style="color:#00E676">Canada Resources Evidence</a> vertical, so
+        extending this lens to foreign-filer constituents is a coverage decision, not a capability gap.
+        <strong style="color:#E2E8F0">Foreign-holdings ETFs (e.g. KORU-class country funds) remain
+        methodologically out of scope</strong>: their constituents do not file with EDGAR at all, so there is
+        no evidence stream to aggregate — a scope statement, not a caveat.
       </p>
     </div>
 
@@ -293,7 +297,7 @@ def render() -> str:
         <thead><tr><th>Ticker</th><th>SMH weight</th><th>Signal label</th><th>Composite score</th><th>C6</th><th>Evidence grade</th><th>Event history (type×count)</th><th>30d</th></tr></thead>
         <tbody>{''.join(member_rows)}</tbody>
       </table>
-      <p style="font-size:11px;color:#718096;margin-top:8px">Research classifications, not recommendations. C6 is the evidence-impact component of the composite score; the C6 deep-dive concluded its defensible role is a <em>risk gate</em>, not a near-term return signal (see methodology).</p>
+      <p style="font-size:11px;color:#718096;margin-top:8px">Research classifications, not recommendations. C6 is the evidence-impact component of the composite score; the earlier C6 finding is that insider-sale evidence may function more plausibly as a <em>risk-state input</em> than a near-term directional signal (see methodology).</p>
     </div>
 
     <div class="panel">
@@ -301,16 +305,30 @@ def render() -> str:
       <div class="panel-sub">market-model CAR, window [−5, +20] event-time days · dedup: {es['n_raw_filings']} filings → {es['n_events_deduped']} distinct (ticker, type, day) events → {es['n_events_used']} with a ≥30-obs estimation window</div>
 
       <div style="background:#2A1A1A;border-radius:8px;padding:14px 18px;border-left:3px solid #FBA94B;margin-bottom:14px">
-        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): the hypothesis is NOT supported at this sample.</div>
+        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the current event-level estimator; issuer- and date-clustered confirmation pending.</div>
         <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
           Direction-aligned pooled CAR (peer model, n={pooled['peer']['n_events']} events) is
           <strong style="color:#FF3366">{_pct(car_end(pooled['peer'])['mean_car'],1)}</strong> at τ=+20
           (95% CI {_pct(car_end(pooled['peer'])['ci_lo'],1)} to {_pct(car_end(pooled['peer'])['ci_hi'],1)})
-          — significantly <em>negative</em>: prices moved against the evidence direction. The sample is
-          dominated by INSIDER_SELL clusters during a sector melt-up (insiders sold the strongest names,
-          which kept outperforming peers). This replicates the C6 deep-dive conclusion that insider-sale
-          flow is a risk gate, not a near-term direction signal. Live-detected events since forward Day 0:
+          — <em>negative</em> under this event-level estimator: prices moved against the evidence
+          direction. The sample is dominated by INSIDER_SELL clusters during a sector melt-up (insiders
+          sold the strongest names, which kept outperforming peers). This is consistent with the earlier
+          C6 finding that insider-sale evidence may function more plausibly as a risk-state input than a
+          near-term directional signal. Live-detected events since forward Day 0:
           n={live_n} directional — far too few for inference; this panel accrues with the live record.
+        </p>
+      </div>
+
+      <div style="background:#151A23;border:1px solid #2D3748;border-radius:8px;padding:12px 16px;margin-bottom:14px">
+        <div style="color:#A0AEC0;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px">How to read direction alignment</div>
+        <p style="font-size:12px;color:#A0AEC0;line-height:1.55">
+          Each event's abnormal return is multiplied by its evidence direction (+1 for accumulation-type
+          evidence, −1 for disposal-type evidence such as INSIDER_SELL). Because INSIDER_SELL events carry
+          direction −1, a <em>positive</em> unsigned CAR after insider sales — visible in the INSIDER_SELL
+          panel below — enters this pooled series with a <em>negative</em> sign. The adverse pooled result
+          is therefore largely a restatement of the same unsigned fact: covered names continued to move up
+          relative to peers after insider sales. It is evidence against the directional-sell hypothesis at
+          this sample, not evidence of a price decline.
         </p>
       </div>
 
@@ -370,7 +388,7 @@ def render() -> str:
     </div>
 
     <div class="footer">
-      YUCLAW Open Index Evidence · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW SMH Covered-Constituent Evidence Lens · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 </body>

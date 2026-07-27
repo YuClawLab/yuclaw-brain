@@ -27,6 +27,7 @@ from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
 from v3.web.useful_blocks import (site_header_html,
                                   packet_block_from_manifest as _packet_block,
+                                  public_label as display_label,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 
@@ -46,9 +47,10 @@ DISCLAIMER_LINE = (
 )
 
 # compliance-safe display names (NO trade-direction language).
-# DISPLAY-LAYER NEUTRALIZATION (this page only): cohorts and signal labels are
-# rendered in research-neutral vocabulary; the locked internal signal labels in
-# snapshots / Telegram / dashboard are unchanged (separate policy).
+# Cohort names are descriptive prose; SIGNAL labels render verbatim from the
+# locked public vocabulary (useful_blocks.PUBLIC_LABELS). The previous
+# display-layer remap ("POSITIVE_RESEARCH+", "RISK_FLAG (…)") invented labels
+# outside the locked set and was removed per the 2026-07-26 label audit.
 COHORT_LABEL = {
     "top_decile": "High-score cohort (top decile by composite score)",
     "bottom_decile": "Low-score cohort (bottom decile by composite score)",
@@ -57,19 +59,6 @@ COHORT_LABEL = {
     "universe_ew": "Equal-weight universe (all scored tickers)",
     "benchmark": "SPY benchmark (broad-market reference)",
 }
-DISPLAY_LABEL = {
-    "STRONG_BULLISH": "POSITIVE_RESEARCH+",
-    "BULLISH": "POSITIVE_RESEARCH",
-    "NEUTRAL": "NEUTRAL",
-    "WEAKENING": "RISK_FLAG (weakening)",
-    "NEGATIVE_EVENT": "RISK_FLAG (event)",
-    "BEARISH_WATCH": "RISK_FLAG (watch)",
-    "RISK_ALERT": "RISK_FLAG (alert)",
-}
-
-
-def display_label(raw: str) -> str:
-    return DISPLAY_LABEL.get((raw or "").upper(), raw)
 COHORT_COLOR = {
     "top_decile": "#00E676",
     "bottom_decile": "#FF3366",
