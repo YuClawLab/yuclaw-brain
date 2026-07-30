@@ -709,6 +709,86 @@ percentiles mean the real value is unremarkable within its null. All cells ledge
 Falsification Battery v1.</div>"""
 
 
+_IMPL_LINE = ("Investment implication: none established — no buy, sell, or "
+              "alpha conclusion is supported by this page.")
+
+
+def _sec_geometry(lens: str) -> str:
+    """Evidence structure panel (Fields-review Part 2) — reads the recorded
+    run artifact; skips when absent."""
+    p = _REPO / "output" / "oie" / "evidence_geometry.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    g = data["results"].get(lens)
+    if not g:
+        return ""
+    t5 = "".join(
+        f"<tr><td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{s['size']}</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{s['mass_pct']}%</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-weight:700'>{s['dominant_issuer']}</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D'>{s['dominant_type']}</td>"
+        f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{s['span_trading_days']}d</td></tr>"
+        for s in g["top5_stories"])
+    return f"""
+<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>Evidence structure</h2>
+<div style='font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px'>
+protocol {data['protocol_id']} · registered before computation</div>
+<p style='font-size:12px;color:#A0AEC0'>
+{g['n_raw_filings']} filings → {g['n_events']} deduped events → {g['n_stories']} stories →
+<b style='color:#E2E8F0'>{g['n_eff_story']} effective</b> (story-level design effect {g['deff_story']};
+issuer-level effective count {g['n_eff_issuer']}). Top story {g['top_story_share_pct']}% of event mass.</p>
+<table style='width:100%;border-collapse:collapse;font-size:12px'>
+<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>
+<th style='padding:5px 10px'>Story size</th><th style='padding:5px 10px'>Mass</th>
+<th style='padding:5px 10px'>Dominant issuer</th><th style='padding:5px 10px'>Dominant type</th>
+<th style='padding:5px 10px'>Span</th></tr>{t5}</table>
+<div style='font-size:11px;color:#718096;margin-top:8px'>
+Many events, fewer stories — statistics on this page use cluster-aware inference accordingly.
+{_IMPL_LINE}</div>"""
+
+
+def _sec_lifecycle(lens: str) -> str:
+    """Evidence lifecycle panel (Fields-review Part 4) — display-only."""
+    p = _REPO / "output" / "oie" / "evidence_lifecycle.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    pop = data["per_population"].get(lens)
+    st = (data["staleness"] or {}).get(lens)
+    if not pop:
+        return ""
+    rows, thin = [], []
+    for et, r in sorted(pop.items(), key=lambda kv: -kv[1].get("n", 0)):
+        if r.get("badge") == "UNDERPOWERED":
+            thin.append(f"{et} (n={r['n']})")
+            continue
+        rows.append(
+            f"<tr><td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{et}</td>"
+            f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{r['n']}</td>"
+            f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{r['peak_tau']}</td>"
+            f"<td style='padding:5px 10px;border-top:1px solid #1E232D;font-family:monospace'>{r['peak_value_pct']}%</td>"
+            f"<td style='padding:5px 10px;border-top:1px solid #1E232D'>{r['half_life']}</td></tr>")
+    stale_line = (f"Evidence freshness: median age {st['median_age_days']}d, "
+                  f"{st['share_le_7d_pct']}% within 7d, "
+                  f"{st['share_gt_30d_pct']}% older than 30d." if st else "")
+    table = ("" if not rows else
+             "<table style='width:100%;border-collapse:collapse;font-size:12px'>"
+             "<tr style='color:#718096;text-transform:uppercase;font-size:10px;text-align:left'>"
+             "<th style='padding:5px 10px'>Type (backfill era)</th><th style='padding:5px 10px'>n</th>"
+             "<th style='padding:5px 10px'>Peak day</th><th style='padding:5px 10px'>Peak |CAR|</th>"
+             "<th style='padding:5px 10px'>Half-life</th></tr>" + "".join(rows) + "</table>")
+    return f"""
+<h2 style='font-size:15px;color:#FFF;margin:26px 0 6px'>Evidence lifecycle</h2>
+<div style='font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px'>
+protocol {data['protocol_id']} · display-only · registered before computation</div>
+{table}
+<div style='font-size:11px;color:#718096;margin-top:8px'>
+An absolute cumulative path rises mechanically with horizon — a window-edge peak with no half-life is
+what no-decay looks like under this estimator. Types below the n>=15 floor, listed not plotted:
+{', '.join(thin) or 'none'}. {stale_line} {_IMPL_LINE}</div>"""
+
+
 def _sec_momentum(lens: str) -> str:
     """Pre-event momentum conditioning panel (sharper-hypothesis Part B) —
     reads the recorded run artifact; skips when absent."""
@@ -857,8 +937,10 @@ def main(argv=None) -> int:
         run_cells["secondary"] += 4 * len(infs) + type_cells
         sections = (_sec_car(infs, anat)
                     + types_html
+                    + _sec_geometry(lens)
                     + _sec_falsification(lens)
                     + _sec_momentum(lens)
+                    + _sec_lifecycle(lens)
                     + _sec_taxonomy(lens)
                     + _sec_issuers(posture["members"], aux, thru, lens)
                     + _sec_delta(lens)

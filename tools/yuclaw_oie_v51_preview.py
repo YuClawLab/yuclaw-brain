@@ -263,6 +263,114 @@ def momentum_html() -> str:
                   "relative momentum · registered before computation", body)
 
 
+_IMPLICATION = ("Investment implication: none established — no buy, sell, or "
+                "alpha conclusion is supported by this page.")
+
+
+# ------------------------------------------------- Fields-review panels
+def geometry_html() -> str:
+    p = _REPO / "output" / "oie" / "evidence_geometry.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    g = data["results"]["SMH"]
+    t5 = "".join(
+        f"<tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{s['size']}</td>"
+        f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{s['mass_pct']}%</td>"
+        f"<td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>{escape(s['dominant_issuer'])}</td>"
+        f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(s['dominant_type'])}</td>"
+        f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>{s['span_trading_days']}d</td></tr>"
+        for s in g["top5_stories"])
+    body = f"""
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:8px">
+        <div class="tile"><div class="v">{g['n_raw_filings']}</div><div class="k">filings</div></div>
+        <div class="tile"><div class="v">{g['n_events']}</div><div class="k">deduped events</div></div>
+        <div class="tile"><div class="v">{g['n_stories']}</div><div class="k">stories (linked clusters)</div></div>
+        <div class="tile"><div class="v">{g['n_eff_story']}</div><div class="k">effective evidence count</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Story size</th><th>Event mass</th><th>Dominant issuer</th><th>Dominant type</th><th>Span</th></tr></thead>
+        <tbody>{t5}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Many events, fewer stories — statistics on this page use cluster-aware inference accordingly.
+        Linkage rule (pre-committed): same issuer within 5 trading days, or same type and lens within 3.
+        Story-level design effect {g['deff_story']} (issuer-level effective count {g['n_eff_issuer']});
+        with only {g['n_stories']} stories the story-level variance read is itself thin — both structure
+        and variance are shown rather than choosing one. Top story carries {g['top_story_share_pct']}% of
+        event mass. {escape(_IMPLICATION)}
+      </p>"""
+    return _panel("Evidence structure",
+                  f"protocol {escape(data['protocol_id'])} · registered before computation · seed 20260730", body)
+
+
+def robustness_html() -> str:
+    p = _REPO / "output" / "oie" / "robustness_profile.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    cells, summ = data["smh"]["cells"], data["smh"]["summary"]
+    rows = []
+    for k, v in cells.items():
+        if v is None:
+            rows.append(f"<tr><td style='padding:6px 12px;color:#718096;font-size:12px'>{escape(k)}</td>"
+                        f"<td colspan='4' style='padding:6px 12px;color:#718096;font-size:11px'>empty — SPY history begins 2026-02-02, so a trailing-120-trading-day window is not computable at these event dates (own-data rule; cell reported, not estimated)</td></tr>")
+            continue
+        rows.append(
+            f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>{escape(k)}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>{v['estimate']:+.2f}%</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>({v['ci'][0]:+.2f}, {v['ci'][1]:+.2f})</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>{v['n']}/{v['G']}</td>"
+            f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(v['badge'])}</td></tr>")
+    body = f"""
+      <table>
+        <thead><tr><th>Context cell</th><th>E4 estimate</th><th>Cluster CI</th><th>n/G</th><th>Badge</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Sign held in {summ['sign_held']}/{summ['n_computed']} computed cells · CI excluded zero in
+        {summ['ci_excluded_zero']}/{summ['n_computed']} · breaks in: {escape(', '.join(summ['breaks']) or 'none')} ·
+        UNDERPOWERED cells: {escape(', '.join(summ['underpowered']) or 'none')}.
+        Context grid pre-declared at registration; every cell ledger-counted.
+        {escape(data['expected_fp_line'])}. {escape(_IMPLICATION)}
+      </p>"""
+    return _panel("Context robustness",
+                  f"protocol {escape(data['protocol_id'])} · pre-declared grid · registered before computation", body)
+
+
+def lifecycle_html() -> str:
+    p = _REPO / "output" / "oie" / "evidence_lifecycle.json"
+    if not p.exists():
+        return ""
+    data = json.loads(p.read_text())
+    rows = "".join(
+        f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px;font-family:JetBrains Mono,monospace'>{escape(et)}</td>"
+        f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{r['n']}</td>"
+        f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{r['peak_tau']}</td>"
+        f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{r['peak_value_pct']}%</td>"
+        f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(r['half_life'])}</td></tr>"
+        for et, r in data["pooled_types"].items())
+    thin = ", ".join(f"{escape(et)} (n={r['n']})"
+                     for et, r in data["thin_types"].items())
+    st = data["staleness"].get("SMH") or {}
+    body = f"""
+      <table>
+        <thead><tr><th>Event type (pooled, backfill era)</th><th>n</th><th>Peak day</th><th>Peak |CAR|</th><th>Half-life</th></tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Median time-to-peak across qualifying types: {data['median_time_to_peak_pooled']} trading days —
+        at the window edge for every qualifying type, with no half-life reached. An absolute cumulative
+        path rises mechanically with horizon, so this pattern is what no-decay looks like under this
+        estimator; it is not evidence of late-arriving impact. Types below the n≥15 floor, listed not
+        plotted: {thin or 'none'}. Evidence freshness (this sleeve): median age {st.get('median_age_days', '—')}d,
+        {st.get('share_le_7d_pct', '—')}% within 7d, {st.get('share_gt_30d_pct', '—')}% older than 30d.
+        {escape(_IMPLICATION)}
+      </p>"""
+    return _panel("Evidence lifecycle",
+                  f"protocol {escape(data['protocol_id'])} · display-only diffusion read · registered before computation", body)
+
+
 # ---------------------------------------------------------------- Part D
 def funnel_html() -> str:
     cov = overlap_summary()["covered"]
@@ -459,6 +567,7 @@ def main() -> int:
     est = run_estimands(es)
 
     extra = (falsification_html() + sale_type_html() + momentum_html()
+             + geometry_html() + robustness_html() + lifecycle_html()
              + taxonomy_html() + funnel_html() + holdings_html()
              + cross_etf_html())
     render_preview(proto, verdict, facts, anatomy, top, br, states, est,

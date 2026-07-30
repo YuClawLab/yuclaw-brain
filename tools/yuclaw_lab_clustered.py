@@ -352,7 +352,7 @@ def render(proto, results, run_line):
         (Rademacher) small-G remedy is computed beside every cluster CI; 8 matches the smallest live lens;
         changing thresholds after results exist is forbidden by our own discipline.<br>
         <strong style="color:#E2E8F0">2 · Percentile CIs retained for v1.</strong> Bootstrap-t is deferred —
-        it needs studentization machinery we have not validated; revisit at v5.3 under its own registered spec.
+        it needs studentization machinery not yet exercised in this codebase; revisit at v5.3 under its own registered spec.
       </p>
     </div>
 

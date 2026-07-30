@@ -42,7 +42,7 @@
         (Rademacher) small-G remedy is computed beside every cluster CI; 8 matches the smallest live lens;
         changing thresholds after results exist is forbidden by our own discipline.<br>
         <strong style="color:#E2E8F0">2 · Percentile CIs retained for v1.</strong> Bootstrap-t is deferred —
-        it needs studentization machinery we have not validated; revisit at v5.3 under its own registered spec.
+        it needs studentization machinery not yet exercised in this codebase; revisit at v5.3 under its own registered spec.
       </p>
     </div>
 
@@ -61,6 +61,24 @@
         Percentile intervals; bootstrap-t deferred (decision 2 above).
       </p>
     </div>
+
+    <!-- ROBUSTNESS-PANEL-START -->
+    <div class="panel">
+      <div class="panel-title">Context robustness</div>
+      <div class="panel-sub">protocol cd0497d1a10b · pre-declared grid · registered before computation</div>
+      <table>
+        <thead><tr><th>Context cell</th><th>Spread estimate</th><th>Ticker-cluster CI</th><th>n/G</th><th>Badge</th></tr></thead>
+        <tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>k=1</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+0.39%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-0.04, +0.86)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>848/67</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>k=5 (base)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+0.77%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-0.87, +2.39)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>784/64</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:6px 12px;color:#718096;font-size:12px'>trend>=0 (k=5)</td><td colspan='4' style='padding:6px 12px;color:#718096;font-size:11px'>empty — SPY history begins 2026-02-02; a trailing-120-trading-day window is not computable at these signal dates (own-data rule)</td></tr><tr><td style='padding:6px 12px;color:#718096;font-size:12px'>trend<0 (k=5)</td><td colspan='4' style='padding:6px 12px;color:#718096;font-size:11px'>empty — SPY history begins 2026-02-02; a trailing-120-trading-day window is not computable at these signal dates (own-data rule)</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>vol-high (k=5)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+0.33%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-2.59, +3.55)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>416/62</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>vol-low (k=5)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+1.29%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-0.28, +3.12)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>368/55</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>k=20</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>-1.29%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-5.87, +3.21)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>528/61</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr></tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Sign held in 4/5 computed cells · CI excluded zero in
+        0/5 · breaks in: k=20 ·
+        UNDERPOWERED cells: none.
+        Every cell ledger-counted. 449 secondary cells ledgered registry-wide; expected false positives at alpha=0.05: 22.45.
+        Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.
+      </p>
+    </div>
+    <!-- ROBUSTNESS-PANEL-END -->
 
     <div class="panel">
       <div class="panel-title">Provenance</div>
