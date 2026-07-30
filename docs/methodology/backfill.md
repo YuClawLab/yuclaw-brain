@@ -179,8 +179,8 @@ discipline.
 
 **2 · Percentile bootstrap CIs are retained for v1.** Bootstrap-t
 (studentized) intervals are deferred: they require studentization machinery
-we have not validated. Revisit at v5.3 under its own registered spec —
-not before.
+not yet exercised in this codebase. Revisit at v5.3 under its own registered
+spec — not before.
 
 The Lab's public clustered panel reports the ticker-clustered CI as primary
 with wild-cluster and naive date-resample CIs beside it, labeled; the
