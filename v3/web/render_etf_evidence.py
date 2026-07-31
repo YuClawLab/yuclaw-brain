@@ -363,6 +363,8 @@ def render() -> str:
 
     {_v51.smh_holdings_panel()}
 
+    {_v51.fields_review_panels()}
+
     <details class="acc">
       <summary>Methodology summary</summary>
       <div class="acc-body">

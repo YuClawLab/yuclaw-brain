@@ -81,7 +81,7 @@
 
     <div class="fresh">
       <strong>Data through 2026-07-30</strong> (last completed U.S. trading day) ·
-      regenerated daily after market close · last build 2026-07-30 23:00 UTC
+      regenerated daily after market close · last build 2026-07-31 02:46 UTC
     </div>
 
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px"><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #FBA94B;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Forward OOS</div><div style="font-size:15px;font-weight:800;color:#FBA94B;font-family:JetBrains Mono,monospace;margin:3px 0">EARLY · n=47 periods</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">no significant alpha yet — underpowered, accruing daily</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #FBA94B;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">In-sample replay</div><div style="font-size:15px;font-weight:800;color:#FBA94B;font-family:JetBrains Mono,monospace;margin:3px 0">OPTIMISTIC</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">parametric look-ahead — educational only, collapsed below</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #00E676;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Ledger</div><div style="font-size:15px;font-weight:800;color:#00E676;font-family:JetBrains Mono,monospace;margin:3px 0">LIVE · 52 blocks</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">git-anchored daily · root 9300b9e2…</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #00E676;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Reproducibility</div><div style="font-size:15px;font-weight:800;color:#00E676;font-family:JetBrains Mono,monospace;margin:3px 0">ONE-COMMAND VERIFY</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">stdlib script reproduces every statistic + ledger roots</div></div></div>
@@ -98,7 +98,7 @@
         the point-in-time infrastructure is live, every daily signal set is anchored to a public,
         git-committed ledger, and every statistic on this page reproduces from published derived
         data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
-        out-of-sample proof target — its in-sample sign is known and its forward test is defined
+        out-of-sample test target — its in-sample sign is known and its forward test is defined
         below. Everything here is research and education, not investment advice; research
         classifications, not recommendations.
       </p>
@@ -139,7 +139,7 @@
       <div class="panel-title">Latest rolling record</div>
       <div class="panel-sub">continuous display across the regime boundary · statistics stay strictly per-regime</div>
       <div class="fresh" style="margin-bottom:4px">
-        Updated through <strong>2026-07-30</strong> · last build 2026-07-30 23:00 UTC · daily after U.S. market close
+        Updated through <strong>2026-07-30</strong> · last build 2026-07-31 02:46 UTC · daily after U.S. market close
       </div>
       
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 0 6px">
@@ -349,6 +349,18 @@
             <p style="font-size:12px;color:#A0AEC0;margin-top:8px">This panel is not failing. It is too young. Alpha estimates are shown for completeness and are <strong style="color:#E2E8F0">not significant</strong>; detectability improves as n accrues daily.</p>
           </div>
         </div>
+        
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:16px 0 0">Clustered decile inference (registered · protocol 36d019b175c8) — per-signal-date k-day spreads; cluster CI is primary, naive shown beside it labeled naive</div>
+        <table>
+          <thead><tr><th>Horizon</th><th>Mean spread</th><th>Ticker-cluster CI (primary)</th><th>Wild-cluster CI (small-G remedy)</th><th>Naive CI (comparison)</th><th>dates/tickers</th><th>Badge</th></tr></thead>
+          <tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>k=1</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+0.05%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-0.42%, +0.54%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-0.46%, +0.56%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096;font-size:11px'>(-0.65%, +0.70%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>47d/65t</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr style='background:#1A2334'><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>k=5 — PRIMARY</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>+0.18%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-1.45%, +1.81%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-1.59%, +1.94%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096;font-size:11px'>(-1.29%, +1.68%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>43d/63t</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>k=20</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>-1.99%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-6.28%, +2.55%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>(-6.63%, +2.77%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096;font-size:11px'>(-5.40%, +1.16%)</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>27d/60t</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr></tbody>
+        </table>
+        <p style="font-size:11px;color:#718096;margin-top:6px">
+          Same tickers recur in deciles across dates; the ticker-clustered CI absorbs that dependence, the
+          naive date-resample CI does not. Estimator differs from the per-rebalance spreads above (per-signal-date
+          k-day returns — clustering requires ticker identity); stated side by side, never blended. Locked
+          decisions: G&lt;8 UNDERPOWERED retained; percentile CIs retained for v1 (bootstrap-t deferred to v5.3).
+        </p>
       </div>
       <div style="margin-top:18px">
         <div style="font-size:12px;font-weight:700;color:#FBA94B;text-transform:uppercase;letter-spacing:1px">In-Sample Replay · 2026-02-18 → 2026-05-18 · parametric look-ahead — optimistic</div>
@@ -382,6 +394,7 @@
             <p style="font-size:12px;color:#A0AEC0;margin-top:8px">This panel is not failing. It is too young. Alpha estimates are shown for completeness and are <strong style="color:#E2E8F0">not significant</strong>; detectability improves as n accrues daily.</p>
           </div>
         </div>
+        
       </div>
       <p style="font-size:11px;color:#718096;margin-top:12px">
         Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is
@@ -421,7 +434,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
         It exits non-zero on any mismatch.
       </p>
       <p style="font-size:11px;color:#718096;margin-top:8px;font-family:JetBrains Mono,monospace">
-        this build derives from: source commit 3ddc3e805a1e ·
+        this build derives from: source commit e21dc93da5e7 ·
         ledger block 2026-07-30 · daily root 9300b9e23136f719… ·
         52 public ledger blocks
       </p>
@@ -451,7 +464,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       </ul>
       <div style="margin-top:10px;background:#151A23;border:1px solid #1E232D;border-radius:8px;padding:10px 14px">
         <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:4px">Cite this page</div>
-        <code style="font-size:11.5px;line-height:1.5;display:block;white-space:normal">YUCLAW Validation Lab, v5.0.0, data through 2026-07-30, built 2026-07-30, commit 3ddc3e805a1e; evidence-tier names excluded from scoring universe.</code>
+        <code style="font-size:11.5px;line-height:1.5;display:block;white-space:normal">YUCLAW Validation Lab, v5.0.0, data through 2026-07-30, built 2026-07-31, commit e21dc93da5e7; evidence-tier names excluded from scoring universe.</code>
       </div>
     </div>
 
@@ -519,7 +532,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
 
     
     <div class="panel">
-      <div class="panel-title">Roadmap · Risk Gate Lab (next proof target)</div>
+      <div class="panel-title">Roadmap · Risk Gate Lab (next registered test)</div>
       <div class="panel-sub">no new claims — the tests are defined before the data can answer them</div>
       <ul style="list-style:none;font-size:13px;color:#A0AEC0;line-height:1.7">
         <li style="margin:6px 0">· <strong style="color:#E2E8F0">C6 out-of-sample test</strong>: the evidence/risk channel fires on ~25% of forward snapshots (rare by construction). Defined test: conditional 20-trading-day forward outcomes of C6-fired vs quiet snapshots, evaluable once the forward window exceeds the horizon with sufficient fired n.</li>
@@ -549,7 +562,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       <div class="panel-sub">each row: the measured number and its honest maturity label</div>
       <table>
         <thead><tr><th>Property</th><th>Measured</th><th>Status</th></tr></thead>
-        <tbody><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Git-anchored replayable ledger</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>52 daily blocks · latest root 9300b9e23136… (2026-07-30)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — anchored daily before pages publish</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Evidence grounding (v5 Layer-1 corpus)</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>corpus grounding 0.52 → 0.75 · citation fidelity 0.66 → 0.85 after the prose-first extraction fix (commit f130983e)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>MEASURED on the v5 Layer-1 filing corpus</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>C6 evidence/risk channel</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>fires on 35% of in-sample and 28% of forward snapshots (rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)</td><td style='padding:8px 12px;color:#FBA94B;font-size:11px;font-family:JetBrains Mono,monospace'>rareness confirmed OOS 2026-07-06 (22% fire, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Event-type extraction specialists</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE for 8-K and Form-4 streams · Form-4 live since 2026-07-16 (batch 2026-02-18 → 05-15; gap backfilled, ingestion-time as-of)</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Point-in-time discipline</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — the disclosed gap is the proof it isn't backfilled</td></tr></tbody>
+        <tbody><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Git-anchored replayable ledger</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>52 daily blocks · latest root 9300b9e23136… (2026-07-30)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — anchored daily before pages publish</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Evidence grounding (v5 Layer-1 corpus)</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>corpus grounding 0.52 → 0.75 · citation fidelity 0.66 → 0.85 after the prose-first extraction fix (commit f130983e)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>MEASURED on the v5 Layer-1 filing corpus</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>C6 evidence/risk channel</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>fires on 35% of in-sample and 28% of forward snapshots (rare by construction) · in-sample within-class IC +0.36 on material non-insider events (n=38)</td><td style='padding:8px 12px;color:#FBA94B;font-size:11px;font-family:JetBrains Mono,monospace'>rareness confirmed OOS 2026-07-06 (22% fire, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Event-type extraction specialists</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>10 dedicated extractors (v5 Layer 1) — earnings, guidance, M&amp;A, insider, governance, …</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE for 8-K and Form-4 streams · Form-4 live since 2026-07-16 (batch 2026-02-18 → 05-15; gap backfilled, ingestion-time as-of)</td></tr><tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>Point-in-time discipline</td><td style='padding:8px 12px;color:#A0AEC0;font-size:12px'>daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)</td><td style='padding:8px 12px;color:#00E676;font-size:11px;font-family:JetBrains Mono,monospace'>LIVE — the disclosed gap is the evidence it isn't backfilled</td></tr></tbody>
       </table>
       <p style="font-size:11px;color:#718096;margin-top:12px;line-height:1.6">
         <strong style="color:#A0AEC0">Definitions (exact internal rubric, deterministic verifier — no LLM in the loop):</strong><br>
@@ -575,7 +588,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     </div>
 
     <div class="footer">
-      YUCLAW Signal Validation Lab · data through 2026-07-30 · built 2026-07-30 23:00 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW Signal Validation Lab · data through 2026-07-30 · built 2026-07-31 02:46 UTC · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
   <script>

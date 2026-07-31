@@ -570,7 +570,7 @@ def innovation_panel_html(ledger: dict, c6: dict) -> str:
          "LIVE for 8-K and Form-4 streams · Form-4 live since 2026-07-16 (batch 2026-02-18 → 05-15; gap backfilled, ingestion-time as-of)", "#00E676"),
         ("Point-in-time discipline",
          "daily as-of snapshots; outage of Jun 26 – Jul 3 disclosed (snapshots continued point-in-time on frozen price inputs; zero retroactive edits)",
-         "LIVE — the disclosed gap is the proof it isn't backfilled", "#00E676"),
+         "LIVE — the disclosed gap is the evidence it isn't backfilled", "#00E676"),
     ]
     trs = "".join(
         f"<tr><td style='padding:8px 12px;color:#E2E8F0;font-weight:600;font-size:12px'>{name}</td>"
@@ -646,7 +646,7 @@ def honest_reading_html() -> str:
         the point-in-time infrastructure is live, every daily signal set is anchored to a public,
         git-committed ledger, and every statistic on this page reproduces from published derived
         data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
-        out-of-sample proof target — its in-sample sign is known and its forward test is defined
+        out-of-sample test target — its in-sample sign is known and its forward test is defined
         below. Everything here is research and education, not investment advice; research
         classifications, not recommendations.
       </p>
@@ -759,7 +759,7 @@ def challenge_html() -> str:
 def roadmap_html() -> str:
     return """
     <div class="panel">
-      <div class="panel-title">Roadmap · Risk Gate Lab (next proof target)</div>
+      <div class="panel-title">Roadmap · Risk Gate Lab (next registered test)</div>
       <div class="panel-sub">no new claims — the tests are defined before the data can answer them</div>
       <ul style="list-style:none;font-size:13px;color:#A0AEC0;line-height:1.7">
         <li style="margin:6px 0">· <strong style="color:#E2E8F0">C6 out-of-sample test</strong>: the evidence/risk channel fires on ~25% of forward snapshots (rare by construction). Defined test: conditional 20-trading-day forward outcomes of C6-fired vs quiet snapshots, evaluable once the forward window exceeds the horizon with sufficient fired n.</li>

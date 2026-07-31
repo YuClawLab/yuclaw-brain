@@ -57,20 +57,32 @@ def smh_estimand_panel() -> str:
              ("etf", "E3 ETF-weighted"),
              ("capped", "E4 capped-ETF-weighted — PRIMARY")]
     rows = []
+    has_tw = any(e[k].get("two_way") for k, _ in order)
     for k, desc in order:
         r = e[k]
         hl = " style='background:#1A2334'" if k == "capped" else ""
+        tw = r.get("two_way")
+        tw_cell = ""
+        if has_tw:
+            if tw:
+                deg = " DEGENERATE" if tw.get("degenerate") else ""
+                tw_cell = (f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>"
+                           f"({tw['ci'][0]:+.2f}, {tw['ci'][1]:+.2f}) "
+                           f"<span style='color:#718096'>[{escape(tw['badge'])}{deg}]</span></td>")
+            else:
+                tw_cell = "<td style='padding:7px 12px;color:#718096'>—</td>"
         rows.append(
             f"<tr{hl}><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{desc}</td>"
             f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>{r['mean_pct']:+.2f}%</td>"
             f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>({r['issuer_ci'][0]:+.2f}, {r['issuer_ci'][1]:+.2f})</td>"
             f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>({r['date_ci'][0]:+.2f}, {r['date_ci'][1]:+.2f})</td>"
             f"<td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>({r['envelope'][0]:+.2f}, {r['envelope'][1]:+.2f})</td>"
+            f"{tw_cell}"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape(r['badge'])}</td></tr>")
     ei = e["issuer"]
     body = f"""
       <table>
-        <thead><tr><th>Estimand</th><th>Mean CAR +20d</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th><th>Badge</th></tr></thead>
+        <thead><tr><th>Estimand</th><th>Mean CAR +20d</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th>{'<th>Formal two-way CI (CGM)</th>' if has_tw else ''}<th>Badge</th></tr></thead>
         <tbody>{''.join(rows)}</tbody>
       </table>
       <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
@@ -324,6 +336,25 @@ def smh_holdings_panel() -> str:
       </p>"""
     return _panel("holdings", "Holdings intelligence",
                   "provenance and freshness of the constituent snapshot", body)
+
+
+# ---------------------------------------------- Fields-review panels (flip)
+def fields_review_panels() -> str:
+    """Evidence structure / Context robustness / Evidence lifecycle — the
+    Jul-30 engine panels, promoted to the public page at the flip. Reuses
+    the staged builders (same artifacts, same copy); degrades to empty when
+    artifacts are absent so the daily chain can never crash here."""
+    try:
+        import sys as _s
+        _tools = str(_REPO / "tools")
+        if _tools not in _s.path:
+            _s.path.insert(0, _tools)
+        from yuclaw_oie_v51_preview import (geometry_html, lifecycle_html,
+                                            robustness_html)
+        return geometry_html() + robustness_html() + lifecycle_html()
+    except Exception as exc:                     # noqa: BLE001
+        return (f"<!-- fields-review panels unavailable: "
+                f"{str(exc)[:120]} -->")
 
 
 # ------------------------------------------------------------ lab clustered
