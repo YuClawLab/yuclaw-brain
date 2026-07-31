@@ -139,15 +139,87 @@ def run_one(accession: str, ticker: str, form: str, out_dir: Path) -> Path | Non
     return out
 
 
+def run_backlog() -> int:
+    """Option-B backlog computation (owner decision 2026-07-31) under
+    protocol d7d5cc4fde5f (C6 Risk Gate v2): filings 2026-07-16..30,
+    strictly as-of inputs, verify_as_of() as a HARD GATE per artifact —
+    verifier failure permanently excludes the artifact (no repair, no
+    retry); exclusions and reasons recorded."""
+    import hashlib
+    sys.path.insert(0, str(_REPO / "tools"))
+    from yuclaw_c6_risk_gate_v2 import GAP_LO, GAP_HI, verify_as_of
+    from v3.universe_tiers import evidence_cik_map
+
+    exclusions = []
+    with psycopg2.connect(DSN) as cn:
+        cn.set_session(readonly=True)
+        with cn.cursor() as cur:
+            cur.execute(
+                """SELECT DISTINCT r.accession_number, r.ticker,
+                          r.source_type, r.source_publish_time::date
+                   FROM events_raw r
+                   WHERE r.ticker = ANY(%s)
+                     AND r.source_publish_time::date BETWEEN %s AND %s
+                   ORDER BY 4""",
+                (sorted(evidence_cik_map()), GAP_LO, GAP_HI))
+            rows = cur.fetchall()
+    done = 0
+    for acc, tk, form, fdate in rows:
+        out = OUT_DIR / f"{acc}.json"
+        if out.exists():
+            continue
+        text = narrative(acc)
+        if not text:
+            exclusions.append({"accession": acc, "ticker": tk,
+                               "reason": "no persisted narrative in "
+                                         "swarm_inputs (as-of input absent)"})
+            continue
+        path = run_one(acc, tk, form, OUT_DIR)
+        if path is None:
+            exclusions.append({"accession": acc, "ticker": tk,
+                               "reason": "specialized run failed"})
+            continue
+        artifact = json.loads(path.read_text())
+        artifact["late_computed"] = True
+        artifact["filing_date"] = fdate.isoformat()
+        artifact["input_manifest"] = {
+            "narrative_sha256": hashlib.sha256(text.encode()).hexdigest(),
+            "narrative_source": "yuclaw_v5.swarm_inputs",
+            "accession_scoped_inputs": [f"swarm_inputs:{acc}",
+                                        f"events:{acc}"],
+            "max_input_content_date": fdate.isoformat(),
+        }
+        problems = verify_as_of(artifact, text, fdate)
+        if problems:
+            path.unlink()   # hard gate: excluded permanently, never written
+            exclusions.append({"accession": acc, "ticker": tk,
+                               "reason": "; ".join(problems)})
+            continue
+        path.write_text(json.dumps(artifact, indent=1))
+        done += 1
+    (_REPO / "output" / "oie" / "c6_backlog_exclusions.json").write_text(
+        json.dumps({"computed": done, "excluded": exclusions}, indent=2))
+    print(f"[c6-backlog] computed {done} late artifacts; excluded "
+          f"{len(exclusions)}")
+    for e in exclusions:
+        print(f"  excluded {e['accession']} ({e['ticker']}): {e['reason']}")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--max", type=int, default=2)
+    ap.add_argument("--backlog", action="store_true",
+                    help="Option-B late computation of the 2026-07-16..30 gap")
     ap.add_argument("--out-dir", default=str(OUT_DIR),
                     help="TEST ONLY — production always uses output/swarm/canada")
     ap.add_argument("--accession", default=None,
                     help="TEST ONLY — run one specific accession")
     a = ap.parse_args()
     out_dir = Path(a.out_dir)
+
+    if a.backlog:
+        return run_backlog()
 
     if a.accession:
         with psycopg2.connect(DSN) as cn:
