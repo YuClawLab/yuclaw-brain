@@ -538,17 +538,31 @@ def cross_etf_html() -> str:
         table = ("<p style='font-size:12px;color:#A0AEC0'>0 multi-lens issuers across "
                  "SMH and the four Canada lenses — the sectors are disjoint, as expected. "
                  "The machinery is the shipped cross-lens overlap map, extended to include SMH.</p>")
-    body = f"""{table}
-      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
-        <strong style="color:#E2E8F0">Sector-ETF overlap — stated data gap, not a silent cap:</strong>
-        the universe file lists sector ETFs (XLK, SOXX-class, and peers) as fund tickers only; no
-        constituent-weight snapshots for them exist in the evidence store (SMH is the only sector ETF
-        with a dated holdings snapshot). SMH↔sector-ETF issuer overlaps therefore cannot be computed
-        from stored data today. Filling the gap requires ingesting those funds' holdings disclosures —
-        staged as a v5.2 item; nothing is estimated in the meantime.
+    sector = ""
+    sp = _REPO / "output" / "oie" / "sector_overlap.json"
+    if sp.exists():
+        so = json.loads(sp.read_text())
+        xlk = so.get("smh_overlaps", {}).get("XLK", {})
+        rows2 = "".join(
+            f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-weight:700'>{escape(t)}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{v['smh']:.2f}%</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{v['xlk']:.2f}%</td></tr>"
+            for t, v in sorted(xlk.items(), key=lambda kv: -kv[1]["smh"])[:8])
+        pv = so.get("xlk_pilot", {}).get("verdict", {})
+        pf = so.get("xlk_pilot", {}).get("facts", {})
+        sector = f"""
+      <div style="font-size:11px;color:#718096;margin:14px 0 4px;text-transform:uppercase;letter-spacing:1px">SMH ↔ XLK issuer overlap (issuer-disclosed daily holdings, v5.2 ingestion) — {len(xlk)} shared issuers, top 8</div>
+      <table><thead><tr><th>Issuer</th><th>SMH weight</th><th>XLK weight</th></tr></thead><tbody>{rows2}</tbody></table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:8px;line-height:1.6">
+        Sector-ETF holdings snapshots now cover 13 SPDR funds (issuer disclosures, dated; derived
+        statistics only). Pilot admission read for XLK: <strong style="color:#E2E8F0">{escape(str(pv.get('label')))}</strong>,
+        {pf.get('covered_issuers')}/{76} names covered ({pf.get('covered_weight_pct')}% of weight),
+        effective issuers {pv.get('effective_issuers')}. Remaining disclosure gaps, stated: IBB
+        (different issuer endpoint) — nothing estimated in the meantime.
       </p>"""
+    body = f"""{table}{sector}"""
     return _panel("Cross-ETF issuer map",
-                  "shipped cross-lens machinery · SMH + XEG/ZEO/GDX/URNM membership overlap", body)
+                  "membership overlap · Canada lenses + sector-ETF holdings snapshots", body)
 
 
 # ---------------------------------------------------------------- main
