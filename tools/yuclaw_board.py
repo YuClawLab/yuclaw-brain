@@ -108,6 +108,12 @@ Generated {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} from live 
 |---|---|---|---|---|
 {chr(10).join(proto_rows)}
 
+## Research questions (hypothesis registry)
+
+| question | status | linked protocols | grounds |
+|---|---|---|---|
+{chr(10).join(f"| {q['question']} | **{q['status']}** | {', '.join('`'+p+'`' for p in q['linked_protocols'])} | {'; '.join(q['grounds'])[:220]} |" for q in reg.questions().values())}
+
 ## Gates (fresh at generation time)
 
 | gate | result |

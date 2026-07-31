@@ -371,6 +371,33 @@ def lifecycle_html() -> str:
                   f"protocol {escape(data['protocol_id'])} · display-only diffusion read · registered before computation", body)
 
 
+def hypotheses_html() -> str:
+    """Research-question tracker panel (E-tranche; staged preview only)."""
+    reg = Registry(str(_REPO / "registry" / "protocols.jsonl"))
+    qs = reg.questions()
+    if not qs:
+        return ""
+    color = {"OPEN": "#4DD0E1", "ANSWERED": "#00E676", "RETIRED": "#FBA94B"}
+    rows = "".join(
+        f"<tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{escape(q['question'])}</td>"
+        f"<td style='padding:7px 12px'><span style='color:{color.get(q['status'], '#A0AEC0')};font-weight:700;font-size:11px'>{escape(q['status'])}</span></td>"
+        f"<td style='padding:7px 12px;color:#718096;font-family:JetBrains Mono,monospace;font-size:10px'>{escape(', '.join(q['linked_protocols']))}</td>"
+        f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape('; '.join(q['grounds']))}</td></tr>"
+        for q in qs.values())
+    body = f"""
+      <table>
+        <thead><tr><th>Research question</th><th>Status</th><th>Linked protocols</th><th>Grounds</th></tr></thead>
+        <tbody>{rows}</tbody>
+      </table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Question lifecycle is append-only in the registry chain: hypotheses come from exploration,
+        confirmation runs on data that does not exist yet, retirements cite their grounds.
+        {escape(_IMPLICATION)}
+      </p>"""
+    return _panel("Research questions",
+                  "hypothesis registry · append-only chain entries", body)
+
+
 # ---------------------------------------------------------------- Part D
 def funnel_html() -> str:
     cov = overlap_summary()["covered"]
@@ -587,7 +614,7 @@ def main() -> int:
     extra = (falsification_html() + sale_type_html() + momentum_html()
              + geometry_html() + robustness_html() + lifecycle_html()
              + taxonomy_html() + funnel_html() + holdings_html()
-             + cross_etf_html())
+             + cross_etf_html() + hypotheses_html())
     render_preview(proto, verdict, facts, anatomy, top, br, states, est,
                    es, run_line, extra_html=extra)
     print("[v5.1] smh_lens.html re-rendered with falsification / taxonomy / "

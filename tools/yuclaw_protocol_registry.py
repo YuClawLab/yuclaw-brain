@@ -175,6 +175,49 @@ class Registry:
         self.assert_registered(r.protocol_id)
         return self._append("run", asdict(r))
 
+    # ---- research-question tracking (E-tranche, 2026-07-31). Append-only
+    # like everything else: status changes are new lines, never edits.
+    def register_question(self, question_id: str, question: str,
+                          linked_protocols: list, status: str = "OPEN",
+                          grounds: list | None = None, date: str = "") -> str:
+        if status not in ("OPEN", "ANSWERED", "RETIRED"):
+            raise ValueError(f"unknown question status {status}")
+        if any(l["kind"] == "question"
+               and l["payload"]["question_id"] == question_id
+               for l in self._lines):
+            raise ValueError(f"question {question_id} already registered — "
+                             "use update_question")
+        return self._append("question", {
+            "question_id": question_id, "question": question,
+            "linked_protocols": linked_protocols, "status": status,
+            "grounds": grounds or [], "date": date})
+
+    def update_question(self, question_id: str, status: str,
+                        grounds: list, date: str) -> str:
+        if status not in ("OPEN", "ANSWERED", "RETIRED"):
+            raise ValueError(f"unknown question status {status}")
+        if not any(l["kind"] == "question"
+                   and l["payload"]["question_id"] == question_id
+                   for l in self._lines):
+            raise ValueError(f"unknown question {question_id}")
+        return self._append("question_status", {
+            "question_id": question_id, "status": status,
+            "grounds": grounds, "date": date})
+
+    def questions(self) -> dict:
+        """Latest state per question_id (base entry + last status line)."""
+        out: dict = {}
+        for l in self._lines:
+            if l["kind"] == "question":
+                out[l["payload"]["question_id"]] = dict(l["payload"])
+            elif l["kind"] == "question_status":
+                q = out.get(l["payload"]["question_id"])
+                if q is not None:
+                    q["status"] = l["payload"]["status"]
+                    q["grounds"] = l["payload"]["grounds"]
+                    q["date"] = l["payload"]["date"]
+        return out
+
     # ---- §26 multiple-testing ledger
     def test_ledger(self, alpha: float = 0.05) -> dict:
         per = {}
