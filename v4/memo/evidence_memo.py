@@ -111,10 +111,16 @@ def _load_grounding():
 _GROUNDING = _load_grounding()
 
 
+_FORM_TOKEN_RE = re.compile(r"\b(6-K|8-K|10-K|10-Q|20-F|40-F|13[DG])\b")
+
+
 def _numbers_verified(sentence: str, corpus: str) -> tuple[bool, list[str]]:
     """Every number in the (citation-stripped) sentence must appear in the
-    cited events' verification corpus. Uses the v5 verifier when available."""
-    text = _CITE_RE.sub("", sentence)
+    cited events' verification corpus. Uses the v5 verifier when available.
+    Form designators (6-K, 8-K, ...) are locked vocabulary, not numeric
+    claims — stripped before extraction (5.1.0 fix: 'Form 6-K' previously
+    failed as an uncited number '6', blocking 6-K-heavy memos)."""
+    text = _FORM_TOKEN_RE.sub("", _CITE_RE.sub("", sentence))
     if _GROUNDING is not None:
         ok, report = _GROUNDING.verify_numbers(text, [corpus])
         missing = [r["token"] for r in report
