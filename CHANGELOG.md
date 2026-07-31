@@ -2,6 +2,30 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.1.0] — 2026-07-31
+
+### Added
+
+- **The held subcommands ship**: `events` (accepted-event export, table/JSON/CSV),
+  `lens` (lens summary JSON), `export` (derived-data packets), and the evidence
+  memo interface (`memo --ticker/--days`, citation-verified) are now supported,
+  documented surface. Backend-connected commands fail friendly without a local
+  backend (message + exit 3, never a traceback — the 5.0.1 replay-lab pattern).
+- **Public research panels (site)**: the SMH lens page now carries the
+  four-estimand table with the conservative envelope AND a formal two-way
+  cluster interval side by side, falsification battery, Form-4 transaction
+  taxonomy, evidence structure/context robustness/evidence lifecycle panels,
+  and the clustered decile panel on the Validation Lab — every statistic under
+  a pre-registered protocol with cluster-aware inference. Headline updated to
+  the completed-confirmation wording; adverse results reported as measured.
+- **Evidence packets** now include the engine run artifacts
+  (evidence_geometry / robustness_profile / evidence_lifecycle JSONs).
+
+### Fixed
+
+- Version coherence: site badge, README, User Guide, usage caveats, and the
+  packaged metadata all say 5.1.0 (they disagreed across 5.0.0/5.0.1/v5.1).
+
 ## [5.0.1] — 2026-07-23
 
 Bugs-only patch release. **No new subcommands; no scoring, methodology, or number

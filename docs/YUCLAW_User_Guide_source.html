@@ -121,7 +121,7 @@ Top contributing events (last 7 days):
 
 Compliance: Research only. Not financial advice. Not a registered investment advisor.</div>
 <p>Three things to notice: the label (<span class="mono">NEUTRAL</span>) is a research classification of the composite score; each component&rsquo;s contribution is shown with its weight; and every contributing event carries a link to the SEC document it was extracted from. If you take one habit from this guide, take this one: <b>follow the source links.</b> The engine is built to show its work &mdash; make it.</p>
-<div class="callout amber"><b>Version note (5.0.x).</b> The pip-installed 5.0.x releases predate the <code>events</code>, <code>lens</code>, <code>export</code>, and <code>memo</code> subcommands &mdash; they ship in v5.1. To use them today, run from a checkout of <span class="mono">main</span>: <span class="mono">git clone https://github.com/YuClawLab/yuclaw-brain</span> and invoke <span class="mono">python3 -m v3.cli ...</span>. Everything else in this guide works from the pip install.</div>
+<div class="callout amber"><b>Version note (5.0.x).</b> The pip-installed 5.0.x releases predate the <code>events</code>, <code>lens</code>, <code>export</code>, and <code>memo</code> subcommands &mdash; they ship in v5.1.0 (available now). To use them today, run from a checkout of <span class="mono">main</span>: <span class="mono">git clone https://github.com/YuClawLab/yuclaw-brain</span> and invoke <span class="mono">python3 -m v3.cli ...</span>. Everything else in this guide works from the pip install.</div>
 
 <h2 id="s3"><span class="n">3</span>Reading a signal</h2>
 <h3>The nine components</h3>
@@ -164,7 +164,7 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <div class="term"><span class="p">$</span> yuclaw replay-lab
 <span class="c"># fetches the public replay bundle, rebuilds cohorts, recomputes every statistic,</span>
 <span class="c"># re-derives every ledger hash root &mdash; exit 0 on exact match, non-zero on ANY mismatch</span></div>
-<p>This runs from a brand-new environment with nothing but the pip install. At the v5.0.0 release it reproduced every published daily ledger root and statistic exactly from a fresh venv. A standalone stdlib script (<span class="mono">tools/replay_lab.py</span>) does the same with no dependencies at all.</p>
+<p>This runs from a brand-new environment with nothing but the pip install. At the v5.1.0 release it reproduced every published daily ledger root and statistic exactly from a fresh venv. A standalone stdlib script (<span class="mono">tools/replay_lab.py</span>) does the same with no dependencies at all.</p>
 <h3>5.2 &nbsp;Check a specific signal against the public ledger</h3>
 <div class="term"><span class="p">$</span> yuclaw verify AMD --date 2026-05-20 <span class="c"># works from bare pip — bundled ledger record</span></div>
 <p>Recomputes the signal&rsquo;s hash and checks it against the git-anchored ledger in <span class="mono">yuclaw-trust</span> &mdash; independent confirmation that the record hasn&rsquo;t been edited since publication. For any other ticker/date, clone <span class="mono">github.com/YuClawLab/yuclaw-trust</span> next to your working directory (the full public ledger) or connect the local backend.</p>
@@ -193,7 +193,7 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <p><code>yuclaw memo --ticker SU --days 30</code> produces a short research memo in which <b>every sentence cites an event ID</b> that resolves to a filing excerpt. Generation uses the local LLM; verification does not: a deterministic verifier checks each citation against source text, and a linter enforces a restricted conclusion vocabulary plus the research-only footer. Memos require a full local deployment (events database + local models) &mdash; pip-only users can read the approved demo at <span class="mono">docs/examples/evidence_memo_su.md</span> to see the exact output shape.</p>
 <h3>Evidence packets and exports</h3>
 <p><code>yuclaw export --lens GDX --page</code> builds an evidence packet: a zip of typed events, verified excerpts, and replay data, each carrying citation metadata (<span class="mono">data_through, build_date, source_commit, ledger_root, methodology_version, scope_note, known_limitations</span>) so anything you quote downstream stays traceable.</p>
-<div class="callout amber"><b>Export rule.</b> Exports contain <b>derived YUCLAW data only</b> &mdash; typed events extracted from public SEC filings, scores, hashes, and the track record. Raw third-party market data (vendor price and options feeds) is never redistributed, per those vendors&rsquo; terms. Citation format for research use: &ldquo;YUCLAW v5.0.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; the packet metadata gives you the exact string.</div>
+<div class="callout amber"><b>Export rule.</b> Exports contain <b>derived YUCLAW data only</b> &mdash; typed events extracted from public SEC filings, scores, hashes, and the track record. Raw third-party market data (vendor price and options feeds) is never redistributed, per those vendors&rsquo; terms. Citation format for research use: &ldquo;YUCLAW v5.1.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; the packet metadata gives you the exact string.</div>
 
 <h2 id="s8"><span class="n">8</span>Programmatic access: SDK, REST, MCP</h2>
 <ul>
@@ -217,7 +217,7 @@ Compliance: Research only. Not financial advice. Not a registered investment adv
 <h2 id="s10"><span class="n">10</span>Troubleshooting, support, and disclaimer</h2>
 <table class="ref">
   <tr><th>SYMPTOM</th><th>CAUSE &amp; FIX</th></tr>
-  <tr><td><span class="mono">events / lens / export / memo</span> not recognized</td><td>Pip 5.0.x predates these subcommands. Run from a <span class="mono">main</span> checkout: <span class="mono">python3 -m v3.cli ...</span> (Section 2). They ship in v5.1.</td></tr>
+  <tr><td><span class="mono">events / lens / export / memo</span> not recognized</td><td>Pip 5.0.x predates these subcommands. Run from a <span class="mono">main</span> checkout: <span class="mono">python3 -m v3.cli ...</span> (Section 2). They ship in v5.1.0 (available now).</td></tr>
   <tr><td><span class="mono">why TICKER</span> says it needs a backend</td><td>Expected from a bare pip install. Run <span class="mono">yuclaw demo</span> or <span class="mono">yuclaw why AMD --as-of 2026-05-20</span> (bundled offline signal); the published-record commands (<span class="mono">replay-lab</span>, <span class="mono">verify</span>, <span class="mono">validation</span>) work anywhere. Live signals for all tickers: <span class="mono">docs/v4/backend_setup.md</span>.</td></tr>
   <tr><td><span class="mono">replay-lab</span> exits non-zero</td><td>That is the alarm working. Re-run once (transient network), then open a GitHub issue with the replication template &mdash; a reproducible mismatch is a high-value report.</td></tr>
   <tr><td>Dashboard looks stale</td><td>Check the freshness stamp on the page. Pages regenerate daily after U.S. market close; outages are disclosed on the Lab page, never backfilled.</td></tr>
@@ -244,7 +244,7 @@ yuclaw export --lens GDX --format csv&nbsp;*<br>
 yuclaw memo --ticker SU --days 30&nbsp;*&dagger;<br>
 yuclaw brief &middot; watch add &middot; profile show
     </div>
-    <div class="small" style="margin-top:4pt;">* ships in v5.1; run <span class="mono">python3 -m v3.cli</span> from a main checkout meanwhile &nbsp;&dagger; needs full local deployment</div>
+    <div class="small" style="margin-top:4pt;">* ship in v5.1.0 (available now); run <span class="mono">python3 -m v3.cli</span> from a main checkout meanwhile &nbsp;&dagger; needs full local deployment</div>
   </div>
   <div style="flex:1; border:1pt solid #182430; padding:7pt 9pt;">
     <div style="font-family:'Liberation Mono'; font-size:7.4pt; font-weight:bold; letter-spacing:1.2pt; margin-bottom:4pt;">SURFACES</div>
@@ -260,7 +260,7 @@ pypi.org/project/yuclaw<br>
 Telegram: @yuclaw_signals (07:35 MT)
     </div>
     <div style="font-family:'Liberation Mono'; font-size:7.4pt; font-weight:bold; letter-spacing:1.2pt; margin:6pt 0 3pt 0;">CITE YUCLAW</div>
-    <div class="small">&ldquo;YUCLAW v5.0.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; exact values ship in every evidence-packet METADATA.json.</div>
+    <div class="small">&ldquo;YUCLAW v5.1.0, data through &lt;date&gt;, commit &lt;hash&gt;&rdquo; &mdash; exact values ship in every evidence-packet METADATA.json.</div>
   </div>
 </div>
 <div class="callout" style="margin-top:8pt;"><b>The one habit:</b> follow the source links. Every event in every signal resolves to a SEC filing &mdash; the engine is built to show its work. Make it.</div>

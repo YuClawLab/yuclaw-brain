@@ -94,7 +94,7 @@ Then, check the receipts yourself:
 yuclaw replay-lab
 ```
 
-Fetches the public replay bundle and reproduces the Validation Lab off-box. At the v5.0.0
+Fetches the public replay bundle and reproduces the Validation Lab off-box. At the v5.1.0
 release this ran from a brand-new environment — a fresh venv with nothing but
 `pip install yuclaw` — and reproduced **33 daily ledger roots exactly (2,926 leaf hashes
 recomputed)** and every published statistic, exit 0. It exits non-zero on any mismatch.

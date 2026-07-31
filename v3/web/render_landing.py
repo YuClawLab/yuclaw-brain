@@ -1,5 +1,5 @@
 """
-Render the YUCLAW v5.0.0 public landing page to docs/index.html.
+Render the YUCLAW v5.1.0 public landing page to docs/index.html.
 
 Static, data-baked, NO JS hydration — the v2.3.0 silent-freeze lesson.
 
@@ -126,7 +126,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v5.0.0 — Evidence-First Financial AI</title>
+  <title>YUCLAW v5.1.0 — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -283,7 +283,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     </div>
 
     <div class="footer">
-      YUCLAW v5.0.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v5.1.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·

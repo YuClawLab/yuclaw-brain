@@ -24,7 +24,7 @@ import json
 from html import escape
 from pathlib import Path
 
-VERSION = "v5.0.0"
+VERSION = "v5.1.0"
 
 # Locked public signal vocabulary — the ONLY signal labels any public page may
 # render (mirrors the homepage "Public signal vocabulary" legend). Pages render

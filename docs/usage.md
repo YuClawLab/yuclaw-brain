@@ -9,11 +9,11 @@ and postures are research classifications, not recommendations.*
 
 Install: `pip install yuclaw`
 
-> The `events` / `lens` / `export` subcommands ship in v5.1;
+> The `events` / `lens` / `export` subcommands ship in v5.1.0 (installed now);
 > until then run them from a checkout: `python3 -m v3.cli ...`.
 > `memo` note: pip 5.0.x ships the **earlier** memo interface (positional
 > ticker, `--as-of`); the evidence-memo CLI documented below
-> (`--ticker`/`--days`, citation-verified) also ships in v5.1 — run it
+> (`--ticker`/`--days`, citation-verified) ships in v5.1.0 — run it
 > from a checkout meanwhile: `python3 -m v4.memo.cli --ticker SU --days 90`.
 > `yuclaw replay-lab` works in the published 5.0.x today.
 

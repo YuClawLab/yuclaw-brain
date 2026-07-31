@@ -208,6 +208,16 @@ def build_open_index_packet(built: str, commit: str, ledger: dict) -> tuple[Path
                  "79-ticker scoring universe, as measured — not a total-index claim."),
     })
 
+    # v5.1.0: engine run artifacts (registered protocols) travel with the
+    # packet when present on the build box — structure, robustness, lifecycle,
+    # falsification. Absent files are skipped, never stubbed.
+    _oie_dir = _REPO / "output" / "oie"
+    for eng in ("evidence_geometry.json", "robustness_profile.json",
+                "evidence_lifecycle.json", "falsification_run.json"):
+        src = _oie_dir / eng
+        if src.exists():
+            files[f"engines/{eng}"] = src.read_bytes()
+
     meta = _metadata("open_index", str(data_through), built, commit, ledger)
     files["METADATA.json"] = _json_bytes(meta)
     files["CITATION.txt"] = (citation_snippet(PACKETS["open_index"]["page_label"],

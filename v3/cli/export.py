@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 
-def main(argv: list[str] | None = None) -> int:
+def _main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw export",
                                 description="Export derived evidence data (packet rule applies)")
     tgt = p.add_mutually_exclusive_group(required=True)
@@ -71,3 +71,32 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def _friendly_backend_exit(exc: Exception) -> int:
+    """5.1.0 ship-shape (per the 5.0.1 replay-lab pattern): backend-connected
+    commands fail with a message and a distinct exit code, never a traceback.
+    0 = ok, 2 = usage, 3 = backend unavailable."""
+    import sys as _sys
+    print("backend unavailable: this command reads the YUCLAW research "
+          "backend (Postgres evidence store + research data files), which "
+          "is not present on this machine.\n"
+          f"  detail: {type(exc).__name__}: {str(exc)[:140]}\n"
+          "  offline instead: `yuclaw demo` (bundled AMD @ 2026-05-20) or "
+          "`yuclaw replay-lab` (public bundle).\n"
+          "  to connect a backend: see README \u00a7 'connect the local "
+          "backend'.", file=_sys.stderr)
+    return 3
+
+
+def main(argv: list[str] | None = None) -> int:
+    try:
+        return _main(argv)
+    except SystemExit:
+        raise
+    except Exception as exc:                     # noqa: BLE001
+        import psycopg2
+        if isinstance(exc, (psycopg2.OperationalError, FileNotFoundError,
+                            RuntimeError, ImportError)):
+            return _friendly_backend_exit(exc)
+        raise
