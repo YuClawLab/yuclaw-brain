@@ -568,7 +568,11 @@ def cross_etf_html() -> str:
 # ---------------------------------------------------------------- main
 def main() -> int:
     reg = Registry(str(_REPO / "registry" / "protocols.jsonl"))
-    pid = _pid(METHOD_SPEC, PROTOCOL_PARAMS)
+    # resolve the CURRENT protocol from the recorded artifact (v1 was
+    # superseded by SMH multi-estimand CAR v2 on 2026-07-31; the artifact
+    # always carries the protocol its numbers were recorded under)
+    pid = json.loads((_REPO / "output" / "oie" / "smh_lens_run.json"
+                      ).read_text())["protocol_id"]
     proto = reg.assert_registered(pid)
     run_line = ""
     for ln in reg._lines:

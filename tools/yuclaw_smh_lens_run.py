@@ -205,9 +205,20 @@ def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
              ("etf", "E3 ETF-weighted (fund weight, renormalized to sleeve)"),
              ("capped", "E4 capped-ETF-weighted (issuer cap 20% of sleeve) — PRIMARY")]
     est_rows = []
+    has_tw = any(e[k].get("two_way") for k, _ in order)
     for k, desc in order:
         r = e[k]
         star = " style='background:#1A2334'" if k == "capped" else ""
+        tw = r.get("two_way")
+        tw_cell = ""
+        if has_tw:
+            if tw:
+                deg = " DEGENERATE" if tw.get("degenerate") else ""
+                tw_cell = (f"<td style='padding:7px 12px;color:#4DD0E1;font-family:JetBrains Mono,monospace;font-size:11px'>"
+                           f"({tw['ci'][0]:+.2f}, {tw['ci'][1]:+.2f}) "
+                           f"<span style='color:#718096'>[{escape(tw['badge'])}{deg}]</span></td>")
+            else:
+                tw_cell = "<td style='padding:7px 12px;color:#718096'>—</td>"
         est_rows.append(
             f"<tr{star}><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>{escape(desc)}</td>"
             f"<td style='padding:7px 12px;color:#FF3366;font-family:JetBrains Mono,monospace;font-weight:700'>{r['mean_pct']:+.2f}%</td>"
@@ -215,6 +226,7 @@ def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace;font-size:11px'>{_ci(r['issuer_ci'])}</td>"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace;font-size:11px'>{_ci(r['date_ci'])}</td>"
             f"<td style='padding:7px 12px;color:#FBA94B;font-family:JetBrains Mono,monospace;font-size:11px'>{_ci(r['envelope'])}</td>"
+            f"{tw_cell}"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape(r['badge'])}</td></tr>")
 
     unc_rows = "".join(
@@ -332,7 +344,7 @@ def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
       <div class="panel-title">Multi-estimand direction-aligned CAR at τ=+20 · backfill era (the adverse-headline sample)</div>
       <div class="panel-sub">peer model · n={est['n_backfill']} events · {est['issuers_backfill']} issuers · {est['dates_backfill']} dates · B=4000, seed {SEED} · live era n={est['n_live']} (disclosed, too small for standalone inference)</div>
       <table>
-        <thead><tr><th>Estimand</th><th>Mean CAR</th><th>Naive CI</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th><th>Badge</th></tr></thead>
+        <thead><tr><th>Estimand</th><th>Mean CAR</th><th>Naive CI</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th>{'<th>Formal two-way CI (CGM)</th>' if has_tw else ''}<th>Badge</th></tr></thead>
         <tbody>{''.join(est_rows)}</tbody>
       </table>
       <p style="font-size:12px;color:#A0AEC0;margin-top:12px;line-height:1.6">

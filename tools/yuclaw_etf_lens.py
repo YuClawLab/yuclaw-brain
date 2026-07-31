@@ -278,6 +278,56 @@ class WeightedClusteredCAR:
     def run_all(self):
         return {k: self.run(k) for k in ("event", "issuer", "etf", "capped")}
 
+# -------------------------------------------- formal two-way (CGM) — v2
+V2_AMENDMENT = """
+AMENDMENT (v2, 2026-07-31): beside the conservative envelope (which is
+retained unchanged), each estimand reports the FORMAL TWO-WAY
+cluster-robust interval: CGM variance V = V_issuer + V_date -
+V_intersection computed by the score-sum sandwich on the weighted mean;
+CI = mean +/- 1.959964 * sqrt(V). Small-G guard: min(G_issuer, G_date) < 8
+=> the two-way interval carries UNDERPOWERED regardless of width. If the
+CGM variance is non-positive (a known small-sample degeneracy) the wider
+single-way variance is substituted and the cell is labeled DEGENERATE —
+disclosed, never silent. The envelope remains the headline interval; the
+formal two-way is reported beside it, labeled. All other clauses of v1
+inherited verbatim."""
+METHOD_SPEC_V2 = METHOD_SPEC + V2_AMENDMENT
+METHOD_HASH_V2 = hashlib.sha256(METHOD_SPEC_V2.encode()).hexdigest()[:16]
+
+
+def cgm_two_way(events, fund_w, kind, z=1.959964):
+    """events: [(issuer, date, car_pct)]. Returns the formal two-way cell."""
+    wc = WeightedClusteredCAR(events, fund_w, B=1)
+    w = wc._weights(events, kind)
+    sw = sum(w)
+    if not sw:
+        return None
+    mean = sum(wi * c for wi, (_i, _d, c) in zip(w, events)) / sw
+
+    def V(keyfn):
+        sums: dict = {}
+        for wi, e in zip(w, events):
+            k = keyfn(e)
+            sums[k] = sums.get(k, 0.0) + wi * (e[2] - mean)
+        return sum(s * s for s in sums.values()) / (sw * sw)
+
+    vi, vd = V(lambda e: e[0]), V(lambda e: e[1])
+    vint = V(lambda e: (e[0], e[1]))
+    var = vi + vd - vint
+    degenerate = var <= 0
+    if degenerate:
+        var = max(vi, vd)
+    se = math.sqrt(var)
+    g = min(len({e[0] for e in events}), len({e[1] for e in events}))
+    return {"mean_pct": round(mean, 2),
+            "ci": (round(mean - z * se, 2), round(mean + z * se, 2)),
+            "se": round(se, 3), "G_min": g,
+            "degenerate": degenerate,
+            "badge": "UNDERPOWERED" if g < 8 else
+                     ("DESCRIPTIVE" if mean - z * se <= 0 <= mean + z * se
+                      else "PRELIMINARY")}
+
+
 # ---------------------------------------------------------------- selftest
 def _selftest():
     # T1 effective-N math
@@ -349,6 +399,58 @@ def _selftest():
     assert "MEASURED" not in admit_client(LensFacts(**base))["label"]
     bad2 = dict(base); bad2["covered_weight_pct"] = 49.9
     assert admit_client(LensFacts(**bad2))["label"] == "NOT_ADMITTED"
+    # T9 formal two-way (CGM): three synthetic regimes
+    rng9 = random.Random(11)
+    fw9 = {f"I{i}": 5.0 for i in range(20)}
+    # (a) independent: unique issuer AND unique date per event -> ~naive width
+    ev_a = [(f"I{i}", f"d{i}", rng9.gauss(0, 2)) for i in range(20)]
+    tw_a = cgm_two_way(ev_a, fw9, "event")
+    mean_a = sum(c for *_x, c in ev_a) / 20
+    naive_se = (sum((c - mean_a) ** 2 for *_x, c in ev_a) / 20 / 20) ** 0.5
+    assert 0.6 <= tw_a["se"] / naive_se <= 1.5, (tw_a["se"], naive_se)
+    # (b) issuer-correlated: strong within-issuer shock -> two-way tracks the
+    #     issuer-cluster width, far above naive
+    ev_b = []
+    for i in range(10):
+        shock = rng9.gauss(0, 3)
+        ev_b += [(f"I{i}", f"e{i}{k}", shock + rng9.gauss(0, 0.1))
+                 for k in range(4)]
+    tw_b = cgm_two_way(ev_b, fw9, "event")
+    mean_b = sum(c for *_x, c in ev_b) / len(ev_b)
+    naive_b = (sum((c - mean_b) ** 2 for *_x, c in ev_b)
+               / len(ev_b) / len(ev_b)) ** 0.5
+    # theoretical inflation cap is sqrt(4)=2 with 4 events/cluster; require
+    # near-cap inflation AND agreement with the issuer-only sandwich
+    assert tw_b["se"] > 1.7 * naive_b, (tw_b["se"], naive_b)
+    wcb = WeightedClusteredCAR(ev_b, fw9, B=1)
+    wb = wcb._weights(ev_b, "event")
+    swb = sum(wb)
+    sums_b: dict = {}
+    for wi, e in zip(wb, ev_b):
+        sums_b[e[0]] = sums_b.get(e[0], 0.0) + wi * (e[2] - mean_b)
+    se_iss_only = (sum(x * x for x in sums_b.values()) / (swb * swb)) ** 0.5
+    assert 0.9 <= tw_b["se"] / se_iss_only <= 1.1, (tw_b["se"], se_iss_only)
+    # (c) both-way shocks -> wider than either single-way sandwich
+    ev_c = []
+    row = {i: rng9.gauss(0, 2) for i in range(6)}
+    col = {j: rng9.gauss(0, 2) for j in range(6)}
+    for i in range(6):
+        for j in range(6):
+            ev_c.append((f"R{i}", f"C{j}", row[i] + col[j] + rng9.gauss(0, 0.1)))
+    wc9 = WeightedClusteredCAR(ev_c, {f"R{i}": 5 for i in range(6)}, B=1)
+    w9 = wc9._weights(ev_c, "event")
+    sw9 = sum(w9)
+    m9 = sum(wi * c for wi, (_a, _b, c) in zip(w9, ev_c)) / sw9
+
+    def _v(keyfn):
+        s: dict = {}
+        for wi, e in zip(w9, ev_c):
+            s[keyfn(e)] = s.get(keyfn(e), 0.0) + wi * (e[2] - m9)
+        return sum(x * x for x in s.values()) / (sw9 * sw9)
+    tw_c = cgm_two_way(ev_c, {f"R{i}": 5 for i in range(6)}, "event")
+    assert tw_c["se"] ** 2 > _v(lambda e: e[0]) and \
+           tw_c["se"] ** 2 > _v(lambda e: e[1]), "two-way not wider than singles"
+    assert tw_c["badge"] == "UNDERPOWERED"   # G_min = 6 < 8
     return r2
 
 if __name__ == "__main__":
@@ -356,7 +458,8 @@ if __name__ == "__main__":
     print("[OK] T1 effective-N · T2 admission boundaries · T3 anatomy identity "
           "· T4 equal-case agreement · T5 concentration sensitivity · "
           "T6 dependence widens envelope · T7 determinism · "
-          "T8 client cap (user_defined never MEASURED)")
+          "T8 client cap (user_defined never MEASURED) · "
+          "T9 formal two-way CGM (independent/issuer/both-way)")
     print(f"[OK] METHOD_HASH={METHOD_HASH}  (register before real lens data)\n")
     for k, res in r.items():
         print(f"{k:>7}: mean={res.mean_pct:+.2f}%  naive{res.naive_ci}  "
