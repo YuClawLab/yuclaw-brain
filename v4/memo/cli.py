@@ -26,7 +26,7 @@ def _parse_as_of(raw: Optional[str]) -> Optional[datetime]:
     return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
 
 
-def main(argv: list[str] | None = None) -> int:
+def _main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw memo", description="Generate a v4 research memo.")
     p.add_argument("ticker", nargs="?", default=None,
                    help="positional: legacy signal memo for a scored ticker")
@@ -69,3 +69,30 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def main(argv: list[str] | None = None) -> int:
+    """5.1.0: friendly no-backend path (exit 3) — the evidence-memo mode
+    needs the research backend + box services; the bundled demo path
+    (positional ticker) keeps working offline."""
+    try:
+        return _main(argv)
+    except SystemExit:
+        raise
+    except Exception as exc:                     # noqa: BLE001
+        import sys as _s
+        try:
+            import psycopg2
+            db_err = isinstance(exc, psycopg2.OperationalError)
+        except Exception:
+            db_err = False
+        if db_err or isinstance(exc, (FileNotFoundError, ImportError,
+                                      RuntimeError)):
+            print("backend unavailable: `memo --ticker` builds a "
+                  "citation-verified evidence memo from the local research "
+                  "backend, which is not present on this machine.\n"
+                  f"  detail: {type(exc).__name__}: {str(exc)[:140]}\n"
+                  "  offline instead: `yuclaw memo AMD` (bundled demo memo) "
+                  "or `yuclaw demo`.", file=_s.stderr)
+            return 3
+        raise
