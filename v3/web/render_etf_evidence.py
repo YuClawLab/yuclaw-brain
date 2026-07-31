@@ -19,6 +19,7 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
+from v3.web import oie_v51_blocks as _v51
 from v3.web.useful_blocks import (site_header_html,
                                   packet_block_from_manifest as _packet_block,
                                   public_label as display_label,
@@ -305,7 +306,7 @@ def render() -> str:
       <div class="panel-sub">market-model CAR, window [−5, +20] event-time days · dedup: {es['n_raw_filings']} filings → {es['n_events_deduped']} distinct (ticker, type, day) events → {es['n_events_used']} with a ≥30-obs estimation window</div>
 
       <div style="background:#2A1A1A;border-radius:8px;padding:14px 18px;border-left:3px solid #FBA94B;margin-bottom:14px">
-        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the current event-level estimator; issuer- and date-clustered confirmation pending.</div>
+        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the event-level estimator; issuer- and date-clustered confirmation completed — the adverse point estimate persists under all four registered weightings but is statistically supported only under event weighting (issuer-, ETF-, and capped-weighted envelopes include zero). The event-date-shuffle null places the primary capped estimand at an unremarkable percentile: era-generic direction alignment, not event-timed information.</div>
         <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
           Direction-aligned pooled CAR (peer model, n={pooled['peer']['n_events']} events) is
           <strong style="color:#FF3366">{_pct(car_end(pooled['peer'])['mean_car'],1)}</strong> at τ=+20
@@ -351,6 +352,16 @@ def render() -> str:
         and are statistically uninformative. {escape(es['insider_stream_note'])}
       </p>
     </div>
+
+    {_v51.smh_estimand_panel()}
+
+    {_v51.falsification_panel("SMH-E4")}
+
+    {_v51.taxonomy_panel("SMH")}
+
+    {_v51.smh_funnel_panel()}
+
+    {_v51.smh_holdings_panel()}
 
     <details class="acc">
       <summary>Methodology summary</summary>

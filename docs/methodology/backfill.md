@@ -163,6 +163,31 @@ Research / education only. Not investment advice. Past results — in-sample or 
 
 ---
 
+## v5.1 — Clustered-inference estimator parameters (D No.1, locked 2026-07-27)
+
+Two deferred estimator-parameter decisions were resolved and locked with
+protocol `36d019b175c8` ("Lab clustered decile inference v1", registered
+before computation; method hash `4cfe94a4f4ec7a7f`). Versioned here; any
+future change requires a superseding protocol, never an edit.
+
+**1 · The G < 8 UNDERPOWERED threshold is retained.** Every clustered
+interval computed with fewer than 8 clusters carries the UNDERPOWERED badge
+regardless of width. Rationale: the wild-cluster (Rademacher) small-G remedy
+is computed and shown beside every cluster CI; 8 matches the smallest live
+lens; and changing thresholds after results exist is forbidden by our own
+discipline.
+
+**2 · Percentile bootstrap CIs are retained for v1.** Bootstrap-t
+(studentized) intervals are deferred: they require studentization machinery
+not yet exercised in this codebase. Revisit at v5.3 under its own registered
+spec — not before.
+
+The Lab's public clustered panel reports the ticker-clustered CI as primary
+with wild-cluster and naive date-resample CIs beside it, labeled; the
+clustered estimator uses per-signal-date k-day forward-return spreads
+(clustering requires ticker identity) and is stated beside the per-rebalance
+spread tests, never blended.
+
 ## v5.2 — C2 volume component: formal deprecation and shadow challenger (2026-07-31)
 
 The composite's C2 (volume confirmation) component has been self-masked at
