@@ -79,10 +79,21 @@ def _universe() -> list[str]:
     return u["equities"] + u["sector_etfs"] + u["broad_etfs"] + u["macro"]
 
 
+def _smh_foreign_tier() -> set[str]:
+    """SMH foreign filers covered via the evidence tier (coverage_vertical
+    smh_foreign, added 2026-07-31). Evidence coverage ONLY — these names are
+    never scored (positive gating in v3/universe_tiers)."""
+    from v3.universe_tiers import evidence_tier_records
+    return {r["ticker"] for r in evidence_tier_records()
+            if r.get("coverage_vertical") == "smh_foreign"}
+
+
 def overlap_summary() -> dict[str, Any]:
     uni = set(_universe())
-    covered = sorted(t for t in SMH_HOLDINGS if t in uni)
-    uncovered = sorted(t for t in SMH_HOLDINGS if t not in uni)
+    foreign_tier = _smh_foreign_tier()
+    eligible = uni | foreign_tier
+    covered = sorted(t for t in SMH_HOLDINGS if t in eligible)
+    uncovered = sorted(t for t in SMH_HOLDINGS if t not in eligible)
     w_cov = sum(SMH_HOLDINGS[t] for t in covered)
     return {
         "etf": "SMH", "as_of": SMH_AS_OF, "source": SMH_SOURCE,
@@ -90,7 +101,10 @@ def overlap_summary() -> dict[str, Any]:
         "covered": covered, "n_covered": len(covered),
         "covered_weight_pct": round(w_cov, 2),
         "uncovered": uncovered,
-        "foreign_uncovered": sorted(FOREIGN_DOMICILED),
+        "foreign_uncovered": sorted(FOREIGN_DOMICILED - covered_set
+                                    if (covered_set := set(covered)) else
+                                    FOREIGN_DOMICILED),
+        "covered_via_evidence_tier": sorted(set(covered) & foreign_tier),
         "weights_covered": {t: SMH_HOLDINGS[t] for t in covered},
     }
 

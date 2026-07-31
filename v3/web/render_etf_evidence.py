@@ -273,14 +273,14 @@ def render() -> str:
         <div class="tile"><div class="v">{ru['rollup']['events_30d']}</div><div class="k">events, trailing 30 days</div></div>
       </div>
       <p style="font-size:12px;color:#A0AEC0;line-height:1.6;max-width:820px">
-        <strong style="color:#E2E8F0">Why not 100%?</strong> {len(ov['uncovered'])} disclosed constituents are outside the
-        universe, including the foreign-domiciled issuers {', '.join(ov['foreign_uncovered'])}. These file on
-        the foreign-private-issuer track — 6-K current reports plus 20-F (or 40-F under MJDS) annual
-        reports — rather than the 8-K + Form 4 stream this page's event study consumes. That is a coverage
-        boundary of this lens, not a pipeline limitation: YUCLAW already ingests the 6-K/40-F path, with
-        exhibit-level prose extraction, in the
-        <a href="canada_resources.html" style="color:#00E676">Canada Resources Evidence</a> vertical, so
-        extending this lens to foreign-filer constituents is a coverage decision, not a capability gap.
+        <strong style="color:#E2E8F0">Why not 100%?</strong> {len(ov['uncovered'])} disclosed constituents remain
+        outside the covered sleeve — all of them US filers outside the 79-ticker scoring universe (a
+        scoring-universe decision, not a filer-class gap). The foreign private issuers
+        {', '.join(ov.get('covered_via_evidence_tier', []))} are covered as of 2026-07-31 through the
+        evidence tier (6-K current reports + 20-F annual reports, exhibit-level prose extraction — the
+        same path shipped for the
+        <a href="canada_resources.html" style="color:#00E676">Canada Resources Evidence</a> vertical);
+        they are evidence coverage only and are never scored.
         <strong style="color:#E2E8F0">Foreign-holdings ETFs (e.g. KORU-class country funds) remain
         methodologically out of scope</strong>: their constituents do not file with EDGAR at all, so there is
         no evidence stream to aggregate — a scope statement, not a caveat.
