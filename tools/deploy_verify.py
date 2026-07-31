@@ -30,6 +30,7 @@ DEFAULT_PATHS = [
     "validation.html",
     "validation_lab.html",
     "etf_evidence.html",
+    "xlk_evidence.html",
     "canada_resources.html",
     "replication.html",
     "todays_evidence.html",

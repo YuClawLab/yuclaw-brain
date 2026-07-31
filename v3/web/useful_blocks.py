@@ -64,6 +64,7 @@ def load_packet_manifest(kind: str) -> dict | None:
 _NAV_CHIPS = (
     ("Validation Lab", "validation_lab.html"),
     ("SMH Evidence Lens", "etf_evidence.html"),
+    ("XLK Evidence Lens", "xlk_evidence.html"),
     ("Canada Resources Evidence", "canada_resources.html"),
     ("Forward Tracking", "validation.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),

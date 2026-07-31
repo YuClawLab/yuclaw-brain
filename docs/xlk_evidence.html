@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YUCLAW · XLK Covered-Constituent Evidence Lens</title>
+  <meta name="description" content="Research event study on the YUCLAW-covered share of disclosed XLK weight. Hypothetical research illustration — not investment advice.">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B0E14;font-family:'Inter',sans-serif;color:#E2E8F0;line-height:1.6}
+    .container{max-width:1080px;margin:0 auto;padding:24px}
+    .fresh{background:#0F1B14;border:1px solid #00E67640;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#A0AEC0;font-family:JetBrains Mono,monospace}
+    .fresh strong{color:#00E676}
+    .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;line-height:1.55;color:#A0AEC0}
+    .disclaimer strong{color:#FBA94B}
+    .panel{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}
+    .panel-title{font-size:13px;font-weight:700;color:#FFF;margin-bottom:4px}
+    .panel-sub{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:8px 12px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.6px}
+    td{font-size:13px;border-bottom:1px solid #1A2030}
+    code{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}
+    .tile{min-width:120px}
+    .tile .v{font-size:24px;font-weight:800;color:#FFF;font-family:JetBrains Mono,monospace}
+    .tile .k{font-size:11px;color:#718096;text-transform:uppercase;letter-spacing:0.6px}
+    .footer{text-align:center;padding:18px;color:#718096;font-size:11px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.1.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">XLK Covered-Constituent Evidence Lens</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        
+      </div>
+    </div>
+
+    <h1 style="font-size:26px;font-weight:800;color:#FFF;letter-spacing:-0.5px;margin-bottom:4px">
+      XLK Covered-Constituent Evidence Lens</h1>
+    <p style="font-size:14px;color:#A0AEC0;margin-bottom:16px;max-width:840px">
+      Evidence analysis of the YUCLAW-covered 54.6% of disclosed XLK weight.
+      This is not a full-fund inference. XLK is the second sector lens: it was activated because it
+      passed the published admission standard — not because of popularity.</p>
+
+    <div class="fresh"><strong>Registered run</strong> · protocol <code>e5f9e680f402</code> ·
+      holdings as of 2026-07-29 · last build 2026-07-31 07:31 UTC</div>
+
+    <div class="disclaimer"><strong>Disclaimer —</strong> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications, not recommendations. Past results — in-sample or forward-tracked — do not predict future performance.</div>
+
+    <div class="panel">
+      <div class="panel-title">Admission and coverage</div>
+      <div class="panel-sub">issuer holdings snapshot ∩ 79-ticker scoring universe · admission per the published standard</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-bottom:8px">
+        <div class="tile"><div class="v" style="font-size:16px;color:#4DD0E1">EXPLORATORY</div><div class="k">admission verdict</div></div>
+        <div class="tile"><div class="v">5.58</div><div class="k">effective issuers</div></div>
+        <div class="tile"><div class="v">11/76</div><div class="k">holdings covered</div></div>
+        <div class="tile"><div class="v">54.6%</div><div class="k">of fund weight covered</div></div>
+      </div>
+      <p style="font-size:12px;color:#A0AEC0">Top-1 covered 14.85% · top-3 37.27% · top-5 44.69% of full-fund weight (largest: AAPL).</p>
+      <table><thead><tr><th>Uncovered — reason</th><th>Weight</th><th>Names</th></tr></thead><tbody><tr><td style='padding:6px 12px;color:#A0AEC0;font-size:12px'>outside the 79-ticker scoring universe</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>45.34%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>65</td></tr><tr><td style='padding:6px 12px;color:#A0AEC0;font-size:12px'>not disclosed / rounding residual</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>0.07%</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>1</td></tr></tbody></table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Multi-estimand direction-aligned CAR at τ=+20 · backfill era</div>
+      <div class="panel-sub">n=54 events · conservative envelope AND formal two-way, side by side · all-era n=107 disclosed</div>
+      <table>
+        <thead><tr><th>Estimand</th><th>Mean CAR</th><th>Conservative envelope</th><th>Formal two-way CI (CGM)</th><th>Badge</th></tr></thead>
+        <tbody><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E1 event-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-11.14%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-18.66, -4.30)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-17.11, -5.18)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>PRELIMINARY</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E2 issuer-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-6.99%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-13.91, -1.74)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-12.98, -1.00)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>PRELIMINARY</td></tr><tr><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E3 ETF-weighted</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-6.69%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-12.65, +0.01)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-9.99, -3.38)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>DESCRIPTIVE</td></tr><tr style='background:#1A2334'><td style='padding:7px 12px;color:#E2E8F0;font-size:12px'>E4 capped-ETF-weighted — PRIMARY</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FF3366;font-weight:700'>-6.92%</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#FBA94B;font-size:11px'>(-13.39, -1.34)</td><td style='padding:7px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>(-10.72, -3.12)</td><td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>PRELIMINARY</td></tr></tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Falsification (registered secondaries): event-date-shuffle percentile
+        0.115; direction sign-flip percentile
+        0.008; pre-event placebo -0.62%.
+        Extremity is read two-sided. The sign-flip result is extreme while the date-shuffle result is not —
+        the adverse alignment survives direction randomization, but an era-generic component cannot be
+        excluded at this sample. Reported as measured. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.
+      </p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Evidence structure</div>
+      <div class="panel-sub">story clustering (pre-committed linkage) · effective evidence count</div>
+      <p style="font-size:12px;color:#A0AEC0">107 events → 4 stories →
+        <strong style="color:#E2E8F0">16.1 effective</strong> (design effect 6.653;
+        issuer-level 77.6). Top story 77.6% of event mass.
+        Many events, fewer stories — statistics on this page use cluster-aware inference accordingly.</p>
+      <table><thead><tr><th>Story size</th><th>Mass</th><th>Dominant issuer</th><th>Dominant type</th></tr></thead><tbody><tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>83</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>77.6%</td><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>DELL</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>INSIDER_SELL</td></tr><tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>20</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>18.7%</td><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>MRVL</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>INSIDER_SELL</td></tr><tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>1.9%</td><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>INTC</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>EXEC_CHANGE</td></tr><tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>1.9%</td><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace'>INTC</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>EXEC_CHANGE</td></tr></tbody></table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Evidence lifecycle</div>
+      <div class="panel-sub">per-type |CAR| paths day 0→20 · backfill era · n≥15 floor</div>
+      <table><thead><tr><th>Event type</th><th>n</th><th>Peak day</th><th>Half-life</th></tr></thead><tbody><tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-size:12px'>INSIDER_SELL</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>34</td><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>20</td><td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>not reached within window</td></tr></tbody></table>
+      <p style="font-size:11px;color:#718096;margin-top:8px">An absolute cumulative path rises mechanically
+        with horizon — a window-edge peak with no half-life is what no-decay looks like under this estimator.
+        Below the floor, listed not plotted: M_AND_A_CLOSE (n=12), EXEC_CHANGE (n=4), OTHER_MATERIAL (n=3), M_AND_A_ANNOUNCE (n=1). Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.</p>
+    </div>
+
+    
+    <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="status-block">
+      <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Status — proven · not proven · accruing</div>
+      <p style="font-size:11.5px;color:#718096;margin:0 0 10px">
+        Rendered from one shared source (<code>v3/web/useful_blocks.py</code>) on every page that shows it,
+        so the copies cannot drift. Statuses are measured, not aspirational.
+      </p>
+      <div style="display:flex;gap:22px;flex-wrap:wrap">
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px">Proven (verifiable today)</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Replay works — one command reproduces every Lab statistic and ledger root from published data</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Ledger anchored daily — sha-256 daily roots committed to a public git repository before pages update</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Evidence traces to filings — every accepted event carries a source URL, accession number, and verified excerpt</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Coverage measured — SEC-filer weight per lens is stated as measured, never rounded up</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Snapshots are point-in-time — daily as-of writes, zero retroactive edits (outage window disclosed, not repaired)</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Evidence-tier names are never scored — enforced by positive gating and a standing negative check</li></ul></div>
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#FF3366;margin-bottom:6px">Not proven</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Forward alpha — no spread, IC, or alpha significant at 5% with adequate power</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> C6 risk-gate sign — rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Peer-model CAR lead — event-study lead over peer models is not established; live-era sample remains small</li></ul></div>
+        <div style="flex:1;min-width:250px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#FBA94B;margin-bottom:6px">Accruing</div><ul style="list-style:none;padding:0"><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> Forward out-of-sample record — one period per trading day, accruing daily</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> Matured CAR events — each accepted event matures into the event study after its forward window completes</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> C6 elevated arm — live Form-4 ingestion since 2026-07-16 restores the insider stream to production inputs</li><li style="margin:5px 0;color:#A0AEC0;font-size:12.5px;line-height:1.55"><span style="color:#FBA94B;font-weight:700">·</span> External replications — the replication log accrues as independent runs are reported</li></ul></div>
+      </div>
+    </div>
+
+    <div class="disclaimer"><strong>Disclaimer —</strong> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications, not recommendations. Past results — in-sample or forward-tracked — do not predict future performance.</div>
+    <div class="footer">YUCLAW XLK Covered-Constituent Evidence Lens · built 2026-07-31 07:31 UTC ·
+      <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#00E676">YuClawLab</a> · research &amp; education only</div>
+  </div>
+</body>
+</html>

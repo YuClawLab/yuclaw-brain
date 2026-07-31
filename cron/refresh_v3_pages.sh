@@ -38,6 +38,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # AI-ETF Evidence module (added 2026-07-05, Deng Part 2 — same freshness
 # contract as the Lab).
 /usr/bin/python3 -m v3.web.render_etf_evidence || exit 7
+# XLK lens (second sector lens, admission-standard-driven; 2026-07-31).
+/usr/bin/python3 -m v3.web.render_xlk_evidence || exit 21
 # Canada Resources Evidence — evidence-tier vertical (added 2026-07-14, Phase 2;
 # same freshness contract; the tier is never scored — see v3/universe_tiers.py).
 /usr/bin/python3 -m v3.web.render_canada_resources || exit 9
@@ -84,7 +86,8 @@ print('[registry] chain OK')" || exit 19
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/git add docs/index.html docs/validation.html docs/validation_lab.html \
-                 docs/etf_evidence.html docs/canada_resources.html \
+                 docs/etf_evidence.html docs/xlk_evidence.html \
+                 docs/canada_resources.html \
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
                  docs/trace_su.html docs/replication.html docs/lane.html

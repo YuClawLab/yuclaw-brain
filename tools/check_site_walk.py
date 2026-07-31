@@ -45,7 +45,7 @@ RE_STAMP = re.compile(r'(built|generated|as of|data through)\s*:?\s*20\d\d-',
 STATIC_MARK = "<!-- static-page -->"
 DISCLAIMER_RE = re.compile(r'not (investment|financial) advice', re.I)
 MIN_CHIPS = 8   # nav chips in the shared header (site_header_html)
-CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "Canada Resources",
+CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "XLK Evidence Lens", "Canada Resources",
                "Forward Tracking", "GitHub", "PyPI", "Ledger", "Methodology",
                "Home")
 
