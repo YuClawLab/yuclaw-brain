@@ -68,6 +68,40 @@ else
     status+=("push:OK")
 fi
 
+# 1d. C6 risk-artifact lag (restoration order, 2026-07-31) — dormancy can
+# never again hide: oldest qualifying evidence-tier filing (>= 2026-07-31)
+# still lacking its risk-channel artifact must be younger than 48h.
+c6_lag_h=$(python3 - << 'PYEOF' 2>/dev/null
+import sys, glob, os
+sys.path.insert(0, "/home/zhangd2/yuclaw")
+from datetime import datetime, timezone, date
+import psycopg2
+from v3.universe_tiers import evidence_cik_map
+have = {os.path.basename(f)[:-5] for f in glob.glob(
+    "/home/zhangd2/yuclaw/output/swarm/canada/*.json")}
+with psycopg2.connect("dbname=yuclaw_events") as cn:
+    with cn.cursor() as cur:
+        cur.execute("""SELECT r.accession_number, min(r.source_publish_time)
+            FROM events_raw r JOIN yuclaw_v5.swarm_inputs s
+              ON s.accession_number = r.accession_number
+            WHERE r.ticker = ANY(%s)
+              AND r.source_publish_time::date >= '2026-07-31'
+            GROUP BY 1""", (sorted(evidence_cik_map()),))
+        rows = [(a, t) for a, t in cur.fetchall() if a not in have]
+if not rows:
+    print(0)
+else:
+    oldest = min(t for _a, t in rows)
+    print(int((datetime.now(timezone.utc) - oldest).total_seconds() // 3600))
+PYEOF
+)
+if [[ -n "${c6_lag_h:-}" ]] && (( c6_lag_h > 48 )); then
+    status+=("c6:LAG(${c6_lag_h}h)")
+    problems+=("C6 risk-artifact lag ${c6_lag_h}h (>48h): qualifying filing without risk-channel artifact — check c6_specialized_live step in event_worker_guarded.sh")
+else
+    status+=("c6:OK(${c6_lag_h:-0}h)")
+fi
+
 # 2. Ollama responding on 11434
 if curl -fs --max-time 5 http://localhost:11434/api/version >/dev/null 2>&1; then
     status+=("ollama:OK")

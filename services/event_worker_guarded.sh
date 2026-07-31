@@ -28,7 +28,7 @@ if [ -n "$NONOLLAMA" ]; then
 fi
 
 # 2. A v5 swarm / Layer / capture job (our own GPU-heavy work) is running.
-SWARM=$(ps -eo args 2>/dev/null | grep -iE 'v5\.swarm|run_specialized|validate_scale|batch_specialists|risk_[a-z_]*_capture|specialized\.py' | grep -v grep || true)
+SWARM=$(ps -eo args 2>/dev/null | grep -iE 'v5\.swarm|run_specialized|validate_scale|batch_specialists|risk_[a-z_]*_capture|specialized\.py|c6_specialized_live' | grep -v grep || true)
 if [ -n "$SWARM" ]; then
     echo "[worker-guard] $(date -u +%FT%TZ) v5 swarm/Layer job running — skip drain"
     exit 0
@@ -38,4 +38,15 @@ fi
 # at most one short batch, never an unbounded run).
 cd /home/zhangd2/yuclaw
 echo "[worker-guard] $(date -u +%FT%TZ) box free — draining up to 8 rows"
-exec /usr/bin/python3 -m v3.extract.event_worker --once --batch 8
+/usr/bin/python3 -m v3.extract.event_worker --once --batch 8
+RC=$?
+
+# C6 specialized live step (restoration order, 2026-07-31): same GPU slot,
+# bounded (2/tick), idempotent, forward-only from 2026-07-31 — the Jul-16..30
+# backlog is an owner decision (Part C) and is never touched here. Non-fatal:
+# a C6 failure must not fail the extraction chain.
+if [ $RC -eq 0 ]; then
+    /usr/bin/python3 /home/zhangd2/yuclaw/services/c6_specialized_live.py --max 2 \
+        || echo "[worker-guard] $(date -u +%FT%TZ) c6-live step failed (non-fatal)"
+fi
+exit $RC
