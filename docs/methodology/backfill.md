@@ -160,3 +160,25 @@ This is an **observed property of the launch-day dataset**. We do not claim the 
 ## 10. Disclaimer
 
 Research / education only. Not investment advice. Past results — in-sample or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.
+
+---
+
+## v5.2 — C2 volume component: formal deprecation and shadow challenger (2026-07-31)
+
+The composite's C2 (volume confirmation) component has been self-masked at
+confidence 0.0 since v2.3.0 — it has never contributed to any published
+score. This section makes that formal: **the effective composite is the
+renormalized eight remaining components**, and every historical score
+already reflects exactly that. Nothing changed in the numbers; the
+disclosure now matches the code.
+
+The intended volume scorer now runs as a **shadow challenger**: it writes to
+a parallel table only and is structurally isolated from the live composite
+(the isolation is self-tested in code — the live path contains no reference
+to the challenger, and the challenger imports nothing from the live path).
+Its evaluation was registered before accrual began (protocol
+"C2 challenger evaluation v1"): the single primary endpoint is the shadow
+scorer's rank association with 5-day forward returns on the forward window
+from 2026-07-31. Any future question of promoting it into the composite
+will cite that endpoint and nothing else, under a separate registered
+decision.

@@ -72,6 +72,10 @@ print('[registry] chain OK')" || exit 19
 # deployed, never fatal to the public chain.
 /usr/bin/python3 tools/yuclaw_board.py || echo "[refresh_v3_pages] board generation failed (non-fatal)"
 
+# C2 shadow challenger accrual (v5.2, 2026-07-31): parallel table only,
+# structurally isolated from the composite; non-fatal.
+/usr/bin/python3 tools/yuclaw_c2_challenger.py || echo "[refresh_v3_pages] c2 challenger failed (non-fatal)"
+
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
