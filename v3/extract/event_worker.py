@@ -158,7 +158,7 @@ def process_batch(limit: int = 5) -> dict:
                 # text the LLM saw, so raw_excerpt stays a verbatim substring.
                 # (Canada Resources evidence tier, 2026-07-14.)
                 llm_text = row["raw_text"]
-                if row["source_type"] in ("6-K", "40-F"):
+                if row["source_type"] in ("6-K", "40-F", "20-F"):
                     composed = prose_live.compose_foreign_input(
                         row["accession_number"], row["source_type"], row["raw_text"])
                     if composed:

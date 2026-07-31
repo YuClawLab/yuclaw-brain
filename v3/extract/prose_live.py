@@ -28,7 +28,7 @@ from v3.extract.narrative import DEFAULT_DSN, _persist, extract_and_store, sanit
 # 6-K/40-F (MJDS foreign private issuers, Canada Resources evidence tier, 2026-07-14):
 # both are cover-page envelopes whose substance is furnished as EX-99.x/EX-13.x exhibits
 # — the exhibit extractor is the ONLY correct prose source; the primary doc is boilerplate.
-PROSE_FORMS = ("8-K", "10-K", "10-Q", "6-K", "40-F")
+PROSE_FORMS = ("8-K", "10-K", "10-Q", "6-K", "40-F", "20-F")
 
 
 def _existing(accession: str) -> bool:
@@ -60,7 +60,7 @@ def ingest_prose(accession: str | None, form: str | None) -> tuple[str, str]:
                 _persist_exhibit(rec, DEFAULT_DSN)
                 return (rec["narrative_section"], f"{rec['char_len']} chars")
             return ("fallback_raw_cover", f"exhibit sanity {probs}")
-        if form == "40-F":
+        if form in ("40-F", "20-F"):
             # annual-report prose path: MD&A anchor search inside the exhibit
             rec = extract_exhibit_narrative(accession, persist=False)
             ok, probs = sanity_ok(rec)
@@ -104,7 +104,7 @@ def compose_foreign_input(accession: str | None, form: str | None,
     body is always the exhibit prose. Ensures the prose is persisted (sanity-gated)
     as a side effect. Returns None when no sanity-passing exhibit prose is available —
     the caller falls back to the raw cover, which typically yields no_event."""
-    if not accession or form not in ("6-K", "40-F"):
+    if not accession or form not in ("6-K", "40-F", "20-F"):
         return None
     try:
         ingest_prose(accession, form)          # idempotent; persists when sane

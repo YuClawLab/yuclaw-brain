@@ -45,7 +45,9 @@ STATE_PATH = Path(__file__).resolve().parent.parent / "backfill_state.json"
 # here if Day 3 parser slips and we still want Form 4 coverage via LLM fallback.
 # 40-F (MJDS annual report) added 2026-07-14 for the Canada Resources evidence
 # tier — routed through the annual-report exhibit-narrative prose path.
-FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K", "40-F"}
+FORM_TYPES = {"8-K", "10-Q", "10-K", "6-K", "40-F", "20-F"}
+# 20-F (FPI annual report) added 2026-07-31 for the SMH foreign-filer
+# extension — routed through the same annual-report prose path as 40-F.
 
 # SEC published cap is 10 req/sec. 0.15s sleep → ~6.6 req/sec, comfortable margin.
 SEC_SLEEP_SECONDS = 0.15

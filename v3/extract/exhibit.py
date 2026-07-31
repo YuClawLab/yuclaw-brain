@@ -46,7 +46,7 @@ _INDEX_RE = re.compile(r"index", re.I)
 
 # -index.htm document-table row: <td>seq</td><td>desc</td><td><a href="file">..</a></td><td>TYPE</td>
 _INDEX_HTM_ROW_RE = re.compile(
-    r'href="[^"]*/([^"/]+\.html?)"[^>]*>.*?</a>\s*</td>\s*<td[^>]*>\s*(EX-[\d.]+|6-K|8-K|40-F|10-K|10-Q)',
+    r'href="[^"]*/([^"/]+\.html?)"[^>]*>.*?</a>\s*</td>\s*<td[^>]*>\s*(EX-[\d.]+|6-K|8-K|40-F|20-F|10-K|10-Q)',
     re.I | re.S)
 
 

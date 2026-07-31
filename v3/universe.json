@@ -1,1046 +1,1118 @@
 {
-  "version": "v3.0",
-  "as_of": "2026-05-18",
-  "equities": [
-    "AAPL",
-    "MSFT",
-    "NVDA",
-    "GOOGL",
-    "META",
-    "AMZN",
-    "TSLA",
-    "AMD",
-    "INTC",
-    "MRVL",
-    "MU",
-    "ARM",
-    "RKLB",
-    "LUNR",
-    "HPE",
-    "AMAT",
-    "LRCX",
-    "CRCL",
-    "DELL",
-    "JPM",
-    "BAC",
-    "GS",
-    "MS",
-    "WFC",
-    "C",
-    "AXP",
-    "V",
-    "MA",
-    "PYPL",
-    "UNH",
-    "JNJ",
-    "PFE",
-    "MRK",
-    "ABBV",
-    "LLY",
-    "TMO",
-    "DHR",
-    "ABT",
-    "BMY",
-    "XOM",
-    "CVX",
-    "COP",
-    "SLB",
-    "PSX",
-    "PG",
-    "KO",
-    "PEP",
-    "WMT",
-    "COST"
-  ],
-  "sector_etfs": [
-    "XLK",
-    "XLF",
-    "XLE",
-    "XLV",
-    "XLU",
-    "XLI",
-    "XLY",
-    "XLP",
-    "XLB",
-    "XLRE",
-    "XLC",
-    "SMH",
-    "KRE",
-    "IBB",
-    "XBI"
-  ],
-  "broad_etfs": [
-    "SPY",
-    "QQQ",
-    "IWM",
-    "DIA",
-    "MDY"
-  ],
-  "macro": [
-    "TLT",
-    "IEF",
-    "GLD",
-    "SLV",
-    "UUP",
-    "FXI",
-    "EEM",
-    "VIXY",
-    "VXX",
-    "TAIL"
-  ],
-  "deferred": [
-    {
-      "ticker": "QSUM",
-      "reason": "not in SEC company_tickers.json or company_tickers_mf.json as of 2026-05-18",
-      "investigated": "2026-05-18"
-    }
-  ],
-  "tier_contract": {
-    "as_of": "2026-07-14",
-    "note": "Positive gating. Only securities in a tier explicitly marked scoring_eligible=true may enter composite scoring / signal_snapshots; only lab_universe=true tiers enter Lab panels and the 79-ticker forward-track universe. Default for any security not covered by a tier marking: NOT scoring-eligible. The evidence tier is covered for filings evidence and research dashboards only.",
-    "scoring_tier": {
-      "keys": [
-        "equities",
-        "sector_etfs",
-        "broad_etfs",
-        "macro"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": true,
-      "lab_universe": true
-    },
-    "evidence_tier": {
-      "key": "evidence_tier",
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources"
-    }
+ "version": "v3.0",
+ "as_of": "2026-05-18",
+ "equities": [
+  "AAPL",
+  "MSFT",
+  "NVDA",
+  "GOOGL",
+  "META",
+  "AMZN",
+  "TSLA",
+  "AMD",
+  "INTC",
+  "MRVL",
+  "MU",
+  "ARM",
+  "RKLB",
+  "LUNR",
+  "HPE",
+  "AMAT",
+  "LRCX",
+  "CRCL",
+  "DELL",
+  "JPM",
+  "BAC",
+  "GS",
+  "MS",
+  "WFC",
+  "C",
+  "AXP",
+  "V",
+  "MA",
+  "PYPL",
+  "UNH",
+  "JNJ",
+  "PFE",
+  "MRK",
+  "ABBV",
+  "LLY",
+  "TMO",
+  "DHR",
+  "ABT",
+  "BMY",
+  "XOM",
+  "CVX",
+  "COP",
+  "SLB",
+  "PSX",
+  "PG",
+  "KO",
+  "PEP",
+  "WMT",
+  "COST"
+ ],
+ "sector_etfs": [
+  "XLK",
+  "XLF",
+  "XLE",
+  "XLV",
+  "XLU",
+  "XLI",
+  "XLY",
+  "XLP",
+  "XLB",
+  "XLRE",
+  "XLC",
+  "SMH",
+  "KRE",
+  "IBB",
+  "XBI"
+ ],
+ "broad_etfs": [
+  "SPY",
+  "QQQ",
+  "IWM",
+  "DIA",
+  "MDY"
+ ],
+ "macro": [
+  "TLT",
+  "IEF",
+  "GLD",
+  "SLV",
+  "UUP",
+  "FXI",
+  "EEM",
+  "VIXY",
+  "VXX",
+  "TAIL"
+ ],
+ "deferred": [
+  {
+   "ticker": "QSUM",
+   "reason": "not in SEC company_tickers.json or company_tickers_mf.json as of 2026-05-18",
+   "investigated": "2026-05-18"
+  }
+ ],
+ "tier_contract": {
+  "as_of": "2026-07-14",
+  "note": "Positive gating. Only securities in a tier explicitly marked scoring_eligible=true may enter composite scoring / signal_snapshots; only lab_universe=true tiers enter Lab panels and the 79-ticker forward-track universe. Default for any security not covered by a tier marking: NOT scoring-eligible. The evidence tier is covered for filings evidence and research dashboards only.",
+  "scoring_tier": {
+   "keys": [
+    "equities",
+    "sector_etfs",
+    "broad_etfs",
+    "macro"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": true,
+   "lab_universe": true
   },
-  "evidence_tier": [
-    {
-      "ticker": "AEM",
-      "cik": "0000002809",
-      "sec_name": "AGNICO EAGLE MINES LTD",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "AG",
-      "cik": "0001308648",
-      "sec_name": "FIRST MAJESTIC SILVER CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "AGI",
-      "cik": "0001178819",
-      "sec_name": "ALAMOS GOLD INC",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "ARIS",
-      "cik": "0001964504",
-      "sec_name": "Aris Mining Corp",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "AU",
-      "cik": "0001973832",
-      "sec_name": "AngloGold Ashanti PLC",
-      "filer_class": "FPI_20F",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "B",
-      "cik": "0000756894",
-      "sec_name": "BARRICK MINING CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "BTE",
-      "cik": "0001279495",
-      "sec_name": "BAYTEX ENERGY CORP.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "BTG",
-      "cik": "0001429937",
-      "sec_name": "B2GOLD CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "CCJ",
-      "cik": "0001009001",
-      "sec_name": "CAMECO CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "CDE",
-      "cik": "0000215466",
-      "sec_name": "Coeur Mining, Inc.",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "CGAU",
-      "cik": "0001854640",
-      "sec_name": "Centerra Gold Inc.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "CNQ",
-      "cik": "0001017413",
-      "sec_name": "CANADIAN NATURAL RESOURCES Ltd",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG",
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "CVE",
-      "cik": "0001475260",
-      "sec_name": "CENOVUS ENERGY INC.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG",
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "DNN",
-      "cik": "0001063259",
-      "sec_name": "DENISON MINES CORP.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "EFXT",
-      "cik": "0001904856",
-      "sec_name": "Enerflex Ltd.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "EGO",
-      "cik": "0000918608",
-      "sec_name": "ELDORADO GOLD CORP /FI",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "ENB",
-      "cik": "0000895728",
-      "sec_name": "ENBRIDGE INC",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC"
-      ],
-      "lenses": [
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "EQX",
-      "cik": "0001756607",
-      "sec_name": "Equinox Gold Corp.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "EU",
-      "cik": "0001500881",
-      "sec_name": "enCore Energy Corp.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "Nasdaq"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "EXK",
-      "cik": "0001277866",
-      "sec_name": "ENDEAVOUR SILVER CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "FNV",
-      "cik": "0001456346",
-      "sec_name": "FRANCO NEVADA Corp",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "FSM",
-      "cik": "0001341335",
-      "sec_name": "FORTUNA MINING CORP.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "GFI",
-      "cik": "0001172724",
-      "sec_name": "GOLD FIELDS LTD",
-      "filer_class": "FPI_20F",
-      "exchanges": [
-        "NYSE",
-        "OTC"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "HL",
-      "cik": "0000719413",
-      "sec_name": "HECLA MINING CO/DE/",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE",
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "HMY",
-      "cik": "0001023514",
-      "sec_name": "HARMONY GOLD MINING CO LTD",
-      "filer_class": "FPI_20F",
-      "exchanges": [
-        "NYSE",
-        "OTC"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "IAG",
-      "cik": "0001203464",
-      "sec_name": "IAMGOLD CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "IMO",
-      "cik": "0000049938",
-      "sec_name": "IMPERIAL OIL LTD",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG",
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "ISOU",
-      "cik": "0001997377",
-      "sec_name": "IsoEnergy Ltd.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "KGC",
-      "cik": "0000701818",
-      "sec_name": "KINROSS GOLD CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE",
-        "OTC"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "NEM",
-      "cik": "0001164727",
-      "sec_name": "NEWMONT Corp /DE/",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE",
-        "OTC"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "NXE",
-      "cik": "0001698535",
-      "sec_name": "NexGen Energy Ltd.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "OGC",
-      "cik": "0001487326",
-      "sec_name": "OceanaGold Corp",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "OR",
-      "cik": "0001627272",
-      "sec_name": "OR Royalties Inc.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "ORLA",
-      "cik": "0001680056",
-      "sec_name": "Orla Mining Ltd.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "PAAS",
-      "cik": "0000771992",
-      "sec_name": "PAN AMERICAN SILVER CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "PBA",
-      "cik": "0001546066",
-      "sec_name": "PEMBINA PIPELINE CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC"
-      ],
-      "lenses": [
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "RGLD",
-      "cik": "0000085535",
-      "sec_name": "ROYAL GOLD INC",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "Nasdaq"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "SA",
-      "cik": "0001231346",
-      "sec_name": "SEABRIDGE GOLD INC",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "SOBO",
-      "cik": "0002019061",
-      "sec_name": "South Bow Corp",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "SSRM",
-      "cik": "0000921638",
-      "sec_name": "SSR MINING INC.",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "Nasdaq",
-        "OTC"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "SU",
-      "cik": "0000311337",
-      "sec_name": "SUNCOR ENERGY INC",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG",
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "TRP",
-      "cik": "0001232384",
-      "sec_name": "TC ENERGY CORP",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC",
-        "OTC"
-      ],
-      "lenses": [
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "UEC",
-      "cik": "0001334933",
-      "sec_name": "URANIUM ENERGY CORP",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "URG",
-      "cik": "0001375205",
-      "sec_name": "UR-ENERGY INC",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "UROY",
-      "cik": "0001711570",
-      "sec_name": "Uranium Royalty Corp.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "Nasdaq"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "UUUU",
-      "cik": "0001385849",
-      "sec_name": "ENERGY FUELS INC",
-      "filer_class": "DOMESTIC",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "URNM"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "VET",
-      "cik": "0001293135",
-      "sec_name": "VERMILION ENERGY INC.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "XEG"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    },
-    {
-      "ticker": "WCPRF",
-      "cik": "0001472879",
-      "sec_name": "WHITECAP RESOURCES INC.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "OTC"
-      ],
-      "lenses": [
-        "XEG",
-        "ZEO"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "low",
-      "price_history_quality": "limited_otc_proxy",
-      "evidence_scope": "filings_only_when_available"
-    },
-    {
-      "ticker": "WPM",
-      "cik": "0001323404",
-      "sec_name": "Wheaton Precious Metals Corp.",
-      "filer_class": "MJDS",
-      "exchanges": [
-        "NYSE"
-      ],
-      "lenses": [
-        "GDX"
-      ],
-      "evidence_eligible": true,
-      "scoring_eligible": false,
-      "lab_universe": false,
-      "coverage_vertical": "canada_resources",
-      "added": "2026-07-14",
-      "listing_quality": "us_primary"
-    }
-  ]
+  "evidence_tier": {
+   "key": "evidence_tier",
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources"
+  }
+ },
+ "evidence_tier": [
+  {
+   "ticker": "AEM",
+   "cik": "0000002809",
+   "sec_name": "AGNICO EAGLE MINES LTD",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "AG",
+   "cik": "0001308648",
+   "sec_name": "FIRST MAJESTIC SILVER CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "AGI",
+   "cik": "0001178819",
+   "sec_name": "ALAMOS GOLD INC",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "ARIS",
+   "cik": "0001964504",
+   "sec_name": "Aris Mining Corp",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "AU",
+   "cik": "0001973832",
+   "sec_name": "AngloGold Ashanti PLC",
+   "filer_class": "FPI_20F",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "B",
+   "cik": "0000756894",
+   "sec_name": "BARRICK MINING CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "BTE",
+   "cik": "0001279495",
+   "sec_name": "BAYTEX ENERGY CORP.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "BTG",
+   "cik": "0001429937",
+   "sec_name": "B2GOLD CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "CCJ",
+   "cik": "0001009001",
+   "sec_name": "CAMECO CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "CDE",
+   "cik": "0000215466",
+   "sec_name": "Coeur Mining, Inc.",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "CGAU",
+   "cik": "0001854640",
+   "sec_name": "Centerra Gold Inc.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "CNQ",
+   "cik": "0001017413",
+   "sec_name": "CANADIAN NATURAL RESOURCES Ltd",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG",
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "CVE",
+   "cik": "0001475260",
+   "sec_name": "CENOVUS ENERGY INC.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG",
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "DNN",
+   "cik": "0001063259",
+   "sec_name": "DENISON MINES CORP.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "EFXT",
+   "cik": "0001904856",
+   "sec_name": "Enerflex Ltd.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "EGO",
+   "cik": "0000918608",
+   "sec_name": "ELDORADO GOLD CORP /FI",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "ENB",
+   "cik": "0000895728",
+   "sec_name": "ENBRIDGE INC",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC"
+   ],
+   "lenses": [
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "EQX",
+   "cik": "0001756607",
+   "sec_name": "Equinox Gold Corp.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "EU",
+   "cik": "0001500881",
+   "sec_name": "enCore Energy Corp.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "Nasdaq"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "EXK",
+   "cik": "0001277866",
+   "sec_name": "ENDEAVOUR SILVER CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "FNV",
+   "cik": "0001456346",
+   "sec_name": "FRANCO NEVADA Corp",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "FSM",
+   "cik": "0001341335",
+   "sec_name": "FORTUNA MINING CORP.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "GFI",
+   "cik": "0001172724",
+   "sec_name": "GOLD FIELDS LTD",
+   "filer_class": "FPI_20F",
+   "exchanges": [
+    "NYSE",
+    "OTC"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "HL",
+   "cik": "0000719413",
+   "sec_name": "HECLA MINING CO/DE/",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE",
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "HMY",
+   "cik": "0001023514",
+   "sec_name": "HARMONY GOLD MINING CO LTD",
+   "filer_class": "FPI_20F",
+   "exchanges": [
+    "NYSE",
+    "OTC"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "IAG",
+   "cik": "0001203464",
+   "sec_name": "IAMGOLD CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "IMO",
+   "cik": "0000049938",
+   "sec_name": "IMPERIAL OIL LTD",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG",
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "ISOU",
+   "cik": "0001997377",
+   "sec_name": "IsoEnergy Ltd.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "KGC",
+   "cik": "0000701818",
+   "sec_name": "KINROSS GOLD CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE",
+    "OTC"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "NEM",
+   "cik": "0001164727",
+   "sec_name": "NEWMONT Corp /DE/",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE",
+    "OTC"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "NXE",
+   "cik": "0001698535",
+   "sec_name": "NexGen Energy Ltd.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "OGC",
+   "cik": "0001487326",
+   "sec_name": "OceanaGold Corp",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "OR",
+   "cik": "0001627272",
+   "sec_name": "OR Royalties Inc.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "ORLA",
+   "cik": "0001680056",
+   "sec_name": "Orla Mining Ltd.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "PAAS",
+   "cik": "0000771992",
+   "sec_name": "PAN AMERICAN SILVER CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "PBA",
+   "cik": "0001546066",
+   "sec_name": "PEMBINA PIPELINE CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC"
+   ],
+   "lenses": [
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "RGLD",
+   "cik": "0000085535",
+   "sec_name": "ROYAL GOLD INC",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "Nasdaq"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "SA",
+   "cik": "0001231346",
+   "sec_name": "SEABRIDGE GOLD INC",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "SOBO",
+   "cik": "0002019061",
+   "sec_name": "South Bow Corp",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "SSRM",
+   "cik": "0000921638",
+   "sec_name": "SSR MINING INC.",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "Nasdaq",
+    "OTC"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "SU",
+   "cik": "0000311337",
+   "sec_name": "SUNCOR ENERGY INC",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG",
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "TRP",
+   "cik": "0001232384",
+   "sec_name": "TC ENERGY CORP",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC",
+    "OTC"
+   ],
+   "lenses": [
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "UEC",
+   "cik": "0001334933",
+   "sec_name": "URANIUM ENERGY CORP",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "URG",
+   "cik": "0001375205",
+   "sec_name": "UR-ENERGY INC",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "UROY",
+   "cik": "0001711570",
+   "sec_name": "Uranium Royalty Corp.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "Nasdaq"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "UUUU",
+   "cik": "0001385849",
+   "sec_name": "ENERGY FUELS INC",
+   "filer_class": "DOMESTIC",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "URNM"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "VET",
+   "cik": "0001293135",
+   "sec_name": "VERMILION ENERGY INC.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "XEG"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "WCPRF",
+   "cik": "0001472879",
+   "sec_name": "WHITECAP RESOURCES INC.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "OTC"
+   ],
+   "lenses": [
+    "XEG",
+    "ZEO"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "low",
+   "price_history_quality": "limited_otc_proxy",
+   "evidence_scope": "filings_only_when_available"
+  },
+  {
+   "ticker": "WPM",
+   "cik": "0001323404",
+   "sec_name": "Wheaton Precious Metals Corp.",
+   "filer_class": "MJDS",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "GDX"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "canada_resources",
+   "added": "2026-07-14",
+   "listing_quality": "us_primary"
+  },
+  {
+   "ticker": "ASML",
+   "cik": "0000937966",
+   "sec_name": "ASML HOLDING NV",
+   "filer_class": "FPI",
+   "exchanges": [
+    "NASDAQ"
+   ],
+   "lenses": [
+    "SMH"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "smh_foreign",
+   "added": "2026-07-31",
+   "listing_quality": "adr_or_nyshares"
+  },
+  {
+   "ticker": "NXPI",
+   "cik": "0001413447",
+   "sec_name": "NXP Semiconductors N.V.",
+   "filer_class": "FPI",
+   "exchanges": [
+    "NASDAQ"
+   ],
+   "lenses": [
+    "SMH"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "smh_foreign",
+   "added": "2026-07-31",
+   "listing_quality": "adr_or_nyshares"
+  },
+  {
+   "ticker": "STM",
+   "cik": "0000932787",
+   "sec_name": "STMicroelectronics N.V.",
+   "filer_class": "FPI",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "SMH"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "smh_foreign",
+   "added": "2026-07-31",
+   "listing_quality": "adr_or_nyshares"
+  },
+  {
+   "ticker": "TSM",
+   "cik": "0001046179",
+   "sec_name": "TAIWAN SEMICONDUCTOR MANUFACTURING CO LTD",
+   "filer_class": "FPI",
+   "exchanges": [
+    "NYSE"
+   ],
+   "lenses": [
+    "SMH"
+   ],
+   "evidence_eligible": true,
+   "scoring_eligible": false,
+   "lab_universe": false,
+   "coverage_vertical": "smh_foreign",
+   "added": "2026-07-31",
+   "listing_quality": "adr_or_nyshares"
+  }
+ ]
 }
