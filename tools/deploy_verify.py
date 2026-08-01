@@ -33,6 +33,7 @@ DEFAULT_PATHS = [
     "xlk_evidence.html",
     "llms.txt",
     "evidence_index.json",
+    "weekly_note.html",
     "canada_resources.html",
     "replication.html",
     "todays_evidence.html",

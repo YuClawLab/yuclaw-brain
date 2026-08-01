@@ -80,6 +80,11 @@ print('[registry] chain OK')" || exit 19
 # structurally isolated from the composite; non-fatal.
 /usr/bin/python3 tools/yuclaw_c2_challenger.py || echo "[refresh_v3_pages] c2 challenger failed (non-fatal)"
 
+# Weekly evidence note (2026-08-01): Fridays only; auto-drafted, railed at build.
+if [ "$(date +%u)" = "5" ]; then
+    /usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
+fi
+
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
@@ -93,7 +98,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
                  docs/trace_su.html docs/replication.html docs/lane.html \
-                 docs/evidence_index.json docs/llms.txt
+                 docs/evidence_index.json docs/llms.txt docs/weekly_note.html
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
