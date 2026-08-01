@@ -103,6 +103,7 @@ def smh_estimand_panel() -> str:
         <tbody>{''.join(rows)}</tbody>
       </table>
       {fal_line}
+      {_matched_control_line()}
       <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
         The adverse point estimate persists under all four registered weightings; it is statistically
         supported only under event weighting. Under issuer weighting the conservative envelope
@@ -429,6 +430,27 @@ def baselines_block() -> str:
     return _panel("baselines", "Baselines — the composite vs simple alternatives (registered)",
                   f"protocol {escape(data['protocol_id'])} · forward-OOS · registered before computation",
                   body)
+
+
+def _matched_control_line() -> str:
+    """Matched-control adjusted estimand (registered; review Part E)."""
+    d = _load("matched_control.json")
+    if not d:
+        return ""
+    a = d["adjusted_E4"]
+    return (
+        f"<p style='font-size:12px;color:#A0AEC0;margin-top:8px;line-height:1.6'>"
+        f"<strong style='color:#E2E8F0'>Matched controls</strong> (protocol "
+        f"{escape(d['protocol_id'])}, registered): each event paired with a same-day, "
+        f"event-free sleeve issuer nearest in standardized momentum+volatility "
+        f"({d['n_pairs']} pairs, {d['n_excluded']} excluded, median match distance "
+        f"{d['median_match_distance']} sd). Matched-control-adjusted E4 = "
+        f"<strong style='color:#FF3366'>{a['mean_pct']:+.2f}%</strong> CI "
+        f"({a['ci'][0]:+.2f}, {a['ci'][1]:+.2f}) [{escape(a['badge'])}]. Read together "
+        f"with the falsification context above: the timing of the adverse alignment is "
+        f"not distinguishable from its era, but relative to matched factor twins on the "
+        f"same days it is issuer-day-specific — both facts print; neither is a "
+        f"recommendation.</p>")
 
 
 def _qualified_rows() -> str:
