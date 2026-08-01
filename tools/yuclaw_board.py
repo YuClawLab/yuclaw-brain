@@ -124,6 +124,10 @@ Generated {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} from live 
 
 `v5.1-public-staging`: {behind_ahead} · tip: {stip}
 
+## Standing rules
+
+- Every newly registered primary result gets a Robustness Profile grid within one cycle (rule of 2026-08-01).
+
 ## Armed dates
 
 | date | what |

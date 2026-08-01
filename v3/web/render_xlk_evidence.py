@@ -33,6 +33,35 @@ IMPLICATION = ("Investment implication: none established — no buy, sell, or "
                "alpha conclusion is supported by this page.")
 
 
+def _xlk_robustness() -> str:
+    rp = _REPO / "output" / "oie" / "robustness_profile.json"
+    if not rp.exists():
+        return ""
+    d = json.loads(rp.read_text())
+    tgt = d.get("xlk")
+    if not tgt:
+        return ""
+    s = tgt["summary"]
+    rows = "".join(
+        f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>{escape(k)}</td>"
+        + (f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#FF3366'>{v['estimate']:+.2f}%</td>"
+           f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0;font-size:11px'>({v['ci'][0]:+.2f}, {v['ci'][1]:+.2f})</td>"
+           f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(v['badge'])}</td>"
+           if v else "<td colspan='3' style='padding:6px 12px;color:#718096;font-size:11px'>empty — SPY history begins 2026-02-02 (own-data rule)</td>")
+        + "</tr>"
+        for k, v in tgt["cells"].items())
+    return f"""
+    <div class="panel">
+      <div class="panel-title">Context robustness</div>
+      <div class="panel-sub">secondary cells under the registered robustness protocol · pre-declared grid</div>
+      <table><thead><tr><th>Context cell</th><th>E4 estimate</th><th>Cluster CI</th><th>Badge</th></tr></thead>
+      <tbody>{rows}</tbody></table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:8px">Sign held {s['sign_held']}/{s['n_computed']}
+      (coherence {s['coherence_fraction']}) · breaks: {escape(', '.join(s['breaks']) or 'none')}.
+      {escape(IMPLICATION)}</p>
+    </div>"""
+
+
 def render() -> str:
     d = json.loads(SRC.read_text())
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -167,6 +196,8 @@ def render() -> str:
         with horizon — a window-edge peak with no half-life is what no-decay looks like under this estimator.
         Below the floor, listed not plotted: {thin}. {escape(IMPLICATION)}</p>
     </div>
+
+    {_xlk_robustness()}
 
     {status_block_html()}
 

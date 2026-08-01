@@ -304,6 +304,18 @@ def geometry_html() -> str:
                   f"protocol {escape(data['protocol_id'])} · registered before computation · seed 20260730", body)
 
 
+def _extra_target_summary(data, key, label):
+    tgt = data.get(key)
+    if not tgt:
+        return ""
+    s = tgt["summary"]
+    return (f"<p style='font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.6'>"
+            f"<strong style='color:#E2E8F0'>{escape(label)}</strong> (secondary cells, same grid): "
+            f"sign held {s['sign_held']}/{s['n_computed']} (coherence {s['coherence_fraction']}) · "
+            f"breaks: {escape(', '.join(s['breaks']) or 'none')} · empty (SPY-history bound): "
+            f"{escape(', '.join(s['empty']) or 'none')}.</p>")
+
+
 def robustness_html() -> str:
     p = _REPO / "output" / "oie" / "robustness_profile.json"
     if not p.exists():
@@ -333,7 +345,8 @@ def robustness_html() -> str:
         UNDERPOWERED cells: {escape(', '.join(summ['underpowered']) or 'none')}.
         Context grid pre-declared at registration; every cell ledger-counted.
         {escape(data['expected_fp_line'])}. {escape(_IMPLICATION)}
-      </p>"""
+      </p>
+      {_extra_target_summary(data, 'matched', 'Matched-control-adjusted E4 (pairs fixed at the +20 selection)')}"""
     return _panel("Context robustness",
                   f"protocol {escape(data['protocol_id'])} · pre-declared grid · registered before computation", body)
 
