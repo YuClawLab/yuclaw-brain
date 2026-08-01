@@ -354,7 +354,7 @@ def render_preview(proto, verdict, facts, anatomy, top, br, states, est,
          "the envelope includes zero — under issuer weighting the adverse result is not distinguishable from zero at this sample; it does NOT clearly survive issuer weighting"}.
         Primary endpoint E4 (capped-ETF-weighted) envelope {_ci(e['capped']['envelope'])}:
         {"adverse and excludes zero under the conservative envelope" if primary_adverse else "envelope includes zero — descriptive at this sample"}.
-        Envelope = wider of the issuer-/date-cluster bootstrap CIs; formal two-way clustering pending — stated, not faked.
+        Envelope = wider of the issuer-/date-cluster bootstrap CIs; the formal CGM two-way interval is reported beside it in the table.
       </p>
     </div>
 

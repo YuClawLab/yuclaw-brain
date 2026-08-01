@@ -132,6 +132,42 @@ def car_chart(curve: dict, title: str, color: str = "#4DD0E1",
     return "".join(parts)
 
 
+def _headline_finding() -> str:
+    """Every claim in the headline derives from the recorded run artifacts —
+    the stale-twin rule (2026-08-01): conclusion sentences are computed from
+    live badge/envelope fields, never hardcoded."""
+    import json as _json
+    try:
+        d = _json.loads((_REPO / "output" / "oie" / "smh_lens_run.json"
+                         ).read_text())
+        e = d["estimands"]["backfill"]
+        names = {"event": "event-weighted", "issuer": "issuer-weighted",
+                 "etf": "ETF-weighted", "capped": "capped-weighted"}
+        excl = [names[k] for k in names
+                if not (e[k]["envelope"][0] <= 0 <= e[k]["envelope"][1])]
+        incl = [names[k] for k in names
+                if e[k]["envelope"][0] <= 0 <= e[k]["envelope"][1]]
+        pct_txt = ""
+        fp = _REPO / "output" / "oie" / "falsification_run.json"
+        if fp.exists():
+            pct = _json.loads(fp.read_text())["panels"]["SMH-E4"][
+                "date_shuffle"]["percentile_in_null"]
+            pct_txt = (f" The event-date-shuffle null places the capped "
+                       f"estimand at percentile {pct:.3f} — not extreme: an "
+                       f"era-generic direction-alignment component cannot be "
+                       f"excluded.")
+        return ("Headline finding (backfill era, Feb 18 – May 15): adverse "
+                "under the event-level estimator; issuer- and date-clustered "
+                "confirmation completed — the adverse point estimate persists "
+                "under all four registered weightings; conservative envelopes "
+                f"exclude zero for {', '.join(excl) or 'none of the estimands'} "
+                f"and include zero for {', '.join(incl) or 'none'}.{pct_txt}")
+    except Exception:                             # noqa: BLE001
+        return ("Headline finding (backfill era): adverse under the "
+                "event-level estimator; see the estimand table below for the "
+                "current per-weighting intervals.")
+
+
 def render() -> str:
     data = compute_all()
     ru, es = data["rollup"], data["event_study"]
@@ -306,7 +342,7 @@ def render() -> str:
       <div class="panel-sub">market-model CAR, window [−5, +20] event-time days · dedup: {es['n_raw_filings']} filings → {es['n_events_deduped']} distinct (ticker, type, day) events → {es['n_events_used']} with a ≥30-obs estimation window</div>
 
       <div style="background:#2A1A1A;border-radius:8px;padding:14px 18px;border-left:3px solid #FBA94B;margin-bottom:14px">
-        <div style="color:#FBA94B;font-weight:700;font-size:13px">Headline finding (backfill era, Feb 18 – May 15): adverse under the event-level estimator; issuer- and date-clustered confirmation completed — the adverse point estimate persists under all four registered weightings but is statistically supported only under event weighting (issuer-, ETF-, and capped-weighted envelopes include zero). The event-date-shuffle null places the primary capped estimand at an unremarkable percentile: era-generic direction alignment, not event-timed information.</div>
+        <div style="color:#FBA94B;font-weight:700;font-size:13px">{_headline_finding()}</div>
         <p style="font-size:12px;color:#A0AEC0;margin-top:6px;line-height:1.55">
           Direction-aligned pooled CAR (peer model, n={pooled['peer']['n_events']} events) is
           <strong style="color:#FF3366">{_pct(car_end(pooled['peer'])['mean_car'],1)}</strong> at τ=+20

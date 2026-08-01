@@ -64,6 +64,18 @@ _LOCKED_TOKENS_RE = re.compile(
 
 RESEARCH_FOOTER_RE = re.compile(r"research (and|&(amp;)?) education (use )?only", re.I)
 
+# DRIFT PHRASES (stale-twin guard, 2026-08-01) + positioning-ruling words
+# (2026-07-30). Conclusion captions derive from live badge/envelope fields,
+# so these strings appearing in RENDERED output are by definition drift —
+# either a superseded hardcoded conclusion or a forbidden framing. Pages
+# mode refuses them; locked METHOD_SPEC texts inside .py files are not
+# rendered output and are unaffected.
+DRIFT_RE = re.compile(
+    r"supported only under event weighting|"
+    r"two-way clustering pending|"
+    r"\bproof\b|certificate|mathematical verification|"
+    r"\bvalidated\b|conservation law", re.I)
+
 _QUOTE_LINE_RE = re.compile(r"^\s*>.*$", re.M)          # markdown blockquotes
 _CODE_SPAN_RE = re.compile(r"`[^`]*`")                   # inline code
 _TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$", re.M)      # markdown table rows
@@ -100,6 +112,11 @@ def lint_text(text: str, *, strip: bool = True, pages_mode: bool = False) -> lis
     pats = _PAGE_PATTERNS if pages_mode else _PATTERNS
     out = []
     for i, line in enumerate(text.splitlines(), 1):
+        if pages_mode:
+            m = DRIFT_RE.search(line)
+            if m:
+                out.append({"word": f"drift:{m.group(0)}", "line_no": i,
+                            "line": line.strip()[:140]})
         if _NEGATION_RE.search(line):
             continue
         for word, pat in pats:
