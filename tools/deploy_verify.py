@@ -43,8 +43,8 @@ DEFAULT_PATHS = [
     "examples/evidence_memo_su.md",
     # copy artifacts edited outside the daily renders (2026-07-23 rail
     # extension) — previously checked by hand after copy orders
-    "YUCLAW_User_Guide.pdf",
-    "YUCLAW_User_Guide_source.html",
+    "YUCLAW_User_Guide_v5.1.pdf",
+    "YUCLAW_User_Guide_v5.1_source.html",
     "methodology/backfill.md",
     "replay/lab_replay_bundle.json",
     "packets/manifest.json",

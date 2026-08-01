@@ -299,7 +299,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     <div class="footer">
       YUCLAW v5.1.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
-      <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
+      <a href="YUCLAW_User_Guide_v5.1.pdf">📖 User Guide (PDF)</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       <a href="replication.html">Replication</a> ·
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·

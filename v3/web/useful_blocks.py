@@ -188,7 +188,7 @@ def use_in_research_html(packet_href: str | None = None,
     guide_link: landing only — adds the User Guide (PDF) line to the block."""
     cite_href = packet_href or "validation_lab.html#evidence-packet"
     guide = ('<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
-             '<a href="YUCLAW_User_Guide.pdf">\U0001F4D6 User Guide (PDF)</a>'
+             '<a href="YUCLAW_User_Guide_v5.1.pdf">\U0001F4D6 User Guide (PDF)</a>'
              ' — from pip install to full verification, six pages.</p>'
              ) if guide_link else ""
     return f"""

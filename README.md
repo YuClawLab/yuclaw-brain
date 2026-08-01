@@ -21,7 +21,7 @@ Signal labels are research classifications, not buy/sell recommendations.
 [Canada Resources Evidence](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html) ·
 [Open Index Evidence](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) ·
 [Quickstart](#sixty-seconds) ·
-[📖 User Guide (PDF)](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide.pdf) ·
+[📖 User Guide (PDF)](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide_v5.1.pdf) ·
 [Methodology](docs/methodology/backfill.md) ·
 [**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
 [PyPI](https://pypi.org/project/yuclaw)
@@ -369,7 +369,7 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 | **Dashboard** | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
 | **Validation Lab** | [validation_lab.html](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) |
 | **Open Index Evidence** | [etf_evidence.html](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) |
-| **📖 User Guide (PDF)** | [YUCLAW_User_Guide.pdf](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide.pdf) |
+| **📖 User Guide (PDF)** | [YUCLAW_User_Guide_v5.1.pdf](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide_v5.1.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
