@@ -31,6 +31,7 @@ from v3.web.useful_blocks import (site_header_html,
                                   status_block_html as _shared_status_block,
                                   use_in_research_html as _use_in_research)
 from v3.web.oie_v51_blocks import (baselines_block as _baselines,
+                                   neutralized_ic_block as _neutralized,
                                    lab_clustered_block as _v51_clustered)
 
 OUT = _REPO / "docs" / "validation_lab.html"
@@ -1080,6 +1081,8 @@ def render() -> str:
     {rigor_panel_html(rig)}
 
     {_baselines()}
+
+    {_neutralized()}
 
     {maturity_html(ledger)}
 

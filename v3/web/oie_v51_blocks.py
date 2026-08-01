@@ -431,6 +431,46 @@ def baselines_block() -> str:
                   body)
 
 
+# ------------------------------------------------------------ neutralized IC
+def neutralized_ic_block() -> str:
+    """Raw vs neutralized IC panel (review completion, 2026-08-01)."""
+    data = _load("neutralized_ic.json")
+    if not data:
+        return ""
+    rows = []
+    for s, row in data["table"].items():
+        name = "Composite" if s == "score" else s
+        cells = "".join(
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>"
+            f"{row[v]['mean_ic']:+.4f}</td>" if row[v]["mean_ic"] is not None
+            else "<td style='padding:6px 12px;color:#718096'>—</td>"
+            for v in ("raw", "beta60", "mom60", "vol20", "joint"))
+        hl = " style='background:#1A2334'" if s == "score" else ""
+        rows.append(f"<tr{hl}><td style='padding:6px 12px;color:#E2E8F0;"
+                    f"font-size:12px;font-family:JetBrains Mono,monospace'>{escape(name)}</td>{cells}</tr>")
+    pr = data["primary"]
+    body = f"""
+      <table>
+        <thead><tr><th>Strategy</th><th>Raw IC k=5</th><th>Beta-neutral</th><th>Momentum-neutral</th><th>Vol-neutral</th><th>Jointly neutral</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Registered primary: composite jointly-neutralized IC at k=5 =
+        <strong style="color:#E2E8F0">{pr['joint_ic_k5']:+.4f}</strong>
+        CI ({pr['ci'][0]:+.4f}, {pr['ci'][1]:+.4f}) [{escape(pr['badge'])}] — the association is not
+        explained away by market beta, momentum, or volatility exposure, and it is also not
+        statistically distinguishable from zero at this sample; both facts print. Component cells are
+        exploratory: note c8's raw association largely dissolves under neutralization (factor exposure,
+        reported as measured); blank rows are the masked (c2) and frozen (c4) components with no
+        cross-sectional variation. {escape(data['sector_cell'])}.
+        Investment implication: none established — no buy, sell, or alpha conclusion is supported by
+        this page.
+      </p>"""
+    return _panel("neutralized", "Neutralized association — raw vs factor-neutralized (registered)",
+                  f"protocol {escape(data['protocol_id'])} · forward-OOS · registered before computation",
+                  body)
+
+
 # ------------------------------------------------------------ lab clustered
 def lab_clustered_block() -> str:
     data = _load("lab_clustered_run.json")
