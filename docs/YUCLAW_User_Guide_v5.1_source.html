@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+@page { size: A4; margin: 2.0cm 1.9cm 2.2cm 1.9cm;
+  @bottom-left { content: "YUCLAW User Guide · v5.1 · research & education only — not investment advice"; font-family: "Liberation Sans"; font-size: 7.5pt; color: #6b7480; }
+  @bottom-right { content: "Page " counter(page); font-family: "Liberation Sans"; font-size: 7.5pt; color: #6b7480; } }
+body { font-family: "Liberation Serif"; font-size: 10pt; color: #1a202c; line-height: 1.45; }
+h1,h2,h3,h4 { font-family: "Liberation Sans"; color: #0f2318; }
+h1 { font-size: 21pt; margin: 0 0 2mm 0; }
+h2 { font-size: 13.5pt; border-bottom: 2px solid #00A857; padding-bottom: 1.2mm; margin: 7mm 0 3mm 0; page-break-after: avoid; }
+h3 { font-size: 11pt; margin: 4.5mm 0 1.8mm 0; page-break-after: avoid; }
+p { margin: 0 0 2.4mm 0; }
+.band { background: #0E1512; color: #fff; padding: 9mm 8mm; border-left: 6px solid #00E676; margin: -6mm -4mm 6mm -4mm; }
+.band .yu { color: #00E676; } .band h1 { color: #fff; }
+.band .sub { font-family: "Liberation Sans"; color: #c8d2cc; font-size: 10.5pt; margin-top: 1.5mm; }
+.band .meta { font-family: "Liberation Mono"; color: #8fa398; font-size: 8.5pt; margin-top: 4mm; }
+.disc { background: #FFF7E8; border-left: 4px solid #E8A33D; padding: 3mm 4mm; font-size: 9pt; margin: 3mm 0; font-family: "Liberation Sans"; }
+.note { background: #EDF7F1; border-left: 4px solid #00A857; padding: 2.6mm 4mm; font-size: 9.2pt; margin: 2.5mm 0; }
+code, .mono { font-family: "Liberation Mono"; font-size: 8.6pt; }
+pre { background: #0E1512; color: #D7E4DC; padding: 3mm 4mm; border-radius: 2mm; font-family: "Liberation Mono"; font-size: 8.4pt; line-height: 1.4; margin: 2mm 0 3mm 0; white-space: pre-wrap; page-break-inside: avoid; }
+pre .c { color: #7CE8A9; }
+table { border-collapse: collapse; width: 100%; margin: 2mm 0 3.5mm 0; font-family: "Liberation Sans"; font-size: 8.8pt; page-break-inside: avoid; }
+th { background: #0E1512; color: #fff; text-align: left; padding: 1.8mm 2.4mm; font-size: 8.6pt; }
+td { border-bottom: 1px solid #d7dee2; padding: 1.7mm 2.4mm; vertical-align: top; }
+tr:nth-child(even) td { background: #F3F7F5; }
+.lbl { font-family: "Liberation Mono"; font-size: 8.2pt; }
+.ok { color: #0B7A43; font-weight: bold; } .no { color: #B03A2E; font-weight: bold; } .acc { color: #8a6d1a; font-weight: bold; }
+.small { font-size: 8.6pt; color: #4a5560; }
+.toc td { border: none; padding: 1mm 2mm; background: #fff !important; }
+.pagebreak { page-break-before: always; }
+ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
+.kv td:first-child { font-family: "Liberation Mono"; font-size: 8.4pt; white-space: nowrap; }
+</style></head><body>
+
+<div class="band">
+  <h1><span class="yu">YU</span>CLAW &nbsp;<span style="font-size:11pt;border:1px solid #00E676;border-radius:2mm;padding:0.5mm 2mm;color:#00E676;">v5.1</span></h1>
+  <div class="sub"><b>User Guide</b> — Evidence-First Financial AI. Every signal traces to a real SEC filing.</div>
+  <div class="sub">An open research laboratory where market hypotheses are tested, challenged, and preserved — with every conclusion carrying its own audit trail.</div>
+  <div class="meta">The YUCLAW Team · August 2026 · yuclaw.ca · github.com/YuClawLab/yuclaw-brain · pip install yuclaw · MIT License</div>
+</div>
+
+<div class="disc"><b>Disclaimer.</b> YUCLAW is a research and education platform. Nothing in this guide or on any YUCLAW surface is investment advice, a recommendation, or an offer of any product. Signal labels are research classifications, not buy/sell recommendations. Past results — in-sample or forward-tracked — do not predict future performance. <i>Investment implication: none established — no buy, sell, or alpha conclusion is supported by this material.</i></div>
+
+<div style="background:#0E1512;color:#D7E4DC;padding:5mm 6mm;border-radius:2mm;margin:4mm 0;page-break-inside:avoid;">
+<div style="font-family:'Liberation Sans';font-size:12pt;color:#00E676;font-weight:bold;margin-bottom:2mm;">Why YUCLAW exists</div>
+<p style="margin:0 0 2.2mm 0;">Financial markets generate millions of claims every day — headlines, scores, ratings, predictions. Almost none of them can be checked. The claim arrives; the evidence, the assumptions, the track record of similar claims, and the list of things that were tried and failed — all of that stays hidden. Claims without evidence become noise, and noise with confidence becomes dangerous.</p>
+<p style="margin:0 0 2.2mm 0;">YUCLAW was built on a simple refusal: <b style="color:#fff;">never publish a number a stranger cannot recompute.</b> Every signal traces to a real filing. Every statistic carries its protocol, its sample anatomy, and its count of how many other things were tried. Every failed hypothesis stays on the record, because knowing what does not work is half of knowing anything at all.</p>
+<p style="margin:0;">The product is not a prediction. The product is a record you can check — and a set of instruments that check it before you do.</p>
+</div>
+<h2>Contents</h2>
+<table class="toc">
+<tr><td>1 · What YUCLAW is (and is not)</td><td>6 · Reading the statistics honestly</td></tr>
+<tr><td>2 · Quick start in three minutes</td><td>7 · Verifying everything yourself</td></tr>
+<tr><td>3 · A map of the website</td><td>8 · The research engines, in plain language</td></tr>
+<tr><td>4 · Signal labels and published thresholds</td><td>9 · The protocol registry and pre-registration</td></tr>
+<tr><td>5 · Command-line reference</td><td>10 · Evidence packets, exports &amp; the AI layer</td></tr>
+<tr><td>11 · Bring Your Own Signal (research service)</td><td>13 · Status: what is and is not established</td></tr>
+<tr><td>12 · Known limitations</td><td>14 · FAQ &nbsp;·&nbsp; 15 · Glossary &nbsp;·&nbsp; 16 · Citing YUCLAW</td></tr>
+</table>
+
+<h2>1 · What YUCLAW is (and is not)</h2>
+<p>YUCLAW ingests real SEC filings (8-K, 10-K, Form 4, and the foreign-private-issuer track: 6-K, 20-F, 40-F), extracts typed evidence events with locally hosted language models, classifies them under a fixed public vocabulary, and studies whether that evidence stream carries information — publishing every result <b>exactly as measured, including where it is adverse to the hypothesis</b>. All inference runs on local hardware; the full pipeline, data derivations, and methodology are open source under MIT.</p>
+<p>Three design commitments define the platform:</p>
+<ul>
+<li><b>Evidence first.</b> Every accepted event links to a primary filing with an accession number and a verified excerpt. Every research memo cites its sources sentence by sentence, and citations are machine-checked before anything renders.</li>
+<li><b>Pre-registration.</b> Statistical protocols are locked into a tamper-evident, append-only registry <i>before</i> they touch data. Editing a locked specification is impossible without a visible supersession. Test counts are ledgered, and the expected number of chance findings is printed beside the results.</li>
+<li><b>Self-audit.</b> The platform runs falsification tests, baseline comparisons, and robustness grids against its own headline results — and publishes the outcomes. Several of YUCLAW's own hypotheses have been retired by its own instruments; those retirements remain on the record.</li>
+</ul>
+<p><b>What YUCLAW is not:</b> it is not a stock picker, not a trading system, not an advisory service, and not a performance product. It never publishes sell or short recommendations. If you are looking for something to tell you what to buy, this is the wrong tool — deliberately.</p>
+
+<h3>1.1 · How it fits together</h3>
+<svg viewBox="0 0 700 258" style="width:100%;margin:2mm 0 3mm 0;" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="ar" markerWidth="7" markerHeight="7" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5 z" fill="#4a5560"/></marker></defs>
+<style>.b{fill:#0E1512;rx:6;} .t{font-family:'Liberation Sans';font-size:10.5px;fill:#fff;} .s{font-family:'Liberation Sans';font-size:8.5px;fill:#8fa398;} .g{font-family:'Liberation Sans';font-size:9px;fill:#0B7A43;font-weight:bold;} .a{stroke:#4a5560;stroke-width:1.4;marker-end:url(#ar);fill:none;}</style>
+<rect class="b" x="8" y="20" width="118" height="46" rx="6"/><text class="t" x="67" y="39" text-anchor="middle">SEC EDGAR</text><text class="s" x="67" y="53" text-anchor="middle">8-K · 10-K · Form 4 · 6-K · 20-F/40-F</text>
+<rect class="b" x="158" y="20" width="132" height="46" rx="6"/><text class="t" x="224" y="35" text-anchor="middle">Local extraction</text><text class="s" x="224" y="48" text-anchor="middle">sovereign LLMs · grounding checks</text><text class="s" x="224" y="59" text-anchor="middle">typed, cited evidence events</text>
+<rect class="b" x="322" y="4" width="150" height="38" rx="6"/><text class="t" x="397" y="20" text-anchor="middle">Scoring universe (79)</text><text class="s" x="397" y="33" text-anchor="middle">composite → 8 public labels</text>
+<rect class="b" x="322" y="48" width="150" height="38" rx="6"/><text class="t" x="397" y="64" text-anchor="middle">Evidence tier</text><text class="s" x="397" y="77" text-anchor="middle">lenses · never scored (enforced)</text>
+<rect class="b" x="504" y="20" width="188" height="52" rx="6"/><text class="t" x="598" y="36" text-anchor="middle">Research under locked protocols</text><text class="s" x="598" y="49" text-anchor="middle">event studies · falsification · baselines</text><text class="s" x="598" y="61" text-anchor="middle">structure · robustness · lifecycle</text>
+<rect class="b" x="120" y="118" width="204" height="50" rx="6"/><text class="t" x="222" y="134" text-anchor="middle">Gates &amp; daily chain</text><text class="s" x="222" y="147" text-anchor="middle">language · copy-integrity · site-walk</text><text class="s" x="222" y="159" text-anchor="middle">registry chain-verify · reconciliation</text>
+<rect class="b" x="368" y="118" width="212" height="50" rx="6"/><text class="t" x="474" y="134" text-anchor="middle">Public record</text><text class="s" x="474" y="147" text-anchor="middle">pages · packets · weekly note · llms.txt</text><text class="s" x="474" y="159" text-anchor="middle">daily SHA-256 ledger roots → public git</text>
+<rect x="120" y="204" width="460" height="42" rx="6" fill="#EDF7F1" stroke="#0B7A43" stroke-width="1.4"/><text class="g" x="350" y="221" text-anchor="middle">Anyone verifies · anytime</text><text class="s" x="350" y="236" text-anchor="middle" fill="#33413a">yuclaw replay-lab · make replicate · registry chain check · evidence trace — exit 0 = reproduced</text>
+<path class="a" d="M126,43 L156,43"/><path class="a" d="M290,36 L320,26"/><path class="a" d="M290,52 L320,64"/><path class="a" d="M472,23 L502,32"/><path class="a" d="M472,67 L502,58"/>
+<path class="a" d="M598,72 L474,116"/><path class="a" d="M397,86 L280,116"/><path class="a" d="M324,143 L366,143"/>
+<path class="a" d="M474,168 L440,202"/><path class="a" d="M350,246 C60,246 40,120 66,68" stroke-dasharray="4,3"/>
+</svg>
+<p class="small">Filings become cited events; events feed either the scored universe or the never-scored evidence tier; all research runs under pre-registered protocols; gates stand between every result and the public record; and the dashed loop is the point — the public record feeds independent verification back against the source.</p>
+<h2>2 · Quick start in three minutes</h2>
+<pre>pip install yuclaw
+yuclaw demo          <span class="c"># guided 3-minute tour — works on any machine, no setup</span>
+yuclaw replay-lab    <span class="c"># reproduce the published Lab statistics from the public bundle</span>
+yuclaw verify AMD --date 2026-05-20   <span class="c"># check a signal against the public ledger</span></pre>
+<p>Every command in the read/verify family works from any computer with internet access — they consume only the published public bundle. Commands that read the research backend (<span class="mono">events, lens, memo, export</span>) require access to a YUCLAW research node; on other machines they print a clear one-paragraph explanation and exit with code 3 — never a stack trace.</p>
+<div class="note"><b>First thing worth doing:</b> run <span class="mono">yuclaw replay-lab</span>. It recomputes every statistic and ledger root on the Validation Lab from published data. Exit code 0 means your machine just reproduced the site. That single command is the platform's thesis in miniature.</div>
+
+<h2>3 · A map of the website (yuclaw.ca)</h2>
+<table>
+<tr><th style="width:34%">Page</th><th>The question it answers</th></tr>
+<tr><td><b>Home</b></td><td>Current research classifications for the 79-ticker scoring universe, with composite scores. Caption on the table: <i>research classifications — not recommendations</i>.</td></tr>
+<tr><td><b>Validation Lab</b></td><td>Does the composite signal contain measurable forward information? Deciles, information coefficients, clustered confidence intervals, baseline comparisons, calibration, neutralized ICs — with negative and inconclusive results shown as measured.</td></tr>
+<tr><td><b>SMH Covered-Constituent Evidence Lens</b></td><td>Event-study analysis of the YUCLAW-covered share of disclosed SMH weight (coverage percentage stated dynamically on the page). Explicitly not a full-fund inference.</td></tr>
+<tr><td><b>XLK Evidence Lens</b></td><td>The second theme lens — admitted because it passed the published lens admission standard, not by popularity.</td></tr>
+<tr><td><b>Canada Resources Evidence</b></td><td>A source-traceable evidence view of four Canadian resource lenses (XEG, ZEO, GDX, URNM) built on the 6-K/40-F filing substrate. Evidence-tier names are never scored.</td></tr>
+<tr><td><b>Forward Tracking</b></td><td>The forward out-of-sample ledger: one period per trading day since Day 0, plus the label-calibration panel measuring what each classification has historically preceded.</td></tr>
+<tr><td><b>Ledger</b></td><td>Daily SHA-256 roots committed to a public git repository before pages update — the anchor that makes retroactive edits visible.</td></tr>
+<tr><td><b>Methodology</b></td><td>Backfill disclosure, estimator ladder, score→label thresholds, corporate-action and price-adjustment policies, trading-day conventions.</td></tr>
+<tr><td><b>Weekly Evidence Note</b></td><td>A Friday note generated from the registry and evidence store directly; a build gate fails the site if its counts ever disagree with the chain.</td></tr>
+<tr><td><b>Today's Evidence Changes</b></td><td>What changed in the evidence substrate — last completed UTC day plus the day in progress.</td></tr>
+<tr><td><b>Replication</b></td><td>How to reproduce the record, the vocabulary of verification, and the (honestly empty until earned) log of independent replications.</td></tr>
+</table>
+
+<div class="pagebreak"></div>
+<h2>4 · Signal labels and published thresholds</h2>
+<p>YUCLAW uses a fixed eight-label vocabulary. Labels are <b>sentiment-style research classifications</b>, chosen deliberately over directive verbs. The exact score→label mapping is published so classification is reproducible:</p>
+<table>
+<tr><th>Composite score</th><th>Label</th><th>Reading</th></tr>
+<tr><td class="mono">&ge; +0.55</td><td class="lbl">STRONG_BULLISH</td><td>strongly positive evidence posture</td></tr>
+<tr><td class="mono">&ge; +0.40</td><td class="lbl">BULLISH</td><td>positive evidence posture</td></tr>
+<tr><td class="mono">&ge; +0.20</td><td class="lbl">NEUTRAL</td><td>balanced evidence</td></tr>
+<tr><td class="mono">&ge; &nbsp;0.00</td><td class="lbl">WATCH</td><td>mixed; monitoring</td></tr>
+<tr><td class="mono">&ge; −0.20</td><td class="lbl">WEAKENING</td><td>deteriorating evidence posture</td></tr>
+<tr><td class="mono">&ge; −0.40</td><td class="lbl">NEGATIVE_EVENT</td><td>a materially negative evidence event dominates</td></tr>
+<tr><td class="mono">&lt; −0.40</td><td class="lbl">BEARISH_WATCH</td><td>strongly negative evidence posture</td></tr>
+<tr><td class="mono">—</td><td class="lbl">RISK_ALERT</td><td>risk-state overlay; explicitly <i>not</i> score-mapped</td></tr>
+</table>
+<p>Two honesty notes travel with this table. First, <b>the thresholds carry no outcome promise; the calibration panel measures the outcomes</b> — as of this guide's writing, pooled directional consistency has a confidence interval that includes 0.5, so directional meaning is not yet demonstrated, and the panel says so. Second, the evidence-impact component (C6) carries its own standing finding: insider-sale evidence may function more plausibly as a risk-state input than a near-term directional signal — which is why a name can carry heavy insider-sale evidence and a cautionary label without any directional claim being made.</p>
+
+<h2>5 · Command-line reference</h2>
+<table>
+<tr><th style="width:30%">Command</th><th>What it does</th><th style="width:14%">Runs where</th></tr>
+<tr><td class="mono">yuclaw demo</td><td>Guided three-minute tour of the platform's ideas.</td><td>anywhere</td></tr>
+<tr><td class="mono">yuclaw why TICKER --as-of DATE</td><td>Signal anatomy: which components and events produced a score, point-in-time.</td><td>anywhere*</td></tr>
+<tr><td class="mono">yuclaw verify TICKER --date DATE</td><td>Checks a signal against the public ledger; prints VERIFIED or a plain-language explanation of what could not be checked on this machine.</td><td>anywhere</td></tr>
+<tr><td class="mono">yuclaw replay-lab</td><td>Recomputes the published Lab statistics and ledger roots from the public bundle. Exit 0 = full reproduction.</td><td>anywhere</td></tr>
+<tr><td class="mono">yuclaw events --ticker T [--since D]</td><td>Lists accepted evidence events with filing citations.</td><td>backend</td></tr>
+<tr><td class="mono">yuclaw lens NAME</td><td>Lens summary: coverage, admission verdict, current posture.</td><td>backend</td></tr>
+<tr><td class="mono">yuclaw memo --ticker T</td><td>Generates an evidence memo with per-sentence, machine-verified citations under a restricted conclusion vocabulary.</td><td>backend</td></tr>
+<tr><td class="mono">yuclaw export ...</td><td>Exports YUCLAW-derived data (events, signals, statistics). Raw vendor price/options data is never exported.</td><td>backend</td></tr>
+</table>
+<p class="small">*<span class="mono">why</span> works anywhere for dates covered by the bundled demo data; full history requires the backend. <b>Exit codes:</b> 0 = success · 2 = usage error (message shows correct syntax) · 3 = environment cannot support the command (clear explanation, no traceback). If you ever see a raw Python traceback, that is a bug — please report it.</p>
+
+<h2>6 · Reading the statistics honestly</h2>
+<p>Every statistic on YUCLAW carries machinery designed to keep you from over-reading it. Learn these five habits and the site reads correctly:</p>
+<h3>6.1 · Badges are the grammar</h3>
+<table>
+<tr><th>Badge</th><th>Meaning</th></tr>
+<tr><td class="lbl">PRELIMINARY</td><td>The pre-registered interval excludes the null <i>and</i> sample floors are met. The strongest label the system awards — deliberately, nothing stronger exists.</td></tr>
+<tr><td class="lbl">DESCRIPTIVE</td><td>Measured and reported, but the interval includes the null. A description, not a conclusion.</td></tr>
+<tr><td class="lbl">UNDERPOWERED</td><td>Below pre-registered sample floors. Shown for completeness; statistically uninformative.</td></tr>
+<tr><td class="lbl">DATA-LIMITED</td><td>The input is frozen, missing, or constant; no statistic is computed on it.</td></tr>
+<tr><td class="lbl">INCONCLUSIVE</td><td>A gated read whose arms did not meet pre-committed minimums. Reported, never decorated.</td></tr>
+</table>
+<h3>6.2 · Clustered intervals outrank naive ones</h3>
+<p>Events sharing an issuer or a calendar day are not independent. Wherever both appear, the <b>cluster-aware interval is primary</b> and the naive one is labeled naive. The conservative envelope is the wider of the issuer-clustered and date-clustered intervals. An interval that narrowly excludes zero should always be read alongside its falsification context — the pages place them together deliberately.</p>
+<h3>6.3 · The false-positive ledger is printed on purpose</h3>
+<p>The registry counts every secondary statistical cell ever computed and prints the expected number of chance findings at &alpha;=0.05 beside the panels. If the site shows hundreds of exploratory cells, some will look significant by luck — the ledger tells you how many, before you are impressed.</p>
+<h3>6.4 · Falsification context travels with headlines</h3>
+<p>Headline event-study results are accompanied by placebo tests: date-shuffle nulls (does the timing matter?), direction randomization, and pre-event windows. Example of the house style, from the SMH lens: an adverse pooled result whose date-shuffle percentile is unremarkable is described as <i>era-generic direction alignment, not event-timed information</i> — the result stands, and its most deflationary explanation stands next to it.</p>
+<h3>6.5 · Sample anatomy beats sample size</h3>
+<p>Beside every panel: unique issuers, median events per issuer, top-issuer share, window overlap. Five hundred filings can be three stories (see §8). The anatomy tells you which.</p>
+
+<div class="pagebreak"></div>
+<h2>7 · Verifying everything yourself</h2>
+<p>YUCLAW's core claim is that you do not have to trust it. Four verification workflows, in increasing depth:</p>
+<h3>7.1 · Reproduce the Lab (one command)</h3>
+<pre>pip install yuclaw && yuclaw replay-lab
+<span class="c"># exit 0: every statistic and daily ledger root recomputed from published data</span></pre>
+<h3>7.2 · Full replication in a clean environment</h3>
+<pre>git clone https://github.com/YuClawLab/yuclaw-brain && cd yuclaw-brain
+make replicate   <span class="c"># scrubbed-env fetch → verifier → diff against published outputs</span></pre>
+<p>The replication page defines the verifier vocabulary — an <i>exact day</i> (recomputed root matches byte-for-byte) versus an <i>anchored-subset day</i> (an intraday anchoring artifact, disclosed, in which every anchored hash still recomputes unchanged). Independent replications can be reported via the repository's issue template; the public log lists them as they are earned.</p>
+<h3>7.3 · Verify the protocol registry chain</h3>
+<pre>curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/registry/protocols.jsonl
+curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/yuclaw_protocol_registry.py
+python3 -c "import yuclaw_protocol_registry as r; \
+  reg=r.Registry('protocols.jsonl'); print('chain OK:', reg.verify_chain())"</pre>
+<p>The registry is an append-only hash chain: every line carries the hash of the line before it. Any edit or deletion anywhere in history breaks the chain for every verifier on Earth. You can further recompute a protocol's <span class="mono">method_hash</span> from the committed specification text and compare — confirming specifications were not altered after registration.</p>
+<h3>7.4 · Trace one piece of evidence end to end</h3>
+<p>The site's evidence-trace walk-through follows one real filing from EDGAR through exhibit extraction, event typing, grading, and posture — every step linked. Ten minutes, and you will know exactly what an "accepted event" is.</p>
+
+<h2>8 · The research engines, in plain language</h2>
+<p>Three engines run routinely over every lens and every registered result. Their panels appear across the site under plain names:</p>
+<h3>8.1 · Evidence structure — "how many independent facts is this, really?"</h3>
+<p>Events that share an issuer and a time window are usually one story, not many signals. The engine clusters events into stories under a pre-committed linkage rule and computes an <i>effective</i> evidence count via design effects. A real example from the SMH lens: <b>513 filings → 81 distinct events → 3 stories</b>, with one story carrying 95% of the mass. Statistics on the page use cluster-aware inference accordingly — and now you know why.</p>
+<h3>8.2 · Context robustness — "where does this conclusion survive, and where does it break?"</h3>
+<p>Every registered primary result is re-estimated across a pre-declared grid — horizons, volatility regimes, trend regimes where computable, populations, eras — and summarized honestly: <i>sign held in X of Y cells; breaks in: [list]</i>. No pass/fail verdicts exist; cells that cannot be computed say so rather than being estimated around. A standing rule makes the grid part of what "done" means: every new registered result receives its robustness profile within one cycle.</p>
+<h3>8.3 · Evidence lifecycle — "how does filed information emerge, peak, and fade?"</h3>
+<p>Per event type: the average magnitude path after the event, time-to-peak, and half-life where reached. The current honest reading across qualifying types is <i>no decay distinguishable from diffusion</i> within the studied window — an informative null, published like any other result.</p>
+
+<h2>9 · The protocol registry and pre-registration</h2>
+<p>The registry is the platform's constitution. How to read it:</p>
+<ul>
+<li><b>A protocol</b> is a locked specification — question, population, exactly one primary endpoint, secondary endpoints, analysis plan, sample floors, badge rules — registered <i>before</i> computation, identified by a hash of its own text.</li>
+<li><b>A run</b> records a computation under a protocol: data window, cell counts (which feed the false-positive ledger), and a hash of the results artifact.</li>
+<li><b>A supersession</b> is the only way a specification changes. The old version is preserved forever, mechanically refuses further runs, and a notice links old to new. Version lineages are public — including, in one case, a supersession that permitted late computation of a process-failure gap strictly from as-of inputs, with per-artifact lag disclosed and a mechanical verifier enforcing the constraint.</li>
+<li><b>Questions</b> track open research hypotheses — including retired ones. YUCLAW's registry currently records, among others, the retirement of the simple insider-selling directional hypothesis on three pre-registered grounds. Failed hypotheses are preserved, not deleted: they are part of the record's value.</li>
+</ul>
+<div class="note"><b>Why this matters to you:</b> when a YUCLAW page shows a result, the criteria for that result were fixed before the data arrived, the number of other things tried is printed, and the specification's text can be hash-checked by anyone. Those three properties together are what "harder to fake" means in practice.</div>
+
+<div class="pagebreak"></div>
+<h2>10 · Evidence packets, exports &amp; the AI layer</h2>
+<h3>10.1 · Evidence packets</h3>
+<p>Each research surface ships a downloadable packet: coverage statement, event-study summary, events CSV with event IDs, engine outputs, METADATA (data-through date, build commit, ledger root, methodology version, known limitations) and a ready CITATION.txt. Packets regenerate in the daily chain.</p>
+<h3>10.2 · Export rules — stated plainly</h3>
+<p>YUCLAW-derived data is exportable: signals, components, classifications, extracted events from public SEC filings, hashes, statistics, the track record. Raw vendor market data (price series, options data) is never redistributed — that is a licensing boundary, disclosed rather than blurred.</p>
+<h3>10.3 · For AI agents</h3>
+<p>YUCLAW positions itself as an open evidence layer underneath AI research tools. Machine surfaces: <span class="mono">yuclaw.ca/llms.txt</span> (identity, vocabulary, endpoints, citation format, the not-advice frame) · <span class="mono">evidence_index.json</span> (a machine-readable map of every page, packet, and protocol with stable URLs and data-through dates) · MCP server tools mirroring the CLI with the same friendly no-backend behavior. Agents consuming YUCLAW inherit its citation discipline: event-level claims cite event IDs from the packet CSVs.</p>
+
+<h2>11 · Bring Your Own Signal (research service)</h2>
+<p>YUCLAW's validation machinery can be applied to <i>your</i> signal. You provide a point-in-time CSV (<span class="mono">date,ticker,signal_value</span>); the platform runs the full diagnostic suite — information coefficients with cluster-aware intervals, quantile monotonicity, churn, horizon decay, placebo tests — under a client-namespace protocol, and returns a hash-stamped memo plus a reproduction bundle whose standalone script re-derives every number.</p>
+<ul>
+<li><b>Intake validation:</b> wrong columns, unparseable dates, NaN/infinite values, duplicate ticker-days, future-dated or lookahead-suspicious rows are each rejected with a row-numbered, plain-language message.</li>
+<li><b>Honest ceilings:</b> user-defined lenses cap at <span class="lbl">EXPLORATORY (CLIENT)</span> — higher maturity labels are reserved for the canonical public record and cannot be purchased.</li>
+<li><b>Custody:</b> client files never enter the public repository or any backup path; machine-enforced, with deletion on request.</li>
+<li><b>Sample honesty:</b> baskets under 15 names will carry power caveats — that is a property of sample size, not a defect in your signal, and the memo says so.</li>
+</ul>
+<p>This service runs as a concierge research engagement during the current pilot phase. Terms, delivery, and scope are provided on inquiry.</p>
+
+<h2>12 · Known limitations</h2>
+<ul>
+<li><b>The forward record is young.</b> The out-of-sample ledger accrues one period per trading day; most forward statistics remain DESCRIPTIVE or UNDERPOWERED at current sample sizes, and the site says so wherever it applies.</li>
+<li><b>The scoring universe is 79 tickers, frozen.</b> Evidence-tier names (Canada Resources; foreign SMH constituents) are ingested and analyzed but never scored — enforced by positive gating and a standing negative check.</li>
+<li><b>Theme-lens coverage is partial and stated.</b> Lens pages analyze the covered constituent sleeve only, with the covered-weight percentage in the title area and an itemized account of what is uncovered and why.</li>
+<li><b>Prices are unadjusted closes.</b> Dividends are not reinvested (a disclosed drag consideration for high-yield names); splits are handled by window exclusion, never retroactive re-pricing.</li>
+<li><b>In-sample replay carries look-ahead caveats.</b> The backfill era is labeled as in-sample replay, with the language-model look-ahead disclosure in methodology; it is never blended with the forward ledger.</li>
+<li><b>Some analyses await data or accrual.</b> Cells that cannot be computed honestly (insufficient history, thin arms, absent factor data) render as stated gaps rather than estimates.</li>
+<li><b>One disclosed outage window</b> exists in the record; it is documented, not repaired.</li>
+</ul>
+
+<h2>13 · Status: what is and is not established</h2>
+<p class="small">This mirrors the shared status block rendered on the site from a single source. Statuses are measured, not aspirational; the live pages are canonical.</p>
+<table>
+<tr><th style="width:22%">Status</th><th>Item</th></tr>
+<tr><td class="ok">✓ Verifiable today</td><td>Replay reproduces every Lab statistic and ledger root from published data · daily SHA-256 roots anchored to public git before pages update · every accepted event traces to a filing with accession number and verified excerpt · coverage stated as measured · snapshots are point-in-time with zero retroactive edits · evidence-tier names are never scored.</td></tr>
+<tr><td class="no">✗ Not established</td><td>Forward alpha — no spread, IC, or alpha significant at 5% with adequate power · directional meaning of the label set (calibration interval includes 0.5) · C6 risk-gate sign confirmation (first computable read scheduled under a locked protocol) · event-study lead over peer models.</td></tr>
+<tr><td class="acc">· Accruing</td><td>The forward out-of-sample record, daily · matured event-study windows · the C6 elevated arm under live ingestion · robustness grids over new results · external replications, as reported.</td></tr>
+</table>
+
+<div class="pagebreak"></div>
+<h2>14 · Frequently asked questions</h2>
+<p><b>Is this investment advice?</b> No. Research and education only. No YUCLAW output is a recommendation, and the platform never publishes sell or short recommendations.</p>
+<p><b>Why do you publish results that hurt your own hypothesis?</b> Because a record that only contains favorable results is not a record. Several adverse findings on the site — including baseline comparisons the composite loses at current sample sizes — are published under the same pre-registered protocols as everything else. The platform's product is the trustworthiness of its process.</p>
+<p><b>A label looked wrong in hindsight — is that a bug?</b> No. Labels are point-in-time research classifications; the calibration panel measures, publicly, what each label has historically preceded — including where the answer is "nothing demonstrable yet."</p>
+<p><b>Why is coverage of an index fund partial?</b> Because YUCLAW only analyzes constituents inside its disclosed universe and filing substrate, and refuses to imply otherwise. The uncovered remainder is itemized with reasons on each lens page.</p>
+<p><b>Can I use YUCLAW data in my own research or product?</b> Yes — derived data is MIT-licensed and exportable with ready citations. Raw vendor market data is not redistributed.</p>
+<p><b>How do I report a bug or a replication?</b> Via GitHub issues on the repository; replication reports have a dedicated template and, once verified, enter the public log.</p>
+<p><b>Who is the YUCLAW Team?</b> An independent research operation based in Calgary, Alberta, running entirely on sovereign local hardware. The platform, methodology, and this guide are published under the YUCLAW Team name; the record itself — the chain, the ledger, the registry — is the authority, not any individual.</p>
+
+<h2>15 · Glossary</h2>
+<table class="kv">
+<tr><td>accepted event</td><td>A typed evidence item extracted from a filing that passed grounding checks; carries a source URL, accession number, and verified excerpt.</td></tr>
+<tr><td>CAR</td><td>Cumulative abnormal return: return relative to a benchmark model, cumulated over event-time trading days.</td></tr>
+<tr><td>cluster-aware CI</td><td>A confidence interval that respects dependence between events sharing an issuer or date; primary wherever shown.</td></tr>
+<tr><td>conservative envelope</td><td>The wider of the issuer-clustered and date-clustered intervals.</td></tr>
+<tr><td>estimand</td><td>A precisely defined quantity being estimated (e.g., capped-ETF-weighted mean CAR at +20 trading days).</td></tr>
+<tr><td>evidence-tier name</td><td>A ticker that is ingested and analyzed but never scored; excluded from the 79-ticker scoring universe by machine-enforced gating.</td></tr>
+<tr><td>IC</td><td>Information coefficient: cross-sectional rank correlation between a score and forward returns.</td></tr>
+<tr><td>N_eff / design effect</td><td>The effective number of independent observations after accounting for clustering; N_eff = N / DEFF.</td></tr>
+<tr><td>point-in-time</td><td>Recorded with the information available at that moment and never edited afterward.</td></tr>
+<tr><td>protocol / run / supersession</td><td>See §9 — the registry's three record types.</td></tr>
+<tr><td>story</td><td>A cluster of events linked by issuer and time under a pre-committed rule; the unit of independent evidence.</td></tr>
+</table>
+
+<h2>16 · Citing YUCLAW</h2>
+<pre>YUCLAW &lt;page name&gt;, data through &lt;date&gt;, build &lt;commit&gt;,
+https://github.com/YuClawLab/yuclaw-brain
+<span class="c"># or use the ready CITATION.txt inside any evidence packet;</span>
+<span class="c"># event-level claims cite event IDs from the packet CSVs.</span></pre>
+<p>Links: <b>yuclaw.ca</b> · GitHub <b>github.com/YuClawLab/yuclaw-brain</b> · PyPI <b>pypi.org/project/yuclaw</b> · machine surface <b>yuclaw.ca/llms.txt</b></p>
+<div class="disc"><b>Final disclaimer.</b> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications are not recommendations. Past results — in-sample or forward-tracked — do not predict future performance. © 2026 The YUCLAW Team · MIT License · research &amp; education only.</div>
+
+</body></html>
