@@ -267,6 +267,20 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     {status_block}
 
     <div class="card">
+      <div class="card-title">For AI agents &amp; researchers</div>
+      <p style="font-size:13px;color:#A0AEC0;line-height:1.7">
+        YUCLAW is the open evidence layer underneath AI research tools. Start with
+        <a href="llms.txt" style="color:#00E676">llms.txt</a> and the machine-readable
+        <a href="evidence_index.json" style="color:#00E676">evidence_index.json</a>
+        (every page, packet, and protocol with stable URLs and data-through dates).
+        Packets carry derived statistics, event CSVs, engine run JSONs, and citation
+        snippets; <code>yuclaw replay-lab</code> re-computes the published statistics
+        from the public bundle. Derived data only — preserve the disclaimers when
+        quoting; nothing here is advice or a recommendation.
+      </p>
+    </div>
+
+    <div class="card">
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
                   font-family:JetBrains Mono,monospace;font-size:13px;color:#E2E8F0;overflow-x:auto">

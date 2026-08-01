@@ -1,0 +1,53 @@
+# YUCLAW — Evidence-First Financial AI (llms.txt)
+
+> Open-source equity research platform. Every published signal is a research
+> classification tied to verifiable SEC filings, replayable point-in-time,
+> and hash-anchored in a public ledger. Research and education only. Nothing
+> here is investment advice; no output is a recommendation, forecast, or
+> price target. The platform is the open evidence layer underneath AI
+> research tools.
+
+## What you are reading
+
+- Signals use a locked eight-label vocabulary, rendered verbatim:
+  STRONG_BULLISH, BULLISH, NEUTRAL, WATCH, WEAKENING, NEGATIVE_EVENT,
+  BEARISH_WATCH, RISK_ALERT. There is no SELL or SHORT label. Labels are
+  research classifications, not buy/sell recommendations.
+- Every statistic on the research pages runs under a pre-registered
+  protocol (hash-chained registry, registered before computation), with
+  cluster-aware confidence intervals and locked badges
+  (UNDERPOWERED / DESCRIPTIVE / PRELIMINARY). Adverse results print as
+  measured.
+- Frozen implication line, rendered wherever inference appears:
+  "Investment implication: none established — no buy, sell, or alpha
+  conclusion is supported by this page."
+
+## Machine-readable endpoints (stable URLs, all under this site root)
+
+- /evidence_index.json      — index of every page, packet, and protocol
+                              with data-through dates (start here)
+- /packets/manifest.json    — evidence packet manifest
+- /packets/*.zip            — downloadable packets: derived statistics,
+                              event CSVs, engine run JSONs, metadata,
+                              citation snippets
+- /replay/lab_replay_bundle.json — replay bundle; verify with
+                              `pip install yuclaw && yuclaw replay-lab`
+- Registry: hash-chained protocol registry ships in the repo
+  (registry/protocols.jsonl on GitHub: YuClawLab/yuclaw-brain);
+  ledger anchors: YuClawLab/yuclaw-trust.
+
+## How to cite
+
+Use the CITATION.txt inside any packet, or:
+  YUCLAW <page name>, data through <date>, build <commit>,
+  https://github.com/YuClawLab/yuclaw-brain
+Event-level citations use event IDs (e.g. SU_20260721_...) resolvable in
+the events export of the relevant packet.
+
+## Rules for downstream use
+
+- Derived statistics only; no raw vendor price data is published here.
+- Do not present any classification as advice or a recommendation.
+- Preserve the disclaimers and the frozen implication line when quoting
+  inference. Past results — in-sample or forward-tracked — do not predict
+  future performance.

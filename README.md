@@ -405,3 +405,24 @@ Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B + Gemma 4 26B via Ollama · Loca
 `pip install yuclaw`
 
 </div>
+
+## For AI agents & researchers
+
+YUCLAW is the open evidence layer underneath AI research tools.
+
+- **Start here**: [`llms.txt`](https://yuclawlab.github.io/yuclaw-brain/llms.txt)
+  and the machine-readable
+  [`evidence_index.json`](https://yuclawlab.github.io/yuclaw-brain/evidence_index.json)
+  (every page, packet, and protocol with stable URLs and data-through dates).
+- **Consume**: evidence packets (derived statistics, event CSVs, engine run
+  JSONs, metadata + citation snippets) from `/packets/`; the MCP server
+  exposes `why / memo / events / lens / universe / validation / verify` as
+  tools with friendly no-backend behavior.
+- **Cite**: use the `CITATION.txt` inside any packet; event-level citations
+  use event IDs resolvable in the packet CSVs.
+- **Verify**: `pip install yuclaw && yuclaw replay-lab` recomputes the
+  published Lab statistics from the public bundle; the protocol registry
+  (`registry/protocols.jsonl`) is hash-chained and append-only.
+- **Rules**: derived statistics only; preserve the disclaimers and the
+  frozen implication line when quoting inference; nothing here is advice
+  or a recommendation.

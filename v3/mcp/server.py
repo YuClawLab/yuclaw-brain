@@ -162,6 +162,43 @@ def yuclaw_verify(ticker: str, date: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+@mcp.tool()
+def yuclaw_events(ticker: str, since: Optional[str] = None) -> dict[str, Any]:
+    """Accepted evidence events for a ticker (typed classifications with
+    verified excerpts; derived data only — never raw vendor price data).
+    since: optional YYYY-MM-DD floor. v5.1 surface; friendly no-backend
+    behavior: returns {error, hint} instead of raising."""
+    try:
+        from v3.cli.events import fetch_events
+        rows = fetch_events(ticker, since)
+        return {"ticker": ticker.upper(), "n": len(rows), "events": rows[:200],
+                "note": "research classifications, not recommendations"}
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
+                "hint": "this tool reads the local YUCLAW evidence store; "
+                        "see README section 'connect the local backend'"}
+
+
+@mcp.tool()
+def yuclaw_lens(vertical: str, lens: str) -> dict[str, Any]:
+    """Lens summary data as JSON — the same derived numbers the public lens
+    pages render (posture + maturity). vertical: 'canada'; lens: XEG | ZEO |
+    GDX | URNM. v5.1 surface; friendly no-backend behavior."""
+    try:
+        from v3.lab.etf_evidence import canada_event_maturity, canada_posture
+        if vertical != "canada":
+            return {"error": f"unknown vertical {vertical!r}",
+                    "hint": "supported: canada"}
+        return {"lens": lens, "posture": canada_posture(lens),
+                "maturity": canada_event_maturity(lens),
+                "note": "derived statistics only"}
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
+                "hint": "this tool reads the local YUCLAW research backend"}
+
+
 def main() -> None:
     """Run the MCP server over stdio."""
     mcp.run()

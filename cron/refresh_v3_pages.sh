@@ -32,6 +32,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # "Download evidence packet" blocks.
 /usr/bin/python3 -m v3.lab.replay_export || exit 8
 /usr/bin/python3 -m v3.web.evidence_packets || exit 10
+# AI evidence layer (2026-08-01): machine-readable index for agents.
+/usr/bin/python3 tools/yuclaw_evidence_index.py || exit 22
 # Validation Lab (added 2026-07-05 — was a one-time v4.2 artifact and went
 # stale; now rebuilt daily so the page's freshness stamp stays honest).
 /usr/bin/python3 -m v3.web.render_validation_lab || exit 6
@@ -90,7 +92,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/canada_resources.html \
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
-                 docs/trace_su.html docs/replication.html docs/lane.html
+                 docs/trace_su.html docs/replication.html docs/lane.html \
+                 docs/evidence_index.json docs/llms.txt
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"

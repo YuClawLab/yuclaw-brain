@@ -31,6 +31,8 @@ DEFAULT_PATHS = [
     "validation_lab.html",
     "etf_evidence.html",
     "xlk_evidence.html",
+    "llms.txt",
+    "evidence_index.json",
     "canada_resources.html",
     "replication.html",
     "todays_evidence.html",
