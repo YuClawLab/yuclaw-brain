@@ -233,3 +233,56 @@ strongest, with what each rung does and does not remove:
 
 Rungs are reported side by side wherever they apply; a result that only
 holds on one rung says so.
+
+
+---
+
+## v5.2 — Frozen-universe corporate-action and window policies (pre-committed 2026-08-01, before first occurrence)
+
+**Delisting / merger policy.** The 79-ticker scoring universe is frozen. If
+a member is delisted or absorbed in a merger: no replacement is added
+mid-freeze; the name's recorded snapshots and matured outcomes stand
+unchanged; forward-return windows that CROSS the corporate-action date are
+excluded from every statistic (never padded, shortened, or filled with the
+acquirer), and the exclusion count is disclosed on the affected panels.
+This policy is stated before any such event has occurred in the record.
+
+**Open-window closure rule.** A forward window that cannot complete —
+because of the data edge, a halt, or a corporate action — is excluded from
+every horizon it cannot complete. Partially matured outcomes never enter a
+longer-horizon statistic; the ledger records the outcome when, and only
+when, the window closes.
+
+**Price-adjustment policy.** The price store keeps closes exactly as
+provided by the source with automatic adjustment DISABLED: prices are not
+split-adjusted retroactively and dividends are not reinvested in any return
+calculation. The same convention applies everywhere, so internal
+comparisons are consistent. Consequence, stated plainly: a stock split
+inside a return window would appear as a price discontinuity; under the
+corporate-action policy above, windows crossing such an event are excluded
+rather than adjusted. Recorded snapshots are never retroactively re-priced.
+
+**Trading-day convention.** Day 0 is the first trading day on or after an
+event timestamp's date; all windows, horizons (k), lags, and linkage rules
+count TRADING days from the store's trading calendar, never calendar days,
+unless a panel explicitly says "calendar days" (the cascade lag is the one
+such case).
+
+## v5.2 — Score-to-label thresholds (the locked mapping) {#thresholds}
+
+The composite score maps to the public vocabulary by fixed thresholds
+(v3/signal/base.py, unchanged since registration of the label set):
+
+| composite score | label |
+|---|---|
+| >= 0.55 | STRONG_BULLISH |
+| >= 0.40 | BULLISH |
+| >= 0.20 | NEUTRAL |
+| >= 0.00 | WATCH |
+| >= -0.20 | WEAKENING |
+| >= -0.40 | NEGATIVE_EVENT |
+| < -0.40 | BEARISH_WATCH |
+
+RISK_ALERT is not score-mapped: it is a risk-state overlay and never a
+directional claim. The calibration panel measures what these labels have
+actually preceded; the thresholds themselves carry no outcome promise.

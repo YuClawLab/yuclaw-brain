@@ -102,7 +102,10 @@ def _calibration_panel() -> str:
         yet demonstrated at this sample; that is the finding, printed as measured. STRONG_BULLISH reads
         anti-consistent at k=20 at current n — also printed as measured; the record accrues daily.
         Labels with no forward outcomes yet: {', '.join(absent) or 'none'}. Non-directional labels carry
-        no consistency claim by construction. Investment implication: none established — no buy, sell,
+        no consistency claim by construction. The score-to-label mapping is fixed thresholds,
+        published in <a href="methodology/backfill.md#thresholds" style="color:#00E676">the
+        methodology (score-to-label thresholds)</a> — the thresholds carry no outcome promise;
+        this panel measures the outcomes. Investment implication: none established — no buy, sell,
         or alpha conclusion is supported by this page.
       </p>
     </div>"""

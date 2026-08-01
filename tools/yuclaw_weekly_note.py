@@ -57,13 +57,11 @@ def gather(start: date, end: date) -> dict:
         if not (start <= d <= end):
             continue
         j = json.loads(f.read_text())
-        c = j.get("counts", j)
-        nf = c.get("new_filings")
-        total_filings += (sum(nf.values()) if isinstance(nf, dict)
-                          else int(nf or 0))
-        ne = c.get("new_events_accepted", c.get("accepted", 0))
-        total_events += (sum(ne.values()) if isinstance(ne, dict)
-                         else int(ne or 0))
+        c = j.get("counts", {})
+        nf = c.get("new_filings") or {}
+        ne = c.get("new_events") or {}
+        total_filings += sum(nf.values())
+        total_events += sum(ne.values())
         days += 1
 
     from yuclaw_protocol_registry import Registry
@@ -138,7 +136,7 @@ def main() -> int:
     <div class="panel">
       <div class="panel-title">Ingestion</div>
       <p style="font-size:13px;color:#A0AEC0">{g['filings']} new filings across {g['days']} archived
-      days; {g['events']} events accepted into the evidence store.</p>
+      days; {g['events']} events accepted into the evidence store (as counted by the daily digest: accepted events recorded on each archived day, across all covered verticals).</p>
     </div>
 
     <div class="panel">
@@ -168,8 +166,29 @@ def main() -> int:
         print(f"WEEKLY NOTE PAGE RAIL FAILURE: {page_problems[:3]}")
         return 1
     OUT.write_text(html)
+    # SELF-CHECK (red-team fix, 2026-08-01): the note's registry counts must
+    # equal an independent recount from the chain — a mismatch FAILS the
+    # chain (the Friday step propagates the nonzero exit).
+    from yuclaw_protocol_registry import Registry as _R
+    _r = _R(str(_REPO / "registry" / "protocols.jsonl"))
+    chk_protos = sum(1 for l in _r._lines if l["kind"] == "protocol"
+                     and start.isoformat() <= l["payload"]["lock_date"] <= end.isoformat())
+    chk_runs = sum(1 for l in _r._lines if l["kind"] == "run"
+                   and start.isoformat() <= l["payload"]["run_date"] <= end.isoformat())
+    chk_sups = sum(1 for l in _r._lines if l["kind"] == "supersede_notice"
+                   and start.isoformat() <= l["payload"]["date"] <= end.isoformat())
+    rendered = OUT.read_text()
+    ok = (chk_protos == len(g["protocols"]) and chk_runs == g["n_runs"]
+          and chk_sups == len(g["supersessions"])
+          and f"{g['n_runs']} recorded runs" in rendered)
+    if not ok:
+        print(f"[weekly-note] SELF-CHECK FAILED: note counts "
+              f"({len(g['protocols'])}p/{g['n_runs']}r/"
+              f"{len(g['supersessions'])}s) != registry recount "
+              f"({chk_protos}p/{chk_runs}r/{chk_sups}s)")
+        return 1
     print(f"[weekly-note] wrote {OUT} ({start} -> {end}; "
-          f"{g['filings']} filings, {g['n_runs']} runs)")
+          f"{g['filings']} filings, {g['n_runs']} runs; self-check OK)")
     return 0
 
 

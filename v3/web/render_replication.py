@@ -130,6 +130,14 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
         (bootstrap CI with the published seed, Fama-MacBeth IC with Newey-West correction,
         market-model alpha), and recompute every sha-256 leaf and daily root against the public
         <a href="https://github.com/YuClawLab/yuclaw-trust">yuclaw-trust</a> ledger.
+        <span style="display:block;margin-top:6px;font-size:12px;color:#718096">
+        Verifier vocabulary: a day counts as <strong style="color:#A0AEC0">exact</strong> when the
+        recomputed daily root matches the anchored root byte-for-byte; it counts as an
+        <strong style="color:#A0AEC0">anchored-subset</strong> day when the anchored block committed a
+        SUBSET of that day's entry hashes (an intraday re-run anchored before the day completed) and
+        every anchored hash recomputes unchanged from today's data — fewer hashes anchored, none
+        mutated. The replay output names both counts separately; a subset day is a disclosed anchoring
+        artifact, not a verification failure.</span>
       </p>
     </div>
 

@@ -107,11 +107,11 @@ def smh_estimand_panel() -> str:
       {fal_line}
       {_matched_control_line()}
       <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
-        The adverse point estimate persists under all four registered weightings; it is statistically
-        supported only under event weighting. Under issuer weighting the conservative envelope
-        ({ei['envelope'][0]:+.2f}, {ei['envelope'][1]:+.2f}) includes zero — the adverse headline draws
-        real strength from event-count concentration in a few insider-sale-heavy issuers.
-        Envelope = wider of the issuer-/date-cluster bootstrap CIs; formal two-way clustering pending.
+        The adverse point estimate persists under all four registered weightings; envelopes exclude
+        zero for {', '.join(desc.split(' — ')[0] for kk, desc in order if not (e[kk]['envelope'][0] <= 0 <= e[kk]['envelope'][1])) or 'none of the estimands'}
+        and include zero for {', '.join(desc.split(' — ')[0] for kk, desc in order if e[kk]['envelope'][0] <= 0 <= e[kk]['envelope'][1]) or 'none'}.
+        Envelope = wider of the issuer-/date-cluster bootstrap CIs; the formal CGM two-way interval is
+        reported in the table beside it.
       </p>"""
     return _panel("estimands", "Multi-estimand direction-aligned CAR · backfill era (registered)",
                   f"protocol {escape(data['protocol_id'])} · method {escape(data['method_hash'])} · "
@@ -426,6 +426,10 @@ def baselines_block() -> str:
         {data['window']['n_dates']} forward dates / {data['window']['n_tickers']} clustered tickers.
         At this sample the persistence baseline reads ahead of the composite at k=5 — printed exactly as
         measured; the window is young and the comparison recomputes as the record accrues.
+        Interpretation note: yesterday's score and today's are highly overlapping (the composite moves
+        slowly), so the persistence comparison is not between independent signals — a one-day-lagged copy
+        of a slow-moving score can rank ahead at short horizons under reversal-like return structure
+        without containing any information the composite lacks.
         Investment implication: none established — no buy, sell, or alpha conclusion is supported by
         this page.
       </p>"""
