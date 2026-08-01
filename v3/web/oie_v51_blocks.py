@@ -80,11 +80,29 @@ def smh_estimand_panel() -> str:
             f"{tw_cell}"
             f"<td style='padding:7px 12px;color:#A0AEC0;font-size:11px'>{escape(r['badge'])}</td></tr>")
     ei = e["issuer"]
+    fal_line = ""
+    fp = _OIE / "falsification_run.json"
+    if fp.exists():
+        fpan = json.loads(fp.read_text()).get("panels", {}).get("SMH-E4")
+        if fpan:
+            fal_line = (
+                f"<p style='font-size:12px;color:#A0AEC0;margin-top:8px;line-height:1.6'>"
+                f"<strong style='color:#E2E8F0'>Falsification context for this table"
+                f"</strong> (same population, registered battery): event-date-shuffle "
+                f"percentile {fpan['date_shuffle']['percentile_in_null']:.3f} — "
+                f"unremarkable within its null, so an era-generic component cannot be "
+                f"excluded; direction sign-flip percentile "
+                f"{fpan['sign_flip']['percentile_in_null']:.3f}; pre-event placebo "
+                f"{fpan['placebo_minus20d']['value_pct']:+.2f}% at null percentile "
+                f"{fpan['placebo_minus20d']['percentile_in_shuffle_null']:.3f}. An "
+                f"envelope that excludes zero should be read WITH these beside it, "
+                f"whichever way they cut.</p>")
     body = f"""
       <table>
         <thead><tr><th>Estimand</th><th>Mean CAR +20d</th><th>Issuer-cluster CI</th><th>Date-cluster CI</th><th>Conservative envelope</th>{'<th>Formal two-way CI (CGM)</th>' if has_tw else ''}<th>Badge</th></tr></thead>
         <tbody>{''.join(rows)}</tbody>
       </table>
+      {fal_line}
       <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
         The adverse point estimate persists under all four registered weightings; it is statistically
         supported only under event weighting. Under issuer weighting the conservative envelope

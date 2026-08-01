@@ -1,0 +1,323 @@
+{
+  "protocol_id": "da44ba9fae79",
+  "method_hash": "f90d567326f511df",
+  "built_utc": "2026-07-31 07:51 UTC",
+  "facts": {
+    "ticker": "SMH",
+    "holdings_source": "VanEck fund holdings disclosure (25 of 26 holdings public in the free listing)",
+    "holdings_date": "2026-07-03",
+    "covered_issuers": 12,
+    "covered_weight_pct": 67.15,
+    "covered_weights": [
+      5.33,
+      5.58,
+      1.15,
+      4.99,
+      4.88,
+      4.68,
+      4.27,
+      5.34,
+      19.01,
+      1.24,
+      1.28,
+      9.4
+    ],
+    "price_coverage_pct": 100.0,
+    "substrate_disclosed": true,
+    "reproduction_bundle": true,
+    "live_protocol_registered": true,
+    "external_replications": 0
+  },
+  "verdict": {
+    "label": "MEASURED",
+    "effective_issuers": 7.14,
+    "reasons": [],
+    "external_replications": 0,
+    "note": "MATURE reserved \u2014 requires externally replicated results under a versioned standard"
+  },
+  "anatomy": {
+    "covered_weight_pct": 67.15,
+    "uncovered_weight_pct": 32.85,
+    "identity_check_pct": 100.0,
+    "top1_covered_pct": 19.01,
+    "top3_covered_pct": 33.99,
+    "top5_covered_pct": 44.66,
+    "effective_covered_issuers": 7.14,
+    "largest_covered": [
+      "NVDA",
+      19.01
+    ],
+    "uncovered_by_reason": [
+      {
+        "reason": "US filer outside the 79-ticker scored universe",
+        "weight_pct": 32.86,
+        "names": 13
+      },
+      {
+        "reason": "foreign private issuer (6-K / 20-F substrate; ingestible via the Canada-vertical 6-K/40-F path \u2014 coverage decision pending)",
+        "weight_pct": 0,
+        "names": 0
+      },
+      {
+        "reason": "not disclosed in the free holdings listing",
+        "weight_pct": -0.01,
+        "names": 1
+      }
+    ]
+  },
+  "breadth": {
+    "state_share_pct": {
+      "NEGATIVE_EVENT": 22.7,
+      "WEAKENING": 77.3
+    },
+    "fresh_7d_weight_pct": 9.7,
+    "stale_30d_weight_pct": 2.3
+  },
+  "estimands": {
+    "backfill": {
+      "event": {
+        "estimand": "event",
+        "mean_pct": -10.17,
+        "naive_ci": [
+          -15.98,
+          -4.37
+        ],
+        "issuer_ci": [
+          -15.6,
+          -3.0
+        ],
+        "date_ci": [
+          -16.59,
+          -5.11
+        ],
+        "envelope": [
+          -16.59,
+          -3.0
+        ],
+        "n_events": 58,
+        "n_issuers": 11,
+        "n_dates": 28,
+        "badge": "PRELIMINARY",
+        "two_way": {
+          "mean_pct": -10.17,
+          "ci": [
+            -16.08,
+            -4.27
+          ],
+          "se": 3.012,
+          "G_min": 11,
+          "degenerate": false,
+          "badge": "PRELIMINARY"
+        }
+      },
+      "issuer": {
+        "estimand": "issuer",
+        "mean_pct": -5.15,
+        "naive_ci": [
+          -12.11,
+          1.82
+        ],
+        "issuer_ci": [
+          -10.85,
+          0.24
+        ],
+        "date_ci": [
+          -12.54,
+          -1.29
+        ],
+        "envelope": [
+          -12.54,
+          0.24
+        ],
+        "n_events": 58,
+        "n_issuers": 11,
+        "n_dates": 28,
+        "badge": "DESCRIPTIVE",
+        "two_way": {
+          "mean_pct": -5.15,
+          "ci": [
+            -12.31,
+            2.02
+          ],
+          "se": 3.656,
+          "G_min": 11,
+          "degenerate": false,
+          "badge": "DESCRIPTIVE"
+        }
+      },
+      "etf": {
+        "estimand": "etf",
+        "mean_pct": -5.15,
+        "naive_ci": [
+          -13.52,
+          3.21
+        ],
+        "issuer_ci": [
+          -11.04,
+          -0.2
+        ],
+        "date_ci": [
+          -12.56,
+          -0.32
+        ],
+        "envelope": [
+          -12.56,
+          -0.2
+        ],
+        "n_events": 58,
+        "n_issuers": 11,
+        "n_dates": 28,
+        "badge": "PRELIMINARY",
+        "two_way": {
+          "mean_pct": -5.15,
+          "ci": [
+            -11.7,
+            1.39
+          ],
+          "se": 3.338,
+          "G_min": 11,
+          "degenerate": false,
+          "badge": "DESCRIPTIVE"
+        }
+      },
+      "capped": {
+        "estimand": "capped",
+        "mean_pct": -5.68,
+        "naive_ci": [
+          -13.44,
+          2.08
+        ],
+        "issuer_ci": [
+          -11.94,
+          -0.01
+        ],
+        "date_ci": [
+          -13.09,
+          -1.75
+        ],
+        "envelope": [
+          -13.09,
+          -0.01
+        ],
+        "n_events": 58,
+        "n_issuers": 11,
+        "n_dates": 28,
+        "badge": "PRELIMINARY",
+        "two_way": {
+          "mean_pct": -5.68,
+          "ci": [
+            -12.55,
+            1.19
+          ],
+          "se": 3.507,
+          "G_min": 11,
+          "degenerate": false,
+          "badge": "DESCRIPTIVE"
+        }
+      }
+    },
+    "all_era_sensitivity": {
+      "event": {
+        "estimand": "event",
+        "mean_pct": -6.2,
+        "naive_ci": [
+          -10.94,
+          -1.47
+        ],
+        "issuer_ci": [
+          -11.16,
+          -2.04
+        ],
+        "date_ci": [
+          -10.43,
+          -2.33
+        ],
+        "envelope": [
+          -11.16,
+          -2.04
+        ],
+        "n_events": 101,
+        "n_issuers": 11,
+        "n_dates": 53,
+        "badge": "PRELIMINARY"
+      },
+      "issuer": {
+        "estimand": "issuer",
+        "mean_pct": -6.52,
+        "naive_ci": [
+          -11.84,
+          -1.21
+        ],
+        "issuer_ci": [
+          -9.76,
+          -2.9
+        ],
+        "date_ci": [
+          -11.06,
+          -2.3
+        ],
+        "envelope": [
+          -11.06,
+          -2.3
+        ],
+        "n_events": 101,
+        "n_issuers": 11,
+        "n_dates": 53,
+        "badge": "PRELIMINARY"
+      },
+      "etf": {
+        "estimand": "etf",
+        "mean_pct": -4.18,
+        "naive_ci": [
+          -10.05,
+          1.7
+        ],
+        "issuer_ci": [
+          -9.99,
+          -0.11
+        ],
+        "date_ci": [
+          -8.48,
+          0.34
+        ],
+        "envelope": [
+          -9.99,
+          0.34
+        ],
+        "n_events": 101,
+        "n_issuers": 11,
+        "n_dates": 53,
+        "badge": "DESCRIPTIVE"
+      },
+      "capped": {
+        "estimand": "capped",
+        "mean_pct": -5.02,
+        "naive_ci": [
+          -10.63,
+          0.58
+        ],
+        "issuer_ci": [
+          -10.42,
+          -1.65
+        ],
+        "date_ci": [
+          -9.5,
+          -0.81
+        ],
+        "envelope": [
+          -10.42,
+          -0.81
+        ],
+        "n_events": 101,
+        "n_issuers": 11,
+        "n_dates": 53,
+        "badge": "PRELIMINARY"
+      }
+    },
+    "n_backfill": 58,
+    "n_live": 43,
+    "n_rows_total": 101,
+    "issuers_backfill": 11,
+    "dates_backfill": 28
+  }
+}

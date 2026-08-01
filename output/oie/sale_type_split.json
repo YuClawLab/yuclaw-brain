@@ -1,0 +1,184 @@
+{
+  "protocol_id": "d82ad02068b1",
+  "method_hash": "589c91fd2a8f15b3",
+  "built_utc": "2026-07-27 02:06 UTC",
+  "unclassified_event_days_total": 0,
+  "fm_mechanical": {
+    "n": 0,
+    "reason": "structurally empty at event level: ingestion keeps P/S codes only, so F/M/A-only filings never became events"
+  },
+  "results": {
+    "backfill": {
+      "n_discretionary": 11,
+      "n_plan": 17,
+      "n_unclassified": 0,
+      "discretionary": {
+        "estimand": "capped",
+        "mean_pct": -3.77,
+        "naive_ci": [
+          -20.77,
+          13.24
+        ],
+        "issuer_ci": [
+          -16.2,
+          10.05
+        ],
+        "date_ci": [
+          -22.16,
+          1.4
+        ],
+        "envelope": [
+          -22.16,
+          10.05
+        ],
+        "n_events": 11,
+        "n_issuers": 6,
+        "n_dates": 10,
+        "badge": "UNDERPOWERED",
+        "shuffle": {
+          "percentile_in_null": 0.844,
+          "null": {
+            "mean": -13.154,
+            "sd": 8.415
+          }
+        }
+      },
+      "plan": {
+        "estimand": "capped",
+        "mean_pct": -15.89,
+        "naive_ci": [
+          -31.02,
+          -0.76
+        ],
+        "issuer_ci": [
+          -26.58,
+          -3.48
+        ],
+        "date_ci": [
+          -31.03,
+          -5.63
+        ],
+        "envelope": [
+          -31.03,
+          -3.48
+        ],
+        "n_events": 17,
+        "n_issuers": 5,
+        "n_dates": 12,
+        "badge": "UNDERPOWERED",
+        "shuffle": {
+          "percentile_in_null": 0.148,
+          "null": {
+            "mean": -9.793,
+            "sd": 5.87
+          }
+        }
+      },
+      "difference": {
+        "value": 12.124,
+        "issuer_ci": [
+          4.58,
+          17.94
+        ],
+        "date_ci": [
+          -8.45,
+          25.07
+        ],
+        "envelope": [
+          -8.45,
+          25.07
+        ],
+        "replicates_dropped": {
+          "issuer": 0,
+          "date": 0
+        }
+      }
+    },
+    "all_era": {
+      "n_discretionary": 29,
+      "n_plan": 29,
+      "n_unclassified": 0,
+      "discretionary": {
+        "estimand": "capped",
+        "mean_pct": -1.62,
+        "naive_ci": [
+          -13.68,
+          10.43
+        ],
+        "issuer_ci": [
+          -14.28,
+          12.35
+        ],
+        "date_ci": [
+          -13.14,
+          3.2
+        ],
+        "envelope": [
+          -14.28,
+          12.35
+        ],
+        "n_events": 29,
+        "n_issuers": 8,
+        "n_dates": 23,
+        "badge": "DESCRIPTIVE",
+        "shuffle": {
+          "percentile_in_null": 0.433,
+          "null": {
+            "mean": -0.575,
+            "sd": 5.43
+          }
+        }
+      },
+      "plan": {
+        "estimand": "capped",
+        "mean_pct": -2.81,
+        "naive_ci": [
+          -19.98,
+          14.35
+        ],
+        "issuer_ci": [
+          -17.07,
+          6.65
+        ],
+        "date_ci": [
+          -18.69,
+          3.89
+        ],
+        "envelope": [
+          -18.69,
+          6.65
+        ],
+        "n_events": 29,
+        "n_issuers": 6,
+        "n_dates": 22,
+        "badge": "UNDERPOWERED",
+        "shuffle": {
+          "percentile_in_null": 0.433,
+          "null": {
+            "mean": -1.783,
+            "sd": 4.439
+          }
+        }
+      },
+      "difference": {
+        "value": 1.188,
+        "issuer_ci": [
+          -10.17,
+          18.98
+        ],
+        "date_ci": [
+          -12.85,
+          17.53
+        ],
+        "envelope": [
+          -12.85,
+          18.98
+        ],
+        "replicates_dropped": {
+          "issuer": 0,
+          "date": 0
+        }
+      }
+    }
+  }
+}

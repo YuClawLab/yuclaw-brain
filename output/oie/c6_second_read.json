@@ -1,0 +1,30 @@
+{
+  "protocol": "d7d5cc4fde5f (C6 Risk Gate v2)",
+  "verdict": "INCONCLUSIVE",
+  "clause": "thin-arm clause (inherited verbatim): either arm below 10 issuer-days with completed k=10 windows => INCONCLUSIVE",
+  "data_through": "2026-07-30",
+  "arms": {
+    "elevated": {
+      "issuer_days": 11,
+      "late": 11,
+      "live": 0,
+      "k10_complete": 0
+    },
+    "normal": {
+      "issuer_days": 34,
+      "late": 34,
+      "live": 0,
+      "k10_complete": 1
+    }
+  },
+  "late_lag_days": {
+    "min": 1,
+    "median": 3,
+    "max": 15
+  },
+  "backlog": {
+    "computed": 45,
+    "excluded": 11
+  },
+  "projection": "~-0.2 more weeks of accrual for the elevated arm to reach 10 issuer-days (rate 5.5/wk), plus ~2 weeks for k=10 windows to complete"
+}

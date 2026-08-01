@@ -1,0 +1,348 @@
+{
+  "protocol_id": "e5f9e680f402",
+  "method_hash": "09bbb3c38e68b588",
+  "built_utc": "2026-07-31 07:30 UTC",
+  "holdings": {
+    "as_of": "2026-07-29",
+    "retrieved": "2026-07-31T02:38:47+00:00",
+    "n_holdings": 76
+  },
+  "facts": {
+    "ticker": "XLK",
+    "holdings_source": "https://www.ssga.com/library-content/products/fund-data/etfs/us/holdings-daily-us-en-xlk.xlsx",
+    "holdings_date": "2026-07-29",
+    "covered_issuers": 11,
+    "covered_weight_pct": 54.6,
+    "covered_weights": [
+      14.8454,
+      13.7546,
+      8.6706,
+      3.9888,
+      3.43,
+      2.8229,
+      2.5276,
+      2.3029,
+      1.044,
+      0.7803,
+      0.4303
+    ],
+    "price_coverage_pct": 100.0,
+    "substrate_disclosed": true,
+    "reproduction_bundle": true,
+    "live_protocol_registered": true,
+    "external_replications": 0
+  },
+  "verdict": {
+    "label": "EXPLORATORY",
+    "effective_issuers": 5.58,
+    "reasons": [],
+    "external_replications": 0,
+    "note": "MATURE reserved \u2014 requires externally replicated results under a versioned standard"
+  },
+  "anatomy": {
+    "covered_weight_pct": 54.6,
+    "uncovered_weight_pct": 45.41,
+    "identity_check_pct": 100.01,
+    "top1_covered_pct": 14.85,
+    "top3_covered_pct": 37.27,
+    "top5_covered_pct": 44.69,
+    "effective_covered_issuers": 5.58,
+    "largest_covered": [
+      "AAPL",
+      14.8454
+    ],
+    "uncovered_by_reason": [
+      {
+        "reason": "outside the 79-ticker scoring universe",
+        "weight_pct": 45.34,
+        "names": 65
+      },
+      {
+        "reason": "not disclosed / rounding residual",
+        "weight_pct": 0.07,
+        "names": 1
+      }
+    ]
+  },
+  "n_events_backfill": 54,
+  "n_events_all": 107,
+  "estimands": {
+    "event": {
+      "estimand": "event",
+      "mean_pct": -11.14,
+      "naive_ci": [
+        -17.95,
+        -4.34
+      ],
+      "issuer_ci": [
+        -16.87,
+        -4.3
+      ],
+      "date_ci": [
+        -18.66,
+        -4.9
+      ],
+      "envelope": [
+        -18.66,
+        -4.3
+      ],
+      "n_events": 54,
+      "n_issuers": 11,
+      "n_dates": 23,
+      "badge": "PRELIMINARY",
+      "two_way": {
+        "mean_pct": -11.14,
+        "ci": [
+          -17.11,
+          -5.18
+        ],
+        "se": 3.041,
+        "G_min": 11,
+        "degenerate": false,
+        "badge": "PRELIMINARY"
+      }
+    },
+    "issuer": {
+      "estimand": "issuer",
+      "mean_pct": -6.99,
+      "naive_ci": [
+        -15.31,
+        1.33
+      ],
+      "issuer_ci": [
+        -12.13,
+        -1.74
+      ],
+      "date_ci": [
+        -13.91,
+        -2.29
+      ],
+      "envelope": [
+        -13.91,
+        -1.74
+      ],
+      "n_events": 54,
+      "n_issuers": 11,
+      "n_dates": 23,
+      "badge": "PRELIMINARY",
+      "two_way": {
+        "mean_pct": -6.99,
+        "ci": [
+          -12.98,
+          -1.0
+        ],
+        "se": 3.055,
+        "G_min": 11,
+        "degenerate": false,
+        "badge": "PRELIMINARY"
+      }
+    },
+    "etf": {
+      "estimand": "etf",
+      "mean_pct": -6.69,
+      "naive_ci": [
+        -15.5,
+        2.13
+      ],
+      "issuer_ci": [
+        -10.47,
+        -3.77
+      ],
+      "date_ci": [
+        -12.65,
+        0.01
+      ],
+      "envelope": [
+        -12.65,
+        0.01
+      ],
+      "n_events": 54,
+      "n_issuers": 11,
+      "n_dates": 23,
+      "badge": "DESCRIPTIVE",
+      "two_way": {
+        "mean_pct": -6.69,
+        "ci": [
+          -9.99,
+          -3.38
+        ],
+        "se": 1.685,
+        "G_min": 11,
+        "degenerate": false,
+        "badge": "PRELIMINARY"
+      }
+    },
+    "capped": {
+      "estimand": "capped",
+      "mean_pct": -6.92,
+      "naive_ci": [
+        -16.22,
+        2.37
+      ],
+      "issuer_ci": [
+        -11.57,
+        -2.69
+      ],
+      "date_ci": [
+        -13.39,
+        -1.34
+      ],
+      "envelope": [
+        -13.39,
+        -1.34
+      ],
+      "n_events": 54,
+      "n_issuers": 11,
+      "n_dates": 23,
+      "badge": "PRELIMINARY",
+      "two_way": {
+        "mean_pct": -6.92,
+        "ci": [
+          -10.72,
+          -3.12
+        ],
+        "se": 1.939,
+        "G_min": 11,
+        "degenerate": false,
+        "badge": "PRELIMINARY"
+      }
+    }
+  },
+  "falsification": {
+    "target": "XLK",
+    "real_pct": -6.924,
+    "n_events": 54,
+    "n_issuers": 11,
+    "eligible_grid_days": {
+      "AAPL": 36,
+      "AMAT": 36,
+      "AMD": 36,
+      "DELL": 36,
+      "HPE": 36,
+      "INTC": 36,
+      "LRCX": 36,
+      "MRVL": 36,
+      "MSFT": 36,
+      "MU": 36,
+      "NVDA": 36
+    },
+    "date_shuffle": {
+      "null": {
+        "mean": -3.848,
+        "sd": 2.477,
+        "p2_5": -8.462,
+        "p97_5": 1.095
+      },
+      "percentile_in_null": 0.115
+    },
+    "sign_flip": {
+      "null": {
+        "mean": 0.033,
+        "sd": 3.073,
+        "p2_5": -5.614,
+        "p97_5": 6.086
+      },
+      "percentile_in_null": 0.008
+    },
+    "placebo_minus20d": {
+      "value_pct": -0.625,
+      "dropped": 22,
+      "percentile_in_shuffle_null": 0.904
+    },
+    "note": "two-sided extremity, exploratory"
+  },
+  "geometry": {
+    "n_events": 107,
+    "n_stories": 4,
+    "size_distribution": {
+      "max": 83,
+      "singletons": 0
+    },
+    "deff_story": 6.653,
+    "n_eff_story": 16.1,
+    "deff_issuer": 1.379,
+    "n_eff_issuer": 77.6,
+    "inverse_hhi_stories": 1.57,
+    "top_story_share_pct": 77.6,
+    "top5_stories": [
+      {
+        "size": 83,
+        "mass_pct": 77.6,
+        "dominant_issuer": "DELL",
+        "dominant_type": "INSIDER_SELL",
+        "span_trading_days": 45
+      },
+      {
+        "size": 20,
+        "mass_pct": 18.7,
+        "dominant_issuer": "MRVL",
+        "dominant_type": "INSIDER_SELL",
+        "span_trading_days": 17
+      },
+      {
+        "size": 2,
+        "mass_pct": 1.9,
+        "dominant_issuer": "INTC",
+        "dominant_type": "EXEC_CHANGE",
+        "span_trading_days": 1
+      },
+      {
+        "size": 2,
+        "mass_pct": 1.9,
+        "dominant_issuer": "INTC",
+        "dominant_type": "EXEC_CHANGE",
+        "span_trading_days": 2
+      }
+    ]
+  },
+  "lifecycle": {
+    "INSIDER_SELL": {
+      "path": [
+        2.2065,
+        2.8865,
+        3.7182,
+        4.643,
+        5.2417,
+        5.7685,
+        6.4387,
+        6.4699,
+        6.7397,
+        7.9972,
+        9.0756,
+        9.4151,
+        12.1389,
+        12.7311,
+        14.3426,
+        14.5718,
+        16.1334,
+        16.8225,
+        18.6739,
+        20.1149,
+        20.1662
+      ],
+      "peak_tau": 20,
+      "peak_value_pct": 20.166,
+      "half_life_tau": null,
+      "half_life": "not reached within window",
+      "n": 34
+    }
+  },
+  "lifecycle_thin": {
+    "M_AND_A_CLOSE": {
+      "n": 12,
+      "badge": "UNDERPOWERED"
+    },
+    "EXEC_CHANGE": {
+      "n": 4,
+      "badge": "UNDERPOWERED"
+    },
+    "OTHER_MATERIAL": {
+      "n": 3,
+      "badge": "UNDERPOWERED"
+    },
+    "M_AND_A_ANNOUNCE": {
+      "n": 1,
+      "badge": "UNDERPOWERED"
+    }
+  }
+}

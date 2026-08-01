@@ -1,0 +1,32 @@
+{
+  "verdict": "INCONCLUSIVE",
+  "clause": "thin-arm clause (130579a5, mirrored in the locked spec): 'INCONCLUSIVE required the held-out batch to be the wrong shape for the arms to mean anything' \u2014 here both arms are EMPTY: zero issuer-days in the live window",
+  "data_through": "2026-07-29",
+  "arms": {
+    "elevated": {
+      "issuer_days": 0,
+      "k10_complete": 0
+    },
+    "normal": {
+      "issuer_days": 0,
+      "k10_complete": 0
+    }
+  },
+  "accrual_facts": {
+    "flagged_artifacts_total": 34,
+    "flagged_artifacts_flag_split": {
+      "normal": 29,
+      "elevated": 5
+    },
+    "flagged_artifact_date_range": [
+      "2026-01-23",
+      "2026-07-13"
+    ],
+    "live_window_start": "2026-07-16",
+    "events_raw_rows_since_live_start": 153,
+    "finding": "ingestion is live but NO risk-channel artifacts exist for post-2026-07-16 filings \u2014 the v5 specialized C6 runs are not executing on live filings; arm accrual rate is zero until they resume"
+  },
+  "projection": "indeterminate at zero accrual; historical batch rate (~1.4 artifacts/week, ~0.2 elevated/week) implies n>=10/arm is many weeks out even after resumption",
+  "cells_computed": 0,
+  "n_secondary_cells": 0
+}

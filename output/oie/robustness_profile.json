@@ -1,0 +1,173 @@
+{
+  "protocol_id": "cd0497d1a10b",
+  "method_hash": "921ffdd80bf1febd",
+  "built_utc": "2026-07-30 07:39 UTC",
+  "smh": {
+    "cells": {
+      "k=5 (backfill)": {
+        "estimate": -2.416,
+        "ci": [
+          -8.01,
+          1.09
+        ],
+        "n": 45,
+        "G": 8,
+        "badge": "DESCRIPTIVE"
+      },
+      "k=10 (backfill)": {
+        "estimate": -5.779,
+        "ci": [
+          -11.64,
+          -1.67
+        ],
+        "n": 45,
+        "G": 8,
+        "badge": "PRELIMINARY"
+      },
+      "k=20 backfill (base)": {
+        "estimate": -5.876,
+        "ci": [
+          -13.28,
+          2.01
+        ],
+        "n": 45,
+        "G": 8,
+        "badge": "DESCRIPTIVE"
+      },
+      "k=60 (backfill only)": {
+        "estimate": -12.315,
+        "ci": [
+          -30.93,
+          7.66
+        ],
+        "n": 24,
+        "G": 7,
+        "badge": "UNDERPOWERED"
+      },
+      "trend>=0 (k=20 bf)": null,
+      "trend<0 (k=20 bf)": null,
+      "vol-high (k=20 bf)": {
+        "estimate": -5.016,
+        "ci": [
+          -21.18,
+          6.75
+        ],
+        "n": 23,
+        "G": 7,
+        "badge": "UNDERPOWERED"
+      },
+      "vol-low (k=20 bf)": {
+        "estimate": -7.015,
+        "ci": [
+          -13.7,
+          1.18
+        ],
+        "n": 22,
+        "G": 8,
+        "badge": "DESCRIPTIVE"
+      },
+      "era: live (k=20)": {
+        "estimate": 4.597,
+        "ci": [
+          -8.22,
+          18.01
+        ],
+        "n": 34,
+        "G": 8,
+        "badge": "DESCRIPTIVE"
+      }
+    },
+    "summary": {
+      "base_cell": "k=20 backfill (base)",
+      "base_sign": -1,
+      "n_computed": 7,
+      "sign_held": 6,
+      "coherence_fraction": 0.857,
+      "ci_excluded_zero": 1,
+      "breaks": [
+        "era: live (k=20)"
+      ],
+      "underpowered": [
+        "k=60 (backfill only)",
+        "vol-high (k=20 bf)"
+      ],
+      "empty": [
+        "trend<0 (k=20 bf)",
+        "trend>=0 (k=20 bf)"
+      ]
+    }
+  },
+  "lab": {
+    "cells": {
+      "k=1": {
+        "estimate": 0.393,
+        "ci": [
+          -0.04,
+          0.86
+        ],
+        "n": 848,
+        "G": 67,
+        "badge": "DESCRIPTIVE"
+      },
+      "k=5 (base)": {
+        "estimate": 0.771,
+        "ci": [
+          -0.87,
+          2.39
+        ],
+        "n": 784,
+        "G": 64,
+        "badge": "DESCRIPTIVE"
+      },
+      "trend>=0 (k=5)": null,
+      "trend<0 (k=5)": null,
+      "vol-high (k=5)": {
+        "estimate": 0.332,
+        "ci": [
+          -2.59,
+          3.55
+        ],
+        "n": 416,
+        "G": 62,
+        "badge": "DESCRIPTIVE"
+      },
+      "vol-low (k=5)": {
+        "estimate": 1.295,
+        "ci": [
+          -0.28,
+          3.12
+        ],
+        "n": 368,
+        "G": 55,
+        "badge": "DESCRIPTIVE"
+      },
+      "k=20": {
+        "estimate": -1.287,
+        "ci": [
+          -5.87,
+          3.21
+        ],
+        "n": 528,
+        "G": 61,
+        "badge": "DESCRIPTIVE"
+      }
+    },
+    "summary": {
+      "base_cell": "k=5 (base)",
+      "base_sign": 1,
+      "n_computed": 5,
+      "sign_held": 4,
+      "coherence_fraction": 0.8,
+      "ci_excluded_zero": 0,
+      "breaks": [
+        "k=20"
+      ],
+      "underpowered": [],
+      "empty": [
+        "trend<0 (k=5)",
+        "trend>=0 (k=5)"
+      ]
+    }
+  },
+  "expected_fp_line": "449 secondary cells ledgered registry-wide; expected false positives at alpha=0.05: 22.45"
+}
