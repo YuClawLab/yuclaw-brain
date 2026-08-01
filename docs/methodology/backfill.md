@@ -207,3 +207,29 @@ scorer's rank association with 5-day forward returns on the forward window
 from 2026-07-31. Any future question of promoting it into the composite
 will cite that endpoint and nothing else, under a separate registered
 decision.
+
+---
+
+## v5.2 — The estimator ladder (what each benchmark controls for)
+
+Every CAR panel on the site links here. The ladder, weakest control to
+strongest, with what each rung does and does not remove:
+
+1. **SPY-relative (market model).** Removes broad-market movement. Does not
+   remove sector or style composition — in a strong sector regime its
+   "abnormal" return is dominated by the sector factor, which is exactly
+   what it shows. Always reported beside the peer model, never averaged.
+2. **Peer-basket model.** Each name against the equal-weight rest of its
+   covered sleeve. Removes the sleeve-common factor (the sector melt-up /
+   melt-down). Does not remove issuer-level factor tilts within the sleeve.
+3. **Factor context (owned factors only).** Where the site conditions or
+   neutralizes, it uses only factors computable from its own store: market
+   beta (trailing 60d vs SPY), prior-60d momentum, trailing-20d volatility,
+   and same-day matched controls on those factors. It does not own a
+   commercial factor model, sector classifications for individual equities,
+   or commodity/FX factor data — so it does not claim factor-neutrality
+   beyond the factors listed, and the "sector-neutral" cell is reported as
+   not computable rather than proxied.
+
+Rungs are reported side by side wherever they apply; a result that only
+holds on one rung says so.
