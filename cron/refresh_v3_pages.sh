@@ -86,6 +86,11 @@ print('[registry] chain OK')" || exit 19
 if [ "$(date +%u)" = "5" ]; then
     /usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
 fi
+# Note-reconciliation gate (P0.4, 2026-08-01): the published note must agree
+# with the registry and the evidence store — hard gate whenever a note exists.
+/usr/bin/python3 tools/check_weekly_note.py || exit 24
+# Universe-integrity gate (P1.7): threshold-table match + delisting watch.
+/usr/bin/python3 tools/check_universe_integrity.py || exit 25
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.

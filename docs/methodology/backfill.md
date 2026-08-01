@@ -264,7 +264,7 @@ rather than adjusted. Recorded snapshots are never retroactively re-priced.
 
 **Trading-day convention.** Day 0 is the first trading day on or after an
 event timestamp's date; all windows, horizons (k), lags, and linkage rules
-count TRADING days from the store's trading calendar, never calendar days,
+count TRADING days from the store's trading calendar (the distinct trade dates actually present in the price store — exchange holidays are simply absent from that calendar, so no separate holiday table exists or is needed), never calendar days,
 unless a panel explicitly says "calendar days" (the cascade lag is the one
 such case).
 

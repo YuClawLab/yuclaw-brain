@@ -429,7 +429,10 @@ def baselines_block() -> str:
         Interpretation note: yesterday's score and today's are highly overlapping (the composite moves
         slowly), so the persistence comparison is not between independent signals — a one-day-lagged copy
         of a slow-moving score can rank ahead at short horizons under reversal-like return structure
-        without containing any information the composite lacks.
+        without containing any information the composite lacks. Because it re-uses yesterday's own composite, this
+        baseline measures day-over-day continuity and smoothing behavior, not an independent
+        competitor strategy — the honest reading is that the daily composite is noisy at k=5,
+        not that a rival wins.
         Investment implication: none established — no buy, sell, or alpha conclusion is supported by
         this page.
       </p>"""

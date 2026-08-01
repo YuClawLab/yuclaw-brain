@@ -59,10 +59,31 @@ def gather(start: date, end: date) -> dict:
         j = json.loads(f.read_text())
         c = j.get("counts", {})
         nf = c.get("new_filings") or {}
-        ne = c.get("new_events") or {}
         total_filings += sum(nf.values())
-        total_events += sum(ne.values())
         days += 1
+
+    # events accepted: DIRECT evidence-store count for the true window
+    # (acceptance time), split canonical scoring universe vs evidence tier —
+    # single source, no digest intermediary (correction of 2026-08-01).
+    import psycopg2
+    from v3.lab.cohort_engine import DSN
+    from v3.universe_tiers import evidence_tier_tickers, scoring_universe
+    ev_canon = ev_tier = 0
+    with psycopg2.connect(DSN) as cn:
+        cn.set_session(readonly=True)
+        with cn.cursor() as cur:
+            cur.execute(
+                """SELECT ticker, count(*) FROM events
+                   WHERE event_status='accepted'
+                     AND created_at::date BETWEEN %s AND %s
+                   GROUP BY 1""", (start, end))
+            tier = evidence_tier_tickers()
+            canon = scoring_universe()
+            for tk, n in cur.fetchall():
+                if tk in tier:
+                    ev_tier += n
+                elif tk in canon:
+                    ev_canon += n
 
     from yuclaw_protocol_registry import Registry
     reg = Registry(str(_REPO / "registry" / "protocols.jsonl"))
@@ -76,7 +97,9 @@ def gather(start: date, end: date) -> dict:
         if ln["kind"] == "supersede_notice" and start.isoformat() <= pl["date"] <= end.isoformat():
             sups.append(f"{pl['protocol_id']} -> {pl['superseded_by']}")
     questions = {k: v["status"] for k, v in reg.questions().items()}
-    return {"days": days, "filings": total_filings, "events": total_events,
+    return {"days": days, "filings": total_filings,
+            "events_canonical": ev_canon, "events_tier": ev_tier,
+            "events": ev_canon + ev_tier,
             "protocols": protos, "n_runs": len(runs), "supersessions": sups,
             "questions": questions}
 
@@ -136,7 +159,12 @@ def main() -> int:
     <div class="panel">
       <div class="panel-title">Ingestion</div>
       <p style="font-size:13px;color:#A0AEC0">{g['filings']} new filings across {g['days']} archived
-      days; {g['events']} events accepted into the evidence store (as counted by the daily digest: accepted events recorded on each archived day, across all covered verticals).</p>
+      days; {g['events']} events accepted into the evidence store in the window
+      ({g['events_canonical']} on scoring-universe names, {g['events_tier']} on evidence-tier
+      names — counted directly from the store by acceptance time).</p>
+      <p style="font-size:11px;color:#718096;margin-top:6px">Counts corrected 2026-08-01;
+      the generator now reads the registry and the evidence store directly (a prior build
+      under-counted events via a digest-field mismatch).</p>
     </div>
 
     <div class="panel">
