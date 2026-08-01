@@ -54,6 +54,60 @@ def _fmt_rate(x: Any) -> str:
     return f"{x*100:.0f}%"
 
 
+
+
+def _calibration_panel() -> str:
+    """Label calibration panel (registered protocol; credibility battery,
+    2026-08-01): what each classification has historically preceded —
+    measured, not promised. Reads the recorded run artifact; renders
+    nothing when absent."""
+    import json as _json
+    from pathlib import Path as _P
+    src = _P(__file__).resolve().parents[2] / "output" / "oie" / "label_calibration.json"
+    if not src.exists():
+        return ""
+    d = _json.loads(src.read_text())
+    pr = d["primary"]
+    rows = []
+    for lbl, row in d["table"].items():
+        c = row.get("k20") or {}
+        cons = c.get("consistency")
+        rows.append(
+            f"<tr><td style='padding:6px 12px;color:#E2E8F0;font-family:JetBrains Mono,monospace;font-size:12px'>{lbl}</td>"
+            f"<td style='padding:6px 12px;color:#718096;font-size:11px'>{row['directional']}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>{row['n']}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>"
+            f"{(str(round(c['mean_excess']*100,2)) + '%') if c.get('mean_excess') is not None else '—'}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>"
+            f"{(format(cons, '.2f')) if cons is not None else '—'}</td>"
+            f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{c.get('badge', '—')}</td></tr>")
+    seen = set(d["table"])
+    absent = [l for l in ("STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
+                          "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH",
+                          "RISK_ALERT") if l not in seen]
+    return f"""
+    <div class="card">
+      <div class="card-title">Label calibration — what each classification has historically preceded (measured, not promised)</div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:10px">
+        protocol {d['protocol_id']} · forward ledger only · registered before computation · benchmark-relative outcomes at k=20</div>
+      <table>
+        <thead><tr><th>Label</th><th>Direction class</th><th>n outcomes</th><th>Mean excess k=20</th><th>Direction consistency</th><th>Badge</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Registered primary: pooled direction-consistency of the directional labels at k=20 =
+        <strong style="color:#E2E8F0">{pr['consistency_k20']:.3f}</strong>
+        CI ({pr['ci'][0]:.3f}, {pr['ci'][1]:.3f}) [{pr['badge']}] over n={pr['n']} outcomes /
+        {pr['n_tickers']} clustered tickers — the interval includes 0.5, so directional meaning is not
+        yet demonstrated at this sample; that is the finding, printed as measured. STRONG_BULLISH reads
+        anti-consistent at k=20 at current n — also printed as measured; the record accrues daily.
+        Labels with no forward outcomes yet: {', '.join(absent) or 'none'}. Non-directional labels carry
+        no consistency claim by construction. Investment implication: none established — no buy, sell,
+        or alpha conclusion is supported by this page.
+      </p>
+    </div>"""
+
+
 def _label_color(label: str) -> str:
     if label in ("STRONG_BULLISH", "BULLISH"):
         return "#00E676"
@@ -187,6 +241,8 @@ def render(panels: dict[str, Any]) -> str:
       Cohort-level event study: <a href="validation_lab.html"
       style="color:#00E676;text-decoration:none">Validation Lab →</a>
     </div>
+
+    {_calibration_panel()}
 
     <div class="disclaimer">
       <strong>DISCLAIMER —</strong> {escape(COMPLIANCE_FOOTER)}
