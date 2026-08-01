@@ -375,6 +375,62 @@ def fields_review_panels() -> str:
                 f"{str(exc)[:120]} -->")
 
 
+# ------------------------------------------------------------ baselines
+def baselines_block() -> str:
+    """Public Baselines panel (credibility battery, 2026-08-01) — the
+    composite vs five deterministic baselines, pre-registered; ties and
+    losses print as measured."""
+    data = _load("baselines_run.json")
+    if not data:
+        return ""
+    label = {"composite": "Composite (the platform's score)",
+             "random": "Random rank (seeded)",
+             "momentum60": "Momentum rank (prior 60d return)",
+             "reversal5": "Short-reversal rank (prior 5d, inverted)",
+             "persistence": "Previous-day-score persistence",
+             "equal_weight": "Equal-weight component composite"}
+    rows = []
+    for n in ("composite", "random", "momentum60", "reversal5",
+              "persistence", "equal_weight"):
+        t = data["table"][n]
+        d5 = data["diffs_k5"].get(n)
+        diff_cell = ("<td style='padding:6px 12px;color:#718096'>—</td>"
+                     if not d5 else
+                     f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;font-size:11px;"
+                     f"color:{'#FF3366' if d5['diff'] < 0 else '#A0AEC0'}'>"
+                     f"{d5['diff']:+.4f} ({d5['ci'][0]:+.4f}, {d5['ci'][1]:+.4f}) "
+                     f"<span style='color:#718096'>[{d5['badge']}]</span></td>")
+        hl = " style='background:#1A2334'" if n == "composite" else ""
+        rows.append(
+            f"<tr{hl}><td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>{label[n]}</td>"
+            + "".join(f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>"
+                      f"{t[str(k)]['mean_ic']:+.4f}</td>" if t[str(k)]['mean_ic'] is not None
+                      else "<td style='padding:6px 12px;color:#718096'>—</td>"
+                      for k in (1, 5, 20))
+            + diff_cell + "</tr>")
+    pr = data["primary"]
+    body = f"""
+      <table>
+        <thead><tr><th>Strategy</th><th>Mean IC k=1</th><th>Mean IC k=5</th><th>Mean IC k=20</th><th>Composite − baseline @k=5 (clustered CI)</th></tr></thead>
+        <tbody>{''.join(rows)}</tbody>
+      </table>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        Most platforms never test this. The comparison is pre-registered; results appear as measured.
+        Registered primary: composite minus the top-scoring baseline per the registered argmax rule
+        ({escape(data['best_baseline_k5'])}) at k=5 =
+        <strong style="color:{'#FF3366' if pr['diff'] < 0 else '#E2E8F0'}">{pr['diff']:+.4f}</strong>
+        CI ({pr['ci'][0]:+.4f}, {pr['ci'][1]:+.4f}) [{escape(pr['badge'])}] over
+        {data['window']['n_dates']} forward dates / {data['window']['n_tickers']} clustered tickers.
+        At this sample the persistence baseline reads ahead of the composite at k=5 — printed exactly as
+        measured; the window is young and the comparison recomputes as the record accrues.
+        Investment implication: none established — no buy, sell, or alpha conclusion is supported by
+        this page.
+      </p>"""
+    return _panel("baselines", "Baselines — the composite vs simple alternatives (registered)",
+                  f"protocol {escape(data['protocol_id'])} · forward-OOS · registered before computation",
+                  body)
+
+
 # ------------------------------------------------------------ lab clustered
 def lab_clustered_block() -> str:
     data = _load("lab_clustered_run.json")
