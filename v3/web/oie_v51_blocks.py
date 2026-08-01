@@ -431,6 +431,26 @@ def baselines_block() -> str:
                   body)
 
 
+def _qualified_rows() -> str:
+    """Qualified-pool clustered spreads (registered addendum, Part D)."""
+    data = _load("qualified_clustered.json")
+    if not data:
+        return ""
+    rows = []
+    for k in ("1", "5", "20"):
+        r = data["results"].get(k)
+        if not r:
+            continue
+        rows.append(
+            f"<tr><td style='padding:6px 12px;color:#A0AEC0;font-family:JetBrains Mono,monospace;font-size:12px'>Evidence-Qualified pool · k={k}{' — addendum primary' if k == '5' else ''}</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>{r['spread_mean']*100:+.2f}%</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#4DD0E1;font-size:11px'>({r['cluster_ci'][0]*100:+.2f}%, {r['cluster_ci'][1]*100:+.2f}%)</td>"
+            f"<td colspan='2' style='padding:6px 12px;color:#718096;font-size:11px'>qualified cross-section only (protocol {escape(data['protocol_id'])})</td>"
+            f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>{r['n_dates']}d/{r['G_tickers']}t</td>"
+            f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(r['badge'])}</td></tr>")
+    return ("<table><tbody>" + "".join(rows) + "</tbody></table>") if rows else ""
+
+
 # ------------------------------------------------------------ neutralized IC
 def neutralized_ic_block() -> str:
     """Raw vs neutralized IC panel (review completion, 2026-08-01)."""
@@ -498,6 +518,7 @@ def lab_clustered_block() -> str:
           <thead><tr><th>Horizon</th><th>Mean spread</th><th>Ticker-cluster CI (primary)</th><th>Wild-cluster CI (small-G remedy)</th><th>Naive CI (comparison)</th><th>dates/tickers</th><th>Badge</th></tr></thead>
           <tbody>{''.join(rows)}</tbody>
         </table>
+        {_qualified_rows()}
         <p style="font-size:11px;color:#718096;margin-top:6px">
           Same tickers recur in deciles across dates; the ticker-clustered CI absorbs that dependence, the
           naive date-resample CI does not. Estimator differs from the per-rebalance spreads above (per-signal-date
