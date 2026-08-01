@@ -34,6 +34,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.evidence_packets || exit 10
 # AI evidence layer (2026-08-01): machine-readable index for agents.
 /usr/bin/python3 tools/yuclaw_evidence_index.py || exit 22
+# Statistic audit-diff (2026-08-01): headline changes with cause tags.
+/usr/bin/python3 tools/yuclaw_audit_diff.py || echo "[refresh_v3_pages] audit diff failed (non-fatal)"
 # Validation Lab (added 2026-07-05 — was a one-time v4.2 artifact and went
 # stale; now rebuilt daily so the page's freshness stamp stays honest).
 /usr/bin/python3 -m v3.web.render_validation_lab || exit 6

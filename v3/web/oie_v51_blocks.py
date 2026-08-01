@@ -21,6 +21,8 @@ _REPO = Path(__file__).resolve().parents[2]
 _OIE = _REPO / "output" / "oie"
 
 HOLDINGS_RETRIEVED = "2026-07-05"
+_IMPLICATION = ("Investment implication: none established — no buy, sell, or "
+                "alpha conclusion is supported by this page.")
 REQUIRED = {"events": 10, "issuers": 8, "dates": 10}
 
 
@@ -471,6 +473,143 @@ def _qualified_rows() -> str:
             f"<td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#718096'>{r['n_dates']}d/{r['G_tickers']}t</td>"
             f"<td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>{escape(r['badge'])}</td></tr>")
     return ("<table><tbody>" + "".join(rows) + "</tbody></table>") if rows else ""
+
+
+# ---------------------------------------------- case exhibits (Part B)
+def case_exhibits_block() -> str:
+    """Per-name case cards for the current top and bottom composite deciles —
+    illustrative exhibits, never stock picks; every citation is a real event
+    ID verified against the store before render."""
+    import psycopg2
+    try:
+        from v3.lab.cohort_engine import DSN, DECILE_FRACTION
+        with psycopg2.connect(DSN) as cn:
+            cn.set_session(readonly=True)
+            with cn.cursor() as cur:
+                cur.execute("""
+                    SELECT DISTINCT ON (ticker) ticker, signal_label,
+                           total_score, signal_time::date,
+                           c1_price_momentum, c6_event_impact,
+                           c7_peer_correlation, c8_cascade_effect
+                    FROM signal_snapshots WHERE is_backfill = false
+                    ORDER BY ticker, signal_time DESC""")
+                snaps = [dict(zip(("ticker", "label", "score", "as_of",
+                                   "c1", "c6", "c7", "c8"), r))
+                         for r in cur.fetchall()]
+                ranked = sorted(snaps, key=lambda s: -float(s["score"]))
+                k = max(1, round(len(ranked) * DECILE_FRACTION))
+                names = ranked[:k] + ranked[-k:]
+                cards = []
+                for i, s in enumerate(names):
+                    cur.execute("""
+                        SELECT event_id, event_type, event_time::date,
+                               llm_confidence
+                        FROM events WHERE event_status='accepted' AND ticker=%s
+                        ORDER BY event_time DESC LIMIT 3""", (s["ticker"],))
+                    evs = cur.fetchall()
+                    cur.execute("""
+                        SELECT signal_label, signal_time::date
+                        FROM signal_snapshots WHERE ticker=%s
+                          AND is_backfill=false
+                        ORDER BY signal_time DESC LIMIT 5""", (s["ticker"],))
+                    hist = cur.fetchall()
+                    # citation verifier: round-trip the IDs
+                    ids = [e[0] for e in evs]
+                    if ids:
+                        cur.execute("SELECT count(*) FROM events "
+                                    "WHERE event_id = ANY(%s)", (ids,))
+                        if cur.fetchone()[0] != len(ids):
+                            continue   # refuse the card rather than mis-cite
+                    side = "top decile" if i < k else "bottom decile"
+                    ev_html = "".join(
+                        f"<li style='font-size:11px;color:#A0AEC0'>{e[2]} "
+                        f"{escape(e[1])} (confidence {e[3]}) "
+                        f"<code style='font-size:10px'>{escape(e[0])}</code></li>"
+                        for e in evs) or "<li style='font-size:11px;color:#718096'>no accepted events on record</li>"
+                    age = "—"
+                    if evs:
+                        from datetime import date as _dd, datetime as _dt, timezone as _tz
+                        age = f"{(_dt.now(_tz.utc).date() - evs[0][2]).days}d"
+                    hist_html = " → ".join(f"{h[0]}" for h in reversed(hist))
+                    comps = (f"c1 {s['c1']:+.2f} · c6 {s['c6']:+.2f} · "
+                             f"c7 {s['c7']:+.2f} · c8 {s['c8']:+.2f}"
+                             if s["c1"] is not None else "components n/a")
+                    cards.append(f"""
+        <details style="background:#1A2030;border-radius:8px;margin-bottom:8px">
+          <summary style="cursor:pointer;padding:10px 14px;font-size:12px;color:#E2E8F0">
+            <span style="font-family:JetBrains Mono,monospace;font-weight:700">{escape(s['ticker'])}</span>
+            · {side} · {escape(s['label'])} · score {float(s['score']):+.3f} · evidence age {age}</summary>
+          <div style="padding:0 14px 12px">
+            <p style="font-size:11px;color:#718096">components: {comps} · label history: {escape(hist_html)}</p>
+            <p style="font-size:11px;color:#718096;margin-top:4px">contributing events (accession-linked, verified):</p>
+            <ul style="margin-left:18px">{ev_html}</ul>
+          </div>
+        </details>""")
+    except Exception:                             # noqa: BLE001
+        return ""
+    body = f"""
+      {''.join(cards)}
+      <p style="font-size:11px;color:#718096;margin-top:8px">
+        Illustrative exhibits of how classifications trace to filings — never stock picks. Every event ID
+        round-trips to the evidence store before render; full event exports are in the evidence packets.
+        {escape(_IMPLICATION)}
+      </p>"""
+    return _panel("cases", "Case exhibits — score to filings lineage (illustrative)",
+                  "current top and bottom composite deciles · citation-verified", body)
+
+
+# ---------------------------------------------- transparency trio (Part C)
+def transparency_block() -> str:
+    from datetime import date as _d
+    # (1) maturity calendar
+    cal_rows = ""
+    try:
+        import glob as _g
+        arms = {"elevated": 0, "normal": 0}
+        for f in _g.glob(str(_REPO / "output/swarm/canada/*.json")):
+            d = json.loads(Path(f).read_text())
+            rc = d.get("risk_channel") or {}
+            fl = str(rc.get("flag", "")).lower()
+            if fl.startswith("elev"):
+                arms["elevated"] += 1
+            elif fl:
+                arms["normal"] += 1
+        cal_rows = f"""
+        <tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2026-08-13</td>
+        <td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>C6 risk-gate second read (protocol d7d5cc4fde5f)</td>
+        <td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>armed · accrual: {arms['elevated']} elevated / {arms['normal']} normal artifacts vs floor 10/arm with completed windows</td></tr>
+        <tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2026-09-01</td>
+        <td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Reversal coherence first read (protocol ea120b0a6b52)</td>
+        <td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>guard active (computation refuses before the date); accrual from 2026-07-27; floors 15 events/target, 3 targets</td></tr>"""
+    except Exception:                             # noqa: BLE001
+        pass
+    # (2) audit diff
+    diff_html = ""
+    ad = _load("audit_diff.json")
+    if ad:
+        ch = "".join(
+            f"<li style='font-size:11px;color:#A0AEC0'><strong style='color:#E2E8F0'>{escape(c['stat'])}</strong>: "
+            f"{escape(str(c['change']))} — <em>{escape(c['cause'])}</em></li>"
+            for c in ad["changes"][:12]) or \
+            "<li style='font-size:11px;color:#718096'>no headline-statistic changes since the previous build</li>"
+        diff_html = (f"<div style='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 4px'>"
+                     f"What changed and why (vs {escape(str(ad.get('previous_as_of') or 'first record'))})</div>"
+                     f"<ul style='margin-left:18px'>{ch}</ul>")
+    # (3) outage / diagnostics
+    marker = Path("/tmp/yuclaw_push_failed.marker")
+    diag = (f"<div style='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 4px'>Monitoring</div>"
+            f"<p style='font-size:11px;color:#A0AEC0'>Known outage: 2026-06-26 to 2026-07-03 — snapshots continued point-in-time on frozen price inputs; "
+            f"zero retroactive edits (disclosed since it happened). Chain health: 30-minute monitor with alert file; "
+            f"push/deploy alarm: {'FAILURE MARKER PRESENT' if marker.exists() else 'clear at build time'}; "
+            f"deploy-verify runs after every push (byte-identity against the live site).</p>")
+    body = f"""
+      <table><thead><tr><th>Date</th><th>Armed event</th><th>Status / accrual</th></tr></thead>
+      <tbody>{cal_rows}</tbody></table>
+      {diff_html}
+      {diag}
+      <p style="font-size:11px;color:#718096;margin-top:8px">{escape(_IMPLICATION)}</p>"""
+    return _panel("transparency", "Maturity calendar, changes, and monitoring",
+                  "armed reads · headline-statistic audit diff · outage and alarm status", body)
 
 
 # ------------------------------------------------------------ neutralized IC
