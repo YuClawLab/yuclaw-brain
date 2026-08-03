@@ -13,4 +13,7 @@ LOG=/home/zhangd2/yuclaw/services/u350_shadow.log
     /usr/bin/python3 v3/u350/shadow_ops.py "$step" || \
       echo "[u350-shadow] step '$step' rc=$? (logged, continuing)"
   done
+  # Phase-A verification harness: health line + phase_a_log.jsonl record
+  /usr/bin/python3 tools/u350_phase_health.py || \
+    echo "[u350-shadow] phase health rc=$? (logged, continuing)"
 } >> "$LOG" 2>&1
