@@ -64,6 +64,11 @@ CREATE TABLE IF NOT EXISTS {SCHEMA}.events
     (LIKE public.events INCLUDING ALL);
 CREATE TABLE IF NOT EXISTS {SCHEMA}.rejected_events
     (LIKE public.rejected_events INCLUDING ALL);
+-- LIKE INCLUDING ALL copies serial DEFAULTs that point at the PUBLIC
+-- sequences, which the role is (correctly) refused. Twins get their own.
+CREATE SEQUENCE IF NOT EXISTS {SCHEMA}.events_raw_raw_id_seq;
+ALTER TABLE {SCHEMA}.events_raw ALTER COLUMN raw_id
+    SET DEFAULT nextval('{SCHEMA}.events_raw_raw_id_seq');
 """
 
 
@@ -290,8 +295,15 @@ def cmd_score() -> int:
 
 
 # price-derived components that must compute every shadow day; evidence
-# components (c2, c6, c8, c9) self-mask on absence and are exempt
+# components (c2, c6, c8, c9) self-mask on absence and are exempt.
+# A component-day whose rationale carries a STRUCTURAL marker is out of
+# the component's coverage by construction (e.g. C7's peer-cohort map is
+# a U79-only table — extending it would change U79 names' own C7 via the
+# cohort majorities, which is forbidden). Structural inactivity is
+# DISCLOSED, never counted as a completeness failure; a component that
+# computed on some days and missed others is a real failure.
 ALWAYS_ON = ("c1", "c3", "c4", "c5", "c7")
+STRUCTURAL_MARKERS = ("no sector cohort", "not yet implemented")
 
 
 def cmd_guards() -> int:
@@ -303,14 +315,26 @@ def cmd_guards() -> int:
             per: dict[str, list] = {}
             for tk, comps in cur.fetchall():
                 per.setdefault(tk, []).append(comps)
+            structural: dict[str, int] = {}
             for tk, days in per.items():
                 for cid in ALWAYS_ON:
-                    n = sum(1 for d in days
-                            if (d.get(cid) or {}).get("confidence", 0) > 0)
-                    if n / len(days) < 0.95:
+                    ok = miss = struct = 0
+                    for d in days:
+                        c = d.get(cid) or {}
+                        if c.get("confidence", 0) > 0:
+                            ok += 1
+                        elif any(mk in (c.get("rationale") or "")
+                                 for mk in STRUCTURAL_MARKERS):
+                            struct += 1
+                        else:
+                            miss += 1
+                    if struct == len(days):
+                        structural[cid] = structural.get(cid, 0) + 1
+                        continue        # disclosed below, not a failure
+                    if ok / max(ok + miss, 1) < 0.95:
                         problems.append(
                             f"COMPONENT_INCOMPLETE {tk}.{cid}: computed "
-                            f"{n}/{len(days)} shadow days (<95%)")
+                            f"{ok}/{ok + miss} active shadow days (<95%)")
             # label anomaly: extreme-label share today vs U79 same day
             cur.execute(f"""SELECT signal_label FROM
                 {SCHEMA}.shadow_snapshots
@@ -334,6 +358,10 @@ def cmd_guards() -> int:
         for p in problems:
             print(f"  · {p}")
         return 1
+    for cid, n in sorted(structural.items()):
+        print(f"[guards] disclosure — {cid} STRUCTURALLY_INACTIVE for {n} "
+              f"shadow names (out of the component's coverage map by "
+              f"construction; extending the map would alter U79 scores)")
     print(f"[guards] OK — completeness floor met on {len(per) if per else 0}"
           f" names; no label anomaly (shadow n={len(sh)}, U79 n={len(u79)})")
     return 0

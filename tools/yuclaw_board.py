@@ -49,6 +49,37 @@ def gate_line(name, cmd):
     return f"| {name} | {'PASS' if rc == 0 else 'FAIL'} |"
 
 
+def u350_section() -> str:
+    try:
+        import psycopg2
+        with psycopg2.connect("dbname=yuclaw_events") as cn:
+            with cn.cursor() as cur:
+                cur.execute("""SELECT manifest_hash,
+                                      jsonb_array_length(members)
+                               FROM u350.manifest WHERE phase='A'
+                               ORDER BY locked_at DESC LIMIT 1""")
+                row = cur.fetchone()
+                if not row:
+                    return "Phase A not yet ignited (no manifest)."
+                mh, nm = row
+                cur.execute("""SELECT min(signal_time::date),
+                                      count(DISTINCT signal_time::date),
+                                      count(*) FROM u350.shadow_snapshots""")
+                first, ndays, nsnap = cur.fetchone()
+        rc, out = _run(["python3", "v3/u350/shadow_ops.py", "guards"])
+        guard = "green" if rc == 0 else "FLAGGED — see shadow log"
+        return (f"- manifest `{mh[:16]}` · {nm} members (79 U79 + "
+                f"{nm - 79} shadow)\n"
+                f"- Phase-A clock: day {ndays or 0} of 15-20 trading days "
+                f"(first snapshot {first}); {nsnap or 0} snapshots total\n"
+                f"- guards: {guard} (completeness floor + label anomaly; "
+                f"C7 structurally inactive for shadow names, disclosed)\n"
+                f"- success criterion: system verification (isolation, "
+                f"completeness, guards) — never performance")
+    except Exception as exc:                          # noqa: BLE001
+        return f"(u350 section unavailable: {exc})"
+
+
 def main() -> int:
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     reg = Registry(str(_REPO / "registry" / "protocols.jsonl"))
@@ -123,6 +154,10 @@ Generated {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} from live 
 ## Staging branch
 
 `v5.1-public-staging`: {behind_ahead} · tip: {stip}
+
+## U350 shadow program (Phase A — shadow data is never a forward record; no public claims)
+
+{u350_section()}
 
 ## Standing rules
 
