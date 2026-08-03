@@ -1,0 +1,8 @@
+[Unit]
+Description=YUCLAW U350 Phase-A shadow daily pass (u350 schema only; yields to all U79 work)
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/zhangd2/yuclaw/services/u350_shadow_daily.sh
+WorkingDirectory=/home/zhangd2/yuclaw
+MemoryMax=100G

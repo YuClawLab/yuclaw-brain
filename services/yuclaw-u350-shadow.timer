@@ -1,0 +1,9 @@
+[Unit]
+Description=YUCLAW U350 shadow daily cadence (17:30 local, after price_history_daily 16:45 and the 17:00 v3 daily)
+
+[Timer]
+OnCalendar=Mon..Fri 17:30
+Persistent=true
+
+[Install]
+WantedBy=timers.target
