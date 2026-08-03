@@ -76,6 +76,14 @@ DRIFT_RE = re.compile(
     r"\bproof\b|certificate|mathematical verification|"
     r"\bvalidated\b|conservation law", re.I)
 
+# French claim-words rail: applied to files whose name carries an _FR
+# marker (e.g. YUCLAW_User_Guide_v5.1_FR_source.html). Covers gender/
+# number inflections; accent-insensitive on the e/é variants seen in
+# practice. Same class as the English forbidden ruling words.
+FR_CLAIM_RE = re.compile(
+    r"\bvalidé(?:e|es|s)?\b|\bgaranti(?:e|es|s)?\b|"
+    r"\bcertifié(?:e|es|s)?\b|\bprouvé(?:e|es|s)?\b", re.I)
+
 _QUOTE_LINE_RE = re.compile(r"^\s*>.*$", re.M)          # markdown blockquotes
 _CODE_SPAN_RE = re.compile(r"`[^`]*`")                   # inline code
 _TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$", re.M)      # markdown table rows
@@ -145,7 +153,14 @@ def main(argv: list[str] | None = None) -> int:
             print(f"MISS {arg}: no such file", file=sys.stderr)
             rc = 1
             continue
-        violations = lint_text(path.read_text(errors="replace"), pages_mode=pages_mode)
+        text = path.read_text(errors="replace")
+        violations = lint_text(text, pages_mode=pages_mode)
+        if "_FR" in path.name:
+            for i, line in enumerate(strip_non_authored(text).splitlines(), 1):
+                m = FR_CLAIM_RE.search(line)
+                if m:
+                    violations.append({"line_no": i, "word": m.group(0),
+                                       "line": line.strip()[:120]})
         if violations:
             rc = 1
             print(f"FAIL {arg}: {len(violations)} banned-language hit(s)")

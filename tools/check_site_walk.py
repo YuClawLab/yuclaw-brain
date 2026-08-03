@@ -35,7 +35,8 @@ from pathlib import Path
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 MAX_CLICKS = 3
 
-SOURCE_DOCS = {"YUCLAW_User_Guide_v5.1_source.html"}   # print source for the PDF
+SOURCE_DOCS = {"YUCLAW_User_Guide_v5.1_source.html",     # print source (EN PDF)
+               "YUCLAW_User_Guide_v5.1_FR_source.html"}  # print source (FR PDF)
 
 RE_HREF = re.compile(r'href=[\'"]([^\'"]+)[\'"]')
 RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
