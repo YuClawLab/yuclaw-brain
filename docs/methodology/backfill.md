@@ -286,3 +286,24 @@ The composite score maps to the public vocabulary by fixed thresholds
 RISK_ALERT is not score-mapped: it is a risk-state overlay and never a
 directional claim. The calibration panel measures what these labels have
 actually preceded; the thresholds themselves carry no outcome promise.
+
+---
+
+## U79 / U350 relationship statement (2026-08-02)
+
+Two universes, two records, never blended:
+
+- **U79** — the 79-name scoring universe and its forward record — is
+  canonical and continues untouched forever. Nothing in the expanded-
+  universe program writes into it (enforced by database-level refusals,
+  self-tested on every build), and no U79 statistic is ever recomputed
+  over a different membership.
+- **U350** — the expanded research universe — accrues its own record in
+  its own namespace, beginning as SHADOW data: shadow scores and shadow
+  snapshots are system-verification output, never a forward record, and
+  support no public claims while shadow status holds.
+- **Comparison rules**: any future side-by-side of the two records states
+  both memberships, both windows, and both records' maturity; a statistic
+  computed on one universe is never presented as continuous with the
+  other; admission of any name to U350 happens only through the registered
+  Universe Admission Protocol's six gates.
