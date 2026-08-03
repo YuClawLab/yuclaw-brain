@@ -95,6 +95,11 @@ def _compile(words: list[str]) -> list[tuple[str, re.Pattern]]:
 
 _PATTERNS = _compile(BANNED_DIRECTIVE + BANNED_ADJECTIVE)   # memo prose (full rail)
 _PAGE_PATTERNS = _compile(BANNED_ADJECTIVE)                  # public pages (adjective rail)
+# FR files: the English marketing adjective "premier" is the French ordinal
+# ("first") — an innocent collision, exempted for _FR files only. Every
+# other banned token has no such French homograph (the French cognates are
+# institutionnel/professionnel etc. and do not collide).
+_PAGE_PATTERNS_FR = _compile([w for w in BANNED_ADJECTIVE if w != "premier"])
 
 
 def strip_non_authored(text: str) -> str:
@@ -154,7 +159,17 @@ def main(argv: list[str] | None = None) -> int:
             rc = 1
             continue
         text = path.read_text(errors="replace")
-        violations = lint_text(text, pages_mode=pages_mode)
+        if pages_mode and "_FR" in path.name:
+            violations = []
+            for i, line in enumerate(strip_non_authored(text).splitlines(), 1):
+                m = DRIFT_RE.search(line)
+                hit = m.group(0) if m else next(
+                    (w for w, p in _PAGE_PATTERNS_FR if p.search(line)), None)
+                if hit:
+                    violations.append({"line_no": i, "word": hit,
+                                       "line": line.strip()[:120]})
+        else:
+            violations = lint_text(text, pages_mode=pages_mode)
         if "_FR" in path.name:
             for i, line in enumerate(strip_non_authored(text).splitlines(), 1):
                 m = FR_CLAIM_RE.search(line)

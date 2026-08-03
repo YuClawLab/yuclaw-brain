@@ -36,7 +36,7 @@ DOCS = Path(__file__).resolve().parents[1] / "docs"
 MAX_CLICKS = 3
 
 SOURCE_DOCS = {"YUCLAW_User_Guide_v5.1_source.html",     # print source (EN PDF)
-               "YUCLAW_User_Guide_v5.1_FR_source.html"}  # print source (FR PDF)
+               "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html"}  # print source (FR PDF)
 
 RE_HREF = re.compile(r'href=[\'"]([^\'"]+)[\'"]')
 RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
@@ -44,7 +44,9 @@ RE_LOGO = re.compile(r'<a href="index\.html"[^>]*>\s*<span[^>]*>YU', re.S)
 RE_STAMP = re.compile(r'(built|generated|as of|data through)\s*:?\s*20\d\d-',
                       re.I)
 STATIC_MARK = "<!-- static-page -->"
-DISCLAIMER_RE = re.compile(r'not (investment|financial) advice', re.I)
+# English pages + the FR guide's equivalent ("Ni conseil en investissement")
+DISCLAIMER_RE = re.compile(
+    r'not (investment|financial) advice|ni conseil en investissement', re.I)
 MIN_CHIPS = 8   # nav chips in the shared header (site_header_html)
 CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "XLK Evidence Lens", "Canada Resources",
                "Forward Tracking", "GitHub", "PyPI", "Ledger", "Methodology",

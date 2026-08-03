@@ -189,7 +189,9 @@ def use_in_research_html(packet_href: str | None = None,
     cite_href = packet_href or "validation_lab.html#evidence-packet"
     guide = ('<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
              '<a href="YUCLAW_User_Guide_v5.1.pdf">\U0001F4D6 User Guide (PDF)</a>'
-             ' — from pip install to full verification, six pages.</p>'
+             ' — from pip install to full verification, six pages. · '
+             '<a href="YUCLAW_Guide_Utilisateur_v5.1_FR.pdf">\U0001F4D6 '
+             "Guide de l'utilisateur (FR)</a></p>"
              ) if guide_link else ""
     return f"""
     <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">

@@ -45,6 +45,11 @@ DEFAULT_PATHS = [
     # extension) — previously checked by hand after copy orders
     "YUCLAW_User_Guide_v5.1.pdf",
     "YUCLAW_User_Guide_v5.1_source.html",
+    # French edition (2026-08-03). The English edition + live pages are
+    # canonical per the FR guide's own final disclaimer ("En cas de
+    # divergence, l'édition anglaise et les pages en direct font foi").
+    "YUCLAW_Guide_Utilisateur_v5.1_FR.pdf",
+    "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html",
     "methodology/backfill.md",
     "replay/lab_replay_bundle.json",
     "packets/manifest.json",
