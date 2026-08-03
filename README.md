@@ -2,27 +2,46 @@
 
 # YUCLAW
 
-**Open-Source Evidence-First Financial Research Platform**
+**The open evidence layer for financial research — every claim carries its own audit trail.**
 
+Statistics pre-registered before data. Adverse results published. Every number reproducible by strangers.
+
+![PyPI](https://img.shields.io/pypi/v/yuclaw)
 ![License MIT](https://img.shields.io/badge/License-MIT-green)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
-![PyPI yuclaw 5.0.0](https://img.shields.io/badge/PyPI-yuclaw%205.0.0-orange)
-![Hardware DGX Spark GB10](https://img.shields.io/badge/Hardware-DGX%20Spark%20GB10-76B900)
 ![Ledger git-anchored](https://img.shields.io/badge/Ledger-git--anchored-blue)
 
-Composite research signals tied to SEC filings, a specialist evidence swarm running on
-local models, and a public git-anchored Verified Research Ledger for tamper evidence.
+</div>
 
-**Research and education only — not investment advice.**
-Signal labels are research classifications, not buy/sell recommendations.
+**Verify us before you read us — three commands:**
 
-[Live Dashboard](https://yuclawlab.github.io/yuclaw-brain) ·
-[Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) ·
-[Canada Resources Evidence](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html) ·
-[Open Index Evidence](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) ·
-[Quickstart](#sixty-seconds) ·
-[📖 User Guide (PDF)](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide_v5.1.pdf) ·
-[Methodology](docs/methodology/backfill.md) ·
+```bash
+pip install yuclaw && yuclaw replay-lab     # rebuilds every published Lab statistic — exit 0 = reproduced
+curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/registry/protocols.jsonl   # the protocol chain — statistics locked BEFORE computation, tamper-evident
+make replicate                              # full clean-environment replication
+```
+
+**What you'll find inside:** the baseline test our own composite lost at current
+sample sizes — published under the pre-registered protocol · a label-calibration
+panel that says "directional meaning not yet demonstrated" · retired hypotheses
+preserved with their grounds · 500+ filings shown to be 3 evidence stories ·
+robustness grids that print where results break.
+
+**Research and education only — not investment advice.** Signal labels are
+research classifications, not buy/sell recommendations.
+
+<div align="center">
+
+[Live site (yuclaw.ca)](https://yuclaw.ca) ·
+[Validation Lab](https://yuclaw.ca/validation_lab.html) ·
+[SMH Evidence Lens](https://yuclaw.ca/etf_evidence.html) ·
+[XLK Evidence Lens](https://yuclaw.ca/xlk_evidence.html) ·
+[Canada Resources](https://yuclaw.ca/canada_resources.html) ·
+[Forward Tracking](https://yuclaw.ca/validation.html) ·
+[📖 User Guide (EN)](https://yuclaw.ca/YUCLAW_User_Guide_v5.1.pdf) ·
+[📖 Guide (FR)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_v5.1_FR.pdf) ·
+[Weekly Note](https://yuclaw.ca/weekly_note.html) ·
+[For AI agents → llms.txt](https://yuclaw.ca/llms.txt) ·
 [**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
 [PyPI](https://pypi.org/project/yuclaw)
 
@@ -35,18 +54,47 @@ Signal labels are research classifications, not buy/sell recommendations.
 
 ---
 
+## Why this is different
+
+- **Statistics are registered before they are computed.** Every published
+  statistic names its protocol in a hash-chained, append-only registry
+  ([registry/protocols.jsonl](registry/protocols.jsonl)); estimator changes
+  are supersessions, never edits. Check the chain yourself:
+
+  ```bash
+  python3 - <<'EOF'
+  import sys; sys.path.insert(0, 'tools')
+  from yuclaw_protocol_registry import Registry
+  Registry('registry/protocols.jsonl').verify_chain(); print('chain OK')
+  EOF
+  ```
+
+- **Self-audits publish as measured.** A pre-registered champion-challenger
+  test found a persistence baseline ahead of our own composite at the primary
+  horizon — that table is on the [Lab page](https://yuclaw.ca/validation_lab.html),
+  not in a drawer. The label-calibration panel prints where labels carry no
+  demonstrated directional meaning.
+- **Lenses pass a published admission standard or they don't ship.** The XLK
+  lens is live because it passed the same admission standard the SMH lens
+  registered; verdicts and their reasons print on each page.
+- **The evidence layer is machine-readable.** [llms.txt](https://yuclaw.ca/llms.txt)
+  and [evidence_index.json](https://yuclaw.ca/evidence_index.json) give AI
+  agents stable URLs for every page, packet, and protocol.
+
+---
+
 ## What YUCLAW does
 
-- **Every signal traces to a filing.** Each composite score decomposes into nine components,
-  and every evidence event links to the SEC document it was extracted from — checked
-  against the source text before any signal sees it.
-- **Every snapshot is hashed to a public, tamper-evident ledger — git-anchored, never
-  edited.** Daily signal sets are content-hashed and committed to
-  [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) before pages publish.
-  Outages are disclosed, never backfilled.
-- **Every Lab chart is reproducible bit-for-bit.** `yuclaw replay-lab` (or a standalone
-  stdlib script) rebuilds the cohorts, recomputes every statistic, and re-derives every
-  ledger hash root from published derived data.
+- **Every signal traces to a filing.** Each composite score decomposes into nine
+  components, and every evidence event links to the SEC document it was
+  extracted from — checked against the source text before any signal sees it.
+- **Every snapshot is hashed to a public, tamper-evident ledger — git-anchored,
+  never edited.** Daily signal sets are content-hashed and committed to
+  [yuclaw-trust](https://github.com/YuClawLab/yuclaw-trust) before pages
+  publish. Outages are disclosed, never backfilled.
+- **Every Lab chart is reproducible bit-for-bit.** `yuclaw replay-lab` (or a
+  standalone stdlib script) rebuilds the cohorts, recomputes every statistic,
+  and re-derives every ledger hash root from published derived data.
 
 ---
 
@@ -60,61 +108,27 @@ yuclaw why AMD --as-of 2026-05-20  # bundled offline signal, no backend needed
 
 Live signals for **all** tickers need the local backend
 ([docs/v4/backend_setup.md](docs/v4/backend_setup.md)); the published-data
-commands — `yuclaw replay-lab`, `yuclaw verify`, `yuclaw validation` — work
-anywhere with no backend.
-
-With the backend running, `yuclaw why NVDA` looks like this (backend-mode
-output):
-
-```text
-NVDA composite score: +0.299  (signal label: NEUTRAL)
-
-Components (score × weight × confidence):
-  C1 Momentum        +0.46   (weight 0.12)
-  C2 Volume          +0.00   (weight 0.08)
-  C3 Sector          -0.15   (weight 0.12)
-  C4 Macro           +0.60   (weight 0.15)
-  C5 Oil/Rates/FX    -0.47   (weight 0.05)
-  C6 Event Impact    +0.16   (weight 0.18)
-  C7 Peer Corr       +0.95   (weight 0.10)
-  C8 Cascade         +0.00   (weight 0.12)
-  C9 Model Trust     +0.00   (weight 0.08)
-
-Top contributing events (last 7 days):
-  ↑  +0.02  2026-05-14  M_AND_A_CLOSE (d1 cascade)
-              CASCADE d1 via HPE→NVDA (supply, w=0.15) from HPE: H3C divestiture
-              source: https://www.sec.gov/Archives/edgar/data/1645590/...
-
-Compliance: Research only. Not financial advice. Not a registered investment advisor.
-```
-
-Then, check the receipts yourself:
-
-```bash
-yuclaw replay-lab
-```
-
-Fetches the public replay bundle and reproduces the Validation Lab off-box. At the v5.1.0
-release this ran from a brand-new environment — a fresh venv with nothing but
-`pip install yuclaw` — and reproduced **33 daily ledger roots exactly (2,926 leaf hashes
-recomputed)** and every published statistic, exit 0. It exits non-zero on any mismatch.
+commands work anywhere with no backend. At the v5.1.0 release, `replay-lab`
+ran from a fresh venv with nothing but `pip install yuclaw` and reproduced
+**33 daily ledger roots exactly (2,926 leaf hashes recomputed)** and every
+published statistic, exit 0. It exits non-zero on any mismatch.
 
 ---
 
-## What shipped in v5.0
+## What shipped in v5.1
 
 | Component | Measured / Shipped | Status |
 |---|---|---|
-| **Layer 0 — evidence job queue** | 281-filing real-data backfill: 281/281 succeeded, 0 dead-letter (`90f23392`) | Complete |
-| **Layer 1 — specialist evidence swarm** | 10 event-type specialists: ma, insider, regulatory, supplychain, macro, geopolitical, earningsquality, litigation, sentimentdrift, esg (`1b2b2e07`, `745df911`) | Complete, in production |
-| **Two-tier local inference** | Gemma 4 26B A4B worker (specialists/debate) + Llama 3.1 70B (extraction/synthesis), both via local Ollama (`21bdbc17`) | Live — zero cloud LLM dependency |
-| **Prose-first ingestion** | worker persists exhibit/MD&A prose; corpus grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85 (`f130983e`, live port `b1b153a0`) | Live |
-| **Live reclassify rescue** | corrected event-type layer reproduces the stored corpus 97/97 (`67487eb2`) | Live |
-| **C6 risk channel** | rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16) (`c28f8542`, `aba72e89`) | Partial — sign pending |
+| **Full command surface on PyPI** | `events` / `lens` / `export` / `memo` subcommands ship in the published wheel (previously main-checkout only) | Live |
+| **Protocol registry** | hash-chained, append-only pre-registration ledger; 60+ entries; supersession-only edits; chain-verified in the daily gate suite | Live |
+| **Public engine panels** | evidence structure, context robustness, evidence lifecycle — derived from run artifacts, regenerated daily | Live |
+| **Champion-challenger baselines** | pre-registered; the persistence baseline finished ahead of the composite at the primary horizon at current n — published as measured | Published |
+| **Label calibration** | pooled consistency with CIs; panels state where directional meaning is not yet demonstrated | Published |
+| **SMH + XLK evidence lenses** | both passed the published admission standard; foreign-filer 6-K/20-F/40-F prose paths live | Live |
+| **Layer 0/1 evidence swarm** | 10 event-type specialists on local models; prose-first ingestion (grounding 0.52 → 0.75, citation fidelity 0.66 → 0.85) | Live |
+| **C6 risk channel** | rareness confirmed OOS (22.2% fire rate, n=9 held-out); sign unconfirmed — first read under the v2 protocol printed INCONCLUSIVE (2026-07-30); accrual continues | Partial — sign pending |
 | **Layers 2–10** | roadmap — **explicitly gated on out-of-sample sign confirmation** for the risk channel | Gated, not built |
-| **Canada Resources evidence tier** | 49 SEC filers across XEG/ZEO/GDX/URNM; 6-K/40-F prose path; evidence-only, never scored; MJDS insider scope disclosed ([live dashboard](https://yuclawlab.github.io/yuclaw-brain/canada_resources.html)) | Live |
-
----
+| **Canada Resources evidence tier** | 49 SEC filers across XEG/ZEO/GDX/URNM; 6-K/40-F prose path; evidence-only, never scored ([live page](https://yuclaw.ca/canada_resources.html)) | Live |
 
 ### Command surface
 
@@ -127,17 +141,10 @@ yuclaw events --ticker SU --since 2026-05-01   # Accepted-events export (derived
 yuclaw lens canada --lens XEG      # Lens summary-card data as JSON (same numbers the page renders)
 yuclaw export --lens GDX --format csv          # Lens events export; --page builds the evidence packet
 yuclaw memo --ticker SU --days 30  # Evidence memo — grounded, citation-verified, linted (docs/usage.md)
-yuclaw brief                       # Personalized digest (uses ~/.yuclaw/profile.json)
-yuclaw watch add TICKER            # Manage local watchlist
 yuclaw verify TICKER --date DATE   # Verified Research Ledger integrity check
-yuclaw profile show                # Local preferences
 ```
 
 Worked examples with real output: [docs/usage.md](docs/usage.md).
-
-> **PyPI 5.0.x note:** the `events` / `lens` / `export` / `memo` subcommands ship in
-> v5.1; until then run them from a main checkout (`python3 -m v3.cli ...`;
-> memo: `python3 -m v4.memo.cli ...`). Everything else above works in the published 5.0.x.
 
 **Public signal vocabulary:** `STRONG_BULLISH`, `BULLISH`, `NEUTRAL`, `WATCH`,
 `WEAKENING`, `NEGATIVE_EVENT`, `BEARISH_WATCH`, `RISK_ALERT`.
@@ -148,108 +155,51 @@ There is no `SELL` or `SHORT` label — these are research classifications, not 
 ## How it works
 
 ```
-SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K / 40-F)
-        │
-        ▼
-systemd poller (always-on, 5-min sweep)
-        │
-        ├──▶  Form 4 → deterministic XML parser (no LLM, zero GPU) → events table
-        │
-        ▼
-prose-first text acquisition  ← exhibit / MD&A prose persisted; XBRL cover is the fallback
-        │
-        ▼
-Llama 3.1 70B extraction  +  SourceLock Guard   ← every extraction checked against source text
-        │
-        ▼
-live event-type rescue (corrected-type layer, reproduction 97/97)
-        │
-        ▼
-events table  (the evidence layer)
-        │
-        ▼
-Layer-1 specialist swarm (10 specialists, Gemma worker)
-  — risk channel (C6, count≥2) kept SEPARATE from direction
-        │
-        ▼
-9-component composite  (C1..C9 — C6 event impact carries the highest single weight, 0.18)
-        │
-        ▼
-signal_snapshots  (content-hashed)
-        │
-        ├──▶  Verified Research Ledger  (git-anchored, public)
-        ├──▶  Forward Tracking Ledger   (outcomes vs SPY at 1 / 5 / 20 days)
-        ├──▶  Live landing + Validation Lab pages  (regenerated daily)
-        └──▶  SDK / REST / MCP server
+SEC EDGAR (Form 4 / 8-K / 10-Q / 10-K / 6-K / 20-F / 40-F)
+  │
+  ▼ systemd poller (always-on, 5-min sweep)
+  ├──▶ Form 4 → deterministic XML parser (no LLM, zero GPU) → events table
+  ▼ prose-first text acquisition (exhibit / MD&A prose; XBRL cover fallback)
+  ▼ Llama 3.1 70B extraction + SourceLock Guard (checked against source text)
+  ▼ events table — the evidence layer
+  ▼ Layer-1 specialist swarm (10 specialists; risk channel kept SEPARATE from direction)
+  ▼ 9-component composite (C1..C9)
+  ▼ signal_snapshots (content-hashed)
+  ├──▶ Verified Research Ledger (git-anchored, public)
+  ├──▶ Forward Tracking Ledger (outcomes vs SPY at 1 / 5 / 20 days)
+  ├──▶ Live landing + Validation Lab pages (regenerated daily)
+  └──▶ SDK / REST / MCP server
 ```
 
----
+**132-name coverage:** a 79-name scoring universe (equities + sector ETFs +
+broad ETFs + macro instruments) plus a 53-filer evidence tier — ingested and
+dashboarded, never scored; the boundary is machine-enforced.
 
-## Core capabilities
-
-**Evidence-first composite signals.** The 9-component composite — momentum, volume,
-sector velocity, macro regime, oil/rates/FX, event impact, peer correlation, supply-chain
-cascade, model trust — is confidence-weighted. C6 event impact carries the highest single
-weight (0.18), by design: evidence is meant to correct price-only signals, not echo them.
-
-**Two-tier local inference.** Extraction and synthesis run on Llama 3.1 70B; the Layer-1
-specialist swarm runs on Gemma 4 26B A4B (selected by A/B against the 8B baseline). Both
-are served by one local Ollama daemon on the DGX Spark — zero cloud LLM dependency. SEC
-EDGAR is the only external data source for the evidence layer.
-
-**Grounded, measured extraction.** A deterministic verifier checks that every agent claim
-carries a verbatim quote from the filing and that every number in the claim appears in
-those quotes. No LLMs are in the loop for this verification. Measured on the L1 corpus:
-grounding 0.52 → 0.75 and citation fidelity 0.66 → 0.85 after the prose-first fix
-(measurement commit `f130983e`; production port `b1b153a0`).
-
-**Time-machine replay.** Any signal can be recomputed as of a past date with point-in-time
-filtering (`available_as_of <= as_of`). Leak-audited and reproducible via the `replay` CLI,
-the REST `/replay` endpoint, or the MCP `yuclaw_replay` tool.
-
-**Verified Research Ledger.** Each day's signal hashes are committed to a public git repo
-(`yuclaw-trust`). Run `yuclaw verify TICKER --date DATE` to independently confirm a signal
-hasn't been edited since publication. This checks record integrity and timing — not
-investment merit.
-
-**Multi-surface access.** Python SDK (`pip install yuclaw`), REST API, FastMCP stdio server
-(7 tools), and CLI.
-
-**128-name universe.** A 79-name scoring universe (equities + sector ETFs + broad ETFs +
-macro instruments) plus a 49-filer Canada Resources evidence tier — ingested and
-dashboarded, never scored; the boundary is machine-enforced
-(`verify_evidence_tier_boundary`, 21 regression tests).
-
-**Evidence memos.** `yuclaw memo` produces a citable research memo where every sentence
-cites an event ID; a deterministic verifier checks each citation against source text and a
-linter enforces the restricted conclusion vocabulary.
-[Approved demo](docs/examples/evidence_memo_su.md).
+Deep dives: [system architecture, operations, hardware](docs/architecture.md) ·
+[OpenClaw / MCP integration](docs/openclaw.md) ·
+[methodology](docs/methodology/backfill.md).
 
 ---
 
-## Signal Validation Lab (v2)
+## Signal Validation Lab
 
-A Fama–French-style decile-cohort event study of whether YUCLAW's composite score carries
-forward information — built from feedback by **Prof. Deng Shijie (Georgia Tech)**, upgraded
-to protocol grade in v5.0:
+A decile-cohort event study of whether YUCLAW's composite score carries forward
+information — built from feedback by **Prof. Deng Shijie (Georgia Tech)**:
 
-- **Regenerated daily** after U.S. market close, with a freshness stamp on the page and a
+- **Regenerated daily** after U.S. market close, freshness-stamped, with a
   staleness alarm in the health monitor.
-- **Rolling charts to the latest trading day** with the in-sample → forward regime boundary
-  drawn on-chart; statistics are computed per-regime and **never blended** across it.
-- **Statistical rigor panel:** bootstrap confidence intervals, Newey–West-corrected
-  information coefficients, market-model alpha with its p-value, and a statistical power
-  meter that quantifies what the current n can and cannot detect.
-- **Panel 4 — evidence-qualified candidate cohort**, forward-only by construction, with its
-  honest small-n stated (decile cohort of 2–4 names: "too small for inference").
-- **Maturity gates: 1–3 passed, 4–6 not yet** — printed on the page.
+- **Statistical rigor panel:** bootstrap confidence intervals, Newey–West and
+  clustered inference, market-model alpha, and a statistical power meter that
+  quantifies what the current n can and cannot detect.
+- **Statistics computed per-regime** (in-sample vs forward) and never blended
+  across the boundary.
 - **Reproduce this page:** `yuclaw replay-lab` or the standalone stdlib script.
 
 In the Lab's own words: *"No forward alpha has been statistically proven yet."*
 
-🔬 **Live:** [Signal Validation Lab](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html)
-· [Today's Evidence Digest](https://yuclawlab.github.io/yuclaw-brain/todays_evidence.html)
-· [Independent Replication Log](https://yuclawlab.github.io/yuclaw-brain/replication.html)
+🔬 **Live:** [Signal Validation Lab](https://yuclaw.ca/validation_lab.html)
+· [Today's Evidence Digest](https://yuclaw.ca/todays_evidence.html)
+· [Independent Replication Log](https://yuclaw.ca/replication.html)
 · **Methodology:** [docs/methodology/validation_lab.md](docs/methodology/validation_lab.md)
 
 *Hypothetical research illustration — not investment advice, not performance advertising.*
@@ -261,104 +211,28 @@ In the Lab's own words: *"No forward alpha has been statistically proven yet."*
 Full methodology lives in [docs/methodology/backfill.md](docs/methodology/backfill.md).
 The honest limits, stated up front:
 
-- **The forward record is young.** Forward tracking began 2026-05-20 (forward Day 0 =
-  2026-05-18). Roughly 30 trading days of look-ahead-free history exist as of v5.0 — enough
-  to display, not enough for statistical significance; the Lab's power meter quantifies this.
-
-- **In-sample is replay reconstruction, not a live backtest.** The In-Sample Event Validation
-  panel was materialized after the fact by the replay engine — not emitted live — and the
-  evidence-extraction model's training cutoff overlaps that window, so in-sample results
-  carry a parametric look-ahead bias and are systematically optimistic.
-
-- **C6 risk channel is partially confirmed.** rareness confirmed OOS 2026-07-06 (22% fire rate, n=9 held-out); sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16).
-  The sign confirmation is the gate for Layers 2–10, and it has not been met.
-
-- **C4 macro regime is temporarily frozen as of 2026-05-18** with a staleness disclosure,
-  pending macro-engine restoration — its only upstream is the retired v2.3 macro engine, and
-  it cannot be price-derived without changing the component's math. C1/C3/C5/C7 read live
+- **The forward record is young.** Forward tracking began 2026-05-20; roughly
+  50 trading days of look-ahead-free history exist as of early August 2026 —
+  enough to display, not enough for statistical significance; the Lab's power
+  meter quantifies this.
+- **In-sample is replay reconstruction, not a live backtest.** The in-sample
+  panel was materialized after the fact by the replay engine, and the
+  extraction model's training cutoff overlaps that window, so in-sample
+  results carry a parametric look-ahead bias and are systematically optimistic.
+- **C6 risk channel is partially confirmed.** Rareness confirmed OOS; the sign
+  question remains open — the first read under the registered v2 protocol
+  printed INCONCLUSIVE (2026-07-30) and accrual continues. The sign
+  confirmation is the gate for Layers 2–10, and it has not been met.
+- **C4 macro regime is temporarily frozen as of 2026-05-18** with a staleness
+  disclosure, pending macro-engine restoration. C1/C3/C5/C7 read live
   `price_history`; C6/C8/C9 remain point-in-time exact.
-
-- **Extreme labels are rare by construction.** `STRONG_BULLISH` and `BEARISH_WATCH` require
-  broad component agreement plus at least one material non-insider event. Day-0 OOS 99th
-  percentile sat at +0.531, just below the +0.55 `STRONG_BULLISH` floor. See backfill.md §8.
-
-- **Jun 26 – Jul 3, 2026 outage — disclosed, not patched.** A network outage froze
-  price-derived inputs at Jun 25 closes while snapshots continued point-in-time on-box.
-  Feeds were restored and re-checked against EDGAR (no missing filings); **no snapshot or
-  ledger row was retroactively edited.** The full log is on the Lab page.
-
-- **No table of headline % returns appears in this README.** Hit rates in both panels are
-  reported alongside their *n*; small-*n* panels are tagged. See the
-  [live validation page](https://yuclawlab.github.io/yuclaw-brain/validation.html) for
-  current numbers.
-
----
-
-## System architecture
-
-```
-v3/
-  signal/      9-component composite (C1..C9), supply-chain graph, cascade engine
-  sources/     SEC EDGAR poller + backfill + Form 4 deterministic parser
-  extract/     LLM extraction + SourceLock Guard + prose-first acquisition + live reclassify
-  lab/         Validation Lab engines: cohorts, rigor stats, event study, replay bundle
-  replay/      Time-machine replay engine
-  track/       price_history + outcome_updater + In-Sample Validation panels
-  proof/       Verified Research Ledger writer + verifier
-  radar/       Change detector + Telegram / Email / Slack adapters
-  api/         FastAPI REST server
-  mcp/         FastMCP stdio server (7 tools)
-  cli/         why / replay / replay-lab / validation / brief / watch / verify / profile
-yuclaw/v5/     ClawFactory Layers 0–1: job queue, specialist swarm, grounding verifier
-services/      systemd units + guarded worker + heartbeat + network self-heal
-sdk/           yuclaw — public SDK (pip install yuclaw)
-tools/         replay_lab.py — standalone stdlib reproduction script
-docs/methodology/   Methodology + limitations + leak audit + Lab methodology
-```
-
----
-
-## Operations — what's actually running
-
-Read from the live systemd units and `crontab -l`, not aspirational:
-
-- **EDGAR poller** — systemd, always-on; 5-minute submissions sweep across 127 universe
-  tickers resolving to 112 distinct EDGAR CIKs (79-name scoring universe + 49-filer Canada
-  Resources evidence tier; ETF share classes share issuer-trust CIKs, and one macro
-  instrument has no EDGAR CIK).
-- **Event worker** — systemd timer, every 15 min, GPU-guarded: 70B extraction + SourceLock +
-  live reclassify + prose-first persistence. Exits cleanly when the box is busy.
-- **Daily pipeline** — weekdays 17:00 MDT: healthcheck → snapshots → outcomes → radar →
-  ledger → page regeneration (landing, validation, **Lab, Open Index Evidence, replay bundle**).
-- **Health monitor** — every 30 min: prices, ingestion sweep age, **Lab build age
-  (staleness alarm)**, disk; writes an alert file on any failure.
-- **Off-box heartbeat** — every 5 min: gist check-in + GitHub Actions dead-man watcher.
-- **Network self-heal** — every 5–10 min: link/tailscale recovery; never touches a healthy link.
-- **Telegram broadcast** — daily 07:35 MDT signal digest to `@yuclaw_signals`.
-- **Research crons** — hourly–nightly: oil intelligence, sentiment archive, swarm debate
-  (research-side, orthogonal to the signal pipeline).
-
----
-
-## Hardware
-
-- **GPU:** NVIDIA Grace Blackwell GB10 (128 GB unified memory), single box.
-- **Models resident:** Llama 3.1 70B (Q4_K_M, 42 GB weights, ≈46 GB resident with its
-  pinned context budget) + Gemma 4 26B A4B (17 GB weights, ≈20 GB resident) — both served
-  by one local Ollama daemon under an explicit GPU mutex + memory-cap contract.
-- **All local.** No cloud LLM calls anywhere in the pipeline.
-
----
-
-## OpenClaw integration
-
-```bash
-# As an OpenClaw skill
-bash <(curl -s https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/yuclaw/openclaw/install.sh)
-
-# Or as an MCP server
-python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
-```
+- **Jun 26 – Jul 3, 2026 outage — disclosed, not patched.** A network outage
+  froze price-derived inputs at Jun 25 closes while snapshots continued
+  point-in-time on-box. No snapshot or ledger row was retroactively edited.
+- **No table of headline % returns appears in this README.** Hit rates are
+  reported alongside their *n* on the
+  [live validation page](https://yuclaw.ca/validation.html); small-*n* panels
+  are tagged.
 
 ---
 
@@ -366,10 +240,11 @@ python3 yuclaw/openclaw/mcp_server.py     # listens on port 8002
 
 | | |
 |---|---|
-| **Dashboard** | [yuclawlab.github.io/yuclaw-brain](https://yuclawlab.github.io/yuclaw-brain) |
-| **Validation Lab** | [validation_lab.html](https://yuclawlab.github.io/yuclaw-brain/validation_lab.html) |
-| **Open Index Evidence** | [etf_evidence.html](https://yuclawlab.github.io/yuclaw-brain/etf_evidence.html) |
-| **📖 User Guide (PDF)** | [YUCLAW_User_Guide_v5.1.pdf](https://yuclawlab.github.io/yuclaw-brain/YUCLAW_User_Guide_v5.1.pdf) |
+| **Live site** | [yuclaw.ca](https://yuclaw.ca) |
+| **Validation Lab** | [validation_lab.html](https://yuclaw.ca/validation_lab.html) |
+| **SMH Evidence Lens** | [etf_evidence.html](https://yuclaw.ca/etf_evidence.html) |
+| **XLK Evidence Lens** | [xlk_evidence.html](https://yuclaw.ca/xlk_evidence.html) |
+| **📖 User Guide (EN / FR)** | [EN](https://yuclaw.ca/YUCLAW_User_Guide_v5.1.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_v5.1_FR.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |
@@ -396,23 +271,12 @@ For educational and research purposes only. See
 
 ---
 
-<div align="center">
-
-**Released under the MIT License — free for everyone.**
-
-Built on NVIDIA DGX Spark GB10 · Llama 3.1 70B + Gemma 4 26B via Ollama · Local inference · Git-anchored Verified Research Ledger
-
-`pip install yuclaw`
-
-</div>
-
 ## For AI agents & researchers
 
 YUCLAW is the open evidence layer underneath AI research tools.
 
-- **Start here**: [`llms.txt`](https://yuclawlab.github.io/yuclaw-brain/llms.txt)
-  and the machine-readable
-  [`evidence_index.json`](https://yuclawlab.github.io/yuclaw-brain/evidence_index.json)
+- **Start here**: [`llms.txt`](https://yuclaw.ca/llms.txt) and the
+  machine-readable [`evidence_index.json`](https://yuclaw.ca/evidence_index.json)
   (every page, packet, and protocol with stable URLs and data-through dates).
 - **Consume**: evidence packets (derived statistics, event CSVs, engine run
   JSONs, metadata + citation snippets) from `/packets/`; the MCP server
@@ -422,7 +286,15 @@ YUCLAW is the open evidence layer underneath AI research tools.
   use event IDs resolvable in the packet CSVs.
 - **Verify**: `pip install yuclaw && yuclaw replay-lab` recomputes the
   published Lab statistics from the public bundle; the protocol registry
-  (`registry/protocols.jsonl`) is hash-chained and append-only.
+  ([registry/protocols.jsonl](registry/protocols.jsonl)) is hash-chained and
+  append-only.
 - **Rules**: derived statistics only; preserve the disclaimers and the
   frozen implication line when quoting inference; nothing here is advice
   or a recommendation.
+<div align="center">
+
+**Released under the MIT License — free for everyone.**
+
+`pip install yuclaw`
+
+</div>
