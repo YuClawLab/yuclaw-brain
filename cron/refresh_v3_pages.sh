@@ -91,6 +91,9 @@ fi
 /usr/bin/python3 tools/check_weekly_note.py || exit 24
 # Universe-integrity gate (P1.7): threshold-table match + delisting watch.
 /usr/bin/python3 tools/check_universe_integrity.py || exit 25
+# U350 isolation gate (Phase 0, 2026-08-02): cross-universe refusals proven
+# by attempt on every build; U79 is inviolable.
+/usr/bin/python3 tools/check_u350_isolation.py || exit 26
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
