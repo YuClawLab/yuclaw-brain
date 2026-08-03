@@ -68,8 +68,30 @@ def now():
 
 
 def synth_inputs(rng):
+    # 40-name mixed basket spanning both universes (breadth re-run,
+    # 2026-08-03): 20 from U79 equities + 20 from the U350 Phase-A
+    # shadow manifest — the realistic-client-scale case the 15-name
+    # power floor is meant for. Falls back to U79-only if the shadow
+    # manifest is absent.
     uni = json.loads((_REPO / "v3" / "universe.json").read_text())["equities"]
-    picks = sorted(rng.sample(uni, 10))
+    shadow = []
+    try:
+        import psycopg2 as _pg
+        with _pg.connect(DSN) as _cn:
+            with _cn.cursor() as _cur:
+                _cur.execute("""SELECT members FROM u350.manifest
+                                WHERE phase='A'
+                                ORDER BY locked_at DESC LIMIT 1""")
+                _row = _cur.fetchone()
+        if _row:
+            shadow = sorted(m["ticker"] for m in _row[0]
+                            if m["origin"] == "shadow")
+    except Exception:                                 # noqa: BLE001
+        pass
+    if shadow:
+        picks = sorted(rng.sample(uni, 20) + rng.sample(shadow, 20))
+    else:
+        picks = sorted(rng.sample(uni, 10))
     weights = [rng.uniform(3, 18) for _ in picks]
     tot = sum(weights)
     weights = [round(w / tot * 100, 2) for w in weights]

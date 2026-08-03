@@ -18,8 +18,12 @@ the first trading day STRICTLY AFTER D; the k-day forward return is
 (P[t0+k]/P[t0] - 1) minus the same for SPY, in percent. No same-day entry —
 conservative against intraday-availability assumptions.
 
-Out-of-universe tickers (no usable price_history) are EXCLUDED and disclosed
-with counts — no new data paths are invented for them.
+Coverage basis (extended 2026-08-03): admissible tickers are U79 ∪ the
+U350 Phase-A manifest, wherever price history exists in the shared store
+(public price_history ∪ u350.price_history). Out-of-coverage tickers are
+EXCLUDED and disclosed with counts and reasons — no new data paths are
+invented for them. Ceilings (EXPLORATORY (CLIENT)), custody, and namespace
+isolation are unchanged by the breadth extension.
 
 Registry: client-namespace chain only (Registry(..., namespace='client'),
 guarded in code). The canonical run_all() guard is deliberately not used —
@@ -52,18 +56,66 @@ K_PRIMARY = 5
 SEED = 20260727
 MIN_PRICE_ROWS = 60   # usable price history floor for coverage
 
-CLIENT_SPEC = """CLIENT-SIGNAL decomposition v1 (user_defined=true,
+CLIENT_SPEC = """CLIENT-SIGNAL decomposition v1.1 (user_defined=true,
 non_canonical=true). Single-component DecompositionLab suite (IC + moving-
 block bootstrap CIs, quantile monotonicity, churn, horizon decay, placebo)
 on a user-supplied point-in-time signal; forward returns benchmark-relative
-(SPY) from price_history; entry at the close of the first trading day
-strictly after the signal date; k=5 IC is the single primary endpoint, all
-other cells secondary/exploratory. Locked badges from the canonical Lab
-spec. Client-namespace chain only; not part of the canonical public record."""
+(SPY) from the shared price store; entry at the close of the first trading
+day strictly after the signal date; k=5 IC is the single primary endpoint,
+all other cells secondary/exploratory. Coverage basis: U79 union the U350
+Phase-A manifest, wherever price history exists in the shared store (public
+price_history union u350.price_history); out-of-coverage tickers excluded
+and disclosed. Locked badges from the canonical Lab spec. Client-namespace
+chain only; not part of the canonical public record."""
 
 
 def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _coverage_basis():
+    """Admissible tickers = U79 scoring universe ∪ U350 Phase-A manifest
+    members (breadth extension 2026-08-03). Degrades to U79-only with the
+    matching label if the u350 namespace is absent — the client lane must
+    never break on a box without the shadow program."""
+    from v3.universe_tiers import scoring_universe
+    basis, label = set(scoring_universe()), "U79"
+    try:
+        import psycopg2
+        with psycopg2.connect("dbname=yuclaw_events") as cn:
+            with cn.cursor() as cur:
+                cur.execute("""SELECT members FROM u350.manifest
+                               WHERE phase='A'
+                               ORDER BY locked_at DESC LIMIT 1""")
+                row = cur.fetchone()
+        if row:
+            basis |= {m["ticker"] for m in row[0]}
+            label = "U79 ∪ U350 Phase-A manifest"
+    except Exception:                                 # noqa: BLE001
+        pass
+    return basis, label
+
+
+def _load_prices_shared(basis):
+    """Shared price store: public price_history plus u350.price_history
+    rows for coverage-basis tickers (public rows win on conflict; closes
+    only ever derive returns, never surfaced)."""
+    prices, trade_dates = load_prices()
+    dates = set(trade_dates)
+    try:
+        import psycopg2
+        with psycopg2.connect("dbname=yuclaw_events") as cn:
+            with cn.cursor() as cur:
+                cur.execute("""SELECT ticker, trade_date, close
+                               FROM u350.price_history
+                               WHERE close IS NOT NULL
+                                 AND ticker = ANY(%s)""", (sorted(basis),))
+                for tk, d, close in cur.fetchall():
+                    prices.setdefault(tk, {}).setdefault(d, float(close))
+                    dates.add(d)
+    except Exception:                                 # noqa: BLE001
+        pass
+    return prices, sorted(dates)
 
 
 def run_suite(csv_path: str | Path, out_dir: str | Path) -> dict:
@@ -72,14 +124,20 @@ def run_suite(csv_path: str | Path, out_dir: str | Path) -> dict:
 
     rows, intake_report = validate(csv_path)          # raises IntakeError
 
-    prices, trade_dates = load_prices()
+    basis, basis_label = _coverage_basis()
+    prices, trade_dates = _load_prices_shared(basis)
     idx = {d: i for i, d in enumerate(trade_dates)}
 
     tickers = sorted({r["ticker"] for r in rows})
-    covered = [t for t in tickers if len(prices.get(t, {})) >= MIN_PRICE_ROWS]
+    covered = [t for t in tickers if t in basis
+               and len(prices.get(t, {})) >= MIN_PRICE_ROWS]
     excluded = sorted(set(tickers) - set(covered))
     excl_counts = {t: sum(1 for r in rows if r["ticker"] == t)
                    for t in excluded}
+    excl_reasons = {t: ("out of coverage basis (" + basis_label + ")"
+                        if t not in basis else
+                        "insufficient price history in shared store")
+                    for t in excluded}
 
     # ---- client-namespace registry, registry-first -------------------------
     reg = Registry(str(out_dir / "registry_client.jsonl"), namespace="client")
@@ -144,8 +202,10 @@ def run_suite(csv_path: str | Path, out_dir: str | Path) -> dict:
     result = {
         "protocol_id": pid,
         "intake": intake_report,
-        "coverage": {"covered_tickers": covered,
+        "coverage": {"coverage_basis": basis_label,
+                     "covered_tickers": covered,
                      "excluded_out_of_universe": excl_counts,
+                     "excluded_reasons": excl_reasons,
                      "n_excluded_rows": sum(excl_counts.values())},
         "suite": suite,
         "built_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),

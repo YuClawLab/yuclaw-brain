@@ -44,6 +44,10 @@ signal date, relative to the broad U.S. market (the SPY fund): the stock's
 return over the next k trading days minus SPY's return over the same days.
 Entry is the close of the first trading day AFTER the signal date — we never
 assume the signal could be acted on the same day it is dated.
+Coverage basis: names in YUCLAW's canonical 79-name universe or its
+expanded research universe (Phase-A manifest) with price history in the
+research store are measurable; anything else is excluded and listed with
+the reason, never silently scored.
 
 **What the SPY comparison controls for:** the broad market moving as a
 whole. A signal that merely tracks the whole market rising or falling scores
