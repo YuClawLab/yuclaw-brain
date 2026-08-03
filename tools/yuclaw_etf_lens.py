@@ -152,10 +152,32 @@ ever recorded against it (uncomputed class, like the thresholds themselves).
 """
 CLIENT_STANDARD_HASH = hashlib.sha256(CLIENT_STANDARD_SPEC.encode()).hexdigest()[:16]
 
+CLIENT_STANDARD_SPEC_V12 = """
+CLIENT-LENS ADMISSION STANDARD — v1.2 (client chain; supersedes the
+client-suite application of v1/cdd92e7b99bc, which remains locked and
+unmodified in the canonical chain — canonical standards unaffected)
+Single change from v1: the price-availability gate reads the SHARED price
+store — public price_history UNION u350.price_history — the same coverage
+basis the client signal lab uses (U79 union the U350 Phase-A manifest).
+Rationale: coverage basis unified across the client suite; a client name
+that the signal lab can measure must not fail the lens admission price
+gate for reading a narrower store. Gate NUMBERS are unchanged (95% price
+coverage, coverage/concentration thresholds identical to v1); the
+EXPLORATORY (CLIENT) cap, its rationale, and every NOT_ADMITTED reason
+carry through verbatim. Standard entry — no runs are ever recorded
+against it (uncomputed class).
+"""
+CLIENT_STANDARD_V12_HASH = hashlib.sha256(
+    CLIENT_STANDARD_SPEC_V12.encode()).hexdigest()[:16]
 
-def admit_client(f: LensFacts, t: AdmissionThresholds = AdmissionThresholds()):
+
+def admit_client(f: LensFacts, t: AdmissionThresholds = AdmissionThresholds(),
+                 standard_version: str = "v1.2"):
     """Client-namespace ruling: same gates as admit(), but any admitted
-    verdict is capped at EXPLORATORY (CLIENT) per CLIENT_STANDARD_SPEC."""
+    verdict is capped at EXPLORATORY (CLIENT) per the client standard.
+    standard_version only labels the ruling; gate numbers are identical
+    across v1/v1.2 — v1.2 changed the price-gate SOURCE (shared store),
+    which lives in the caller's price_coverage_pct computation."""
     out = admit(f, t)
     if out["label"] == "NOT_ADMITTED":
         return out
@@ -164,10 +186,11 @@ def admit_client(f: LensFacts, t: AdmissionThresholds = AdmissionThresholds()):
     capped["label"] = ("EXPLORATORY (CLIENT, CONCENTRATION-LIMITED)"
                        if "CONCENTRATION-LIMITED" in out["label"]
                        else "EXPLORATORY (CLIENT)")
+    capped["standard_version"] = standard_version
     capped["note"] = ("user_defined lens: capped at EXPLORATORY (CLIENT) — "
                       "MEASURED and above reserved for canonical public "
-                      "lenses (Client-lens admission standard v1). "
-                      + out.get("note", ""))
+                      "lenses (Client-lens admission standard "
+                      f"{standard_version}). " + out.get("note", ""))
     return capped
 
 

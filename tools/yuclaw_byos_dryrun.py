@@ -346,7 +346,35 @@ def main() -> int:
     results_hashes = {"signal_suite": suite_res["result_hash"]}
     manifest = build_bundle(basket_csv, sig_csv, results_hashes,
                             OUT_DIR / "registry_client.jsonl")
-    n_priced = sum(1 for t in picks if len(prices.get(t, {})) >= EST_MIN)
+    # v1.2 standard: price-availability gate reads the SHARED price store
+    # (public ∪ u350) — registered in the client chain BEFORE the verdict
+    # is computed under it (registry-first). Canonical v1 (cdd92e7b99bc)
+    # stays locked and untouched in the canonical chain.
+    from yuclaw_client_signal_lab import _coverage_basis, _load_prices_shared
+    from yuclaw_etf_lens import (CLIENT_STANDARD_SPEC_V12,
+                                 CLIENT_STANDARD_V12_HASH)
+    v12_params = {"user_defined": True, "non_canonical": True,
+                  "class": "standard", "version": "1.2"}
+    v12_pid = protocol_id(CLIENT_STANDARD_SPEC_V12, v12_params)
+    if not reg.get_protocol(v12_pid):
+        reg.register(Protocol(
+            protocol_id=v12_pid,
+            name="Client-lens admission standard v1.2 [user_defined, "
+                 "non_canonical]",
+            method_hash=CLIENT_STANDARD_V12_HASH,
+            spec_summary=CLIENT_STANDARD_SPEC_V12.replace("\n", " "),
+            primary_endpoint="admission-standard ruling — standard entry; "
+                             "no statistical endpoint, no runs ever "
+                             "recorded",
+            secondary_endpoints=[],
+            lock_date=datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+            supersedes="cdd92e7b99bc (client-suite application only; "
+                       "canonical entry remains locked)"))
+    reg.verify_chain()
+    reg.assert_registered(v12_pid)
+    _basis, _blabel = _coverage_basis()
+    _shared, _sd = _load_prices_shared(_basis)
+    n_priced = sum(1 for t in picks if len(_shared.get(t, {})) >= EST_MIN)
     facts = LensFacts(
         ticker="CLIENT-SYNTH", holdings_source="SYNTHETIC-CLIENT CSV upload",
         holdings_date="2026-07-24", covered_issuers=len(picks),
