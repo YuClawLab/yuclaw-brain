@@ -81,6 +81,29 @@ def main() -> int:
                 f"internal/policy_invocations/{tk}.md — the corporate-action "
                 "policy must be invoked explicitly")
 
+    # U3 — membership drift (identity spine, 2026-08-02): any change to
+    # universe membership without a policy-invocation note fails the chain.
+    import json as _json
+    import hashlib as _hl
+    u = _json.loads((_REPO / "v3" / "universe.json").read_text())
+    mem = {k: sorted(u.get(k, [])) for k in
+           ("equities", "sector_etfs", "broad_etfs", "macro")}
+    mem["evidence_tier"] = sorted(r["ticker"] for r in u["evidence_tier"])
+    cur_h = _hl.sha256(_json.dumps(mem, sort_keys=True).encode()).hexdigest()
+    base = _json.loads((_REPO / "registry" /
+                        "universe_membership.json").read_text())
+    if cur_h != base["baseline_hash"]:
+        notes = list((_REPO / "internal" / "policy_invocations"
+                      ).glob("UNIVERSE_CHANGE_*.md")) if (
+            _REPO / "internal" / "policy_invocations").exists() else []
+        if not notes:
+            problems.append(
+                "U3: universe membership changed (hash "
+                f"{cur_h[:12]} != baseline {base['baseline_hash'][:12]}) "
+                "with NO UNIVERSE_CHANGE_*.md policy-invocation note — "
+                "membership changes must invoke the corporate-action policy "
+                "and re-baseline registry/universe_membership.json")
+
     if problems:
         print("UNIVERSE-INTEGRITY GATE FAILED:")
         for p in problems:
