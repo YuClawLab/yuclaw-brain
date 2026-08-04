@@ -62,7 +62,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # Language rail (pages mode): regenerated prose must stay inside the locked
 # public vocabulary. Hard gate before anything is committed — same contract
 # as the deploy-verify gate below (nonzero exit aborts the chain).
-/usr/bin/python3 tools/check_language.py --pages docs/*.html README.md || exit 16
+/usr/bin/python3 tools/check_language.py --pages docs/*.html README.md COMPARISON.md || exit 16
 # Copy-integrity rail (2026-07-22): clipped decimals, unclosed parens,
 # cut-off paragraphs, dead local links — same hard-gate contract.
 /usr/bin/python3 tools/check_copy_integrity.py docs/*.html || exit 18

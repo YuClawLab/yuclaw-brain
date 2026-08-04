@@ -21,6 +21,8 @@ curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/registry/
 make replicate                              # full clean-environment replication
 ```
 
+**[How we compare →](COMPARISON.md)**
+
 **What you'll find inside:** the baseline test our own composite lost at current
 sample sizes — published under the pre-registered protocol · a label-calibration
 panel that says "directional meaning not yet demonstrated" · retired hypotheses
