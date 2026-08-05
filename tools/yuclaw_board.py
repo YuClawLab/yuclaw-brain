@@ -49,6 +49,28 @@ def gate_line(name, cmd):
     return f"| {name} | {'PASS' if rc == 0 else 'FAIL'} |"
 
 
+def sentinel_line() -> str:
+    import json as _j
+    log = _REPO / "internal" / "sentinel" / "log.jsonl"
+    if not log.exists():
+        return "no sentinel runs recorded yet (timer armed 2026-08-04)"
+    lines = [_j.loads(l) for l in log.read_text().splitlines() if l.strip()]
+    sweep = next((l for l in reversed(lines) if l.get("kind") != "launcher"),
+                 None)
+    launch = next((l for l in reversed(lines) if l.get("kind") == "launcher"),
+                  None)
+    out = []
+    if sweep:
+        out.append(f"last sweep {sweep.get('date')}: findings "
+                   f"{sweep.get('findings')} · fixes {sweep.get('fixes')} · "
+                   f"filed {sweep.get('filed')} · gates {sweep.get('gates')}")
+    if launch:
+        out.append(f"launcher: rc={launch.get('rc')} "
+                   f"{launch.get('runtime_s')}s commits="
+                   f"{launch.get('commits')} pushed={launch.get('pushed')}")
+    return " · ".join(out) or "log present but empty"
+
+
 def u350_section() -> str:
     try:
         import psycopg2
@@ -158,6 +180,10 @@ Generated {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')} from live 
 ## U350 shadow program (Phase A — shadow data is never a forward record; no public claims)
 
 {u350_section()}
+
+## Sentinel (nightly bounded audit)
+
+{sentinel_line()}
 
 ## Standing rules
 

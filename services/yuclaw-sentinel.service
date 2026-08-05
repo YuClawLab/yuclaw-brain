@@ -1,0 +1,9 @@
+[Unit]
+Description=YUCLAW Nightly Sentinel — bounded autonomous audit (read + known-bug-class fixes only; launcher enforces solo-session, prompt pin, forbidden-path revert)
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/zhangd2/yuclaw/services/sentinel_nightly.sh
+WorkingDirectory=/home/zhangd2/yuclaw
+RuntimeMaxSec=1560
+MemoryMax=8G

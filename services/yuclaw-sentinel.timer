@@ -1,0 +1,9 @@
+[Unit]
+Description=YUCLAW Nightly Sentinel cadence (23:45 local, after the 23:00 UTC chain completes)
+
+[Timer]
+OnCalendar=*-*-* 23:45
+Persistent=false
+
+[Install]
+WantedBy=timers.target
