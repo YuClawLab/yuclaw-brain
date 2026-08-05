@@ -36,7 +36,7 @@ ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
   <h1><span class="yu">YU</span>CLAW &nbsp;<span style="font-size:11pt;border:1px solid #00E676;border-radius:2mm;padding:0.5mm 2mm;color:#00E676;">v5.1</span></h1>
   <div class="sub"><b>User Guide</b> — Evidence-First Financial AI. Every signal traces to a real SEC filing.</div>
   <div class="sub">An open research laboratory where market hypotheses are tested, challenged, and preserved — with every conclusion carrying its own audit trail.</div>
-  <div class="meta">The YUCLAW Team · August 2026 · yuclaw.ca · github.com/YuClawLab/yuclaw-brain · pip install yuclaw · MIT License</div>
+  <div class="meta">The YUCLAW Team · August 2026 · yuclaw.ca · github.com/YuClawLab/yuclaw-brain · pip install yuclaw · Apache-2.0 License</div>
 </div>
 
 <div class="disc"><b>Disclaimer.</b> YUCLAW is a research and education platform. Nothing in this guide or on any YUCLAW surface is investment advice, a recommendation, or an offer of any product. Signal labels are research classifications, not buy/sell recommendations. Past results — in-sample or forward-tracked — do not predict future performance. <i>Investment implication: none established — no buy, sell, or alpha conclusion is supported by this material.</i></div>
@@ -59,7 +59,7 @@ ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
 </table>
 
 <h2>1 · What YUCLAW is (and is not)</h2>
-<p>YUCLAW ingests real SEC filings (8-K, 10-K, Form 4, and the foreign-private-issuer track: 6-K, 20-F, 40-F), extracts typed evidence events with locally hosted language models, classifies them under a fixed public vocabulary, and studies whether that evidence stream carries information — publishing every result <b>exactly as measured, including where it is adverse to the hypothesis</b>. All inference runs on local hardware; the full pipeline, data derivations, and methodology are open source under MIT.</p>
+<p>YUCLAW ingests real SEC filings (8-K, 10-K, Form 4, and the foreign-private-issuer track: 6-K, 20-F, 40-F), extracts typed evidence events with locally hosted language models, classifies them under a fixed public vocabulary, and studies whether that evidence stream carries information — publishing every result <b>exactly as measured, including where it is adverse to the hypothesis</b>. All inference runs on local hardware; the full pipeline, data derivations, and methodology are open source under Apache-2.0.</p>
 <p>Three design commitments define the platform:</p>
 <ul>
 <li><b>Evidence first.</b> Every accepted event links to a primary filing with an accession number and a verified excerpt. Every research memo cites its sources sentence by sentence, and citations are machine-checked before anything renders.</li>
@@ -242,7 +242,7 @@ python3 -c "import yuclaw_protocol_registry as r; \
 <p><b>Why do you publish results that hurt your own hypothesis?</b> Because a record that only contains favorable results is not a record. Several adverse findings on the site — including baseline comparisons the composite loses at current sample sizes — are published under the same pre-registered protocols as everything else. The platform's product is the trustworthiness of its process.</p>
 <p><b>A label looked wrong in hindsight — is that a bug?</b> No. Labels are point-in-time research classifications; the calibration panel measures, publicly, what each label has historically preceded — including where the answer is "nothing demonstrable yet."</p>
 <p><b>Why is coverage of an index fund partial?</b> Because YUCLAW only analyzes constituents inside its disclosed universe and filing substrate, and refuses to imply otherwise. The uncovered remainder is itemized with reasons on each lens page.</p>
-<p><b>Can I use YUCLAW data in my own research or product?</b> Yes — derived data is MIT-licensed and exportable with ready citations. Raw vendor market data is not redistributed.</p>
+<p><b>Can I use YUCLAW data in my own research or product?</b> Yes — derived data is Apache-2.0-licensed and exportable with ready citations. Raw vendor market data is not redistributed.</p>
 <p><b>How do I report a bug or a replication?</b> Via GitHub issues on the repository; replication reports have a dedicated template and, once verified, enter the public log.</p>
 <p><b>Who is the YUCLAW Team?</b> An independent research operation based in Calgary, Alberta, running entirely on sovereign local hardware. The platform, methodology, and this guide are published under the YUCLAW Team name; the record itself — the chain, the ledger, the registry — is the authority, not any individual.</p>
 
@@ -267,6 +267,6 @@ https://github.com/YuClawLab/yuclaw-brain
 <span class="c"># or use the ready CITATION.txt inside any evidence packet;</span>
 <span class="c"># event-level claims cite event IDs from the packet CSVs.</span></pre>
 <p>Links: <b>yuclaw.ca</b> · GitHub <b>github.com/YuClawLab/yuclaw-brain</b> · PyPI <b>pypi.org/project/yuclaw</b> · machine surface <b>yuclaw.ca/llms.txt</b></p>
-<div class="disc"><b>Final disclaimer.</b> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications are not recommendations. Past results — in-sample or forward-tracked — do not predict future performance. © 2026 The YUCLAW Team · MIT License · research &amp; education only.</div>
+<div class="disc"><b>Final disclaimer.</b> Hypothetical research illustration. Not investment advice, not performance advertising, not an offer of any product. Research classifications are not recommendations. Past results — in-sample or forward-tracked — do not predict future performance. © 2026 The YUCLAW Team · Apache-2.0 License · research &amp; education only.</div>
 
 </body></html>

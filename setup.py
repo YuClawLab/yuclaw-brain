@@ -28,7 +28,7 @@ setup(
         'Development Status :: 4 - Beta',
         'Intended Audience :: Financial and Insurance Industry',
         'Topic :: Office/Business :: Financial :: Investment',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3.10',
     ],
     python_requires='>=3.10',

@@ -2,7 +2,7 @@
 name: yuclaw
 version: 3.0.0
 description: Evidence-first financial research — composite signals tied to SEC filings, time-machine replay, and a git-anchored Verified Research Ledger. Research/education only — not investment advice.
-license: MIT
+license: Apache-2.0
 homepage: https://github.com/YuClawLab/yuclaw-brain
 ---
 

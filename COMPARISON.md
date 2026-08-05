@@ -10,7 +10,7 @@
 
 | Verifiability dimension | **YUCLAW** | AI stock scorers¹ | Pick subscriptions² | Open algo platforms³ | Signal tournaments⁴ | AI filing assistants⁵ |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|
-| Fully open source — pipeline, methodology, and derived data | ✅ MIT | ❌ | ❌ | 🔶 engine only | ❌ | ❌ |
+| Fully open source — pipeline, methodology, and derived data | ✅ Apache-2.0 | ❌ | ❌ | 🔶 engine only | ❌ | ❌ |
 | Statistics **pre-registered before computation**, in a public tamper-evident chain | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Publishes adverse results about its own signals** (baseline losses, failed hypotheses, retired ideas — preserved, not deleted) | ✅ | ❌ | 🔶 losing picks visible | n/a⁶ | ❌ | n/a |
 | One-command **independent replication** of every published statistic (`yuclaw replay-lab`, exit 0) | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ |
@@ -57,5 +57,7 @@ python3 -c "import yuclaw_protocol_registry as r; print('chain OK:', r.Registry(
 *YUCLAW is research and education only — not investment advice. Signal labels are research classifications, not recommendations. Our own forward record is young; most of our forward statistics are honestly labeled DESCRIPTIVE or UNDERPOWERED at current sample sizes — that's printed on every page, which is rather the point.*
 
 **[yuclaw.ca](https://yuclaw.ca)** · **[Validation Lab](https://yuclaw.ca/validation_lab.html)** · **[User Guide](https://yuclaw.ca/YUCLAW_User_Guide_v5.1.pdf)** · `pip install yuclaw`
+
+*Comparison table v1.2 · August 2026.*
 
 </div>

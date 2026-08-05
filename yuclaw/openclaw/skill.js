@@ -54,7 +54,7 @@ const skill = {
     description: 'YUCLAW Financial Intelligence — real backtests, ZKP audit trail, Nemotron 120B analysis',
     version: '1.1.0',
     author: 'YuClawLab',
-    license: 'MIT',
+    license: 'Apache-2.0',
     homepage: GITHUB,
 
     commands: {

@@ -1,6 +1,6 @@
 # Pricing
 
-YUCLAW is **free and open source** under the [MIT License](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE).
+YUCLAW is **free and open source** under the [Apache License 2.0](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE).
 
 There is no subscription. There is no paywall. There is no premium tier.
 
@@ -16,7 +16,7 @@ or gates access behind a fee is not us.
 
 ## Supporting the project
 
-YUCLAW is MIT licensed and will remain free. Donation channels may be added
+YUCLAW is Apache-2.0 licensed and will remain free. Donation channels may be added
 in a future release; for now, the best way to support the project is to
 [star the repo](https://github.com/YuClawLab/yuclaw-brain), contribute
 [issues](https://github.com/YuClawLab/yuclaw-brain/issues) or
@@ -51,4 +51,4 @@ file for the full text.
 
 ⚠️ Research and educational software. Not financial advice. AI-generated
 signals may contain errors. Past performance does not predict future
-returns. MIT Licensed.
+returns. Apache-2.0 Licensed.

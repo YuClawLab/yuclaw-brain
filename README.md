@@ -7,7 +7,7 @@
 Statistics pre-registered before data. Adverse results published. Every number reproducible by strangers.
 
 ![PyPI](https://img.shields.io/pypi/v/yuclaw)
-![License MIT](https://img.shields.io/badge/License-MIT-green)
+![License Apache--2.0](https://img.shields.io/badge/License-Apache--2.0-green)
 ![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Ledger git-anchored](https://img.shields.io/badge/Ledger-git--anchored-blue)
 
@@ -295,7 +295,7 @@ YUCLAW is the open evidence layer underneath AI research tools.
   or a recommendation.
 <div align="center">
 
-**Released under the MIT License — free for everyone.**
+**Released under the Apache License 2.0 — free for everyone.**
 
 `pip install yuclaw`
 

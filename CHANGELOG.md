@@ -2,6 +2,12 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased — 5.2]
+
+### Changed
+
+- **License: Apache-2.0** (releases ≤5.1.x remain MIT as published).
+
 ## [5.1.0] — 2026-07-31
 
 ### Added

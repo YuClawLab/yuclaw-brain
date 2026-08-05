@@ -60,7 +60,9 @@ _NEGATION_RE = re.compile(
 # Locked machine vocabulary that legitimately embeds banned stems.
 _LOCKED_TOKENS_RE = re.compile(
     r"INSIDER_(BUY|SELL)|BUYBACK_\w+|buy/sell recommendations?|"
-    r"buy or sell", re.I)
+    r"buy or sell|"
+    # the DCO's proper legal name — not a research-claim word
+    r"Developer Certificate of Origin|developercertificate\.org", re.I)
 
 RESEARCH_FOOTER_RE = re.compile(r"research (and|&(amp;)?) education (use )?only", re.I)
 

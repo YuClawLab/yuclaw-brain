@@ -7,14 +7,14 @@ name = "yuclaw"
 version = "5.1.0"
 description = "Evidence-first financial research — every signal traced to its SEC filings and verifiable against a public, git-anchored ledger. CLI + REST + MCP + LangChain/LlamaIndex. Research / education only — not investment advice."
 readme = "README.md"
-license = { text = "MIT" }
+license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 keywords = ["finance", "research", "quant", "sec-filings", "evidence", "ai", "agents", "mcp"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Financial and Insurance Industry",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -63,7 +63,7 @@ packages = ["v3", "v4"]
 # automatically as data files under the v4 package — no force-include needed.
 
 [tool.hatch.build.targets.sdist]
-include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "docs"]
+include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs"]
 # Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
 exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc"]

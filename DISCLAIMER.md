@@ -19,6 +19,6 @@ The above not-advice notice is the canonical wording defined once at
 `v4/api/schema.py::COMPLIANCE_NOTICE` (version tag `draft-v0` — a conservative placeholder
 pending a post-funding securities-law review) and is attached to every signal-data response.
 
-*For educational and research purposes only. MIT Licensed.* See
+*For educational and research purposes only. Apache-2.0 Licensed.* See
 [Methodology](docs/methodology/backfill.md) for what the evidence and validation layers do and
 do not represent.

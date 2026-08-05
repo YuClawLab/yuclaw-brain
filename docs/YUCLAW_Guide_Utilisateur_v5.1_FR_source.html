@@ -35,7 +35,7 @@ ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
   <h1><span class="yu">YU</span>CLAW &nbsp;<span style="font-size:11pt;border:1px solid #00E676;border-radius:2mm;padding:0.5mm 2mm;color:#00E676;">v5.1</span></h1>
   <div class="sub"><b>Guide de l'utilisateur</b> — Evidence-First Financial AI. Chaque signal remonte à un dépôt réglementaire réel auprès de la SEC.</div>
   <div class="sub">Un laboratoire de recherche ouvert où les hypothèses de marché sont testées, contestées et conservées — chaque conclusion portant sa propre piste d'audit.</div>
-  <div class="meta">L'équipe YUCLAW · Août 2026 · yuclaw.ca · github.com/YuClawLab/yuclaw-brain · pip install yuclaw · Licence MIT · Édition française</div>
+  <div class="meta">L'équipe YUCLAW · Août 2026 · yuclaw.ca · github.com/YuClawLab/yuclaw-brain · pip install yuclaw · Licence Apache-2.0 · Édition française</div>
 </div>
 
 <div class="disc"><b>Avertissement.</b> YUCLAW est une plateforme de recherche et d'éducation. Rien dans ce guide ni sur aucune surface YUCLAW ne constitue un conseil en investissement, une recommandation ou une offre de produit. Les libellés de signaux sont des classifications de recherche, pas des recommandations d'achat ou de vente. Les résultats passés — en échantillon comme en suivi prospectif — ne préjugent pas des performances futures. <i>Implication d'investissement : aucune n'est établie — aucune conclusion d'achat, de vente ou d'alpha n'est étayée par ce document.</i></div>
@@ -59,7 +59,7 @@ ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
 </table>
 
 <h2>1 · Ce qu'est YUCLAW (et ce qu'il n'est pas)</h2>
-<p>YUCLAW ingère des dépôts réglementaires réels de la SEC (8-K, 10-K, Form 4, ainsi que la filière des émetteurs privés étrangers : 6-K, 20-F, 40-F), en extrait des événements typés à l'aide de modèles de langage hébergés localement, les classe sous un vocabulaire public figé, et étudie si ce flux d'éléments porte de l'information — en publiant chaque résultat <b>exactement tel que mesuré, y compris lorsqu'il contredit l'hypothèse</b>. Toute l'inférence tourne sur du matériel local ; le pipeline complet, les dérivations de données et la méthodologie sont en source ouverte sous licence MIT.</p>
+<p>YUCLAW ingère des dépôts réglementaires réels de la SEC (8-K, 10-K, Form 4, ainsi que la filière des émetteurs privés étrangers : 6-K, 20-F, 40-F), en extrait des événements typés à l'aide de modèles de langage hébergés localement, les classe sous un vocabulaire public figé, et étudie si ce flux d'éléments porte de l'information — en publiant chaque résultat <b>exactement tel que mesuré, y compris lorsqu'il contredit l'hypothèse</b>. Toute l'inférence tourne sur du matériel local ; le pipeline complet, les dérivations de données et la méthodologie sont en source ouverte sous licence Apache-2.0.</p>
 <p>Trois engagements de conception définissent la plateforme :</p>
 <ul>
 <li><b>Les éléments d'abord.</b> Chaque événement accepté est relié à un dépôt primaire, avec numéro d'accession et extrait contrôlé. Chaque mémo de recherche cite ses sources phrase par phrase, et les citations sont contrôlées par machine avant tout rendu.</li>
@@ -228,7 +228,7 @@ python3 -c "import yuclaw_protocol_registry as r; \
 <p><b>Pourquoi publiez-vous des résultats défavorables à votre propre hypothèse ?</b> Parce qu'un dossier qui ne contient que des résultats favorables n'est pas un dossier. Plusieurs conclusions défavorables du site — dont des comparaisons de référence que le composite perd aux tailles d'échantillon actuelles — sont publiées sous les mêmes protocoles pré-enregistrés que tout le reste. Le produit de la plateforme est la fiabilité de son processus.</p>
 <p><b>Un libellé semble erroné a posteriori — est-ce un bogue ?</b> Non. Les libellés sont des classifications de recherche « à date » ; le panneau de calibration mesure publiquement ce que chaque libellé a historiquement précédé — y compris quand la réponse est « rien de démontrable pour l'instant ».</p>
 <p><b>Pourquoi la couverture d'un fonds indiciel est-elle partielle ?</b> Parce que YUCLAW n'analyse que les constituants relevant de son univers divulgué et de son socle documentaire, et refuse de laisser croire autre chose. Le reste non couvert est inventorié avec ses raisons sur chaque page de lentille.</p>
-<p><b>Puis-je utiliser les données YUCLAW dans mes recherches ou mon produit ?</b> Oui — les données dérivées sont sous licence MIT et exportables, citations prêtes. Les données brutes de marché des fournisseurs ne sont pas redistribuées.</p>
+<p><b>Puis-je utiliser les données YUCLAW dans mes recherches ou mon produit ?</b> Oui — les données dérivées sont sous licence Apache-2.0 et exportables, citations prêtes. Les données brutes de marché des fournisseurs ne sont pas redistribuées.</p>
 <p><b>Comment signaler un bogue ou une réplication ?</b> Via les tickets GitHub du dépôt ; les réplications disposent d'un gabarit dédié et, une fois contrôlées, entrent au journal public.</p>
 <p><b>Qui est l'équipe YUCLAW ?</b> Une opération de recherche indépendante établie à Calgary (Alberta), fonctionnant intégralement sur du matériel local souverain. La plateforme, la méthodologie et ce guide sont publiés sous le nom de l'équipe YUCLAW ; l'autorité, c'est le dossier lui-même — la chaîne, le registre quotidien, le registre de protocoles — et non un individu.</p>
 
@@ -253,6 +253,6 @@ https://github.com/YuClawLab/yuclaw-brain
 <span class="c"># ou utilisez le CITATION.txt prêt à l'emploi de tout dossier de preuves ;</span>
 <span class="c"># les affirmations au niveau événement citent les identifiants des CSV du dossier.</span></pre>
 <p>Liens : <b>yuclaw.ca</b> · GitHub <b>github.com/YuClawLab/yuclaw-brain</b> · PyPI <b>pypi.org/project/yuclaw</b> · surface machine <b>yuclaw.ca/llms.txt</b></p>
-<div class="disc"><b>Avertissement final.</b> Illustration de recherche hypothétique. Ni conseil en investissement, ni publicité de performance, ni offre de produit. Les classifications de recherche ne sont pas des recommandations. Les résultats passés — en échantillon comme en suivi prospectif — ne préjugent pas des performances futures. En cas de divergence, l'édition anglaise et les pages en direct font foi. © 2026 L'équipe YUCLAW · Licence MIT · recherche et éducation uniquement.</div>
+<div class="disc"><b>Avertissement final.</b> Illustration de recherche hypothétique. Ni conseil en investissement, ni publicité de performance, ni offre de produit. Les classifications de recherche ne sont pas des recommandations. Les résultats passés — en échantillon comme en suivi prospectif — ne préjugent pas des performances futures. En cas de divergence, l'édition anglaise et les pages en direct font foi. © 2026 L'équipe YUCLAW · Licence Apache-2.0 · recherche et éducation uniquement.</div>
 
 </body></html>

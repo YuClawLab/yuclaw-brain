@@ -306,7 +306,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·
       <a href="lane.html">YUCLAW's Lane</a> ·
       <a href="weekly_note.html">Weekly Note</a> ·
-      MIT Licensed
+      Apache-2.0 Licensed
     </div>
   </div>
 </body>
