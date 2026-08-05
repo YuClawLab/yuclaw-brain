@@ -119,6 +119,12 @@ def compute() -> dict:
 
 
 def main() -> int:
+    # --refresh: regenerate the artifact under the SAME locked spec
+    # without appending a run line — the daily display refresh is not a
+    # new statistical run; the artifact embeds protocol_id + method_hash
+    # for verification. Run lines are recorded on explicit invocations
+    # (the default), which is how the first computation was counted.
+    refresh_only = "--refresh" in sys.argv
     reg, pid = register()
     scores = compute()
     artifact = {"protocol_id": pid,
@@ -129,6 +135,11 @@ def main() -> int:
     OUT.write_text(json.dumps(artifact, indent=1))
     rh = hashlib.sha256(json.dumps(scores, sort_keys=True).encode()
                         ).hexdigest()[:16]
+    if refresh_only:
+        vals = sorted(s["ecs"] for s in scores.values())
+        print(f"[ecs] refresh: {len(scores)} names · median "
+              f"{vals[len(vals)//2]} · artifact updated, no run line")
+        return 0
     from yuclaw_protocol_registry import Run
     reg.record_run(Run(
         protocol_id=pid,

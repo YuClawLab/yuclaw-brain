@@ -55,6 +55,13 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_lane || exit 14
 # Signal Review product page (2026-08-04; counsel-armed, no-form gate below).
 /usr/bin/python3 -m v3.web.render_signal_review || exit 29
+# Universe Surface (2026-08-04): ECS artifact refresh (no run line) then
+# Explorer + 79 Why pages + Sectors + Tour — display layer, no statistics.
+/usr/bin/python3 tools/yuclaw_evidence_coverage.py --refresh || exit 31
+/usr/bin/python3 -m v3.web.render_explorer || exit 32
+/usr/bin/python3 -m v3.web.render_why_pages || exit 33
+/usr/bin/python3 -m v3.web.render_sectors || exit 34
+/usr/bin/python3 -m v3.web.render_tour || exit 35
 
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
@@ -115,7 +122,9 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
                  docs/trace_su.html docs/replication.html docs/lane.html \
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
-                 docs/signal_review.html docs/schemas
+                 docs/signal_review.html docs/schemas \
+                 docs/explorer.html docs/explorer_data.json docs/why \
+                 docs/sectors.html docs/tour.html
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"

@@ -66,14 +66,18 @@ def lint_file(path: Path, docs_root: Path) -> list[str]:
         if tag == "p" and len(txt) > 60 and _CUT_ENDINGS.search(txt):
             problems.append(f"cut-off <p>: …{txt[-90:]}")
 
-    for href in _HREF_RE.findall(raw):
+    # href scan runs on `body` (script/style/pre/code stripped): JS
+    # template literals inside <script> are not rendered copy, and their
+    # client-side-built links are covered by the site-walk's spot checks.
+    for href in _HREF_RE.findall(body):
         if href in ("", "#"):
             problems.append(f"dangling link: href=\"{href}\"")
             continue
         if href.startswith(("http://", "https://", "mailto:", "#")):
             continue
-        target = (docs_root / href.split("#")[0]).resolve()
-        if href.split("#")[0] and not target.exists():
+        path_part = href.split("#")[0].split("?")[0]   # query strings resolve
+        target = (docs_root / path_part).resolve()
+        if path_part and not target.exists():
             problems.append(f"dead local link: {href}")
     return problems
 

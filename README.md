@@ -21,7 +21,7 @@ curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/registry/
 make replicate                              # full clean-environment replication
 ```
 
-**[How we compare →](COMPARISON.md)**
+**[How we compare →](COMPARISON.md)** · **[Take the 5-minute tour →](https://yuclaw.ca/tour.html)**
 
 **What you'll find inside:** the baseline test our own composite lost at current
 sample sizes — published under the pre-registered protocol · a label-calibration

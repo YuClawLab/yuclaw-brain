@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YUCLAW — the 5-minute tour</title>
+<meta name="description" content="Five commands, five stations: install, verify, reproduce, chain-check, and walk one evidence trace. Every output captured from this build. Research only — not investment advice.">
+<style>
+ *{margin:0;padding:0;box-sizing:border-box}
+ body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.6}
+ .container{max-width:900px;margin:0 auto;padding:24px}
+ h2{font-size:17px;color:#FFF;margin:4px 0 12px}
+ .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:16px}
+ .stnum{color:#00E676;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+ .cmd{background:#0B0E14;border:1px solid #00E67640;border-radius:8px;padding:12px 14px;color:#00E676;
+       font-family:'JetBrains Mono',monospace;font-size:12px;overflow-x:auto;white-space:pre-wrap}
+ .out{background:#10141C;border:1px solid #1E232D;border-radius:8px;padding:12px 14px;color:#A0AEC0;
+       font-family:'JetBrains Mono',monospace;font-size:11px;overflow-x:auto;margin-top:8px;white-space:pre-wrap}
+ .muted{color:#718096;font-size:12px;margin-top:8px}
+ .amber{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;font-size:12px;color:#A0AEC0;margin-bottom:16px}
+ .amber strong{color:#FBA94B}
+ .closing{background:linear-gradient(135deg,#10141C,#141B2E);border:1px solid #00E67640;border-radius:12px;
+           padding:26px;text-align:center}
+ .closing a{color:#00E676;font-weight:700}
+</style>
+</head>
+<body><div class="container">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.1.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">The 5-minute tour</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Signal Review</a><a href="explorer.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Explorer</a><a href="sectors.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Sectors</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 03:55 UTC</span>
+      </div>
+    </div>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Signal labels are research classifications, not buy/sell recommendations. Every output below was captured
+from this build at 2026-08-05 03:55 UTC — the page regenerates daily so it can never drift from what the commands
+actually print.</div>
+
+      <div class="card">
+        <div class="stnum">Station 1</div>
+        <h2>Install and take the guided demo</h2>
+        <pre class="cmd">$ pip install yuclaw &amp;&amp; yuclaw demo</pre>
+        <pre class="out">╔════════════════════════════════════════════════════════╗
+  ║   YUCLAW — 3-Minute Guided Journey                     ║
+  ╚════════════════════════════════════════════════════════╝
+  Pre-flight checks
+   ✓ database reachable
+   ✓ ledger entry for AMD 2026-05-20 (nearest committed ledger date to 2026-05-15)
+   ✓ Ollama reachable (not needed — demo uses a cached snapshot)
+
+  STEP 1   What you&#x27;re about to see   (~15s)
+────────────────────────────────────────────────────────────────────────
+  YUCLAW is an evidence-first financial AI. In ~3 minutes you&#x27;ll see a
+  real research signal traced to its SEC filings, point-in-time replayed,
+  and independently verified against a public, git-anchored ledger.
+
+  Subject: AMD, frozen at 2026-05-20 (a real, committed snapshot).
+
+  STEP 2   The signal, and what drives it   (~30s)
+────────────────────────────────────────────────────────────────────────
+  $ yuclaw why AMD --as-of 2026-05-20
+
+  AMD — Watch
+  Evidence Quality: Grade C (thin / single-source)</pre>
+        <p class="muted">The demo runs offline with zero configuration — the output above is this build's actual capture (first lines; the full journey takes about three minutes).</p>
+      </div>
+      <div class="card">
+        <div class="stnum">Station 2</div>
+        <h2>Verify a published signal against the public ledger</h2>
+        <pre class="cmd">$ yuclaw verify AMD --date 2026-05-20</pre>
+        <pre class="out">OK  VERIFIED: signal unaltered since ledger commit   AMD @ 2026-05-20
+  ledger commit:   ca08002  (2026-08-04 17:00:06 -0600)
+  ledger label:    WATCH  (current: WATCH)
+  content_hash:    fe7ca6df321910409fd514edb63922ac06606904f46b8b6564c97e8d4c3195e6
+
+Verifies record integrity and timing — not investment merit.
+
+Research and education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations. YUCLAW is not a registered investment adviser.</pre>
+        <p class="muted">This checks record integrity and timing — not investment merit.</p>
+      </div>
+      <div class="card">
+        <div class="stnum">Station 3</div>
+        <h2>Reproduce every published Lab statistic</h2>
+        <pre class="cmd">$ yuclaw replay-lab</pre>
+        <pre class="out">REPRODUCTION OK  (exit 0)</pre>
+        <p class="muted">Exit 0 means every published Lab statistic and every daily ledger root recomputed exactly from the public bundle; any mismatch exits non-zero. Not run at page build (it takes minutes) — most recent recorded reproduction: 2026-08-04 — nightly stranger-mode smoke (fresh venv, pip install yuclaw): replay-lab REPRODUCED OK, exit 0.</p>
+      </div>
+      <div class="card">
+        <div class="stnum">Station 4</div>
+        <h2>Check the pre-registration chain yourself</h2>
+        <pre class="cmd">$ curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/registry/protocols.jsonl
+curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/yuclaw_protocol_registry.py
+python3 -c &quot;import yuclaw_protocol_registry as r; print(&#x27;chain OK:&#x27;, r.Registry(&#x27;protocols.jsonl&#x27;).verify_chain())&quot;</pre>
+        <pre class="out">chain OK: True
+(run just now at page build against the live chain)</pre>
+        <p class="muted">Statistics are locked into this hash chain BEFORE computation; any edit anywhere in history breaks it for every verifier.</p>
+      </div>
+      <div class="card">
+        <div class="stnum">Station 5</div>
+        <h2>Walk one evidence trace to its SEC filing</h2>
+        <pre class="cmd">$ yuclaw events --ticker SU --since 2026-07-01</pre>
+        <pre class="out">2026-07-21  OTHER_MATERIAL     dir +0  mag 0.20  6-K      Suncor Energy (TSX: SU) (NYSE: SU) will release its second quarter financial results on Au…
+2026-08-04  DIVIDEND_CHANGE    dir +1  mag 0.80  6-K      News Release dated August&amp;nbsp;4, 2026, Suncor Energy declares dividend
+
+2 accepted event(s) · research classifications, not recommendations</pre>
+        <p class="muted">Every accepted event carries its source URL and a verified excerpt — claims trace to primary filings, machine-checked.</p>
+      </div>
+<div class="closing">
+  <p style="font-size:17px;color:#FFF;font-weight:700">Still skeptical? Good.</p>
+  <p style="margin-top:6px">That is the correct starting posture here.
+  <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/COMPARISON.md">Read How We Compare →</a></p>
+</div>
+<p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
+built 2026-08-05 03:55 UTC</p>
+</div></body></html>

@@ -24,6 +24,10 @@ BASE = "https://yuclawlab.github.io/yuclaw-brain"
 OUT = _REPO / "docs" / "evidence_index.json"
 
 PAGES = {
+    "explorer.html": "Universe Explorer — the full 79-name table, client-side filter/sort",
+    "sectors.html": "Sector overview — descriptive medians of current classifications (display, not inference)",
+    "tour.html": "The 5-minute tour — five commands with build-captured output",
+
     "index.html": "landing — current signals (locked vocabulary)",
     "validation_lab.html": "Validation Lab — cohorts, rigor, clustered inference, baselines",
     "validation.html": "Forward Tracking — ledger, label calibration",

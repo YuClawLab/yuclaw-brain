@@ -38,6 +38,7 @@ MAX_CLICKS = 3
 SOURCE_DOCS = {"YUCLAW_User_Guide_v5.1_source.html",     # print source (EN PDF)
                "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html"}  # print source (FR PDF)
 
+RE_SCRIPT = re.compile(r"<script\b.*?</script>", re.S | re.I)
 RE_HREF = re.compile(r'href=[\'"]([^\'"]+)[\'"]')
 RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
 RE_LOGO = re.compile(r'<a href="index\.html"[^>]*>\s*<span[^>]*>YU', re.S)
@@ -49,17 +50,18 @@ DISCLAIMER_RE = re.compile(
     r'not (investment|financial) advice|ni conseil en investissement', re.I)
 MIN_CHIPS = 8   # nav chips in the shared header (site_header_html)
 CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "XLK Evidence Lens", "Canada Resources",
-               "Forward Tracking", "Signal Review", "GitHub", "PyPI", "Ledger",
+               "Forward Tracking", "Signal Review", "Explorer", "Sectors", "GitHub", "PyPI", "Ledger",
                "Methodology", "Home")
 
 
 def _internal_targets(page: Path, html: str):
     """(target_path|None, fragment|None, raw) for every internal href."""
     out = []
-    for raw in RE_HREF.findall(html):
+    for raw in RE_HREF.findall(RE_SCRIPT.sub(" ", html)):
         if raw.startswith(("http://", "https://", "mailto:", "data:")):
             continue
         path_part, _, frag = raw.partition("#")
+        path_part = path_part.partition("?")[0]   # query strings resolve
         target = (page.parent / path_part).resolve() if path_part else page
         out.append((target, frag or None, raw))
     return out
@@ -125,6 +127,40 @@ def main(argv: list[str] | None = None) -> int:
                 if tgt_ids is not None and frag not in tgt_ids:
                     findings.append(f"{name}: dead anchor {raw} "
                                     f"(no id='{frag}' in {target.name})")
+
+    # ---- 6. generated Why pages (docs/why/, 79 files): pattern check.
+    # Walking all 79 nightly is redundant — they share one template. We
+    # pin the template hash (drift = a reviewed gate edit) and spot-walk
+    # 5 random pages for the invariants every page must carry.
+    WHY_TEMPLATE_PIN = "ed940db4f58a7fcd"
+    why_dir = DOCS / "why"
+    if why_dir.exists():
+        import random
+        sys.path.insert(0, str(DOCS.parent))
+        from v3.web.render_why_pages import template_hash
+        got = template_hash()
+        if got != WHY_TEMPLATE_PIN:
+            findings.append(f"why/: template hash {got} != pinned "
+                            f"{WHY_TEMPLATE_PIN} — review the template "
+                            f"change and update the pin in the same commit")
+        why_pages = sorted(why_dir.glob("*.html"))
+        if len(why_pages) < 79:
+            findings.append(f"why/: only {len(why_pages)} pages (<79)")
+        for p in random.sample(why_pages, min(5, len(why_pages))):
+            t = p.read_text(errors="replace")
+            if "not investment advice" not in t.lower():
+                findings.append(f"why/{p.name}: disclaimer missing")
+            if "Investment implication: none established" not in t:
+                findings.append(f"why/{p.name}: implication line missing")
+            if '<base href="../">' not in t:
+                findings.append(f"why/{p.name}: base href missing")
+            if not RE_STAMP.search(t):
+                findings.append(f"why/{p.name}: freshness stamp missing")
+            for target, _f, raw in _internal_targets(p, t):
+                # <base href="../"> — resolve against docs/ root
+                eff = (DOCS / raw.partition("#")[0]).resolve()
+                if raw.partition("#")[0] and not eff.exists():
+                    findings.append(f"why/{p.name}: dead link {raw}")
 
     if findings:
         print(f"[site-walk] {len(findings)} finding(s):")

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<base href="../">
+<title>Why VIXY — YUCLAW classification anatomy</title>
+<style>
+ *{margin:0;padding:0;box-sizing:border-box}
+ body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.6}
+ .container{max-width:900px;margin:0 auto;padding:24px}
+ h2{font-size:16px;color:#FFF;margin:22px 0 10px}
+ .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin-bottom:14px}
+ .amber{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;font-size:12px;color:#A0AEC0;margin:14px 0}
+ .amber strong{color:#FBA94B}
+ .mono{font-family:'JetBrains Mono',monospace}
+ .muted{color:#718096;font-size:12px}
+ .biglabel{display:inline-block;padding:6px 16px;border-radius:6px;font-weight:800;letter-spacing:0.5px}
+ .crow{display:grid;grid-template-columns:220px 1fr 70px;gap:10px;align-items:center;margin:7px 0}
+ .cname{font-size:12px;color:#CBD5E1}
+ .cw{color:#718096;font-family:'JetBrains Mono',monospace;font-size:10px}
+ .cbarwrap{background:#10141C;border-radius:4px;height:10px;overflow:hidden}
+ .cbar{height:10px}
+ .cval{font-family:'JetBrains Mono',monospace;font-size:12px;text-align:right}
+ .cnote{grid-column:1/4;font-size:11px;color:#FBA94B;padding-left:4px}
+ .terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+ .term{background:#10141C;border:1px solid #1E232D;border-radius:8px;padding:12px;text-align:center}
+ .term .v{font-family:'JetBrains Mono',monospace;font-size:20px;color:#FFF}
+ .term .k{font-size:10.5px;color:#718096;margin-top:3px}
+ .ev{border-top:1px solid #1E232D;padding:10px 0}
+ .evtype{color:#00E676;font-weight:700;font-size:12px;font-family:'JetBrains Mono',monospace}
+ .evmeta{color:#718096;font-size:11px;margin-left:8px}
+ .evex{font-size:12px;color:#A0AEC0;margin:5px 0}
+ .evlink{font-size:11px;color:#00E676}
+ .rb{display:inline-block;width:11px;height:16px;border-radius:2px;margin-right:2px}
+</style>
+</head>
+<body><div class="container">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.1.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Why VIXY</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Signal Review</a><a href="explorer.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Explorer</a><a href="sectors.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Sectors</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 03:55 UTC</span>
+      </div>
+    </div>
+<div class="card">
+  <h1 style="font-size:24px;color:#FFF">Why VIXY</h1>
+  <p style="margin:10px 0 6px"><span class="biglabel"
+    style="background:#A0AEC026;color:#A0AEC0;border:1px solid #A0AEC080">WATCH</span>
+    <span class="mono" style="font-size:20px;margin-left:12px;color:#FFF">+0.1541</span></p>
+  <p class="muted">score +0.1541 sits in the WATCH band [+0.00, +0.20) of the published threshold table ·
+    snapshot 2026-08-04 17:00 UTC · point-in-time, never edited</p>
+</div>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Signal labels are research classifications, not buy/sell recommendations.
+Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.</div>
+
+<div class="card"><h2>Component breakdown (C1–C9, confidence-weighted composite)</h2>
+
+        <div class="crow">
+          <div class="cname">C1 Price momentum
+            <span class="cw">w=0.12</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:18%;
+            background:#FF3366"></div></div>
+          <div class="cval">-0.183</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C2 Volume confirmation
+            <span class="cw">w=0.08</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          <div class='cnote'>volume feed not wired — zero-confidence by design (C2 challenger accrues in a parallel shadow table)</div>
+        </div>
+        <div class="crow">
+          <div class="cname">C3 Sector velocity
+            <span class="cw">w=0.12</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C4 Macro regime
+            <span class="cw">w=0.15</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:60%;
+            background:#00E676"></div></div>
+          <div class="cval">+0.600</div>
+          <div class='cnote'>macro-regime input frozen as of 2026-05-18 with staleness disclosure, pending macro engine restoration</div>
+        </div>
+        <div class="crow">
+          <div class="cname">C5 Oil/rates/FX
+            <span class="cw">w=0.05</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C6 Event impact
+            <span class="cw">w=0.18</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C7 Peer correlation
+            <span class="cw">w=0.10</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C8 Cascade effect
+            <span class="cw">w=0.12</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:0%;
+            background:#3A4150"></div></div>
+          <div class="cval">+0.000</div>
+          
+        </div>
+        <div class="crow">
+          <div class="cname">C9 Model trust
+            <span class="cw">w=0.08</span></div>
+          <div class="cbarwrap"><div class="cbar" style="width:27%;
+            background:#FF3366"></div></div>
+          <div class="cval">-0.273</div>
+          
+        </div>
+<p class="muted" style="margin-top:8px">Weights are the published composite weights; component scores are
+the current snapshot's stored values. C6 event impact carries the highest single weight by design —
+evidence is meant to correct price-only signals, not echo them.</p></div>
+
+<div class="card"><h2>Evidence coverage — the four terms</h2>
+<div class="terms">
+  <div class="term"><div class="v">25</div><div class="k">ECS (0–100)</div></div>
+  <div class="term"><div class="v">0</div><div class="k">accepted events, 90d</div></div>
+  <div class="term"><div class="v">—</div><div class="k">days since latest event</div></div>
+  <div class="term"><div class="v">0</div><div class="k">distinct event types</div></div>
+  <div class="term"><div class="v">1</div><div class="k">substrate active (0/1)</div></div>
+</div>
+<p class="muted" style="margin-top:8px">Evidence Coverage v1 (registered protocol): how much evidence stands
+under this classification — coverage, not prediction.</p></div>
+
+<div class="card"><h2>Latest accepted events</h2><p class='muted'>No accepted events currently on record for this name — absence of evidence is disclosed, never imputed.</p></div>
+
+<div class="card"><h2>Label history (last 30 snapshot days)</h2>
+<div><span class='rb' title='2026-06-24 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-06-25 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-06-26 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-06-29 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-06-30 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-01 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-02 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-03 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-06 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-07 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-08 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-09 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-07-10 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-07-13 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-14 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-07-15 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-07-16 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-17 NEUTRAL' style='background:#A0AEC0'></span><span class='rb' title='2026-07-20 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-21 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-22 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-23 NEUTRAL' style='background:#A0AEC0'></span><span class='rb' title='2026-07-24 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-27 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-28 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-29 NEUTRAL' style='background:#A0AEC0'></span><span class='rb' title='2026-07-30 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-07-31 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-03 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-04 WATCH' style='background:#A0AEC0'></span></div>
+<p class="muted" style="margin-top:6px">Point-in-time record, oldest → newest; colors follow the label
+legend on the home page. Never edited after the fact.</p></div>
+
+<div class="card"><h2>Story membership</h2><p class='muted'>No mega-story membership recorded for this name in the current evidence-geometry artifacts.</p></div>
+
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page. Past results — in-sample or forward-tracked — do not predict future performance.</div>
+<p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
+<a href="explorer.html" style="color:#A0AEC0">Universe Explorer</a> · built 2026-08-05 03:55 UTC</p>
+</div></body></html>

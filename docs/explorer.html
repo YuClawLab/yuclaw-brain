@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YUCLAW Universe Explorer — 79 names, filterable</title>
+<meta name="description" content="The full 79-name scoring universe: labels, scores, evidence coverage — filterable and sortable, entirely in your browser. Research classifications, not recommendations.">
+<style>
+ *{margin:0;padding:0;box-sizing:border-box}
+ body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.5}
+ .container{max-width:1100px;margin:0 auto;padding:24px}
+ .amber{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;font-size:12px;color:#A0AEC0;margin-bottom:14px}
+ .amber strong{color:#FBA94B}
+ .bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+ input,select{background:#151A23;border:1px solid #1E232D;border-radius:8px;color:#E2E8F0;padding:8px 12px;font-size:13px}
+ table{width:100%;border-collapse:collapse;background:#151A23;border:1px solid #1E232D;border-radius:12px;overflow:hidden}
+ th{padding:10px 12px;color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;text-align:left;cursor:pointer;user-select:none;background:#10141C}
+ th:hover{color:#00E676}
+ td{padding:9px 12px;border-top:1px solid #1E232D;font-size:13px}
+ td a{color:#FFF;text-decoration:none;font-weight:600}
+ td a:hover{color:#00E676}
+ .lbl{padding:3px 9px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.4px}
+ .mono{font-family:'JetBrains Mono',monospace}
+ .muted{color:#718096;font-size:12px}
+ .capline{background:#151A23;border:1px solid #1E232D;border-bottom:none;border-radius:12px 12px 0 0;padding:10px 14px;font-size:12px;color:#A0AEC0}
+</style>
+</head>
+<body><div class="container">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.1.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Universe Explorer</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Signal Review</a><a href="explorer.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">Explorer</a><a href="sectors.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Sectors</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 03:55 UTC</span>
+      </div>
+    </div>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Signal labels are research classifications, not buy/sell recommendations. Evidence coverage is coverage,
+not prediction. Nothing on this page transmits anything — filtering and sorting run entirely in your browser
+over data embedded in the page.</div>
+
+<div class="bar">
+  <input id="ftk" placeholder="filter ticker…" oninput="refresh()" style="width:160px">
+  <select id="flb" onchange="refresh()"><option value="">all labels</option><option value="STRONG_BULLISH">STRONG_BULLISH</option><option value="BULLISH">BULLISH</option><option value="NEUTRAL">NEUTRAL</option><option value="WATCH">WATCH</option><option value="WEAKENING">WEAKENING</option><option value="NEGATIVE_EVENT">NEGATIVE_EVENT</option><option value="BEARISH_WATCH">BEARISH_WATCH</option><option value="RISK_ALERT">RISK_ALERT</option></select>
+  <select id="fgr" onchange="refresh()"><option value="">all evidence grades</option><option value="High">High</option><option value="Medium">Medium</option><option value="Thin">Thin</option><option value="None">None</option><option value="n/a">n/a</option></select>
+  <select id="fsc" onchange="refresh()"><option value="">all sectors</option><option value="Broad ETF">Broad ETF</option><option value="Communications">Communications</option><option value="Consumer Disc.">Consumer Disc.</option><option value="Consumer Staples">Consumer Staples</option><option value="Energy">Energy</option><option value="Financials">Financials</option><option value="Health Care">Health Care</option><option value="Macro">Macro</option><option value="Other">Other</option><option value="Sector ETF">Sector ETF</option><option value="Technology">Technology</option></select>
+</div>
+
+<div class="capline">research classifications — not recommendations · evidence grade = display bucket of the
+coverage score (coverage, not prediction) · <span id="count"></span></div>
+<table>
+  <thead><tr>
+    <th onclick="sortBy('ticker')">Ticker</th>
+    <th onclick="sortBy('label')">Label</th>
+    <th onclick="sortBy('score')">Score ▾</th>
+    <th onclick="sortBy('ecs')">Evidence coverage</th>
+    <th onclick="sortBy('grade')">Grade</th>
+    <th onclick="sortBy('sector')">Sector</th>
+    <th onclick="sortBy('events_30d')">Events 30d</th>
+    <th onclick="sortBy('evidence_age_days')">Evidence age (d)</th>
+  </tr></thead>
+  <tbody id="tb"></tbody>
+</table>
+<p class="muted" style="margin-top:10px">Every row links to its Why page — the full anatomy of the current
+classification. Data generated 2026-08-05T03:55 UTC · point-in-time, never edited.</p>
+
+<script>
+const ROWS = [{"ticker":"AAPL","label":"WATCH","score":0.1677,"ecs":87,"grade":"High","sector":"Technology","events_30d":3,"evidence_age_days":4.9,"why":"why/AAPL.html"},{"ticker":"ABBV","label":"WATCH","score":0.0004,"ecs":67,"grade":"Medium","sector":"Health Care","events_30d":3,"evidence_age_days":1.6,"why":"why/ABBV.html"},{"ticker":"ABT","label":"WATCH","score":0.171,"ecs":66,"grade":"Medium","sector":"Health Care","events_30d":3,"evidence_age_days":7.5,"why":"why/ABT.html"},{"ticker":"AMAT","label":"WATCH","score":0.0515,"ecs":75,"grade":"High","sector":"Technology","events_30d":33,"evidence_age_days":19.9,"why":"why/AMAT.html"},{"ticker":"AMD","label":"WATCH","score":0.1376,"ecs":100,"grade":"High","sector":"Technology","events_30d":42,"evidence_age_days":0.5,"why":"why/AMD.html"},{"ticker":"AMZN","label":"WATCH","score":0.1527,"ecs":90,"grade":"High","sector":"Technology","events_30d":32,"evidence_age_days":5.4,"why":"why/AMZN.html"},{"ticker":"ARM","label":"NEUTRAL","score":0.2166,"ecs":95,"grade":"High","sector":"Technology","events_30d":20,"evidence_age_days":6.5,"why":"why/ARM.html"},{"ticker":"AXP","label":"WATCH","score":0.1441,"ecs":76,"grade":"High","sector":"Financials","events_30d":3,"evidence_age_days":11.9,"why":"why/AXP.html"},{"ticker":"BAC","label":"NEUTRAL","score":0.3286,"ecs":36,"grade":"Thin","sector":"Financials","events_30d":0,"evidence_age_days":89.3,"why":"why/BAC.html"},{"ticker":"BMY","label":"NEUTRAL","score":0.2161,"ecs":58,"grade":"Medium","sector":"Health Care","events_30d":2,"evidence_age_days":5.7,"why":"why/BMY.html"},{"ticker":"C","label":"WATCH","score":0.1304,"ecs":36,"grade":"Thin","sector":"Financials","events_30d":0,"evidence_age_days":84.3,"why":"why/C.html"},{"ticker":"COP","label":"NEUTRAL","score":0.2223,"ecs":57,"grade":"Medium","sector":"Energy","events_30d":1,"evidence_age_days":19.9,"why":"why/COP.html"},{"ticker":"COST","label":"WATCH","score":0.092,"ecs":66,"grade":"Medium","sector":"Consumer Staples","events_30d":2,"evidence_age_days":19.9,"why":"why/COST.html"},{"ticker":"CRCL","label":"WEAKENING","score":-0.0039,"ecs":100,"grade":"High","sector":"Other","events_30d":57,"evidence_age_days":0.3,"why":"why/CRCL.html"},{"ticker":"CVX","label":"WATCH","score":0.0814,"ecs":75,"grade":"High","sector":"Energy","events_30d":7,"evidence_age_days":19.9,"why":"why/CVX.html"},{"ticker":"DELL","label":"NEUTRAL","score":0.2452,"ecs":92,"grade":"High","sector":"Technology","events_30d":875,"evidence_age_days":11.3,"why":"why/DELL.html"},{"ticker":"DHR","label":"WATCH","score":0.0588,"ecs":68,"grade":"Medium","sector":"Health Care","events_30d":3,"evidence_age_days":1.5,"why":"why/DHR.html"},{"ticker":"DIA","label":"NEUTRAL","score":0.2737,"ecs":0,"grade":"None","sector":"Broad ETF","events_30d":0,"evidence_age_days":null,"why":"why/DIA.html"},{"ticker":"EEM","label":"WATCH","score":0.1771,"ecs":0,"grade":"None","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/EEM.html"},{"ticker":"FXI","label":"BULLISH","score":0.4624,"ecs":0,"grade":"None","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/FXI.html"},{"ticker":"GLD","label":"WATCH","score":0.1954,"ecs":59,"grade":"Medium","sector":"Macro","events_30d":1,"evidence_age_days":0.5,"why":"why/GLD.html"},{"ticker":"GOOGL","label":"WEAKENING","score":-0.0449,"ecs":89,"grade":"High","sector":"Communications","events_30d":33,"evidence_age_days":6.2,"why":"why/GOOGL.html"},{"ticker":"GS","label":"NEUTRAL","score":0.2869,"ecs":86,"grade":"High","sector":"Financials","events_30d":11,"evidence_age_days":1.4,"why":"why/GS.html"},{"ticker":"HPE","label":"NEUTRAL","score":0.3369,"ecs":100,"grade":"High","sector":"Technology","events_30d":5,"evidence_age_days":0.5,"why":"why/HPE.html"},{"ticker":"IBB","label":"NEUTRAL","score":0.2107,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/IBB.html"},{"ticker":"IEF","label":"NEUTRAL","score":0.2191,"ecs":0,"grade":"None","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/IEF.html"},{"ticker":"INTC","label":"WATCH","score":0.1351,"ecs":82,"grade":"High","sector":"Technology","events_30d":3,"evidence_age_days":12.4,"why":"why/INTC.html"},{"ticker":"IWM","label":"NEUTRAL","score":0.2573,"ecs":0,"grade":"None","sector":"Broad ETF","events_30d":0,"evidence_age_days":null,"why":"why/IWM.html"},{"ticker":"JNJ","label":"WEAKENING","score":-0.0829,"ecs":84,"grade":"High","sector":"Health Care","events_30d":7,"evidence_age_days":0.8,"why":"why/JNJ.html"},{"ticker":"JPM","label":"NEUTRAL","score":0.2114,"ecs":79,"grade":"High","sector":"Financials","events_30d":4,"evidence_age_days":12.5,"why":"why/JPM.html"},{"ticker":"KO","label":"WEAKENING","score":-0.047,"ecs":86,"grade":"High","sector":"Consumer Staples","events_30d":19,"evidence_age_days":1.5,"why":"why/KO.html"},{"ticker":"KRE","label":"NEUTRAL","score":0.2397,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/KRE.html"},{"ticker":"LLY","label":"WEAKENING","score":-0.1011,"ecs":54,"grade":"Medium","sector":"Health Care","events_30d":1,"evidence_age_days":19.9,"why":"why/LLY.html"},{"ticker":"LRCX","label":"WATCH","score":0.0275,"ecs":75,"grade":"High","sector":"Technology","events_30d":45,"evidence_age_days":19.9,"why":"why/LRCX.html"},{"ticker":"LUNR","label":"WATCH","score":0.0943,"ecs":99,"grade":"High","sector":"Other","events_30d":22,"evidence_age_days":1.5,"why":"why/LUNR.html"},{"ticker":"MA","label":"WEAKENING","score":-0.0267,"ecs":87,"grade":"High","sector":"Financials","events_30d":19,"evidence_age_days":0.3,"why":"why/MA.html"},{"ticker":"MDY","label":"NEUTRAL","score":0.2647,"ecs":0,"grade":"None","sector":"Broad ETF","events_30d":0,"evidence_age_days":null,"why":"why/MDY.html"},{"ticker":"META","label":"WATCH","score":0.0724,"ecs":94,"grade":"High","sector":"Technology","events_30d":48,"evidence_age_days":0.2,"why":"why/META.html"},{"ticker":"MRK","label":"WATCH","score":0.0108,"ecs":62,"grade":"Medium","sector":"Health Care","events_30d":1,"evidence_age_days":0.9,"why":"why/MRK.html"},{"ticker":"MRVL","label":"WATCH","score":0.0454,"ecs":99,"grade":"High","sector":"Technology","events_30d":10,"evidence_age_days":1.3,"why":"why/MRVL.html"},{"ticker":"MS","label":"WATCH","score":0.1192,"ecs":87,"grade":"High","sector":"Financials","events_30d":7,"evidence_age_days":0.5,"why":"why/MS.html"},{"ticker":"MSFT","label":"NEUTRAL","score":0.3643,"ecs":95,"grade":"High","sector":"Technology","events_30d":6,"evidence_age_days":6.5,"why":"why/MSFT.html"},{"ticker":"MU","label":"WATCH","score":0.0282,"ecs":95,"grade":"High","sector":"Technology","events_30d":142,"evidence_age_days":7.2,"why":"why/MU.html"},{"ticker":"NVDA","label":"WATCH","score":0.126,"ecs":88,"grade":"High","sector":"Technology","events_30d":7,"evidence_age_days":19.9,"why":"why/NVDA.html"},{"ticker":"PEP","label":"WATCH","score":0.0121,"ecs":67,"grade":"Medium","sector":"Consumer Staples","events_30d":3,"evidence_age_days":6.3,"why":"why/PEP.html"},{"ticker":"PFE","label":"WATCH","score":0.1879,"ecs":74,"grade":"Medium","sector":"Health Care","events_30d":3,"evidence_age_days":0.9,"why":"why/PFE.html"},{"ticker":"PG","label":"WATCH","score":0.0604,"ecs":68,"grade":"Medium","sector":"Consumer Staples","events_30d":4,"evidence_age_days":0.5,"why":"why/PG.html"},{"ticker":"PSX","label":"WATCH","score":0.1681,"ecs":62,"grade":"Medium","sector":"Energy","events_30d":3,"evidence_age_days":14.2,"why":"why/PSX.html"},{"ticker":"PYPL","label":"NEUTRAL","score":0.2974,"ecs":96,"grade":"High","sector":"Financials","events_30d":6,"evidence_age_days":5.3,"why":"why/PYPL.html"},{"ticker":"QQQ","label":"NEUTRAL","score":0.2604,"ecs":0,"grade":"None","sector":"Broad ETF","events_30d":0,"evidence_age_days":null,"why":"why/QQQ.html"},{"ticker":"RKLB","label":"WEAKENING","score":-0.1415,"ecs":88,"grade":"High","sector":"Other","events_30d":70,"evidence_age_days":19.9,"why":"why/RKLB.html"},{"ticker":"SLB","label":"NEUTRAL","score":0.2406,"ecs":70,"grade":"Medium","sector":"Energy","events_30d":2,"evidence_age_days":6.7,"why":"why/SLB.html"},{"ticker":"SLV","label":"NEUTRAL","score":0.2163,"ecs":25,"grade":"Thin","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/SLV.html"},{"ticker":"SMH","label":"NEUTRAL","score":0.3356,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/SMH.html"},{"ticker":"SPY","label":"NEUTRAL","score":0.2932,"ecs":0,"grade":"None","sector":"Broad ETF","events_30d":0,"evidence_age_days":null,"why":"why/SPY.html"},{"ticker":"TAIL","label":"NEUTRAL","score":0.2001,"ecs":0,"grade":"None","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/TAIL.html"},{"ticker":"TLT","label":"WATCH","score":0.1822,"ecs":0,"grade":"None","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/TLT.html"},{"ticker":"TMO","label":"WATCH","score":0.1882,"ecs":63,"grade":"Medium","sector":"Health Care","events_30d":2,"evidence_age_days":7.3,"why":"why/TMO.html"},{"ticker":"TSLA","label":"WEAKENING","score":-0.0271,"ecs":69,"grade":"Medium","sector":"Consumer Disc.","events_30d":3,"evidence_age_days":13.3,"why":"why/TSLA.html"},{"ticker":"UNH","label":"WEAKENING","score":-0.0545,"ecs":38,"grade":"Thin","sector":"Health Care","events_30d":0,"evidence_age_days":60.3,"why":"why/UNH.html"},{"ticker":"UUP","label":"NEUTRAL","score":0.2237,"ecs":25,"grade":"Thin","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/UUP.html"},{"ticker":"V","label":"WATCH","score":0.0022,"ecs":84,"grade":"High","sector":"Financials","events_30d":9,"evidence_age_days":4.3,"why":"why/V.html"},{"ticker":"VIXY","label":"WATCH","score":0.1541,"ecs":25,"grade":"Thin","sector":"Macro","events_30d":0,"evidence_age_days":null,"why":"why/VIXY.html"},{"ticker":"VXX","label":"WATCH","score":0.1475,"ecs":38,"grade":"Thin","sector":"Macro","events_30d":0,"evidence_age_days":60.4,"why":"why/VXX.html"},{"ticker":"WFC","label":"NEUTRAL","score":0.2738,"ecs":57,"grade":"Medium","sector":"Financials","events_30d":2,"evidence_age_days":7.5,"why":"why/WFC.html"},{"ticker":"WMT","label":"WEAKENING","score":-0.0402,"ecs":87,"grade":"High","sector":"Consumer Staples","events_30d":26,"evidence_age_days":0.3,"why":"why/WMT.html"},{"ticker":"XBI","label":"NEUTRAL","score":0.2343,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XBI.html"},{"ticker":"XLB","label":"NEUTRAL","score":0.2273,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLB.html"},{"ticker":"XLC","label":"WATCH","score":0.1176,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLC.html"},{"ticker":"XLE","label":"WATCH","score":0.101,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLE.html"},{"ticker":"XLF","label":"NEUTRAL","score":0.235,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLF.html"},{"ticker":"XLI","label":"NEUTRAL","score":0.2138,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLI.html"},{"ticker":"XLK","label":"BULLISH","score":0.4385,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLK.html"},{"ticker":"XLP","label":"WATCH","score":0.0673,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLP.html"},{"ticker":"XLRE","label":"WATCH","score":0.073,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLRE.html"},{"ticker":"XLU","label":"WEAKENING","score":-0.0481,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLU.html"},{"ticker":"XLV","label":"WATCH","score":0.0788,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLV.html"},{"ticker":"XLY","label":"WATCH","score":0.0836,"ecs":0,"grade":"None","sector":"Sector ETF","events_30d":0,"evidence_age_days":null,"why":"why/XLY.html"},{"ticker":"XOM","label":"NEUTRAL","score":0.2362,"ecs":61,"grade":"Medium","sector":"Energy","events_30d":1,"evidence_age_days":1.5,"why":"why/XOM.html"}];
+const COLORS = {"STRONG_BULLISH":"#00E676","BULLISH":"#00E676","NEUTRAL":"#A0AEC0","WATCH":"#A0AEC0",
+"WEAKENING":"#FF3366","NEGATIVE_EVENT":"#FF3366","BEARISH_WATCH":"#FF3366","RISK_ALERT":"#FBA94B"};
+let sortKey = "score", sortDir = -1;
+function sortBy(k) {
+  if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = -1; }
+  refresh();
+}
+function refresh() {
+  const tk = document.getElementById("ftk").value.toUpperCase();
+  const lb = document.getElementById("flb").value;
+  const gr = document.getElementById("fgr").value;
+  const sc = document.getElementById("fsc").value;
+  let rows = ROWS.filter(r =>
+    (!tk || r.ticker.includes(tk)) && (!lb || r.label === lb) &&
+    (!gr || r.grade === gr) && (!sc || r.sector === sc));
+  rows.sort((a, b) => {
+    let x = a[sortKey], y = b[sortKey];
+    if (x == null) return 1; if (y == null) return -1;
+    if (typeof x === "string") return sortDir * x.localeCompare(y);
+    return sortDir * (x - y);
+  });
+  document.getElementById("count").textContent = rows.length + " of " + ROWS.length + " names";
+  document.getElementById("tb").innerHTML = rows.map(r => {
+    const c = COLORS[r.label] || "#A0AEC0";
+    return `<tr><td><a href="${r.why}">${r.ticker}</a></td>` +
+      `<td><span class="lbl" style="background:${c}26;color:${c};border:1px solid ${c}80">${r.label}</span></td>` +
+      `<td class="mono" style="color:${r.score > 0 ? "#00E676" : r.score < 0 ? "#FF3366" : "#A0AEC0"}">${r.score >= 0 ? "+" : ""}${r.score.toFixed(3)}</td>` +
+      `<td class="mono">${r.ecs ?? "—"}</td><td>${r.grade}</td><td>${r.sector}</td>` +
+      `<td class="mono">${r.events_30d}</td><td class="mono">${r.evidence_age_days ?? "—"}</td></tr>`;
+  }).join("");
+}
+const params = new URLSearchParams(location.search);
+if (params.get("sector")) document.getElementById("fsc").value = params.get("sector");
+refresh();
+</script>
+</div></body></html>

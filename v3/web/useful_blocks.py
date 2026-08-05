@@ -68,6 +68,8 @@ _NAV_CHIPS = (
     ("Canada Resources Evidence", "canada_resources.html"),
     ("Forward Tracking", "validation.html"),
     ("Signal Review", "signal_review.html"),
+    ("Explorer", "explorer.html"),
+    ("Sectors", "sectors.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
     ("PyPI", "https://pypi.org/project/yuclaw/"),
     ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),

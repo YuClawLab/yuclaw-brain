@@ -39,6 +39,13 @@ DEFAULT_PATHS = [
     "todays_evidence.html",
     "lane.html",
     "signal_review.html",
+    "explorer.html",
+    "explorer_data.json",
+    "sectors.html",
+    "tour.html",
+    # one generated Why page as the pattern representative (all 79 share
+    # the pinned template; site-walk spot-checks 5 nightly)
+    "why/AAPL.html",
     "trace_su.html",
     "usage.md",
     "examples/evidence_memo_su.md",

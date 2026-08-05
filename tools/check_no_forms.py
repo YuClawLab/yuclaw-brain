@@ -20,13 +20,14 @@ from pathlib import Path
 DOCS = Path(__file__).resolve().parents[1] / "docs"
 
 F1 = re.compile(r"<form\b", re.I)
-# F2: collectable inputs only. A bare <input> with no name attribute and
-# no file type is a client-side widget (the preview pages' local filter
-# boxes) — with <form> banned outright by F1 it has nowhere to submit,
-# and F3 covers payment scripts. Named inputs, textareas, selects, and
-# file inputs are always violations.
-F2 = re.compile(r"<input\b[^>]*\bname=|<textarea\b|<select\b|"
-                r"type=[\"']file[\"']", re.I)
+# F2: collectable inputs only — the documented transmit-nothing
+# exemption. A bare <input> or <select> with no name attribute is a
+# client-side widget (preview filter boxes; the Explorer's filter/sort
+# controls) — with <form> banned outright by F1 it has nowhere to
+# submit, and F3 covers payment scripts. NAMED inputs/selects,
+# textareas, and file inputs are always violations.
+F2 = re.compile(r"<input\b[^>]*\bname=|<select\b[^>]*\bname=|"
+                r"<textarea\b|type=[\"']file[\"']", re.I)
 F3 = re.compile(r"stripe|paypal|braintree|checkout\.js|squareup|"
                 r"credit card|data-price|buy-now|add.to.cart", re.I)
 
