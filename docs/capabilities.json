@@ -1,0 +1,26 @@
+{
+ "name": "YUCLAW Ground Truth API",
+ "version": "v5.3",
+ "generated": "2026-08-05T05:08:59.692118+00:00",
+ "positioning": "The open evidence layer for financial AI.",
+ "endpoints": {
+  "discovery": "https://yuclaw.ca/capabilities.json",
+  "index": "https://yuclaw.ca/evidence_index.json",
+  "llms": "https://yuclaw.ca/llms.txt",
+  "why_json": "https://yuclaw.ca/why/{TICKER}.json",
+  "why_html": "https://yuclaw.ca/why/{TICKER}.html",
+  "explorer_data": "https://yuclaw.ca/explorer_data.json",
+  "schemas": "https://yuclaw.ca/schemas/{Name}.v1.json",
+  "verify": "https://yuclaw.ca/evidence/verify.json",
+  "ledger_day": "https://yuclaw.ca/ledger/{YYYY-MM-DD}.json",
+  "evidencebench": "https://yuclaw.ca/evidencebench/items.jsonl"
+ },
+ "cli": {
+  "install": "pip install yuclaw",
+  "check_claim": "yuclaw check-claim --ticker X --type T --date-range A..B  (or --text '...')",
+  "replay": "yuclaw replay TICKER --date D",
+  "reproduce": "yuclaw replay-lab"
+ },
+ "as_of_recipe": "evidence as of D = evidence_objects with available_as_of <= D; classification at D = label_history last entry <= D; beyond the ribbon: the replay CLI",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}

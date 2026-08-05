@@ -1,0 +1,760 @@
+{
+ "ticker": "ENB",
+ "form": "8-K",
+ "accession_number": "0001193125-26-326744",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 5,
+   "citations_verified": 5,
+   "points_total": 4,
+   "points_grounded": 4,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The company's secured growth project backlog has reached a substantial $41 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Enbridge Reports Strong Second Quarter Results, Reaffirms 2026 Guidance and Grows Secured Backlog to $41B",
+       "verified": true,
+       "match_type": "exact",
+       "start": 54,
+       "end": 159
+      },
+      {
+       "quote": "in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2694,
+       "end": 2779
+      }
+     ],
+     "numbers": [
+      {
+       "token": "41",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Enbridge has demonstrated aggressive capital deployment with $9 billion in new projects sanctioned year-to-date.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Year-to-date, we have sanctioned $9 billion of new projects and are well on track to meet our targeted $10-20 billion of new project announcements over the 2026 to 2027 timeframe.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2780,
+       "end": 2959
+      }
+     ],
+     "numbers": [
+      {
+       "token": "9",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Operational efficiency is improving as evidenced by the increase in EBITDA to $4.8 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Adjusted earnings before interest, income taxes and depreciation and amortization (EBITDA)* of $4.8 billion, compared to $4.6 billion in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 936,
+       "end": 1077
+      }
+     ],
+     "numbers": [
+      {
+       "token": "4.8",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Cash generation from operating activities saw a significant year-over-year increase to $4.1 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Cash provided by operating activities of $4.1 billion, compared with $3.2 billion in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1080,
+       "end": 1169
+      }
+     ],
+     "numbers": [
+      {
+       "token": "4.1",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company's secured growth project backlog has reached a substantial $41 billion.",
+    "Enbridge has demonstrated aggressive capital deployment with $9 billion in new projects sanctioned year-to-date.",
+    "Operational efficiency is improving as evidenced by the increase in EBITDA to $4.8 billion.",
+    "Cash generation from operating activities saw a significant year-over-year increase to $4.1 billion."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "Enbridge Reports Strong Second Quarter Results, Reaffirms 2026 Guidance and Grows Secured Backlog to $41B",
+     "start": 54,
+     "end": 159,
+     "match_type": "exact"
+    },
+    {
+     "quote": "in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2694,
+     "end": 2779,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Year-to-date, we have sanctioned $9 billion of new projects and are well on track to meet our targeted $10-20 billion of new project announcements over the 2026 to 2027 timeframe.",
+     "start": 2780,
+     "end": 2959,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Adjusted earnings before interest, income taxes and depreciation and amortization (EBITDA)* of $4.8 billion, compared to $4.6 billion in 2025",
+     "start": 936,
+     "end": 1077,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Cash provided by operating activities of $4.1 billion, compared with $3.2 billion in 2025",
+     "start": 1080,
+     "end": 1169,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 0,
+   "points_discarded": 2,
+   "grounding_rate": 0.0,
+   "points": [
+    {
+     "point": "GAAP earnings attributable to common shareholders fell significantly from $2.2 billion in 2025 to $1.4 billion in the second quarter of 2026.",
+     "grounded": false,
+     "discard_reason": "number(s) not in cited quote: ['2026']",
+     "quotes": [
+      {
+       "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 586,
+       "end": 807
+      }
+     ],
+     "numbers": [
+      {
+       "token": "2.2",
+       "found": true
+      },
+      {
+       "token": "2025",
+       "found": true
+      },
+      {
+       "token": "1.4",
+       "found": true
+      },
+      {
+       "token": "2026",
+       "found": false
+      }
+     ]
+    },
+    {
+     "point": "Adjusted earnings per common share saw a slight decline from $0.65 in 2025 to $0.63 in the second quarter of 2026.",
+     "grounded": false,
+     "discard_reason": "number(s) not in cited quote: ['2026']",
+     "quotes": [
+      {
+       "quote": "Adjusted earnings* of $1.4 billion or $0.63 per common share*, compared with $1.4 billion or $0.65 per common share in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 810,
+       "end": 933
+      }
+     ],
+     "numbers": [
+      {
+       "token": "0.65",
+       "found": true
+      },
+      {
+       "token": "2025",
+       "found": true
+      },
+      {
+       "token": "0.63",
+       "found": true
+      },
+      {
+       "token": "2026",
+       "found": false
+      }
+     ]
+    }
+   ],
+   "grounded_points": [],
+   "discarded_points": [
+    {
+     "point": "GAAP earnings attributable to common shareholders fell significantly from $2.2 billion in 2025 to $1.4 billion in the second quarter of 2026.",
+     "reason": "number(s) not in cited quote: ['2026']"
+    },
+    {
+     "point": "Adjusted earnings per common share saw a slight decline from $0.65 in 2025 to $0.63 in the second quarter of 2026.",
+     "reason": "number(s) not in cited quote: ['2026']"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+     "start": 586,
+     "end": 807,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Adjusted earnings* of $1.4 billion or $0.63 per common share*, compared with $1.4 billion or $0.65 per common share in 2025",
+     "start": 810,
+     "end": 933,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "skeptic": {
+   "citations_total": 3,
+   "citations_verified": 3,
+   "points_total": 3,
+   "points_grounded": 2,
+   "points_discarded": 1,
+   "grounding_rate": 0.6667,
+   "points": [
+    {
+     "point": "GAAP earnings attributable to common shareholders decreased from $2.2 billion in 2025 to $1.4 billion in the second quarter of 2026.",
+     "grounded": false,
+     "discard_reason": "number(s) not in cited quote: ['2026']",
+     "quotes": [
+      {
+       "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 586,
+       "end": 807
+      }
+     ],
+     "numbers": [
+      {
+       "token": "2.2",
+       "found": true
+      },
+      {
+       "token": "2025",
+       "found": true
+      },
+      {
+       "token": "1.4",
+       "found": true
+      },
+      {
+       "token": "2026",
+       "found": false
+      }
+     ]
+    },
+    {
+     "point": "The company's growth project backlog has reached $41 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2638,
+       "end": 2779
+      }
+     ],
+     "numbers": [
+      {
+       "token": "41",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The company's year-to-date project sanctions total $9 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Year-to-date, we have sanctioned $9 billion of new projects and are well on track to meet our targeted $10-20 billion of new project announcements over the 2026 to 2027 timeframe.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2780,
+       "end": 2959
+      }
+     ],
+     "numbers": [
+      {
+       "token": "9",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company's growth project backlog has reached $41 billion.",
+    "The company's year-to-date project sanctions total $9 billion."
+   ],
+   "discarded_points": [
+    {
+     "point": "GAAP earnings attributable to common shareholders decreased from $2.2 billion in 2025 to $1.4 billion in the second quarter of 2026.",
+     "reason": "number(s) not in cited quote: ['2026']"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+     "start": 586,
+     "end": 807,
+     "match_type": "exact"
+    },
+    {
+     "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2638,
+     "end": 2779,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Year-to-date, we have sanctioned $9 billion of new projects and are well on track to meet our targeted $10-20 billion of new project announcements over the 2026 to 2027 timeframe.",
+     "start": 2780,
+     "end": 2959,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "spec:earningsquality": {
+   "citations_total": 4,
+   "citations_verified": 4,
+   "points_total": 3,
+   "points_grounded": 3,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "GAAP earnings attributable to common shareholders fell to $1.4 billion from $2.2 billion in 2025.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 586,
+       "end": 807
+      }
+     ],
+     "numbers": [
+      {
+       "token": "1.4",
+       "found": true
+      },
+      {
+       "token": "2.2",
+       "found": true
+      },
+      {
+       "token": "2025",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Cash provided by operating activities saw strong growth to $4.1 billion from $3.2 billion in 2025.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Cash provided by operating activities of $4.1 billion, compared with $3.2 billion in 2025",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1080,
+       "end": 1169
+      }
+     ],
+     "numbers": [
+      {
+       "token": "4.1",
+       "found": true
+      },
+      {
+       "token": "3.2",
+       "found": true
+      },
+      {
+       "token": "2025",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The company's secured growth project backlog has reached $41 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Enbridge Reports Strong Second Quarter Results, Reaffirms 2026 Guidance and Grows Secured Backlog to $41B",
+       "verified": true,
+       "match_type": "exact",
+       "start": 54,
+       "end": 159
+      },
+      {
+       "quote": "added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2716,
+       "end": 2779
+      }
+     ],
+     "numbers": [
+      {
+       "token": "41",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "GAAP earnings attributable to common shareholders fell to $1.4 billion from $2.2 billion in 2025.",
+    "Cash provided by operating activities saw strong growth to $4.1 billion from $3.2 billion in 2025.",
+    "The company's secured growth project backlog has reached $41 billion."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "Second quarter GAAP earnings attributable to common shareholders of $1.4 billion or $0.64 per common share, compared with GAAP earnings attributable to common shareholders of $2.2 billion or $1.00 per common share in 2025",
+     "start": 586,
+     "end": 807,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Cash provided by operating activities of $4.1 billion, compared with $3.2 billion in 2025",
+     "start": 1080,
+     "end": 1169,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Enbridge Reports Strong Second Quarter Results, Reaffirms 2026 Guidance and Grows Secured Backlog to $41B",
+     "start": 54,
+     "end": 159,
+     "match_type": "exact"
+    },
+    {
+     "quote": "added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2716,
+     "end": 2779,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "spec:macro": {
+   "citations_total": 3,
+   "citations_verified": 2,
+   "points_total": 3,
+   "points_grounded": 2,
+   "points_discarded": 1,
+   "grounding_rate": 0.6667,
+   "points": [
+    {
+     "point": "Global geopolitical developments are causing volatility in energy markets.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "Shaped by ongoing geopolitical developments around and the world, energy markets have remained volatile in recent months.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company's growth is supported by favorable market fundamentals and supportive Canadian government policies.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "These assets will become increasingly important to our growth profile as Canadian oil production rises in response to favourable market fundamentals and the implementation of more supportive policies by Canadian governments.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 4308,
+       "end": 4532
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company has expanded its secured growth project backlog to $41 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2638,
+       "end": 2779
+      }
+     ],
+     "numbers": [
+      {
+       "token": "41",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company's growth is supported by favorable market fundamentals and supportive Canadian government policies.",
+    "The company has expanded its secured growth project backlog to $41 billion."
+   ],
+   "discarded_points": [
+    {
+     "point": "Global geopolitical developments are causing volatility in energy markets.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "These assets will become increasingly important to our growth profile as Canadian oil production rises in response to favourable market fundamentals and the implementation of more supportive policies by Canadian governments.",
+     "start": 4308,
+     "end": 4532,
+     "match_type": "exact"
+    },
+    {
+     "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2638,
+     "end": 2779,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "spec:geopolitical": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "Global energy markets are experiencing volatility driven by ongoing geopolitical developments and supply disruptions.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "Shaped by ongoing geopolitical developments around and the world, energy markets have remained volatile in recent months. While supply disruptions persist and uncertainty continues, one thing is clear; energy security, reliability, and affordability are more important than ever.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "Enbridge is expanding its North American footprint through significant project sanctions and backlog growth.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2638,
+       "end": 2779
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "Enbridge is expanding its North American footprint through significant project sanctions and backlog growth."
+   ],
+   "discarded_points": [
+    {
+     "point": "Global energy markets are experiencing volatility driven by ongoing geopolitical developments and supply disruptions.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "We are advancing projects all across our businesses and in the second quarter added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2638,
+     "end": 2779,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "spec:esg": {
+   "citations_total": 3,
+   "citations_verified": 3,
+   "points_total": 3,
+   "points_grounded": 3,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "Enbridge is expanding its renewable energy portfolio, having sanctioned 1.4 GW of solar and onshore wind and 1.6 GWh of battery storage capacity.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "which saw us sanction over 1.4 GW of solar and onshore Wind generation capacity and 1.6 GWh of battery storage capacity",
+       "verified": true,
+       "match_type": "normalized",
+       "start": 5636,
+       "end": 5755
+      }
+     ],
+     "numbers": [
+      {
+       "token": "1.4",
+       "found": true
+      },
+      {
+       "token": "1.6",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The company is investing in the US$1.0 billion Line 5 Relocation project to support reliable energy delivery.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Sanctioned and began construction of the US$1.0 billion Line 5 Relocation project in Wisconsin, supporting the continued safe and reliable delivery of energy to the Midwest, Ontario and Quebec",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1332,
+       "end": 1524
+      }
+     ],
+     "numbers": [
+      {
+       "token": "1.0",
+       "found": true
+      },
+      {
+       "token": "5",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Enbridge's growth project backlog has reached $41 billion.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "added $1 billion to our now $41 billion growth project backlog.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2716,
+       "end": 2779
+      }
+     ],
+     "numbers": [
+      {
+       "token": "41",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "Enbridge is expanding its renewable energy portfolio, having sanctioned 1.4 GW of solar and onshore wind and 1.6 GWh of battery storage capacity.",
+    "The company is investing in the US$1.0 billion Line 5 Relocation project to support reliable energy delivery.",
+    "Enbridge's growth project backlog has reached $41 billion."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "which saw us sanction over 1.4 GW of solar and onshore Wind generation capacity and 1.6 GWh of battery storage capacity",
+     "start": 5636,
+     "end": 5755,
+     "match_type": "normalized"
+    },
+    {
+     "quote": "Sanctioned and began construction of the US$1.0 billion Line 5 Relocation project in Wisconsin, supporting the continued safe and reliable delivery of energy to the Midwest, Ontario and Quebec",
+     "start": 1332,
+     "end": 1524,
+     "match_type": "exact"
+    },
+    {
+     "quote": "added $1 billion to our now $41 billion growth project backlog.",
+     "start": 2716,
+     "end": 2779,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [
+  "earningsquality",
+  "macro",
+  "geopolitical",
+  "esg"
+ ],
+ "risk_channel": {
+  "level": "medium",
+  "score": 1.0,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Declining GAAP profitability",
+   "Earnings volatility",
+   "Energy market uncertainty",
+   "GAAP earnings volatility",
+   "Geopolitical uncertainty",
+   "Geopolitical volatility",
+   "High capital expenditure requirements",
+   "Market volatility"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "medium",
+   "skeptic": "medium",
+   "earningsquality": "medium",
+   "macro": "medium",
+   "geopolitical": "medium",
+   "esg": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 16000,
+ "secs": 211.7,
+ "computed_at": "2026-07-31T11:28:40+00:00",
+ "live_path": "c6_specialized_live"
+}

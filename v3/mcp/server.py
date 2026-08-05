@@ -199,6 +199,118 @@ def yuclaw_lens(vertical: str, lens: str) -> dict[str, Any]:
                 "hint": "this tool reads the local YUCLAW research backend"}
 
 
+
+# ---------------------------------------------------------------------------
+# v5.3 "Ground Truth" tools (MCP v2): evidence objects, anatomy, passport,
+# snapshot verification, protocol lookup. All friendly-no-backend.
+# ---------------------------------------------------------------------------
+@mcp.tool()
+def get_evidence(ticker: str, as_of: Optional[str] = None) -> dict[str, Any]:
+    """EvidenceObjects for a ticker (frozen v1 schema: excerpt, accession,
+    source_hash, available_as_of). as_of applies the point-in-time filter
+    available_as_of <= as_of. Research classifications, never advice."""
+    try:
+        from v3.evidence import evidence_objects, in_universe
+        if not in_universe(ticker):
+            return {"status": "NOT_IN_COVERAGE",
+                    "note": f"{ticker.upper()} is outside the 79-name "
+                            f"scoring universe"}
+        objs = evidence_objects(ticker, as_of=as_of, limit=100)
+        return {"ticker": ticker.upper(), "as_of": as_of,
+                "n": len(objs),
+                "evidence_objects": [
+                    {k: v for k, v in o.items() if not k.startswith("_")}
+                    for o in objs],
+                "note": "research classifications, not recommendations"}
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
+                "hint": "the same objects are served at "
+                        "https://yuclaw.ca/why/{TICKER}.json"}
+
+
+@mcp.tool()
+def get_signal_anatomy(ticker: str) -> dict[str, Any]:
+    """The full classification anatomy (label, score, threshold band,
+    components, coverage terms, label history) — the why/{TICKER}.json
+    document."""
+    try:
+        import json as _json
+        from pathlib import Path as _P
+        f = (_P(__file__).resolve().parents[2] / "docs" / "why" /
+             f"{ticker.upper().replace('.', '-')}.json")
+        if not f.exists():
+            return {"status": "NOT_IN_COVERAGE",
+                    "note": f"no anatomy document for {ticker.upper()}"}
+        return _json.loads(f.read_text())
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
+                "hint": "served at https://yuclaw.ca/why/{TICKER}.json"}
+
+
+@mcp.tool()
+def check_claim(ticker: Optional[str] = None,
+                event_type: Optional[str] = None,
+                date_range: Optional[str] = None,
+                accession: Optional[str] = None,
+                text: Optional[str] = None) -> dict[str, Any]:
+    """Evidence Passport: deterministic claim check. Statuses:
+    SOURCE_MATCHED / PARTIAL_MATCH / UNSUPPORTED (= not found in the
+    corpus, never a truth verdict) / NOT_IN_COVERAGE / NOT_PARSEABLE."""
+    try:
+        from v3.cli.check_claim import _parse_text, passport
+        from v3.universe_tiers import scoring_universe
+        uni = set(scoring_universe())
+        if text:
+            claim = _parse_text(text, uni)
+            return passport(text, claim,
+                            claim is not None and claim["ticker"] in uni)
+        if not ticker:
+            return {"error": "give ticker+event_type/accession, or text"}
+        dr = tuple(date_range.split("..")) if date_range else None
+        claim = {"ticker": ticker.upper(), "type": event_type,
+                 "accession": accession, "date_range": dr}
+        import json as _json
+        return passport(_json.dumps({k: v for k, v in claim.items() if v}),
+                        claim, claim["ticker"] in uni)
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
+                "hint": "install locally: pip install yuclaw && "
+                        "yuclaw check-claim --help"}
+
+
+@mcp.tool()
+def verify_snapshot(ticker: str, date: str) -> dict[str, Any]:
+    """Ledger integrity check for a published snapshot (record integrity
+    and timing — not investment merit). Offline path: fetch
+    /ledger/{date}.json and recompute the root."""
+    return yuclaw_verify(ticker, date)
+
+
+@mcp.tool()
+def get_protocol(protocol_id: str) -> dict[str, Any]:
+    """A protocol payload from the hash-chained registry — the
+    specification locked BEFORE its statistic was computed."""
+    try:
+        import json as _json
+        from pathlib import Path as _P
+        reg = (_P(__file__).resolve().parents[2] / "registry" /
+               "protocols.jsonl")
+        for line in reg.read_text().splitlines():
+            e = _json.loads(line)
+            if (e.get("kind") == "protocol" and
+                    e["payload"].get("protocol_id") == protocol_id):
+                return e["payload"]
+        return {"error": f"protocol {protocol_id} not found",
+                "hint": "list: https://yuclaw.ca/evidence_index.json "
+                        "registry block"}
+    except Exception as exc:                     # noqa: BLE001
+        return {"error": "backend unavailable",
+                "detail": f"{type(exc).__name__}: {str(exc)[:140]}"}
+
+
 def main() -> None:
     """Run the MCP server over stdio."""
     mcp.run()

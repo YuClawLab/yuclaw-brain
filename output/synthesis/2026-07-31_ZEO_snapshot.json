@@ -1,0 +1,155 @@
+{
+ "lens": "ZEO",
+ "build_id": "50b49abb",
+ "data_through": "2026-07-31",
+ "coverage_weight_pct": 75.0,
+ "filers_covered": 9,
+ "filers_total": 12,
+ "grade": "A",
+ "funnel": {
+  "filings_ingested": 111,
+  "with_usable_prose": 92,
+  "candidate_events": 88,
+  "accepted": 88,
+  "after_dedup": 82,
+  "matured": 72,
+  "direction_eligible": 53,
+  "reasons": {
+   "with_usable_prose": "no extractable exhibit/MD&A prose",
+   "candidate_events": "prose contained no material-event candidate",
+   "accepted": "failed deterministic source-grounding verification",
+   "after_dedup": "duplicate of an already-accepted event",
+   "matured": "forward window not yet complete",
+   "direction_eligible": "event type carries no directional prior"
+  }
+ },
+ "issuers": [
+  {
+   "ticker": "CVE",
+   "weight_pct": 9.15,
+   "events_accepted": 7,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-29",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "SOBO",
+   "weight_pct": 8.65,
+   "events_accepted": 10,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-05-07",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "PBA",
+   "weight_pct": 8.57,
+   "events_accepted": 12,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-30",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "TRP",
+   "weight_pct": 8.5,
+   "events_accepted": 12,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "GUIDANCE_RAISE",
+   "last_event_date": "2026-07-30",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "WCPRF",
+   "weight_pct": 8.42,
+   "events_accepted": 0,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": null,
+   "last_event_date": null,
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "SU",
+   "weight_pct": 8.21,
+   "events_accepted": 17,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-21",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "IMO",
+   "weight_pct": 8.1,
+   "events_accepted": 12,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "EXEC_CHANGE",
+   "last_event_date": "2026-07-31",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "ENB",
+   "weight_pct": 8.04,
+   "events_accepted": 10,
+   "c6_state": "elevated",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-31",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "CNQ",
+   "weight_pct": 7.21,
+   "events_accepted": 8,
+   "c6_state": "elevated",
+   "c6_rarity_pctile": null,
+   "last_event_type": "DIVIDEND_CHANGE",
+   "last_event_date": "2026-05-12",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  }
+ ],
+ "car": [
+  {
+   "day": 5,
+   "peer_car_pct": 0.48,
+   "spy_car_pct": 0.48,
+   "ci_lo_pct": -0.55,
+   "ci_hi_pct": 1.52,
+   "n": 50
+  },
+  {
+   "day": 10,
+   "peer_car_pct": 0.31,
+   "spy_car_pct": 0.31,
+   "ci_lo_pct": -0.92,
+   "ci_hi_pct": 1.54,
+   "n": 50
+  },
+  {
+   "day": 20,
+   "peer_car_pct": -0.23,
+   "spy_car_pct": -0.23,
+   "ci_lo_pct": -1.84,
+   "ci_hi_pct": 1.37,
+   "n": 47
+  }
+ ],
+ "methodology_version": "v5",
+ "insider_scope_note": "most covered Canadian issuers report insider trades through Canada's SEDI system, which is not yet ingested"
+}

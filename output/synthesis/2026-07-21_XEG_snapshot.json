@@ -1,0 +1,144 @@
+{
+ "lens": "XEG",
+ "build_id": "04da7365",
+ "data_through": "2026-07-21",
+ "coverage_weight_pct": 76.0,
+ "filers_covered": 8,
+ "filers_total": 28,
+ "grade": "A",
+ "funnel": {
+  "filings_ingested": 87,
+  "with_usable_prose": 64,
+  "candidate_events": 71,
+  "accepted": 71,
+  "after_dedup": 66,
+  "matured": 58,
+  "direction_eligible": 41,
+  "reasons": {
+   "with_usable_prose": "no extractable exhibit/MD&A prose",
+   "candidate_events": "prose contained no material-event candidate",
+   "accepted": "failed deterministic source-grounding verification",
+   "after_dedup": "duplicate of an already-accepted event",
+   "matured": "forward window not yet complete",
+   "direction_eligible": "event type carries no directional prior"
+  }
+ },
+ "issuers": [
+  {
+   "ticker": "SU",
+   "weight_pct": 25.27,
+   "events_accepted": 17,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-21",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "CNQ",
+   "weight_pct": 24.49,
+   "events_accepted": 8,
+   "c6_state": "elevated",
+   "c6_rarity_pctile": null,
+   "last_event_type": "DIVIDEND_CHANGE",
+   "last_event_date": "2026-05-12",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "CVE",
+   "weight_pct": 12.88,
+   "events_accepted": 6,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-05-06",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "IMO",
+   "weight_pct": 6.54,
+   "events_accepted": 10,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-15",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "WCPRF",
+   "weight_pct": 4.71,
+   "events_accepted": 0,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": null,
+   "last_event_date": null,
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "EFXT",
+   "weight_pct": 1.05,
+   "events_accepted": 10,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "EXEC_CHANGE",
+   "last_event_date": "2026-07-13",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "BTE",
+   "weight_pct": 0.92,
+   "events_accepted": 12,
+   "c6_state": "elevated",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-06-26",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "VET",
+   "weight_pct": 0.52,
+   "events_accepted": 8,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-05-07",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  }
+ ],
+ "car": [
+  {
+   "day": 5,
+   "peer_car_pct": 1.09,
+   "spy_car_pct": 1.09,
+   "ci_lo_pct": -0.46,
+   "ci_hi_pct": 2.63,
+   "n": 40
+  },
+  {
+   "day": 10,
+   "peer_car_pct": -0.31,
+   "spy_car_pct": -0.31,
+   "ci_lo_pct": -2.44,
+   "ci_hi_pct": 1.82,
+   "n": 39
+  },
+  {
+   "day": 20,
+   "peer_car_pct": -1.59,
+   "spy_car_pct": -1.59,
+   "ci_lo_pct": -4.5,
+   "ci_hi_pct": 1.31,
+   "n": 36
+  }
+ ],
+ "methodology_version": "v5",
+ "insider_scope_note": "most covered Canadian issuers report insider trades through Canada's SEDI system, which is not yet ingested"
+}

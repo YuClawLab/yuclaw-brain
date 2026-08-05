@@ -63,6 +63,15 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_sectors || exit 34
 /usr/bin/python3 -m v3.web.render_tour || exit 35
 /usr/bin/python3 -m v3.web.render_methodology || exit 37
+# v5.3 Ground Truth: why-JSON API + endpoints, AI-builders page (live
+# passport), EvidenceBench page; bench items regenerate weekly (Fridays).
+/usr/bin/python3 -m v3.web.render_why_json || exit 38
+/usr/bin/python3 -m v3.web.render_ai_builders || exit 39
+if [ "$(date +%u)" = "5" ]; then
+    /usr/bin/python3 tools/yuclaw_evidencebench.py generate || exit 40
+    /usr/bin/python3 tools/yuclaw_evidencebench.py selfscore || exit 40
+fi
+/usr/bin/python3 -m v3.web.render_evidencebench || exit 41
 
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
@@ -127,7 +136,9 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
                  docs/signal_review.html docs/schemas \
                  docs/explorer.html docs/explorer_data.json docs/why \
-                 docs/sectors.html docs/tour.html docs/methodology.html
+                 docs/sectors.html docs/tour.html docs/methodology.html \
+                 docs/capabilities.json docs/evidence docs/ledger \
+                 docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"

@@ -25,6 +25,8 @@ COMMANDS: dict[str, str] = {
     "events": "v3.cli.events:main",
     # 5.2: Signal Review client-side pre-check (local-only, never transmits)
     "intake-check": "v3.cli.intake_check:main",
+    # 5.3: Evidence Passport — deterministic claim check
+    "check-claim": "v3.cli.check_claim:main",
     "lens": "v3.cli.lens:main",
     "export": "v3.cli.export:main",
     # legacy v3 helpers (kept available; not part of the documented v4 surface)

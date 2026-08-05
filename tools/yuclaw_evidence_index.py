@@ -27,6 +27,11 @@ PAGES = {
     "explorer.html": "Universe Explorer — the full 79-name table, client-side filter/sort",
     "sectors.html": "Sector overview — descriptive medians of current classifications (display, not inference)",
     "tour.html": "The 5-minute tour — five commands with build-captured output",
+    "for_ai_builders.html": "For AI builders — the agent surface: why-JSON "
+                            "API, Evidence Passport, MCP v2, EvidenceBench",
+    "evidencebench.html": "EvidenceBench — contamination-resistant "
+                          "groundedness benchmark (weekly post-cutoff "
+                          "regeneration; abstention outscores fabrication)",
     "signal_review.html": "Signal Review — bring-your-signal research review "
                           "service (five-step no-upload flow, fixed tiers, "
                           "EXPLORATORY (CLIENT) ceiling)",

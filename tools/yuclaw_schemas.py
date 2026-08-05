@@ -143,6 +143,82 @@ def robustness_cell() -> dict:
     return s
 
 
+def evidence_object() -> dict:
+    return _schema(
+        "EvidenceObject",
+        "One frozen evidence object (v5.3 Ground Truth): an accepted "
+        "event reduced to its citable core. protocol_id is nullable — "
+        "evidence extraction predates per-event protocol coverage "
+        "(disclosed, not faked); statistics computed on events name "
+        "their protocols in the registry.",
+        {
+            "ticker": {"type": "string"},
+            "evidence_type": {"type": "string"},
+            "filing_date": {"type": ["string", "null"], "format": "date"},
+            "accession_number": {"type": ["string", "null"],
+                                 "pattern": "^\\d{10}-\\d{2}-\\d{6}$"},
+            "excerpt": {"type": "string", "maxLength": 400},
+            "source_hash": {"type": "string"},
+            "available_as_of": {"type": "string"},
+            "protocol_id": {"type": ["string", "null"]},
+        },
+        ["ticker", "evidence_type", "excerpt", "source_hash",
+         "available_as_of", "protocol_id"])
+
+
+def why_anatomy() -> dict:
+    return _schema(
+        "WhyAnatomy",
+        "The why/{TICKER}.json Ground Truth document: current "
+        "classification anatomy + EvidenceObjects + point-in-time label "
+        "history + the as-of reconstruction recipe.",
+        {
+            "ticker": {"type": "string"},
+            "generated": {"type": "string"},
+            "label": {"type": "string"},
+            "score": {"type": "number"},
+            "threshold_band": {"type": "object"},
+            "components": {"type": "object"},
+            "evidence_coverage": {"type": "object"},
+            "evidence_objects": {"type": "array", "items": {"type": "object"}},
+            "label_history": {"type": "array", "items": {
+                "type": "object",
+                "properties": {"date": {"type": "string"},
+                               "label": {"type": "string"}},
+                "required": ["date", "label"]}},
+            "as_of_recipe": {"type": "string"},
+            "verify": {"type": "string"},
+            "not_advice": {"type": "string"},
+        },
+        ["ticker", "generated", "label", "score", "evidence_objects",
+         "label_history", "as_of_recipe", "not_advice"])
+
+
+def passport_result() -> dict:
+    return _schema(
+        "PassportResult",
+        "An Evidence Passport: a deterministic claim-check against the "
+        "corpus. UNSUPPORTED means not found in YUCLAW's corpus — never "
+        "a truth verdict; NOT_PARSEABLE is the false-denial guard for "
+        "text claims the conservative parser cannot structure.",
+        {
+            "claim_as_given": {"type": "string"},
+            "claim_as_parsed": {"type": ["object", "null"]},
+            "generated": {"type": "string"},
+            "status": {"type": "string", "enum": [
+                "SOURCE_MATCHED", "PARTIAL_MATCH", "UNSUPPORTED",
+                "NOT_IN_COVERAGE", "NOT_PARSEABLE"]},
+            "matched_evidence": {"type": "array",
+                                 "items": {"type": "object"}},
+            "misses": {"type": "array", "items": {"type": "string"}},
+            "replay": {"type": ["string", "null"]},
+            "note": {"type": "string"},
+            "not_advice": {"type": "string"},
+        },
+        ["claim_as_given", "claim_as_parsed", "status",
+         "matched_evidence", "not_advice"])
+
+
 def research_memo() -> dict:
     from v4.memo.generator import MemoOutput
     s = MemoOutput.model_json_schema()
@@ -160,7 +236,8 @@ def research_memo() -> dict:
 def main() -> int:
     OUT.mkdir(exist_ok=True)
     for fn in (signal_snapshot, evidence_event, research_protocol,
-               robustness_cell, research_memo):
+               robustness_cell, research_memo, evidence_object,
+               why_anatomy, passport_result):
         s = fn()
         path = OUT / f"{s['title']}.v1.json"
         path.write_text(json.dumps(s, indent=1, sort_keys=True) + "\n")

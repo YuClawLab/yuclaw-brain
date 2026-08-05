@@ -1,0 +1,190 @@
+{
+ "ticker": "UEC",
+ "form": "8-K",
+ "accession_number": "0001437749-26-024336",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 3,
+   "citations_verified": 2,
+   "points_total": 3,
+   "points_grounded": 2,
+   "points_discarded": 1,
+   "grounding_rate": 0.6667,
+   "points": [
+    {
+     "point": "UEC maintains a dominant position in the U.S. market with significant production capacity.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The Company controls the largest uranium resource base and the most licensed production capacity in the United States, totaling approximately 12 million pounds per year across its Wyoming and South Texas platforms.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1428,
+       "end": 1642
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company is actively expanding its role in the domestic nuclear fuel supply chain through refining and conversion capabilities.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "Through its wholly owned subsidiary, United States Uranium Refining & Conversion Corp, UEC is pursuing domestic refining and Disconversion capabilities to further strengthen the U.S. nuclear fuel supply chain.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "UEC's strategy provides investors with direct, unhedged exposure to uranium market fundamentals.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "UEC maintains a 100% unhedged uranium strategy, providing full exposure to uranium market fundamentals.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 2013,
+       "end": 2116
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "UEC maintains a dominant position in the U.S. market with significant production capacity.",
+    "UEC's strategy provides investors with direct, unhedged exposure to uranium market fundamentals."
+   ],
+   "discarded_points": [
+    {
+     "point": "The company is actively expanding its role in the domestic nuclear fuel supply chain through refining and conversion capabilities.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "The Company controls the largest uranium resource base and the most licensed production capacity in the United States, totaling approximately 12 million pounds per year across its Wyoming and South Texas platforms.",
+     "start": 1428,
+     "end": 1642,
+     "match_type": "exact"
+    },
+    {
+     "quote": "UEC maintains a 100% unhedged uranium strategy, providing full exposure to uranium market fundamentals.",
+     "start": 2013,
+     "end": 2116,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 0,
+   "citations_verified": 0,
+   "points_total": 0,
+   "points_grounded": 0,
+   "points_discarded": 0,
+   "grounding_rate": 0.0,
+   "points": [],
+   "grounded_points": [],
+   "discarded_points": [],
+   "ledger": []
+  },
+  "skeptic": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "The filing lacks the actual voting percentages for the director elections and the compensation vote.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "For complete results on all matters voted on at the AGM, please see the Company\u2019s Current Report on May 8-K filed on EDGAR at www.sec.gov.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company's claim regarding its production capacity is not accompanied by specific timeline or feasibility details.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The Company controls the largest uranium resource base and the most licensed production capacity in the United States, totaling approximately 12 million pounds per year across its Wyoming and South Texas platforms.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1428,
+       "end": 1642
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The company's claim regarding its production capacity is not accompanied by specific timeline or feasibility details."
+   ],
+   "discarded_points": [
+    {
+     "point": "The filing lacks the actual voting percentages for the director elections and the compensation vote.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "The Company controls the largest uranium resource base and the most licensed production capacity in the United States, totaling approximately 12 million pounds per year across its Wyoming and South Texas platforms.",
+     "start": 1428,
+     "end": 1642,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 0.667,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Execution of refining/conversion projects",
+   "Uranium market volatility",
+   "lack of new material information",
+   "lack of transparency",
+   "unhedged exposure"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "low",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 2471,
+ "secs": 107.1,
+ "computed_at": "2026-07-31T03:08:16+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-23",
+ "input_manifest": {
+  "narrative_sha256": "083e0657dae4441fe8ee2a2cd70d35a4268d922dd3f162a0e882e6029b372684",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0001437749-26-024336",
+   "events:0001437749-26-024336"
+  ],
+  "max_input_content_date": "2026-07-23"
+ }
+}

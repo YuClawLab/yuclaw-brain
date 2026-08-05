@@ -1,0 +1,155 @@
+{
+ "lens": "URNM",
+ "build_id": "b63db785",
+ "data_through": "2026-07-24",
+ "coverage_weight_pct": 55.0,
+ "filers_covered": 9,
+ "filers_total": 26,
+ "grade": "A",
+ "funnel": {
+  "filings_ingested": 112,
+  "with_usable_prose": 99,
+  "candidate_events": 81,
+  "accepted": 81,
+  "after_dedup": 73,
+  "matured": 61,
+  "direction_eligible": 47,
+  "reasons": {
+   "with_usable_prose": "no extractable exhibit/MD&A prose",
+   "candidate_events": "prose contained no material-event candidate",
+   "accepted": "failed deterministic source-grounding verification",
+   "after_dedup": "duplicate of an already-accepted event",
+   "matured": "forward window not yet complete",
+   "direction_eligible": "event type carries no directional prior"
+  }
+ },
+ "issuers": [
+  {
+   "ticker": "CCJ",
+   "weight_pct": 20.6,
+   "events_accepted": 13,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "CAPACITY_CHANGE",
+   "last_event_date": "2026-07-15",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "NXE",
+   "weight_pct": 12.6,
+   "events_accepted": 11,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-05-21",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "UEC",
+   "weight_pct": 4.91,
+   "events_accepted": 6,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-23",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "DNN",
+   "weight_pct": 4.69,
+   "events_accepted": 12,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "REGULATORY_ACTION",
+   "last_event_date": "2026-07-02",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "UUUU",
+   "weight_pct": 4.67,
+   "events_accepted": 10,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-13",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "URG",
+   "weight_pct": 2.49,
+   "events_accepted": 5,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-05-11",
+   "new_events_since_prev": 0,
+   "form4_eligible": true
+  },
+  {
+   "ticker": "ISOU",
+   "weight_pct": 2.0,
+   "events_accepted": 11,
+   "c6_state": "normal",
+   "c6_rarity_pctile": null,
+   "last_event_type": "OTHER_MATERIAL",
+   "last_event_date": "2026-07-13",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "EU",
+   "weight_pct": 1.65,
+   "events_accepted": 7,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "EXEC_CHANGE",
+   "last_event_date": "2026-07-09",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  },
+  {
+   "ticker": "UROY",
+   "weight_pct": 0.87,
+   "events_accepted": 6,
+   "c6_state": null,
+   "c6_rarity_pctile": null,
+   "last_event_type": "M_AND_A_CLOSE",
+   "last_event_date": "2026-07-20",
+   "new_events_since_prev": 0,
+   "form4_eligible": false
+  }
+ ],
+ "car": [
+  {
+   "day": 5,
+   "peer_car_pct": 0.01,
+   "spy_car_pct": 0.01,
+   "ci_lo_pct": -1.65,
+   "ci_hi_pct": 1.68,
+   "n": 46
+  },
+  {
+   "day": 10,
+   "peer_car_pct": -0.69,
+   "spy_car_pct": -0.69,
+   "ci_lo_pct": -2.54,
+   "ci_hi_pct": 1.15,
+   "n": 43
+  },
+  {
+   "day": 20,
+   "peer_car_pct": 0.22,
+   "spy_car_pct": 0.22,
+   "ci_lo_pct": -2.29,
+   "ci_hi_pct": 2.74,
+   "n": 37
+  }
+ ],
+ "methodology_version": "v5",
+ "insider_scope_note": "most covered Canadian issuers report insider trades through Canada's SEDI system, which is not yet ingested"
+}

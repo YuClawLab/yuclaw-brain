@@ -1,0 +1,185 @@
+{
+ "ticker": "BTE",
+ "form": "6-K",
+ "accession_number": "0001062993-26-003828",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 2,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The company's core assets are characterized by high returns and a high-quality nature.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "It operates a high-quality, high-return portfolio in the Western Canadian Sedimentary Basin, featuring the Duvernay and heavy oil plays in Alberta and Saskatchewan.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 952,
+       "end": 1116
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "Baytex possesses a significant drilling inventory that supports consistent cash flow generation.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "These core assets are backed by an extensive drilling inventory and consistently generate strong cash flow.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1117,
+       "end": 1224
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The company's core assets are characterized by high returns and a high-quality nature.",
+    "Baytex possesses a significant drilling inventory that supports consistent cash flow generation."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "It operates a high-quality, high-return portfolio in the Western Canadian Sedimentary Basin, featuring the Duvernay and heavy oil plays in Alberta and Saskatchewan.",
+     "start": 952,
+     "end": 1116,
+     "match_type": "exact"
+    },
+    {
+     "quote": "These core assets are backed by an extensive drilling inventory and consistently generate strong cash flow.",
+     "start": 1117,
+     "end": 1224,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 0,
+   "citations_verified": 0,
+   "points_total": 0,
+   "points_grounded": 0,
+   "points_discarded": 0,
+   "grounding_rate": 0.0,
+   "points": [],
+   "grounded_points": [],
+   "discarded_points": [],
+   "ledger": []
+  },
+  "skeptic": {
+   "citations_total": 3,
+   "citations_verified": 3,
+   "points_total": 2,
+   "points_grounded": 2,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The filing provides no actual financial performance metrics, only a notice of when results will be released.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "rter 2026 financial and operating results after the close of markets on Thursday July 30, 2026.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 0,
+       "end": 95
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company's claims regarding its portfolio's performance and cash flow generation are qualitative and lack supporting quantitative evidence in this text.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "It operates a high-quality, high-return portfolio in the Western Canadian Sedimentary Basin, featuring the Duvernay and heavy oil plays in Alberta and Saskatchewan.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 952,
+       "end": 1116
+      },
+      {
+       "quote": "These core assets are backed by an extensive drilling inventory and consistently generate strong cash flow.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1117,
+       "end": 1224
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The filing provides no actual financial performance metrics, only a notice of when results will be released.",
+    "The company's claims regarding its portfolio's performance and cash flow generation are qualitative and lack supporting quantitative evidence in this text."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "rter 2026 financial and operating results after the close of markets on Thursday July 30, 2026.",
+     "start": 0,
+     "end": 95,
+     "match_type": "exact"
+    },
+    {
+     "quote": "It operates a high-quality, high-return portfolio in the Western Canadian Sedimentary Basin, featuring the Duvernay and heavy oil plays in Alberta and Saskatchewan.",
+     "start": 952,
+     "end": 1116,
+     "match_type": "exact"
+    },
+    {
+     "quote": "These core assets are backed by an extensive drilling inventory and consistently generate strong cash flow.",
+     "start": 1117,
+     "end": 1224,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 0.667,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Event-driven volatility",
+   "Information asymmetry",
+   "commodity price volatility",
+   "lack of material information",
+   "operational execution"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "low",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 1711,
+ "secs": 118.0,
+ "computed_at": "2026-07-31T03:10:14+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-24",
+ "input_manifest": {
+  "narrative_sha256": "c04a3d44bf957fc8830936441874f8f3908efb0978666ad4e701b5d9f7930df7",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0001062993-26-003828",
+   "events:0001062993-26-003828"
+  ],
+  "max_input_content_date": "2026-07-24"
+ }
+}

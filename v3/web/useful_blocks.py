@@ -24,7 +24,7 @@ import json
 from html import escape
 from pathlib import Path
 
-VERSION = "v5.2.0"
+VERSION = "v5.3.0"
 
 # Locked public signal vocabulary — the ONLY signal labels any public page may
 # render (mirrors the homepage "Public signal vocabulary" legend). Pages render
@@ -73,7 +73,7 @@ _NAV_CHIPS = (
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
     ("PyPI", "https://pypi.org/project/yuclaw/"),
     ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),
-    ("Methodology", "methodology/backfill.md"),
+    ("Methodology", "methodology.html"),
     ("Home", "index.html"),
 )
 

@@ -1,0 +1,185 @@
+{
+ "ticker": "LLY",
+ "generated": "2026-08-05T05:08:59.023277+00:00",
+ "label": "WEAKENING",
+ "score": -0.1011,
+ "threshold_band": {
+  "floor": -0.2,
+  "ceiling": 0.0
+ },
+ "components": {
+  "c1": -0.4045,
+  "c2": 0.0,
+  "c3": -0.5112213,
+  "c4": 0.6,
+  "c5": 0.0,
+  "c6": -0.08203136,
+  "c7": -0.08005615,
+  "c8": 0.0,
+  "c9": -1.0
+ },
+ "evidence_coverage": {
+  "ecs": 54,
+  "events_90d": 3,
+  "recency_days": 19.9,
+  "type_diversity": 1,
+  "substrate_active": 1
+ },
+ "evidence_objects": [
+  {
+   "ticker": "LLY",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-06-11",
+   "accession_number": "0001826001-26-000006",
+   "excerpt": "Yuffa Ilya S 2500 shares @ $1150.77 on 2026-06-10 ($2,876,925)",
+   "source_hash": "734fda6b82dc5441a79f6d7d08111a700b356a42837f35d918f3bf145e65effd",
+   "available_as_of": "2026-07-16T01:25:06.848092-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "LLY",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-05-07",
+   "accession_number": "0000316011-26-000015",
+   "excerpt": "LILLY ENDOWMENT INC S 2208 shares @ $996.18 on 2026-05-06 ($2,199,572)",
+   "source_hash": "79297dea30f7a19ab71d62ca8533a45d2362a8479ddb7f96824bab7269bc98ca",
+   "available_as_of": "2026-05-07T14:00:10-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "LLY",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-05-07",
+   "accession_number": "0000316011-26-000015",
+   "excerpt": "LILLY ENDOWMENT INC S 13620 shares @ $995.23 on 2026-05-06 ($13,554,964)",
+   "source_hash": "be05cbcdc3d3cd1120c9312fedfae83474fe6f6d41bd04c202eb76c9c69d9370",
+   "available_as_of": "2026-05-07T14:00:10-06:00",
+   "protocol_id": null
+  }
+ ],
+ "label_history": [
+  {
+   "date": "2026-08-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-08-03",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-07-31",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-07-30",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-07-29",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-28",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-27",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-24",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-23",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-22",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-21",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-20",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-17",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-16",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-15",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-14",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-07-13",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-08",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-07",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-06",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-03",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-02",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-01",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-30",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-29",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-26",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-25",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-24",
+   "label": "NEUTRAL"
+  }
+ ],
+ "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}

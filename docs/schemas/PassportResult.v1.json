@@ -1,0 +1,64 @@
+{
+ "$id": "https://yuclaw.ca/schemas/PassportResult.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "An Evidence Passport: a deterministic claim-check against the corpus. UNSUPPORTED means not found in YUCLAW's corpus \u2014 never a truth verdict; NOT_PARSEABLE is the false-denial guard for text claims the conservative parser cannot structure. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "claim_as_given": {
+   "type": "string"
+  },
+  "claim_as_parsed": {
+   "type": [
+    "object",
+    "null"
+   ]
+  },
+  "generated": {
+   "type": "string"
+  },
+  "matched_evidence": {
+   "items": {
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "misses": {
+   "items": {
+    "type": "string"
+   },
+   "type": "array"
+  },
+  "not_advice": {
+   "type": "string"
+  },
+  "note": {
+   "type": "string"
+  },
+  "replay": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "status": {
+   "enum": [
+    "SOURCE_MATCHED",
+    "PARTIAL_MATCH",
+    "UNSUPPORTED",
+    "NOT_IN_COVERAGE",
+    "NOT_PARSEABLE"
+   ],
+   "type": "string"
+  }
+ },
+ "required": [
+  "claim_as_given",
+  "claim_as_parsed",
+  "status",
+  "matched_evidence",
+  "not_advice"
+ ],
+ "title": "PassportResult",
+ "type": "object",
+ "version": "v1"
+}

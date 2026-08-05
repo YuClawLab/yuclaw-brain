@@ -1,0 +1,232 @@
+{
+ "ticker": "AU",
+ "form": "6-K",
+ "accession_number": "0001973832-26-000109",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 1,
+   "points_grounded": 1,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "Shareholders approved the authority to purchase the company's own shares off-market.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The resolution was passed as an ordinary resolution.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1545,
+       "end": 1597
+      },
+      {
+       "quote": "1. Authority to purchase own shares off-market.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1686,
+       "end": 1733
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "Shareholders approved the authority to purchase the company's own shares off-market."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "The resolution was passed as an ordinary resolution.",
+     "start": 1545,
+     "end": 1597,
+     "match_type": "exact"
+    },
+    {
+     "quote": "1. Authority to purchase own shares off-market.",
+     "start": 1686,
+     "end": 1733,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 1,
+   "points_grounded": 1,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "A substantial portion of shareholders voted against the authority to purchase shares off-market.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Authority to purchase own shares off-market.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1689,
+       "end": 1733
+      },
+      {
+       "quote": "Votes Against % 138,172,636 33.92",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "A substantial portion of shareholders voted against the authority to purchase shares off-market."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "Authority to purchase own shares off-market.",
+     "start": 1689,
+     "end": 1733,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "skeptic": {
+   "citations_total": 4,
+   "citations_verified": 3,
+   "points_total": 3,
+   "points_grounded": 3,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The resolution to authorize off-market share purchases passed with 66.08% of the votes in favor.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "1. Authority to purchase own shares off-format.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      },
+      {
+       "quote": "269,206,760 66.08",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1734,
+       "end": 1751
+      }
+     ],
+     "numbers": [
+      {
+       "token": "66.08",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "A significant portion of the voting power, specifically 33.92%, was cast against the resolution.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "138,172,636 33.92",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1752,
+       "end": 1769
+      }
+     ],
+     "numbers": [
+      {
+       "token": "33.92",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The filing lacks details regarding the specific financial parameters or the intended scale of the share repurchase program.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Authority to purchase own shares off-market.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1689,
+       "end": 1733
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The resolution to authorize off-market share purchases passed with 66.08% of the votes in favor.",
+    "A significant portion of the voting power, specifically 33.92%, was cast against the resolution.",
+    "The filing lacks details regarding the specific financial parameters or the intended scale of the share repurchase program."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "269,206,760 66.08",
+     "start": 1734,
+     "end": 1751,
+     "match_type": "exact"
+    },
+    {
+     "quote": "138,172,636 33.92",
+     "start": 1752,
+     "end": 1769,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Authority to purchase own shares off-market.",
+     "start": 1689,
+     "end": 1733,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 1.0,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Capital allocation disagreement",
+   "Execution uncertainty",
+   "Shareholder dissent"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "medium",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 2890,
+ "secs": 100.6,
+ "computed_at": "2026-07-31T03:11:55+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-24",
+ "input_manifest": {
+  "narrative_sha256": "6de39e2ba03c5fec4aa0ea88ebe659a486aaa5013d7dc1063e7cfcb04d87e20f",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0001973832-26-000109",
+   "events:0001973832-26-000109"
+  ],
+  "max_input_content_date": "2026-07-24"
+ }
+}

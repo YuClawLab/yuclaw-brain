@@ -141,7 +141,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v5.2.0 — Evidence-First Financial AI</title>
+  <title>YUCLAW v5.3.0 — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -316,9 +316,11 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     </div>
 
     <div class="footer">
-      YUCLAW v5.2.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v5.3.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="tour.html">🚀 5-minute tour</a> ·
+      <a href="for_ai_builders.html">🤖 For AI builders</a> ·
+      <a href="evidencebench.html">📐 EvidenceBench</a> ·
       <a href="YUCLAW_User_Guide_v5.1.pdf">📖 User Guide (PDF)</a> ·
       <a href="YUCLAW_Guide_Utilisateur_v5.1_FR.pdf">📖 Guide de l'utilisateur (FR)</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·

@@ -2,6 +2,30 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.3.0] — 2026-08-05
+
+### Added — "Ground Truth"
+
+- **Evidence Layer JSON API**: `why/{TICKER}.json` for all 79 names
+  (anatomy + frozen EvidenceObjects + label history + the as-of
+  reconstruction recipe), `capabilities.json` one-URL discovery,
+  `evidence/verify.json` + per-day `ledger/{DATE}.json` for offline
+  snapshot-integrity checks. Three new frozen schemas (EvidenceObject,
+  WhyAnatomy, PassportResult) — eight total.
+- **Evidence Passport**: `yuclaw check-claim` — deterministic claim check
+  with five mechanical statuses; UNSUPPORTED means "not found in YUCLAW's
+  corpus — never a truth verdict"; NOT_PARSEABLE guards against false
+  denials on unstructurable text.
+- **MCP v2**: get_evidence, get_signal_anatomy, check_claim,
+  verify_snapshot, get_protocol — friendly no-backend behavior preserved.
+- **EvidenceBench v0.1**: contamination-resistant groundedness benchmark —
+  items regenerate weekly from post-cutoff evidence (generation spec
+  registered, uncomputed-standard class); abstention outscores confident
+  fabrication by construction; honest leaderboard opens with our own
+  loudly-labeled self-evaluation row.
+- **Dataset citability**: CITATION.cff, weekly dataset snapshot tags,
+  release notes, "For researchers" on the replication page.
+
 ## [5.2.0] — 2026-08-05
 
 ### Added

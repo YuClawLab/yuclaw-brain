@@ -1,0 +1,179 @@
+{
+ "ticker": "VET",
+ "form": "6-K",
+ "accession_number": "0001279569-26-000717",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 2,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "Vermilion has announced a cash dividend of $0.135 CDN per common share.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Vermilion Energy Inc. (\"Vermilion\") (TSX: VET) (NYSE: VET) is pleased to announce a cash dividend of $0.135 CDN per common share, payable on September 29, 2026, to all shareholders of record on September 15, 2026.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 206,
+       "end": 419
+      }
+     ],
+     "numbers": [
+      {
+       "token": "0.135",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The company's repositioned portfolio is designed for per share value creation and features long-life assets.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Our repositioned portfolio is focused on per share value creation, with long-life assets that deliver top decile realized gas prices and enhanced capital allocation optionality.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 756,
+       "end": 933
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "Vermilion has announced a cash dividend of $0.135 CDN per common share.",
+    "The company's repositioned portfolio is designed for per share value creation and features long-life assets."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "Vermilion Energy Inc. (\"Vermilion\") (TSX: VET) (NYSE: VET) is pleased to announce a cash dividend of $0.135 CDN per common share, payable on September 29, 2026, to all shareholders of record on September 15, 2026.",
+     "start": 206,
+     "end": 419,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Our repositioned portfolio is focused on per share value creation, with long-life assets that deliver top decile realized gas prices and enhanced capital allocation optionality.",
+     "start": 756,
+     "end": 933,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 0,
+   "citations_verified": 0,
+   "points_total": 0,
+   "points_grounded": 0,
+   "points_discarded": 0,
+   "grounding_rate": 0.0,
+   "points": [],
+   "grounded_points": [],
+   "discarded_points": [],
+   "ledger": []
+  },
+  "skeptic": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "The announcement specifies a dividend amount of $0.135 CDN per common share.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "is pleased to announce a cash dividend of $0.135 CDN per common share",
+       "verified": true,
+       "match_type": "exact",
+       "start": 265,
+       "end": 334
+      }
+     ],
+     "numbers": [
+      {
+       "token": "0.135",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "The filing provides no information regarding the source of funds or the sustainability of the dividend payout.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "Vermilion Energy Inc. Announces $0.0135 CDN Cash Dividend for September 29, 2026 Payment Date",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The announcement specifies a dividend amount of $0.135 CDN per common share."
+   ],
+   "discarded_points": [
+    {
+     "point": "The filing provides no information regarding the source of funds or the sustainability of the dividend payout.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "is pleased to announce a cash dividend of $0.135 CDN per common share",
+     "start": 265,
+     "end": 334,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 0.667,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Natural gas price volatility",
+   "Operational safety",
+   "commodity price volatility",
+   "lack of earnings context"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "low",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 1776,
+ "secs": 115.8,
+ "computed_at": "2026-07-31T03:55:51+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-29",
+ "input_manifest": {
+  "narrative_sha256": "783718ce7b477283b31dc08cc1339af2281ae5bc27735575c603068cfbcc5e3c",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0001279569-26-000717",
+   "events:0001279569-26-000717"
+  ],
+  "max_input_content_date": "2026-07-29"
+ }
+}

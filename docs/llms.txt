@@ -30,6 +30,20 @@
 - /packets/*.zip            — downloadable packets: derived statistics,
                               event CSVs, engine run JSONs, metadata,
                               citation snippets
+- /capabilities.json         — ONE-URL discovery of the whole agent surface
+- /why/{TICKER}.json         — Ground Truth anatomy + EvidenceObjects +
+                              label history (79 names, schema-checked)
+- /evidence/verify.json      — offline snapshot-integrity recipe
+- /ledger/{YYYY-MM-DD}.json  — per-day ledger roots
+- /evidencebench/items.jsonl — EvidenceBench items + keys (weekly regen)
+- AS-OF RECIPE (worked example): to reconstruct NVDA as of 2026-07-15,
+  fetch /why/NVDA.json; evidence = evidence_objects with
+  available_as_of <= 2026-07-15; classification = the label_history entry
+  for the last date <= 2026-07-15. Older than the ribbon:
+  `yuclaw replay NVDA --date 2026-07-15`.
+- CLAIM CHECK: `yuclaw check-claim --ticker NVDA --type INSIDER_SELL
+  --date-range 2026-07-01..2026-07-31` → passport JSON; UNSUPPORTED means
+  not found in YUCLAW's corpus — never a truth verdict.
 - /replay/lab_replay_bundle.json — replay bundle; verify with
                               `pip install yuclaw && yuclaw replay-lab`
 - Registry: hash-chained protocol registry ships in the repo
@@ -41,7 +55,9 @@
 - /why/{TICKER}.html — per-name classification anatomy (79 pages; worked example /why/AAPL.html)
 - /canada_resources.html — Canada Resources Evidence
 - /etf_evidence.html — SMH Covered-Constituent Evidence Lens
+- /evidencebench.html — EvidenceBench — contamination-resistant groundedness benchmark (weekly post-cutoff regeneration; abstention outscores fabrication)
 - /explorer.html — Universe Explorer — the full 79-name table, client-side filter/sort
+- /for_ai_builders.html — For AI builders — the agent surface: why-JSON API, Evidence Passport, MCP v2, EvidenceBench
 - /index.html — landing — current signals (locked vocabulary)
 - /lane.html — YUCLAW's Lane — scope statement
 - /methodology.html — Methodology — styled render of the canonical methodology/backfill.md (raw .md stays served for machines)

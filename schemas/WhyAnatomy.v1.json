@@ -1,0 +1,75 @@
+{
+ "$id": "https://yuclaw.ca/schemas/WhyAnatomy.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "The why/{TICKER}.json Ground Truth document: current classification anatomy + EvidenceObjects + point-in-time label history + the as-of reconstruction recipe. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "as_of_recipe": {
+   "type": "string"
+  },
+  "components": {
+   "type": "object"
+  },
+  "evidence_coverage": {
+   "type": "object"
+  },
+  "evidence_objects": {
+   "items": {
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "generated": {
+   "type": "string"
+  },
+  "label": {
+   "type": "string"
+  },
+  "label_history": {
+   "items": {
+    "properties": {
+     "date": {
+      "type": "string"
+     },
+     "label": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "date",
+     "label"
+    ],
+    "type": "object"
+   },
+   "type": "array"
+  },
+  "not_advice": {
+   "type": "string"
+  },
+  "score": {
+   "type": "number"
+  },
+  "threshold_band": {
+   "type": "object"
+  },
+  "ticker": {
+   "type": "string"
+  },
+  "verify": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "ticker",
+  "generated",
+  "label",
+  "score",
+  "evidence_objects",
+  "label_history",
+  "as_of_recipe",
+  "not_advice"
+ ],
+ "title": "WhyAnatomy",
+ "type": "object",
+ "version": "v1"
+}

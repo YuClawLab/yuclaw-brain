@@ -1,0 +1,314 @@
+{
+ "ticker": "RGLD",
+ "form": "8-K",
+ "accession_number": "0000085535-26-000032",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 3,
+   "citations_verified": 3,
+   "points_total": 3,
+   "points_grounded": 3,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The company significantly strengthened its balance sheet by paying down $200 million in debt.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The repayment of $200 million of debt, resulting in an outstanding balance on the revolving credit facility of $400 million on June 30, 2026, leaving $1.0 billion undrawn and available.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 169,
+       "end": 354
+      }
+     ],
+     "numbers": [
+      {
+       "token": "200",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Management is actively returning value to shareholders via share repurchases.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The repurchase of 147,205 shares at an average price of $203.80 per share, for total consideration of $30 million.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 357,
+       "end": 471
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company maintains a highly liquid position with $1.0 billion in undrawn capacity.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "leaving $1.0 billion undrawn and available.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 311,
+       "end": 354
+      }
+     ],
+     "numbers": [
+      {
+       "token": "1.0",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company significantly strengthened its balance sheet by paying down $200 million in debt.",
+    "Management is actively returning value to shareholders via share repurchases.",
+    "The company maintains a highly liquid position with $1.0 billion in undrawn capacity."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "The repayment of $200 million of debt, resulting in an outstanding balance on the revolving credit facility of $400 million on June 30, 2026, leaving $1.0 billion undrawn and available.",
+     "start": 169,
+     "end": 354,
+     "match_type": "exact"
+    },
+    {
+     "quote": "The repurchase of 147,205 shares at an average price of $203.80 per share, for total consideration of $30 million.",
+     "start": 357,
+     "end": 471,
+     "match_type": "exact"
+    },
+    {
+     "quote": "leaving $1.0 billion undrawn and available.",
+     "start": 311,
+     "end": 354,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 3,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "The company incurred a significant one-time expense spike of approximately $12 million in DD&A due to a gold delivery settlement.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The proceeds from the sale of the gold delivery were recognized as stream revenue and resulted in the recognition of approximately $12 million of additional DD&A expense in the second quarter.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1468,
+       "end": 1660
+      }
+     ],
+     "numbers": [
+      {
+       "token": "12",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Royal Gold is actively deploying significant capital into project costs and advances, including $70 million for Hod Maden and a $50 million advance for the Warintza Project.",
+     "grounded": false,
+     "discard_reason": "number(s) not in cited quote: ['70']",
+     "quotes": [
+      {
+       "quote": "Royal Gold funded $70 million in project costs related to Hod Mayden.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      },
+      {
+       "quote": "a $50 million advance payment under the stream agreement was made to Solaris Resources Inc. during the second quarter for the Warintza Project.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1969,
+       "end": 2112
+      }
+     ],
+     "numbers": [
+      {
+       "token": "70",
+       "found": false
+      },
+      {
+       "token": "50",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company incurred a significant one-time expense spike of approximately $12 million in DD&A due to a gold delivery settlement."
+   ],
+   "discarded_points": [
+    {
+     "point": "Royal Gold is actively deploying significant capital into project costs and advances, including $70 million for Hod Maden and a $50 million advance for the Warintza Project.",
+     "reason": "number(s) not in cited quote: ['70']"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "The proceeds from the sale of the gold delivery were recognized as stream revenue and resulted in the recognition of approximately $12 million of additional DD&A expense in the second quarter.",
+     "start": 1468,
+     "end": 1660,
+     "match_type": "exact"
+    },
+    {
+     "quote": "a $50 million advance payment under the stream agreement was made to Solaris Resources Inc. during the second quarter for the Warintza Project.",
+     "start": 1969,
+     "end": 2112,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "skeptic": {
+   "citations_total": 4,
+   "citations_verified": 4,
+   "points_total": 3,
+   "points_grounded": 3,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The reported revenue and expense figures for the royalty segment are not final and are subject to adjustment.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Royalty Segment Sales and DD&A are presented as estimated ranges as final receipts are not yet available.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 853,
+       "end": 958
+      },
+      {
+       "quote": "Estimates are preliminary and are subject to change.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 513,
+       "end": 565
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "A significant portion of the reported quarterly performance stems from a one-time settlement involving the delivery of shares rather than pure cash revenue.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Under the agreement, Americas' obligation to deliver 8,861 ounces of gold over the period between June 2026 and December 2027 was settled in exchange for immediate delivery of 5,000 ounces of gold, which were sold during the second quarter, and 2,652,532 common shares of Americas.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1186,
+       "end": 1467
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The reported DD&A figure includes a substantial non-cash charge related to the gold delivery settlement.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "The proceeds from the sale of the gold delivery were recognized as stream revenue and resulted in the recognition of approximately $12 million of additional DD&A expense in the second quarter.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1468,
+       "end": 1660
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The reported revenue and expense figures for the royalty segment are not final and are subject to adjustment.",
+    "A significant portion of the reported quarterly performance stems from a one-time settlement involving the delivery of shares rather than pure cash revenue.",
+    "The reported DD&A figure includes a substantial non-cash charge related to the gold delivery settlement."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "Royalty Segment Sales and DD&A are presented as estimated ranges as final receipts are not yet available.",
+     "start": 853,
+     "end": 958,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Estimates are preliminary and are subject to change.",
+     "start": 513,
+     "end": 565,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Under the agreement, Americas' obligation to deliver 8,861 ounces of gold over the period between June 2026 and December 2027 was settled in exchange for immediate delivery of 5,000 ounces of gold, which were sold during the second quarter, and 2,652,532 common shares of Americas.",
+     "start": 1186,
+     "end": 1467,
+     "match_type": "exact"
+    },
+    {
+     "quote": "The proceeds from the sale of the gold delivery were recognized as stream revenue and resulted in the recognition of approximately $12 million of additional DD&A expense in the second quarter.",
+     "start": 1468,
+     "end": 1660,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 1.0,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Increased project funding obligations",
+   "Non-cash settlement volatility",
+   "One-time DD&A expense spikes",
+   "Preliminary data revision risk",
+   "Preliminary data volatility",
+   "Project funding outflows",
+   "Project funding requirements",
+   "Uncertainty in preliminary financial estimates"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "medium",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 7480,
+ "secs": 142.7,
+ "computed_at": "2026-07-31T02:50:10+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-21",
+ "input_manifest": {
+  "narrative_sha256": "df75b97d6e04981a395b75b202868e8b515c84cd623432bc2e48606de45ad8a2",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0000085535-26-000032",
+   "events:0000085535-26-000032"
+  ],
+  "max_input_content_date": "2026-07-21"
+ }
+}

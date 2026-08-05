@@ -1,0 +1,175 @@
+{
+ "ticker": "UNH",
+ "generated": "2026-08-05T05:08:59.023277+00:00",
+ "label": "WEAKENING",
+ "score": -0.0545,
+ "threshold_band": {
+  "floor": -0.2,
+  "ceiling": 0.0
+ },
+ "components": {
+  "c1": -0.2095,
+  "c2": 0.0,
+  "c3": -0.5112213,
+  "c4": 0.6,
+  "c5": 0.0,
+  "c6": 0.0,
+  "c7": -0.064278744,
+  "c8": 0.0,
+  "c9": -1.0
+ },
+ "evidence_coverage": {
+  "ecs": 38,
+  "events_90d": 1,
+  "recency_days": 60.3,
+  "type_diversity": 1,
+  "substrate_active": 1
+ },
+ "evidence_objects": [
+  {
+   "ticker": "UNH",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-06-05",
+   "accession_number": "0000731766-26-000138",
+   "excerpt": "Current Report Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of report (Date of earliest event reported): June 1, 2026",
+   "source_hash": "1ce3344162ec7ff1c497277e171e194b33466820dcb266a4e2a6e4cce4cdcdea",
+   "available_as_of": "2026-06-05T14:17:52-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "UNH",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-04-27",
+   "accession_number": "0000731766-26-000123",
+   "excerpt": "Conway Patrick Hugh S 800 shares @ $355.00 on 2026-04-23 ($284,000)",
+   "source_hash": "0e79dbabfbc7ade766d8fe8d6e9db91a736be7c2191cabc5a43897b05412fc21",
+   "available_as_of": "2026-04-27T14:50:58-06:00",
+   "protocol_id": null
+  }
+ ],
+ "label_history": [
+  {
+   "date": "2026-08-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-08-03",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-07-31",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-30",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-29",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-28",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-27",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-24",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-23",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-22",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-21",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-20",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-17",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-16",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-15",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-14",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-13",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-08",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-07",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-07-03",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-07-02",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-07-01",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-30",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-29",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-26",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-25",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-06-24",
+   "label": "NEUTRAL"
+  }
+ ],
+ "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay UNH --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}

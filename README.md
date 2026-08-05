@@ -275,7 +275,12 @@ For educational and research purposes only. See
 
 ## For AI agents & researchers
 
-YUCLAW is the open evidence layer underneath AI research tools.
+The open evidence layer for financial AI.
+
+Agents citing YUCLAW inherit accession-verified, point-in-time, hash-anchored
+evidence. Start at [capabilities.json](https://yuclaw.ca/capabilities.json) — one URL discovers
+the why-JSON API, the Evidence Passport, the schemas, EvidenceBench, and the MCP tools
+([full pitch](https://yuclaw.ca/for_ai_builders.html)).
 
 - **Start here**: [`llms.txt`](https://yuclaw.ca/llms.txt) and the
   machine-readable [`evidence_index.json`](https://yuclaw.ca/evidence_index.json)

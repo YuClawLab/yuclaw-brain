@@ -1,0 +1,191 @@
+{
+ "ticker": "CGAU",
+ "form": "6-K",
+ "accession_number": "0001171843-26-004953",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 2,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The Board of Directors has approved a quarterly dividend of C$0.07 per common share, totaling approximately C$13.7 million or US$9.7 million.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "announced today that its Board of Directors has approved a quarterly dividend of C$0.07 per common share \u2013 approximately C$13.7 million or US$9.7 million in aggregate.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 246,
+       "end": 413
+      }
+     ],
+     "numbers": [
+      {
+       "token": "0.07",
+       "found": true
+      },
+      {
+       "token": "13.7",
+       "found": true
+      },
+      {
+       "token": "9.7",
+       "found": true
+      }
+     ]
+    },
+    {
+     "point": "Centerra maintains a self-funded organic growth pipeline in North America.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "Centerra has a self-funded organic growth pipeline in North America, including the Kemess gold-copper Project in British Columbia, Canada, and the Goldfield gold Project in Nevada, United States.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 1235,
+       "end": 1430
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The Board of Directors has approved a quarterly dividend of C$0.07 per common share, totaling approximately C$13.7 million or US$9.7 million.",
+    "Centerra maintains a self-funded organic growth pipeline in North America."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "announced today that its Board of Directors has approved a quarterly dividend of C$0.07 per common share \u2013 approximately C$13.7 million or US$9.7 million in aggregate.",
+     "start": 246,
+     "end": 413,
+     "match_type": "exact"
+    },
+    {
+     "quote": "Centerra has a self-funded organic growth pipeline in North America, including the Kemess gold-copper Project in British Columbia, Canada, and the Goldfield gold Project in Nevada, United States.",
+     "start": 1235,
+     "end": 1430,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 0,
+   "citations_verified": 0,
+   "points_total": 0,
+   "points_grounded": 0,
+   "points_discarded": 0,
+   "grounding_rate": 0.0,
+   "points": [],
+   "grounded_points": [],
+   "discarded_points": [],
+   "ledger": []
+  },
+  "skeptic": {
+   "citations_total": 2,
+   "citations_verified": 2,
+   "points_total": 2,
+   "points_grounded": 2,
+   "points_discarded": 0,
+   "grounding_rate": 1.0,
+   "points": [
+    {
+     "point": "The company's future dividend amounts and timing are subject to significant discretion and various undefined economic factors.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "the timing and quantum of dividends are to be determined by the Board of Directors from time-to-time based on, among other things, the Company\u2019s operating results, cash flow and financial conditions, current and anticipated capital requirements, and general business conditions.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 662,
+       "end": 940
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The announcement provides the specific dividend amount of C$0.07 per common share but fails to provide the underlying earnings or cash flow data used to calculate it.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "announced today that its Board of Directors has approved a quarterly dividend of C$0.07 per common share",
+       "verified": true,
+       "match_type": "exact",
+       "start": 246,
+       "end": 350
+      }
+     ],
+     "numbers": [
+      {
+       "token": "0.07",
+       "found": true
+      }
+     ]
+    }
+   ],
+   "grounded_points": [
+    "The company's future dividend amounts and timing are subject to significant discretion and various undefined economic factors.",
+    "The announcement provides the specific dividend amount of C$0.07 per common share but fails to provide the underlying earnings or cash flow data used to calculate it."
+   ],
+   "discarded_points": [],
+   "ledger": [
+    {
+     "quote": "the timing and quantum of dividends are to be determined by the Board of Directors from time-to-time based on, among other things, the Company\u2019s operating results, cash flow and financial conditions, current and anticipated capital requirements, and general business conditions.",
+     "start": 662,
+     "end": 940,
+     "match_type": "exact"
+    },
+    {
+     "quote": "announced today that its Board of Directors has approved a quarterly dividend of C$0.07 per common share",
+     "start": 246,
+     "end": 350,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "medium",
+  "score": 0.667,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "capital requirements",
+   "cash flow",
+   "dependence on operating results",
+   "discretionary dividend policy",
+   "lack of fundamental data",
+   "operating results"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "low",
+   "skeptic": "medium"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 2060,
+ "secs": 131.1,
+ "computed_at": "2026-07-31T03:27:49+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-28",
+ "input_manifest": {
+  "narrative_sha256": "43f4ef30be52de2ba61d801fcc1bed9db6f2fd5fbbc539b2adacd944fcdde7fa",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0001171843-26-004953",
+   "events:0001171843-26-004953"
+  ],
+  "max_input_content_date": "2026-07-28"
+ }
+}

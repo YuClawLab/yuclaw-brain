@@ -1,0 +1,167 @@
+{
+ "ticker": "EGO",
+ "form": "6-K",
+ "accession_number": "0000918608-26-000023",
+ "grounding_by_agent": {
+  "bull": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "The company maintains a diversified production profile including gold, copper, and base metals.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "Eldorado Gold is a gold, copper and base and base metals producer with mining, development and exploration operations in Canada, Turkiye, and Greece.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The company operates five distinct mining assets across multiple jurisdictions.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "We operate five mines: the Lamaque Complex in Quebec, Canada (\"Lamaque\"), McIlvenna Bay in Saskatchewan, Canada, Kisladag and Efemcukuru located in western Turkiye, and Olympias located in northern Greece.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 5626,
+       "end": 5831
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The company operates five distinct mining assets across multiple jurisdictions."
+   ],
+   "discarded_points": [
+    {
+     "point": "The company maintains a diversified production profile including gold, copper, and base metals.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "We operate five mines: the Lamaque Complex in Quebec, Canada (\"Lamaque\"), McIlvenna Bay in Saskatchewan, Canada, Kisladag and Efemcukuru located in western Turkiye, and Olympias located in northern Greece.",
+     "start": 5626,
+     "end": 5831,
+     "match_type": "exact"
+    }
+   ]
+  },
+  "bear": {
+   "citations_total": 0,
+   "citations_verified": 0,
+   "points_total": 0,
+   "points_grounded": 0,
+   "points_discarded": 0,
+   "grounding_rate": 0.0,
+   "points": [],
+   "grounded_points": [],
+   "discarded_points": [],
+   "ledger": []
+  },
+  "skeptic": {
+   "citations_total": 2,
+   "citations_verified": 1,
+   "points_total": 2,
+   "points_grounded": 1,
+   "points_discarded": 1,
+   "grounding_rate": 0.5,
+   "points": [
+    {
+     "point": "The document contains no actual financial or operational results for the period, serving only as an introductory framework.",
+     "grounded": false,
+     "discard_reason": "no verified quote",
+     "quotes": [
+      {
+       "quote": "This MD&A dated July 30, 2026 for Eldorado Gold Corporation contains information that management believes is relevant for an assessment and understanding of our consolidated financial position and the results of consolidated operations for the three and six months ended June 30, 2026.",
+       "verified": false,
+       "match_type": null,
+       "start": null,
+       "end": null
+      }
+     ],
+     "numbers": []
+    },
+    {
+     "point": "The filing explicitly notes that non-IFRS metrics used by the company may not be comparable to those of other industry peers.",
+     "grounded": true,
+     "discard_reason": null,
+     "quotes": [
+      {
+       "quote": "In the gold mining industry, these are common performance measures but may not be comparable to similar measures presented by other issuers.",
+       "verified": true,
+       "match_type": "exact",
+       "start": 3158,
+       "end": 3298
+      }
+     ],
+     "numbers": []
+    }
+   ],
+   "grounded_points": [
+    "The filing explicitly notes that non-IFRS metrics used by the company may not be comparable to those of other industry peers."
+   ],
+   "discarded_points": [
+    {
+     "point": "The document contains no actual financial or operational results for the period, serving only as an introductory framework.",
+     "reason": "no verified quote"
+    }
+   ],
+   "ledger": [
+    {
+     "quote": "In the gold mining industry, these are common performance measures but may not be comparable to similar measures presented by other issuers.",
+     "start": 3158,
+     "end": 3298,
+     "match_type": "exact"
+    }
+   ]
+  }
+ },
+ "spawn_keys": [],
+ "risk_channel": {
+  "level": "high",
+  "score": 1.0,
+  "agg": "count2",
+  "flag": "normal",
+  "drivers": [
+   "Geographic concentration",
+   "Operational execution",
+   "lack of substantive data",
+   "reliance on non-IFRS metrics"
+  ],
+  "contributors": {
+   "bull": "medium",
+   "bear": "low",
+   "skeptic": "high"
+  },
+  "insider_gate": false
+ },
+ "filing_len": 16000,
+ "secs": 115.2,
+ "computed_at": "2026-07-31T04:14:28+00:00",
+ "live_path": "c6_specialized_live",
+ "late_computed": true,
+ "filing_date": "2026-07-30",
+ "input_manifest": {
+  "narrative_sha256": "f738a1dee79b26becfd5335c04b0fca3b3c2ad87636cd8d28f4519fa5313c609",
+  "narrative_source": "yuclaw_v5.swarm_inputs",
+  "accession_scoped_inputs": [
+   "swarm_inputs:0000918608-26-000023",
+   "events:0000918608-26-000023"
+  ],
+  "max_input_content_date": "2026-07-30"
+ }
+}
