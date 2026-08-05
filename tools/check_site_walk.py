@@ -49,8 +49,8 @@ DISCLAIMER_RE = re.compile(
     r'not (investment|financial) advice|ni conseil en investissement', re.I)
 MIN_CHIPS = 8   # nav chips in the shared header (site_header_html)
 CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "XLK Evidence Lens", "Canada Resources",
-               "Forward Tracking", "GitHub", "PyPI", "Ledger", "Methodology",
-               "Home")
+               "Forward Tracking", "Signal Review", "GitHub", "PyPI", "Ledger",
+               "Methodology", "Home")
 
 
 def _internal_targets(page: Path, html: str):

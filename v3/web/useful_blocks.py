@@ -67,6 +67,7 @@ _NAV_CHIPS = (
     ("XLK Evidence Lens", "xlk_evidence.html"),
     ("Canada Resources Evidence", "canada_resources.html"),
     ("Forward Tracking", "validation.html"),
+    ("Signal Review", "signal_review.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
     ("PyPI", "https://pypi.org/project/yuclaw/"),
     ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),

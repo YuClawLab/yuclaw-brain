@@ -53,6 +53,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_trace_su || exit 12
 /usr/bin/python3 -m v3.web.render_replication || exit 13
 /usr/bin/python3 -m v3.web.render_lane || exit 14
+# Signal Review product page (2026-08-04; counsel-armed, no-form gate below).
+/usr/bin/python3 -m v3.web.render_signal_review || exit 29
 
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
@@ -96,6 +98,8 @@ fi
 /usr/bin/python3 tools/check_u350_isolation.py || exit 26
 # Schema gate (2026-08-04): today's real outputs vs the frozen v1 API schemas.
 /usr/bin/python3 tools/check_schemas.py || exit 28
+# No-form/upload/payment gate (2026-08-04): docs/ never collects data or money.
+/usr/bin/python3 tools/check_no_forms.py || exit 30
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
@@ -110,7 +114,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
                  docs/trace_su.html docs/replication.html docs/lane.html \
-                 docs/evidence_index.json docs/llms.txt docs/weekly_note.html
+                 docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
+                 docs/signal_review.html docs/schemas
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
