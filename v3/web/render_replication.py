@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import VERSION, site_header_html, status_block_html
+from v3.web.useful_blocks import freshness_strip, VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "replication.html"
@@ -105,7 +105,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Independent Replication", active="replication.html")}
+    {site_header_html(subtitle="Independent Replication", active="replication.html", stamp=freshness_strip())}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Replicate the record yourself</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">

@@ -18,7 +18,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "for_ai_builders.html"
 
@@ -53,7 +53,7 @@ def _live_passport() -> dict:
 def main() -> int:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="For AI builders",
-                              stamp=f"built {stamp}")
+                              stamp=freshness_strip())
     pp = _live_passport()
     pp_json = escape(json.dumps(pp, indent=1)[:2600])
     statuses = "".join(

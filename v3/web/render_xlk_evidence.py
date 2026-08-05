@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html, status_block_html
+from v3.web.useful_blocks import freshness_strip, site_header_html, status_block_html
 
 OUT = _REPO / "docs" / "xlk_evidence.html"
 SRC = _REPO / "output" / "oie" / "xlk_lens_run.json"
@@ -144,7 +144,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="XLK Covered-Constituent Evidence Lens", active="xlk_evidence.html")}
+    {site_header_html(subtitle="XLK Covered-Constituent Evidence Lens", active="xlk_evidence.html", stamp=freshness_strip())}
 
     <h1 style="font-size:26px;font-weight:800;color:#FFF;letter-spacing:-0.5px;margin-bottom:4px">
       XLK Covered-Constituent Evidence Lens</h1>

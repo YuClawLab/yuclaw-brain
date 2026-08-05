@@ -18,7 +18,7 @@ if str(_REPO) not in sys.path:
 
 import markdown
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 SRC = _REPO / "docs" / "methodology" / "backfill.md"
 OUT = _REPO / "docs" / "methodology.html"
@@ -30,7 +30,7 @@ def main() -> int:
         SRC.read_text(),
         extensions=["tables", "attr_list", "fenced_code", "toc"])
     header = site_header_html(subtitle="Methodology",
-                              stamp=f"built {stamp}",
+                              stamp=freshness_strip(),
                               active="methodology.html")
     OUT.write_text(f"""<!DOCTYPE html>
 <html lang="en">

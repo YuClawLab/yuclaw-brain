@@ -28,7 +28,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "signal_review.html"
 SUITE = _REPO / "output" / "byos_dryrun" / "signal_suite.json"
@@ -166,7 +166,7 @@ def _flow_svg() -> str:
 def render() -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Signal Review",
-                              stamp=f"built {stamp}",
+                              stamp=freshness_strip(),
                               active="signal_review.html")
     step_cards = "".join(f"""
       <div class="step">

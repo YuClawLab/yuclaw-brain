@@ -78,6 +78,29 @@ _NAV_CHIPS = (
 )
 
 
+def freshness_strip() -> str:
+    """The standard freshness strip (order of 2026-08-05), single-sourced:
+    'Data through YYYY-MM-DD (last completed U.S. trading day) ·
+    regenerated daily after market close · last build <ts> UTC'.
+    Data-through is DERIVED from the snapshot record, never typed.
+    Use as the site_header_html stamp on every data-bearing page."""
+    from datetime import datetime, timezone
+    try:
+        import psycopg2
+        with psycopg2.connect("dbname=yuclaw_events") as cn:
+            with cn.cursor() as cur:
+                cur.execute("SELECT max(signal_time)::date FROM "
+                            "signal_snapshots WHERE is_backfill = false")
+                dt = cur.fetchone()[0]
+        data_through = dt.isoformat() if dt else "unavailable"
+    except Exception:                                 # noqa: BLE001
+        data_through = "unavailable"
+    build = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    return (f"Data through {data_through} (last completed U.S. trading "
+            f"day) · regenerated daily after market close · last build "
+            f"{build} UTC")
+
+
 def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> str:
     """The shared site header. Rendered identically on every page that calls it.
     active: this page's output filename (e.g. "validation_lab.html") — the

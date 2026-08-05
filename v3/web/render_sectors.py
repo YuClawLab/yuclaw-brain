@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "sectors.html"
 LBL_COLOR = {"STRONG_BULLISH": "#00E676", "BULLISH": "#00E676",
@@ -38,7 +38,7 @@ def main() -> int:
         sectors.setdefault(r["sector"], []).append(r)
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Sector overview",
-                              stamp=f"built {stamp}",
+                              stamp=freshness_strip(),
                               active="sectors.html")
     cards = []
     for sec in sorted(sectors, key=lambda s: -len(sectors[s])):

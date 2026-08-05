@@ -44,6 +44,10 @@ RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
 RE_LOGO = re.compile(r'<a href="index\.html"[^>]*>\s*<span[^>]*>YU', re.S)
 RE_STAMP = re.compile(r'(built|generated|as of|data through)\s*:?\s*20\d\d-',
                       re.I)
+# Standard freshness strip (order of 2026-08-05): every data-bearing page
+# must carry the data-through phrasing — a bare 'built <ts>' no longer
+# satisfies the freshness gate, so no page can invent its own format.
+RE_DATA_THROUGH = re.compile(r'data through\s*:?\s*20\d\d-\d\d-\d\d', re.I)
 STATIC_MARK = "<!-- static-page -->"
 # English pages + the FR guide's equivalent ("Ni conseil en investissement")
 DISCLAIMER_RE = re.compile(
@@ -103,10 +107,12 @@ def main(argv: list[str] | None = None) -> int:
             if n_chips < MIN_CHIPS:
                 findings.append(f"{name}: nav chips incomplete "
                                 f"({n_chips}/{len(CHIP_LABELS)} labels found)")
-        # ---- 3. freshness stamp or static marker
-        if not RE_STAMP.search(t) and STATIC_MARK not in t:
-            findings.append(f"{name}: no freshness stamp and no "
-                            f"{STATIC_MARK} marker")
+        # ---- 3. freshness: static pages carry the marker; every
+        # data-bearing page must carry the STANDARD data-through strip
+        if STATIC_MARK not in t and not RE_DATA_THROUGH.search(t):
+            findings.append(f"{name}: data-bearing page without the "
+                            f"standard 'Data through YYYY-MM-DD' "
+                            f"freshness strip (bare stamps fail)")
         # ---- 5. disclaimer
         if not DISCLAIMER_RE.search(t):
             findings.append(f"{name}: disclaimer block not found")
@@ -132,7 +138,7 @@ def main(argv: list[str] | None = None) -> int:
     # Walking all 79 nightly is redundant — they share one template. We
     # pin the template hash (drift = a reviewed gate edit) and spot-walk
     # 5 random pages for the invariants every page must carry.
-    WHY_TEMPLATE_PIN = "ed940db4f58a7fcd"
+    WHY_TEMPLATE_PIN = "a305e8c03e74d331"
     why_dir = DOCS / "why"
     if why_dir.exists():
         import random

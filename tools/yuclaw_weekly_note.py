@@ -26,7 +26,7 @@ for p in (str(_REPO), str(_REPO / "tools")):
         sys.path.insert(0, p)
 
 from check_language import lint_text
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import freshness_strip, site_header_html
 
 OUT = _REPO / "docs" / "weekly_note.html"
 FORBIDDEN = re.compile(r"\bproof\b|certificate|mathematical verification|"
@@ -149,7 +149,7 @@ def main() -> int:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Weekly Evidence Note", active="weekly_note.html")}
+    {site_header_html(subtitle="Weekly Evidence Note", active="weekly_note.html", stamp=freshness_strip())}
     <h1 style="font-size:24px;font-weight:800;margin-bottom:4px">Weekly Evidence Note</h1>
     <p style="font-size:13px;color:#718096;margin-bottom:14px;font-family:JetBrains Mono,monospace">
       week of {start} → {end} · auto-drafted from live sources · built {escape(built)}</p>

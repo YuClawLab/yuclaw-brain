@@ -21,7 +21,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "tour.html"
 
@@ -86,7 +86,7 @@ def main() -> int:
       </div>"""
 
     header = site_header_html(subtitle="The 5-minute tour",
-                              stamp=f"built {stamp}")
+                              stamp=freshness_strip())
     body = "".join([
         station(1, "Install and take the guided demo",
                 "pip install yuclaw && yuclaw demo",

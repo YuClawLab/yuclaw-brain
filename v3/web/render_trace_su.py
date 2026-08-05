@@ -25,7 +25,7 @@ from pathlib import Path
 
 import psycopg2
 
-from v3.web.useful_blocks import VERSION, site_header_html, use_in_research_html
+from v3.web.useful_blocks import freshness_strip, VERSION, site_header_html, use_in_research_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "trace_su.html"
@@ -211,7 +211,7 @@ def render(d: dict) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Evidence trace", active="trace_su.html")}
+    {site_header_html(subtitle="Evidence trace", active="trace_su.html", stamp=freshness_strip())}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">One evidence trace, end to end</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6">

@@ -17,7 +17,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import site_header_html
+from v3.web.useful_blocks import (freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "evidencebench.html"
 
@@ -29,7 +29,7 @@ def main() -> int:
     lb = json.loads((_REPO / "docs" / "evidencebench" /
                      "leaderboard.json").read_text())
     header = site_header_html(subtitle="EvidenceBench",
-                              stamp=f"built {stamp}")
+                              stamp=freshness_strip())
     rows = "".join(
         f"<tr><td>{escape(r['label'])}</td>"
         f"<td class='mono'>{r['aggregate']}</td>"
