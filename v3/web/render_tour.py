@@ -21,7 +21,8 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, site_header_html,
+                                  updated_strip)
 
 OUT = _REPO / "docs" / "tour.html"
 
@@ -86,7 +87,7 @@ def main() -> int:
       </div>"""
 
     header = site_header_html(subtitle="The 5-minute tour",
-                              stamp=freshness_strip())
+                              stamp=updated_strip())
     body = "".join([
         station(1, "Install and take the guided demo",
                 "pip install yuclaw && yuclaw demo",
@@ -149,16 +150,16 @@ def main() -> int:
 {header}
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Signal labels are research classifications, not buy/sell recommendations. Every output below was captured
-from this build at {stamp} — the page regenerates daily so it can never drift from what the commands
-actually print.</div>
+at this page's build (timestamp in the footer) — the page regenerates daily so it can never drift from
+what the commands actually print.</div>
 {body}
 <div class="closing">
   <p style="font-size:17px;color:#FFF;font-weight:700">Still skeptical? Good.</p>
   <p style="margin-top:6px">That is the correct starting posture here.
   <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/COMPARISON.md">Read How We Compare →</a></p>
 </div>
-<p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
-built {stamp}</p>
+<p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
+{build_footer()}
 </div></body></html>""")
     print(f"[render_tour] 5 stations captured live (demo/verify/chain/"
           f"events at build; replay-lab evidenced, disclosed)")

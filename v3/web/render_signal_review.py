@@ -28,7 +28,8 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, site_header_html,
+                                  updated_strip)
 
 OUT = _REPO / "docs" / "signal_review.html"
 SUITE = _REPO / "output" / "byos_dryrun" / "signal_suite.json"
@@ -166,7 +167,7 @@ def _flow_svg() -> str:
 def render() -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Signal Review",
-                              stamp=freshness_strip(),
+                              stamp=updated_strip(),
                               active="signal_review.html")
     step_cards = "".join(f"""
       <div class="step">
@@ -386,8 +387,8 @@ investment adviser. Past results — in-sample or forward-tracked — do not pre
 Engagement terms are subject to counsel review before any engagement is accepted.</div>
 
 <p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
-<a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0">GitHub</a> ·
-built {stamp}</p>
+<a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0">GitHub</a></p>
+{build_footer()}
 </div></body></html>"""
 
 

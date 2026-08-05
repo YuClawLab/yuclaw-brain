@@ -202,10 +202,10 @@ FROZEN_WINDOW_NOTE = (
 
 
 def render(panels: dict[str, Any]) -> str:
-    from v3.web.useful_blocks import site_header_html
+    from v3.web.useful_blocks import build_footer, freshness_strip, site_header_html
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     matured_through = panels["forward"].get("matured_through")
-    fwd_extra = f"data through {matured_through}" if matured_through else ""
+    fwd_extra = f"matured through {matured_through}" if matured_through else ""
     frozen_note = (
         f"<div style='font-size:12px;color:#718096;margin:0 0 10px 0;padding:10px 14px;"
         f"background:#10141C;border:1px solid #1E232D;border-radius:8px'>"
@@ -238,7 +238,7 @@ def render(panels: dict[str, Any]) -> str:
 <body>
   <div class="container">
     {site_header_html(subtitle="Forward Tracking + In-Sample Validation", active="validation.html",
-                      stamp=f"generated {generated_at}")}
+                      stamp=freshness_strip(matured_through) + " · this page's forward panels mature one trading day behind the snapshot record (a 1-day outcome needs the next close)" if matured_through else freshness_strip())}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 16px 0">
       Cohort-level event study: <a href="validation_lab.html"
@@ -279,6 +279,7 @@ def render(panels: dict[str, Any]) -> str:
       MIT
     </div>
   </div>
+{build_footer()}
 </body>
 </html>
 """

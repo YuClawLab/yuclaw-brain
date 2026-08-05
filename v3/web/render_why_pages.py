@@ -34,7 +34,7 @@ import psycopg2
 
 from v3.signal.base import SIGNAL_THRESHOLDS
 from v3.signal.composite import COMPONENT_WEIGHTS
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
 
 OUT_DIR = _REPO / "docs" / "why"
 IMPLICATION = ("Investment implication: none established — no buy, sell, "
@@ -247,7 +247,8 @@ legend on the home page. Never edited after the fact.</p></div>
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 {IMPLICATION} Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
-<a href="explorer.html" style="color:#A0AEC0">Universe Explorer</a> · built {stamp}</p>
+<a href="explorer.html" style="color:#A0AEC0">Universe Explorer</a></p>
+{build_footer()}
 </div></body></html>"""
 
 

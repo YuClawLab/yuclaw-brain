@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import freshness_strip, site_header_html, status_block_html
+from v3.web.useful_blocks import build_footer, freshness_strip, site_header_html, status_block_html
 
 OUT = _REPO / "docs" / "xlk_evidence.html"
 SRC = _REPO / "output" / "oie" / "xlk_lens_run.json"
@@ -213,7 +213,8 @@ def render() -> str:
     {status_block_html()}
 
     <div class="disclaimer"><strong>Disclaimer —</strong> {escape(DISCLAIMER)}</div>
-    <div class="footer">YUCLAW XLK Covered-Constituent Evidence Lens · built {escape(built)} ·
+    {build_footer()}
+    <div class="footer">YUCLAW XLK Covered-Constituent Evidence Lens ·
       <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#00E676">YuClawLab</a> · research &amp; education only</div>
   </div>
 </body>

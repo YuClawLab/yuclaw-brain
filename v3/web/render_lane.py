@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import freshness_strip, VERSION, site_header_html, status_block_html
+from v3.web.useful_blocks import build_footer, freshness_strip, VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "lane.html"
@@ -137,10 +137,11 @@ def render() -> str:
     {status_block_html()}
 
     <div class="footer">
-      YUCLAW's lane · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> ·
+      YUCLAW's lane · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> ·
       research &amp; education only
     </div>
   </div>
+{build_footer()}
 </body>
 </html>
 """

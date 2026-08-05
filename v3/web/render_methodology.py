@@ -18,7 +18,8 @@ if str(_REPO) not in sys.path:
 
 import markdown
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, site_header_html,
+                                  updated_strip)
 
 SRC = _REPO / "docs" / "methodology" / "backfill.md"
 OUT = _REPO / "docs" / "methodology.html"
@@ -30,7 +31,7 @@ def main() -> int:
         SRC.read_text(),
         extensions=["tables", "attr_list", "fenced_code", "toc"])
     header = site_header_html(subtitle="Methodology",
-                              stamp=freshness_strip(),
+                              stamp=updated_strip(),
                               active="methodology.html")
     OUT.write_text(f"""<!DOCTYPE html>
 <html lang="en">
@@ -71,8 +72,9 @@ the source is what the threshold-match gate reads.</div>
 <div class="md">{body}</div>
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
-<p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> · built {stamp} ·
+<p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 canonical source: <a href="methodology/backfill.md" style="color:#A0AEC0">methodology/backfill.md</a></p>
+{build_footer()}
 </div></body></html>""")
     print(f"[render_methodology] {OUT.stat().st_size} bytes from "
           f"{SRC.relative_to(_REPO)}")

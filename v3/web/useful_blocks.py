@@ -78,13 +78,7 @@ _NAV_CHIPS = (
 )
 
 
-def freshness_strip() -> str:
-    """The standard freshness strip (order of 2026-08-05), single-sourced:
-    'Data through YYYY-MM-DD (last completed U.S. trading day) ·
-    regenerated daily after market close · last build <ts> UTC'.
-    Data-through is DERIVED from the snapshot record, never typed.
-    Use as the site_header_html stamp on every data-bearing page."""
-    from datetime import datetime, timezone
+def _data_through_date() -> str:
     try:
         import psycopg2
         with psycopg2.connect("dbname=yuclaw_events") as cn:
@@ -92,13 +86,47 @@ def freshness_strip() -> str:
                 cur.execute("SELECT max(signal_time)::date FROM "
                             "signal_snapshots WHERE is_backfill = false")
                 dt = cur.fetchone()[0]
-        data_through = dt.isoformat() if dt else "unavailable"
+        return dt.isoformat() if dt else "unavailable"
     except Exception:                                 # noqa: BLE001
-        data_through = "unavailable"
-    build = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-    return (f"Data through {data_through} (last completed U.S. trading "
-            f"day) · regenerated daily after market close · last build "
-            f"{build} UTC")
+        return "unavailable"
+
+
+def freshness_strip(data_through: str | None = None) -> str:
+    """The standard header strip for DATA-BEARING pages (2026-08-05 final
+    form): 'Data through YYYY-MM-DD (last completed U.S. trading day) ·
+    regenerated daily after market close'. Derived, never typed; pages
+    whose data genuinely lags (e.g. the matured forward ledger) pass
+    their own derived date. Raw build timestamps live in build_footer(),
+    never here."""
+    return (f"Data through {data_through or _data_through_date()} "
+            f"(last completed U.S. trading day) · regenerated daily "
+            f"after market close")
+
+
+def updated_strip() -> str:
+    """Strip for PROSE pages (methodology, tour, signal review): they
+    carry copy, not snapshots — 'Updated YYYY-MM-DD'."""
+    from datetime import datetime, timezone
+    return f"Updated {datetime.now(timezone.utc).strftime('%Y-%m-%d')}"
+
+
+def build_footer() -> str:
+    """The demoted raw build timestamp + ledger root, small mono, for
+    auditors' ledger cross-reference. The ONLY place a raw build UTC
+    timestamp may appear (site-walk enforces this)."""
+    from datetime import datetime, timezone
+    root = "n/a"
+    try:
+        led = sorted((Path(__file__).resolve().parents[2] / "docs" /
+                      "ledger").glob("*.json"))
+        if led:
+            root = json.loads(led[-1].read_text())["root_sha256"][:12]
+    except Exception:                                 # noqa: BLE001
+        pass
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+    return (f'<footer class="buildinfo" style="font-family:\'JetBrains '
+            f'Mono\',monospace;font-size:10px;color:#4A5568;'
+            f'margin:18px 0 6px">build {ts} UTC · ledger root {root}</footer>')
 
 
 def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> str:

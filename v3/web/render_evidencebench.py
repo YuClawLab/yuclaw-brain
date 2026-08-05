@@ -17,7 +17,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "evidencebench.html"
 
@@ -104,7 +104,8 @@ the repository (dataset citability: see CITATION.cff at the repo root and the
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
-<a href="for_ai_builders.html" style="color:#A0AEC0">For AI builders</a> · built {stamp}</p>
+<a href="for_ai_builders.html" style="color:#A0AEC0">For AI builders</a></p>
+{build_footer()}
 </div></body></html>""")
     print(f"[render_evidencebench] {meta['n_items']} items · "
           f"{len(lb['rows'])} leaderboard row(s)")

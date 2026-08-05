@@ -123,7 +123,7 @@ def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
 
 
 def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
-    from v3.web.useful_blocks import (freshness_strip, site_header_html,
+    from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html,
                                       status_block_html, use_in_research_html)
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
@@ -223,7 +223,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         not prediction (Evidence Coverage v1, registered protocol).
         Score = composite research score. It is not an expected return, a probability,
         a price target, or a recommendation.</p>
-      <div class="as-of">{escape(freshness_strip())} · signals as of {escape(as_of_str)}</div>
+      <div class="as-of">{escape(freshness_strip())}</div>
     </div>
 
     <div class="card">
@@ -330,6 +330,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       <a href="weekly_note.html">Weekly Note</a> ·
       Apache-2.0 Licensed
     </div>
+    {build_footer()}
   </div>
 </body>
 </html>

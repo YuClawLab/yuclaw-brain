@@ -215,7 +215,7 @@ def taxonomy_panel(lens: str, pid: str = "taxonomy") -> str:
         untouched. Research classifications, not recommendations.
       </p>"""
     return _panel(pid, "Form-4 transaction taxonomy · covered members",
-                  f"built {escape(data['built_utc'])} · display-only", body)
+                  f"artifact of {escape(data['built_utc'][:10])} · display-only", body)
 
 
 # ------------------------------------------------------------ funnel + holdings

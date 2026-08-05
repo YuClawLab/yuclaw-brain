@@ -24,7 +24,7 @@ from pathlib import Path
 
 import psycopg2
 
-from v3.web.useful_blocks import freshness_strip, VERSION, site_header_html
+from v3.web.useful_blocks import build_footer, freshness_strip, VERSION, site_header_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "todays_evidence.html"
@@ -328,10 +328,11 @@ def render(state: dict, diffs: dict,
     </div>
 
     <div class="footer">
-      YUCLAW Today's Evidence Changes · built {escape(built)} ·
+      YUCLAW Today's Evidence Changes ·
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
+{build_footer()}
 </body>
 </html>
 """

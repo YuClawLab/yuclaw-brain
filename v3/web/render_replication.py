@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import freshness_strip, VERSION, site_header_html, status_block_html
+from v3.web.useful_blocks import build_footer, freshness_strip, VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "replication.html"
@@ -169,11 +169,12 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     {status_block_html()}
 
     <div class="footer">
-      YUCLAW Independent Replication · built {escape(built)} · source commit <code>{escape(_commit())}</code> ·
+      YUCLAW Independent Replication · source commit <code>{escape(_commit())}</code> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 <div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 Ground Truth anatomy documents, and the per-day ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
+{build_footer()}
 </body>
 </html>
 """

@@ -25,7 +25,7 @@ from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
 from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
-from v3.web.useful_blocks import (site_header_html,
+from v3.web.useful_blocks import (freshness_strip, build_footer, site_header_html,
                                   packet_block_from_manifest as _packet_block,
                                   public_label as display_label,
                                   status_block_html as _shared_status_block,
@@ -999,7 +999,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Signal Validation Lab", active="validation_lab.html")}
+    {site_header_html(subtitle="Signal Validation Lab", active="validation_lab.html", stamp=freshness_strip())}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 14px 0">
       Per-label hit-rate ledger: <a href="validation.html"
@@ -1120,7 +1120,7 @@ def render() -> str:
     </div>
 
     <div class="footer">
-      YUCLAW Signal Validation Lab · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW Signal Validation Lab · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
   <script>
@@ -1145,6 +1145,7 @@ def render() -> str:
     }});
   }})();
   </script>
+{build_footer()}
 </body>
 </html>
 """

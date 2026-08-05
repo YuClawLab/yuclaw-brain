@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "sectors.html"
 LBL_COLOR = {"STRONG_BULLISH": "#00E676", "BULLISH": "#00E676",
@@ -97,7 +97,8 @@ descriptive medians of current classifications — display, not inference. Cover
 not prediction.</div>
 <div class="grid">{''.join(cards)}</div>
 <p class="muted" style="margin-top:14px">Each card links into the Universe Explorer pre-filtered to its
-sector. Data generated {data['generated'][:16]} UTC · point-in-time, never edited · built {stamp}</p>
+sector. Point-in-time, never edited.</p>
+{build_footer()}
 </div></body></html>""")
     print(f"[render_sectors] {len(sectors)} sector cards")
     return 0

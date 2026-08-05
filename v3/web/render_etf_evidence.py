@@ -20,7 +20,7 @@ if str(_REPO) not in sys.path:
 
 from v3.lab.etf_evidence import SMH_AS_OF, compute_all
 from v3.web import oie_v51_blocks as _v51
-from v3.web.useful_blocks import (site_header_html,
+from v3.web.useful_blocks import (freshness_strip, build_footer, site_header_html,
                                   packet_block_from_manifest as _packet_block,
                                   public_label as display_label,
                                   status_block_html as _shared_status_block,
@@ -269,7 +269,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="SMH Covered-Constituent Evidence Lens", active="etf_evidence.html")}
+    {site_header_html(subtitle="SMH Covered-Constituent Evidence Lens", active="etf_evidence.html", stamp=freshness_strip())}
 
     <h1 style="font-size:26px;font-weight:800;color:#FFF;letter-spacing:-0.5px;margin-bottom:4px">
       SMH Covered-Constituent Evidence Lens</h1>
@@ -437,9 +437,10 @@ def render() -> str:
     </div>
 
     <div class="footer">
-      YUCLAW SMH Covered-Constituent Evidence Lens · data through {escape(data_through)} · built {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
+      YUCLAW SMH Covered-Constituent Evidence Lens · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
+{build_footer()}
 </body>
 </html>
 """

@@ -25,7 +25,7 @@ if str(_REPO) not in sys.path:
 
 import psycopg2
 
-from v3.web.useful_blocks import (freshness_strip, site_header_html)
+from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
 
 OUT_HTML = _REPO / "docs" / "explorer.html"
 OUT_JSON = _REPO / "docs" / "explorer_data.json"
@@ -175,7 +175,7 @@ coverage score (coverage, not prediction) · <span id="count"></span></div>
   <tbody id="tb"></tbody>
 </table>
 <p class="muted" style="margin-top:10px">Every row links to its Why page — the full anatomy of the current
-classification. Data generated {data['generated'][:16]} UTC · point-in-time, never edited.</p>
+classification. Point-in-time, never edited.</p>
 
 <script>
 const ROWS = {payload};
@@ -214,6 +214,7 @@ const params = new URLSearchParams(location.search);
 if (params.get("sector")) document.getElementById("fsc").value = params.get("sector");
 refresh();
 </script>
+{build_footer()}
 </div></body></html>"""
 
 
