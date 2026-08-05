@@ -6,21 +6,75 @@
 <meta name="description" content="A registered, reproducible research review of your signal. Research classifications, never recommendations. No uploads, no payment forms — engagement begins with a conversation.">
 <style>
  *{margin:0;padding:0;box-sizing:border-box}
- body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.65}
- .container{max-width:980px;margin:0 auto;padding:24px}
- h1{font-size:28px;color:#FFF;letter-spacing:-0.5px;margin-bottom:6px}
- h2{font-size:18px;color:#FFF;margin:26px 0 10px}
- .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:16px}
- .disc{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:12px 16px;font-size:12px;color:#A0AEC0;margin:14px 0}
+ body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.6}
+ .container{max-width:1060px;margin:0 auto;padding:24px}
+ h2{font-size:19px;color:#FFF;margin:0 0 14px}
+ .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:24px;margin-bottom:18px}
  .mono{font-family:'JetBrains Mono',monospace}
- ol.flow li{margin:10px 0 10px 18px}
- ul{margin-left:18px}
- li{margin:6px 0}
- table{width:100%;border-collapse:collapse;margin:10px 0}
- th,td{padding:10px 12px;border-bottom:1px solid #1E232D;text-align:left;font-size:13px;vertical-align:top}
- th{color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
- code{background:#1E232D;padding:2px 7px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#00E676}
  .muted{color:#718096;font-size:12px}
+ code{background:#1E232D;padding:2px 7px;border-radius:4px;font-size:12px;font-family:'JetBrains Mono',monospace;color:#00E676}
+ /* hero */
+ .hero{background:linear-gradient(135deg,#10141C,#141B2E);border:1px solid #1E232D;border-radius:14px;
+        padding:52px 34px 40px;text-align:center;margin-bottom:14px}
+ .hero h1{font-size:clamp(26px,4.4vw,44px);font-weight:800;color:#FFF;letter-spacing:-1.2px;line-height:1.15}
+ .hero .sub{font-size:16px;color:#A0AEC0;margin:14px auto 26px;max-width:640px}
+ .cmdchip{display:inline-block;background:#0B0E14;border:1px solid #00E67650;border-radius:10px;
+           padding:14px 22px;font-family:'JetBrains Mono',monospace;font-size:clamp(11px,1.8vw,14px);
+           color:#00E676;box-shadow:0 0 24px #00E67618}
+ .cmdcap{font-size:12px;color:#718096;margin-top:10px}
+ .amber{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;
+         font-size:12px;color:#A0AEC0;margin-bottom:20px}
+ .amber strong{color:#FBA94B}
+ /* steps */
+ .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
+ .step{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:16px}
+ .numrow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+ .num{width:26px;height:26px;border-radius:50%;background:#00E67620;color:#00E676;border:1px solid #00E67660;
+       display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+ .ico{font-size:18px}
+ .steptitle{font-weight:700;color:#FFF;font-size:13.5px;line-height:1.35}
+ .stepsub{font-size:12px;color:#A0AEC0;margin:5px 0 8px}
+ details summary{cursor:pointer;color:#00E676;font-size:11.5px}
+ details p{font-size:12px;color:#A0AEC0;margin-top:7px}
+ /* tiers */
+ .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+ .tier{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;position:relative}
+ .tier.full{border:1px solid #00E67660;box-shadow:0 0 30px #00E67612}
+ .tag{position:absolute;top:-10px;right:16px;background:#00E676;color:#0B0E14;font-size:10px;
+       font-weight:800;padding:3px 10px;border-radius:5px;letter-spacing:0.5px}
+ .price{font-family:'JetBrains Mono',monospace;font-size:34px;color:#FFF;font-weight:700;margin:6px 0 2px}
+ .price small{font-size:13px;color:#718096;font-weight:400}
+ .tier ul{list-style:none;margin-top:12px}
+ .tier li{font-size:12.5px;color:#CBD5E1;margin:7px 0;padding-left:22px;position:relative}
+ .tick{position:absolute;left:0;color:#00E676;font-weight:700}
+ .feestrip{font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;background:#10141C;
+            border:1px solid #1E232D;border-radius:8px;padding:9px 14px;margin-top:12px;text-align:center}
+ /* receive */
+ .recv{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+ .recv-card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:18px}
+ .recv-title{font-size:12px;color:#718096;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px}
+ .memomock{background:#F7F8FA;border-radius:6px;padding:16px 18px;color:#1A202C;max-width:280px;
+            box-shadow:0 6px 20px #00000060;font-size:9px}
+ .memomock .mt{font-weight:800;font-size:11px;letter-spacing:0.2px}
+ .memomock .ms{color:#718096;font-size:8px;margin-bottom:8px}
+ .memomock .sec{border-top:1px solid #E2E8F0;padding:4px 0;font-weight:600;color:#2D3748}
+ .memomock .bar{height:3px;background:#CBD5E1;border-radius:2px;margin:2px 0;width:90%}
+ .ftree{font-family:'JetBrains Mono',monospace;font-size:12px;color:#A0AEC0;line-height:1.9;white-space:pre}
+ .synth-label{display:inline-block;background:#FBA94B20;color:#FBA94B;border:1px solid #FBA94B60;
+               font-size:10.5px;font-weight:800;letter-spacing:0.5px;padding:4px 10px;border-radius:5px;margin-top:8px}
+ /* ceilings */
+ .ceil{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+ .ceil .c{background:#0F1A14;border:1px solid #00E67630;border-radius:10px;padding:14px;font-size:12.5px;color:#CBD5E1}
+ .ceil .c b{color:#FFF}
+ .pull{border-left:3px solid #00E676;padding:12px 18px;margin:16px 0 0;font-size:15px;color:#E2E8F0;font-style:italic}
+ .pull span{color:#00E676}
+ /* for / not for */
+ .fornot{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+ .for{background:#151A23;border:1px solid #1E232D;border-left:4px solid #00E676;border-radius:12px;padding:20px}
+ .notfor{background:#151A23;border:1px solid #1E232D;border-left:4px solid #FF3366;border-radius:12px;padding:20px}
+ .for h3{color:#00E676;font-size:14px;margin-bottom:8px}
+ .notfor h3{color:#FF3366;font-size:14px;margin-bottom:8px}
+ .for p,.notfor p{font-size:13px;color:#CBD5E1}
 </style>
 </head>
 <body><div class="container">
@@ -42,89 +96,163 @@
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
         <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">Signal Review</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology/backfill.md" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
-        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 02:47 UTC</span>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 03:27 UTC</span>
       </div>
     </div>
 
-<div class="card">
-  <h1>Bring your signal. YUCLAW tries to break it before you trust it.</h1>
-  <p style="color:#A0AEC0;margin-top:6px">A registered, reproducible research review of a signal you already have —
-  statistics locked before computation, adverse results delivered as measured, and a bundle that lets you
-  rerun every number without us.</p>
-  <div class="disc"><strong>Research and education only — not investment advice.</strong>
-  Signal Review produces research classifications, never recommendations. It will not tell you what to buy or
-  sell, and it will not predict tomorrow's price. If you want tomorrow's stock price, we are deliberately the
-  wrong vendor.</div>
+<div class="hero">
+  <h1>Bring your signal.<br>YUCLAW tries to break it before you trust it.</h1>
+  <p class="sub">A registered, reproducible research review — statistics locked before computation,
+  adverse results delivered as measured, a bundle that reruns every number without us.</p>
+  <div class="cmdchip">pip install yuclaw &amp;&amp; yuclaw intake-check your.csv</div>
+  <div class="cmdcap">start here — runs on your machine, sends nothing</div>
 </div>
 
-<div class="card">
-  <h2>How it works — five steps, no uploads</h2>
-  <ol class="flow">
-    <li><strong>Pre-check your file locally.</strong> <code>pip install yuclaw && yuclaw intake-check your.csv</code>
-      — the exact intake rules, run on your machine. Your data stays yours until you engage; this page has no
-      upload box by design.</li>
-    <li><strong>Request a slot.</strong> Contact + a short scope call. Working path today: open a GitHub issue
-      titled "Signal Review slot request" with <em>no data attached</em> — [CONTACT CHANNEL PLACEHOLDER —
-      published after counsel sign-off on the delivery path].</li>
-    <li><strong>Protocol locked before computation.</strong> Your engagement's statistical specification is
-      registered in a client-namespace tamper-evident chain first; you receive the spec and its hash before any
-      number is computed.</li>
-    <li><strong>Analysis on sovereign hardware, custody-enforced.</strong> All inference runs on our own local
-      hardware. Client data never enters the public repository or backups — enforced by an automated custody
-      gate, not policy prose.</li>
-    <li><strong>Memo + reproduction bundle + findings session.</strong> Every number in the memo cites its
-      protocol; the bundle reruns the analysis end-to-end without us.</li>
-  </ol>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Signal Review produces research classifications, never recommendations. It will not tell you what to buy or
+sell, and it will not predict tomorrow's price.</div>
+
+<h2>How it works — five steps, no uploads</h2>
+<div class="steps">
+      <div class="step">
+        <div class="numrow"><span class="num">1</span><span class="ico">🔍</span></div>
+        <div class="steptitle">Pre-check your file locally</div>
+        <div class="stepsub">One command, on your machine. Sends nothing.</div>
+        <details><summary>more</summary><p><code>pip install yuclaw && yuclaw intake-check your.csv</code> — the exact intake rules, run on your machine. Your data stays yours until you engage; this page has no upload box by design.</p></details>
+      </div>
+      <div class="step">
+        <div class="numrow"><span class="num">2</span><span class="ico">📅</span></div>
+        <div class="steptitle">Request a slot</div>
+        <div class="stepsub">Contact + a short scope call.</div>
+        <details><summary>more</summary><p>Working path today: open a GitHub issue titled "Signal Review slot request" with <em>no data attached</em> — [CONTACT CHANNEL PLACEHOLDER — published after counsel sign-off on the delivery path].</p></details>
+      </div>
+      <div class="step">
+        <div class="numrow"><span class="num">3</span><span class="ico">🔒</span></div>
+        <div class="steptitle">Protocol locked before computation</div>
+        <div class="stepsub">You receive the spec and its hash.</div>
+        <details><summary>more</summary><p>Your engagement's statistical specification is registered in a client-namespace tamper-evident chain first; you receive the spec and its hash before any number is computed.</p></details>
+      </div>
+      <div class="step">
+        <div class="numrow"><span class="num">4</span><span class="ico">🖥️</span></div>
+        <div class="steptitle">Sovereign analysis, custody-enforced</div>
+        <div class="stepsub">Local hardware. Your data never enters our repo.</div>
+        <details><summary>more</summary><p>All inference runs on our own local hardware. Client data never enters the public repository or backups — enforced by an automated custody gate, not policy prose.</p></details>
+      </div>
+      <div class="step">
+        <div class="numrow"><span class="num">5</span><span class="ico">📦</span></div>
+        <div class="steptitle">Memo + bundle + findings session</div>
+        <div class="stepsub">Every number cites its protocol.</div>
+        <details><summary>more</summary><p>Every number in the memo cites its protocol; the reproduction bundle reruns the analysis end-to-end without us.</p></details>
+      </div></div>
+<div class="card"><svg viewBox="0 0 960 120" role="img" aria-label="Signal Review flow: CSV to local intake-check to scope call to locked protocol to sovereign analysis to memo and bundle; a dashed arrow returns to the client: you rerun everything without us" style="width:100%"><rect x="4.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="72.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">your</text><text x="72.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">CSV</text><line x1="144.0" y1="35.0" x2="162.0" y2="35.0" stroke="#00E676" stroke-width="1.6" marker-end="url(#arr)"/><rect x="167.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="235.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">local</text><text x="235.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">intake-check</text><line x1="307.0" y1="35.0" x2="325.0" y2="35.0" stroke="#00E676" stroke-width="1.6" marker-end="url(#arr)"/><rect x="330.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="398.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">scope</text><text x="398.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">call</text><line x1="470.0" y1="35.0" x2="488.0" y2="35.0" stroke="#00E676" stroke-width="1.6" marker-end="url(#arr)"/><rect x="493.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="561.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">protocol locked (hash</text><text x="561.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">to you)</text><line x1="633.0" y1="35.0" x2="651.0" y2="35.0" stroke="#00E676" stroke-width="1.6" marker-end="url(#arr)"/><rect x="656.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="724.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">sovereign analysis</text><text x="724.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">(custody gate)</text><line x1="796.0" y1="35.0" x2="814.0" y2="35.0" stroke="#00E676" stroke-width="1.6" marker-end="url(#arr)"/><rect x="819.0" y="12" width="137.0" height="46" rx="8" fill="#151A23" stroke="#1E232D"/><text x="887.5" y="30" fill="#E2E8F0" font-size="10.5" text-anchor="middle">memo + bundle</text><text x="887.5" y="43" fill="#E2E8F0" font-size="10.5" text-anchor="middle">to you</text><path d="M 887.5 58 V 92 H 72.5 V 58" fill="none" stroke="#00E676" stroke-width="1.4" stroke-dasharray="6,5" marker-end="url(#arr)"/><text x="480.0" y="108" fill="#00E676" font-size="11" text-anchor="middle" font-family="monospace">you rerun everything without us</text><defs><marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 z" fill="#00E676"/></marker></defs></svg></div>
+
+<h2>Founding pilot tiers</h2>
+<div class="tiers">
+  <div class="tier">
+    <div style="font-weight:800;color:#FFF">Founding Pilot A</div>
+    <div class="muted">Signal validation core</div>
+    <div class="price">CAD 2,500<small> fixed</small></div>
+    <ul><li><span class="tick">✓</span>Locked protocol registered before computation (you receive the spec and its hash)</li><li><span class="tick">✓</span>Signal decomposition suite: rank association with later returns with confidence intervals, quantile ordering, churn, horizon decay, placebo</li><li><span class="tick">✓</span>Methodology note (how to read every number)</li><li><span class="tick">✓</span>Reproduction bundle (rerun our numbers without us)</li><li><span class="tick">✓</span>Research memo covering the suite results</li></ul>
+  </div>
+  <div class="tier full">
+    <span class="tag">FULL REVIEW</span>
+    <div style="font-weight:800;color:#FFF">Founding Pilot B</div>
+    <div class="muted">Full signal review</div>
+    <div class="price">CAD 5,000<small> fixed</small></div>
+    <ul><li style="padding-left:0;color:#718096">Everything in A, plus:</li><li><span class="tick">✓</span>Basket event-study panel with cluster-robust intervals</li><li><span class="tick">✓</span>Falsification battery (date-shuffle, sign-flip, placebo)</li><li><span class="tick">✓</span>Coverage and exclusion anatomy (what was measurable and why)</li><li><span class="tick">✓</span>30 days of written questions + a findings session</li></ul>
+  </div>
+</div>
+<div class="feestrip">fixed fees only · no contingent, performance-linked, or asset-based fees ·
+no payment is collected on this site — invoicing follows the scope call</div>
+
+<h2 style="margin-top:26px">What you receive</h2>
+<div class="recv">
+  <div class="recv-card">
+    <div class="recv-title">The memo — first page</div>
+    <div class="memomock">
+      <div class="mt">Signal Review — Research Memo</div>
+      <div class="ms">protocol &lt;hash&gt; · registered before computation</div>
+      <div class="sec">1 · Data Integrity</div><div class="bar"></div><div class="bar" style="width:70%"></div>
+      <div class="sec">2 · IC with CIs</div><div class="bar"></div><div class="bar" style="width:80%"></div>
+      <div class="sec">3 · Quantile Ordering</div><div class="bar" style="width:85%"></div>
+      <div class="sec">4 · Falsification</div><div class="bar" style="width:75%"></div>
+      <div class="sec">5 · Limitations</div><div class="bar" style="width:60%"></div>
+      <div class="sec">6 · Reproduction</div><div class="bar" style="width:65%"></div>
+    </div>
+    <p class="muted" style="margin-top:8px">Layout illustration of the memo's section structure — every number
+    in a delivered memo cites its registered protocol.</p>
+  </div>
+  <div class="recv-card">
+    <div class="recv-title">The bundle — actual contents</div>
+    <div class="ftree">client_deliverable.zip
+├── CLIENT_MEMO.pdf
+├── CLIENT_MEMO.md
+├── METHODOLOGY.md
+├── bundle/
+│   ├── client_input.csv
+│   ├── client_signals.csv
+│   ├── manifest.json
+│   ├── registry_client.jsonl
+│   └── rerun.sh
+├── SHA256SUMS
+└── README_VERIFICATION.md</div>
+    <p class="muted" style="margin-top:8px"><code>bash bundle/rerun.sh</code> recomputes the delivered numbers
+    from the bundled inputs and prints REPRODUCTION OK on an exact match.</p>
+  </div>
+  
+      <div class="recv-card">
+        <div class="recv-title">One honest chart</div>
+        <svg viewBox="0 0 560 200" role="img" aria-label="IC by horizon with confidence intervals, all straddling zero" style="width:100%;max-width:560px"><line x1="305.0" y1="8" x2="305.0" y2="182" stroke="#3A4150" stroke-dasharray="3,3"/><text x="305.0" y="196" fill="#718096" font-size="10" text-anchor="middle" font-family="monospace">0</text><text x="60" y="28" fill="#A0AEC0" font-size="11" text-anchor="end" font-family="monospace">k=1</text><line x1="212.16" y1="24" x2="377.16" y2="24" stroke="#4A5568" stroke-width="2"/><line x1="212.16" y1="19" x2="212.16" y2="29" stroke="#4A5568" stroke-width="2"/><line x1="377.16" y1="19" x2="377.16" y2="29" stroke="#4A5568" stroke-width="2"/><circle cx="292.68" cy="24" r="4" fill="#00E676"/><text x="387.16" y="28" fill="#718096" font-size="10" font-family="monospace">-0.006</text><text x="60" y="62" fill="#A0AEC0" font-size="11" text-anchor="end" font-family="monospace">k=2</text><line x1="139.78" y1="58" x2="345.26" y2="58" stroke="#4A5568" stroke-width="2"/><line x1="139.78" y1="53" x2="139.78" y2="63" stroke="#4A5568" stroke-width="2"/><line x1="345.26" y1="53" x2="345.26" y2="63" stroke="#4A5568" stroke-width="2"/><circle cx="240.98000000000002" cy="58" r="4" fill="#00E676"/><text x="355.26" y="62" fill="#718096" font-size="10" font-family="monospace">-0.029</text><text x="60" y="96" fill="#A0AEC0" font-size="11" text-anchor="end" font-family="monospace">k=5</text><line x1="184.0" y1="92" x2="400.48" y2="92" stroke="#4A5568" stroke-width="2"/><line x1="184.0" y1="87" x2="184.0" y2="97" stroke="#4A5568" stroke-width="2"/><line x1="400.48" y1="87" x2="400.48" y2="97" stroke="#4A5568" stroke-width="2"/><circle cx="296.2" cy="92" r="4" fill="#00E676"/><text x="410.48" y="96" fill="#718096" font-size="10" font-family="monospace">-0.004</text><text x="60" y="130" fill="#A0AEC0" font-size="11" text-anchor="end" font-family="monospace">k=10</text><line x1="276.62" y1="126" x2="426.0" y2="126" stroke="#4A5568" stroke-width="2"/><line x1="276.62" y1="121" x2="276.62" y2="131" stroke="#4A5568" stroke-width="2"/><line x1="426.0" y1="121" x2="426.0" y2="131" stroke="#4A5568" stroke-width="2"/><circle cx="350.1" cy="126" r="4" fill="#00E676"/><text x="436.0" y="130" fill="#718096" font-size="10" font-family="monospace">+0.021</text><text x="60" y="164" fill="#A0AEC0" font-size="11" text-anchor="end" font-family="monospace">k=20</text><line x1="295.1" y1="160" x2="439.2" y2="160" stroke="#4A5568" stroke-width="2"/><line x1="295.1" y1="155" x2="295.1" y2="165" stroke="#4A5568" stroke-width="2"/><line x1="439.2" y1="155" x2="439.2" y2="165" stroke="#4A5568" stroke-width="2"/><circle cx="366.6" cy="160" r="4" fill="#00E676"/><text x="449.2" y="164" fill="#718096" font-size="10" font-family="monospace">+0.028</text></svg>
+        <div class="synth-label">SYNTHETIC DEMONSTRATION — a null signal, correctly diagnosed as null</div>
+        <p class="muted" style="margin-top:6px">Rank-association (IC) by horizon with bootstrap confidence
+        intervals, rendered from the synthetic dry-run's actual output. Every interval straddles zero —
+        exactly what an information-free signal should show, and exactly what the suite reported.</p>
+      </div>
 </div>
 
-<div class="card">
-  <h2>Founding pilot tiers</h2>
-  <table>
-    <thead><tr><th>Tier</th><th>Fee (CAD, fixed, paid before work begins)</th><th>Scope</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Founding Pilot A</strong><br><span class="muted">Signal validation core</span></td>
-          <td class="mono">2,500</td>
-          <td><ul><li>Locked protocol registered before computation (you receive the spec and its hash)</li><li>Signal decomposition suite: rank association with later returns with confidence intervals, quantile ordering, churn, horizon decay, placebo</li><li>Methodology note (how to read every number)</li><li>Reproduction bundle (rerun our numbers without us)</li><li>Research memo covering the suite results</li></ul></td></tr>
-      <tr><td><strong>Founding Pilot B</strong><br><span class="muted">Full signal review</span></td>
-          <td class="mono">5,000</td>
-          <td>Everything in A, plus:<ul><li>Basket event-study panel with cluster-robust intervals</li><li>Falsification battery (date-shuffle, sign-flip, placebo)</li><li>Coverage and exclusion anatomy (what was measurable and why)</li><li>30 days of written questions + a findings session</li></ul></td></tr>
-    </tbody>
-  </table>
-  <p class="muted">Fixed fees only — no contingent, performance-linked, or asset-based fees of any kind.
-  No payment is collected on this site; invoicing follows the scope call.</p>
+<h2 style="margin-top:26px">The honest ceilings</h2>
+<div class="ceil">
+  <div class="c">🚫 <b>Standings are not purchasable.</b> Client engagements cap at EXPLORATORY (CLIENT);
+    the public record's higher standings cannot be bought — at any price.</div>
+  <div class="c">📏 <b>Under 15 names per date = underpowered,</b> disclosed up front — honesty about sample
+    size, not a defect in your signal.</div>
+  <div class="c">⚖️ <b>Adverse results are delivered exactly as measured.</b> Nothing is softened, decorated,
+    or withheld.</div>
+  <div class="c">🧹 <b>Unrequested columns are rejected automatically.</b> We never carry client data we did
+    not ask for.</div>
+</div>
+<div class="pull">A defensible null — <span>"your signal shows no measurable information at this sample size,
+and here is the power analysis that says so"</span> — is a result we are proud to deliver.
+It may save you far more than the fee.</div>
+
+<h2 style="margin-top:26px">Who this is for</h2>
+<div class="fornot">
+  <div class="for">
+    <h3>For</h3>
+    <p>Anyone holding a signal, a screen, or a systematic idea who wants an independent, registered,
+    reproducible read of what the evidence shows — and what it cannot show at the current sample size.</p>
+  </div>
+  <div class="notfor">
+    <h3>"If you want tomorrow's stock price, we are deliberately the wrong vendor."</h3>
+    <p>Not for anyone seeking predictions, price targets, trade timing, portfolio construction, or advice.
+    No standing above EXPLORATORY (CLIENT) is available, and no recommendation will ever be part of a
+    deliverable.</p>
+  </div>
 </div>
 
-<div class="card">
-  <h2>The honest ceilings</h2>
-  <ul>
-    <li>Client engagements are capped at <strong>EXPLORATORY (CLIENT)</strong> standing.
-      The public record's higher standings cannot be bought — at any price.</li>
-    <li>Fewer than 15 names per date is disclosed as underpowered, up front.</li>
-    <li>Adverse results are delivered exactly as measured. A defensible null — "your signal shows no measurable
-      information at this sample size, and here is the power analysis that says so" — is a result we are proud
-      to deliver. It may save you far more than the fee.</li>
-    <li>Files containing columns we did not ask for are rejected automatically. We never carry client data we
-      did not request.</li>
-  </ul>
+<div class="card" style="margin-top:26px">
+  <h2>Request a slot</h2>
+  <p style="font-size:13.5px;color:#CBD5E1">Contact + a short scope call. Working path today: open a GitHub
+  issue titled "Signal Review slot request" with <em>no data attached</em> — [CONTACT CHANNEL PLACEHOLDER —
+  published after counsel sign-off on the delivery path].</p>
 </div>
 
-<div class="card">
-  <h2>Who this is for — and not for</h2>
-  <p><strong>For:</strong> anyone holding a signal, a screen, or a systematic idea who wants an independent,
-  registered, reproducible read of what the evidence shows — and what it cannot show at the current sample
-  size.</p>
-  <p style="margin-top:8px"><strong>Not for:</strong> anyone seeking predictions, price targets, trade timing,
-  portfolio construction, or advice. If you want tomorrow's stock price, we are deliberately the wrong vendor.
-  No standing above EXPLORATORY (CLIENT) is available, and no recommendation will ever be part of a
-  deliverable.</p>
-</div>
-
-<div class="disc"><strong>Research and education only — not investment advice.</strong> Signal labels and
+<div class="amber"><strong>Research and education only — not investment advice.</strong> Signal labels and
 review outputs are research classifications, not buy/sell recommendations. YUCLAW is not a registered
 investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.
 Engagement terms are subject to counsel review before any engagement is accepted.</div>
 
 <p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0">GitHub</a> ·
-built 2026-08-05 02:47 UTC</p>
+built 2026-08-05 03:27 UTC</p>
 </div></body></html>
