@@ -2,11 +2,38 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased — 5.2]
+## [5.2.0] — 2026-08-05
+
+### Added
+
+- **`yuclaw intake-check`** — client-side pre-check of a signal CSV against
+  the exact Signal Review intake rules (shared packaged module — client and
+  server cannot drift). Runs entirely locally and says so; exit 0/2.
+- **Five frozen v1 JSON Schemas** (SignalSnapshot, EvidenceEvent,
+  ResearchProtocol, RobustnessCell, ResearchMemo) derived from live
+  artifacts, served at /schemas/, checked against real outputs by a daily
+  chain gate.
+- **Evidence Coverage v1** (registered protocol `e3d51f5b0ca3`,
+  descriptive/coverage class — explicitly not a return predictor) rendered
+  on the home table and lens constituent tables with its locked caption.
+- **Signal Review** product page (five-step no-upload flow, fixed founding
+  tiers, EXPLORATORY (CLIENT) ceiling stated) + tier fulfillment profiles
+  with a page-promise self-test; a no-form/upload/payment gate enforces the
+  counsel-armed surface mechanically.
+- **Universe Surface**: Explorer (client-side filter/sort over published
+  data), 79 per-name Why pages (pinned template + nightly spot-walk),
+  Sector overview (descriptive medians, display not inference), and the
+  5-minute tour with build-captured command output.
+- Nightly gate additions: schema validation, no-form, index-completeness,
+  membership-drift, U350 isolation — the institutional-gates line
+  continues to grow rather than shrink.
 
 ### Changed
 
-- **License: Apache-2.0** (releases ≤5.1.x remain MIT as published).
+- **License: Apache-2.0** (releases ≤5.1.x remain MIT as published);
+  NOTICE ships in the wheel per Apache §4(d).
+- README + comparison refresh: verify-first hero, yuclaw.ca links, honest
+  v5.1 shipped-table; COMPARISON.md v1.3.
 
 ## [5.1.0] — 2026-07-31
 

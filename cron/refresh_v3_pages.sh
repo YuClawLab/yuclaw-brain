@@ -107,6 +107,8 @@ fi
 /usr/bin/python3 tools/check_schemas.py || exit 28
 # No-form/upload/payment gate (2026-08-04): docs/ never collects data or money.
 /usr/bin/python3 tools/check_no_forms.py || exit 30
+# Index-completeness gate (audit F2, 2026-08-05): machine surface never lags.
+/usr/bin/python3 tools/check_index_completeness.py || exit 36
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.

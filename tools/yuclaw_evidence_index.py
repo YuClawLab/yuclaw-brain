@@ -27,6 +27,15 @@ PAGES = {
     "explorer.html": "Universe Explorer — the full 79-name table, client-side filter/sort",
     "sectors.html": "Sector overview — descriptive medians of current classifications (display, not inference)",
     "tour.html": "The 5-minute tour — five commands with build-captured output",
+    "signal_review.html": "Signal Review — bring-your-signal research review "
+                          "service (five-step no-upload flow, fixed tiers, "
+                          "EXPLORATORY (CLIENT) ceiling)",
+    # Why-page family: one pattern entry + the worked example. Builder's
+    # choice, stated: the index stays compact — all 79 tickers enumerate
+    # in /explorer_data.json; every page follows the same pinned template.
+    "why/AAPL.html": "Why AAPL — per-name classification anatomy (worked "
+                     "example of the why/{TICKER}.html family, 79 pages, "
+                     "one pinned template)",
 
     "index.html": "landing — current signals (locked vocabulary)",
     "validation_lab.html": "Validation Lab — cohorts, rigor, clustered inference, baselines",
@@ -112,6 +121,25 @@ def main() -> int:
                    "the published Lab statistics from the public bundle"),
     }
     OUT.write_text(json.dumps(index, indent=1))
+    # llms.txt auto-managed pages block (audit F2): regenerated from the
+    # same PAGES dict every build so the machine surface can never lag.
+    lp = _REPO / "docs" / "llms.txt"
+    txt = lp.read_text()
+    START = "## Pages (auto-generated from the evidence index — do not hand-edit)"
+    END = "## How to cite"
+    lines = [START, ""]
+    lines.append("- /why/{TICKER}.html — per-name classification anatomy "
+                 "(79 pages; worked example /why/AAPL.html)")
+    for pg, what in sorted(PAGES.items()):
+        lines.append(f"- /{pg} — {what}")
+    lines += ["", END]
+    import re as _re
+    if START in txt:
+        txt = _re.sub(_re.escape(START) + r".*?" + _re.escape(END),
+                      "\n".join(lines), txt, flags=_re.S)
+    else:
+        txt = txt.replace(END, "\n".join(lines), 1)
+    lp.write_text(txt)
     print(f"[evidence-index] wrote {OUT} ({len(protocols)} protocols, "
           f"{len(PAGES)} pages, {len(index['packets'])} packets)")
     return 0
