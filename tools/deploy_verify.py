@@ -46,6 +46,12 @@ DEFAULT_PATHS = [
     # one generated Why page as the pattern representative (all 79 share
     # the pinned template; site-walk spot-checks 5 nightly)
     "why/AAPL.html",
+    "why/AAPL.json",
+    "capabilities.json",
+    "evidence/verify.json",
+    "evidencebench.html",
+    "evidencebench/items.jsonl",
+    "for_ai_builders.html",
     "trace_su.html",
     "usage.md",
     "examples/evidence_memo_su.md",
