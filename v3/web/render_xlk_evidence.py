@@ -62,6 +62,16 @@ def _xlk_robustness() -> str:
     </div>"""
 
 
+def _ecs_block():
+    import json as _j
+    from pathlib import Path as _P
+    from v3.web.oie_v51_blocks import ecs_covered_table
+    from v3.universe_tiers import scoring_universe
+    hold = _j.loads((_P(__file__).resolve().parents[2] / 'data' / 'holdings' / 'XLK.json').read_text())['holdings']
+    covered = sorted(set(hold) & set(scoring_universe()))
+    return ecs_covered_table(covered)
+
+
 def render() -> str:
     d = json.loads(SRC.read_text())
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -159,6 +169,7 @@ def render() -> str:
       </div>
       <p style="font-size:12px;color:#A0AEC0">Top-1 covered {a['top1_covered_pct']}% · top-3 {a['top3_covered_pct']}% · top-5 {a['top5_covered_pct']}% of full-fund weight (largest: {escape(a['largest_covered'][0])}).</p>
       <table><thead><tr><th>Uncovered — reason</th><th>Weight</th><th>Names</th></tr></thead><tbody>{unc_rows}</tbody></table>
+      {_ecs_block()}
     </div>
 
     <div class="panel">

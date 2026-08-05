@@ -87,7 +87,18 @@ def _fetch_current_signals() -> tuple[list[dict[str, Any]], datetime | None]:
     return rows, as_of
 
 
-def _row_html(r: dict[str, Any]) -> str:
+def _load_ecs() -> dict:
+    """Evidence Coverage v1 (protocol e3d51f5b0ca3) artifact — coverage,
+    not prediction; rendered with its locked caption."""
+    import json as _j
+    f = Path(__file__).resolve().parents[2] / "output" / "oie" / "evidence_coverage.json"
+    try:
+        return _j.loads(f.read_text()).get("scores", {})
+    except Exception:
+        return {}
+
+
+def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
     label = r["signal_label"]
     if label not in PUBLIC_LABELS:
         # Defensive — never serve a non-public label.
@@ -104,6 +115,9 @@ def _row_html(r: dict[str, Any]) -> str:
         f"{escape(label)}</span></td>"
         f"<td style='padding:9px 14px;color:{score_color};font-weight:600;"
         f"font-family:JetBrains Mono,monospace;font-size:13px'>{score:+.3f}</td>"
+        f"<td style='padding:9px 14px;color:#A0AEC0;"
+        f"font-family:JetBrains Mono,monospace;font-size:12px'>"
+        f"{(ecs or {}).get(r['ticker'], {}).get('ecs', '—')}</td>"
         f"</tr>"
     )
 
@@ -113,7 +127,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
                                       use_in_research_html)
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
-    table_body = "".join(_row_html(r) for r in rows) or (
+    ecs = _load_ecs()
+    table_body = "".join(_row_html(r, ecs) for r in rows) or (
         "<tr><td colspan='3' style='padding:14px;color:#718096;font-style:italic'>"
         "Forward Tracking Ledger Day 0 — first signals materialize at 17:00 MDT cron."
         "</td></tr>")
@@ -195,6 +210,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         <thead>
           <tr><th>Ticker</th><th>Signal label</th>
           <th title="Composite research score — not an expected return, a probability, a price target, or a recommendation.">Score
+          <span aria-hidden="true" style="cursor:help;color:#718096">ⓘ</span></th>
+          <th title="Evidence Coverage (protocol e3d51f5b0ca3): how much evidence stands under this classification — coverage, not prediction.">Evidence coverage
           <span aria-hidden="true" style="cursor:help;color:#718096">ⓘ</span></th></tr>
         </thead>
         <tbody>
@@ -202,6 +219,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         </tbody>
       </table>
       <p style="font-size:11px;color:#718096;margin-top:8px">
+        Evidence coverage = how much evidence stands under this classification — coverage,
+        not prediction (Evidence Coverage v1, registered protocol).
         Score = composite research score. It is not an expected return, a probability,
         a price target, or a recommendation.</p>
       <div class="as-of">data as of {escape(as_of_str)} · landing page rebuilt {escape(rebuilt)}</div>

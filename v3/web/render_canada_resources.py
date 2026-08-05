@@ -243,6 +243,10 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
         Research-side context (oil-intelligence engine, as of {escape(str(oil['as_of']))}): {escape(' · '.join(x for x in (wti, brent) if x))}.
         Context only — does not feed composite scoring and does not alter evidence grades.</div>"""
 
+    ecs_note = ("<p style='font-size:11px;color:#718096;margin-top:6px'>"
+                "Evidence coverage column: not computed for this tier — the "
+                "registered Evidence Coverage v1 computation covers the "
+                "79-name scoring universe only (coverage, not prediction).</p>")
     thead = ("<thead><tr><th>Name</th><th>Issuer</th><th>Lens weight</th>"
              "<th>Filer class</th><th>Filings ingested</th><th>Constituent events</th>"
              "<th>Evidence grade</th><th>C6 posture</th><th>Insider substrate</th></tr></thead>")
@@ -261,13 +265,13 @@ def _lens_section(lens: str, entry: dict, c6: dict[str, dict], oil: dict | None)
           {thead}
           <tbody>{''.join(rows[TABLE_COLLAPSE_VISIBLE:])}</tbody>
         </table></div>
-      </details>"""
+      </details>{ecs_note}"""
     else:
         table_html = f"""
       <div class="tblwrap"><table>
         {thead}
         <tbody>{''.join(rows)}</tbody>
-      </table></div>"""
+      </table></div>{ecs_note}"""
 
     # Lens summary card (usefulness build 2026-07-16) — one short paragraph,
     # every number pulled from the SAME `p`/`mat` data this section renders

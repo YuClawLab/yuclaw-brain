@@ -332,6 +332,26 @@ def smh_funnel_panel() -> str:
                   "live-era pipeline stages, recomputed at render time", body)
 
 
+def ecs_covered_table(tickers) -> str:
+    """Evidence Coverage v1 (e3d51f5b0ca3) per covered constituent. The
+    registered computation covers U79 names only; constituents outside
+    U79 print an em-dash, disclosed. Caption is locked by the spec."""
+    import json as _j
+    f = Path(__file__).resolve().parents[2] / "output" / "oie" / "evidence_coverage.json"
+    try:
+        scores = _j.loads(f.read_text())["scores"]
+    except Exception:
+        return ""
+    rows = "".join(
+        f"<tr><td style='padding:5px 12px;font-family:JetBrains Mono,monospace;color:#E2E8F0'>{tk}</td>"
+        f"<td style='padding:5px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>"
+        f"{scores.get(tk, {}).get('ecs', '—')}</td></tr>"
+        for tk in tickers)
+    return f"""
+      <p style="font-size:12px;color:#A0AEC0;margin:12px 0 4px"><strong style="color:#E2E8F0">Evidence coverage per covered constituent</strong> — how much evidence stands under this classification — coverage, not prediction (Evidence Coverage v1, registered protocol). Names outside the 79-name scoring universe print an em-dash: the registered computation covers U79 only.</p>
+      <table><thead><tr><th style='padding:5px 12px'>Name</th><th style='padding:5px 12px'>Evidence coverage</th></tr></thead><tbody>{rows}</tbody></table>"""
+
+
 def smh_holdings_panel() -> str:
     from v3.lab.etf_evidence import SMH_AS_OF, SMH_HOLDINGS, overlap_summary
     today = datetime.now(timezone.utc).date()
@@ -354,7 +374,7 @@ def smh_holdings_panel() -> str:
         Rounding footnote: the issuer's disclosed weights sum to {disclosed}%, so the undisclosed residual
         computes to {round(100 - disclosed, 2)}% — shown as measured, an artifact of the issuer's
         two-decimal rounding, not a data error.
-      </p>"""
+      </p>{ecs_covered_table(sorted(SMH_HOLDINGS))}"""
     return _panel("holdings", "Holdings intelligence",
                   "provenance and freshness of the constituent snapshot", body)
 
