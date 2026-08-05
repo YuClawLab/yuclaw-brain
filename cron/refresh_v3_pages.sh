@@ -94,6 +94,8 @@ fi
 # U350 isolation gate (Phase 0, 2026-08-02): cross-universe refusals proven
 # by attempt on every build; U79 is inviolable.
 /usr/bin/python3 tools/check_u350_isolation.py || exit 26
+# Schema gate (2026-08-04): today's real outputs vs the frozen v1 API schemas.
+/usr/bin/python3 tools/check_schemas.py || exit 28
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.

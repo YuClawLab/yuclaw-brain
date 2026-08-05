@@ -1,0 +1,117 @@
+{
+ "$id": "https://yuclaw.ca/schemas/SignalSnapshot.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "One point-in-time composite signal snapshot \u2014 the object whose content_hash is committed to the public ledger. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "available_as_of": {
+   "description": "point-in-time visibility bound",
+   "type": "string"
+  },
+  "c1_price_momentum": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c2_volume_confirm": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c3_sector_velocity": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c4_macro_regime": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c5_oil_rates_fx": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c6_event_impact": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c7_peer_correlation": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c8_cascade_effect": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "c9_model_trust": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "content_hash": {
+   "description": "SHA-256 anchored in the daily ledger root",
+   "type": "string"
+  },
+  "evidence_event_ids": {
+   "items": {
+    "type": "string"
+   },
+   "type": [
+    "array",
+    "null"
+   ]
+  },
+  "signal_label": {
+   "enum": [
+    "STRONG_BULLISH",
+    "BULLISH",
+    "NEUTRAL",
+    "WATCH",
+    "WEAKENING",
+    "NEGATIVE_EVENT",
+    "BEARISH_WATCH",
+    "RISK_ALERT"
+   ],
+   "type": "string"
+  },
+  "signal_time": {
+   "type": "string"
+  },
+  "snapshot_id": {
+   "pattern": "^snap_",
+   "type": "string"
+  },
+  "ticker": {
+   "type": "string"
+  },
+  "total_score": {
+   "type": "number"
+  }
+ },
+ "required": [
+  "snapshot_id",
+  "ticker",
+  "signal_time",
+  "available_as_of",
+  "signal_label",
+  "total_score",
+  "content_hash"
+ ],
+ "title": "SignalSnapshot",
+ "type": "object",
+ "version": "v1"
+}

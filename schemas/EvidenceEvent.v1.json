@@ -1,0 +1,62 @@
+{
+ "$id": "https://yuclaw.ca/schemas/EvidenceEvent.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "One accepted evidence event as exported by `yuclaw events --json` \u2014 derived data tracing to a primary SEC filing. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "available_as_of": {
+   "type": "string"
+  },
+  "direction": {
+   "enum": [
+    -1,
+    0,
+    1
+   ],
+   "type": "integer"
+  },
+  "event_id": {
+   "type": "string"
+  },
+  "event_type": {
+   "type": "string"
+  },
+  "llm_confidence": {
+   "maximum": 1,
+   "minimum": 0,
+   "type": "number"
+  },
+  "magnitude": {
+   "maximum": 1,
+   "minimum": 0,
+   "type": "number"
+  },
+  "raw_excerpt": {
+   "type": "string"
+  },
+  "source_type": {
+   "description": "SEC form type (8-K, 6-K, 4, ...)",
+   "type": "string"
+  },
+  "source_url": {
+   "format": "uri",
+   "type": "string"
+  },
+  "ticker": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "event_id",
+  "ticker",
+  "event_type",
+  "magnitude",
+  "direction",
+  "available_as_of",
+  "source_type",
+  "source_url"
+ ],
+ "title": "EvidenceEvent",
+ "type": "object",
+ "version": "v1"
+}

@@ -1,0 +1,650 @@
+{
+ "$defs": {
+  "CascadeEdge": {
+   "additionalProperties": false,
+   "description": "One propagation edge: a parent event's shock flowing to a child ticker.",
+   "properties": {
+    "child_event_id": {
+     "title": "Child Event Id",
+     "type": "string"
+    },
+    "child_event_type": {
+     "title": "Child Event Type",
+     "type": "string"
+    },
+    "child_ticker": {
+     "description": "Affected ticker",
+     "title": "Child Ticker",
+     "type": "string"
+    },
+    "contribution": {
+     "description": "Child event magnitude = parent_mag\u00b7\u220fweights\u00b7decay",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Contribution",
+     "type": "number"
+    },
+    "decay_factor": {
+     "description": "Locked depth decay (d1=0.20, d2=0.04)",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Decay Factor",
+     "type": "number"
+    },
+    "depth": {
+     "description": "Hops from the root event (1..3)",
+     "maximum": 3,
+     "minimum": 1,
+     "title": "Depth",
+     "type": "integer"
+    },
+    "edge_weight": {
+     "description": "Transmission strength from supply_chain.py",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Edge Weight",
+     "type": "number"
+    },
+    "parent_event_id": {
+     "title": "Parent Event Id",
+     "type": "string"
+    },
+    "parent_event_type": {
+     "title": "Parent Event Type",
+     "type": "string"
+    },
+    "parent_ticker": {
+     "description": "Source of the shock",
+     "title": "Parent Ticker",
+     "type": "string"
+    },
+    "relationship_type": {
+     "description": "supply | peer | cohort | etf | macro",
+     "title": "Relationship Type",
+     "type": "string"
+    }
+   },
+   "required": [
+    "parent_event_id",
+    "child_event_id",
+    "parent_ticker",
+    "child_ticker",
+    "parent_event_type",
+    "child_event_type",
+    "relationship_type",
+    "edge_weight",
+    "depth",
+    "decay_factor",
+    "contribution"
+   ],
+   "title": "CascadeEdge",
+   "type": "object"
+  },
+  "CascadeNode": {
+   "additionalProperties": false,
+   "description": "A cascade tree rooted at an originating event, as a flat edge list.\n\n`event` is the root (depth-0) originating event; `edges` is every propagation\nedge in the tree (each carries parent/child ids + depth, so the tree is fully\nreconstructable). Edge weights/relationships come only from the public\nsupply_chain.py graph.",
+   "properties": {
+    "depth": {
+     "default": 0,
+     "description": "Root depth (always 0)",
+     "title": "Depth",
+     "type": "integer"
+    },
+    "edges": {
+     "description": "All propagation edges (depth 1..3)",
+     "items": {
+      "$ref": "#/$defs/CascadeEdge"
+     },
+     "title": "Edges",
+     "type": "array"
+    },
+    "event": {
+     "$ref": "#/$defs/Evidence",
+     "description": "The root (depth-0) originating event"
+    },
+    "warnings": {
+     "description": "e.g. 'cycle detected at event X', multi-root notes",
+     "items": {
+      "type": "string"
+     },
+     "title": "Warnings",
+     "type": "array"
+    }
+   },
+   "required": [
+    "event"
+   ],
+   "title": "CascadeNode",
+   "type": "object"
+  },
+  "Compliance": {
+   "additionalProperties": false,
+   "description": "REQUIRED on every response. Mirrors sdk COMPLIANCE + adds v4 metadata.\n\nHard regulatory constraint: this object is non-optional. A securities reviewer\nmust be able to read it and conclude the response is research, not advice.",
+   "properties": {
+    "compliance_text_version": {
+     "default": "draft-v0",
+     "description": "Version tag for `notice`. 'draft-v0' = pre-legal-review placeholder.",
+     "title": "Compliance Text Version",
+     "type": "string"
+    },
+    "jurisdiction": {
+     "default": "US",
+     "description": "Regulatory jurisdiction the notice is written for",
+     "title": "Jurisdiction",
+     "type": "string"
+    },
+    "model_id": {
+     "description": "Extraction model id (e.g. yuclaw-llm-70b)",
+     "title": "Model Id",
+     "type": "string"
+    },
+    "not_advice": {
+     "default": true,
+     "description": "Always true",
+     "title": "Not Advice",
+     "type": "boolean"
+    },
+    "not_registered_adviser": {
+     "default": true,
+     "description": "Always true",
+     "title": "Not Registered Adviser",
+     "type": "boolean"
+    },
+    "notice": {
+     "default": "YUCLAW research output. Not investment advice. Past performance does not guarantee future results. Signal labels are research classifications, not buy/sell recommendations.",
+     "description": "Canonical not-advice notice (== schema.COMPLIANCE_NOTICE). PLACEHOLDER pending review.",
+     "title": "Notice",
+     "type": "string"
+    },
+    "prompt_version": {
+     "description": "Extraction prompt version (e.g. v2)",
+     "title": "Prompt Version",
+     "type": "string"
+    },
+    "research_only": {
+     "default": true,
+     "description": "Always true",
+     "title": "Research Only",
+     "type": "boolean"
+    }
+   },
+   "required": [
+    "model_id",
+    "prompt_version"
+   ],
+   "title": "Compliance",
+   "type": "object"
+  },
+  "Component": {
+   "additionalProperties": false,
+   "description": "One C1\u2013C9 component anatomy. Internal `details` are deliberately excluded.",
+   "properties": {
+    "confidence": {
+     "description": "Component self-confidence [0,1]",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Confidence",
+     "type": "number"
+    },
+    "evidence_ids": {
+     "description": "event_ids (in this response's `evidence`) that fed this component; empty for purely technical/macro components (C1\u2013C5, C7, C9).",
+     "items": {
+      "type": "string"
+     },
+     "title": "Evidence Ids",
+     "type": "array"
+    },
+    "implemented": {
+     "default": true,
+     "description": "False if this component is a stub (confidence forced 0)",
+     "title": "Implemented",
+     "type": "boolean"
+    },
+    "key": {
+     "description": "Component id, c1..c9",
+     "pattern": "^c[1-9]$",
+     "title": "Key",
+     "type": "string"
+    },
+    "name": {
+     "description": "Human-readable component name",
+     "title": "Name",
+     "type": "string"
+    },
+    "rationale": {
+     "default": "",
+     "description": "Short human-readable justification",
+     "title": "Rationale",
+     "type": "string"
+    },
+    "score": {
+     "description": "Directional score [-1,1]",
+     "maximum": 1.0,
+     "minimum": -1.0,
+     "title": "Score",
+     "type": "number"
+    },
+    "weight": {
+     "description": "Composite weight (v3 COMPONENT_WEIGHTS)",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Weight",
+     "type": "number"
+    }
+   },
+   "required": [
+    "key",
+    "name",
+    "score",
+    "confidence",
+    "weight"
+   ],
+   "title": "Component",
+   "type": "object"
+  },
+  "Confidence": {
+   "additionalProperties": false,
+   "description": "Overall confidence + bucketed Evidence Quality Grade.",
+   "properties": {
+    "basis": {
+     "default": "",
+     "description": "One-line explanation of how the grade was derived",
+     "title": "Basis",
+     "type": "string"
+    },
+    "grade": {
+     "$ref": "#/$defs/EvidenceGrade",
+     "description": "Bucketed Evidence Quality Grade"
+    },
+    "value": {
+     "description": "Composite confidence [0,1] (v3 composite_confidence)",
+     "maximum": 1.0,
+     "minimum": 0.0,
+     "title": "Value",
+     "type": "number"
+    }
+   },
+   "required": [
+    "value",
+    "grade"
+   ],
+   "title": "Confidence",
+   "type": "object"
+  },
+  "Evidence": {
+   "additionalProperties": false,
+   "description": "A single source event backing the signal. raw_excerpt is SourceLock-verified.",
+   "properties": {
+    "accession_number": {
+     "anyOf": [
+      {
+       "pattern": "^\\d{10}-\\d{2}-\\d{6}$",
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "SEC accession (canonical) when source is an EDGAR filing; null otherwise.",
+     "title": "Accession Number"
+    },
+    "available_as_of": {
+     "description": "When this evidence became knowable (point-in-time)",
+     "format": "date-time",
+     "title": "Available As Of",
+     "type": "string"
+    },
+    "cascade_depth": {
+     "anyOf": [
+      {
+       "minimum": 0,
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Depth if a cascade child, else null/0",
+     "title": "Cascade Depth"
+    },
+    "direction": {
+     "anyOf": [
+      {
+       "maximum": 1,
+       "minimum": -1,
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "-1/0/1 directional sign",
+     "title": "Direction"
+    },
+    "event_id": {
+     "description": "Stable event identifier",
+     "title": "Event Id",
+     "type": "string"
+    },
+    "event_type": {
+     "description": "Locked extraction vocabulary (R2-validated)",
+     "title": "Event Type",
+     "type": "string"
+    },
+    "ledger_hash": {
+     "description": "Per-event integrity hash (events.content_hash) \u2014 ledger anchor",
+     "title": "Ledger Hash",
+     "type": "string"
+    },
+    "llm_confidence": {
+     "anyOf": [
+      {
+       "maximum": 1.0,
+       "minimum": 0.0,
+       "type": "number"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Extraction confidence [0,1]",
+     "title": "Llm Confidence"
+    },
+    "magnitude": {
+     "anyOf": [
+      {
+       "maximum": 1.0,
+       "minimum": 0.0,
+       "type": "number"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Event magnitude [0,1]",
+     "title": "Magnitude"
+    },
+    "raw_excerpt": {
+     "anyOf": [
+      {
+       "maxLength": 400,
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Verbatim, SourceLock-verified excerpt from the source (<=400 chars).",
+     "title": "Raw Excerpt"
+    },
+    "source_url": {
+     "description": "Canonical source (e.g. SEC primary document)",
+     "title": "Source Url",
+     "type": "string"
+    }
+   },
+   "required": [
+    "event_id",
+    "event_type",
+    "source_url",
+    "ledger_hash",
+    "available_as_of"
+   ],
+   "title": "Evidence",
+   "type": "object"
+  },
+  "EvidenceGrade": {
+   "description": "Bucketed Evidence Quality Grade (per ChatGPT review).\n\nCommunicates *how well-supported* the signal is, independent of direction.\nDeriving rule lives in `Confidence.grade_for()` \u2014 deterministic, auditable.",
+   "enum": [
+    "A",
+    "B",
+    "C",
+    "Insufficient"
+   ],
+   "title": "EvidenceGrade",
+   "type": "string"
+  },
+  "ResearchResponse": {
+   "additionalProperties": false,
+   "description": "The single unified response. Every v4 surface returns exactly this shape.",
+   "properties": {
+    "as_of": {
+     "description": "Point-in-time instant this signal reflects (ISO-8601, tz-aware)",
+     "format": "date-time",
+     "title": "As Of",
+     "type": "string"
+    },
+    "cascade": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/CascadeNode"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Day 6: supply-chain cascade tree that propagated into this ticker. Present ONLY when include_cascade=True (like score/memo). None when not requested or no cascade exists."
+    },
+    "compliance": {
+     "$ref": "#/$defs/Compliance",
+     "description": "Required not-advice / provenance block"
+    },
+    "components": {
+     "description": "C1\u2013C9 component anatomies (all 9 when status='ok'; empty for status='no_data')",
+     "items": {
+      "$ref": "#/$defs/Component"
+     },
+     "title": "Components",
+     "type": "array"
+    },
+    "confidence": {
+     "$ref": "#/$defs/Confidence",
+     "description": "Composite confidence + Evidence Quality Grade"
+    },
+    "evidence": {
+     "description": "Source events backing the signal (required key; may be empty for technical-only signals)",
+     "items": {
+      "$ref": "#/$defs/Evidence"
+     },
+     "title": "Evidence",
+     "type": "array"
+    },
+    "is_backfill": {
+     "default": false,
+     "description": "True if as_of is historical/backfilled rather than live",
+     "title": "Is Backfill",
+     "type": "boolean"
+    },
+    "ledger_anchor_url": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Q3: URL to this signal's entry in the git-anchored Verified Research Ledger (v3/proof/). Null if the ledger run has not published this (ticker, date) yet. Excluded from the ledger_hash so publication state does not change the content hash.",
+     "title": "Ledger Anchor Url"
+    },
+    "ledger_hash": {
+     "description": "SHA-256 over the canonical response (verification anchor)",
+     "title": "Ledger Hash",
+     "type": "string"
+    },
+    "limitations": {
+     "description": "Explicit caveats \u2014 what this does NOT consider",
+     "items": {
+      "type": "string"
+     },
+     "minItems": 1,
+     "title": "Limitations",
+     "type": "array"
+    },
+    "overlay_trigger": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Evidence"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Q3: the specific event that triggered an overlay (e.g. the REGULATORY_ACTION/LAWSUIT that forced RISK_ALERT). Also present in `evidence`; denormalized here so the memo can lead with the headline event. None when no overlay applied."
+    },
+    "replay_id": {
+     "description": "Opaque handle to reconstruct this exact response point-in-time",
+     "title": "Replay Id",
+     "type": "string"
+    },
+    "retry_after": {
+     "anyOf": [
+      {
+       "minimum": 0,
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Seconds to wait before retrying (set only when status='rate_limited').",
+     "title": "Retry After"
+    },
+    "schema_version": {
+     "default": "v4.0",
+     "description": "Schema contract version",
+     "title": "Schema Version",
+     "type": "string"
+    },
+    "score": {
+     "anyOf": [
+      {
+       "maximum": 1.0,
+       "minimum": -1.0,
+       "type": "number"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "Composite directional score [-1,1] (v3 total_score). Q2: gated \u2014 default OFF for REST/MCP (opt in via include_score), default ON for SDK/CLI. None when not included.",
+     "title": "Score"
+    },
+    "signal": {
+     "$ref": "#/$defs/SignalLabel",
+     "description": "Locked public vocabulary label"
+    },
+    "signal_overlay": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "description": "If the label diverges from the score-derived band, why (e.g. 'RISK_ALERT: REGULATORY_ACTION/LAWSUIT within 30d'). None when label == score band.",
+     "title": "Signal Overlay"
+    },
+    "status": {
+     "default": "ok",
+     "description": "'ok' = a signal was found; 'no_data' = no snapshot for (ticker, as_of); 'rate_limited' = quota exceeded. ALL carry the required compliance block.",
+     "title": "Status",
+     "type": "string"
+    },
+    "ticker": {
+     "description": "Uppercase ticker",
+     "pattern": "^[A-Z][A-Z0-9.\\-]{0,9}$",
+     "title": "Ticker",
+     "type": "string"
+    }
+   },
+   "required": [
+    "ticker",
+    "as_of",
+    "replay_id",
+    "signal",
+    "components",
+    "evidence",
+    "confidence",
+    "limitations",
+    "ledger_hash",
+    "compliance"
+   ],
+   "title": "ResearchResponse",
+   "type": "object",
+   "x-schema-version": "v4.0"
+  },
+  "SignalLabel": {
+   "description": "The locked public signal vocabulary (mirrors sdk.yuclaw_py PUBLIC_LABELS).\n\nOrdered most-bullish \u2192 most-bearish. These are RESEARCH CLASSIFICATIONS, not\nbuy/sell recommendations. SELL / SHORT / BUY are intentionally absent.",
+   "enum": [
+    "STRONG_BULLISH",
+    "BULLISH",
+    "NEUTRAL",
+    "WATCH",
+    "WEAKENING",
+    "RISK_ALERT",
+    "NEGATIVE_EVENT",
+    "BEARISH_WATCH"
+   ],
+   "title": "SignalLabel",
+   "type": "string"
+  }
+ },
+ "$id": "https://yuclaw.ca/schemas/ResearchMemo.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "description": " Derived directly from v4.memo.generator.MemoOutput (pydantic model_json_schema). Research classifications, not buy/sell recommendations.",
+ "properties": {
+  "as_of": {
+   "format": "date-time",
+   "title": "As Of",
+   "type": "string"
+  },
+  "grade": {
+   "$ref": "#/$defs/EvidenceGrade"
+  },
+  "markdown": {
+   "title": "Markdown",
+   "type": "string"
+  },
+  "mode": {
+   "description": "full | evidence_limited | no_data",
+   "title": "Mode",
+   "type": "string"
+  },
+  "response": {
+   "$ref": "#/$defs/ResearchResponse"
+  },
+  "signal": {
+   "$ref": "#/$defs/SignalLabel"
+  },
+  "ticker": {
+   "title": "Ticker",
+   "type": "string"
+  }
+ },
+ "required": [
+  "ticker",
+  "as_of",
+  "signal",
+  "grade",
+  "mode",
+  "markdown",
+  "response"
+ ],
+ "title": "ResearchMemo",
+ "type": "object",
+ "version": "v1"
+}

@@ -1,0 +1,63 @@
+{
+ "$id": "https://yuclaw.ca/schemas/ResearchProtocol.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "One protocol payload from the append-only hash-chained registry (registry/protocols.jsonl, kind=protocol) \u2014 a statistic's specification locked BEFORE computation. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "lock_date": {
+   "format": "date",
+   "type": "string"
+  },
+  "method_hash": {
+   "pattern": "^[0-9a-f]{16}$",
+   "type": "string"
+  },
+  "name": {
+   "type": "string"
+  },
+  "primary_endpoint": {
+   "type": "string"
+  },
+  "protocol_id": {
+   "pattern": "^[0-9a-f]{12}$",
+   "type": "string"
+  },
+  "secondary_endpoints": {
+   "items": {
+    "type": "string"
+   },
+   "type": "array"
+  },
+  "spec_summary": {
+   "type": "string"
+  },
+  "status": {
+   "enum": [
+    "LOCKED",
+    "SUPERSEDED"
+   ],
+   "type": "string"
+  },
+  "supersedes": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "version": {
+   "type": "integer"
+  }
+ },
+ "required": [
+  "protocol_id",
+  "name",
+  "method_hash",
+  "spec_summary",
+  "primary_endpoint",
+  "lock_date",
+  "status"
+ ],
+ "title": "ResearchProtocol",
+ "type": "object",
+ "version": "v1"
+}

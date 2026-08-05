@@ -92,6 +92,9 @@ def main() -> int:
                         "files": v.get("files")}
                     for k, v in packets.items() if isinstance(v, dict)},
         "replay_bundle": f"{BASE}/replay/lab_replay_bundle.json",
+        "schemas": {n: f"{BASE}/schemas/{n}.v1.json" for n in
+                    ("SignalSnapshot", "EvidenceEvent", "ResearchProtocol",
+                     "RobustnessCell", "ResearchMemo")},
         "registry": {"where": "registry/protocols.jsonl in "
                               "github.com/YuClawLab/yuclaw-brain "
                               "(hash-chained, append-only)",

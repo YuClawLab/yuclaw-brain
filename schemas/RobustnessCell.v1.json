@@ -1,0 +1,54 @@
+{
+ "$id": "https://yuclaw.ca/schemas/RobustnessCell.v1.json",
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "additionalProperties": true,
+ "description": "One cell of a Robustness Profile grid (output/oie/robustness_profile.json) \u2014 where a result holds or breaks, printed as measured. A cell may be null: structurally uncomputable slices (e.g. trend split before the SPY series begins) are disclosed as empty, never proxied. Research classifications, not buy/sell recommendations; research and education only.",
+ "properties": {
+  "G": {
+   "description": "independent clusters behind n",
+   "type": [
+    "integer",
+    "null"
+   ]
+  },
+  "badge": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "ci": {
+   "items": {
+    "type": "number"
+   },
+   "maxItems": 2,
+   "minItems": 2,
+   "type": [
+    "array",
+    "null"
+   ]
+  },
+  "estimate": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "n": {
+   "type": [
+    "integer",
+    "null"
+   ]
+  },
+  "note": {
+   "type": "string"
+  }
+ },
+ "required": [],
+ "title": "RobustnessCell",
+ "type": [
+  "object",
+  "null"
+ ],
+ "version": "v1"
+}

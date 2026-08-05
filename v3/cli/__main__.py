@@ -23,6 +23,8 @@ COMMANDS: dict[str, str] = {
     "replay-lab": "v3.lab.replay_check:main",
     # usefulness build (2026-07-16): derived-data exports + lens summaries
     "events": "v3.cli.events:main",
+    # 5.2: Signal Review client-side pre-check (local-only, never transmits)
+    "intake-check": "v3.cli.intake_check:main",
     "lens": "v3.cli.lens:main",
     "export": "v3.cli.export:main",
     # legacy v3 helpers (kept available; not part of the documented v4 surface)

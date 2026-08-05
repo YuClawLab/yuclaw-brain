@@ -280,6 +280,9 @@ YUCLAW is the open evidence layer underneath AI research tools.
 - **Start here**: [`llms.txt`](https://yuclaw.ca/llms.txt) and the
   machine-readable [`evidence_index.json`](https://yuclaw.ca/evidence_index.json)
   (every page, packet, and protocol with stable URLs and data-through dates).
+- **Objects**: the five frozen v1 JSON Schemas — SignalSnapshot, EvidenceEvent,
+  ResearchProtocol, RobustnessCell, ResearchMemo — at [/schemas/](https://yuclaw.ca/schemas/SignalSnapshot.v1.json);
+  today's real outputs validate against them in the daily gate suite.
 - **Consume**: evidence packets (derived statistics, event CSVs, engine run
   JSONs, metadata + citation snippets) from `/packets/`; the MCP server
   exposes `why / memo / events / lens / universe / validation / verify` as
