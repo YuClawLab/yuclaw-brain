@@ -38,6 +38,7 @@ DEFAULT_PATHS = [
     "replication.html",
     "todays_evidence.html",
     "lane.html",
+    "signal_review.html",
     "trace_su.html",
     "usage.md",
     "examples/evidence_memo_su.md",
