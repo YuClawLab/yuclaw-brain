@@ -95,7 +95,7 @@ construction.</em></p></div>
 own corpus — a format demonstration, loudly labeled self-evaluation; nothing is claimed by it.</p></div>
 
 <div class="card"><h2>Dataset</h2>
-<p style="font-size:13px">Items + keys: <a href="evidencebench/items.jsonl" style="color:#00E676">items.jsonl</a>
+<p style="font-size:13px">Items + keys: <a href="evidencebench/items.jsonl" style="color:#00E676">items.jsonl</a> (JSONL — one item per line: <code>{{item_id, template, question, key}}</code>)
 · <a href="evidencebench/meta.json" style="color:#00E676">meta.json</a>. Under the export rule: derived
 events, verified excerpts, and keys only — no raw vendor OHLCV is published. Weekly snapshots are tagged in
 the repository (dataset citability: see CITATION.cff at the repo root and the

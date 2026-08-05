@@ -72,6 +72,17 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--json", action="store_true")
     args = p.parse_args(argv)
 
+    # exit-code contract: usage/validation errors are 2, never a
+    # mismatch-style 1 — a bad date is the caller's typo, not a failed
+    # verification
+    from datetime import date as _date
+    try:
+        _date.fromisoformat(args.date)
+    except ValueError:
+        print(f"--date must be YYYY-MM-DD (got {args.date!r})",
+              file=sys.stderr)
+        return 2
+
     result = verify(args.ticker, args.date)
     if args.json:
         print(json.dumps(result, indent=2, default=str))

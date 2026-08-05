@@ -109,6 +109,12 @@ def build_endpoints() -> None:
             "ledger_day": f"{base}/ledger/{{YYYY-MM-DD}}.json",
             "evidencebench": f"{base}/evidencebench/items.jsonl",
         },
+        "formats": {
+            "evidencebench": "JSONL — one item per line: {item_id, "
+                             "template (T1|T2|T3), question, key}; "
+                             "/evidencebench/meta.json carries the "
+                             "item-set hash and scoring rule",
+        },
         "cli": {"install": "pip install yuclaw",
                 "check_claim": "yuclaw check-claim --ticker X --type T "
                                "--date-range A..B  (or --text '...')",

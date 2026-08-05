@@ -2,6 +2,27 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.3.1] — 2026-08-05
+
+### Fixed
+
+- **check-claim input hardening**: reversed date ranges, unknown event
+  types, and bare invocations now return friendly one-liners with exit 2
+  (previously a reversed range or unknown type silently produced an
+  UNSUPPORTED passport — a validation error is never a corpus verdict);
+  --type lists the valid taxonomy on rejection.
+- **Exit-code contract** stated in help and enforced: 0 success · 1 ran
+  with negative result · 2 usage/validation · 3 environment unsupported
+  (verify's bad-date moved from 1 to 2).
+- **Abuse matrix**: a permanent pre-release test feeds every subcommand
+  the hostile input set (no/unknown args, reversed ranges, invalid dates,
+  unknown types, empty/missing/garbage files) asserting zero tracebacks
+  and contract-correct exits — runs in the isolation suite before every
+  upload.
+- **EvidenceBench items path**: format note (JSONL framing) published in
+  capabilities.json, llms.txt, and the page; the index-completeness gate
+  now also asserts every capabilities.json endpoint resolves.
+
 ## [5.3.0] — 2026-08-05
 
 ### Added — "Ground Truth"

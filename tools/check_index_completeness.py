@@ -36,6 +36,25 @@ def main() -> int:
                             f"evidence_index.json pages")
         if f"/{page}" not in llms:
             problems.append(f"{page}: nav-linked but not named in llms.txt")
+    # capabilities.json endpoint resolution (v5.3.1): the agent map is
+    # gate-guaranteed — every listed endpoint must resolve to a real
+    # local artifact (templated URLs checked via a representative).
+    caps = json.loads((_REPO / "docs" / "capabilities.json").read_text())
+    subst = {"{TICKER}": "AAPL", "{Name}": "SignalSnapshot",
+             "{YYYY-MM-DD}": None, "{DATE}": None}
+    for key, url in caps.get("endpoints", {}).items():
+        rel = url.replace("https://yuclaw.ca/", "")
+        if "{YYYY-MM-DD}" in rel or "{DATE}" in rel:
+            led = list((_REPO / "docs" / "ledger").glob("*.json"))
+            if not led:
+                problems.append(f"capabilities.{key}: no ledger day files")
+            continue
+        for k, v in subst.items():
+            if v:
+                rel = rel.replace(k, v)
+        if not (_REPO / "docs" / rel).exists():
+            problems.append(f"capabilities.{key}: endpoint {url} does not "
+                            f"resolve to docs/{rel}")
     if problems:
         print("INDEX-COMPLETENESS GATE FAILED:")
         for p in problems:

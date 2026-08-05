@@ -1,7 +1,7 @@
 {
  "name": "YUCLAW Ground Truth API",
  "version": "v5.3",
- "generated": "2026-08-05T05:08:59.692118+00:00",
+ "generated": "2026-08-05T06:14:29.278567+00:00",
  "positioning": "The open evidence layer for financial AI.",
  "endpoints": {
   "discovery": "https://yuclaw.ca/capabilities.json",
@@ -14,6 +14,9 @@
   "verify": "https://yuclaw.ca/evidence/verify.json",
   "ledger_day": "https://yuclaw.ca/ledger/{YYYY-MM-DD}.json",
   "evidencebench": "https://yuclaw.ca/evidencebench/items.jsonl"
+ },
+ "formats": {
+  "evidencebench": "JSONL \u2014 one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
  },
  "cli": {
   "install": "pip install yuclaw",

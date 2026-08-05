@@ -35,7 +35,9 @@
                               label history (79 names, schema-checked)
 - /evidence/verify.json      — offline snapshot-integrity recipe
 - /ledger/{YYYY-MM-DD}.json  — per-day ledger roots
-- /evidencebench/items.jsonl — EvidenceBench items + keys (weekly regen)
+- /evidencebench/items.jsonl — EvidenceBench items + keys (weekly regen);
+  format: JSONL, one item per line {item_id, template T1|T2|T3, question,
+  key}; /evidencebench/meta.json has the item-set hash + scoring rule
 - AS-OF RECIPE (worked example): to reconstruct NVDA as of 2026-07-15,
   fetch /why/NVDA.json; evidence = evidence_objects with
   available_as_of <= 2026-07-15; classification = the label_history entry

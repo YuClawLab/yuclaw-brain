@@ -58,7 +58,10 @@ def main(argv: list[str] | None = None) -> int:
         print(f"yuclaw {_version()}")
         return 0
     if not argv:
-        print(f"usage: yuclaw <command> [args]\ncommands: {', '.join(sorted(COMMANDS))}",
+        print(f"usage: yuclaw <command> [args]\ncommands: {', '.join(sorted(COMMANDS))}\n"
+              f"Exit codes: 0 = success · 1 = operation ran, negative result "
+              f"(e.g. verify mismatch, replay-lab mismatch) · "
+              f"2 = usage/validation error · 3 = environment unsupported",
               file=sys.stderr)
         return 2
     cmd, *rest = argv

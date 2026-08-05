@@ -54,6 +54,13 @@ TYPE_KEYWORDS = {
     "EARNINGS_MISS": ("earnings miss", "missed estimates"),
 }
 _ACC_TEXT_RE = re.compile(r"\b(\d{10})-?(\d{2})-?(\d{6})\b")
+# the locked extraction taxonomy — validation surface for --type
+VALID_TYPES = ("BUYBACK_ANNOUNCE", "CAPACITY_CHANGE", "CONTRACT_WIN",
+               "DIVIDEND_CHANGE", "EARNINGS_BEAT", "EARNINGS_MISS",
+               "EXEC_CHANGE", "GUIDANCE_CUT", "GUIDANCE_RAISE",
+               "INSIDER_BUY", "INSIDER_SELL", "M_AND_A_ANNOUNCE",
+               "M_AND_A_CLOSE", "OTHER_MATERIAL", "PARTNERSHIP",
+               "REGULATORY_ACTION")
 _TICKER_RE = re.compile(r"\b([A-Z]{1,5}(?:\.[A-Z])?)\b")
 
 
@@ -158,6 +165,8 @@ def passport(claim_raw: str, claim: dict | None,
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(
         prog="yuclaw check-claim",
+        epilog="Exit codes: 0 = passport produced (whatever its status); "
+               "2 = usage/validation error; 3 = environment unsupported.",
         description="Evidence Passport — deterministic claim check "
                     "against the corpus. Statuses: SOURCE_MATCHED / "
                     "PARTIAL_MATCH / UNSUPPORTED (= not found in the "
@@ -173,8 +182,21 @@ def main(argv=None) -> int:
     p.add_argument("--text", help="free-text claim (conservative parse)")
     a = p.parse_args(argv)
 
-    from v3.universe_tiers import scoring_universe
-    uni = set(scoring_universe())
+    if not a.text and not a.ticker:
+        p.print_help()
+        return 2
+    if a.type and a.type.upper() not in VALID_TYPES:
+        print(f"unknown --type {a.type!r} — valid event types: "
+              f"{', '.join(VALID_TYPES)}", file=sys.stderr)
+        return 2
+    try:
+        from v3.universe_tiers import scoring_universe
+        uni = set(scoring_universe())
+    except Exception as exc:                     # noqa: BLE001
+        print(f"environment unsupported: cannot load the universe "
+              f"({type(exc).__name__}) — is this a full checkout/install?",
+              file=sys.stderr)
+        return 3
     if a.text:
         claim = _parse_text(a.text, uni)
         ok = claim is not None and claim["ticker"] in uni
@@ -183,20 +205,24 @@ def main(argv=None) -> int:
         dr = None
         if a.date_range:
             try:
-                lo, hi = a.date_range.split("..")
-                dr = (lo.strip(), hi.strip())
+                lo, hi = (x.strip() for x in a.date_range.split(".."))
+                from datetime import date as _date
+                _date.fromisoformat(lo), _date.fromisoformat(hi)
             except ValueError:
-                print("--date-range must be A..B (ISO dates)",
-                      file=sys.stderr)
+                print("--date-range must be A..B with ISO dates "
+                      "(e.g. 2026-07-01..2026-07-31)", file=sys.stderr)
                 return 2
-        claim = {"ticker": a.ticker.upper(), "type": a.type,
+            if lo > hi:
+                print(f"start date is after end date — did you mean "
+                      f"{hi}..{lo}?", file=sys.stderr)
+                return 2
+            dr = (lo, hi)
+        claim = {"ticker": a.ticker.upper(),
+                 "type": a.type.upper() if a.type else None,
                  "accession": a.accession, "date_range": dr}
         doc = passport(json.dumps(
             {k: v for k, v in claim.items() if v}), claim,
             claim["ticker"] in uni)
-    else:
-        p.print_help()
-        return 2
     print(json.dumps(doc, indent=1))
     return 0
 
