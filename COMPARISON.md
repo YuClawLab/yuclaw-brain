@@ -27,6 +27,8 @@
 
 <div align="center">
 
+### Locked before the data — check it yourself
+
 **The row that matters most is the second one.** Everyone's methodology can look rigorous *after* the results are in. Only a specification hash-locked into a public chain *before* the data arrives proves the criteria never moved. Check ours:
 
 </div>
@@ -56,8 +58,8 @@ python3 -c "import yuclaw_protocol_registry as r; print('chain OK:', r.Registry(
 
 *YUCLAW is research and education only — not investment advice. Signal labels are research classifications, not recommendations. Our own forward record is young; most of our forward statistics are honestly labeled DESCRIPTIVE or UNDERPOWERED at current sample sizes — that's printed on every page, which is rather the point.*
 
-**[yuclaw.ca](https://yuclaw.ca)** · **[Validation Lab](https://yuclaw.ca/validation_lab.html)** · **[User Guide](https://yuclaw.ca/YUCLAW_User_Guide_v5.1.pdf)** · `pip install yuclaw`
+**[yuclaw.ca](https://yuclaw.ca)** · **[Validation Lab](https://yuclaw.ca/validation_lab.html)** · **[User Guide](https://yuclaw.ca/YUCLAW_User_Guide_v5.1.pdf)** · **[Guide (FR)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_v5.1_FR.pdf)** · `pip install yuclaw`
 
-*Comparison table v1.2 · August 2026.*
+*Comparison table v1.3 · August 2026.*
 
 </div>
