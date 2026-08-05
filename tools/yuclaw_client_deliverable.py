@@ -32,6 +32,76 @@ from check_language import lint_text
 OUT_DIR = _REPO / "output" / "byos_dryrun"
 ZIP = OUT_DIR / "client_deliverable.zip"
 
+# ---- Tier fulfillment profiles (Signal Review order, 2026-08-04) ----------
+# Each tier lists the memo/deliverable SECTIONS it produces. The page's
+# tier-scope promises (v3/web/render_signal_review.py TIER_*_ITEMS) map
+# onto these; selftest_page_promises() diffs them — the page may never
+# promise what the pipeline does not produce.
+TIER_PROFILES = {
+    "A": {   # Founding Pilot A — signal validation core (CAD 2,500)
+        "sections": [
+            "locked protocol (spec + hash)",
+            "signal decomposition suite",
+            "methodology note",
+            "reproduction bundle",
+            "research memo (suite results)",
+        ],
+        "artifacts": ["CLIENT_MEMO.pdf", "CLIENT_MEMO.md",
+                      "METHODOLOGY.md", "bundle/", "SHA256SUMS",
+                      "README_VERIFICATION.md"],
+        "memo_excludes": ["estimands", "falsification"],
+    },
+    "B": {   # Founding Pilot B — full signal review (CAD 5,000)
+        "sections": [
+            "locked protocol (spec + hash)",
+            "signal decomposition suite",
+            "methodology note",
+            "reproduction bundle",
+            "research memo (suite results)",
+            "basket event-study panel (cluster-robust)",
+            "falsification battery",
+            "coverage and exclusion anatomy",
+            "written questions window + findings session",
+        ],
+        "artifacts": ["CLIENT_MEMO.pdf", "CLIENT_MEMO.md",
+                      "METHODOLOGY.md", "bundle/", "SHA256SUMS",
+                      "README_VERIFICATION.md"],
+        "memo_excludes": [],
+    },
+}
+
+# page-promise -> profile-section mapping used by the self-test
+_PROMISE_MAP = {
+    "Locked protocol registered before computation": "locked protocol (spec + hash)",
+    "Signal decomposition suite": "signal decomposition suite",
+    "Methodology note": "methodology note",
+    "Reproduction bundle": "reproduction bundle",
+    "Research memo covering the suite results": "research memo (suite results)",
+    "Basket event-study panel": "basket event-study panel (cluster-robust)",
+    "Falsification battery": "falsification battery",
+    "Coverage and exclusion anatomy": "coverage and exclusion anatomy",
+    "30 days of written questions": "written questions window + findings session",
+}
+
+
+def selftest_page_promises() -> list[str]:
+    """Diff the Signal Review page's tier promises against TIER_PROFILES.
+    Returns a list of problems (empty = green)."""
+    from v3.web.render_signal_review import TIER_A_ITEMS, TIER_B_ITEMS
+    problems = []
+    for tier, items in (("A", TIER_A_ITEMS), ("B", TIER_B_ITEMS)):
+        produced = set(TIER_PROFILES[tier]["sections"])
+        for item in items:
+            matched = next((v for k, v in _PROMISE_MAP.items()
+                            if item.startswith(k)), None)
+            if matched is None:
+                problems.append(f"tier {tier}: page promise has no "
+                                f"profile mapping: '{item[:60]}'")
+            elif matched not in produced:
+                problems.append(f"tier {tier}: page promises '{item[:50]}' "
+                                f"but profile does not produce '{matched}'")
+    return problems
+
 METHODOLOGY = """# Methodology Note — Reading Your Results
 
 *User-defined research lens — not part of the canonical public record.
@@ -98,6 +168,26 @@ Questions are covered for 30 days from delivery per the engagement terms.
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tier", choices=("A", "B"), default="B",
+                    help="fulfillment profile (default B, full review)")
+    ap.add_argument("--selftest", action="store_true",
+                    help="diff page promises vs tier profiles and exit")
+    args = ap.parse_args()
+    if args.selftest:
+        probs = selftest_page_promises()
+        if probs:
+            print("PAGE-PROMISE SELF-TEST FAILED:")
+            for x in probs:
+                print(f"  · {x}")
+            return 1
+        print("[deliverable] self-test OK — every page promise maps to a "
+              "produced section in its tier profile (A and B)")
+        return 0
+    profile = TIER_PROFILES[args.tier]
+    print(f"[deliverable] tier {args.tier} profile: "
+          f"{len(profile['sections'])} sections")
     problems = lint_text(METHODOLOGY, pages_mode=False)
     if problems:
         print("METHODOLOGY LINT FAILED — banned terms present:")

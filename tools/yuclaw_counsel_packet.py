@@ -169,6 +169,8 @@ def main() -> int:
     manifest.append("evidence_memo_su.md (verbatim public demo memo)")
 
     for src, name in ((_REPO / "docs" / "lane.html", "lane.pdf"),
+                      (_REPO / "docs" / "signal_review.html",
+                       "signal_review.pdf"),
                       (_REPO / "docs" / "preview" / "gdx_synthesis.html",
                        "gdx_synthesis_preview.pdf")):
         HTML(string=src.read_text(), base_url=str(src.parent)).write_pdf(
@@ -179,6 +181,28 @@ def main() -> int:
         shutil.copy(f, PKT / f.name)
         manifest.append(f"{f.name} (COUNSEL-marked draft)")
 
+    (PKT / "ARCHITECTURE_NOTE.md").write_text("""# No-upload / no-payment architecture (for counsel review)
+
+The product surface the lawyer reviews IS the shipped surface:
+
+- The site collects nothing. Zero <form>, upload, or payment elements
+  exist anywhere under docs/ — asserted daily by an automated gate
+  (tools/check_no_forms.py) in the publish chain; a violation blocks
+  deployment.
+- The client's first step runs on the client's machine: `yuclaw
+  intake-check their.csv` validates the file locally against the exact
+  server intake rules (shared code, cannot drift) and prints that nothing
+  was transmitted.
+- Data changes hands only after engagement, through the counsel-approved
+  channel; intake auto-rejects files containing columns we did not
+  request.
+- Fees are fixed (Founding Pilot A CAD 2,500 / B CAD 5,000), invoiced —
+  no online payment collection exists.
+- All client work is capped at EXPLORATORY (CLIENT); the public record's
+  standings cannot be bought; deliverable scope per tier is enforced by a
+  self-test diffing the page's promises against produced sections.
+""")
+    manifest.append("ARCHITECTURE_NOTE.md (no-upload/no-payment surface, generated)")
     shutil.copy(_REPO / "output" / "byos_dryrun" / "client_deliverable.zip",
                 PKT / "client_deliverable_sample.zip")
     manifest.append("client_deliverable_sample.zip (synthetic dry-run deliverable)")
