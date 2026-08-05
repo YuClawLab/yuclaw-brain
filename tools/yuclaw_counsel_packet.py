@@ -125,20 +125,25 @@ def onepager(out: Path):
 <div class="band"><div class="t">YUCLAW Founding Pilot — one page</div>
 <div class="s">generated draft {datetime.now(timezone.utc).strftime('%Y-%m-%d')} · no prior artifact existed; drafted for counsel review</div></div>
 <div class="warn">DRAFT — pending counsel review; never send unreviewed.</div>
-<h2>The offer</h2>
+<h2>The offer — two fixed tiers (v2, matching the public Signal Review page)</h2>
 <p>Bring a signal (or a basket). Receive an honest, registered, reproducible
 answer about what the evidence shows — and what it cannot show at your sample
-size. Fixed fee CAD 5,000, paid before any work on your data begins. One memo,
-one methodology note, one reproduction bundle, 30 days of questions. No
-renewal unless separately agreed.</p>
-<h2>What you get</h2>
+size. Fixed fee, paid before any work on your data begins. No renewal unless
+separately agreed.</p>
+<h2>Founding Pilot A — signal validation core — CAD 2,500</h2>
 <ul>
-<li>Signal validation suite: rank association with later returns (with
+<li>Locked protocol registered before computation (spec + hash to you).</li>
+<li>Signal decomposition suite: rank association with later returns (with
 confidence intervals), quantile ordering, churn, horizon decay, placebo.</li>
-<li>Basket event-study panel with cluster-robust intervals and a
-falsification battery.</li>
-<li>Everything registered before computation in your own tamper-evident
-protocol chain; a bundle that lets you rerun our numbers without us.</li>
+<li>Methodology note, research memo covering the suite results, and a
+reproduction bundle that reruns our numbers without us.</li>
+</ul>
+<h2>Founding Pilot B — full signal review — CAD 5,000</h2>
+<ul>
+<li>Everything in A, plus: basket event-study panel with cluster-robust
+intervals and a falsification battery.</li>
+<li>Coverage and exclusion anatomy (what was measurable and why).</li>
+<li>30 days of written questions + a findings session.</li>
 </ul>
 <h2>What you do not get</h2>
 <ul>

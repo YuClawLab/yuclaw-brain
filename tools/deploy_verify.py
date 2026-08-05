@@ -59,6 +59,7 @@ DEFAULT_PATHS = [
     "YUCLAW_Guide_Utilisateur_v5.1_FR.pdf",
     "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html",
     "methodology/backfill.md",
+    "methodology.html",
     "replay/lab_replay_bundle.json",
     "packets/manifest.json",
     "packets/yuclaw_validation_lab_packet.zip",

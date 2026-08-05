@@ -33,6 +33,7 @@ GUARDED = {"0df6fc002d79": "C6 Risk Gate — first read 2026-07-30",
            "cdd92e7b99bc": "Client admission standard — never computed (standard class)"}
 
 CALENDAR = [
+    ("2026-08-05", "v5.2.0 released — PyPI + GitHub (Signal Review + audit-fix bundle; Apache-2.0)"),
     ("2026-07-30", "C6 Risk Gate first read (protocol 0df6fc002d79) + accrual reading — kit: internal/orders/2026-07-30_c6_first_read.md"),
     ("2026-08-15", "Freeze end — merge v5.1-public-staging (one reviewed merge)"),
     ("2026-09-01", "Reversal coherence guard expiry (protocol ea120b0a6b52) — forward accrual from 2026-07-27"),

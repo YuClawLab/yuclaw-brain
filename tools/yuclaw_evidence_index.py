@@ -37,6 +37,7 @@ PAGES = {
                      "example of the why/{TICKER}.html family, 79 pages, "
                      "one pinned template)",
 
+    "methodology.html": "Methodology — styled render of the canonical methodology/backfill.md (raw .md stays served for machines)",
     "index.html": "landing — current signals (locked vocabulary)",
     "validation_lab.html": "Validation Lab — cohorts, rigor, clustered inference, baselines",
     "validation.html": "Forward Tracking — ledger, label calibration",

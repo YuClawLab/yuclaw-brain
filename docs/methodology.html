@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YUCLAW Methodology — backfill, policies, thresholds</title>
+<meta name="description" content="The canonical methodology: backfill construction, price and corporate-action policies, the locked score-to-label thresholds, estimator ladder, limitations. Research only — not investment advice.">
+<style>
+ *{margin:0;padding:0;box-sizing:border-box}
+ body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#CBD5E1;line-height:1.7}
+ .container{max-width:900px;margin:0 auto;padding:24px}
+ .md h1{font-size:24px;color:#FFF;margin:26px 0 12px}
+ .md h2{font-size:18px;color:#FFF;margin:24px 0 10px;border-bottom:1px solid #1E232D;padding-bottom:6px}
+ .md h3{font-size:15px;color:#E2E8F0;margin:18px 0 8px}
+ .md p{margin:10px 0;font-size:14px}
+ .md ul,.md ol{margin:10px 0 10px 22px;font-size:14px}
+ .md li{margin:5px 0}
+ .md table{border-collapse:collapse;margin:12px 0;width:100%}
+ .md th,.md td{border:1px solid #1E232D;padding:8px 12px;font-size:13px;text-align:left}
+ .md th{background:#151A23;color:#718096;font-size:11px;text-transform:uppercase}
+ .md code{background:#151A23;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#00E676}
+ .md pre{background:#10141C;border:1px solid #1E232D;border-radius:8px;padding:12px;overflow-x:auto;margin:12px 0}
+ .md pre code{background:none;padding:0}
+ .md a{color:#00E676}
+ .md blockquote{border-left:3px solid #1E232D;padding-left:14px;color:#718096}
+ .amber{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;font-size:12px;color:#A0AEC0;margin:14px 0}
+ .amber strong{color:#FBA94B}
+ .muted{color:#718096;font-size:12px}
+</style>
+</head>
+<body><div class="container">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
+                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                    align-items:center;gap:12px">
+          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+            style="color:#00E676">CLAW</span></span>
+          <span style="display:inline-block;background:#00E67620;color:#00E676;
+                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                       font-size:10px;font-weight:700;letter-spacing:0.5px;
+                       font-family:JetBrains Mono,monospace">v5.2.0</span>
+        </a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Methodology</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+        <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Signal Review</a><a href="explorer.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Explorer</a><a href="sectors.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Sectors</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;white-space:nowrap">built 2026-08-05 04:22 UTC</span>
+      </div>
+    </div>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Signal labels are research classifications, not buy/sell recommendations.
+This page is generated from the canonical source
+<a href="methodology/backfill.md" style="color:#FBA94B">methodology/backfill.md</a> (served raw for machines);
+the source is what the threshold-match gate reads.</div>
+<div class="md"><h1 id="methodology-in-sample-validation-forward-tracking">Methodology — In-Sample Validation + Forward Tracking</h1>
+<p><strong>Last updated:</strong> 2026-05-20</p>
+<p>This document describes how the two YUCLAW v3.0 panels are produced:</p>
+<ol>
+<li><strong>In-Sample Validation Results — Replay</strong></li>
+<li><strong>Forward Tracking Ledger — Out-of-Sample</strong></li>
+</ol>
+<p>It is the source of truth for anyone reproducing, auditing, or critiquing the numbers shown on <code>validation.html</code>, in the CLI (<code>python3 -m v3.cli validation</code>), or in any future Telegram / social-media post.</p>
+<hr />
+<h2 id="1-data-window">1. Data window</h2>
+<ul>
+<li><strong>Backfill window:</strong> 2026-02-18 → 2026-05-17 (~90 days). All snapshots in the in-sample panel have <code>signal_date</code> inside this window.</li>
+<li><strong>Forward Tracking Day 0:</strong> 2026-05-20.</li>
+<li><strong>Important:</strong> the backfill window is <strong>not 2023–2026</strong>. It is a single quarter. Older claims are wrong.</li>
+</ul>
+<p>Why this window: the SEC EDGAR backfill that populates the <code>events</code> evidence layer ran for 90 days ending 2026-05-17 (the Sunday before the v3.0 public surface launched). Anything earlier is currently unevidenced.</p>
+<hr />
+<h2 id="2-llm-look-ahead-bias">2. LLM look-ahead bias</h2>
+<ul>
+<li><strong>Model:</strong> Llama 3.1 70B (served locally via Ollama as <code>yuclaw-llm-70b</code>).</li>
+<li><strong>Training cutoff (per Meta model card):</strong> December 2023.</li>
+<li><strong>Backfill window vs cutoff:</strong> the earliest backfill date (2026-02-18) is ~26 months <em>after</em> the training cutoff.</li>
+</ul>
+<p>Therefore the LLM cannot have parametric look-ahead into any event in the backfill — none of the 2026 filings existed when it was trained. This rules out the most common look-ahead failure mode in LLM-driven validation runs.</p>
+<p>The Replay engine adds a secondary safeguard: any <code>as_of</code> earlier than 2024-07-01 is flagged with an "in LLM training window" warning. The current backfill window does not trigger this flag.</p>
+<hr />
+<h2 id="3-in-sample-reconstruction-limitation">3. In-sample reconstruction limitation</h2>
+<p>In-sample signals were <strong>reconstructed via the replay engine</strong>, not emitted live. For each (ticker, Wednesday) pair, we called <code>v3.replay.engine.replay(ticker, as_of)</code> which:</p>
+<ol>
+<li>Filters the <code>events</code> and <code>signal_snapshots</code> tables to <code>available_as_of &lt;= as_of</code>.</li>
+<li>Runs all nine signal components against that filtered view.</li>
+<li>Writes a <code>signal_snapshots</code> row with <code>is_backfill=true</code>.</li>
+</ol>
+<p><strong>Point-in-time filtering was audited</strong> during Day 5 development:</p>
+<pre><code>replay(&quot;AMD&quot;, 2026-03-15) fed 12 events to C6;
+zero had available_as_of &gt; 2026-03-15.
+</code></pre>
+<p>Equivalent audits for arbitrary (ticker, as_of) pairs are reproducible with <code>v3/replay/engine.py</code>.</p>
+<p>That said, <strong>reconstruction is still weaker than live emission</strong>. A signal that was reconstructed has never been seen by an external party and cannot be challenged in real time. The Forward Tracking Ledger is the answer to that limitation.</p>
+<hr />
+<h2 id="4-market-component-approximation">4. Market-component approximation</h2>
+<p>The nine components split into two categories for point-in-time accuracy:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Components</th>
+<th>Point-in-time?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evidence layer</td>
+<td>C6 (event impact), C8 (cascade impact), C9 (model trust)</td>
+<td><strong>Exact</strong> — backed by <code>events</code>, <code>signal_snapshots</code>, <code>track_record</code> with <code>available_as_of</code> filters.</td>
+</tr>
+<tr>
+<td>Market layer</td>
+<td>C1 (momentum), C3 (sector velocity), C4 (macro regime), C5 (oil / rates / FX), C7 (peer correlation)</td>
+<td><strong>Approximate</strong> — read v2.3.0 dashboard cache which holds only the latest snapshot. On historical <code>as_of</code> they self-degrade to confidence 0.3 with a "point-in-time approximation" warning.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Footnote — C2:</strong> C2 (volume confirm) currently contributes no signal — confidence-gated to zero since v3.0 pending volume-feed wiring; live composite weights effectively renormalize across the remaining eight components. Repair-vs-deprecation decision scheduled for v5.2.</p>
+</blockquote>
+<p>The in-sample event validation therefore <strong>primarily reflects the evidence layer</strong>. The market components contribute at ~⅓ of their live confidence, so their net effect on composite_score is small.</p>
+<p>This is by design for v3.0: the v3.0 evidence layer is what's new. v3.1's work is to ingest historical price / macro into a time-series table so the market layer can also run point-in-time.</p>
+<hr />
+<h2 id="5-forward-tracking-ledger">5. Forward Tracking Ledger</h2>
+<ul>
+<li><strong>Day 0:</strong> the launch-day cron run is the first real entry. The pre-launch ledger at <code>https://github.com/YuClawLab/yuclaw-trust/blob/main/verified_research_ledger.jsonl</code> was reset to empty in Day-13c (commit <a href="https://github.com/YuClawLab/yuclaw-trust/commit/470fb4f"><code>470fb4f</code></a>) because the pre-remediation entries were generated against the old label vocabulary and pre-C9-fix scoring. Git history retains the pre-launch test entry at <code>HEAD~1</code> for audit.</li>
+<li><strong>Cadence:</strong> the daily pipeline cron (<code>0 17 * * 1-5</code>) chains: healthcheck → snapshot_writer → outcome_updater → radar → <code>proof.ledger</code> (module path). Each step short-circuits on failure via <code>&amp;&amp;</code>.</li>
+<li><strong>Maturation:</strong></li>
+<li>1-day outcomes mature next trading day.</li>
+<li>5-day outcomes mature ~one trading week later.</li>
+<li>20-day outcomes mature ~one trading month later.</li>
+<li><strong>At launch:</strong> the Forward panel will show all-zero hit rates with <code>matured = 0</code>. This is correct, not a bug.</li>
+<li><strong>Reporting rule:</strong> every hit rate is published with its <code>n</code> (count of eligible matured rows) directly attached — never headline a percentage alone. Panels with <code>n_eligible_5d &lt; 20</code> are tagged "preliminary".</li>
+</ul>
+<p>The ledger accumulates indefinitely. There is no end date.</p>
+<hr />
+<h2 id="6-definitions">6. Definitions</h2>
+<ul>
+<li><strong>Trading day:</strong> any date present in the <code>price_history</code> table for SPY (which mirrors the NYSE trading calendar).</li>
+<li><strong>Raw return at horizon N:</strong> <code>(close[T+N] − close[T]) / close[T]</code>, where <code>T+N</code> is the <em>N</em>th trading day strictly after the signal date.</li>
+<li><strong>SPY return at horizon N:</strong> the same calculation applied to SPY.</li>
+<li><strong>Excess return:</strong> ticker return minus SPY return.</li>
+<li><strong>Hit at horizon N:</strong></li>
+<li><strong>STRONG_BULLISH / BULLISH:</strong> hit if return &gt; 0</li>
+<li><strong>WEAKENING / NEGATIVE_EVENT / BEARISH_WATCH:</strong> hit if return &lt; 0</li>
+<li><strong>NEUTRAL / WATCH:</strong> non-directional → <code>hit_Nd</code> is <code>NULL</code>, excluded from hit-rate denominators</li>
+<li><strong>Hit rate:</strong> <code>hits / eligible</code>, where <code>eligible</code> is the count of matured AND directional signals only. <strong>Coverage and skill are never conflated.</strong></li>
+<li><strong>Median return:</strong> computed over matured rows only.</li>
+</ul>
+<hr />
+<h2 id="7-reproducibility">7. Reproducibility</h2>
+<p>The whole flow is:</p>
+<pre><code class="language-bash"># 1. price history (yfinance, internal use only — never published raw)
+python3 -m v3.track.price_history --start 2026-02-01 --end 2026-06-30
+
+# 2. in-sample replay backfill (Wednesdays in window × universe)
+python3 -m v3.replay.backfill_snapshots
+
+# 3. live OOS Day 0 snapshots
+python3 -m v3.signal.snapshot_writer
+
+# 4. compute outcomes against price_history (idempotent)
+python3 -m v3.track.outcome_updater
+
+# 5. aggregate + display
+python3 -m v3.cli validation
+python3 -m v3.track.render_html      # → docs/validation.html
+</code></pre>
+<p>All inputs are committed to the repo except <code>price_history</code> (Yahoo OHLCV redistribution is restricted). The <code>outcome_updater</code> cron (added Day 7) keeps the Forward panel current.</p>
+<hr />
+<h2 id="8-scoring-range-at-launch">8. Scoring range at launch</h2>
+<p>The composite signal is a confidence-weighted sum across nine components. Five of them (C1 momentum, C3 sector velocity, C4 macro regime, C5 oil/rates/FX, C7 peer correlation) currently operate as <strong>STALE-PROXY</strong> with confidence pinned at 0.3, pending the v3.1 ingestion of historical market data — disclosed in §4 above.</p>
+<p>Under the current weights, the C6 insider-aggregate cap (±0.5), and the STALE-PROXY confidence clamp, the theoretical achievable range of the composite is approximately ±0.92 in historical-replay mode and ±0.95–±1.00 in live (OOS) mode. <strong>All eight signal-label thresholds — including STRONG_BULLISH (≥ +0.55) and BEARISH_WATCH (&lt; −0.40) — are reachable</strong> under each scenario; none is structurally dead.</p>
+<p>The launch-day dataset, however, exercises a narrow portion of that range. With the regenerated 79-snapshot OOS Day-0 dataset:</p>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>OOS Day 0 (n=79)</th>
+<th>In-Sample Replay (n=1027)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>empirical max</td>
+<td>+0.536</td>
+<td>+0.447</td>
+</tr>
+<tr>
+<td>99th percentile (high)</td>
+<td>+0.531</td>
+<td>+0.421</td>
+</tr>
+<tr>
+<td>99th percentile (low)</td>
+<td>−0.075</td>
+<td>−0.217</td>
+</tr>
+<tr>
+<td>empirical min</td>
+<td>−0.088</td>
+<td>−0.419</td>
+</tr>
+</tbody>
+</table>
+<p>The OOS p99 sits just below the STRONG_BULLISH threshold (+0.531 vs the +0.55 floor); the in-sample maximum (+0.447) is in the BULLISH band, never crossing into STRONG_BULLISH.</p>
+<p>Two structural reasons explain the gap between the theoretical maximum and the launch-day empirics:</p>
+<ol>
+<li><strong>Evidence base is sparse.</strong> As of launch the <code>events</code> table holds 17 LLM-extracted material non-insider events (Form-4 insider transactions are bounded by the C6 insider cap, so they cannot lift the composite past roughly +0.4 alone). High-conviction labels require at least one material non-insider event to align with momentum and macro.</li>
+<li><strong>C9 (model trust) is at cold start.</strong> With no matured <code>track_record</code> entries for most tickers, C9 contributes <code>score = 0</code> at <code>confidence = 0.5</code> — adding to the composite denominator without raising the numerator. This compresses |composite| for every snapshot by a small constant factor relative to a matured C9.</li>
+</ol>
+<p><strong>Consequence at launch:</strong> extreme labels (STRONG_BULLISH, BEARISH_WATCH) are intended to be rare. They require <em>broad component agreement</em> plus at least one <em>material non-insider event</em>. This is high-conviction gating by construction, not a defect in the scoring math.</p>
+<p>This is an <strong>observed property of the launch-day dataset</strong>. We do not claim the distribution will shift in any particular direction as more evidence accumulates — that is unverified and not asserted here.</p>
+<h2 id="9-data-sources-attribution">9. Data sources + attribution</h2>
+<ul>
+<li><strong>SEC EDGAR (public domain).</strong> Form 4, 8-K, 10-Q, 10-K, and 6-K filings are ingested from the SEC EDGAR API (<code>data.sec.gov/submissions/</code>, <code>www.sec.gov/Archives/edgar/data/</code>). YUCLAW honors the SEC's 10 req/sec rate limit (we self-throttle to ~6 req/sec) and identifies itself in every request via the <code>User-Agent</code> header per <a href="https://www.sec.gov/os/accessing-edgar-data">SEC's programmatic-access guidance</a>. Filing data is public domain; YUCLAW redistributes only short excerpts (≤ 600 chars) needed to substantiate the evidence trail, with full source URLs to the SEC archive.</li>
+<li><strong>Yahoo Finance (internal only).</strong> Daily close + volume for outcome computation come from the <code>yfinance</code> Python library. This data is <strong>not redistributed</strong> through any v3.0 endpoint, SDK method, or MCP tool — raw OHLCV stays in the internal <code>price_history</code> table. Only derived metrics (returns, hit rates, excess returns vs SPY) are published.</li>
+<li><strong>YUCLAW-generated data (open).</strong> Composite signals, component scores, LLM-extracted SEC event excerpts, supply-chain edges, cascade children, content hashes, daily roots, and validation aggregations are YUCLAW's own derivative work — MIT-licensed, freely redistributable.</li>
+</ul>
+<h2 id="10-disclaimer">10. Disclaimer</h2>
+<p>Research / education only. Not investment advice. Past results — in-sample or forward-tracked — do not predict future performance. YUCLAW is not a registered investment adviser.</p>
+<hr />
+<h2 id="v51-clustered-inference-estimator-parameters-d-no1-locked-2026-07-27">v5.1 — Clustered-inference estimator parameters (D No.1, locked 2026-07-27)</h2>
+<p>Two deferred estimator-parameter decisions were resolved and locked with
+protocol <code>36d019b175c8</code> ("Lab clustered decile inference v1", registered
+before computation; method hash <code>4cfe94a4f4ec7a7f</code>). Versioned here; any
+future change requires a superseding protocol, never an edit.</p>
+<p><strong>1 · The G &lt; 8 UNDERPOWERED threshold is retained.</strong> Every clustered
+interval computed with fewer than 8 clusters carries the UNDERPOWERED badge
+regardless of width. Rationale: the wild-cluster (Rademacher) small-G remedy
+is computed and shown beside every cluster CI; 8 matches the smallest live
+lens; and changing thresholds after results exist is forbidden by our own
+discipline.</p>
+<p><strong>2 · Percentile bootstrap CIs are retained for v1.</strong> Bootstrap-t
+(studentized) intervals are deferred: they require studentization machinery
+not yet exercised in this codebase. Revisit at v5.3 under its own registered
+spec — not before.</p>
+<p>The Lab's public clustered panel reports the ticker-clustered CI as primary
+with wild-cluster and naive date-resample CIs beside it, labeled; the
+clustered estimator uses per-signal-date k-day forward-return spreads
+(clustering requires ticker identity) and is stated beside the per-rebalance
+spread tests, never blended.</p>
+<h2 id="v52-c2-volume-component-formal-deprecation-and-shadow-challenger-2026-07-31">v5.2 — C2 volume component: formal deprecation and shadow challenger (2026-07-31)</h2>
+<p>The composite's C2 (volume confirmation) component has been self-masked at
+confidence 0.0 since v2.3.0 — it has never contributed to any published
+score. This section makes that formal: <strong>the effective composite is the
+renormalized eight remaining components</strong>, and every historical score
+already reflects exactly that. Nothing changed in the numbers; the
+disclosure now matches the code.</p>
+<p>The intended volume scorer now runs as a <strong>shadow challenger</strong>: it writes to
+a parallel table only and is structurally isolated from the live composite
+(the isolation is self-tested in code — the live path contains no reference
+to the challenger, and the challenger imports nothing from the live path).
+Its evaluation was registered before accrual began (protocol
+"C2 challenger evaluation v1"): the single primary endpoint is the shadow
+scorer's rank association with 5-day forward returns on the forward window
+from 2026-07-31. Any future question of promoting it into the composite
+will cite that endpoint and nothing else, under a separate registered
+decision.</p>
+<hr />
+<h2 id="v52-the-estimator-ladder-what-each-benchmark-controls-for">v5.2 — The estimator ladder (what each benchmark controls for)</h2>
+<p>Every CAR panel on the site links here. The ladder, weakest control to
+strongest, with what each rung does and does not remove:</p>
+<ol>
+<li><strong>SPY-relative (market model).</strong> Removes broad-market movement. Does not
+   remove sector or style composition — in a strong sector regime its
+   "abnormal" return is dominated by the sector factor, which is exactly
+   what it shows. Always reported beside the peer model, never averaged.</li>
+<li><strong>Peer-basket model.</strong> Each name against the equal-weight rest of its
+   covered sleeve. Removes the sleeve-common factor (the sector melt-up /
+   melt-down). Does not remove issuer-level factor tilts within the sleeve.</li>
+<li><strong>Factor context (owned factors only).</strong> Where the site conditions or
+   neutralizes, it uses only factors computable from its own store: market
+   beta (trailing 60d vs SPY), prior-60d momentum, trailing-20d volatility,
+   and same-day matched controls on those factors. It does not own a
+   commercial factor model, sector classifications for individual equities,
+   or commodity/FX factor data — so it does not claim factor-neutrality
+   beyond the factors listed, and the "sector-neutral" cell is reported as
+   not computable rather than proxied.</li>
+</ol>
+<p>Rungs are reported side by side wherever they apply; a result that only
+holds on one rung says so.</p>
+<hr />
+<h2 id="v52-frozen-universe-corporate-action-and-window-policies-pre-committed-2026-08-01-before-first-occurrence">v5.2 — Frozen-universe corporate-action and window policies (pre-committed 2026-08-01, before first occurrence)</h2>
+<p><strong>Delisting / merger policy.</strong> The 79-ticker scoring universe is frozen. If
+a member is delisted or absorbed in a merger: no replacement is added
+mid-freeze; the name's recorded snapshots and matured outcomes stand
+unchanged; forward-return windows that CROSS the corporate-action date are
+excluded from every statistic (never padded, shortened, or filled with the
+acquirer), and the exclusion count is disclosed on the affected panels.
+This policy is stated before any such event has occurred in the record.</p>
+<p><strong>Open-window closure rule.</strong> A forward window that cannot complete —
+because of the data edge, a halt, or a corporate action — is excluded from
+every horizon it cannot complete. Partially matured outcomes never enter a
+longer-horizon statistic; the ledger records the outcome when, and only
+when, the window closes.</p>
+<p><strong>Price-adjustment policy.</strong> The price store keeps closes exactly as
+provided by the source with automatic adjustment DISABLED: prices are not
+split-adjusted retroactively and dividends are not reinvested in any return
+calculation. The same convention applies everywhere, so internal
+comparisons are consistent. Consequence, stated plainly: a stock split
+inside a return window would appear as a price discontinuity; under the
+corporate-action policy above, windows crossing such an event are excluded
+rather than adjusted. Recorded snapshots are never retroactively re-priced.</p>
+<p><strong>Trading-day convention.</strong> Day 0 is the first trading day on or after an
+event timestamp's date; all windows, horizons (k), lags, and linkage rules
+count TRADING days from the store's trading calendar (the distinct trade dates actually present in the price store — exchange holidays are simply absent from that calendar, so no separate holiday table exists or is needed), never calendar days,
+unless a panel explicitly says "calendar days" (the cascade lag is the one
+such case).</p>
+<h2 id="thresholds">v5.2 — Score-to-label thresholds (the locked mapping)</h2>
+<p>The composite score maps to the public vocabulary by fixed thresholds
+(v3/signal/base.py, unchanged since registration of the label set):</p>
+<table>
+<thead>
+<tr>
+<th>composite score</th>
+<th>label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;= 0.55</td>
+<td>STRONG_BULLISH</td>
+</tr>
+<tr>
+<td>&gt;= 0.40</td>
+<td>BULLISH</td>
+</tr>
+<tr>
+<td>&gt;= 0.20</td>
+<td>NEUTRAL</td>
+</tr>
+<tr>
+<td>&gt;= 0.00</td>
+<td>WATCH</td>
+</tr>
+<tr>
+<td>&gt;= -0.20</td>
+<td>WEAKENING</td>
+</tr>
+<tr>
+<td>&gt;= -0.40</td>
+<td>NEGATIVE_EVENT</td>
+</tr>
+<tr>
+<td>&lt; -0.40</td>
+<td>BEARISH_WATCH</td>
+</tr>
+</tbody>
+</table>
+<p>RISK_ALERT is not score-mapped: it is a risk-state overlay and never a
+directional claim. The calibration panel measures what these labels have
+actually preceded; the thresholds themselves carry no outcome promise.</p>
+<hr />
+<h2 id="u79-u350-relationship-statement-2026-08-02">U79 / U350 relationship statement (2026-08-02)</h2>
+<p>Two universes, two records, never blended:</p>
+<ul>
+<li><strong>U79</strong> — the 79-name scoring universe and its forward record — is
+  canonical and continues untouched forever. Nothing in the expanded-
+  universe program writes into it (enforced by database-level refusals,
+  self-tested on every build), and no U79 statistic is ever recomputed
+  over a different membership.</li>
+<li><strong>U350</strong> — the expanded research universe — accrues its own record in
+  its own namespace, beginning as SHADOW data: shadow scores and shadow
+  snapshots are system-verification output, never a forward record, and
+  support no public claims while shadow status holds.</li>
+<li><strong>Comparison rules</strong>: any future side-by-side of the two records states
+  both memberships, both windows, and both records' maturity; a statistic
+  computed on one universe is never presented as continuous with the
+  other; admission of any name to U350 happens only through the registered
+  Universe Admission Protocol's six gates.</li>
+</ul></div>
+<div class="amber"><strong>Research and education only — not investment advice.</strong>
+Past results — in-sample or forward-tracked — do not predict future performance.</div>
+<p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> · built 2026-08-05 04:22 UTC ·
+canonical source: <a href="methodology/backfill.md" style="color:#A0AEC0">methodology/backfill.md</a></p>
+</div></body></html>

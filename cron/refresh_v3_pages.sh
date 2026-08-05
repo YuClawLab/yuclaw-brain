@@ -62,6 +62,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_why_pages || exit 33
 /usr/bin/python3 -m v3.web.render_sectors || exit 34
 /usr/bin/python3 -m v3.web.render_tour || exit 35
+/usr/bin/python3 -m v3.web.render_methodology || exit 37
 
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
@@ -126,7 +127,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
                  docs/signal_review.html docs/schemas \
                  docs/explorer.html docs/explorer_data.json docs/why \
-                 docs/sectors.html docs/tour.html
+                 docs/sectors.html docs/tour.html docs/methodology.html
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"

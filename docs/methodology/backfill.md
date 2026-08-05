@@ -72,7 +72,7 @@ This is by design for v3.0: the v3.0 evidence layer is what's new. v3.1's work i
 ## 5. Forward Tracking Ledger
 
 - **Day 0:** the launch-day cron run is the first real entry. The pre-launch ledger at `https://github.com/YuClawLab/yuclaw-trust/blob/main/verified_research_ledger.jsonl` was reset to empty in Day-13c (commit [`470fb4f`](https://github.com/YuClawLab/yuclaw-trust/commit/470fb4f)) because the pre-remediation entries were generated against the old label vocabulary and pre-C9-fix scoring. Git history retains the pre-launch test entry at `HEAD~1` for audit.
-- **Cadence:** the daily pipeline cron (`0 17 * * 1-5`) chains: healthcheck → snapshot_writer → outcome_updater → radar → proof.ledger. Each step short-circuits on failure via `&&`.
+- **Cadence:** the daily pipeline cron (`0 17 * * 1-5`) chains: healthcheck → snapshot_writer → outcome_updater → radar → `proof.ledger` (module path). Each step short-circuits on failure via `&&`.
 - **Maturation:**
   - 1-day outcomes mature next trading day.
   - 5-day outcomes mature ~one trading week later.

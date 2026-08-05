@@ -100,6 +100,14 @@ def selftest_page_promises() -> list[str]:
             elif matched not in produced:
                 problems.append(f"tier {tier}: page promises '{item[:50]}' "
                                 f"but profile does not produce '{matched}'")
+    # one-pager consistency (v2, 2026-08-05): the counsel one-pager must
+    # name both tiers with the page's exact CAD figures.
+    src = (_REPO / "tools" / "yuclaw_counsel_packet.py").read_text()
+    for needle in ("Founding Pilot A", "CAD 2,500",
+                   "Founding Pilot B", "CAD 5,000"):
+        if needle not in src:
+            problems.append(f"one-pager: missing '{needle}' — page and "
+                            f"one-pager tier terms must match")
     return problems
 
 METHODOLOGY = """# Methodology Note — Reading Your Results

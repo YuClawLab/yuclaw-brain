@@ -88,6 +88,9 @@ FR_CLAIM_RE = re.compile(
 
 _QUOTE_LINE_RE = re.compile(r"^\s*>.*$", re.M)          # markdown blockquotes
 _CODE_SPAN_RE = re.compile(r"`[^`]*`")                   # inline code
+# HTML form of the same exemption: <code>/<pre> spans are not authored
+# prose (module paths, commands) — same class as markdown code spans.
+_HTML_CODE_RE = re.compile(r"<(code|pre)\b[^>]*>.*?</\1>", re.S | re.I)
 _TABLE_ROW_RE = re.compile(r"^\s*\|.*\|\s*$", re.M)      # markdown table rows
 
 
@@ -110,6 +113,7 @@ def strip_non_authored(text: str) -> str:
     text = _QUOTE_LINE_RE.sub("", text)
     text = _TABLE_ROW_RE.sub("", text)
     text = _CODE_SPAN_RE.sub("", text)
+    text = _HTML_CODE_RE.sub("", text)
     text = _LOCKED_TOKENS_RE.sub("", text)
     return text
 
