@@ -1,27 +1,27 @@
 {
  "ticker": "COST",
- "generated": "2026-08-05T07:21:31.732731+00:00",
+ "generated": "2026-08-05T23:00:13.493705+00:00",
  "label": "WATCH",
- "score": 0.092,
+ "score": 0.1386,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.02,
+  "c1": -0.0435,
   "c2": 0.0,
-  "c3": -0.30130392,
+  "c3": 0.050242804,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.024115589,
-  "c7": 0.039712824,
+  "c6": 0.02184282,
+  "c7": -0.011331392,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 66,
   "events_90d": 3,
-  "recency_days": 19.9,
+  "recency_days": 20.7,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -98,6 +98,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-05",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-04",
    "label": "WATCH"
@@ -213,10 +217,6 @@
   {
    "date": "2026-06-25",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-06-24",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",

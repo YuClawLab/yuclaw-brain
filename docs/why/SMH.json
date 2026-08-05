@@ -1,16 +1,16 @@
 {
  "ticker": "SMH",
- "generated": "2026-08-05T07:21:31.732731+00:00",
- "label": "NEUTRAL",
- "score": 0.3356,
+ "generated": "2026-08-05T23:00:13.493705+00:00",
+ "label": "WEAKENING",
+ "score": -0.0382,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.14,
+  "c1": -0.2865,
   "c2": 0.0,
-  "c3": 0.90735465,
+  "c3": -0.58892465,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-05",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
@@ -142,10 +146,6 @@
   {
    "date": "2026-06-25",
    "label": "STRONG_BULLISH"
-  },
-  {
-   "date": "2026-06-24",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SMH --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "DELL",
- "generated": "2026-08-05T07:21:31.732731+00:00",
- "label": "NEUTRAL",
- "score": 0.2452,
+ "generated": "2026-08-05T23:00:13.493705+00:00",
+ "label": "WATCH",
+ "score": 0.0378,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.925,
+  "c1": 0.618,
   "c2": 0.0,
-  "c3": 0.8623375,
+  "c3": -0.29261997,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.027726933,
+  "c7": -0.05260937,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 92,
   "events_90d": 882,
-  "recency_days": 11.3,
+  "recency_days": 12.1,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-05",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-04",
    "label": "NEUTRAL"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-06-25",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-06-24",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DELL --date D",

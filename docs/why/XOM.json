@@ -1,27 +1,27 @@
 {
  "ticker": "XOM",
- "generated": "2026-08-05T07:21:31.732731+00:00",
- "label": "NEUTRAL",
- "score": 0.2362,
+ "generated": "2026-08-05T23:00:13.493705+00:00",
+ "label": "WATCH",
+ "score": 0.1407,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.6155,
+  "c1": 0.5565,
   "c2": 0.0,
-  "c3": -0.605584,
+  "c3": -0.8899831,
   "c4": 0.6,
-  "c5": -0.39529788,
-  "c6": 0.55857354,
-  "c7": 0.71976954,
+  "c5": -0.6701737,
+  "c6": 0.5163075,
+  "c7": 0.63841873,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
   "ecs": 61,
   "events_90d": 2,
-  "recency_days": 1.5,
+  "recency_days": 2.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -68,6 +68,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-05",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
@@ -183,10 +187,6 @@
   {
    "date": "2026-06-25",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-06-24",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XOM --date D",

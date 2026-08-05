@@ -1,39 +1,49 @@
 {
  "ticker": "PSX",
- "generated": "2026-08-05T07:21:31.732731+00:00",
- "label": "WATCH",
- "score": 0.1681,
+ "generated": "2026-08-05T23:00:13.493705+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2771,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.835,
+  "c1": 0.711,
   "c2": 0.0,
-  "c3": -0.605584,
+  "c3": -0.8899831,
   "c4": 0.6,
-  "c5": -0.39529788,
-  "c6": -0.30520165,
-  "c7": 0.68261796,
+  "c5": -0.6701737,
+  "c6": 0.6613853,
+  "c7": 0.6069006,
   "c8": 0.0,
   "c9": -0.3
  },
  "evidence_coverage": {
-  "ecs": 62,
-  "events_90d": 5,
-  "recency_days": 14.2,
-  "type_diversity": 1,
+  "ecs": 84,
+  "events_90d": 7,
+  "recency_days": 0.3,
+  "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
   {
    "ticker": "PSX",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-07-21",
-   "accession_number": "0001534701-26-000026",
-   "excerpt": "Sutherland Vanessa Allen S 3523 shares @ $2110482.00 on 2026-07-21 ($7,435,228,086)",
-   "source_hash": "170eff9f5e78b84053e827a873d7b6fac11ffb3faabfcade789b681ae23d43b3",
-   "available_as_of": "2026-07-21T16:30:16.739984-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-05",
+   "accession_number": "0001534701-26-000032",
+   "excerpt": "0001534701 us-gaap:RetainedEarningsMember 2026-04-01 2026-06-30 0001534701 us-gaap:NoncontrollingInterestMember 2026-04-01 2026-06-30",
+   "source_hash": "10473662b65fa4a15c217a8b453343ef46db6ba4fd75dc02907efcd42d4ed60c",
+   "available_as_of": "2026-08-05T10:43:23-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PSX",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-05",
+   "accession_number": "0001534701-26-000030",
+   "excerpt": "On August 5, 2026, Phillips 66 issued a press release announcing the company's financial and operating results for the quarter ended June 30, 2026.",
+   "source_hash": "e3405dfe41d5f3f9b72fb22a259a599541757b815c1e34537cc9bb6ba3e019f8",
+   "available_as_of": "2026-08-05T04:03:40-06:00",
    "protocol_id": null
   },
   {
@@ -43,6 +53,16 @@
    "accession_number": "0001534701-26-000026",
    "excerpt": "Sutherland Vanessa Allen S 563 shares @ $211.01 on 2026-07-20 ($118,798)",
    "source_hash": "25e2345e1ef15db090b9d15b65c941cb029d2d26b53ce29923a2d23158d60a1c",
+   "available_as_of": "2026-07-21T16:30:16.739984-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PSX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-07-21",
+   "accession_number": "0001534701-26-000026",
+   "excerpt": "Sutherland Vanessa Allen S 3523 shares @ $2110482.00 on 2026-07-21 ($7,435,228,086)",
+   "source_hash": "170eff9f5e78b84053e827a873d7b6fac11ffb3faabfcade789b681ae23d43b3",
    "available_as_of": "2026-07-21T16:30:16.739984-06:00",
    "protocol_id": null
   },
@@ -179,6 +199,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-05",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-04",
    "label": "WATCH"
   },
@@ -293,10 +317,6 @@
   {
    "date": "2026-06-25",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-06-24",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
