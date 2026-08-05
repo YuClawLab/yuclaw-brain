@@ -58,8 +58,15 @@ def validate(path: str | Path) -> tuple[list[dict], dict]:
     p = Path(path)
     if not p.exists():
         raise IntakeError([f"file not found: {p}"])
-    with p.open() as f:
-        lines = [ln for ln in f if not ln.lstrip().startswith("#")]
+    try:
+        # utf-8-sig: Excel-exported CSVs open with a BOM — strip it
+        # transparently instead of gluing ﻿ onto the first header
+        with p.open(encoding="utf-8-sig", newline="") as f:
+            lines = [ln for ln in f if not ln.lstrip().startswith("#")]
+    except UnicodeDecodeError:
+        raise IntakeError(
+            ["file is not UTF-8 text (binary, or an unsupported "
+             "encoding?) — export as CSV (UTF-8) and re-run"]) from None
     if not lines:
         raise IntakeError(["file is empty (or only comment lines)"])
     reader = csv.DictReader(lines)

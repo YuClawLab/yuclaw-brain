@@ -83,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
               file=sys.stderr)
         return 2
 
-    result = verify(args.ticker, args.date)
+    result = verify(args.ticker.upper(), args.date)
     if args.json:
         print(json.dumps(result, indent=2, default=str))
     else:

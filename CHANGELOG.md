@@ -2,6 +2,39 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.3.2] — 2026-08-05
+
+### Fixed
+
+- **check-claim no-backend crash** (today's bug-class, closed): a valid
+  structured or --text claim on a machine without a research node now
+  resolves OFFLINE against a bundled published-corpus snapshot
+  (`v3/evidence/corpus_snapshot.json.gz` — the same evidence_objects
+  served at `why/{TICKER}.json`; 79 names, up to the published 100
+  most-recent objects each, ~113 KB in the wheel). The passport carries
+  an explicit `corpus` scope block (mode, snapshot date, per-name cap,
+  live-URL confirm note); on-box passports are byte-identical to 5.3.1.
+  Only when the snapshot itself is unreadable: friendly exit 3 pointing
+  at the public JSON and the capabilities.json as-of recipe — never a
+  traceback.
+- **intake-check BOM**: CSVs are read as utf-8-sig, so Excel-exported
+  files (BOM + CRLF + quoted fields) pass clean; non-UTF-8 bytes get a
+  friendly refusal instead of a UnicodeDecodeError. The Excel-flavored
+  fixture joins tests/fixtures.
+- **Abuse-matrix gap closed**: the matrix now also feeds WELL-FORMED
+  inputs under stranger conditions (run backend-less in the isolation
+  suite) — a correct structured claim and a correct --text claim must
+  produce a passport (offline) or the friendly research-node pointer,
+  and the Excel-flavored CSV must pass intake-check clean. 28 → 32
+  cases (29 hostile incl. new non-UTF-8 file + 3 well-formed).
+
+### Changed
+
+- CLI uppercases ticker arguments everywhere (why / verify / memo /
+  check-claim; replay / events already did) and capabilities.json now
+  states that JSON endpoints are case-sensitive uppercase
+  (`why/NVDA.json`, not `why/nvda.json`).
+
 ## [5.3.1] — 2026-08-05
 
 ### Fixed

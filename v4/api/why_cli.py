@@ -76,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
     a = p.parse_args(argv)
 
     try:
-        resp = build_response(a.ticker, as_of=_parse_as_of(a.as_of),
+        resp = build_response(a.ticker.upper(), as_of=_parse_as_of(a.as_of),
                               include_score=a.include_score, n_evidence=a.n_evidence)
     except RuntimeError as e:
         print(str(e), file=sys.stderr)

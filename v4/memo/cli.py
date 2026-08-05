@@ -48,7 +48,7 @@ def _main(argv: list[str] | None = None) -> int:
         # Evidence memo — on-demand only; the one GPU touchpoint, via gpu-lock.
         from v4.memo.evidence_memo import MemoGenerationError, generate_evidence_memo
         try:
-            print(generate_evidence_memo(a.evidence_ticker, days=a.days))
+            print(generate_evidence_memo(a.evidence_ticker.upper(), days=a.days))
         except MemoGenerationError as e:
             print(f"[memo] generation FAILED (memo not produced): {e}", file=sys.stderr)
             return 1
@@ -58,7 +58,7 @@ def _main(argv: list[str] | None = None) -> int:
         p.error("provide a positional TICKER (legacy signal memo) or --ticker (evidence memo)")
 
     try:
-        m = generate_memo(a.ticker, as_of=_parse_as_of(a.as_of),
+        m = generate_memo(a.ticker.upper(), as_of=_parse_as_of(a.as_of),
                           include_score=a.include_score, n_evidence=a.n_evidence)
     except RuntimeError as e:
         print(str(e), file=sys.stderr)

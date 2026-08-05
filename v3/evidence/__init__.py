@@ -18,10 +18,13 @@ import re
 from datetime import datetime
 from typing import Any, Optional
 
-import psycopg2
-import psycopg2.extras
-
 DSN = "dbname=yuclaw_events"
+
+
+class BackendUnavailable(RuntimeError):
+    """The events database (a YUCLAW research node) cannot be reached —
+    driver missing or connection refused. Callers that can fall back to
+    the published corpus snapshot catch this; nothing else should."""
 
 # .../edgar/data/<cik>/<18-digit accession, undashed>/<doc>
 _ACC_RE = re.compile(r"/edgar/data/\d+/(\d{18})/")
@@ -54,7 +57,15 @@ def evidence_objects(ticker: str, as_of: Optional[str] = None,
     q += " ORDER BY available_as_of DESC LIMIT %s"
     params.append(limit)
     out = []
-    with psycopg2.connect(DSN) as cn:
+    try:
+        import psycopg2
+    except ImportError as exc:
+        raise BackendUnavailable(f"psycopg2 not installed: {exc}") from exc
+    try:
+        cn = psycopg2.connect(DSN)
+    except psycopg2.OperationalError as exc:
+        raise BackendUnavailable(f"events DB unreachable: {exc}") from exc
+    with cn:
         cn.set_session(readonly=True)
         with cn.cursor() as cur:
             cur.execute(q, params)

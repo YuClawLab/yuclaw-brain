@@ -22,6 +22,13 @@ no negation handling, no multi-claim sentences.
 
 Deterministic: same corpus + same claim → byte-identical passport
 (modulo the generated timestamp). Not advice, ever.
+
+Corpus resolution (v5.3.2): a research node (the events DB) when
+reachable — behavior unchanged on-box; otherwise the bundled published
+snapshot (v3/evidence/corpus_snapshot.json.gz — the same
+evidence_objects served at https://yuclaw.ca/why/{TICKER}.json), with
+the passport carrying an explicit "corpus" scope block. Only when
+neither exists: friendly exit 3 pointing at the public JSON.
 """
 from __future__ import annotations
 
@@ -62,6 +69,42 @@ VALID_TYPES = ("BUYBACK_ANNOUNCE", "CAPACITY_CHANGE", "CONTRACT_WIN",
                "M_AND_A_CLOSE", "OTHER_MATERIAL", "PARTNERSHIP",
                "REGULATORY_ACTION")
 _TICKER_RE = re.compile(r"\b([A-Z]{1,5}(?:\.[A-Z])?)\b")
+
+
+class CorpusUnavailable(Exception):
+    """No research node AND no bundled snapshot — the caller prints the
+    friendly public-JSON pointer and exits 3."""
+
+    def __init__(self, ticker: str):
+        self.ticker = ticker
+        super().__init__(ticker)
+
+
+def _corpus(ticker: str) -> tuple[list, dict | None]:
+    """(evidence objects, corpus scope block). Research node first —
+    on-box behavior unchanged (scope block None → field omitted, passport
+    byte-identical to v5.3.1). Off-box: the bundled published snapshot,
+    loudly scoped. Neither → CorpusUnavailable."""
+    from v3.evidence import BackendUnavailable, evidence_objects
+    try:
+        return evidence_objects(ticker, limit=500), None
+    except BackendUnavailable:
+        from v3.evidence.snapshot import load_snapshot
+        snap = load_snapshot()
+        if snap is None:
+            raise CorpusUnavailable(ticker) from None
+        url = f"https://yuclaw.ca/why/{ticker}.json"
+        return snap["names"].get(ticker, []), {
+            "mode": "offline_snapshot",
+            "snapshot_generated": snap.get("generated"),
+            "scope": (f"published corpus snapshot bundled with this "
+                      f"install — the same evidence_objects served at "
+                      f"{url}, up to {snap.get('per_name_cap')} "
+                      f"most-recent objects per name"),
+            "confirm": (f"negative statuses here mean 'not found in the "
+                        f"bundled snapshot' — confirm against {url} or a "
+                        f"research node"),
+        }
 
 
 def _parse_text(text: str, universe: set) -> dict | None:
@@ -122,7 +165,6 @@ def _match(claim: dict, objs: list) -> tuple[str, list, list]:
 
 def passport(claim_raw: str, claim: dict | None,
              universe_ok: bool | None) -> dict:
-    from v3.evidence import evidence_objects
     doc = {"claim_as_given": claim_raw,
            "claim_as_parsed": claim,
            "generated": datetime.now(timezone.utc).isoformat(),
@@ -139,7 +181,9 @@ def passport(claim_raw: str, claim: dict | None,
         doc["note"] = (f"{claim['ticker']} is outside the 79-name scoring "
                        f"universe — the corpus cannot speak to it")
         return doc
-    objs = evidence_objects(claim["ticker"], limit=500)
+    objs, corpus_scope = _corpus(claim["ticker"])
+    if corpus_scope is not None:
+        doc["corpus"] = corpus_scope
     status, matched, misses = _match(claim, objs)
     doc["status"] = status
     doc["misses"] = misses
@@ -197,34 +241,48 @@ def main(argv=None) -> int:
               f"({type(exc).__name__}) — is this a full checkout/install?",
               file=sys.stderr)
         return 3
+    try:
+        doc = _run(a, uni)
+    except CorpusUnavailable as exc:
+        print(f"corpus matching needs a YUCLAW research node — but this "
+              f"evidence is publicly checkable at "
+              f"https://yuclaw.ca/why/{exc.ticker}.json (see "
+              f"'evidence_objects'; the as-of recipe is in "
+              f"capabilities.json)", file=sys.stderr)
+        return 3
+    if doc is None:
+        return 2
+    print(json.dumps(doc, indent=1))
+    return 0
+
+
+def _run(a, uni: set) -> dict | None:
+    """Build the passport for parsed args; None → usage error (exit 2)."""
     if a.text:
         claim = _parse_text(a.text, uni)
         ok = claim is not None and claim["ticker"] in uni
-        doc = passport(a.text, claim, ok if claim else None)
-    elif a.ticker:
-        dr = None
-        if a.date_range:
-            try:
-                lo, hi = (x.strip() for x in a.date_range.split(".."))
-                from datetime import date as _date
-                _date.fromisoformat(lo), _date.fromisoformat(hi)
-            except ValueError:
-                print("--date-range must be A..B with ISO dates "
-                      "(e.g. 2026-07-01..2026-07-31)", file=sys.stderr)
-                return 2
-            if lo > hi:
-                print(f"start date is after end date — did you mean "
-                      f"{hi}..{lo}?", file=sys.stderr)
-                return 2
-            dr = (lo, hi)
-        claim = {"ticker": a.ticker.upper(),
-                 "type": a.type.upper() if a.type else None,
-                 "accession": a.accession, "date_range": dr}
-        doc = passport(json.dumps(
-            {k: v for k, v in claim.items() if v}), claim,
-            claim["ticker"] in uni)
-    print(json.dumps(doc, indent=1))
-    return 0
+        return passport(a.text, claim, ok if claim else None)
+    dr = None
+    if a.date_range:
+        try:
+            lo, hi = (x.strip() for x in a.date_range.split(".."))
+            from datetime import date as _date
+            _date.fromisoformat(lo), _date.fromisoformat(hi)
+        except ValueError:
+            print("--date-range must be A..B with ISO dates "
+                  "(e.g. 2026-07-01..2026-07-31)", file=sys.stderr)
+            return None
+        if lo > hi:
+            print(f"start date is after end date — did you mean "
+                  f"{hi}..{lo}?", file=sys.stderr)
+            return None
+        dr = (lo, hi)
+    claim = {"ticker": a.ticker.upper(),
+             "type": a.type.upper() if a.type else None,
+             "accession": a.accession, "date_range": dr}
+    return passport(json.dumps(
+        {k: v for k, v in claim.items() if v}), claim,
+        claim["ticker"] in uni)
 
 
 if __name__ == "__main__":

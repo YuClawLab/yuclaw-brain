@@ -109,6 +109,10 @@ def build_endpoints() -> None:
             "ledger_day": f"{base}/ledger/{{YYYY-MM-DD}}.json",
             "evidencebench": f"{base}/evidencebench/items.jsonl",
         },
+        "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is "
+                         "uppercase (why/NVDA.json — why/nvda.json is a "
+                         "404); the CLI uppercases ticker arguments for "
+                         "you",
         "formats": {
             "evidencebench": "JSONL — one item per line: {item_id, "
                              "template (T1|T2|T3), question, key}; "
