@@ -24,6 +24,12 @@ TS=$(date -u +"%Y-%m-%d %H:%M UTC")
 # v3 development tree; main holds the launch-published code.
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 
+# Traffic archiver FIRST and non-fatal (2026-08-06): GitHub only retains a
+# rolling 14-day traffic window, so this must run before any gate below can
+# abort the chain — and a GitHub hiccup must never block the page pipeline.
+# Weekend days are covered by the window on Monday's run; the merge dedupes.
+/bin/bash tools/traffic_archive.sh || echo "[refresh_v3_pages] traffic archive failed (non-fatal)"
+
 # Generate fresh pages — output paths default to $REPO_DIR/docs/.
 /usr/bin/python3 -m v3.web.render_landing || exit 2
 /usr/bin/python3 -m v3.track.render_html || exit 3
