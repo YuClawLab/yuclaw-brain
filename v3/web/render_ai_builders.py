@@ -26,10 +26,13 @@ STATUS_EXPLAIN = [
     ("SOURCE_MATCHED", "every structured element of the claim matched at "
      "least one EvidenceObject — the excerpts and hashes are in the "
      "passport"),
-    ("PARTIAL_MATCH", "some elements matched; the misses are listed "
-     "explicitly"),
-    ("UNSUPPORTED", "not found in YUCLAW's corpus — never a truth "
-     "verdict; a cited accession that is not in the corpus lands here"),
+    ("PARTIAL_MATCH", "at least one EvidenceObject matched some elements "
+     "of the claim; the matched objects and the misses are both listed "
+     "explicitly — a passport with zero matched objects is never "
+     "PARTIAL_MATCH"),
+    ("UNSUPPORTED", "no EvidenceObject matched — not found in YUCLAW's "
+     "corpus, never a truth verdict; a cited accession that is not in "
+     "the corpus lands here"),
     ("NOT_IN_COVERAGE", "the ticker is outside the 79-name scoring "
      "universe; the corpus cannot speak to it"),
     ("NOT_PARSEABLE", "the conservative text parser could not "

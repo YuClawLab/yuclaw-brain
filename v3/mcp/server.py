@@ -208,20 +208,39 @@ def yuclaw_lens(vertical: str, lens: str) -> dict[str, Any]:
 def get_evidence(ticker: str, as_of: Optional[str] = None) -> dict[str, Any]:
     """EvidenceObjects for a ticker (frozen v1 schema: excerpt, accession,
     source_hash, available_as_of). as_of applies the point-in-time filter
-    available_as_of <= as_of. Research classifications, never advice."""
+    available_as_of <= as_of. Resolves offline via the bundled
+    published-corpus snapshot when no research node is reachable — the
+    response then carries a loud 'corpus' scope block (v5.3.3, same
+    fallback as the CLI). Research classifications, never advice."""
     try:
-        from v3.evidence import evidence_objects, in_universe
+        from v3.evidence import (BackendUnavailable, evidence_objects,
+                                 in_universe)
         if not in_universe(ticker):
             return {"status": "NOT_IN_COVERAGE",
                     "note": f"{ticker.upper()} is outside the 79-name "
                             f"scoring universe"}
-        objs = evidence_objects(ticker, as_of=as_of, limit=100)
-        return {"ticker": ticker.upper(), "as_of": as_of,
-                "n": len(objs),
-                "evidence_objects": [
-                    {k: v for k, v in o.items() if not k.startswith("_")}
-                    for o in objs],
-                "note": "research classifications, not recommendations"}
+        corpus = None
+        try:
+            objs = evidence_objects(ticker, as_of=as_of, limit=100)
+        except BackendUnavailable:
+            from v3.evidence.snapshot import snapshot_corpus
+            got = snapshot_corpus(ticker)
+            if got is None:
+                raise
+            objs, corpus = got
+            if as_of:
+                objs = [o for o in objs
+                        if o.get("available_as_of") and
+                        o["available_as_of"] <= as_of]
+        out = {"ticker": ticker.upper(), "as_of": as_of,
+               "n": len(objs),
+               "evidence_objects": [
+                   {k: v for k, v in o.items() if not k.startswith("_")}
+                   for o in objs],
+               "note": "research classifications, not recommendations"}
+        if corpus is not None:
+            out["corpus"] = corpus
+        return out
     except Exception as exc:                     # noqa: BLE001
         return {"error": "backend unavailable",
                 "detail": f"{type(exc).__name__}: {str(exc)[:140]}",
@@ -239,6 +258,14 @@ def get_signal_anatomy(ticker: str) -> dict[str, Any]:
         from pathlib import Path as _P
         f = (_P(__file__).resolve().parents[2] / "docs" / "why" /
              f"{ticker.upper().replace('.', '-')}.json")
+        if not f.parent.is_dir():
+            # pip installs don't bundle docs/why — a missing DIRECTORY
+            # must not read as "name not covered" (v5.3.3 false-denial
+            # guard, same class as the passport semantics fix)
+            return {"error": "anatomy documents are not bundled with "
+                             "this install",
+                    "hint": f"the same document is served at "
+                            f"https://yuclaw.ca/why/{ticker.upper()}.json"}
         if not f.exists():
             return {"status": "NOT_IN_COVERAGE",
                     "note": f"no anatomy document for {ticker.upper()}"}
@@ -256,24 +283,39 @@ def check_claim(ticker: Optional[str] = None,
                 accession: Optional[str] = None,
                 text: Optional[str] = None) -> dict[str, Any]:
     """Evidence Passport: deterministic claim check. Statuses:
-    SOURCE_MATCHED / PARTIAL_MATCH / UNSUPPORTED (= not found in the
-    corpus, never a truth verdict) / NOT_IN_COVERAGE / NOT_PARSEABLE."""
+    SOURCE_MATCHED / PARTIAL_MATCH (>=1 matched object, some elements
+    missed) / UNSUPPORTED (= not found in the corpus, never a truth
+    verdict) / NOT_IN_COVERAGE / NOT_PARSEABLE. Resolves offline via the
+    bundled published-corpus snapshot when no research node is reachable
+    (the passport then carries a loud 'corpus' scope block)."""
     try:
-        from v3.cli.check_claim import _parse_text, passport
+        from v3.cli.check_claim import (CorpusUnavailable, _parse_text,
+                                        passport)
         from v3.universe_tiers import scoring_universe
         uni = set(scoring_universe())
-        if text:
-            claim = _parse_text(text, uni)
-            return passport(text, claim,
-                            claim is not None and claim["ticker"] in uni)
-        if not ticker:
-            return {"error": "give ticker+event_type/accession, or text"}
-        dr = tuple(date_range.split("..")) if date_range else None
-        claim = {"ticker": ticker.upper(), "type": event_type,
-                 "accession": accession, "date_range": dr}
-        import json as _json
-        return passport(_json.dumps({k: v for k, v in claim.items() if v}),
-                        claim, claim["ticker"] in uni)
+        try:
+            if text:
+                claim = _parse_text(text, uni)
+                return passport(text, claim,
+                                claim is not None and claim["ticker"] in uni)
+            if not ticker:
+                return {"error": "give ticker+event_type/accession, or text"}
+            dr = tuple(date_range.split("..")) if date_range else None
+            claim = {"ticker": ticker.upper(),
+                     "type": event_type.upper() if event_type else None,
+                     "accession": accession, "date_range": dr}
+            import json as _json
+            return passport(
+                _json.dumps({k: v for k, v in claim.items() if v}),
+                claim, claim["ticker"] in uni)
+        except CorpusUnavailable as exc:
+            return {"error": "corpus unavailable",
+                    "hint": f"corpus matching needs a YUCLAW research "
+                            f"node — but this evidence is publicly "
+                            f"checkable at "
+                            f"https://yuclaw.ca/why/{exc.ticker}.json "
+                            f"(see 'evidence_objects'; the as-of recipe "
+                            f"is in capabilities.json)"}
     except Exception as exc:                     # noqa: BLE001
         return {"error": "backend unavailable",
                 "detail": f"{type(exc).__name__}: {str(exc)[:140]}",

@@ -2,6 +2,41 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [5.3.3] — 2026-08-06
+
+### Fixed
+
+- **Passport status semantics**: `PARTIAL_MATCH` now requires at least
+  one matched EvidenceObject (with some claim elements unmatched). A
+  claim that matches ZERO objects is `UNSUPPORTED` — the caption is
+  unchanged: "not found in YUCLAW's corpus — never a truth verdict".
+  The trigger was the empty-corpus-name case (DIA-style: a universe
+  name with no evidence objects), which 5.3.2 stamped `PARTIAL_MATCH`
+  with an empty `matched_evidence` array. As a side effect of the fix,
+  a genuine partial match (e.g. type matched, window missed) now LISTS
+  the objects that matched the matched elements instead of an empty
+  array. Spec + PassportResult schema note updated; committed unit
+  self-tests in `tests/test_passport_semantics.py`; the abuse matrix
+  gains the empty-corpus case (32 → 33).
+- **MCP offline fallback** (5.3.2's flagged same-class bug): MCP
+  `get_evidence` now resolves via the bundled published-corpus snapshot
+  when no research node is reachable (loud `corpus` scope block — the
+  scope-block builder is shared with the CLI in
+  `v3.evidence.snapshot.snapshot_corpus`, so the two surfaces cannot
+  diverge). MCP `check_claim` — which already inherited the CLI's
+  snapshot fallback through `passport()` — now uppercases
+  `event_type`/`ticker` (case-sensitive matching made lowercase input
+  silently miss) and returns the friendly public-JSON pointer instead
+  of a generic "backend unavailable" when no corpus exists at all.
+  MCP tools smoke-tested in the backend-less isolation suite.
+
+### Changed
+
+- `capabilities.json` `version` is derived from the package version at
+  generation time (was hardcoded `v5.3`).
+- The `why` no-backend hint gains the public-JSON pointer line
+  (`https://yuclaw.ca/why/{TICKER}.json` — no backend needed).
+
 ## [5.3.2] — 2026-08-05
 
 ### Fixed

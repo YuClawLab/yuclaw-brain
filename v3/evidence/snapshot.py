@@ -36,6 +36,29 @@ def load_snapshot() -> dict | None:
     return snap if isinstance(snap, dict) and "names" in snap else None
 
 
+def snapshot_corpus(ticker: str) -> tuple[list, dict] | None:
+    """The bundled snapshot's objects for `ticker` plus the loud 'corpus'
+    scope block every offline surface attaches (CLI passport since
+    v5.3.2, MCP since v5.3.3 — ONE builder so they cannot diverge) — or
+    None when no readable snapshot ships with this install."""
+    snap = load_snapshot()
+    if snap is None:
+        return None
+    t = ticker.upper()
+    url = f"https://yuclaw.ca/why/{t}.json"
+    return snap["names"].get(t, []), {
+        "mode": "offline_snapshot",
+        "snapshot_generated": snap.get("generated"),
+        "scope": (f"published corpus snapshot bundled with this "
+                  f"install — the same evidence_objects served at "
+                  f"{url}, up to {snap.get('per_name_cap')} "
+                  f"most-recent objects per name"),
+        "confirm": (f"negative statuses here mean 'not found in the "
+                    f"bundled snapshot' — confirm against {url} or a "
+                    f"research node"),
+    }
+
+
 def build_snapshot(why_dir: str | Path,
                    out_path: str | Path = SNAPSHOT_PATH) -> dict:
     """Release-time builder: fold the published why-JSON evidence_objects

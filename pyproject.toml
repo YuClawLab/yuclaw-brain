@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "yuclaw"
-version = "5.3.2"
+version = "5.3.3"
 description = "Evidence-first financial research — every signal traced to its SEC filings and verifiable against a public, git-anchored ledger. CLI + REST + MCP + LangChain/LlamaIndex. Research / education only — not investment advice."
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -37,7 +37,8 @@ dependencies = [
 
 [project.optional-dependencies]
 api = ["fastapi>=0.100", "uvicorn>=0.20", "httpx>=0.27"]   # REST server
-mcp = ["mcp>=1.0"]                                          # MCP stdio server
+# <2: mcp 2.0.0 removed mcp.server.fastmcp (server.py's import path)
+mcp = ["mcp>=1.0,<2"]                                       # MCP stdio server
 agents = ["langchain-core>=1.0", "llama-index-core>=0.11"] # LangChain / LlamaIndex wrappers
 
 [project.scripts]
@@ -65,7 +66,11 @@ packages = ["v3", "v4"]
 # automatically as data files under the v4 package — no force-include needed.
 
 [tool.hatch.build.targets.sdist]
-include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas"]
+# tools/: the three files the wheel force-includes must ship in the sdist too,
+# or a wheel built FROM the sdist (pip installing the sdist does this) fails on
+# the missing force-include (found by the 5.3.3 build).
+include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas",
+           "tools/__init__.py", "tools/check_language.py", "tools/yuclaw_client_intake.py"]
 # Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
 exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc"]

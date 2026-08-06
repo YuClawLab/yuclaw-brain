@@ -2,7 +2,7 @@
  "$id": "https://yuclaw.ca/schemas/PassportResult.v1.json",
  "$schema": "https://json-schema.org/draft/2020-12/schema",
  "additionalProperties": true,
- "description": "An Evidence Passport: a deterministic claim-check against the corpus. UNSUPPORTED means not found in YUCLAW's corpus \u2014 never a truth verdict; NOT_PARSEABLE is the false-denial guard for text claims the conservative parser cannot structure. Research classifications, not buy/sell recommendations; research and education only.",
+ "description": "An Evidence Passport: a deterministic claim-check against the corpus. PARTIAL_MATCH requires at least one matched evidence object (with some claim elements unmatched) \u2014 zero matched objects is UNSUPPORTED, which means not found in YUCLAW's corpus \u2014 never a truth verdict; NOT_PARSEABLE is the false-denial guard for text claims the conservative parser cannot structure. Research classifications, not buy/sell recommendations; research and education only.",
  "properties": {
   "claim_as_given": {
    "type": "string"

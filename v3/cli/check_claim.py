@@ -5,9 +5,12 @@ against YUCLAW's evidence corpus. Statuses are the mechanical five:
   SOURCE_MATCHED   every structured element of the claim matched at
                    least one EvidenceObject (type, ticker, window, and —
                    when given — accession)
-  PARTIAL_MATCH    some elements matched; the misses are listed
-  UNSUPPORTED      nothing matched — "not found in YUCLAW's corpus —
-                   never a truth verdict"
+  PARTIAL_MATCH    at least one EvidenceObject matched some elements of
+                   the claim, others missed — the matched objects and
+                   the misses are both listed (v5.3.3: zero matched
+                   objects is never PARTIAL_MATCH)
+  UNSUPPORTED      no EvidenceObject matched — "not found in YUCLAW's
+                   corpus — never a truth verdict"
   NOT_IN_COVERAGE  the ticker is outside the 79-name scoring universe
   NOT_PARSEABLE    a --text claim the parser cannot confidently
                    structure (the false-denial guard: an unparsed claim
@@ -89,22 +92,11 @@ def _corpus(ticker: str) -> tuple[list, dict | None]:
     try:
         return evidence_objects(ticker, limit=500), None
     except BackendUnavailable:
-        from v3.evidence.snapshot import load_snapshot
-        snap = load_snapshot()
-        if snap is None:
+        from v3.evidence.snapshot import snapshot_corpus
+        got = snapshot_corpus(ticker)
+        if got is None:
             raise CorpusUnavailable(ticker) from None
-        url = f"https://yuclaw.ca/why/{ticker}.json"
-        return snap["names"].get(ticker, []), {
-            "mode": "offline_snapshot",
-            "snapshot_generated": snap.get("generated"),
-            "scope": (f"published corpus snapshot bundled with this "
-                      f"install — the same evidence_objects served at "
-                      f"{url}, up to {snap.get('per_name_cap')} "
-                      f"most-recent objects per name"),
-            "confirm": (f"negative statuses here mean 'not found in the "
-                        f"bundled snapshot' — confirm against {url} or a "
-                        f"research node"),
-        }
+        return got
 
 
 def _parse_text(text: str, universe: set) -> dict | None:
@@ -132,11 +124,16 @@ def _match(claim: dict, objs: list) -> tuple[str, list, list]:
     lo, hi = claim.get("date_range") or (None, None)
     misses = []
     pool = objs
+    partial = []   # last non-empty element-matched pool — PARTIAL_MATCH
+    # requires at least one matched EvidenceObject (v5.3.3); zero
+    # matched objects is UNSUPPORTED, whatever the miss count
     if claim.get("type"):
         typed = [o for o in pool if o["evidence_type"] == claim["type"]]
         if not typed:
             misses.append(f"no {claim['type']} object")
-        pool = typed or pool if False else typed
+        else:
+            partial = typed
+        pool = typed
     if claim.get("accession"):
         acc = [o for o in pool if o["accession_number"] == claim["accession"]]
         if not acc:
@@ -147,20 +144,20 @@ def _match(claim: dict, objs: list) -> tuple[str, list, list]:
             misses.append(f"accession {claim['accession']} not in corpus "
                           f"for this name")
             return "UNSUPPORTED", [], misses
-        pool = acc
+        partial = pool = acc
     if lo:
         dated = [o for o in pool if o["filing_date"]
                  and lo <= o["filing_date"] <= hi]
         if not dated and pool:
             misses.append(f"no object filed in {lo}..{hi}")
+        elif dated:
+            partial = dated
         pool = dated
-    if pool:
-        status = "SOURCE_MATCHED" if not misses else "PARTIAL_MATCH"
-        return status, pool[:5], misses
-    # nothing left: PARTIAL if some element matched along the way
-    return ("PARTIAL_MATCH" if len(misses) < len(
-        [k for k in ("type", "accession", "date_range")
-         if claim.get(k)]) else "UNSUPPORTED"), [], misses
+    if pool and not misses:
+        return "SOURCE_MATCHED", pool[:5], misses
+    if partial and misses:
+        return "PARTIAL_MATCH", partial[:5], misses
+    return "UNSUPPORTED", [], misses
 
 
 def passport(claim_raw: str, claim: dict | None,
@@ -213,7 +210,8 @@ def main(argv=None) -> int:
                "2 = usage/validation error; 3 = environment unsupported.",
         description="Evidence Passport — deterministic claim check "
                     "against the corpus. Statuses: SOURCE_MATCHED / "
-                    "PARTIAL_MATCH / UNSUPPORTED (= not found in the "
+                    "PARTIAL_MATCH (>=1 matched object, some elements "
+                    "missed) / UNSUPPORTED (= not found in the "
                     "corpus, never a truth verdict) / NOT_IN_COVERAGE / "
                     "NOT_PARSEABLE. Text mode is conservative keyword/"
                     "type matching: one unambiguous universe ticker plus "

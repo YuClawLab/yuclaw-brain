@@ -70,7 +70,7 @@ five mechanical statuses. Below is a real passport generated at this page's buil
   &quot;accession&quot;: &quot;0001818224-26-000004&quot;,
   &quot;date_range&quot;: null
  },
- &quot;generated&quot;: &quot;2026-08-05T23:00:14.284266+00:00&quot;,
+ &quot;generated&quot;: &quot;2026-08-06T01:06:18.319385+00:00&quot;,
  &quot;status&quot;: &quot;SOURCE_MATCHED&quot;,
  &quot;matched_evidence&quot;: [
   {
@@ -87,7 +87,7 @@ five mechanical statuses. Below is a real passport generated at this page's buil
  &quot;replay&quot;: &quot;yuclaw check-claim --ticker NVDA --type INSIDER_SELL --accession 0001818224-26-000004&quot;,
  &quot;not_advice&quot;: &quot;Research and education only \u2014 not investment advice. A passport describes what YUCLAW&#x27;s corpus contains; UNSUPPORTED means &#x27;not found in YUCLAW&#x27;s corpus \u2014 never a truth verdict&#x27;.&quot;
 }</pre>
-<table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody><tr><td class='mono st'>SOURCE_MATCHED</td><td>every structured element of the claim matched at least one EvidenceObject — the excerpts and hashes are in the passport</td></tr><tr><td class='mono st'>PARTIAL_MATCH</td><td>some elements matched; the misses are listed explicitly</td></tr><tr><td class='mono st'>UNSUPPORTED</td><td>not found in YUCLAW's corpus — never a truth verdict; a cited accession that is not in the corpus lands here</td></tr><tr><td class='mono st'>NOT_IN_COVERAGE</td><td>the ticker is outside the 79-name scoring universe; the corpus cannot speak to it</td></tr><tr><td class='mono st'>NOT_PARSEABLE</td><td>the conservative text parser could not confidently structure the claim — the false-denial guard: an unparsed claim is never called unsupported</td></tr></tbody></table>
+<table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody><tr><td class='mono st'>SOURCE_MATCHED</td><td>every structured element of the claim matched at least one EvidenceObject — the excerpts and hashes are in the passport</td></tr><tr><td class='mono st'>PARTIAL_MATCH</td><td>at least one EvidenceObject matched some elements of the claim; the matched objects and the misses are both listed explicitly — a passport with zero matched objects is never PARTIAL_MATCH</td></tr><tr><td class='mono st'>UNSUPPORTED</td><td>no EvidenceObject matched — not found in YUCLAW's corpus, never a truth verdict; a cited accession that is not in the corpus lands here</td></tr><tr><td class='mono st'>NOT_IN_COVERAGE</td><td>the ticker is outside the 79-name scoring universe; the corpus cannot speak to it</td></tr><tr><td class='mono st'>NOT_PARSEABLE</td><td>the conservative text parser could not confidently structure the claim — the false-denial guard: an unparsed claim is never called unsupported</td></tr></tbody></table>
 </div>
 
 <div class="card"><h2>The as-of recipe (point-in-time reconstruction)</h2>
@@ -113,5 +113,5 @@ until counsel approves wording.]</div>
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-08-05 23:00 UTC · ledger root b32a47688507</footer>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-08-06 01:06 UTC · ledger root b32a47688507</footer>
 </div></body></html>

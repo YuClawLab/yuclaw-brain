@@ -32,7 +32,9 @@ BACKEND_HINT = (
     "signal — AMD @ 2026-05-20 — works offline.\n"
     "  • `yuclaw demo`                      the guided journey (no backend needed)\n"
     "  • `yuclaw why AMD --as-of 2026-05-20` the same signal, offline\n"
-    "  • docs/v4/backend_setup.md           to connect live signals (all tickers/dates)"
+    "  • docs/v4/backend_setup.md           to connect live signals (all tickers/dates)\n"
+    "  • https://yuclaw.ca/why/{TICKER}.json  the published classification + evidence\n"
+    "                                       for any covered name — no backend needed"
 )
 
 # Fields stored as ISO strings in the JSON that must come back as datetime objects.

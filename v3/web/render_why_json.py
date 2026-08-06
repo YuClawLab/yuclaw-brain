@@ -90,11 +90,20 @@ def build_all() -> int:
     return n
 
 
+def _pkg_version() -> str:
+    """The package version at generation time, from the repo's
+    pyproject.toml — capabilities.json can never advertise a stale
+    hardcoded version again (v5.3.3)."""
+    import tomllib
+    with open(_REPO / "pyproject.toml", "rb") as f:
+        return tomllib.load(f)["project"]["version"]
+
+
 def build_endpoints() -> None:
     base = "https://yuclaw.ca"
     (_REPO / "docs" / "capabilities.json").write_text(json.dumps({
         "name": "YUCLAW Ground Truth API",
-        "version": "v5.3", "generated":
+        "version": f"v{_pkg_version()}", "generated":
             datetime.now(timezone.utc).isoformat(),
         "positioning": "The open evidence layer for financial AI.",
         "endpoints": {

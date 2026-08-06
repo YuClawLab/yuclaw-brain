@@ -198,9 +198,12 @@ def passport_result() -> dict:
     return _schema(
         "PassportResult",
         "An Evidence Passport: a deterministic claim-check against the "
-        "corpus. UNSUPPORTED means not found in YUCLAW's corpus — never "
-        "a truth verdict; NOT_PARSEABLE is the false-denial guard for "
-        "text claims the conservative parser cannot structure.",
+        "corpus. PARTIAL_MATCH requires at least one matched evidence "
+        "object (with some claim elements unmatched) — zero matched "
+        "objects is UNSUPPORTED, which means not found in YUCLAW's "
+        "corpus — never a truth verdict; NOT_PARSEABLE is the "
+        "false-denial guard for text claims the conservative parser "
+        "cannot structure.",
         {
             "claim_as_given": {"type": "string"},
             "claim_as_parsed": {"type": ["object", "null"]},

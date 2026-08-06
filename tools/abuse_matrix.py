@@ -23,6 +23,10 @@ pointer (exit 3), never a traceback; an Excel-flavored CSV
 (BOM+CRLF+quotes) must pass intake-check clean. Malformed inputs
 crashing was never the only risk — 2026-08-05's bug was a VALID claim
 on a machine without the backend.
+
+v5.3.3 adds the status-semantics case: an empty-corpus universe name
+(DIA-style) must come back UNSUPPORTED — zero matched objects is never
+a PARTIAL_MATCH with an empty matched_evidence array.
 """
 from __future__ import annotations
 
@@ -84,11 +88,27 @@ def _intake_ok(rc, out, err):
     return f"exit {rc} — Excel-flavored (BOM+CRLF+quotes) CSV must pass clean"
 
 
+def _empty_corpus_unsupported(rc, out, err):
+    # v5.3.3 status semantics: an empty-corpus universe name (DIA-style)
+    # matches ZERO evidence objects, so the passport must say UNSUPPORTED
+    # — never a PARTIAL_MATCH with an empty matched_evidence array
+    # (the v5.3.2 defect).
+    if rc == 0 and '"status": "UNSUPPORTED"' in out:
+        return None
+    if rc == 3 and "yuclaw.ca/why/" in err:
+        return None                       # no corpus at all → friendly pointer
+    return (f"exit {rc} — empty-corpus name must be UNSUPPORTED "
+            f"(zero matched objects is never PARTIAL_MATCH)")
+
+
 WELLFORMED = [
     ("check-claim", ["--ticker", "NVDA", "--type", "INSIDER_SELL",
                      "--date-range", "2026-05-01..2026-05-31"], _claim_ok),
     ("check-claim", ["--text",
                      "NVDA reported an insider sale in May 2026"], _claim_ok),
+    ("check-claim", ["--ticker", "DIA", "--type", "INSIDER_SELL",
+                     "--date-range", "2026-05-01..2026-05-31"],
+     _empty_corpus_unsupported),
 ]
 
 EXCEL_FLAVORED = (b"\xef\xbb\xbf" + "\r\n".join(
