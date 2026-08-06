@@ -24,7 +24,19 @@ import json
 from html import escape
 from pathlib import Path
 
-VERSION = "v5.3.0"
+def _pkg_version() -> str:
+    """The package version, from the repo's pyproject.toml at render time —
+    the same source capabilities.json uses. Header badge, citation
+    snippets, and packet manifests all derive from here; no template may
+    carry a hardcoded version string (display-defect order, 2026-08-06:
+    the badge sat at a hand-typed v5.3.0 while PyPI served 5.3.3)."""
+    import tomllib
+    pp = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    with open(pp, "rb") as f:
+        return tomllib.load(f)["project"]["version"]
+
+
+VERSION = f"v{_pkg_version()}"
 
 # Locked public signal vocabulary — the ONLY signal labels any public page may
 # render (mirrors the homepage "Public signal vocabulary" legend). Pages render
@@ -132,7 +144,10 @@ def build_footer() -> str:
 def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> str:
     """The shared site header. Rendered identically on every page that calls it.
     active: this page's output filename (e.g. "validation_lab.html") — the
-    matching nav chip gets the accent treatment + aria-current="page"."""
+    matching nav chip gets the accent treatment + aria-current="page".
+    stamp: the page's ONE freshness stamp — rendered as its own full-width
+    block DIRECTLY BELOW the nav row (2026-08-06 order: never inline in the
+    chip row again), wording passed through verbatim."""
     def chip(label: str, href: str) -> str:
         if href == active:
             return (f'<a href="{href}" aria-current="page" '
@@ -146,28 +161,34 @@ def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> s
     chips = "".join(chip(label, href) for label, href in _NAV_CHIPS)
     sub = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">'
            f"{escape(subtitle)}</span>") if subtitle else ""
-    right = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;'
-             f'white-space:nowrap">{escape(stamp)}</span>') if stamp else ""
+    stamp_block = (
+        '<style>@media (max-width:480px){.hdr-stamp{font-size:10px;'
+        'line-height:1.5}}</style>'
+        f'<div class="hdr-stamp" style="font-size:11px;color:#718096;'
+        f'font-family:JetBrains Mono,monospace;line-height:1.6;'
+        f'margin:10px 0 0;width:100%">{escape(stamp)}</div>') if stamp else ""
     return f"""
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;
-                gap:10px;margin-bottom:20px;padding:14px 20px;background:#151A23;
+    <div style="margin-bottom:20px;padding:14px 20px;background:#151A23;
                 border:1px solid #1E232D;border-radius:12px">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <a href="index.html" style="text-decoration:none;display:inline-flex;
-                                    align-items:center;gap:12px">
-          <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
-            style="color:#00E676">CLAW</span></span>
-          <span style="display:inline-block;background:#00E67620;color:#00E676;
-                       border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
-                       font-size:10px;font-weight:700;letter-spacing:0.5px;
-                       font-family:JetBrains Mono,monospace">{escape(VERSION)}</span>
-        </a>
-        {sub}
+      <div class="hdr-nav" style="display:flex;justify-content:space-between;align-items:center;
+                  flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                      align-items:center;gap:12px">
+            <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+              style="color:#00E676">CLAW</span></span>
+            <span style="display:inline-block;background:#00E67620;color:#00E676;
+                         border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                         font-size:10px;font-weight:700;letter-spacing:0.5px;
+                         font-family:JetBrains Mono,monospace">{escape(VERSION)}</span>
+          </a>
+          {sub}
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+          {chips}
+        </div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
-        {chips}
-        {right}
-      </div>
+      {stamp_block}
     </div>"""
 
 

@@ -123,8 +123,9 @@ def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
 
 
 def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
-    from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html,
-                                      status_block_html, use_in_research_html)
+    from v3.web.useful_blocks import (VERSION, build_footer, freshness_strip,
+                                      site_header_html, status_block_html,
+                                      use_in_research_html)
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
     ecs = _load_ecs()
@@ -141,7 +142,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v5.3.0 — Evidence-First Financial AI</title>
+  <title>YUCLAW {VERSION} — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -181,7 +182,6 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     th{{font-size:10px;font-weight:600;text-transform:uppercase;color:#718096;padding:9px 14px;text-align:left;border-bottom:1px solid #2D3748;letter-spacing:0.8px}}
     td{{font-size:13px}}
     tr:hover td{{background:#1A202C}}
-    .as-of{{font-size:11px;color:#718096;font-family:JetBrains Mono,monospace;margin-top:10px;text-align:right}}
     .footer{{text-align:center;padding:18px;color:#718096;font-size:11px;margin-top:24px}}
     .footer a{{color:#00E676;text-decoration:none}}
     code{{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}}
@@ -190,7 +190,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(active="index.html")}
+    {site_header_html(active="index.html", stamp=freshness_strip())}
 
     <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>
@@ -223,7 +223,6 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         not prediction (Evidence Coverage v1, registered protocol).
         Score = composite research score. It is not an expected return, a probability,
         a price target, or a recommendation.</p>
-      <div class="as-of">{escape(freshness_strip())}</div>
     </div>
 
     <div class="card">
@@ -316,7 +315,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     </div>
 
     <div class="footer">
-      YUCLAW v5.3.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW {VERSION} · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="tour.html">🚀 5-minute tour</a> ·
       <a href="for_ai_builders.html">🤖 For AI builders</a> ·

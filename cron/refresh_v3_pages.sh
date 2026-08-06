@@ -129,6 +129,9 @@ fi
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
+# Header-layout gate (2026-08-06): stamp in its own block below the nav row,
+# exactly one stamp, version badge == package version — on every page.
+/usr/bin/python3 tools/check_header_layout.py || exit 43
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
@@ -161,6 +164,11 @@ chmod +x /home/zhangd2/yuclaw/cron/push_alert.sh 2>/dev/null || true
 push_with_retry origin main /tmp/yuclaw_push_failed.marker \
     /home/zhangd2/yuclaw/cron/push_alert.sh || exit $?
 echo "[refresh_v3_pages] pushed at $TS"
+
+# Pages check-and-kick (2026-08-06): a push does not reliably queue a Pages
+# build — confirm builds/latest picked up HEAD, kick once if it didn't, wait
+# for `built`. deploy_verify below can only poll; it cannot start a build.
+/bin/bash tools/pages_build_kick.sh 600 || exit 42
 
 # Deploy-verify: push ≠ live. Poll the public site until every artifact is
 # byte-identical with this build (GitHub Pages deploy latency). Non-zero here

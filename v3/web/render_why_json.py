@@ -91,12 +91,12 @@ def build_all() -> int:
 
 
 def _pkg_version() -> str:
-    """The package version at generation time, from the repo's
-    pyproject.toml — capabilities.json can never advertise a stale
-    hardcoded version again (v5.3.3)."""
-    import tomllib
-    with open(_REPO / "pyproject.toml", "rb") as f:
-        return tomllib.load(f)["project"]["version"]
+    """The package version at generation time — capabilities.json can
+    never advertise a stale hardcoded version again (v5.3.3). ONE
+    source: v3.web.useful_blocks (the header badge and citation
+    snippets derive from the same function since 2026-08-06)."""
+    from v3.web.useful_blocks import _pkg_version as pv
+    return pv()
 
 
 def build_endpoints() -> None:
