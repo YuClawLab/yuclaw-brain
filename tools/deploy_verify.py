@@ -159,8 +159,10 @@ def _self_test() -> int:
     """Prove the guards catch the old failure mode: a probe of the
     github.io URL WITHOUT following redirects must be refused (that 301's
     162-byte nginx body is what got hashed as 'content' on 2026-08-07),
-    and even a followed probe must refuse to hash because of the 3xx in
-    the chain. The canonical probe must still pass."""
+    and even a followed probe must refuse to hash because of the 3xx hops
+    — since HTTPS enforcement (2026-08-07b) the followed chain is
+    [301, 301, 200] ending at the canonical httpS URL, and the 3xx-in-
+    chain guard must refuse it anyway. The canonical probe must pass."""
     failures = []
     url = f"{GITHUB_BASE}/index.html"
     body, err = _probe(url, follow=False)
@@ -169,8 +171,11 @@ def _self_test() -> int:
     else:
         print(f"[self-test] OK   -L-less probe refused: {err}")
     body, err = _probe(url, follow=True)
-    if body is not None or not err:
-        failures.append(f"followed github.io probe NOT refused (err={err})")
+    if (body is not None or not err or "3xx in chain" not in err
+            or CANONICAL_PREFIX not in err):
+        failures.append(f"followed github.io probe NOT refused by the "
+                        f"3xx-in-chain guard despite ending at the "
+                        f"canonical https URL (err={err})")
     else:
         print(f"[self-test] OK   followed github.io probe refused: {err}")
     body, err = _probe(f"{BASE}/index.html")
