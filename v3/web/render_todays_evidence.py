@@ -24,7 +24,7 @@ from pathlib import Path
 
 import psycopg2
 
-from v3.web.useful_blocks import build_footer, freshness_strip, VERSION, site_header_html
+from v3.web.useful_blocks import footer_stamp_html, build_footer, freshness_strip, VERSION, site_header_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "todays_evidence.html"
@@ -303,7 +303,7 @@ def render(state: dict, diffs: dict,
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Today's evidence changes", active="todays_evidence.html", stamp=freshness_strip())}
+    {site_header_html(subtitle="Today's evidence changes", active="todays_evidence.html")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Today's evidence changes — {escape(state['date'])}</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">
@@ -332,6 +332,7 @@ def render(state: dict, diffs: dict,
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </body>
 </html>

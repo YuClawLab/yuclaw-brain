@@ -144,7 +144,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="XLK Covered-Constituent Evidence Lens", active="xlk_evidence.html", stamp=freshness_strip())}
+    {site_header_html(subtitle="XLK Covered-Constituent Evidence Lens", active="xlk_evidence.html")}
 
     <h1 style="font-size:26px;font-weight:800;color:#FFF;letter-spacing:-0.5px;margin-bottom:4px">
       XLK Covered-Constituent Evidence Lens</h1>

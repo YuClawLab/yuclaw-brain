@@ -44,15 +44,30 @@ RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
 RE_LOGO = re.compile(r'<a href="index\.html"[^>]*>\s*<span[^>]*>YU', re.S)
 RE_STAMP = re.compile(r'(built|generated|as of|data through)\s*:?\s*20\d\d-',
                       re.I)
-# Standard freshness strip (order of 2026-08-05, final form): every
-# data-bearing page carries EXACTLY ONE strip (the shared-header one);
-# prose pages carry 'Updated YYYY-MM-DD'; raw build timestamps live ONLY
-# inside <footer class="buildinfo"> (the auditors' ledger cross-ref).
-# Duplicated stamps and stray built/generated timestamps are failures.
+# Standard freshness stamp (clean-header order, 2026-08-07): the header
+# carries ZERO stamps. Every page carries EXACTLY ONE stamp anywhere on
+# the page — either its own in-content freshness box (<div class="fresh">,
+# which counts once whatever its wording) or the shared footer stamp line
+# (footer_stamp_html: 'Data through …' / 'Updated YYYY-MM-DD'); raw build
+# timestamps live ONLY inside <footer class="buildinfo"> (the auditors'
+# ledger cross-ref). Counting is whitespace-normalized so multi-line box
+# wording counts like single-line wording. Duplicated stamps and stray
+# built/generated timestamps are failures.
 RE_DATA_THROUGH = re.compile(r'data through\s*:?\s*20\d\d-\d\d-\d\d', re.I)
+RE_FRESH_BOX = re.compile(r'<div class="fresh"[^>]*>.*?</div>', re.S)
 RE_STRIP_PHRASE = re.compile(
     r"\(last completed U\.S\. trading day[^)]*\) · regenerated (daily|weekly)", re.I)
 RE_UPDATED = re.compile(r"Updated 20\d\d-\d\d-\d\d")
+
+
+def _stamp_count(body: str) -> int:
+    """Stamps on a page (scripts + buildinfo already stripped): each
+    in-content freshness box counts once; stamp phrasing outside the
+    boxes counts per match. Same definition as check_header_layout."""
+    boxes = RE_FRESH_BOX.findall(body)
+    rest = re.sub(r"\s+", " ", RE_FRESH_BOX.sub("", body))
+    return (len(boxes) + len(RE_STRIP_PHRASE.findall(rest)) +
+            len(RE_UPDATED.findall(rest)))
 RE_RAW_TS = re.compile(r"\b(built|generated)\s*:?\s*20\d\d-\d\d-\d\d[ T]"
                        r"\d\d:\d\d(:\d\d)?\s*(UTC)?", re.I)
 RE_BUILDINFO = re.compile(r'<footer class="buildinfo".*?</footer>', re.S)
@@ -118,13 +133,12 @@ def main(argv: list[str] | None = None) -> int:
         # ---- 3. freshness (final form): exactly one stamp per page
         if STATIC_MARK not in t and name not in SOURCE_DOCS:
             body = RE_BUILDINFO.sub("", RE_SCRIPT.sub("", t))
-            n_strip = len(RE_STRIP_PHRASE.findall(body))
-            n_upd = len(RE_UPDATED.findall(body))
-            if n_strip + n_upd == 0:
-                findings.append(f"{name}: no standard freshness strip "
-                                f"('Data through …' or 'Updated …')")
-            elif n_strip + n_upd > 1:
-                findings.append(f"{name}: {n_strip + n_upd} freshness "
+            n_stamp = _stamp_count(body)
+            if n_stamp == 0:
+                findings.append(f"{name}: no freshness stamp (footer line "
+                                f"or in-content freshness box)")
+            elif n_stamp > 1:
+                findings.append(f"{name}: {n_stamp} freshness "
                                 f"stamps — exactly one allowed")
             for m in RE_RAW_TS.finditer(body):
                 findings.append(f"{name}: raw '{m.group(0)[:40]}' outside "
@@ -155,7 +169,7 @@ def main(argv: list[str] | None = None) -> int:
     # Walking all 79 nightly is redundant — they share one template. We
     # pin the template hash (drift = a reviewed gate edit) and spot-walk
     # 5 random pages for the invariants every page must carry.
-    WHY_TEMPLATE_PIN = "d766f9c34b88538a"
+    WHY_TEMPLATE_PIN = "64d6a82edc0ba9c4"  # clean-header order, 2026-08-07
     why_dir = DOCS / "why"
     if why_dir.exists():
         import random

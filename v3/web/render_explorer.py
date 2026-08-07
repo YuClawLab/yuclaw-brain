@@ -25,7 +25,7 @@ if str(_REPO) not in sys.path:
 
 import psycopg2
 
-from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT_HTML = _REPO / "docs" / "explorer.html"
 OUT_JSON = _REPO / "docs" / "explorer_data.json"
@@ -111,7 +111,6 @@ def build_data() -> dict:
 def render(data: dict) -> str:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Universe Explorer",
-                              stamp=freshness_strip(),
                               active="explorer.html")
     sectors = sorted({r["sector"] for r in data["rows"]})
     labels = ["STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH", "WEAKENING",
@@ -214,6 +213,7 @@ const params = new URLSearchParams(location.search);
 if (params.get("sector")) document.getElementById("fsc").value = params.get("sector");
 refresh();
 </script>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </div></body></html>"""
 

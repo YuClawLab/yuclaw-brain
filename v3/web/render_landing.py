@@ -38,7 +38,7 @@ DB_DSN = "dbname=yuclaw_events"
 
 # Locked sentiment vocabulary — anything outside this set on the homepage is a
 # bug. Single source: useful_blocks.PUBLIC_LABELS (shared by every renderer).
-from v3.web.useful_blocks import PUBLIC_LABELS  # noqa: E402
+from v3.web.useful_blocks import footer_stamp_html, PUBLIC_LABELS  # noqa: E402
 
 # Canonical compliance notice — MUST stay byte-identical to
 # v4/api/schema.py::COMPLIANCE_NOTICE (single source of truth, v4 Day 9/Q5).
@@ -190,7 +190,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(active="index.html", stamp=freshness_strip())}
+    {site_header_html(active="index.html")}
 
     <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>
@@ -329,7 +329,8 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       <a href="weekly_note.html">Weekly Note</a> ·
       Apache-2.0 Licensed
     </div>
-    {build_footer()}
+    {footer_stamp_html(freshness_strip())}
+{build_footer()}
   </div>
 </body>
 </html>

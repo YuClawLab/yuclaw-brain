@@ -18,7 +18,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "for_ai_builders.html"
 
@@ -55,8 +55,7 @@ def _live_passport() -> dict:
 
 def main() -> int:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    header = site_header_html(subtitle="For AI builders",
-                              stamp=freshness_strip())
+    header = site_header_html(subtitle="For AI builders")
     pp = _live_passport()
     pp_json = escape(json.dumps(pp, indent=1)[:2600])
     statuses = "".join(
@@ -133,6 +132,7 @@ until counsel approves wording.]</div>
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_ai_builders] live NVDA passport status: {pp['status']}")

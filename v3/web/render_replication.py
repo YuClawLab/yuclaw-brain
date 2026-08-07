@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
-from v3.web.useful_blocks import build_footer, freshness_strip, VERSION, site_header_html, status_block_html
+from v3.web.useful_blocks import footer_stamp_html, build_footer, freshness_strip, VERSION, site_header_html, status_block_html
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "replication.html"
@@ -105,7 +105,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Independent Replication", active="replication.html", stamp=freshness_strip())}
+    {site_header_html(subtitle="Independent Replication", active="replication.html")}
 
     <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Replicate the record yourself</h1>
     <p style="font-size:13px;color:#A0AEC0;margin-bottom:16px;line-height:1.6;max-width:760px">
@@ -174,6 +174,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     </div>
   </div>
 <div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 Ground Truth anatomy documents, and the per-day ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </body>
 </html>

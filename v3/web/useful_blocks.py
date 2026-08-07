@@ -122,6 +122,18 @@ def updated_strip() -> str:
     return f"Updated {datetime.now(timezone.utc).strftime('%Y-%m-%d')}"
 
 
+def footer_stamp_html(stamp: str) -> str:
+    """The page's ONE freshness stamp as a small subdued footer line
+    (2026-08-07 order: the stamp never renders in the header — pages
+    without their own in-content freshness box carry exactly this line,
+    directly above build_footer(), wording passed through verbatim).
+    Deliberately OUTSIDE <footer class="buildinfo"> — the stamp guards
+    strip buildinfo before counting."""
+    return (f'<div class="ftr-stamp" style="font-family:\'JetBrains '
+            f'Mono\',monospace;font-size:11px;color:#718096;'
+            f'margin:18px 0 0;line-height:1.6">{escape(stamp)}</div>')
+
+
 def build_footer() -> str:
     """The demoted raw build timestamp + ledger root, small mono, for
     auditors' ledger cross-reference. The ONLY place a raw build UTC
@@ -141,13 +153,14 @@ def build_footer() -> str:
             f'margin:18px 0 6px">build {ts} UTC · ledger root {root}</footer>')
 
 
-def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> str:
+def site_header_html(subtitle: str = "", active: str = "") -> str:
     """The shared site header. Rendered identically on every page that calls it.
     active: this page's output filename (e.g. "validation_lab.html") — the
     matching nav chip gets the accent treatment + aria-current="page".
-    stamp: the page's ONE freshness stamp — rendered as its own full-width
-    block DIRECTLY BELOW the nav row (2026-08-06 order: never inline in the
-    chip row again), wording passed through verbatim."""
+    The header carries brand + version badge + nav chips ONLY (2026-08-07
+    order): the freshness stamp never renders in site chrome — it lives in
+    the page footer via footer_stamp_html(), or in a page's own in-content
+    freshness box."""
     def chip(label: str, href: str) -> str:
         if href == active:
             return (f'<a href="{href}" aria-current="page" '
@@ -161,14 +174,8 @@ def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> s
     chips = "".join(chip(label, href) for label, href in _NAV_CHIPS)
     sub = (f'<span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">'
            f"{escape(subtitle)}</span>") if subtitle else ""
-    stamp_block = (
-        '<style>@media (max-width:480px){.hdr-stamp{font-size:10px;'
-        'line-height:1.5}}</style>'
-        f'<div class="hdr-stamp" style="font-size:11px;color:#718096;'
-        f'font-family:JetBrains Mono,monospace;line-height:1.6;'
-        f'margin:10px 0 0;width:100%">{escape(stamp)}</div>') if stamp else ""
     return f"""
-    <div style="margin-bottom:20px;padding:14px 20px;background:#151A23;
+    <div class="site-hdr" style="margin-bottom:20px;padding:14px 20px;background:#151A23;
                 border:1px solid #1E232D;border-radius:12px">
       <div class="hdr-nav" style="display:flex;justify-content:space-between;align-items:center;
                   flex-wrap:wrap;gap:10px">
@@ -188,7 +195,6 @@ def site_header_html(subtitle: str = "", stamp: str = "", active: str = "") -> s
           {chips}
         </div>
       </div>
-      {stamp_block}
     </div>"""
 
 

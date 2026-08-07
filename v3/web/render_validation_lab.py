@@ -964,8 +964,8 @@ def render() -> str:
     .ver{{display:inline-block;background:#00E67620;color:#00E676;border:1px solid #00E67680;padding:3px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;font-family:JetBrains Mono,monospace}}
     .navlinks a{{color:#A0AEC0;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:6px;background:#1E232D;margin-left:6px}}
     .navlinks a:hover{{color:#00E676}}
-    .fresh{{background:#0F1B14;border:1px solid #00E67640;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#A0AEC0;font-family:JetBrains Mono,monospace}}
-    .fresh strong{{color:#00E676}}
+    .fresh,.panel-fresh{{background:#0F1B14;border:1px solid #00E67640;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:12px;color:#A0AEC0;font-family:JetBrains Mono,monospace}}
+    .fresh strong,.panel-fresh strong{{color:#00E676}}
     .disclaimer-line{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;margin-bottom:22px;font-size:12px;line-height:1.55;color:#A0AEC0}}
     .disclaimer-line strong{{color:#FBA94B}}
     .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}}
@@ -999,7 +999,7 @@ def render() -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Signal Validation Lab", active="validation_lab.html", stamp=freshness_strip())}
+    {site_header_html(subtitle="Signal Validation Lab", active="validation_lab.html")}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 14px 0">
       Per-label hit-rate ledger: <a href="validation.html"
@@ -1035,7 +1035,7 @@ def render() -> str:
     <div class="panel">
       <div class="panel-title">Latest rolling record</div>
       <div class="panel-sub">continuous display across the regime boundary · statistics stay strictly per-regime</div>
-      <div class="fresh" style="margin-bottom:4px">
+      <div class="panel-fresh" style="margin-bottom:4px">
         Updated through <strong>{escape(data_through)}</strong> · last build {escape(built)} · daily after U.S. market close
       </div>
       {roll_spread}

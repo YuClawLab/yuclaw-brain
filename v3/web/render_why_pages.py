@@ -34,7 +34,7 @@ import psycopg2
 
 from v3.signal.base import SIGNAL_THRESHOLDS
 from v3.signal.composite import COMPONENT_WEIGHTS
-from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT_DIR = _REPO / "docs" / "why"
 IMPLICATION = ("Investment implication: none established — no buy, sell, "
@@ -124,7 +124,7 @@ LBL_COLOR = {"STRONG_BULLISH": "#00E676", "BULLISH": "#00E676",
 def _page(tk, snap, hist, events, ecs, stories, stamp) -> str:
     _t, label, score, st, *comps = snap
     color = LBL_COLOR.get(label, "#A0AEC0")
-    header = site_header_html(subtitle=f"Why {tk}", stamp=freshness_strip())
+    header = site_header_html(subtitle=f"Why {tk}")
     comp_rows = []
     for i, cid in enumerate(("c1", "c2", "c3", "c4", "c5", "c6", "c7",
                              "c8", "c9")):
@@ -248,6 +248,7 @@ legend on the home page. Never edited after the fact.</p></div>
 {IMPLICATION} Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="explorer.html" style="color:#A0AEC0">Universe Explorer</a></p>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </div></body></html>"""
 

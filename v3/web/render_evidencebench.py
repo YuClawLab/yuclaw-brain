@@ -17,7 +17,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "evidencebench.html"
 
@@ -28,8 +28,7 @@ def main() -> int:
                        "meta.json").read_text())
     lb = json.loads((_REPO / "docs" / "evidencebench" /
                      "leaderboard.json").read_text())
-    header = site_header_html(subtitle="EvidenceBench",
-                              stamp=freshness_strip())
+    header = site_header_html(subtitle="EvidenceBench")
     rows = "".join(
         f"<tr><td>{escape(r['label'])}</td>"
         f"<td class='mono'>{r['aggregate']}</td>"
@@ -105,6 +104,7 @@ the repository (dataset citability: see CITATION.cff at the repo root and the
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="for_ai_builders.html" style="color:#A0AEC0">For AI builders</a></p>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_evidencebench] {meta['n_items']} items · "

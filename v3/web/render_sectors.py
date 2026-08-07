@@ -19,7 +19,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT = _REPO / "docs" / "sectors.html"
 LBL_COLOR = {"STRONG_BULLISH": "#00E676", "BULLISH": "#00E676",
@@ -38,7 +38,6 @@ def main() -> int:
         sectors.setdefault(r["sector"], []).append(r)
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Sector overview",
-                              stamp=freshness_strip(),
                               active="sectors.html")
     cards = []
     for sec in sorted(sectors, key=lambda s: -len(sectors[s])):
@@ -98,6 +97,7 @@ not prediction.</div>
 <div class="grid">{''.join(cards)}</div>
 <p class="muted" style="margin-top:14px">Each card links into the Universe Explorer pre-filtered to its
 sector. Point-in-time, never edited.</p>
+{footer_stamp_html(freshness_strip())}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_sectors] {len(sectors)} sector cards")

@@ -21,7 +21,7 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from v3.web.useful_blocks import (build_footer, site_header_html,
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, site_header_html,
                                   updated_strip)
 
 OUT = _REPO / "docs" / "tour.html"
@@ -86,8 +86,7 @@ def main() -> int:
         {f'<p class="muted">{note}</p>' if note else ''}
       </div>"""
 
-    header = site_header_html(subtitle="The 5-minute tour",
-                              stamp=updated_strip())
+    header = site_header_html(subtitle="The 5-minute tour")
     body = "".join([
         station(1, "Install and take the guided demo",
                 "pip install yuclaw && yuclaw demo",
@@ -159,6 +158,7 @@ what the commands actually print.</div>
   <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/COMPARISON.md">Read How We Compare →</a></p>
 </div>
 <p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
+{footer_stamp_html(updated_strip())}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_tour] 5 stations captured live (demo/verify/chain/"

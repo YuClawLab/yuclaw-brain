@@ -1,27 +1,27 @@
 {
  "ticker": "ARM",
- "generated": "2026-08-06T01:44:10.933114+00:00",
+ "generated": "2026-08-06T23:00:15.408147+00:00",
  "label": "WATCH",
- "score": 0.0238,
+ "score": 0.0833,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.7395,
+  "c1": -0.229,
   "c2": 0.0,
-  "c3": -0.29261997,
+  "c3": -0.17104527,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.19708697,
-  "c7": 0.12571892,
+  "c6": 0.13294275,
+  "c7": -0.013331556,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 95,
+  "ecs": 94,
   "events_90d": 29,
-  "recency_days": 7.3,
+  "recency_days": 8.3,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -439,6 +439,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-06",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-05",
    "label": "WATCH"
   },
@@ -553,10 +557,6 @@
   {
    "date": "2026-06-26",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-06-25",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ARM --date D",

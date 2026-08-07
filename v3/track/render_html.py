@@ -202,10 +202,18 @@ FROZEN_WINDOW_NOTE = (
 
 
 def render(panels: dict[str, Any]) -> str:
-    from v3.web.useful_blocks import build_footer, freshness_strip, site_header_html
+    from v3.web.useful_blocks import (build_footer, footer_stamp_html,
+                                      freshness_strip, site_header_html)
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     matured_through = panels["forward"].get("matured_through")
     fwd_extra = f"matured through {matured_through}" if matured_through else ""
+    # Maturity-lag note (2026-08-07 order): sits directly above the forward
+    # panels it describes, never in site chrome.
+    maturity_note = (
+        "<div style='font-size:12px;color:#718096;margin:0 0 10px 0;padding:10px 14px;"
+        "background:#10141C;border:1px solid #1E232D;border-radius:8px'>"
+        "This page's forward panels mature one trading day behind the snapshot "
+        "record (a 1-day outcome needs the next close).</div>") if matured_through else ""
     frozen_note = (
         f"<div style='font-size:12px;color:#718096;margin:0 0 10px 0;padding:10px 14px;"
         f"background:#10141C;border:1px solid #1E232D;border-radius:8px'>"
@@ -237,8 +245,7 @@ def render(panels: dict[str, Any]) -> str:
 </head>
 <body>
   <div class="container">
-    {site_header_html(subtitle="Forward Tracking + In-Sample Validation", active="validation.html",
-                      stamp=freshness_strip(matured_through) + " · this page's forward panels mature one trading day behind the snapshot record (a 1-day outcome needs the next close)" if matured_through else freshness_strip())}
+    {site_header_html(subtitle="Forward Tracking + In-Sample Validation", active="validation.html")}
 
     <div style="font-size:12px;color:#A0AEC0;margin:0 0 16px 0">
       Cohort-level event study: <a href="validation_lab.html"
@@ -251,6 +258,7 @@ def render(panels: dict[str, Any]) -> str:
       <strong>DISCLAIMER —</strong> {escape(COMPLIANCE_FOOTER)}
     </div>
 
+    {maturity_note}
     {_render_panel_section("forward", panels["forward"], header_extra=fwd_extra)}
     {_render_panel_section("in_sample", panels["in_sample"], note=POINT_IN_TIME_NOTE,
                            lead_html=frozen_note)}
@@ -279,6 +287,7 @@ def render(panels: dict[str, Any]) -> str:
       MIT
     </div>
   </div>
+{footer_stamp_html(freshness_strip(matured_through) if matured_through else freshness_strip())}
 {build_footer()}
 </body>
 </html>

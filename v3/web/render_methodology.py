@@ -18,7 +18,7 @@ if str(_REPO) not in sys.path:
 
 import markdown
 
-from v3.web.useful_blocks import (build_footer, site_header_html,
+from v3.web.useful_blocks import (footer_stamp_html, build_footer, site_header_html,
                                   updated_strip)
 
 SRC = _REPO / "docs" / "methodology" / "backfill.md"
@@ -31,7 +31,6 @@ def main() -> int:
         SRC.read_text(),
         extensions=["tables", "attr_list", "fenced_code", "toc"])
     header = site_header_html(subtitle="Methodology",
-                              stamp=updated_strip(),
                               active="methodology.html")
     OUT.write_text(f"""<!DOCTYPE html>
 <html lang="en">
@@ -74,6 +73,7 @@ the source is what the threshold-match gate reads.</div>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 canonical source: <a href="methodology/backfill.md" style="color:#A0AEC0">methodology/backfill.md</a></p>
+{footer_stamp_html(updated_strip())}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_methodology] {OUT.stat().st_size} bytes from "
