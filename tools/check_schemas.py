@@ -112,6 +112,59 @@ def main() -> int:
                         "MemoOutput.model_json_schema() — the memo object "
                         "shape drifted; freeze a v2, never edit v1")
 
+    # ---- S6 vocabulary separation (Science Trust Protocol v1, order of
+    # 2026-08-07d — active from registration). CONTEXT-AWARE: structured
+    # field values only, never ordinary prose. (A) research-state
+    # vocabulary is rejected in signal-label / score-label / trading-
+    # classification / buy-sell / portfolio-action fields; (B) signal-
+    # label vocabulary is rejected in the canonical research-state field.
+    from tools.yuclaw_science_trust import RESEARCH_STATES
+    from v3.web.useful_blocks import PUBLIC_LABELS
+    SIGNAL_FIELD_KEYS = {"label", "signal_label", "signal", "score_label",
+                         "classification", "trading_classification",
+                         "action", "buy_sell", "portfolio_action"}
+    RESEARCH_FIELD_KEYS = {"research_state", "science_trust_state"}
+    n_vocab = 0
+
+    def _s6_walk(obj, where):
+        nonlocal n_vocab
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, str):
+                    val = v.upper()
+                    if k in SIGNAL_FIELD_KEYS:
+                        n_vocab += 1
+                        if val in RESEARCH_STATES:
+                            problems.append(
+                                f"S6 {where}: research state {v!r} used as "
+                                f"signal-context field '{k}' — research "
+                                f"states never translate to signal/score/"
+                                f"trading meaning")
+                    if k in RESEARCH_FIELD_KEYS:
+                        n_vocab += 1
+                        if val in PUBLIC_LABELS:
+                            problems.append(
+                                f"S6 {where}: signal label {v!r} used as "
+                                f"canonical research-state field '{k}' — "
+                                f"signal vocabulary never enters research "
+                                f"states")
+                else:
+                    _s6_walk(v, where)
+        elif isinstance(obj, list):
+            for v in obj:
+                _s6_walk(v, where)
+
+    _s6_walk(json.loads(json.dumps(snap, default=str)), "snapshot")
+    _s6_walk(json.loads((_REPO / "docs" / "explorer_data.json"
+                         ).read_text()), "explorer_data.json")
+    for wf in sorted((_REPO / "docs" / "why").glob("*.json")):
+        _s6_walk(json.loads(wf.read_text()), f"why/{wf.name}")
+    for line in (_REPO / "registry" / "protocols.jsonl").read_text(
+            ).splitlines():
+        _s6_walk(json.loads(line).get("payload", {}), "registry")
+    _s6_walk(json.loads((_REPO / "registry" / "truncation_ledger.json"
+                         ).read_text()), "truncation_ledger.json")
+
     if problems:
         print("SCHEMA GATE FAILED:")
         for p in problems:
@@ -119,7 +172,8 @@ def main() -> int:
         return 1
     print(f"[schema-gate] OK — snapshot, {len(events)} events, "
           f"{n_proto} protocols, {n_cells} robustness cells validate "
-          f"against the frozen v1 schemas; memo schema fresh")
+          f"against the frozen v1 schemas; memo schema fresh; "
+          f"vocabulary separation clean over {n_vocab} labeled fields")
     return 0
 
 
