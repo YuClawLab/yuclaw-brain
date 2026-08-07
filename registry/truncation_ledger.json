@@ -1,0 +1,198 @@
+{
+ "ledger_version": 1,
+ "registered": "2026-08-07",
+ "spec": "tools/yuclaw_truncation_budget.py (Truncation & Error Budget v1)",
+ "population_rule": "count/retained_mass only by counting or summing over already-committed artifacts (source named per entry); PENDING otherwise; interpretation_change in {yes,no,unknown} \u2014 unknown is a legal answer",
+ "entries": [
+  {
+   "site_key": "cascade_decay",
+   "reason": "cascade impact decays 0.20 at depth-1, 0.04 at depth-2, dropped at depth-3+ (CASCADE_D1_DECAY/CASCADE_D2_DECAY)",
+   "anchors": [
+    {
+     "path": "v3/signal/cascade_engine.py",
+     "sha256": "e9a574c80e56964c08b4ad6946cee3c0dbca19a24db35025e7bb5e5a87a1f0b7"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "depth-3+ drops are not persisted; committed supply-chain edge list = 19 edges (counted from v3/signal/supply_chain.py, 2026-08-07)",
+   "retained_mass": "PENDING",
+   "interpretation_change": "unknown",
+   "rerun_threshold": "any change to CASCADE_D1_DECAY, CASCADE_D2_DECAY, or the depth cutoff"
+  },
+  {
+   "site_key": "snapshot_per_name_cap",
+   "reason": "bundled evidence snapshot caps each name at 100 evidence objects (PER_NAME_CAP, mirrors render_why_json limit)",
+   "anchors": [
+    {
+     "path": "v3/evidence/snapshot.py",
+     "sha256": "1a49c10ee2c0d8cf48b30e2c87d7df11bf234126d311b5e0a86a82c02ee5f610"
+    }
+   ],
+   "count": "5 of 79 names at the 100-object cap (counted over committed docs/why/*.json, 2026-08-07)",
+   "retained_mass": "PENDING",
+   "retained_mass_note": "pre-cap totals are not persisted at generation",
+   "interpretation_change": "unknown",
+   "rerun_threshold": "any change to PER_NAME_CAP, or >20% of names at cap"
+  },
+  {
+   "site_key": "u350_drain_cap",
+   "reason": "U350 shadow drain processes at most DRAIN_CAP=12 filings per run and only when U79 queues are empty (shadow starves first, by design)",
+   "anchors": [
+    {
+     "path": "v3/u350/shadow_ops.py",
+     "sha256": "fed57a65cf6596208f2699ccbf10ae721b6417b023e68fd1488015008c688952"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "drain backlog lives in the u350 DB schema, not a committed artifact",
+   "retained_mass": "PENDING",
+   "interpretation_change": "no",
+   "interpretation_change_note": "structurally isolated shadow surface; U79 canonical surfaces read nothing from it (U350 isolation gate proves refusals by attempt each build)",
+   "rerun_threshold": "any change to DRAIN_CAP or to the starvation order"
+  },
+  {
+   "site_key": "c7_structurally_inactive",
+   "reason": "C7 peer-correlation component is STRUCTURALLY_INACTIVE (needs 20d sector-cohort return correlations not yet in production inputs)",
+   "anchors": [
+    {
+     "path": "v3/signal/components/c7_peer_correlation.py",
+     "sha256": "2817af661054ea330e54b1a29d232d25ac61e52e950fa260e39f1bcc5d755991"
+    }
+   ],
+   "count": "structural: all issuer-days while inactive (whole component)",
+   "retained_mass": "0 of C7's designed contribution; composite renormalizes over active components",
+   "interpretation_change": "yes",
+   "interpretation_change_note": "disclosed wherever C7 status appears; composite reads as ex-C7",
+   "rerun_threshold": "C7 activation or any renormalization change"
+  },
+  {
+   "site_key": "open_window_closure",
+   "reason": "forward windows enter matured panels only at closure; open windows are excluded from matured statistics, never padded",
+   "anchors": [
+    {
+     "path": "v3/track/outcome_updater.py",
+     "sha256": "d6e1bbf18332449a827c10306cdda1fd0a552067a1da2ebab7556358f8ea397f"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "derivable by subtraction from committed docs/validation.html forward panel (total signals 4743 at 2026-08-06; per-horizon matured columns printed per label row)",
+   "retained_mass": "PENDING",
+   "interpretation_change": "no",
+   "interpretation_change_note": "maturity lag is printed on the page (one trading day behind the snapshot record)",
+   "rerun_threshold": "any horizon change or any padding/backfill of an open window"
+  },
+  {
+   "site_key": "corporate_action_exclusions",
+   "reason": "universe membership changes must invoke the corporate-action policy; affected spans are excluded, never silently spliced",
+   "anchors": [
+    {
+     "path": "tools/check_universe_integrity.py",
+     "sha256": "45ceba1a74cf3674a716a02e8a190a737f34abba668b13841125d214868b195a"
+    },
+    {
+     "path": "tools/yuclaw_u350_admission.py",
+     "sha256": "1bb932b4bc68ca3eb1b7004debbcf8a129c7374d2596fa1fb7d84f4c08b07830"
+    }
+   ],
+   "count": "0 policy invocations on record (internal/policy_invocations/ empty, 2026-08-07)",
+   "retained_mass": "1.0 to date (no exclusions yet invoked)",
+   "interpretation_change": "no",
+   "rerun_threshold": "any policy invocation"
+  },
+  {
+   "site_key": "evidence_tier_boundary",
+   "reason": "evidence-tier names are never scored: positive gating plus a standing negative check",
+   "anchors": [
+    {
+     "path": "v3/universe_tiers.py",
+     "sha256": "97afe55fd08a4dfaa5cfe8ccf2b9192caa836d87c254f7709e7c9a77f3d44115"
+    }
+   ],
+   "count": "53 evidence-tier names vs 79 scoring names (counted from the committed tier registry, 2026-08-07)",
+   "retained_mass": "0 scored mass from evidence-tier names (by design)",
+   "interpretation_change": "no",
+   "interpretation_change_note": "boundary is the published coverage statement itself",
+   "rerun_threshold": "any tier migration in either direction"
+  },
+  {
+   "site_key": "llm_failure_families",
+   "reason": "extraction failures drop filings from the event stream by family: parse failure, refusal, timeout/retry exhaustion (MAX_RETRIES)",
+   "anchors": [
+    {
+     "path": "v3/extract/event_worker.py",
+     "sha256": "5b4e57abc98e02ab85e618f2fca56ed4a4e44ee4de21d2730990a08c965f394a"
+    },
+    {
+     "path": "v3/sources/edgar_poll_v2.py",
+     "sha256": "7c0d3836d43407354ab25a9823d6b6e22c62432626f670598d72e21c31afb179"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "failure logs are operational, not committed artifacts",
+   "retained_mass": "PENDING",
+   "interpretation_change": "unknown",
+   "rerun_threshold": "a new failure family, or any family exceeding 5% of intake in a week"
+  },
+  {
+   "site_key": "delisting_staleness",
+   "reason": "scoring-universe names with stale latest prices are flagged by the U2 delisting watch and excluded from fresh panels until resolved",
+   "anchors": [
+    {
+     "path": "tools/check_universe_integrity.py",
+     "sha256": "45ceba1a74cf3674a716a02e8a190a737f34abba668b13841125d214868b195a"
+    }
+   ],
+   "count": "0 stale of 79 (universe-gate run of 2026-08-07: 79/79 fresh within 5 trading days)",
+   "retained_mass": "1.0 at last gate run",
+   "interpretation_change": "no",
+   "rerun_threshold": "any name flagged by the delisting watch"
+  }
+ ],
+ "detector_allowlist": {
+  "version": 1,
+  "reviewed": "2026-08-07",
+  "note": "narrow-and-trusted (amendment A-3): cap/limit/max constants and exclusion enums present at registration; widen only by versioned review",
+  "constants": [
+   {
+    "file": "v3/sources/edgar_backfill.py",
+    "name": "RAW_TEXT_CAP"
+   },
+   {
+    "file": "tools/check_site_walk.py",
+    "name": "MAX_CLICKS"
+   },
+   {
+    "file": "v3/extract/event_worker.py",
+    "name": "RAW_TEXT_MAX_CHARS"
+   },
+   {
+    "file": "v3/sources/form4_parser.py",
+    "name": "MAGNITUDE_CAP_USD"
+   },
+   {
+    "file": "v3/sources/edgar_poll_v2.py",
+    "name": "MAX_RETRIES"
+   },
+   {
+    "file": "v3/evidence/snapshot.py",
+    "name": "PER_NAME_CAP"
+   },
+   {
+    "file": "v3/u350/shadow_ops.py",
+    "name": "DRAIN_CAP"
+   },
+   {
+    "file": "v3/signal/components/c6_event_impact.py",
+    "name": "INSIDER_AGGREGATE_CAP"
+   },
+   {
+    "file": "tools/yuclaw_client_intake.py",
+    "name": "MAX_SHOWN"
+   },
+   {
+    "file": "tools/deploy_verify.py",
+    "name": "MAX_HOPS"
+   }
+  ]
+ }
+}

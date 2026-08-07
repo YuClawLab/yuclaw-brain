@@ -129,9 +129,14 @@ fi
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
-# Header-layout gate (2026-08-06): stamp in its own block below the nav row,
-# exactly one stamp, version badge == package version — on every page.
+# Header-layout gate (2026-08-07 clean-header order): zero stamps in any
+# header, exactly one stamp per page anywhere, badge == package version.
 /usr/bin/python3 tools/check_header_layout.py || exit 43
+# Truncation-ledger gate (Truncation & Error Budget v1, 2026-08-07, active
+# immediately): every truncation/filter/cap has a ledger entry; anchored
+# truncation code cannot drift without a same-commit ledger update; new
+# cap constants / exclusion enums must be ledgered or allowlist-reviewed.
+/usr/bin/python3 tools/check_truncation_ledger.py || exit 44
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
