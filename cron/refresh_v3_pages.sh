@@ -137,6 +137,13 @@ fi
 # truncation code cannot drift without a same-commit ledger update; new
 # cap constants / exclusion enums must be ledgered or allowlist-reviewed.
 /usr/bin/python3 tools/check_truncation_ledger.py || exit 44
+# Discovery-ledger gate (Discovery Ledger v1, 2026-08-10, active
+# immediately): LEDGER-RECONCILIATION (kind=protocol chain lines <->
+# hypothesis identities, bijection both directions, orphans fail) +
+# FAMILY-LOCK (family membership immutable except by supersession with
+# lineage); registry/discovery_ledger.json is derived, never
+# hand-maintained — any divergence from the chain rebuild fails.
+/usr/bin/python3 tools/check_discovery_ledger.py || exit 45
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).

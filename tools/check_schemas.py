@@ -119,7 +119,12 @@ def main() -> int:
     # classification / buy-sell / portfolio-action fields; (B) signal-
     # label vocabulary is rejected in the canonical research-state field.
     from tools.yuclaw_science_trust import RESEARCH_STATES
+    from tools.yuclaw_discovery_ledger import LEDGER_ADJUDICATION_STATES
     from v3.web.useful_blocks import PUBLIC_LABELS
+    # Discovery Ledger v1 (2026-08-10): ledger statuses + adjudication
+    # vocabulary live on the research-state axis — rejected in signal-
+    # context fields exactly like research states.
+    RESEARCH_AXIS = RESEARCH_STATES | LEDGER_ADJUDICATION_STATES
     SIGNAL_FIELD_KEYS = {"label", "signal_label", "signal", "score_label",
                          "classification", "trading_classification",
                          "action", "buy_sell", "portfolio_action"}
@@ -134,7 +139,7 @@ def main() -> int:
                     val = v.upper()
                     if k in SIGNAL_FIELD_KEYS:
                         n_vocab += 1
-                        if val in RESEARCH_STATES:
+                        if val in RESEARCH_AXIS:
                             problems.append(
                                 f"S6 {where}: research state {v!r} used as "
                                 f"signal-context field '{k}' — research "
@@ -164,6 +169,8 @@ def main() -> int:
         _s6_walk(json.loads(line).get("payload", {}), "registry")
     _s6_walk(json.loads((_REPO / "registry" / "truncation_ledger.json"
                          ).read_text()), "truncation_ledger.json")
+    _s6_walk(json.loads((_REPO / "registry" / "discovery_ledger.json"
+                         ).read_text()), "discovery_ledger.json")
 
     if problems:
         print("SCHEMA GATE FAILED:")
