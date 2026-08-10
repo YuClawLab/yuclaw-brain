@@ -121,6 +121,21 @@
    ],
    "q": 0.1
   },
+  "evidence-completeness-profile": {
+   "adjudication": "PENDING",
+   "counters": {
+    "family_aware_findings": 0,
+    "inconclusive": 0,
+    "matured": 0,
+    "negative": 0,
+    "nominal_findings": 0,
+    "registered": 1
+   },
+   "members": [
+    "H-2026-000035"
+   ],
+   "q": 0.1
+  },
   "evidence-coverage": {
    "adjudication": "PENDING",
    "counters": {
@@ -299,6 +314,21 @@
    },
    "members": [
     "H-2026-000008"
+   ],
+   "q": 0.1
+  },
+  "research-state-derivation": {
+   "adjudication": "PENDING",
+   "counters": {
+    "family_aware_findings": 0,
+    "inconclusive": 0,
+    "matured": 0,
+    "negative": 0,
+    "nominal_findings": 0,
+    "registered": 1
+   },
+   "members": [
+    "H-2026-000036"
    ],
    "q": 0.1
   },
@@ -1502,14 +1532,56 @@
    "universe": "NOT_DECLARED_IN_SOURCE_LINE",
    "verdict_annotation": null,
    "version": 1
+  },
+  {
+   "chain_line": 71,
+   "claim": "Derived-only lineage: count of artifact states diverging from the registered deterministic derivation re-applied to their printed inputs \u2014 must equal 0, chain-gate enforced (exit 47)",
+   "evidence_family": "evidence-completeness-profile",
+   "family_adjudication": "PENDING",
+   "family_q": 0.1,
+   "horizon": "NOT_DECLARED_IN_SOURCE_LINE",
+   "hypothesis_id": "H-2026-000035",
+   "maturity": "NOT_DECLARED_IN_SOURCE_LINE",
+   "method_hash": "60d18ae89b149570",
+   "name": "Evidence Completeness Profile v1 (Science Trust addendum \u2014 counting ACTIVE, unseen-evidence estimator UNCOMPUTED/BANNED)",
+   "parent_family": null,
+   "population": "NOT_DECLARED_IN_SOURCE_LINE",
+   "protocol_id": "82d45a34ba02",
+   "registered_at": "2026-08-10",
+   "result_lineage": [],
+   "status": "REGISTERED",
+   "universe": "NOT_DECLARED_IN_SOURCE_LINE",
+   "verdict_annotation": null,
+   "version": 1
+  },
+  {
+   "chain_line": 72,
+   "claim": "Render integrity: byte-equality of registry/research_state.json with the deterministic rebuild from registered artifacts, and zero research states lacking a registered basis \u2014 chain-gate enforced (exit 48)",
+   "evidence_family": "research-state-derivation",
+   "family_adjudication": "PENDING",
+   "family_q": 0.1,
+   "horizon": "NOT_DECLARED_IN_SOURCE_LINE",
+   "hypothesis_id": "H-2026-000036",
+   "maturity": "NOT_DECLARED_IN_SOURCE_LINE",
+   "method_hash": "98a1da2027a1b983",
+   "name": "Research-State Derivation v1 (Science Trust addendum \u2014 adjudication UNCOMPUTED, derivation machinery ACTIVE)",
+   "parent_family": null,
+   "population": "NOT_DECLARED_IN_SOURCE_LINE",
+   "protocol_id": "ad599b80d2db",
+   "registered_at": "2026-08-10",
+   "result_lineage": [],
+   "status": "REGISTERED",
+   "universe": "NOT_DECLARED_IN_SOURCE_LINE",
+   "verdict_annotation": null,
+   "version": 1
   }
  ],
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 70,
+  "chain_lines": 75,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "145f453800bf0e5d1caad22eecc22d58efc521e3fe94d83741c8416d1d687719",
+  "derivation_anchor_chain_tip": "7eedce8f6bba7a07dac0dfe52fce73c182d1219307b55a475734ad9fb8b2d1dc",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
@@ -1519,7 +1591,7 @@
   "ACCRUING": 17,
   "INCONCLUSIVE": 1,
   "OPEN": 7,
-  "REGISTERED": 5,
+  "REGISTERED": 7,
   "SUPERSEDED": 4
  }
 }

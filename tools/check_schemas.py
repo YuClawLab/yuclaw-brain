@@ -176,6 +176,10 @@ def main() -> int:
                          ).read_text()), "discovery_ledger.json")
     _s6_walk(json.loads((_REPO / "registry" / "anytime_record.json"
                          ).read_text()), "anytime_record.json")
+    _s6_walk(json.loads((_REPO / "registry" / "completeness_profile.json"
+                         ).read_text()), "completeness_profile.json")
+    _s6_walk(json.loads((_REPO / "registry" / "research_state.json"
+                         ).read_text()), "research_state.json")
 
     if problems:
         print("SCHEMA GATE FAILED:")

@@ -155,6 +155,14 @@ fi
 # enrollment field fails) + ANYTIME-RECONCILIATION
 # (registry/anytime_record.json is derived, never hand-maintained).
 /usr/bin/python3 tools/check_anytime_record.py || exit 46
+# Completeness profile (2026-08-11): nightly counting-only regeneration,
+# then derived-only-lineage gate — hand-maintained overrides fail.
+/usr/bin/python3 tools/yuclaw_completeness_profile.py --write || exit 47
+/usr/bin/python3 tools/check_completeness_profile.py || exit 47
+# Research-state derivation (2026-08-11): renders registered artifacts
+# only; byte-identical rebuild enforced.
+/usr/bin/python3 tools/yuclaw_research_state.py --write || exit 48
+/usr/bin/python3 tools/check_research_state.py || exit 48
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
@@ -170,7 +178,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/explorer.html docs/explorer_data.json docs/why \
                  docs/sectors.html docs/tour.html docs/methodology.html \
                  docs/capabilities.json docs/evidence docs/ledger \
-                 docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html
+                 docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html \
+                 registry/completeness_profile.json registry/research_state.json
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"

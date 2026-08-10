@@ -272,6 +272,10 @@ def enroll(payload: dict, chain_path: Path = CHAIN) -> str:
     p = dict(payload)
     now = datetime.now(timezone.utc).replace(microsecond=0)
     p["enrolled_at"] = now.isoformat()
+    if not p.get("start_time"):
+        # C-1 (order 2026-08-11): start_time = the actual registration
+        # timestamp; first eligible observation is strictly after it.
+        p["start_time"] = p["enrolled_at"]
     if "enrollment_id" not in p:
         p["enrollment_id"] = hashlib.sha256(
             f"{p.get('instrument')}|{p.get('registered_null')}|"

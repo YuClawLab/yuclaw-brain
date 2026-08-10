@@ -1,11 +1,166 @@
 {
- "enrollment_count": 0,
- "enrollments": [],
+ "enrollment_count": 3,
+ "enrollments": [
+  {
+   "chain_line": 73,
+   "dependency_assumptions": [
+    "forward-ledger outcome updater continues to mature 20d outcomes from price_history closes",
+    "signal issuance continues under the locked 2026-07-26 label vocabulary",
+    "observations are independent across issuance dates at daily cadence (declared; violations invalidate, never re-adjudicate)"
+   ],
+   "enrolled_at": "2026-08-10T02:20:59+00:00",
+   "enrollment_id": "06721f08a792",
+   "evidence_family": "label-tier-forward-survival",
+   "instrument": "E1: BULLISH-tier pooled (BULLISH + STRONG_BULLISH) 20d directional consistency",
+   "invalidation_conditions": [
+    {
+     "condition": "label-definition change (vocabulary or semantics of the instrument's labels)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "threshold supersession (Anytime Evidence Record v1 method superseded)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "forward-ledger gap > 5 trading days",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "BULLISH/STRONG_BULLISH labels retired before any post-start observation matures",
+     "maps_to": "NOT_IDENTIFIABLE"
+    }
+   ],
+   "maturity": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+   "observation_cadence": "daily at the nightly chain close; an observation is admitted only when a signal issued strictly after start_time has its 20d outcome matured in the forward ledger (C-1: no information-set timestamp <= start_time is ever admitted)",
+   "parameters": {
+    "corporate_action_rule": "returns as recorded by the ledger from price_history closes; corporate-action handling is upstream at the price source; no additional adjustment in this formula",
+    "direction": "greater",
+    "eligible_population": "track_record rows with is_backfill=false AND return_20d IS NOT NULL AND signal_date <= cutoff (only fully matured 20d outcomes strictly prior to enrollment)",
+    "grid_K": 20,
+    "horizon_20d_definition": "return_20d as recorded by the forward ledger outcome updater: close-to-close over 20 trading days from signal_date",
+    "immutability": "m0 is immutable after enrollment; any change requires a new enrollment (C-2)",
+    "label_definition_version": "locked public vocabulary, label-audit order 2026-07-26 (useful_blocks.PUBLIC_LABELS, 8 labels, rendered verbatim, remaps banned)",
+    "m0": 0.5,
+    "m0_provenance": "fixed by order 2026-08-11 (coin-flip null; no historical base used)",
+    "missing_incomplete_window_rule": "rows with NULL return_20d (window not matured) are excluded; no imputation",
+    "transform": "indicator: hit_20d -> 1 else 0"
+   },
+   "registered_null": "H0: E[X_i] <= 0.50 (direction greater); X_i = 1 if hit_20d (20d direction consistent with label) else 0, for signals labeled BULLISH or STRONG_BULLISH issued strictly after start_time",
+   "start_time": "2026-08-10T02:20:59+00:00",
+   "stopping_policy": "no early stopping: continuous daily e-process to the registered thresholds (theta_supported=20, theta_weak=5 state semantics) or invalidation; terminal read only via the instrument's discovery-family registered read after maturity"
+  },
+  {
+   "chain_line": 74,
+   "dependency_assumptions": [
+    "forward-ledger outcome updater continues to mature 20d outcomes from price_history closes",
+    "signal issuance continues under the locked 2026-07-26 label vocabulary",
+    "observations are independent across issuance dates at daily cadence (declared; violations invalidate, never re-adjudicate)"
+   ],
+   "enrolled_at": "2026-08-10T02:20:59+00:00",
+   "enrollment_id": "84187c7ea6e7",
+   "evidence_family": "label-tier-forward-survival",
+   "instrument": "E2: RISK_ALERT 20d adverse-move rate",
+   "invalidation_conditions": [
+    {
+     "condition": "label-definition change (vocabulary or semantics of the instrument's labels)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "threshold supersession (Anytime Evidence Record v1 method superseded)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "forward-ledger gap > 5 trading days",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "RISK_ALERT retired or renamed before its first issuance",
+     "maps_to": "NOT_IDENTIFIABLE"
+    }
+   ],
+   "maturity": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+   "observation_cadence": "daily at the nightly chain close; an observation is admitted only when a signal issued strictly after start_time has its 20d outcome matured in the forward ledger (C-1: no information-set timestamp <= start_time is ever admitted)",
+   "parameters": {
+    "corporate_action_rule": "returns as recorded by the ledger from price_history closes; corporate-action handling is upstream at the price source; no additional adjustment in this formula",
+    "direction": "greater",
+    "eligible_population": "track_record rows with is_backfill=false AND return_20d IS NOT NULL AND signal_date <= cutoff (only fully matured 20d outcomes strictly prior to enrollment)",
+    "grid_K": 20,
+    "horizon_20d_definition": "return_20d as recorded by the forward ledger outcome updater: close-to-close over 20 trading days from signal_date",
+    "immutability": "m0 is immutable after enrollment; any change requires a new enrollment (C-2)",
+    "label_definition_version": "locked public vocabulary, label-audit order 2026-07-26 (useful_blocks.PUBLIC_LABELS, 8 labels, rendered verbatim, remaps banned)",
+    "m0": 0.467304,
+    "m0_conditional_denominator": 0,
+    "m0_conditional_numerator": 0,
+    "m0_cutoff": "enrolled_at (this line's registration stamp)",
+    "m0_denominator": 3242,
+    "m0_formula": "deterministic in-line formula, frozen at enrollment: numerator/denominator over the eligible population conditional on signal_label='RISK_ALERT' IF denominator >= 30; ELSE fall back to the unconditional eligible population (all labels). RISK_ALERT has never been issued: conditional 0/0, fallback applied",
+    "m0_numerator": 1515,
+    "missing_incomplete_window_rule": "rows with NULL return_20d (window not matured) are excluded; no imputation",
+    "source_artifact_sha256": "f0950603c6d60aeaaa9bb634a2d1617ab7c4487aa53b753f857574a66007b6e8",
+    "transform": "indicator: return_20d < 0 -> 1 else 0"
+   },
+   "registered_null": "H0: E[X_i] <= 0.467304 (direction greater); X_i = 1 if return_20d < 0 else 0, for signals labeled RISK_ALERT issued strictly after start_time",
+   "start_time": "2026-08-10T02:20:59+00:00",
+   "stopping_policy": "no early stopping: continuous daily e-process to the registered thresholds (theta_supported=20, theta_weak=5 state semantics) or invalidation; terminal read only via the instrument's discovery-family registered read after maturity"
+  },
+  {
+   "chain_line": 75,
+   "dependency_assumptions": [
+    "forward-ledger outcome updater continues to mature 20d outcomes from price_history closes",
+    "signal issuance continues under the locked 2026-07-26 label vocabulary",
+    "observations are independent across issuance dates at daily cadence (declared; violations invalidate, never re-adjudicate)"
+   ],
+   "enrolled_at": "2026-08-10T02:20:59+00:00",
+   "enrollment_id": "bca373c95f68",
+   "evidence_family": "label-tier-forward-survival",
+   "instrument": "E3: WATCH 20d downward-resolution rate",
+   "invalidation_conditions": [
+    {
+     "condition": "label-definition change (vocabulary or semantics of the instrument's labels)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "threshold supersession (Anytime Evidence Record v1 method superseded)",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "forward-ledger gap > 5 trading days",
+     "maps_to": "INCONCLUSIVE"
+    },
+    {
+     "condition": "WATCH retired before any post-start observation matures",
+     "maps_to": "NOT_IDENTIFIABLE"
+    }
+   ],
+   "maturity": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+   "observation_cadence": "daily at the nightly chain close; an observation is admitted only when a signal issued strictly after start_time has its 20d outcome matured in the forward ledger (C-1: no information-set timestamp <= start_time is ever admitted)",
+   "parameters": {
+    "corporate_action_rule": "returns as recorded by the ledger from price_history closes; corporate-action handling is upstream at the price source; no additional adjustment in this formula",
+    "direction": "greater",
+    "eligible_population": "track_record rows with is_backfill=false AND return_20d IS NOT NULL AND signal_date <= cutoff (only fully matured 20d outcomes strictly prior to enrollment)",
+    "grid_K": 20,
+    "horizon_20d_definition": "return_20d as recorded by the forward ledger outcome updater: close-to-close over 20 trading days from signal_date",
+    "immutability": "m0 is immutable after enrollment; any change requires a new enrollment (C-2)",
+    "label_definition_version": "locked public vocabulary, label-audit order 2026-07-26 (useful_blocks.PUBLIC_LABELS, 8 labels, rendered verbatim, remaps banned)",
+    "m0": 0.387183,
+    "m0_cutoff": "enrolled_at (this line's registration stamp)",
+    "m0_denominator": 749,
+    "m0_formula": "deterministic in-line formula, frozen at enrollment: numerator/denominator over the eligible population conditional on signal_label='WATCH' (denominator >= 30 satisfied)",
+    "m0_numerator": 290,
+    "missing_incomplete_window_rule": "rows with NULL return_20d (window not matured) are excluded; no imputation",
+    "source_artifact_sha256": "0e9a4a44e3a34b8f77b7f4373d1a12d8fc789c18ebfd5768193a54d481edbd51",
+    "transform": "indicator: return_20d < 0 -> 1 else 0"
+   },
+   "registered_null": "H0: E[X_i] <= 0.387183 (direction greater); X_i = 1 if return_20d < 0 else 0, for signals labeled WATCH issued strictly after start_time",
+   "start_time": "2026-08-10T02:20:59+00:00",
+   "stopping_policy": "no early stopping: continuous daily e-process to the registered thresholds (theta_supported=20, theta_weak=5 state semantics) or invalidation; terminal read only via the instrument's discovery-family registered read after maturity"
+  }
+ ],
  "note": "zero enrollments at registration \u2014 honest-empty, like the leaderboard; every future instrument enrolls its own line BEFORE its observation starts; historical starts are refused",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 70,
-  "derivation_anchor_chain_tip": "145f453800bf0e5d1caad22eecc22d58efc521e3fe94d83741c8416d1d687719",
+  "chain_lines": 75,
+  "derivation_anchor_chain_tip": "7eedce8f6bba7a07dac0dfe52fce73c182d1219307b55a475734ad9fb8b2d1dc",
   "enrollment_machinery": "ACTIVE",
   "method_hash": "7b41bb4b8bded72b",
   "name": "Anytime Evidence Record v1 (Science Trust addendum)",
