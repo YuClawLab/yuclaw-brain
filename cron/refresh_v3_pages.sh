@@ -144,6 +144,12 @@ fi
 # lineage); registry/discovery_ledger.json is derived, never
 # hand-maintained — any divergence from the chain rebuild fails.
 /usr/bin/python3 tools/check_discovery_ledger.py || exit 45
+# Anytime-record gate (Anytime Evidence Record v1, 2026-08-11, active
+# immediately): ANYTIME-PROSPECTIVE (retro-dated enrollment start fails —
+# nothing is ever retrofitted) + ANYTIME-SCHEMA (missing required
+# enrollment field fails) + ANYTIME-RECONCILIATION
+# (registry/anytime_record.json is derived, never hand-maintained).
+/usr/bin/python3 tools/check_anytime_record.py || exit 46
 
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).

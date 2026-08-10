@@ -1,5 +1,20 @@
 {
  "families": {
+  "anytime-evidence-record": {
+   "adjudication": "PENDING",
+   "counters": {
+    "family_aware_findings": 0,
+    "inconclusive": 0,
+    "matured": 0,
+    "negative": 0,
+    "nominal_findings": 0,
+    "registered": 1
+   },
+   "members": [
+    "H-2026-000034"
+   ],
+   "q": 0.1
+  },
   "c2-challenger-evaluation": {
    "adjudication": "PENDING",
    "counters": {
@@ -1466,14 +1481,35 @@
    "universe": "NOT_DECLARED_IN_SOURCE_LINE",
    "verdict_annotation": null,
    "version": 1
+  },
+  {
+   "chain_line": 70,
+   "claim": "Prospective integrity: count of enrollment lines with start_time earlier than enrolled_at or missing a required enrollment field \u2014 must equal 0, chain-gate enforced",
+   "evidence_family": "anytime-evidence-record",
+   "family_adjudication": "PENDING",
+   "family_q": 0.1,
+   "horizon": "NOT_DECLARED_IN_SOURCE_LINE",
+   "hypothesis_id": "H-2026-000034",
+   "maturity": "NOT_DECLARED_IN_SOURCE_LINE",
+   "method_hash": "7b41bb4b8bded72b",
+   "name": "Anytime Evidence Record v1 (Science Trust addendum \u2014 adjudication UNCOMPUTED, enrollment machinery ACTIVE, zero enrollments, PROSPECTIVE ONLY)",
+   "parent_family": null,
+   "population": "NOT_DECLARED_IN_SOURCE_LINE",
+   "protocol_id": "e99eb4d335fe",
+   "registered_at": "2026-08-10",
+   "result_lineage": [],
+   "status": "REGISTERED",
+   "universe": "NOT_DECLARED_IN_SOURCE_LINE",
+   "verdict_annotation": null,
+   "version": 1
   }
  ],
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 69,
+  "chain_lines": 70,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "a1e0bfd9ae6f91a8d738d1c8217c01fc236d6d57a8fef2d92e1d0919d3330724",
+  "derivation_anchor_chain_tip": "145f453800bf0e5d1caad22eecc22d58efc521e3fe94d83741c8416d1d687719",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
@@ -1483,7 +1519,7 @@
   "ACCRUING": 17,
   "INCONCLUSIVE": 1,
   "OPEN": 7,
-  "REGISTERED": 4,
+  "REGISTERED": 5,
   "SUPERSEDED": 4
  }
 }
