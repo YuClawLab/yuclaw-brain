@@ -146,6 +146,66 @@
    "retained_mass": "1.0 at last gate run",
    "interpretation_change": "no",
    "rerun_threshold": "any name flagged by the delisting watch"
+  },
+  {
+   "site_key": "macro_series_allowlist",
+   "reason": "No.5 ingestion refuses any (source, series_id) outside the enumerated 11-series set ALL_SERIES (6 FRED + 3 EIA + 2 yfinance); licensed LSEG/Bloomberg factor sets excluded per the No.5 packet",
+   "anchors": [
+    {
+     "path": "v3/sources/macro_series.py",
+     "sha256": "b7a7163db70001d8edc3675ae55dd36bd39a5c9936a21ce6b0b3fde89935ce48"
+    }
+   ],
+   "count": 11,
+   "count_note": "11 series in-set counted from ALL_SERIES (2026-08-10); 5 ingested this session, 6 FRED pending FRED_API_KEY; the excluded licensed class is not enumerable",
+   "retained_mass": "NOT APPLICABLE",
+   "interpretation_change": "no",
+   "rerun_threshold": "any edit to FRED_SERIES / EIA_SERIES / YF_SERIES / ALL_SERIES"
+  },
+  {
+   "site_key": "macro_backfill_window",
+   "reason": "bounded backfill: observations before BACKFILL_START (2016-01-01) are never stored; window enforced client-side for every source because the EIA v2 seriesid route ignores start/end and returns full history",
+   "anchors": [
+    {
+     "path": "v3/sources/macro_series.py",
+     "sha256": "b7a7163db70001d8edc3675ae55dd36bd39a5c9936a21ce6b0b3fde89935ce48"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "one counted example from the 2026-08-10 smoke overshoot (deleted before backfill): EIA PET.RWTC.D full history 10219 rows, 2652 in-window retained; per-series pre-2016 drop counts are not persisted",
+   "retained_mass": "PENDING",
+   "interpretation_change": "no",
+   "rerun_threshold": "any change to BACKFILL_START or the client-side window filter"
+  },
+  {
+   "site_key": "macro_missing_value_skip",
+   "reason": "source-native absent observations are skipped, never stored as zeros: FRED value '.', EIA null value, yfinance NaN close",
+   "anchors": [
+    {
+     "path": "v3/sources/macro_series.py",
+     "sha256": "b7a7163db70001d8edc3675ae55dd36bd39a5c9936a21ce6b0b3fde89935ce48"
+    }
+   ],
+   "count": "PENDING",
+   "count_note": "skips are not persisted; dominated by non-trading days (weekends/holidays) in daily series",
+   "retained_mass": "PENDING",
+   "interpretation_change": "unknown",
+   "rerun_threshold": "any change to the '.'/null/NaN skip branches"
+  },
+  {
+   "site_key": "macro_fetch_error_branch",
+   "reason": "a per-series fetch failure skips that series for the run (printed to stderr, nonzero exit; next --accrue or --resume self-heals) rather than aborting the whole ingestion",
+   "anchors": [
+    {
+     "path": "v3/sources/macro_series.py",
+     "sha256": "b7a7163db70001d8edc3675ae55dd36bd39a5c9936a21ce6b0b3fde89935ce48"
+    }
+   ],
+   "count": 0,
+   "count_note": "0 error-branch activations across the 2026-08-10 smoke (x3), backfill, and resume runs (counted from run stats)",
+   "retained_mass": "NOT APPLICABLE",
+   "interpretation_change": "unknown",
+   "rerun_threshold": "any change to the error-branch semantics (skip vs abort) or exit-code contract"
   }
  ],
  "detector_allowlist": {

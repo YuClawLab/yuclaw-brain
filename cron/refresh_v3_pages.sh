@@ -29,6 +29,11 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # abort the chain — and a GitHub hiccup must never block the page pipeline.
 # Weekend days are covered by the window on Monday's run; the merge dedupes.
 /bin/bash tools/traffic_archive.sh || echo "[refresh_v3_pages] traffic archive failed (non-fatal)"
+# No.5 macro accrual (order 2026-08-10g): POINT_IN_TIME forward accrual of
+# the FRED/EIA/futures context series — research-internal substrate only,
+# feeds no page or score; non-fatal by design (archiver pattern). FRED
+# series self-skip while FRED_API_KEY is absent from ~/.yuclaw_env.
+/usr/bin/python3 -m v3.sources.macro_series --accrue || echo "[refresh_v3_pages] macro accrual failed (non-fatal)"
 
 # Generate fresh pages — output paths default to $REPO_DIR/docs/.
 /usr/bin/python3 -m v3.web.render_landing || exit 2
