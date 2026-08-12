@@ -1,28 +1,28 @@
 {
  "ticker": "MRVL",
- "generated": "2026-08-11T23:01:38.075685+00:00",
- "label": "WEAKENING",
- "score": -0.0717,
+ "generated": "2026-08-12T23:01:20.429744+00:00",
+ "label": "WATCH",
+ "score": 0.1211,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.4985,
+  "c1": -0.0105,
   "c2": 0.0,
-  "c3": -0.3016638,
+  "c3": 0.70801044,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.33087578,
-  "c7": 0.20564254,
+  "c6": -0.3017084,
+  "c7": 0.018579531,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 94,
-  "events_90d": 14,
-  "recency_days": 8.1,
-  "type_diversity": 4,
+  "ecs": 87,
+  "events_90d": 12,
+  "recency_days": 9.1,
+  "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
@@ -309,6 +309,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-12",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-11",
    "label": "WEAKENING"
   },
@@ -423,10 +427,6 @@
   {
    "date": "2026-07-02",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-01",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",

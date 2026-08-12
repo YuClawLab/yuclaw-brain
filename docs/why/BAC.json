@@ -1,31 +1,51 @@
 {
  "ticker": "BAC",
- "generated": "2026-08-11T23:01:38.075685+00:00",
+ "generated": "2026-08-12T23:01:20.429744+00:00",
  "label": "NEUTRAL",
- "score": 0.3132,
+ "score": 0.3049,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.363,
+  "c1": 0.446,
   "c2": 0.0,
-  "c3": -0.19131374,
+  "c3": -0.093549006,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.0,
-  "c7": 0.1381528,
+  "c6": -2.8159737e-05,
+  "c7": 0.1288079,
   "c8": 0.0,
   "c9": 0.5
  },
  "evidence_coverage": {
-  "ecs": 25,
-  "events_90d": 0,
-  "recency_days": null,
-  "type_diversity": 0,
+  "ecs": 69,
+  "events_90d": 2,
+  "recency_days": 0.2,
+  "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "BAC",
+   "evidence_type": "INSIDER_BUY",
+   "filing_date": "2026-08-12",
+   "accession_number": "0000070858-26-000439",
+   "excerpt": "BANK OF AMERICA CORP /DE/ P 4797 shares @ $12.29 on 2026-08-10 ($58,955)",
+   "source_hash": "d6240829b42ce1a8b9ee4c93e2aacb811753172bb1cb2d68fdd3a5c010656881",
+   "available_as_of": "2026-08-12T11:42:10.880611-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "BAC",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-12",
+   "accession_number": "0000070858-26-000439",
+   "excerpt": "BANK OF AMERICA CORP /DE/ S 4797 shares @ $12.32 on 2026-08-10 ($59,099)",
+   "source_hash": "bb7a3268517c5e23d1c605dbcf15925fd69686e8961629cdc079efb7b014fac9",
+   "available_as_of": "2026-08-12T11:42:10.880611-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "BAC",
    "evidence_type": "INSIDER_SELL",
@@ -98,6 +118,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-11",
    "label": "NEUTRAL"
@@ -212,10 +236,6 @@
   },
   {
    "date": "2026-07-02",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-01",
    "label": "NEUTRAL"
   }
  ],
