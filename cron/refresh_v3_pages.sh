@@ -155,6 +155,14 @@ fi
 # enrollment field fails) + ANYTIME-RECONCILIATION
 # (registry/anytime_record.json is derived, never hand-maintained).
 /usr/bin/python3 tools/check_anytime_record.py || exit 46
+# Anytime observer (order 2026-08-12a): nightly observation admission for
+# the three enrolled instruments — C-1 strictly-after issuance, matured
+# 20d outcomes only, locked e-process wealth updates, observations
+# appended to the chained registry/anytime_observations.jsonl (the
+# canonical chain is never written here). Non-fatal by design; the
+# nightly "0 eligible observations" line IS the C-1 proof until the
+# first post-start outcome matures (~2026-09-08).
+/usr/bin/python3 tools/yuclaw_anytime_observer.py --nightly || echo "[refresh_v3_pages] anytime observer failed (non-fatal)"
 # Completeness profile (2026-08-11): nightly counting-only regeneration,
 # then derived-only-lineage gate — hand-maintained overrides fail.
 /usr/bin/python3 tools/yuclaw_completeness_profile.py --write || exit 47
@@ -180,6 +188,9 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/capabilities.json docs/evidence docs/ledger \
                  docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html \
                  registry/completeness_profile.json registry/research_state.json
+# Observation chain exists only once the first observation is admitted
+# (~2026-09-08); guarded add so an absent file never errors the chain.
+[ -f registry/anytime_observations.jsonl ] && /usr/bin/git add registry/anytime_observations.jsonl
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
