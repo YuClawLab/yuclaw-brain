@@ -1,27 +1,27 @@
 {
  "ticker": "NVDA",
- "generated": "2026-08-12T23:01:20.429744+00:00",
+ "generated": "2026-08-13T23:01:18.186729+00:00",
  "label": "WATCH",
- "score": 0.1354,
+ "score": 0.0754,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.505,
+  "c1": 0.3185,
   "c2": 0.0,
-  "c3": 0.70801044,
+  "c3": 0.4596028,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.35270128,
-  "c7": -0.013645315,
+  "c6": -0.32191512,
+  "c7": -0.011693718,
   "c8": 0.0,
-  "c9": -0.2
+  "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 79,
+  "ecs": 78,
   "events_90d": 9,
-  "recency_days": 27.6,
+  "recency_days": 28.6,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -519,6 +519,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-13",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-12",
    "label": "WATCH"
   },
@@ -633,10 +637,6 @@
   {
    "date": "2026-07-03",
    "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-07-02",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay NVDA --date D",

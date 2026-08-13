@@ -1,27 +1,27 @@
 {
  "ticker": "JPM",
- "generated": "2026-08-12T23:01:20.429744+00:00",
- "label": "WATCH",
- "score": 0.1822,
+ "generated": "2026-08-13T23:01:18.186729+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2032,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.458,
+  "c1": 0.295,
   "c2": 0.0,
-  "c3": -0.093549006,
+  "c3": 0.17513427,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.20408146,
-  "c7": 0.12787296,
+  "c6": -0.18530774,
+  "c7": 0.16095598,
   "c8": 0.0,
   "c9": 0.1764706
  },
  "evidence_coverage": {
-  "ecs": 87,
-  "events_90d": 13,
-  "recency_days": 1.1,
+  "ecs": 86,
+  "events_90d": 9,
+  "recency_days": 2.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -359,6 +359,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-13",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-12",
    "label": "WATCH"
   },
@@ -473,10 +477,6 @@
   {
    "date": "2026-07-03",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-02",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay JPM --date D",

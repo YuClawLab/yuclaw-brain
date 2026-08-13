@@ -1,8 +1,8 @@
 {
  "ticker": "ABT",
- "generated": "2026-08-12T23:01:20.429744+00:00",
+ "generated": "2026-08-13T23:01:18.186729+00:00",
  "label": "NEUTRAL",
- "score": 0.3593,
+ "score": 0.2907,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
@@ -10,22 +10,32 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": -0.056920923,
+  "c3": -0.2843189,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.04883402,
-  "c7": 0.24495706,
+  "c6": -0.083143294,
+  "c7": 0.34189275,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 62,
-  "events_90d": 3,
-  "recency_days": 15.3,
-  "type_diversity": 2,
+  "ecs": 81,
+  "events_90d": 4,
+  "recency_days": 0.1,
+  "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "ABT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-13",
+   "accession_number": "0001867666-26-000013",
+   "excerpt": "Morrone Louis H. S 5850 shares @ $109.83 on 2026-08-11 ($642,506)",
+   "source_hash": "478b4b013e4c92991ebcb1c86ef27a6169c0b9da241f0ec8862d1da1c31e496b",
+   "available_as_of": "2026-08-13T15:17:48.933167-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABT",
    "evidence_type": "OTHER_MATERIAL",
@@ -138,6 +148,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-12",
    "label": "NEUTRAL"
@@ -253,10 +267,6 @@
   {
    "date": "2026-07-03",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-02",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABT --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "PFE",
- "generated": "2026-08-12T23:01:20.429744+00:00",
+ "generated": "2026-08-13T23:01:18.186729+00:00",
  "label": "NEUTRAL",
- "score": 0.3857,
+ "score": 0.3879,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.374,
+  "c1": 0.526,
   "c2": 0.0,
-  "c3": -0.056920923,
+  "c3": -0.2843189,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.59615266,
-  "c7": 0.32137686,
+  "c6": 0.5527791,
+  "c7": 0.42003405,
   "c8": 0.0,
-  "c9": 0.0
+  "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 8,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -108,6 +108,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-12",
    "label": "NEUTRAL"
@@ -223,10 +227,6 @@
   {
    "date": "2026-07-03",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-02",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PFE --date D",
