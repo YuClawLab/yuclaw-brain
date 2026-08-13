@@ -1,0 +1,230 @@
+{
+ "anchor": "6619496184b1bf41c8da5f24eed8c41781a3b2045b4595fa9ccf026e0132ab7a",
+ "derivation_protocol": "ad599b80d2db",
+ "name": "ABT",
+ "platform": {
+  "c6_component": [
+   {
+    "annotation_verbatim": "C6 second read under v2. Verdict: INCONCLUSIVE. Arms (late/live): elevated 11 (11/0), normal 34 (34/0); k10-complete 0/1. Late lags min/med/max {'min': 1, 'median': 3, 'max': 15}. Projection: ~-0.2 more weeks of accrual for the elevated arm to reach 10 issuer-days (rate 5.5/wk), plus ~2 weeks for k=10 windows to complete",
+    "research_state": "INCONCLUSIVE"
+   },
+   {
+    "annotation_verbatim": "C6 third read under v2 (the kit's second computable-read attempt). Verdict: INCONCLUSIVE. Thin-arm clause: elevated arm 8 issuer-days with completed k=10 windows (< 10 floor; completed late/live 8/0), normal 18 (18/0). Arm accrual late/live: elevated 19 (10/9), normal 58 (25/33). Late lags min/med/max 1/3/15. Robustness: elevated completed-k10 = 9 artifact-level / 4 conflict-days-excluded / 8 spec issuer-day-pairs (elevated-wins) \u2014 below floor under every counting variant; 9 same-day flag-conflict issuer-days disclosed in the results JSON. Projection: floor reached once 2 pending elevated windows complete \u2014 both are 1 trading session short; next read viable ~2026-08-14 after tonight's price accrual. Results JSON output/oie/c6_third_read.json (box-local).",
+    "research_state": "INCONCLUSIVE"
+   }
+  ],
+  "discovery_ledger": {
+   "families": 32,
+   "family_adjudication": "PENDING until each family's first registered read",
+   "hypotheses": 36,
+   "status_counts": {
+    "ACCRUING": 17,
+    "INCONCLUSIVE": 1,
+    "OPEN": 7,
+    "REGISTERED": 7,
+    "SUPERSEDED": 4
+   }
+  },
+  "sequential_evidence": [
+   {
+    "enrollment_id": "06721f08a792",
+    "instrument": "E1: BULLISH-tier pooled (BULLISH + STRONG_BULLISH) 20d directional consistency",
+    "maturity_condition": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+    "observations": 0,
+    "sequential_state": "ACCUMULATING"
+   },
+   {
+    "enrollment_id": "84187c7ea6e7",
+    "instrument": "E2: RISK_ALERT 20d adverse-move rate",
+    "maturity_condition": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+    "observations": 0,
+    "sequential_state": "ACCUMULATING"
+   },
+   {
+    "enrollment_id": "bca373c95f68",
+    "instrument": "E3: WATCH 20d downward-resolution rate",
+    "maturity_condition": "30 matured post-start observations AND 60 calendar days elapsed since start_time",
+    "observations": 0,
+    "sequential_state": "ACCUMULATING"
+   }
+  ],
+  "truncation_ledger": {
+   "detail": [
+    {
+     "count": "PENDING",
+     "reason": "cascade impact decays 0.20 at depth-1, 0.04 at depth-2, dropped at depth-3+ (CASCADE_D1_DECAY/CASCADE_D2_DECAY)",
+     "site_key": "cascade_decay"
+    },
+    {
+     "count": "5 of 79 names at the 100-object cap (counted over committed docs/why/*.json, 2026-08-07)",
+     "reason": "bundled evidence snapshot caps each name at 100 evidence objects (PER_NAME_CAP, mirrors render_why_json limit)",
+     "site_key": "snapshot_per_name_cap"
+    },
+    {
+     "count": "PENDING",
+     "reason": "U350 shadow drain processes at most DRAIN_CAP=12 filings per run and only when U79 queues are empty (shadow starves first, by design)",
+     "site_key": "u350_drain_cap"
+    },
+    {
+     "count": "structural: all issuer-days while inactive (whole component)",
+     "reason": "C7 peer-correlation component is STRUCTURALLY_INACTIVE (needs 20d sector-cohort return correlations not yet in production inputs)",
+     "site_key": "c7_structurally_inactive"
+    },
+    {
+     "count": "PENDING",
+     "reason": "forward windows enter matured panels only at closure; open windows are excluded from matured statistics, never padded",
+     "site_key": "open_window_closure"
+    },
+    {
+     "count": "0 policy invocations on record (internal/policy_invocations/ empty, 2026-08-07)",
+     "reason": "universe membership changes must invoke the corporate-action policy; affected spans are excluded, never silently spliced",
+     "site_key": "corporate_action_exclusions"
+    },
+    {
+     "count": "53 evidence-tier names vs 79 scoring names (counted from the committed tier registry, 2026-08-07)",
+     "reason": "evidence-tier names are never scored: positive gating plus a standing negative check",
+     "site_key": "evidence_tier_boundary"
+    },
+    {
+     "count": "PENDING",
+     "reason": "extraction failures drop filings from the event stream by family: parse failure, refusal, timeout/retry exhaustion (MAX_RETRIES)",
+     "site_key": "llm_failure_families"
+    },
+    {
+     "count": "0 stale of 79 (universe-gate run of 2026-08-07: 79/79 fresh within 5 trading days)",
+     "reason": "scoring-universe names with stale latest prices are flagged by the U2 delisting watch and excluded from fresh panels until resolved",
+     "site_key": "delisting_staleness"
+    },
+    {
+     "count": "11",
+     "reason": "No.5 ingestion refuses any (source, series_id) outside the enumerated 11-series set ALL_SERIES (6 FRED + 3 EIA + 2 yfinance); licensed LSEG/Bloomberg factor sets excluded per the No.5 packet",
+     "site_key": "macro_series_allowlist"
+    },
+    {
+     "count": "PENDING",
+     "reason": "bounded backfill: observations before BACKFILL_START (2016-01-01) are never stored; window enforced client-side for every source because the EIA v2 seriesid route ignores start/end and returns full history",
+     "site_key": "macro_backfill_window"
+    },
+    {
+     "count": "PENDING",
+     "reason": "source-native absent observations are skipped, never stored as zeros: FRED value '.', EIA null value, yfinance NaN close",
+     "site_key": "macro_missing_value_skip"
+    },
+    {
+     "count": "0",
+     "reason": "a per-series fetch failure skips that series for the run (printed to stderr, nonzero exit; next --accrue or --resume self-heals) rather than aborting the whole ingestion",
+     "site_key": "macro_fetch_error_branch"
+    }
+   ],
+   "entries": 13,
+   "entries_with_pending_or_unknown_count": [
+    "cascade_decay",
+    "llm_failure_families",
+    "macro_backfill_window",
+    "macro_missing_value_skip",
+    "open_window_closure",
+    "u350_drain_cap"
+   ]
+  }
+ },
+ "renderer_version": "1.0.0",
+ "science_trust": {
+  "conflicting_evidence": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "Research-State Derivation v1 contradiction rule (CONFLICTED would surface here and in the research state itself)",
+   "source": "research_state.json",
+   "value": "NONE_DERIVED"
+  },
+  "dependency": {
+   "annotation": "PENDING",
+   "basis": "layered-dependency family registered (layered-evidence-dependency-spec, REGISTERED) \u2014 no name-scoped read yet",
+   "source": "discovery_ledger.json",
+   "value": "PENDING"
+  },
+  "discovery_context": {
+   "annotation": "PENDING",
+   "basis": "Discovery Ledger v1 (results-blind name scan) + family adjudication state from Research-State Derivation v1",
+   "source": "discovery_ledger.json",
+   "value": {
+    "multiplicity": "PENDING (Discovery Ledger family adjudication awaits registered read)",
+    "name_scoped_hypotheses": []
+   }
+  },
+  "evidence_coverage": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "Evidence Completeness Profile v1 counting rules; UNKNOWN and NOT_APPLICABLE are legal derived states, not gaps in this card",
+   "source": "completeness_profile.json",
+   "value": {
+    "canada_sedi": "NOT_APPLICABLE",
+    "corporate_actions": "HIGH",
+    "foreign_filings": "NOT_APPLICABLE",
+    "insider_form4": "MEDIUM",
+    "macro_series": "NOT_APPLICABLE",
+    "pricing": "MEDIUM",
+    "sec_primary": "MEDIUM"
+   }
+  },
+  "forward_maturity": {
+   "annotation": "PENDING",
+   "basis": "matured name-scoped primary endpoints in the Discovery Ledger at the build anchor",
+   "source": "discovery_ledger.json",
+   "value": "PENDING"
+  },
+  "independent_evidence": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "distinct observed evidence families (counting only; cross-family independence is declared, not measured \u2014 see dependency)",
+   "source": "completeness_profile.json",
+   "value": {
+    "families": [
+     "corporate_actions",
+     "insider_form4",
+     "pricing",
+     "sec_primary"
+    ],
+    "families_observed": 4,
+    "material_missing": []
+   }
+  },
+  "name": {
+   "annotation": "FACT",
+   "basis": "registered universe membership",
+   "source": "completeness_profile.json",
+   "value": "ABT"
+  },
+  "platform_component_context": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "platform C6 risk-component reads recorded in the chain, rendered verbatim on the SCIENCE tab; the discovery family adjudicates at its registered read",
+   "source": "research_state.json",
+   "value": {
+    "c6_component": "INCONCLUSIVE",
+    "registered_reads": 2
+   }
+  },
+  "research_state": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "Research-State Derivation v1 precedence table over registered reads at the build anchor",
+   "source": "research_state.json",
+   "value": "INSUFFICIENT_EVIDENCE"
+  },
+  "sequential_evidence": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "Anytime Evidence Record v1 \u2014 enrolled instruments are label-tier; the platform enrollment states render on the SCIENCE tab from the canonical artifact at build time",
+   "source": "anytime_record.json",
+   "value": "NOT_APPLICABLE at name level (enrolled instruments are label-tier)"
+  },
+  "truncation_impact": {
+   "annotation": "NOT_ESTIMABLE",
+   "basis": "the Truncation & Error Budget ledger is site-key-scoped; no registered per-name attribution exists \u2014 the full ledger renders on the SCIENCE tab, including PENDING counts",
+   "source": "truncation_ledger.json",
+   "value": "NOT_ESTIMABLE"
+  },
+  "universe_class": {
+   "annotation": "FACT",
+   "basis": "scored US universe (U79)",
+   "source": "completeness_profile.json",
+   "value": "us_scoring"
+  }
+ },
+ "staged": true,
+ "surface": "preview"
+}

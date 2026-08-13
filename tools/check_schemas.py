@@ -180,6 +180,17 @@ def main() -> int:
                          ).read_text()), "completeness_profile.json")
     _s6_walk(json.loads((_REPO / "registry" / "research_state.json"
                          ).read_text()), "research_state.json")
+    # Science Trust STAGED surfaces (order 2026-08-14, A-7): S6 walks
+    # every preview card output — the machine card JSON, the why-mirror
+    # science_trust blocks, and the capabilities vNext preview.
+    for tf in sorted((_REPO / "docs" / "preview" / "trust").glob("*.json")):
+        _s6_walk(json.loads(tf.read_text()), f"preview/trust/{tf.name}")
+    for pf in sorted((_REPO / "docs" / "preview" / "why").glob("*.json")):
+        _s6_walk(json.loads(pf.read_text()), f"preview/why/{pf.name}")
+    _cap_prev = _REPO / "docs" / "preview" / "capabilities.vnext.json"
+    if _cap_prev.exists():
+        _s6_walk(json.loads(_cap_prev.read_text()),
+                 "preview/capabilities.vnext.json")
 
     if problems:
         print("SCHEMA GATE FAILED:")

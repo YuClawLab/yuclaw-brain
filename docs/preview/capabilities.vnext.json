@@ -1,0 +1,69 @@
+{
+ "as_of_recipe": "evidence as of D = evidence_objects with available_as_of <= D; classification at D = label_history last entry <= D; beyond the ribbon: the replay CLI",
+ "cli": {
+  "check_claim": "yuclaw check-claim --ticker X --type T --date-range A..B  (or --text '...')",
+  "install": "pip install yuclaw",
+  "replay": "yuclaw replay TICKER --date D",
+  "reproduce": "yuclaw replay-lab"
+ },
+ "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is uppercase (why/NVDA.json \u2014 why/nvda.json is a 404); the CLI uppercases ticker arguments for you",
+ "endpoints": {
+  "discovery": "https://yuclaw.ca/capabilities.json",
+  "evidencebench": "https://yuclaw.ca/evidencebench/items.jsonl",
+  "explorer_data": "https://yuclaw.ca/explorer_data.json",
+  "index": "https://yuclaw.ca/evidence_index.json",
+  "ledger_day": "https://yuclaw.ca/ledger/{YYYY-MM-DD}.json",
+  "llms": "https://yuclaw.ca/llms.txt",
+  "schemas": "https://yuclaw.ca/schemas/{Name}.v1.json",
+  "verify": "https://yuclaw.ca/evidence/verify.json",
+  "why_html": "https://yuclaw.ca/why/{TICKER}.html",
+  "why_json": "https://yuclaw.ca/why/{TICKER}.json"
+ },
+ "formats": {
+  "evidencebench": "JSONL \u2014 one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
+ },
+ "generated": "2026-08-12T23:01:21.092934+00:00",
+ "name": "YUCLAW Ground Truth API",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
+ "positioning": "The open evidence layer for financial AI.",
+ "schema_preview": "vNext",
+ "science_trust": {
+  "anchor": {
+   "annotation": "FACT",
+   "basis": "chain-tip derivation anchor",
+   "source": "registry/research_state.json",
+   "value": "6619496184b1bf41c8da5f24eed8c41781a3b2045b4595fa9ccf026e0132ab7a"
+  },
+  "card_html": {
+   "annotation": "FACT",
+   "basis": "staged path",
+   "source": "this file",
+   "value": "preview/trust/{NAME}.html"
+  },
+  "card_json": {
+   "annotation": "FACT",
+   "basis": "staged path",
+   "source": "this file",
+   "value": "preview/trust/{NAME}.json"
+  },
+  "derivation": {
+   "annotation": "DERIVED_RESULT",
+   "basis": "every state derived at build time; nothing hand-maintained",
+   "source": "registry/research_state.json",
+   "value": "Research-State Derivation v1"
+  },
+  "status": {
+   "annotation": "FACT",
+   "basis": "order 2026-08-14 \u2014 preview only, promoted only by a separate authorized v6 release order",
+   "source": "this file",
+   "value": "STAGED_PREVIEW"
+  },
+  "why_mirror": {
+   "annotation": "FACT",
+   "basis": "staged path",
+   "source": "this file",
+   "value": "preview/why/{TICKER}.json"
+  }
+ },
+ "version": "v5.3.3"
+}
