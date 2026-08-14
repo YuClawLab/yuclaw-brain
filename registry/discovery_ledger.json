@@ -487,10 +487,10 @@
  },
  "founding_entry": {
   "alpha": 0.05,
-  "expected_false_positives_at_alpha": 37.55,
+  "expected_false_positives_at_alpha": 37.7,
   "note": "secondary/exploratory cells remain descriptive and inherit this FP accounting; absorbed as the ledger's founding lineage entry",
   "source": "tools/yuclaw_protocol_registry.py test_ledger()",
-  "total_secondary_cells": 751
+  "total_secondary_cells": 754
  },
  "hypotheses": [
   {
@@ -994,6 +994,16 @@
      "note": "C6 third read under v2 (the kit's second computable-read attempt). Verdict: INCONCLUSIVE. Thin-arm clause: elevated arm 8 issuer-days with completed k=10 windows (< 10 floor; completed late/live 8/0), normal 18 (18/0). Arm accrual late/live: elevated 19 (10/9), normal 58 (25/33). Late lags min/med/max 1/3/15. Robustness: elevated completed-k10 = 9 artifact-level / 4 conflict-days-excluded / 8 spec issuer-day-pairs (elevated-wins) \u2014 below floor under every counting variant; 9 same-day flag-conflict issuer-days disclosed in the results JSON. Projection: floor reached once 2 pending elevated windows complete \u2014 both are 1 trading session short; next read viable ~2026-08-14 after tonight's price accrual. Results JSON output/oie/c6_third_read.json (box-local).",
      "result_hash": "cdf89504b802e517",
      "run_date": "2026-08-13"
+    },
+    {
+     "chain_line": 77,
+     "data_window": "live accrual 2026-07-16..2026-08-13 (45 late artifacts under as-of gate + live path; prices through 2026-08-13)",
+     "kind": "run",
+     "n_primary_cells": 1,
+     "n_secondary_cells": 3,
+     "note": "C6 fourth read under v2 \u2014 first COMPUTED read (reads 1-3 INCONCLUSIVE). PRIMARY RV(k=10) ratio elevated/normal = 1.0785, issuer-cluster bootstrap CI (B=4000, seed 20260717) [0.9006, 1.3229], naive CI [0.9107, 1.3045] beside \u2014 CI includes 1.0: badge DESCRIPTIVE (no stronger label exists in this protocol). Arms at read: elevated 10 issuer-days / 9 issuers (late/live 10/0 among completed k=10), normal 23 / 20 issuers (23/0). S1 max-drawdown diffs: k5 +0.0044 CI[-0.0118,+0.0219] DESCRIPTIVE (n 17/49); k10 +0.0001 CI[-0.0238,+0.0236] DESCRIPTIVE (n 10/23); k20 not computable (0/1 complete windows \u2014 excluded, never padded). S2 tail-frequency diff -0.2957 CI[-0.6500,+0.1162] DESCRIPTIVE (shares 0.400/0.696, n 10/23). Late lags min/med/max 1/3/15. Counting-rule sensitivity disclosed: registered unit (issuer-day pairs, conflict day -> elevated, as disclosed at the 2026-08-13 read) 10/23 and artifact-level 11/32 both reach the floor; conflict-days-excluded variant 5/23 would not \u2014 full variants in the results JSON. All completed windows are late-computed artifacts (segregated labeling clause); n_late/n_live beside every statistic. Results JSON output/oie/c6_fourth_read.json (box-local).",
+     "result_hash": "1f10a97194c20a13",
+     "run_date": "2026-08-14"
     }
    ],
    "status": "INCONCLUSIVE",
@@ -1589,9 +1599,9 @@
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 76,
+  "chain_lines": 77,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "6619496184b1bf41c8da5f24eed8c41781a3b2045b4595fa9ccf026e0132ab7a",
+  "derivation_anchor_chain_tip": "98dcf74a827a28a8af9c09b965be3757781db2f1fdcb3e5d4a769cacca7eb009",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
