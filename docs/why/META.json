@@ -1,27 +1,27 @@
 {
  "ticker": "META",
- "generated": "2026-08-13T23:01:18.186729+00:00",
- "label": "WEAKENING",
- "score": -0.0521,
+ "generated": "2026-08-14T23:02:38.525174+00:00",
+ "label": "NEGATIVE_EVENT",
+ "score": -0.2233,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": -0.4,
+  "ceiling": -0.2
  },
  "components": {
-  "c1": -0.4995,
+  "c1": -0.671,
   "c2": 0.0,
-  "c3": 0.4596028,
+  "c3": -0.6400882,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.46211717,
-  "c7": -0.015456145,
+  "c6": -0.44144353,
+  "c7": -0.055794448,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 57,
-  "recency_days": 0.9,
+  "recency_days": 1.9,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-14",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
    "date": "2026-08-13",
    "label": "WEAKENING"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-06",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay META --date D",

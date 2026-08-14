@@ -1,27 +1,27 @@
 {
  "ticker": "AMAT",
- "generated": "2026-08-13T23:01:18.186729+00:00",
- "label": "WEAKENING",
- "score": -0.0505,
+ "generated": "2026-08-14T23:02:38.525174+00:00",
+ "label": "NEGATIVE_EVENT",
+ "score": -0.2295,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": -0.4,
+  "ceiling": -0.2
  },
  "components": {
-  "c1": -0.5135,
+  "c1": -0.6235,
   "c2": 0.0,
-  "c3": 0.4596028,
+  "c3": -0.6400882,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.016622277,
+  "c7": -0.053186905,
   "c8": 0.0,
-  "c9": -0.2
+  "c9": -0.26666668
  },
  "evidence_coverage": {
   "ecs": 66,
   "events_90d": 33,
-  "recency_days": 28.7,
+  "recency_days": 29.7,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -419,6 +419,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-14",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
    "date": "2026-08-13",
    "label": "WEAKENING"
   },
@@ -533,10 +537,6 @@
   {
    "date": "2026-07-06",
    "label": "STRONG_BULLISH"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",

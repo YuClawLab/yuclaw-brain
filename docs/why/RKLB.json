@@ -1,27 +1,27 @@
 {
  "ticker": "RKLB",
- "generated": "2026-08-13T23:01:18.186729+00:00",
+ "generated": "2026-08-14T23:02:38.525174+00:00",
  "label": "NEUTRAL",
- "score": 0.2647,
+ "score": 0.2776,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.082,
+  "c1": 0.2655,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.2998069,
+  "c6": 0.22888152,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 92,
   "events_90d": 76,
-  "recency_days": 0.7,
+  "recency_days": 1.7,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-14",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-13",
    "label": "NEUTRAL"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-06",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay RKLB --date D",

@@ -1,8 +1,8 @@
 {
  "ticker": "ABT",
- "generated": "2026-08-13T23:01:18.186729+00:00",
+ "generated": "2026-08-14T23:02:38.525174+00:00",
  "label": "NEUTRAL",
- "score": 0.2907,
+ "score": 0.2049,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
@@ -10,18 +10,18 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": -0.2843189,
+  "c3": -0.7764457,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.083143294,
-  "c7": 0.34189275,
+  "c6": -0.075336084,
+  "c7": 0.2731511,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 81,
+  "ecs": 80,
   "events_90d": 4,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -149,6 +149,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-14",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-13",
    "label": "NEUTRAL"
   },
@@ -263,10 +267,6 @@
   {
    "date": "2026-07-06",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABT --date D",

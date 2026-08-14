@@ -1,27 +1,27 @@
 {
  "ticker": "LRCX",
- "generated": "2026-08-13T23:01:18.186729+00:00",
- "label": "WATCH",
- "score": 0.0124,
+ "generated": "2026-08-14T23:02:38.525174+00:00",
+ "label": "WEAKENING",
+ "score": -0.1291,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1315,
+  "c1": -0.046,
   "c2": 0.0,
-  "c3": 0.4596028,
+  "c3": -0.6400882,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.015206249,
+  "c7": -0.02129267,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 82,
   "events_90d": 47,
-  "recency_days": 6.2,
+  "recency_days": 7.2,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -569,6 +569,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-14",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-13",
    "label": "WATCH"
   },
@@ -683,10 +687,6 @@
   {
    "date": "2026-07-06",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LRCX --date D",

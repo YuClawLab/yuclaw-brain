@@ -1,31 +1,41 @@
 {
  "ticker": "INTC",
- "generated": "2026-08-13T23:01:18.186729+00:00",
+ "generated": "2026-08-14T23:02:38.525174+00:00",
  "label": "NEUTRAL",
- "score": 0.2868,
+ "score": 0.2234,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": -0.1485,
+  "c1": -0.024,
   "c2": 0.0,
-  "c3": 0.4596028,
+  "c3": -0.6400882,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.5993436,
-  "c7": 0.013790112,
+  "c6": 0.8188348,
+  "c7": -0.02007254,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 4,
-  "recency_days": 1.3,
-  "type_diversity": 4,
+  "ecs": 91,
+  "events_90d": 5,
+  "recency_days": 0.1,
+  "type_diversity": 5,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "INTC",
+   "evidence_type": "INSIDER_BUY",
+   "filing_date": "2026-08-14",
+   "accession_number": "0000050863-26-000177",
+   "excerpt": "TAN LIP BU P 105263 shares @ $95.00 on 2026-08-11 ($9,999,985)",
+   "source_hash": "302cda45e3164b728c95212edfd4ca3b7dbc8939a572249662eebe91732f7d02",
+   "available_as_of": "2026-08-14T14:33:47.880102-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "INTC",
    "evidence_type": "PRODUCT_LAUNCH",
@@ -128,6 +138,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-13",
    "label": "NEUTRAL"
@@ -243,10 +257,6 @@
   {
    "date": "2026-07-06",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",
