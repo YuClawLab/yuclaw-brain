@@ -1,27 +1,27 @@
 {
  "ticker": "TSLA",
- "generated": "2026-08-14T23:02:38.525174+00:00",
+ "generated": "2026-08-17T23:03:10.530004+00:00",
  "label": "WEAKENING",
- "score": -0.0333,
+ "score": -0.0646,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.6615,
+  "c1": -0.662,
   "c2": 0.0,
-  "c3": -0.46192342,
+  "c3": -0.55800104,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.10170276,
+  "c6": 0.08389728,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.14285715
  },
  "evidence_coverage": {
-  "ecs": 62,
+  "ecs": 60,
   "events_90d": 4,
-  "recency_days": 23.1,
+  "recency_days": 26.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -459,6 +459,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-17",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-14",
    "label": "WEAKENING"
   },
@@ -573,10 +577,6 @@
   {
    "date": "2026-07-07",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay TSLA --date D",

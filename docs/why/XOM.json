@@ -1,27 +1,27 @@
 {
  "ticker": "XOM",
- "generated": "2026-08-14T23:02:38.525174+00:00",
+ "generated": "2026-08-17T23:03:10.530004+00:00",
  "label": "BULLISH",
- "score": 0.4784,
+ "score": 0.4259,
  "threshold_band": {
   "floor": 0.4,
   "ceiling": 0.55
  },
  "components": {
-  "c1": 0.5395,
+  "c1": 0.5315,
   "c2": 0.0,
-  "c3": 0.93707305,
+  "c3": 0.65983623,
   "c4": 0.6,
-  "c5": 0.018477509,
-  "c6": 0.23012859,
-  "c7": 0.7324534,
+  "c5": -0.03553969,
+  "c6": 0.17236504,
+  "c7": 0.7412133,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 55,
+  "ecs": 53,
   "events_90d": 2,
-  "recency_days": 11.3,
+  "recency_days": 14.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -68,6 +68,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-17",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-08-14",
    "label": "BULLISH"
@@ -183,10 +187,6 @@
   {
    "date": "2026-07-07",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XOM --date D",

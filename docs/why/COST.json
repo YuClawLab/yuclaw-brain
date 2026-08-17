@@ -1,27 +1,27 @@
 {
  "ticker": "COST",
- "generated": "2026-08-14T23:02:38.525174+00:00",
- "label": "NEUTRAL",
- "score": 0.2101,
+ "generated": "2026-08-17T23:03:10.530004+00:00",
+ "label": "WATCH",
+ "score": 0.0231,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.243,
+  "c1": 0.042,
   "c2": 0.0,
-  "c3": -0.06383986,
+  "c3": -0.7080153,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.008993937,
-  "c7": 0.12907745,
+  "c6": 0.0,
+  "c7": -0.018673489,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 62,
   "events_90d": 3,
-  "recency_days": 29.7,
+  "recency_days": 32.7,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -98,6 +98,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-17",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-14",
    "label": "NEUTRAL"
@@ -213,10 +217,6 @@
   {
    "date": "2026-07-07",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "INTC",
- "generated": "2026-08-14T23:02:38.525174+00:00",
+ "generated": "2026-08-17T23:03:10.530004+00:00",
  "label": "NEUTRAL",
- "score": 0.2234,
+ "score": 0.3929,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": -0.024,
+  "c1": 0.3355,
   "c2": 0.0,
-  "c3": -0.6400882,
+  "c3": 0.22256498,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.8188348,
-  "c7": -0.02007254,
+  "c6": 0.75538486,
+  "c7": 0.20563443,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 91,
+  "ecs": 88,
   "events_90d": 5,
-  "recency_days": 0.1,
+  "recency_days": 3.1,
   "type_diversity": 5,
   "substrate_active": 1
  },
@@ -139,6 +139,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-17",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-14",
    "label": "NEUTRAL"
   },
@@ -253,10 +257,6 @@
   {
    "date": "2026-07-07",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",

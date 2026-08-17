@@ -1,27 +1,27 @@
 {
  "ticker": "BMY",
- "generated": "2026-08-14T23:02:38.525174+00:00",
- "label": "WATCH",
- "score": 0.1729,
+ "generated": "2026-08-17T23:03:10.530004+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2472,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.435,
+  "c1": 0.3405,
   "c2": 0.0,
-  "c3": -0.7764457,
+  "c3": 0.008016982,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.15403236,
-  "c7": 0.3643485,
+  "c6": 0.11485483,
+  "c7": 0.1444395,
   "c8": 0.0,
   "c9": -0.11111111
  },
  "evidence_coverage": {
-  "ecs": 52,
+  "ecs": 51,
   "events_90d": 2,
-  "recency_days": 15.5,
+  "recency_days": 18.5,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -68,6 +68,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-17",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-14",
    "label": "WATCH"
@@ -183,10 +187,6 @@
   {
    "date": "2026-07-07",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay BMY --date D",

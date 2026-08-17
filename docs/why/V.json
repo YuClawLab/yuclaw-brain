@@ -1,27 +1,27 @@
 {
  "ticker": "V",
- "generated": "2026-08-14T23:02:38.525174+00:00",
+ "generated": "2026-08-17T23:03:10.530004+00:00",
  "label": "WEAKENING",
- "score": -0.0599,
+ "score": -0.0715,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.127,
+  "c1": -0.0865,
   "c2": 0.0,
-  "c3": -0.41796485,
+  "c3": -0.45305458,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.46211717,
-  "c7": 0.06101397,
+  "c6": -0.35165638,
+  "c7": -0.03636298,
   "c8": 0.0,
-  "c9": -0.5
+  "c9": -0.5555556
  },
  "evidence_coverage": {
-  "ecs": 78,
+  "ecs": 77,
   "events_90d": 10,
-  "recency_days": 14.1,
+  "recency_days": 17.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -169,6 +169,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-17",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-14",
    "label": "WEAKENING"
   },
@@ -283,10 +287,6 @@
   {
    "date": "2026-07-07",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
