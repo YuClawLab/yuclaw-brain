@@ -1,27 +1,27 @@
 {
  "ticker": "MSFT",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "NEUTRAL",
- "score": 0.209,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "WATCH",
+ "score": 0.0592,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.988,
+  "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.22256498,
+  "c3": -0.744707,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.35005096,
-  "c7": 0.16097924,
+  "c6": -0.3194582,
+  "c7": 0.03032385,
   "c8": 0.0,
   "c9": -0.18181819
  },
  "evidence_coverage": {
-  "ecs": 86,
+  "ecs": 85,
   "events_90d": 9,
-  "recency_days": 11.0,
+  "recency_days": 12.0,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -149,6 +149,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-17",
    "label": "NEUTRAL"
   },
@@ -263,10 +267,6 @@
   {
    "date": "2026-07-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MSFT --date D",

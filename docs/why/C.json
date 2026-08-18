@@ -1,27 +1,27 @@
 {
  "ticker": "C",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "WATCH",
- "score": 0.1595,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3116,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.258,
+  "c1": 0.3205,
   "c2": 0.0,
-  "c3": -0.45305458,
+  "c3": 0.33967924,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": 0.013756921,
+  "c7": 0.09398707,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 52,
+  "ecs": 51,
   "events_90d": 1,
-  "recency_days": 11.2,
+  "recency_days": 12.2,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -88,6 +88,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-18",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-17",
    "label": "WATCH"
@@ -203,10 +207,6 @@
   {
    "date": "2026-07-08",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay C --date D",

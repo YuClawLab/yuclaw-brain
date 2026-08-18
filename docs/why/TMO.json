@@ -1,27 +1,27 @@
 {
  "ticker": "TMO",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "WATCH",
- "score": 0.1287,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2606,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.3895,
+  "c1": 0.531,
   "c2": 0.0,
-  "c3": 0.008016982,
+  "c3": 0.7026859,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.13982,
+  "c7": 0.21678407,
   "c8": 0.0,
   "c9": 0.7
  },
  "evidence_coverage": {
   "ecs": 84,
   "events_90d": 50,
-  "recency_days": 4.1,
+  "recency_days": 5.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -849,6 +849,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-17",
    "label": "WATCH"
   },
@@ -963,10 +967,6 @@
   {
    "date": "2026-07-08",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay TMO --date D",

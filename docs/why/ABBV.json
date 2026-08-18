@@ -1,31 +1,51 @@
 {
  "ticker": "ABBV",
- "generated": "2026-08-17T23:03:10.530004+00:00",
+ "generated": "2026-08-18T23:03:08.678957+00:00",
  "label": "WATCH",
- "score": 0.1253,
+ "score": 0.1622,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.08,
+  "c1": 0.087,
   "c2": 0.0,
-  "c3": 0.008016982,
+  "c3": 0.7026859,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": -0.06114799,
+  "c6": -0.46211717,
+  "c7": 0.26305506,
   "c8": 0.0,
   "c9": 0.2631579
  },
  "evidence_coverage": {
-  "ecs": 63,
-  "events_90d": 5,
-  "recency_days": 12.2,
-  "type_diversity": 1,
+  "ecs": 84,
+  "events_90d": 7,
+  "recency_days": 0.1,
+  "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-18",
+   "accession_number": "0001762951-26-000006",
+   "excerpt": "Donoghoe Nicholas S 32710 shares @ $250.00 on 2026-08-14 ($8,177,500)",
+   "source_hash": "664d474e1d707c7e9cb7a3adb58f226b1009991b2e3155c96ce1b493bffd1b37",
+   "available_as_of": "2026-08-18T15:07:04.040132-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-18",
+   "accession_number": "0001104659-26-098367",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington , D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "53865a6f9115b12240bf125a4eac4e320976cc6a3c71652c89e0289aecf4ea07",
+   "available_as_of": "2026-08-18T10:30:26-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -128,6 +148,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-17",
    "label": "WATCH"
@@ -243,10 +267,6 @@
   {
    "date": "2026-07-08",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",

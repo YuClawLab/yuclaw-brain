@@ -1,31 +1,41 @@
 {
  "ticker": "MRVL",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "NEUTRAL",
- "score": 0.3765,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "WATCH",
+ "score": 0.0837,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 1.0,
+  "c1": 0.724,
   "c2": 0.0,
-  "c3": 0.22256498,
+  "c3": -0.744707,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.089143425,
-  "c7": 0.14452186,
+  "c6": -0.38375187,
+  "c7": 0.051895767,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 12,
-  "recency_days": 14.1,
+  "ecs": 93,
+  "events_90d": 13,
+  "recency_days": 0.9,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-17",
+   "accession_number": "0001628280-26-057525",
+   "excerpt": "MURPHY MATTHEW J S 7500 shares @ $236.08 on 2026-08-17 ($1,770,600)",
+   "source_hash": "daef1986f2897bb2184f013c65400b5c0c3b867d753d5509aeddbdbabcd46bf9",
+   "available_as_of": "2026-08-17T19:04:46.299562-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "INSIDER_SELL",
@@ -309,6 +319,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-17",
    "label": "NEUTRAL"
   },
@@ -423,10 +437,6 @@
   {
    "date": "2026-07-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",

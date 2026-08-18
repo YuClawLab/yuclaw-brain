@@ -1,31 +1,41 @@
 {
  "ticker": "LLY",
- "generated": "2026-08-17T23:03:10.530004+00:00",
+ "generated": "2026-08-18T23:03:08.678957+00:00",
  "label": "WATCH",
- "score": 0.0593,
+ "score": 0.1733,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.06,
+  "c1": 0.1975,
   "c2": 0.0,
-  "c3": 0.008016982,
+  "c3": 0.7026859,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.28027847,
-  "c7": 0.17059225,
+  "c6": -0.29859135,
+  "c7": 0.25171724,
   "c8": 0.0,
   "c9": -1.0
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 5,
-  "recency_days": 6.1,
+  "ecs": 87,
+  "events_90d": 6,
+  "recency_days": 0.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "LLY",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-18",
+   "accession_number": "0001786054-26-000006",
+   "excerpt": "Jonsson Patrik S 6500 shares @ $1175.10 on 2026-08-17 ($7,638,150)",
+   "source_hash": "30440fb45afd3b142b44875140cc3303f2d965898278644c66ecd48faef66708",
+   "available_as_of": "2026-08-18T14:26:42.459306-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "LLY",
    "evidence_type": "INSIDER_SELL",
@@ -98,6 +108,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-17",
    "label": "WATCH"
@@ -213,10 +227,6 @@
   {
    "date": "2026-07-08",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "NVDA",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "NEUTRAL",
- "score": 0.2469,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "WATCH",
+ "score": 0.0519,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4245,
+  "c1": 0.4175,
   "c2": 0.0,
-  "c3": 0.22256498,
+  "c3": -0.744707,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": 0.5906909,
-  "c7": 0.199651,
+  "c6": 0.5474541,
+  "c7": 0.06867432,
   "c8": 0.0,
-  "c9": -0.26666668
+  "c9": -0.33333334
  },
  "evidence_coverage": {
-  "ecs": 100,
+  "ecs": 99,
   "events_90d": 10,
-  "recency_days": 0.6,
+  "recency_days": 1.6,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -529,6 +529,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-17",
    "label": "NEUTRAL"
   },
@@ -643,10 +647,6 @@
   {
    "date": "2026-07-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay NVDA --date D",

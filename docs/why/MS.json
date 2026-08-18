@@ -1,27 +1,27 @@
 {
  "ticker": "MS",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "WATCH",
- "score": 0.1149,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2677,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.0035,
+  "c1": 0.0475,
   "c2": 0.0,
-  "c3": -0.45305458,
+  "c3": 0.33967924,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.0063876663,
-  "c7": -0.03092935,
+  "c6": -0.0057854736,
+  "c7": 0.12025006,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 79,
+  "ecs": 78,
   "events_90d": 8,
-  "recency_days": 13.3,
+  "recency_days": 14.3,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -229,6 +229,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-17",
    "label": "WATCH"
   },
@@ -343,10 +347,6 @@
   {
    "date": "2026-07-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MS --date D",

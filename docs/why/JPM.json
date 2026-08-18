@@ -1,27 +1,27 @@
 {
  "ticker": "JPM",
- "generated": "2026-08-17T23:03:10.530004+00:00",
- "label": "WATCH",
- "score": 0.1378,
+ "generated": "2026-08-18T23:03:08.678957+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2829,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.2595,
+  "c1": 0.3245,
   "c2": 0.0,
-  "c3": -0.45305458,
+  "c3": 0.33967924,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.09862538,
-  "c7": 0.01365825,
+  "c6": -0.0893795,
+  "c7": 0.093599826,
   "c8": 0.0,
   "c9": 0.1764706
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 82,
   "events_90d": 9,
-  "recency_days": 6.1,
+  "recency_days": 7.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -359,6 +359,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-18",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-17",
    "label": "WATCH"
   },
@@ -473,10 +477,6 @@
   {
    "date": "2026-07-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay JPM --date D",
