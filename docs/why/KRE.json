@@ -1,22 +1,22 @@
 {
  "ticker": "KRE",
- "generated": "2026-08-18T23:03:08.678957+00:00",
+ "generated": "2026-08-19T23:03:42.028493+00:00",
  "label": "WATCH",
- "score": 0.1929,
+ "score": 0.0523,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.0105,
+  "c1": -0.0585,
   "c2": 0.0,
-  "c3": -0.16210862,
+  "c3": -0.72395283,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.25925925
+  "c9": 0.2857143
  },
  "evidence_coverage": {
   "ecs": 0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-18",
    "label": "WATCH"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-09",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay KRE --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "COP",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "BULLISH",
- "score": 0.4706,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2912,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.6545,
+  "c1": 0.644,
   "c2": 0.0,
-  "c3": 0.73597,
+  "c3": -0.30487168,
   "c4": 0.6,
-  "c5": 0.07047159,
-  "c6": 0.3097507,
-  "c7": 0.70891535,
+  "c5": -0.32161936,
+  "c6": 0.28220463,
+  "c7": 0.6909824,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 79,
+  "ecs": 78,
   "events_90d": 5,
-  "recency_days": 7.3,
+  "recency_days": 8.3,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -199,6 +199,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-18",
    "label": "BULLISH"
   },
@@ -313,10 +317,6 @@
   {
    "date": "2026-07-09",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COP --date D",

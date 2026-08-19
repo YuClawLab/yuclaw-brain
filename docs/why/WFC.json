@@ -1,31 +1,41 @@
 {
  "ticker": "WFC",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "NEUTRAL",
- "score": 0.2922,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "WATCH",
+ "score": 0.1597,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0065,
+  "c1": -0.0225,
   "c2": 0.0,
-  "c3": 0.33967924,
+  "c3": -0.41296685,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.04180078,
+  "c7": -0.036185287,
   "c8": 0.0,
   "c9": 0.53333336
  },
  "evidence_coverage": {
-  "ecs": 50,
-  "events_90d": 2,
-  "recency_days": 21.3,
+  "ecs": 65,
+  "events_90d": 3,
+  "recency_days": 0.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "WFC",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-19",
+   "accession_number": "0001193125-26-356890",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of Each Class Trading Symbol Name of Each Exchange on Which Registered Common Stock, par value $1-2/3 WFC New York Stock Exchange (NYSE)",
+   "source_hash": "dd029b92482e1774453249ed21d2760ee3b9a4896371b3d115adefc4b05c5975",
+   "available_as_of": "2026-08-19T10:08:07-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "WFC",
    "evidence_type": "OTHER_MATERIAL",
@@ -78,6 +88,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-18",
    "label": "NEUTRAL"
@@ -193,10 +207,6 @@
   {
    "date": "2026-07-09",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WFC --date D",

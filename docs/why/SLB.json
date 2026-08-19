@@ -1,27 +1,27 @@
 {
  "ticker": "SLB",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "BULLISH",
- "score": 0.496,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3086,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.662,
+  "c1": 0.7715,
   "c2": 0.0,
-  "c3": 0.73597,
+  "c3": -0.30487168,
   "c4": 0.6,
-  "c5": 0.07047159,
-  "c6": 0.09443115,
-  "c7": 0.70766956,
+  "c5": -0.32161936,
+  "c6": 0.08557434,
+  "c7": 0.66811657,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 60,
+  "ecs": 59,
   "events_90d": 3,
-  "recency_days": 20.5,
+  "recency_days": 21.5,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -139,6 +139,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-18",
    "label": "BULLISH"
   },
@@ -253,10 +257,6 @@
   {
    "date": "2026-07-09",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",

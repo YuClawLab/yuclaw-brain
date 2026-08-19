@@ -1,31 +1,41 @@
 {
  "ticker": "MRVL",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "WATCH",
- "score": 0.0837,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2391,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.724,
+  "c1": 1.0,
   "c2": 0.0,
-  "c3": -0.744707,
+  "c3": -0.5063793,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.38375187,
-  "c7": 0.051895767,
+  "c6": 0.30192593,
+  "c7": -0.0075686118,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 93,
-  "events_90d": 13,
-  "recency_days": 0.9,
-  "type_diversity": 3,
+  "ecs": 99,
+  "events_90d": 14,
+  "recency_days": 0.6,
+  "type_diversity": 4,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "PARTNERSHIP",
+   "filing_date": "2026-08-19",
+   "accession_number": "0001193125-26-356217",
+   "excerpt": "On July&#160;29, 2026, Marvell Technology, Inc. (the &#8220;Company&#8221;) and Google LLC (&#8220;Google&#8221;) entered into a commercial agreement relating",
+   "source_hash": "6c306977bc4d87dd854e908691a911991187bdb69126198cf3162e065727aa1f",
+   "available_as_of": "2026-08-19T02:25:06-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "INSIDER_SELL",
@@ -319,6 +329,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-18",
    "label": "WATCH"
   },
@@ -433,10 +447,6 @@
   {
    "date": "2026-07-09",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",

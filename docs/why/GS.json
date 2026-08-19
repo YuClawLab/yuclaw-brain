@@ -1,27 +1,27 @@
 {
  "ticker": "GS",
- "generated": "2026-08-18T23:03:08.678957+00:00",
+ "generated": "2026-08-19T23:03:42.028493+00:00",
  "label": "NEUTRAL",
- "score": 0.3105,
+ "score": 0.2008,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": -0.116,
+  "c1": -0.158,
   "c2": 0.0,
-  "c3": 0.33967924,
+  "c3": -0.41296685,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.5779023,
-  "c7": -0.04526728,
+  "c6": 0.5678125,
+  "c7": -0.040513184,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
-  "ecs": 90,
+  "ecs": 89,
   "events_90d": 20,
-  "recency_days": 4.9,
+  "recency_days": 5.9,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -449,6 +449,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-18",
    "label": "NEUTRAL"
   },
@@ -563,10 +567,6 @@
   {
    "date": "2026-07-09",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GS --date D",

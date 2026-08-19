@@ -1,31 +1,41 @@
 {
  "ticker": "AXP",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "WATCH",
- "score": 0.1961,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "WEAKENING",
+ "score": -0.0124,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.237,
+  "c1": -0.171,
   "c2": 0.0,
-  "c3": 0.33967924,
+  "c3": -0.41296685,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.0,
-  "c7": -0.049071226,
+  "c6": -0.46211717,
+  "c7": -0.040926795,
   "c8": 0.0,
   "c9": 0.4
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 9,
-  "recency_days": 1.5,
+  "ecs": 87,
+  "events_90d": 10,
+  "recency_days": 0.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "AXP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-19",
+   "accession_number": "0000004962-26-000348",
+   "excerpt": "Herena Monique S 8811 shares @ $337.41 on 2026-08-18 ($2,972,920)",
+   "source_hash": "33448d3f9fc0ddb3f404e8d513ee28e5a9fcfbfe9f07505fe7d48db4ef8ae705",
+   "available_as_of": "2026-08-19T14:08:23.130963-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AXP",
    "evidence_type": "OTHER_MATERIAL",
@@ -141,6 +151,16 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-02-20",
    "accession_number": "0000004962-26-000104",
+   "excerpt": "Joabar Raymond S 2835 shares @ $338.98 on 2026-02-19 ($961,008)",
+   "source_hash": "b9b71c2d3982efae6e2ebdfe489d35839a361343b9e061bffe7fd3c30094a7e8",
+   "available_as_of": "2026-02-20T14:05:01-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "AXP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-02-20",
+   "accession_number": "0000004962-26-000104",
    "excerpt": "Joabar Raymond S 3348 shares @ $341.95 on 2026-02-19 ($1,144,849)",
    "source_hash": "2158242e2b7db23274b84c66d02813b38e7f5ed7e15d56657dfeb821ee88c9c5",
    "available_as_of": "2026-02-20T14:05:01-07:00",
@@ -165,19 +185,13 @@
    "source_hash": "121648baf6f82af65b7f9c54d6e84c8002794dd86a29303ad495f3a9bb371cba",
    "available_as_of": "2026-02-20T14:05:01-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "AXP",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-20",
-   "accession_number": "0000004962-26-000104",
-   "excerpt": "Joabar Raymond S 2835 shares @ $338.98 on 2026-02-19 ($961,008)",
-   "source_hash": "b9b71c2d3982efae6e2ebdfe489d35839a361343b9e061bffe7fd3c30094a7e8",
-   "available_as_of": "2026-02-20T14:05:01-07:00",
-   "protocol_id": null
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-18",
    "label": "WATCH"
@@ -293,10 +307,6 @@
   {
    "date": "2026-07-09",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",

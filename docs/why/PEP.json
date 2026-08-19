@@ -1,27 +1,27 @@
 {
  "ticker": "PEP",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "NEUTRAL",
- "score": 0.2398,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "WATCH",
+ "score": 0.186,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.11,
+  "c1": 0.263,
   "c2": 0.0,
-  "c3": 0.557271,
+  "c3": 0.026659383,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.011035989,
-  "c7": 0.0941261,
+  "c6": -0.009995632,
+  "c7": 0.1354963,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 60,
+  "ecs": 59,
   "events_90d": 3,
-  "recency_days": 20.1,
+  "recency_days": 21.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -88,6 +88,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-18",
    "label": "NEUTRAL"
@@ -203,10 +207,6 @@
   {
    "date": "2026-07-09",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PEP --date D",

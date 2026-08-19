@@ -1,16 +1,16 @@
 {
  "ticker": "XLY",
- "generated": "2026-08-18T23:03:08.678957+00:00",
+ "generated": "2026-08-19T23:03:42.028493+00:00",
  "label": "NEUTRAL",
- "score": 0.211,
+ "score": 0.3106,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.04,
+  "c1": 0.1735,
   "c2": 0.0,
-  "c3": 0.00018903521,
+  "c3": 0.23447315,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-18",
    "label": "NEUTRAL"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-09",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLY --date D",

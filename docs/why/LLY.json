@@ -1,27 +1,27 @@
 {
  "ticker": "LLY",
- "generated": "2026-08-18T23:03:08.678957+00:00",
- "label": "WATCH",
- "score": 0.1733,
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2555,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.1975,
+  "c1": 0.5815,
   "c2": 0.0,
-  "c3": 0.7026859,
+  "c3": 0.5805828,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.29859135,
-  "c7": 0.25171724,
+  "c6": -0.3149905,
+  "c7": 0.51885474,
   "c8": 0.0,
   "c9": -1.0
  },
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 6,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -108,6 +108,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-18",
    "label": "WATCH"
@@ -223,10 +227,6 @@
   {
    "date": "2026-07-09",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",
