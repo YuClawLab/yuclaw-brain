@@ -1,24 +1,44 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
  "components": {
-  "c1": -0.006,
+  "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.4596028,
+  "c3": -0.5063793,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.27479255,
-  "c7": 0.025656652,
+  "c6": 0.30192593,
+  "c7": -0.0075686118,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 87,
-  "events_90d": 12,
-  "recency_days": 10.1,
+  "ecs": 99,
+  "events_90d": 14,
+  "recency_days": 0.6,
   "substrate_active": 1,
-  "type_diversity": 3
+  "type_diversity": 4
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001193125-26-356217",
+   "available_as_of": "2026-08-19T02:25:06-06:00",
+   "evidence_type": "PARTNERSHIP",
+   "excerpt": "On July&#160;29, 2026, Marvell Technology, Inc. (the &#8220;Company&#8221;) and Google LLC (&#8220;Google&#8221;) entered into a commercial agreement relating",
+   "filing_date": "2026-08-19",
+   "protocol_id": null,
+   "source_hash": "6c306977bc4d87dd854e908691a911991187bdb69126198cf3162e065727aa1f",
+   "ticker": "MRVL"
+  },
+  {
+   "accession_number": "0001628280-26-057525",
+   "available_as_of": "2026-08-17T19:04:46.299562-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "MURPHY MATTHEW J S 7500 shares @ $236.08 on 2026-08-17 ($1,770,600)",
+   "filing_date": "2026-08-17",
+   "protocol_id": null,
+   "source_hash": "daef1986f2897bb2184f013c65400b5c0c3b867d753d5509aeddbdbabcd46bf9",
+   "ticker": "MRVL"
+  },
   {
    "accession_number": "0001628280-26-051905",
    "available_as_of": "2026-08-03T14:39:16.373684-06:00",
@@ -300,9 +320,25 @@
    "ticker": "MRVL"
   }
  ],
- "generated": "2026-08-13T23:01:18.186729+00:00",
- "label": "WATCH",
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-17",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-08-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-13",
    "label": "WATCH"
@@ -406,22 +442,6 @@
   {
    "date": "2026-07-09",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -523,16 +543,16 @@
   }
  },
  "science_trust_meta": {
-  "anchor": "98dcf74a827a28a8af9c09b965be3757781db2f1fdcb3e5d4a769cacca7eb009",
+  "anchor": "05c386244426899187db8c966440c6e1cf0bcda808b8008ee3e8b1250f8050f0",
   "derivation_protocol": "ad599b80d2db",
   "renderer_version": "1.0.0",
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0959,
+ "score": 0.2391,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "MRVL",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

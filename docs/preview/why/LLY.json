@@ -1,24 +1,34 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",
  "components": {
-  "c1": 0.245,
+  "c1": 0.5815,
   "c2": 0.0,
-  "c3": -0.2843189,
+  "c3": 0.5805828,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.18286577,
-  "c7": 0.448205,
+  "c6": -0.3149905,
+  "c7": 0.51885474,
   "c8": 0.0,
   "c9": -1.0
  },
  "evidence_coverage": {
-  "ecs": 83,
-  "events_90d": 5,
-  "recency_days": 2.1,
+  "ecs": 87,
+  "events_90d": 6,
+  "recency_days": 1.1,
   "substrate_active": 1,
   "type_diversity": 3
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001786054-26-000006",
+   "available_as_of": "2026-08-18T14:26:42.459306-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Jonsson Patrik S 6500 shares @ $1175.10 on 2026-08-17 ($7,638,150)",
+   "filing_date": "2026-08-18",
+   "protocol_id": null,
+   "source_hash": "30440fb45afd3b142b44875140cc3303f2d965898278644c66ecd48faef66708",
+   "ticker": "LLY"
+  },
   {
    "accession_number": "0000059478-26-000083",
    "available_as_of": "2026-08-11T14:38:13.382086-06:00",
@@ -90,9 +100,25 @@
    "ticker": "LLY"
   }
  ],
- "generated": "2026-08-13T23:01:18.186729+00:00",
- "label": "WATCH",
+ "generated": "2026-08-19T23:03:42.028493+00:00",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-08-19",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-08-18",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-17",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-13",
    "label": "WATCH"
@@ -196,22 +222,6 @@
   {
    "date": "2026-07-09",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-08",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-07",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-06",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-03",
-   "label": "BULLISH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -313,16 +323,16 @@
   }
  },
  "science_trust_meta": {
-  "anchor": "98dcf74a827a28a8af9c09b965be3757781db2f1fdcb3e5d4a769cacca7eb009",
+  "anchor": "05c386244426899187db8c966440c6e1cf0bcda808b8008ee3e8b1250f8050f0",
   "derivation_protocol": "ad599b80d2db",
   "renderer_version": "1.0.0",
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0977,
+ "score": 0.2555,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "LLY",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"
