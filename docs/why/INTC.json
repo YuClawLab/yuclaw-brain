@@ -1,27 +1,27 @@
 {
  "ticker": "INTC",
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "WATCH",
- "score": 0.1505,
+ "generated": "2026-08-20T23:01:44.574345+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2246,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.2195,
+  "c1": -0.6315,
   "c2": 0.0,
-  "c3": -0.5063793,
+  "c3": 0.3924982,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.71540725,
-  "c7": -0.06307878,
+  "c6": 0.6965847,
+  "c7": 0.043023583,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 5,
-  "recency_days": 5.1,
+  "recency_days": 6.1,
   "type_diversity": 5,
   "substrate_active": 1
  },
@@ -139,6 +139,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-20",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-19",
    "label": "WATCH"
   },
@@ -253,10 +257,6 @@
   {
    "date": "2026-07-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-09",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",

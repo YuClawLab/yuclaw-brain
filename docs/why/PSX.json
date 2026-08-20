@@ -1,27 +1,27 @@
 {
  "ticker": "PSX",
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "WATCH",
- "score": 0.1829,
+ "generated": "2026-08-20T23:01:44.574345+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2856,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.802,
+  "c1": 0.653,
   "c2": 0.0,
-  "c3": -0.30487168,
+  "c3": 0.6373197,
   "c4": 0.6,
-  "c5": -0.32161936,
-  "c6": -0.22583924,
-  "c7": 0.6624498,
+  "c5": -0.21599528,
+  "c6": -0.24986997,
+  "c7": 0.6541393,
   "c8": 0.0,
   "c9": -0.16666667
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 82,
   "events_90d": 14,
-  "recency_days": 6.1,
+  "recency_days": 7.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -289,6 +289,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-20",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-19",
    "label": "WATCH"
   },
@@ -403,10 +407,6 @@
   {
    "date": "2026-07-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-09",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",

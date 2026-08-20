@@ -1,31 +1,41 @@
 {
  "ticker": "PYPL",
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "WATCH",
- "score": 0.1905,
+ "generated": "2026-08-20T23:01:44.574345+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2616,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.39,
+  "c1": 0.5775,
   "c2": 0.0,
-  "c3": -0.41296685,
+  "c3": 0.03557302,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.0021337788,
-  "c7": 0.06854702,
+  "c6": -0.039014388,
+  "c7": -0.039925005,
   "c8": 0.0,
   "c9": 0.6363636
  },
  "evidence_coverage": {
-  "ecs": 75,
-  "events_90d": 6,
-  "recency_days": 20.1,
+  "ecs": 90,
+  "events_90d": 7,
+  "recency_days": 1.0,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "PYPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-19",
+   "accession_number": "0001896086-26-000012",
+   "excerpt": "Kereere Suzan S 3362 shares @ $60.86 on 2026-08-18 ($204,599)",
+   "source_hash": "e2f0aab5cbcb6ab8cc8836a9966f6b9dfb69460724e4740e68c8cfb32ed068c5",
+   "available_as_of": "2026-08-19T17:15:32.860194-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PYPL",
    "evidence_type": "INSIDER_SELL",
@@ -191,16 +201,6 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-03-04",
    "accession_number": "0001633917-26-000048",
-   "excerpt": "Keller Frank S 8901 shares @ $45.19 on 2026-03-03 ($402,250)",
-   "source_hash": "e6f5f4b5ff475dd754ff78c5b59348b6b604f442320fab963525b0b8ae46b8f6",
-   "available_as_of": "2026-03-04T15:58:18-07:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "PYPL",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-03-04",
-   "accession_number": "0001633917-26-000048",
    "excerpt": "Keller Frank S 1204 shares @ $46.82 on 2026-03-03 ($56,375)",
    "source_hash": "dfdcf305c89b76b0cb94806971152348d7670491dee30f26e9155eefb38f07ed",
    "available_as_of": "2026-03-04T15:58:18-07:00",
@@ -209,11 +209,11 @@
   {
    "ticker": "PYPL",
    "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-19",
-   "accession_number": "0001633917-26-000032",
-   "excerpt": "Kereere Suzan S 31413 shares @ $41.45 on 2026-02-18 ($1,302,069)",
-   "source_hash": "e0064670ca57c7c121703937c928c141f39129b6796950b0a648b801050266d6",
-   "available_as_of": "2026-02-19T14:55:02-07:00",
+   "filing_date": "2026-03-04",
+   "accession_number": "0001633917-26-000048",
+   "excerpt": "Keller Frank S 8901 shares @ $45.19 on 2026-03-03 ($402,250)",
+   "source_hash": "e6f5f4b5ff475dd754ff78c5b59348b6b604f442320fab963525b0b8ae46b8f6",
+   "available_as_of": "2026-03-04T15:58:18-07:00",
    "protocol_id": null
   },
   {
@@ -225,9 +225,23 @@
    "source_hash": "cff67ae9bacb292eb64e5e6853eb16dd1ea52285bb1ffec3d0d7d1bc328fe811",
    "available_as_of": "2026-02-19T14:55:02-07:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "PYPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-02-19",
+   "accession_number": "0001633917-26-000032",
+   "excerpt": "Kereere Suzan S 31413 shares @ $41.45 on 2026-02-18 ($1,302,069)",
+   "source_hash": "e0064670ca57c7c121703937c928c141f39129b6796950b0a648b801050266d6",
+   "available_as_of": "2026-02-19T14:55:02-07:00",
+   "protocol_id": null
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-20",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-19",
    "label": "WATCH"
@@ -342,10 +356,6 @@
   },
   {
    "date": "2026-07-10",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-09",
    "label": "BULLISH"
   }
  ],

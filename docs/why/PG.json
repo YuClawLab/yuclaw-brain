@@ -1,31 +1,41 @@
 {
  "ticker": "PG",
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "WATCH",
- "score": 0.0986,
+ "generated": "2026-08-20T23:01:44.574345+00:00",
+ "label": "WEAKENING",
+ "score": -0.0166,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1595,
+  "c1": -0.173,
   "c2": 0.0,
-  "c3": 0.026659383,
+  "c3": -0.25319073,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.0,
+  "c6": -0.24094291,
+  "c7": -0.042014286,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 59,
-  "events_90d": 4,
-  "recency_days": 15.3,
-  "type_diversity": 1,
+  "ecs": 78,
+  "events_90d": 5,
+  "recency_days": 0.1,
+  "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "PG",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-20",
+   "accession_number": "0000080424-26-000133",
+   "excerpt": "Whaley Susan Street S 8644 shares @ $144.00 on 2026-08-18 ($1,244,736)",
+   "source_hash": "362fe70be814ad5b151caf29fa1b8dac098f062f48c0de5c1724713cf63514a0",
+   "available_as_of": "2026-08-20T13:53:31.542993-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PG",
    "evidence_type": "OTHER_MATERIAL",
@@ -88,6 +98,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-20",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-19",
    "label": "WATCH"
@@ -203,10 +217,6 @@
   {
    "date": "2026-07-10",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-09",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PG --date D",

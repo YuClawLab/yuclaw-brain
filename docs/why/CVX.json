@@ -1,31 +1,41 @@
 {
  "ticker": "CVX",
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "WATCH",
- "score": 0.0895,
+ "generated": "2026-08-20T23:01:44.574345+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2146,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.423,
+  "c1": 0.3845,
   "c2": 0.0,
-  "c3": -0.30487168,
+  "c3": 0.6373197,
   "c4": 0.6,
-  "c5": -0.32161936,
+  "c5": -0.21599528,
   "c6": -0.46211717,
-  "c7": 0.72754896,
+  "c7": 0.7023889,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
   "ecs": 94,
-  "events_90d": 22,
+  "events_90d": 23,
   "recency_days": 0.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "CVX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-20",
+   "accession_number": "0000093410-26-000179",
+   "excerpt": "Pate R. Hewitt S 2470 shares @ $205.11 on 2026-08-18 ($506,619)",
+   "source_hash": "9113817758e37961d8dbc3e3e70fe996afe1598319263454b6165410d7f70502",
+   "available_as_of": "2026-08-20T14:57:29.444016-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "CVX",
    "evidence_type": "INSIDER_SELL",
@@ -171,8 +181,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-05-22",
    "accession_number": "0000093410-26-000121",
-   "excerpt": "HESS JOHN B S 7038 shares @ $195.97 on 2026-05-20 ($1,379,205)",
-   "source_hash": "117f9a6ec05e32105318c8465a2aa86b9c3f75ae0b09cbc3b4ee2c554bdf349c",
+   "excerpt": "HESS JOHN B S 119787 shares @ $192.86 on 2026-05-20 ($23,102,324)",
+   "source_hash": "7fa0a7de0e6999480a54b22bd525626319ee23a6b844f4ff977568d71661cf76",
    "available_as_of": "2026-07-16T01:22:52.372250-06:00",
    "protocol_id": null
   },
@@ -211,6 +221,16 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-05-22",
    "accession_number": "0000093410-26-000121",
+   "excerpt": "HESS JOHN B S 59045 shares @ $193.79 on 2026-05-20 ($11,442,165)",
+   "source_hash": "35d5842b3e780641ce18869aac5214e94eab314cf32078f1334ee1d93d140181",
+   "available_as_of": "2026-07-16T01:22:52.372250-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "CVX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-05-22",
+   "accession_number": "0000093410-26-000121",
    "excerpt": "HESS JOHN B S 30581 shares @ $196.74 on 2026-05-20 ($6,016,595)",
    "source_hash": "5e5a531d4c8ad79bad307d5f5ef9d499c205e33b31c54d523a1ed071c144a34a",
    "available_as_of": "2026-07-16T01:22:52.372250-06:00",
@@ -221,18 +241,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-05-22",
    "accession_number": "0000093410-26-000121",
-   "excerpt": "HESS JOHN B S 119787 shares @ $192.86 on 2026-05-20 ($23,102,324)",
-   "source_hash": "7fa0a7de0e6999480a54b22bd525626319ee23a6b844f4ff977568d71661cf76",
-   "available_as_of": "2026-07-16T01:22:52.372250-06:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "CVX",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-05-22",
-   "accession_number": "0000093410-26-000121",
-   "excerpt": "HESS JOHN B S 59045 shares @ $193.79 on 2026-05-20 ($11,442,165)",
-   "source_hash": "35d5842b3e780641ce18869aac5214e94eab314cf32078f1334ee1d93d140181",
+   "excerpt": "HESS JOHN B S 7038 shares @ $195.97 on 2026-05-20 ($1,379,205)",
+   "source_hash": "117f9a6ec05e32105318c8465a2aa86b9c3f75ae0b09cbc3b4ee2c554bdf349c",
    "available_as_of": "2026-07-16T01:22:52.372250-06:00",
    "protocol_id": null
   },
@@ -559,6 +569,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-20",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-19",
    "label": "WATCH"
   },
@@ -673,10 +687,6 @@
   {
    "date": "2026-07-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-09",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CVX --date D",
