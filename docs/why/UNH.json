@@ -1,27 +1,27 @@
 {
  "ticker": "UNH",
- "generated": "2026-08-20T23:01:44.574345+00:00",
- "label": "WEAKENING",
- "score": -0.076,
+ "generated": "2026-08-21T23:01:42.137045+00:00",
+ "label": "WATCH",
+ "score": 0.1197,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.59,
+  "c1": -0.4775,
   "c2": 0.0,
-  "c3": -0.49166632,
+  "c3": 0.48670018,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.011191284,
+  "c6": -0.010136286,
   "c7": 0.0,
   "c8": 0.0,
   "c9": -0.25
  },
  "evidence_coverage": {
-  "ecs": 65,
+  "ecs": 64,
   "events_90d": 3,
-  "recency_days": 10.3,
+  "recency_days": 11.3,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -68,6 +68,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-21",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-20",
    "label": "WEAKENING"
@@ -183,10 +187,6 @@
   {
    "date": "2026-07-13",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay UNH --date D",

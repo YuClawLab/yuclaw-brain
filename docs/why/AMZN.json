@@ -1,27 +1,27 @@
 {
  "ticker": "AMZN",
- "generated": "2026-08-20T23:01:44.574345+00:00",
- "label": "WATCH",
- "score": 0.0481,
+ "generated": "2026-08-21T23:01:42.137045+00:00",
+ "label": "WEAKENING",
+ "score": -0.0262,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.2535,
+  "c1": 0.2815,
   "c2": 0.0,
-  "c3": 0.3924982,
+  "c3": -0.24684921,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.3916293,
-  "c7": -0.056846485,
+  "c6": -0.35811225,
+  "c7": -0.07310154,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 39,
-  "recency_days": 1.1,
+  "recency_days": 2.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -809,6 +809,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-21",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-20",
    "label": "WATCH"
   },
@@ -923,10 +927,6 @@
   {
    "date": "2026-07-13",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",

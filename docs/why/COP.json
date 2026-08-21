@@ -1,31 +1,41 @@
 {
  "ticker": "COP",
- "generated": "2026-08-20T23:01:44.574345+00:00",
- "label": "BULLISH",
- "score": 0.4375,
+ "generated": "2026-08-21T23:01:42.137045+00:00",
+ "label": "WATCH",
+ "score": 0.1767,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.74,
+  "c1": 0.677,
   "c2": 0.0,
-  "c3": 0.6373197,
+  "c3": -0.4161258,
   "c4": 0.6,
-  "c5": -0.21599528,
-  "c6": 0.25684586,
-  "c7": 0.63723236,
+  "c5": -0.32546815,
+  "c6": -0.15939526,
+  "c7": 0.5954062,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 5,
-  "recency_days": 9.3,
+  "ecs": 87,
+  "events_90d": 6,
+  "recency_days": 0.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "COP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-21",
+   "accession_number": "0001193125-26-361073",
+   "excerpt": "Rose Kelly Brunetti S 15000 shares @ $134.51 on 2026-08-20 ($2,017,725)",
+   "source_hash": "445d7ad4bad53b51cc3d95f7f5629b48b1890bccc7a07361cc1fe79b8a884903",
+   "available_as_of": "2026-08-21T14:05:18.525938-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COP",
    "evidence_type": "EXEC_CHANGE",
@@ -199,6 +209,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-21",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-20",
    "label": "BULLISH"
   },
@@ -313,10 +327,6 @@
   {
    "date": "2026-07-13",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COP --date D",

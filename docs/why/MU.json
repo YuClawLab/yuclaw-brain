@@ -1,31 +1,41 @@
 {
  "ticker": "MU",
- "generated": "2026-08-20T23:01:44.574345+00:00",
+ "generated": "2026-08-21T23:01:42.137045+00:00",
  "label": "WEAKENING",
- "score": -0.0357,
+ "score": -0.1215,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.018,
+  "c1": 0.038,
   "c2": 0.0,
-  "c3": 0.3924982,
+  "c3": -0.24684921,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.048341926,
+  "c7": -0.062125966,
   "c8": 0.0,
   "c9": -0.6666667
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 144,
-  "recency_days": 23.0,
+  "ecs": 93,
+  "events_90d": 145,
+  "recency_days": 1.0,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "MU",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-20",
+   "accession_number": "0001311079-26-000003",
+   "excerpt": "Sadana Sumit S 15000 shares @ $934.29 on 2026-08-18 ($14,014,350)",
+   "source_hash": "d4193dd7f621a0fea23a257c8f89ee7eec22d4320d3b807beb2c7478a691b373",
+   "available_as_of": "2026-08-20T17:11:32.796859-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MU",
    "evidence_type": "INSIDER_SELL",
@@ -1015,19 +1025,13 @@
    "source_hash": "ee6b0e20a514ebc6212dbe597885e57fb2043594600580229f1f873231d420c8",
    "available_as_of": "2026-07-16T01:26:48.376323-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "MU",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-06-30",
-   "accession_number": "0001242654-26-000011",
-   "excerpt": "MEHROTRA SANJAY S 951 shares @ $1169.96 on 2026-06-26 ($1,112,632)",
-   "source_hash": "f19f1be50242d549a5a81493304bb859954c1c89fad5922869f72a4a309c69a2",
-   "available_as_of": "2026-07-16T01:26:48.376323-06:00",
-   "protocol_id": null
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-21",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-20",
    "label": "WEAKENING"
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-13",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-10",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MU --date D",
