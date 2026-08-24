@@ -1,27 +1,27 @@
 {
  "ticker": "META",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "WEAKENING",
- "score": -0.1406,
+ "score": -0.1671,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.616,
+  "c1": -0.3885,
   "c2": 0.0,
-  "c3": -0.24684921,
+  "c3": -0.77101713,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": 0.038700216,
+  "c7": 0.050532516,
   "c8": 0.0,
-  "c9": 0.13333334
+  "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 84,
   "events_90d": 71,
-  "recency_days": 1.0,
+  "recency_days": 4.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-21",
    "label": "WEAKENING"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-14",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay META --date D",

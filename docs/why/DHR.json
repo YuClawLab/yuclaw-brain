@@ -1,31 +1,61 @@
 {
  "ticker": "DHR",
- "generated": "2026-08-21T23:01:42.137045+00:00",
- "label": "STRONG_BULLISH",
- "score": 0.5751,
+ "generated": "2026-08-24T23:01:46.515367+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2267,
  "threshold_band": {
-  "floor": 0.55,
-  "ceiling": null
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 1.0,
+  "c1": 0.5875,
   "c2": 0.0,
-  "c3": 0.48670018,
+  "c3": 0.08934195,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.50606364,
+  "c6": -0.46211717,
+  "c7": 0.423147,
   "c8": 0.0,
   "c9": 0.46666667
  },
  "evidence_coverage": {
-  "ecs": 57,
-  "events_90d": 4,
-  "recency_days": 18.3,
-  "type_diversity": 1,
+  "ecs": 84,
+  "events_90d": 7,
+  "recency_days": 0.1,
+  "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-24",
+   "accession_number": "0000313616-26-000187",
+   "excerpt": "Blair Rainer S 11307 shares @ $217.77 on 2026-08-21 ($2,462,338)",
+   "source_hash": "0f005d44549ceebeaa407b4a3651df95625a86e1b4b5ed6d2c07cbf5f06ce249",
+   "available_as_of": "2026-08-24T15:07:26.467020-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-24",
+   "accession_number": "0000313616-26-000187",
+   "excerpt": "Blair Rainer S 7755 shares @ $219.35 on 2026-08-21 ($1,701,053)",
+   "source_hash": "567100c1bbca63163fec243ede9d18d855d9618f547d519a7f61a8d37d60f8b3",
+   "available_as_of": "2026-08-24T15:07:26.467020-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-24",
+   "accession_number": "0000313616-26-000187",
+   "excerpt": "Blair Rainer S 39193 shares @ $218.73 on 2026-08-21 ($8,572,704)",
+   "source_hash": "d0ba6f22a82cbc7afe09ae6ccef74b38b607c9c62d71fd66d4c22620edd65f9e",
+   "available_as_of": "2026-08-24T15:07:26.467020-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DHR",
    "evidence_type": "OTHER_MATERIAL",
@@ -88,6 +118,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-24",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-21",
    "label": "STRONG_BULLISH"
@@ -203,10 +237,6 @@
   {
    "date": "2026-07-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",

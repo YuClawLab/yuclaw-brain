@@ -1,16 +1,16 @@
 {
  "ticker": "XLP",
- "generated": "2026-08-21T23:01:42.137045+00:00",
- "label": "NEUTRAL",
- "score": 0.2155,
+ "generated": "2026-08-24T23:01:46.515367+00:00",
+ "label": "BULLISH",
+ "score": 0.4097,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.4,
+  "ceiling": 0.55
  },
  "components": {
-  "c1": 0.0955,
+  "c1": 0.255,
   "c2": 0.0,
-  "c3": 0.19139811,
+  "c3": 0.79943496,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-24",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-08-21",
    "label": "NEUTRAL"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-14",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLP --date D",

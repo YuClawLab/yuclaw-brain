@@ -1,27 +1,27 @@
 {
  "ticker": "AMD",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "NEGATIVE_EVENT",
- "score": -0.2136,
+ "score": -0.2833,
  "threshold_band": {
   "floor": -0.4,
   "ceiling": -0.2
  },
  "components": {
-  "c1": -0.716,
+  "c1": -0.7685,
   "c2": 0.0,
-  "c3": -0.24684921,
+  "c3": -0.77101713,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.486386,
-  "c7": 0.03317342,
+  "c6": -0.48021778,
+  "c7": 0.022472963,
   "c8": 0.0,
-  "c9": -0.33333334
+  "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 100,
+  "ecs": 98,
   "events_90d": 70,
-  "recency_days": 0.0,
+  "recency_days": 3.0,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
    "date": "2026-08-21",
    "label": "NEGATIVE_EVENT"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-14",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMD --date D",

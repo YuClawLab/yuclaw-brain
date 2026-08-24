@@ -1,8 +1,8 @@
 {
  "ticker": "MSFT",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "WATCH",
- "score": 0.126,
+ "score": 0.0708,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -10,18 +10,18 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": -0.24684921,
+  "c3": -0.77101713,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.24112149,
-  "c7": -0.11302455,
+  "c6": -0.18074328,
+  "c7": -0.06661644,
   "c8": 0.0,
   "c9": -0.18181819
  },
  "evidence_coverage": {
-  "ecs": 84,
+  "ecs": 82,
   "events_90d": 9,
-  "recency_days": 15.0,
+  "recency_days": 18.0,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -149,6 +149,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-21",
    "label": "WATCH"
   },
@@ -263,10 +267,6 @@
   {
    "date": "2026-07-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MSFT --date D",

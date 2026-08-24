@@ -1,27 +1,27 @@
 {
  "ticker": "WMT",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "WATCH",
- "score": 0.0573,
+ "score": 0.176,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.2575,
+  "c1": -0.088,
   "c2": 0.0,
-  "c3": 0.19139811,
+  "c3": 0.79943496,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.07655746,
-  "c7": -0.06443047,
+  "c6": -0.056931883,
+  "c7": -0.09916239,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 85,
   "events_90d": 29,
-  "recency_days": 0.1,
+  "recency_days": 3.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -669,6 +669,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-21",
    "label": "WATCH"
   },
@@ -783,10 +787,6 @@
   {
    "date": "2026-07-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WMT --date D",

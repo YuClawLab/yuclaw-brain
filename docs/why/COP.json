@@ -1,31 +1,41 @@
 {
  "ticker": "COP",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "WATCH",
- "score": 0.1767,
+ "score": 0.0995,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.677,
+  "c1": 0.547,
   "c2": 0.0,
-  "c3": -0.4161258,
+  "c3": -0.41876757,
   "c4": 0.6,
-  "c5": -0.32546815,
-  "c6": -0.15939526,
-  "c7": 0.5954062,
+  "c5": -0.47939643,
+  "c6": -0.3123946,
+  "c7": 0.58585626,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 87,
-  "events_90d": 6,
-  "recency_days": 0.1,
+  "ecs": 90,
+  "events_90d": 7,
+  "recency_days": 0.3,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "COP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-24",
+   "accession_number": "0001193125-26-362752",
+   "excerpt": "LUNDQUIST ANDREW D S 9487 shares @ $135.15 on 2026-08-21 ($1,282,168)",
+   "source_hash": "6972c1d6dc0b837628e29c2119004e7ef7fcd2b03ea11ab2ec36add5f0b4b5b2",
+   "available_as_of": "2026-08-24T11:01:40.981768-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COP",
    "evidence_type": "INSIDER_SELL",
@@ -209,6 +219,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-21",
    "label": "WATCH"
   },
@@ -323,10 +337,6 @@
   {
    "date": "2026-07-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COP --date D",

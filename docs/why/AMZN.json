@@ -1,27 +1,27 @@
 {
  "ticker": "AMZN",
- "generated": "2026-08-21T23:01:42.137045+00:00",
+ "generated": "2026-08-24T23:01:46.515367+00:00",
  "label": "WEAKENING",
- "score": -0.0262,
+ "score": -0.0217,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.2815,
+  "c1": 0.608,
   "c2": 0.0,
-  "c3": -0.24684921,
+  "c3": -0.77101713,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.35811225,
-  "c7": -0.07310154,
+  "c6": -0.27143753,
+  "c7": -0.04613209,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 86,
+  "ecs": 84,
   "events_90d": 39,
-  "recency_days": 2.1,
+  "recency_days": 5.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -809,6 +809,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-24",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-21",
    "label": "WEAKENING"
   },
@@ -923,10 +927,6 @@
   {
    "date": "2026-07-14",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",

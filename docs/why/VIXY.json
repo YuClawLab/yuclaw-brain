@@ -1,14 +1,14 @@
 {
  "ticker": "VIXY",
- "generated": "2026-08-21T23:01:42.137045+00:00",
- "label": "WATCH",
- "score": 0.0088,
+ "generated": "2026-08-24T23:01:46.515367+00:00",
+ "label": "WEAKENING",
+ "score": -0.0547,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.6055,
+  "c1": -0.8125,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,9 +19,9 @@
   "c9": -0.27272728
  },
  "evidence_coverage": {
-  "ecs": 50,
+  "ecs": 48,
   "events_90d": 1,
-  "recency_days": 14.3,
+  "recency_days": 17.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -38,6 +38,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-24",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-21",
    "label": "WATCH"
@@ -153,10 +157,6 @@
   {
    "date": "2026-07-14",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay VIXY --date D",
