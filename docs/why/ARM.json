@@ -1,27 +1,27 @@
 {
  "ticker": "ARM",
- "generated": "2026-08-24T23:01:46.515367+00:00",
- "label": "WEAKENING",
- "score": -0.1086,
+ "generated": "2026-08-25T23:02:43.594450+00:00",
+ "label": "WATCH",
+ "score": 0.1125,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.782,
+  "c1": -0.355,
   "c2": 0.0,
-  "c3": -0.77101713,
+  "c3": 0.3397461,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.1062158,
-  "c7": 0.02147405,
+  "c6": 0.096267305,
+  "c7": -0.1040054,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 84,
   "events_90d": 21,
-  "recency_days": 14.3,
+  "recency_days": 15.3,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -449,6 +449,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-25",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-24",
    "label": "WEAKENING"
   },
@@ -563,10 +567,6 @@
   {
    "date": "2026-07-15",
    "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ARM --date D",

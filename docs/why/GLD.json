@@ -1,14 +1,14 @@
 {
  "ticker": "GLD",
- "generated": "2026-08-24T23:01:46.515367+00:00",
+ "generated": "2026-08-25T23:02:43.594450+00:00",
  "label": "BULLISH",
- "score": 0.4322,
+ "score": 0.436,
  "threshold_band": {
   "floor": 0.4,
   "ceiling": 0.55
  },
  "components": {
-  "c1": 0.7425,
+  "c1": 0.755,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -21,7 +21,7 @@
  "evidence_coverage": {
   "ecs": 47,
   "events_90d": 1,
-  "recency_days": 20.3,
+  "recency_days": 21.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -38,6 +38,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-25",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-08-24",
    "label": "BULLISH"
@@ -153,10 +157,6 @@
   {
    "date": "2026-07-15",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GLD --date D",

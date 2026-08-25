@@ -1,27 +1,27 @@
 {
  "ticker": "PYPL",
- "generated": "2026-08-24T23:01:46.515367+00:00",
+ "generated": "2026-08-25T23:02:43.594450+00:00",
  "label": "NEUTRAL",
- "score": 0.3756,
+ "score": 0.2652,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.507,
+  "c1": 0.545,
   "c2": 0.0,
-  "c3": 0.68935126,
+  "c3": -0.104644,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.026262034,
-  "c7": 0.06049463,
+  "c6": -0.023787117,
+  "c7": 0.13420749,
   "c8": 0.0,
   "c9": 0.6363636
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 7,
-  "recency_days": 5.0,
+  "recency_days": 6.0,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -239,6 +239,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-25",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-24",
    "label": "NEUTRAL"
   },
@@ -353,10 +357,6 @@
   {
    "date": "2026-07-15",
    "label": "STRONG_BULLISH"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PYPL --date D",

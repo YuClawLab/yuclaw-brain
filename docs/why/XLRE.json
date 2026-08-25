@@ -1,16 +1,16 @@
 {
  "ticker": "XLRE",
- "generated": "2026-08-24T23:01:46.515367+00:00",
- "label": "NEUTRAL",
- "score": 0.2849,
+ "generated": "2026-08-25T23:02:43.594450+00:00",
+ "label": "WATCH",
+ "score": 0.1151,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.0425,
+  "c1": -0.064,
   "c2": 0.0,
-  "c3": 0.3798216,
+  "c3": -0.1554927,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-25",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-24",
    "label": "NEUTRAL"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-15",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLRE --date D",

@@ -1,27 +1,27 @@
 {
  "ticker": "V",
- "generated": "2026-08-24T23:01:46.515367+00:00",
+ "generated": "2026-08-25T23:02:43.594450+00:00",
  "label": "WATCH",
- "score": 0.1397,
+ "score": 0.0263,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.438,
+  "c1": 0.399,
   "c2": 0.0,
-  "c3": 0.68935126,
+  "c3": -0.104644,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.06494732,
+  "c7": 0.15046643,
   "c8": 0.0,
-  "c9": -0.6666667
+  "c9": -0.6923077
  },
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 12,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -189,6 +189,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-25",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-24",
    "label": "WATCH"
   },
@@ -303,10 +307,6 @@
   {
    "date": "2026-07-15",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",

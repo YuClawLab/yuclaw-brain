@@ -1,27 +1,27 @@
 {
  "ticker": "PG",
- "generated": "2026-08-24T23:01:46.515367+00:00",
- "label": "WATCH",
- "score": 0.0838,
+ "generated": "2026-08-25T23:02:43.594450+00:00",
+ "label": "WEAKENING",
+ "score": -0.1424,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0125,
+  "c1": -0.068,
   "c2": 0.0,
-  "c3": 0.79943496,
+  "c3": -0.67393523,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.093808286,
+  "c7": -0.059149355,
   "c8": 0.0,
-  "c9": -0.2
+  "c9": -0.33333334
  },
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 16,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -209,6 +209,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-25",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-08-24",
    "label": "WATCH"
   },
@@ -323,10 +327,6 @@
   {
    "date": "2026-07-15",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PG --date D",
