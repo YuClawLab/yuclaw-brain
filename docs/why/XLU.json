@@ -1,16 +1,16 @@
 {
  "ticker": "XLU",
- "generated": "2026-08-25T23:02:43.594450+00:00",
- "label": "WATCH",
- "score": 0.0576,
+ "generated": "2026-08-26T23:01:19.807493+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2423,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.322,
+  "c1": -0.2375,
   "c2": 0.0,
-  "c3": -0.07352631,
+  "c3": 0.5441773,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-26",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-25",
    "label": "WATCH"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-16",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-15",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLU --date D",

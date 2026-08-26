@@ -1,27 +1,27 @@
 {
  "ticker": "META",
- "generated": "2026-08-25T23:02:43.594450+00:00",
- "label": "WEAKENING",
- "score": -0.007,
+ "generated": "2026-08-26T23:01:19.807493+00:00",
+ "label": "WATCH",
+ "score": 0.0294,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.211,
+  "c1": -0.1495,
   "c2": 0.0,
-  "c3": 0.3397461,
+  "c3": 0.6520109,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": -0.09772958,
+  "c7": -0.14656432,
   "c8": 0.0,
-  "c9": 0.26666668
+  "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 84,
+  "ecs": 83,
   "events_90d": 71,
-  "recency_days": 5.0,
+  "recency_days": 6.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-26",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-25",
    "label": "WEAKENING"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-16",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-15",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay META --date D",
