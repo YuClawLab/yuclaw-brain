@@ -1,22 +1,22 @@
 {
  "ticker": "XLV",
- "generated": "2026-08-26T23:01:19.807493+00:00",
+ "generated": "2026-08-27T23:01:07.092715+00:00",
  "label": "WATCH",
- "score": 0.1045,
+ "score": 0.141,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.3105,
+  "c1": 0.129,
   "c2": 0.0,
-  "c3": -0.8028622,
+  "c3": -0.41824913,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.1764706
+  "c9": 0.11111111
  },
  "evidence_coverage": {
   "ecs": 0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-27",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-26",
    "label": "WATCH"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-17",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-16",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLV --date D",

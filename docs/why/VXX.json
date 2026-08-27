@@ -1,14 +1,14 @@
 {
  "ticker": "VXX",
- "generated": "2026-08-26T23:01:19.807493+00:00",
+ "generated": "2026-08-27T23:01:07.092715+00:00",
  "label": "WEAKENING",
- "score": -0.0645,
+ "score": -0.0777,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.826,
+  "c1": -0.892,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -16,12 +16,12 @@
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": -0.23076923
+  "c9": -0.14285715
  },
  "evidence_coverage": {
   "ecs": 36,
   "events_90d": 1,
-  "recency_days": 82.2,
+  "recency_days": 83.2,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -38,6 +38,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-27",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-26",
    "label": "WEAKENING"
@@ -153,10 +157,6 @@
   {
    "date": "2026-07-17",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-16",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay VXX --date D",

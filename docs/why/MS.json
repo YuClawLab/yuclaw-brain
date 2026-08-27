@@ -1,27 +1,27 @@
 {
  "ticker": "MS",
- "generated": "2026-08-26T23:01:19.807493+00:00",
+ "generated": "2026-08-27T23:01:07.092715+00:00",
  "label": "WATCH",
- "score": 0.1767,
+ "score": 0.1768,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.011,
+  "c1": 0.0775,
   "c2": 0.0,
-  "c3": -0.033746347,
+  "c3": -0.20903827,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.0026200425,
-  "c7": -0.036457647,
+  "c6": -0.0023730379,
+  "c7": 0.03661352,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
   "ecs": 74,
   "events_90d": 8,
-  "recency_days": 22.3,
+  "recency_days": 23.3,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -229,6 +229,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-27",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-26",
    "label": "WATCH"
   },
@@ -343,10 +347,6 @@
   {
    "date": "2026-07-17",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-16",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MS --date D",

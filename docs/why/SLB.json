@@ -1,31 +1,41 @@
 {
  "ticker": "SLB",
- "generated": "2026-08-26T23:01:19.807493+00:00",
+ "generated": "2026-08-27T23:01:07.092715+00:00",
  "label": "NEUTRAL",
- "score": 0.3298,
+ "score": 0.2387,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.201,
+  "c1": 0.503,
   "c2": 0.0,
-  "c3": 0.6458172,
+  "c3": -0.0028759497,
   "c4": 0.6,
-  "c5": -0.13766333,
-  "c6": -0.21484372,
-  "c7": 0.5504314,
+  "c5": -0.33829087,
+  "c6": -0.24718237,
+  "c7": 0.5686328,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 75,
-  "events_90d": 4,
-  "recency_days": 0.1,
+  "ecs": 78,
+  "events_90d": 5,
+  "recency_days": 0.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "SLB",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-27",
+   "accession_number": "0000087347-26-000118",
+   "excerpt": "Le Peuch Olivier S 5000 shares @ $55.00 on 2026-08-27 ($275,000)",
+   "source_hash": "5db99c6db0b4567ad57f9988de02c4b1136b8f82f53b0029e3e337933acece24",
+   "available_as_of": "2026-08-27T15:51:17.105121-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "SLB",
    "evidence_type": "INSIDER_SELL",
@@ -149,6 +159,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-27",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-26",
    "label": "NEUTRAL"
   },
@@ -263,10 +277,6 @@
   {
    "date": "2026-07-17",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-16",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
