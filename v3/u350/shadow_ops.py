@@ -51,6 +51,8 @@ if str(_REPO) not in sys.path:
 import psycopg2
 
 from v3.u350 import DSN, ROLE, SCHEMA, u350_connection
+from v3.u350.market_calendar import (is_session, latest_completed_session,
+                                     session_of, session_window_utc)
 
 UA = "YuClawLab vzhang2199@gmail.com"
 PGPASS = Path.home() / ".pgpass"
@@ -69,6 +71,14 @@ CREATE TABLE IF NOT EXISTS {SCHEMA}.rejected_events
 CREATE SEQUENCE IF NOT EXISTS {SCHEMA}.events_raw_raw_id_seq;
 ALTER TABLE {SCHEMA}.events_raw ALTER COLUMN raw_id
     SET DEFAULT nextval('{SCHEMA}.events_raw_raw_id_seq');
+-- Order 2026-08-28C FIX 1: rejected_events inherited the PUBLIC sequence
+-- default too (root cause of 19 rc=1 drains). Twin sequence, owned by
+-- the twin column; setval handled by the FIX-1 DDL, not here.
+CREATE SEQUENCE IF NOT EXISTS {SCHEMA}.rejected_events_reject_id_seq;
+ALTER SEQUENCE {SCHEMA}.rejected_events_reject_id_seq
+    OWNED BY {SCHEMA}.rejected_events.reject_id;
+ALTER TABLE {SCHEMA}.rejected_events ALTER COLUMN reject_id
+    SET DEFAULT nextval('{SCHEMA}.rejected_events_reject_id_seq');
 """
 
 
@@ -244,21 +254,33 @@ def cmd_drain() -> int:
          "--batch", str(DRAIN_CAP), "--once"],
         env=_twin_env(), cwd=str(_REPO), capture_output=True, text=True,
         timeout=3600)
-    tail = (r.stdout or "").strip().splitlines()[-3:]
+    # Order 2026-08-28C FIX 2a: the worker's rc IS the drain's rc, and both
+    # stream tails go to the shadow log every run (19 silent rc=1 days).
     print(f"[drain] bounded shadow drain (cap {DRAIN_CAP}) rc={r.returncode}")
-    for line in tail:
-        print(f"   {line}")
-    return 0
+    for name, stream in (("stdout", r.stdout), ("stderr", r.stderr)):
+        lines = (stream or "").strip().splitlines()[-20:]
+        print(f"[drain] worker {name} tail ({len(lines)} lines):")
+        for line in lines:
+            print(f"   {line}")
+    return r.returncode
 
 
 def cmd_score() -> int:
     members = shadow_members()
     as_of = datetime.now(timezone.utc)
-    n_ok = 0
-    with u350_connection() as cn:
+    # Order 2026-08-28C FIX 3a: the snapshot date is the latest COMPLETED
+    # NYSE session (registered calendar), never as_of's UTC date — the
+    # Sunday ignition pass minted TICKER_20260803 ids and the real Aug-3
+    # pass was silently ON-CONFLICT-dropped (zero-row trading day).
+    session = latest_completed_session(as_of)
+    attempted = inserted = skipped = 0
+    committed = False
+    cn = u350_connection()
+    try:
         with cn.cursor() as cur:
             for m in members:
                 tk = m["ticker"]
+                attempted += 1
                 r = subprocess.run(
                     [sys.executable, "-m", "v3.signal.composite",
                      "--ticker", tk, "--json"],
@@ -273,7 +295,7 @@ def cmd_score() -> int:
                 ok = sum(1 for c in comps.values()
                          if not c.get("not_implemented")
                          and c.get("confidence", 0) > 0)
-                sid = f"{tk}_{as_of.strftime('%Y%m%d')}"
+                sid = f"{tk}_{session.strftime('%Y%m%d')}"
                 cur.execute(
                     f"""INSERT INTO {SCHEMA}.shadow_snapshots
                         (snapshot_id, ticker, signal_time, available_as_of,
@@ -287,11 +309,26 @@ def cmd_score() -> int:
                     (sid, tk, as_of, as_of, out["label"],
                      out["total_score"], json.dumps(comps, default=str),
                      ok, 9))
-                n_ok += 1
+                if cur.rowcount == 1:
+                    inserted += 1
+                else:
+                    skipped += 1
         cn.commit()
-    print(f"[score] {n_ok}/{len(members)} shadow snapshots written "
-          f"(point-in-time, u350.shadow_snapshots)")
-    return 0 if n_ok else 1
+        committed = True
+    except Exception as exc:                          # noqa: BLE001
+        cn.rollback()
+        print(f"[score] session {session} committed_inserted=0 "
+              f"transaction_rolled_back=true error={str(exc)[:200]}")
+        return 1
+    finally:
+        cn.close()
+    # FIX 3b: counts printed only after commit; N is the run's eligible set.
+    print(f"[score] session {session}: committed_inserted {inserted} / "
+          f"skipped {skipped} / attempted {attempted} "
+          f"(skipped = already committed for this session; "
+          f"u350.shadow_snapshots)")
+    scored = inserted + skipped
+    return 0 if (committed and scored == attempted and attempted) else 1
 
 
 # price-derived components that must compute every shadow day; evidence
@@ -336,9 +373,10 @@ def cmd_guards() -> int:
                             f"COMPONENT_INCOMPLETE {tk}.{cid}: computed "
                             f"{ok}/{ok + miss} active shadow days (<95%)")
             # label anomaly: extreme-label share today vs U79 same day
+            lo, hi = session_window_utc(latest_completed_session())
             cur.execute(f"""SELECT signal_label FROM
                 {SCHEMA}.shadow_snapshots
-                WHERE signal_time::date = current_date""")
+                WHERE signal_time >= %s AND signal_time < %s""", (lo, hi))
             sh = [r[0] for r in cur.fetchall()]
             cur.execute("""SELECT signal_label FROM public.signal_snapshots
                 WHERE signal_time::date = (SELECT max(signal_time::date)
@@ -367,18 +405,35 @@ def cmd_guards() -> int:
     return 0
 
 
-def cmd_calendar() -> int:
+def sessions_with_rows() -> list[date]:
+    """Distinct NYSE sessions that have committed shadow rows: each row is
+    attributed to the latest completed session at its signal_time (so the
+    Sunday-evening ignition rows belong to Fri 2026-07-31, not to Aug 3).
+    Order 2026-08-28C FIX 3c: the day clock counts these and nothing else."""
     with u350_connection() as cn:
         with cn.cursor() as cur:
-            cur.execute(f"SELECT min(signal_time::date), "
-                        f"count(DISTINCT signal_time::date) "
-                        f"FROM {SCHEMA}.shadow_snapshots")
-            first, n = cur.fetchone()
-    if not first:
+            cur.execute(f"SELECT DISTINCT signal_time FROM "
+                        f"{SCHEMA}.shadow_snapshots")
+            times = [r[0] for r in cur.fetchall()]
+    return sorted({session_of(t) for t in times})
+
+
+def cmd_calendar() -> int:
+    sessions = sessions_with_rows()
+    if not sessions:
         print("[calendar] Phase-A clock not started (no snapshots yet)")
         return 0
+    first, n = sessions[0], len(sessions)
+    # disclosed missing sessions: sessions inside the span with zero rows
+    missing, d = [], first
+    while d <= sessions[-1]:
+        if is_session(d) and d not in sessions:
+            missing.append(d.isoformat())
+        d = date.fromordinal(d.toordinal() + 1)
     print(f"[calendar] Phase-A clock: day {n} of 15-20 trading days "
-          f"(first snapshot {first}); success = system verification "
+          f"(first session with rows {first}; sessions with committed "
+          f"rows counted, zero-row sessions disclosed not counted: "
+          f"{missing or 'none'}); success = system verification "
           f"(completeness, isolation, guards), not performance")
     return 0
 

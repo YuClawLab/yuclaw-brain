@@ -43,7 +43,10 @@ if str(_REPO) not in sys.path:
 import psycopg2
 
 from v3.u350 import SCHEMA, u350_connection
-from v3.u350.shadow_ops import DRAIN_CAP, PROSE_FORMS, UA, shadow_members
+from v3.u350.shadow_ops import (DRAIN_CAP, PROSE_FORMS, UA, shadow_members,
+                                sessions_with_rows)
+from v3.u350.market_calendar import (latest_completed_session,
+                                     session_window_utc)
 
 LOG = _REPO / "internal" / "u350" / "phase_a_log.jsonl"
 SHADOW_LOG = _REPO / "services" / "u350_shadow.log"
@@ -97,8 +100,10 @@ def h2_coverage(members):
     tickers = {m["ticker"] for m in members}
     with u350_connection() as cn:
         with cn.cursor() as cur:
+            lo, hi = session_window_utc(latest_completed_session())
             cur.execute(f"""SELECT ticker FROM {SCHEMA}.shadow_snapshots
-                            WHERE signal_time::date = current_date""")
+                            WHERE signal_time >= %s AND signal_time < %s""",
+                        (lo, hi))
             got = {r[0] for r in cur.fetchall()}
             misses = []
             for tk in sorted(tickers - got):
@@ -117,9 +122,10 @@ def h2_coverage(members):
 def h3_components(members):
     with u350_connection() as cn:
         with cn.cursor() as cur:
+            lo, hi = session_window_utc(latest_completed_session())
             cur.execute(f"""SELECT components FROM
                 {SCHEMA}.shadow_snapshots
-                WHERE signal_time::date = current_date""")
+                WHERE signal_time >= %s AND signal_time < %s""", (lo, hi))
             rows = [r[0] for r in cur.fetchall()]
     out, n = {}, len(rows)
     for cid in ("c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9"):
@@ -163,13 +169,13 @@ def h5_guards():
 
 
 def h6_clock():
-    with u350_connection() as cn:
-        with cn.cursor() as cur:
-            cur.execute(f"""SELECT min(signal_time::date),
-                count(DISTINCT signal_time::date)
-                FROM {SCHEMA}.shadow_snapshots""")
-            first, n = cur.fetchone()
-    return {"first": str(first), "shadow_days": n, "window": "15-20"}
+    # Order 2026-08-28C FIX 3c: distinct NYSE sessions with committed rows;
+    # zero-row sessions (2026-08-03) are disclosed, never counted.
+    sessions = sessions_with_rows()
+    return {"first": str(sessions[0]) if sessions else "None",
+            "shadow_days": len(sessions), "window": "15-20",
+            "session": str(latest_completed_session()),
+            "basis": "distinct trading sessions with committed rows"}
 
 
 def main() -> int:

@@ -30,6 +30,10 @@ def main() -> int:
         print("no phase_a_log.jsonl yet — run tools/u350_phase_health.py")
         return 1
     recs = [json.loads(l) for l in LOG.read_text().splitlines() if l.strip()]
+    # Order 2026-08-28C FIX 3c: disclosure records (kind=disclosure) are
+    # surfaced verbatim and never counted as health days.
+    disclosures = [r for r in recs if r.get("kind") == "disclosure"]
+    recs = [r for r in recs if r.get("kind") != "disclosure"]
     days = {}
     for r in recs:                       # last record per date wins
         days[r["date"]] = r
@@ -58,7 +62,14 @@ def main() -> int:
          "",
          f"Phase-A clock: **day {clock['shadow_days']} of "
          f"{clock['window']} trading days** (first shadow snapshot "
-         f"{clock['first']}). Health records: {n} days.",
+         f"{clock['first']}; basis: "
+         f"{clock.get('basis', 'distinct snapshot dates')}). "
+         f"Health records: {n} days.",
+         "",
+         "## Disclosures",
+         "",
+         *([f"- {d['date']}: {d['note']}" for d in disclosures]
+           or ["- none"]),
          "",
          "## System-verification verdicts",
          "",
