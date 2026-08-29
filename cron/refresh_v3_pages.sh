@@ -184,7 +184,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/canada_resources.html \
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
-                 docs/c6_posture_current.json \
+                 docs/c6_posture_current.json registry/c6_posture_state.json \
                  docs/trace_su.html docs/replication.html docs/lane.html \
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
                  docs/signal_review.html docs/schemas \

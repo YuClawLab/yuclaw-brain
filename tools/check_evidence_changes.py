@@ -16,7 +16,10 @@ docs/todays_evidence.html.
           lists with delta_since a date and delta_span_days == date -
           delta_since (delta_status OK), or added/removed/delta_since/
           delta_span_days ALL null with delta_status starting "UNAVAILABLE"
-          (previous endpoint missing/corrupt/undated).
+          (documented cold start only: "UNAVAILABLE (cold start: ...)").
+  TWICE-RUN IDENTITY (29C-v2): compute_posture() is run twice on the real
+          state file + real snapshot; the second block must be IDENTICAL to
+          the first and never UNAVAILABLE.
   ENDPOINT: {as_of, files, set_sha256, accessions}; accessions sorted unique;
           files == len; set_sha256 == recomputed (sorted unique, byte-lex,
           UTF-8, "\\n"-joined, no trailing newline); must agree with the daily
@@ -94,8 +97,9 @@ def _check_daily(path: Path, problems: list[str]) -> dict | None:
     if add is None or rem is None:
         if not (add is None and rem is None and since is None and span is None):
             problems.append(f"{name}: added/removed/delta_since/delta_span_days must ALL be null on a gap")
-        if not str(st).startswith("UNAVAILABLE"):
-            problems.append(f"{name}: null delta without delta_status UNAVAILABLE")
+        if not str(st).startswith("UNAVAILABLE (cold start"):
+            problems.append(f"{name}: null delta_since only allowed for a documented cold start "
+                            f"(delta_status={st!r})")
     else:
         if not (isinstance(add, list) and isinstance(rem, list)):
             problems.append(f"{name}: added_today/removed_today must be lists")
@@ -154,7 +158,7 @@ def _check_html(html: str, daily: dict, label: str, problems: list[str]) -> None
         if "UNAVAILABLE" not in html:
             problems.append(f"HTML: {label} delta UNAVAILABLE status not rendered")
     else:
-        want = (f"since {blk.get('delta_since')} ({blk.get('delta_span_days')}d span): "
+        want = (f"vs {blk.get('delta_since')} ({blk.get('delta_span_days')}d): "
                 f"+{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed")
         if want not in html:
             problems.append(f"HTML: {label} delta '{want}' not rendered")
@@ -198,6 +202,25 @@ def main(argv: list[str] | None = None) -> int:
                 problems.append(f"HTML: legacy key name {k} appears in the page")
     elif latest:
         problems.append("todays_evidence.html missing")
+    # ---- twice-run identity (same-day rerun): the producer is idempotent
+    twice = ""
+    if docs == _REPO / "docs":
+        import copy
+        sys.path.insert(0, str(_REPO))
+        from v3.web import render_todays_evidence as R
+        st = R._load_state()
+        snap = R.c6_snapshot()
+        today = R.datetime.now(R.timezone.utc).date()
+        s1, b1, _ = R.compute_posture(today, copy.deepcopy(st), snap)
+        s2, b2, _ = R.compute_posture(today, copy.deepcopy(s1), snap)   # rerun on the rolled state
+        s3, b3, _ = R.compute_posture(today, copy.deepcopy(s2), snap)
+        if not (b1 == b2 == b3):
+            problems.append("twice-run identity: c6_posture block differs between consecutive same-day runs")
+        if b2["added_today"] is None and st is not None:
+            problems.append("twice-run identity: same-day rerun produced UNAVAILABLE with state present")
+        if latest and dailies[latest].get("c6_posture") != b1 and today.isoformat() == latest:
+            problems.append("twice-run identity: published block != recomputed block from state + snapshot")
+        twice = f", twice-run identity OK (vs {b1['delta_since']}, {b1['delta_span_days']}d)"
     if problems:
         print("EVIDENCE-CHANGES GATE FAILED:")
         for p in problems:
@@ -206,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     print(f"[evidence-changes-gate] OK — {len(dailies)} daily files ({n_legacy} legacy < {CUTOVER}, "
           f"{len(dailies) - n_legacy} current), endpoint as_of={ep.get('as_of') if ep else '—'} "
           f"files={ep.get('files') if ep else '—'} hash verified, JSON<->HTML equal, "
-          f"zero accession strings in HTML")
+          f"zero accession strings in HTML{twice}")
     return 0
 
 

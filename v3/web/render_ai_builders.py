@@ -130,12 +130,13 @@ accession set is <em>not</em> inlined; it lives at <code>/c6_posture_current.jso
 Recompute it from <code>accessions</code> to verify the endpoint offline.</li>
 <li><strong>Pin semantics:</strong> <code>current_url</code> is mutable (always latest); the <code>set_sha256</code>
 inside each dated daily file is the historical pin for that day.</li>
-<li><strong>Labeled delta base:</strong> the delta is computed against the previous published endpoint;
-<code>delta_since</code> is that endpoint's <code>as_of</code> and <code>delta_span_days</code> the calendar days
-it covers (1 on consecutive build days; 3 after a weekend — the chain runs weekdays). Only when the previous
-endpoint is missing, corrupt or undated are <code>added_today</code>/<code>removed_today</code>/<code>delta_since</code>/
-<code>delta_span_days</code> <code>null</code> with <code>delta_status</code> =
-<code>UNAVAILABLE (previous endpoint missing/corrupt/undated)</code>.</li>
+<li><strong>Delta base (dated previous-set state):</strong> the delta is always computed against the last
+<em>completed</em> prior build day's set — <code>delta_since</code> is that day and <code>delta_span_days</code> the
+calendar days covered (1 on consecutive build days; honestly 3 after a weekend — the chain runs weekdays). A
+same-UTC-day rebuild leaves the base unchanged and recomputes the block idempotently (the build gate proves
+twice-run identity). Only a true cold start (no previous-day set at all) publishes <code>added_today</code>/
+<code>removed_today</code>/<code>delta_since</code>/<code>delta_span_days</code> = <code>null</code> with
+<code>delta_status</code> = <code>UNAVAILABLE (cold start: no previous-day set state)</code>.</li>
 <li>Files dated before 2026-08-29 carry the legacy inline <code>c6_posture_accessions</code> /
 <code>c6_posture_files</code> keys and are never rewritten.</li>
 </ul>
