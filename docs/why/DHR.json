@@ -1,27 +1,27 @@
 {
  "ticker": "DHR",
- "generated": "2026-08-27T23:01:07.092715+00:00",
+ "generated": "2026-08-29T11:47:27.536578+00:00",
  "label": "WATCH",
- "score": 0.076,
+ "score": 0.1863,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4175,
+  "c1": 0.498,
   "c2": 0.0,
-  "c3": -0.41824913,
+  "c3": 0.18569769,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.1188357,
+  "c7": 0.15063871,
   "c8": 0.0,
   "c9": 0.5
  },
  "evidence_coverage": {
-  "ecs": 82,
+  "ecs": 81,
   "events_90d": 7,
-  "recency_days": 3.1,
+  "recency_days": 4.6,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -118,6 +118,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-28",
+   "label": "WATCH"
+  },
   {
    "date": "2026-08-27",
    "label": "WATCH"
@@ -233,10 +237,6 @@
   {
    "date": "2026-07-20",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-17",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",

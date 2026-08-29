@@ -8,17 +8,33 @@ Counts and classifications ONLY — locked vocabulary, zero interpretation:
   split) · failed-ingestion notes · ledger root · replay status.
 
 Rolling 30-day archive: docs/evidence_changes/YYYY-MM-DD.json holds each
-day's state; diffs (grades, posture, maturity) compare today against the most
-recent prior archive day. Archive days beyond 30 are pruned.
+day's state; diffs (grades, maturity) compare today against the most recent
+prior archive day. Archive days beyond 30 are pruned.
+
+C6 posture set (ORDER 2026-08-29B, effective 2026-08-29): the CUMULATIVE
+accession set lives at docs/c6_posture_current.json (mutable, always latest;
+{as_of, files, set_sha256, accessions}); each daily file carries ONLY a
+"c6_posture" block {files, set_sha256, added_today, removed_today,
+current_url} — a true one-day delta. set_sha256 = sha256 of the sorted UNIQUE
+accession strings (byte-lexicographic, UTF-8) joined with "\n", no trailing
+newline. Temporal coupling is fail-closed: the delta is computed only when the
+previous snapshot is dated exactly yesterday (or, on a same-UTC-day rerun,
+exactly reconstructable from today's own recorded delta); any gap publishes
+added_today/removed_today = null with delta_status UNAVAILABLE — never a
+multi-day accumulation as a one-day delta. Files dated < 2026-08-29 keep the
+legacy inline c6_posture_accessions / c6_posture_files keys and are never
+rewritten. The current set is computed ONCE per run (single snapshot) and the
+endpoint, the daily block and the HTML all derive from it.
 
 CLI: python3 -m v3.web.render_todays_evidence
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
 
@@ -32,6 +48,11 @@ ARCHIVE_DIR = _REPO / "docs" / "evidence_changes"
 C6_DIR = _REPO / "output" / "swarm" / "canada"
 DSN = "dbname=yuclaw_events"
 ARCHIVE_DAYS = 30
+C6_CURRENT = _REPO / "docs" / "c6_posture_current.json"
+C6_CURRENT_URL = "/c6_posture_current.json"
+POSTURE_SCHEMA_CUTOVER = date(2026, 8, 29)   # daily files >= this carry c6_posture
+DAILY_KEY_ORDER = ("date", "counts", "c6_posture", "grades", "ledger", "maturity", "replay")
+GAP_STATUS = "UNAVAILABLE (previous-day snapshot gap)"
 
 DISCLAIMER_LINE = ("Research & education only. Not investment advice. Counts and research "
                    "classifications only — nothing on this page is a recommendation.")
@@ -85,8 +106,8 @@ def _db_counts(today: date) -> dict:
     return out
 
 
-def _grades_and_maturity() -> tuple[dict, dict, int]:
-    """Current evidence-tier grades {ticker: grade}, per-lens maturity, posture count."""
+def _grades_and_maturity() -> tuple[dict, dict]:
+    """Current evidence-tier grades {ticker: grade}, per-lens maturity."""
     from v3.lab.etf_evidence import CANADA_LENS_KEYS, canada_event_maturity, canada_posture
     grades: dict[str, str] = {}
     maturity: dict[str, dict] = {}
@@ -96,7 +117,7 @@ def _grades_and_maturity() -> tuple[dict, dict, int]:
             grades[m["ticker"]] = m["grade"].split(" ")[0]  # letter only
         mat = canada_event_maturity(lens)
         maturity[lens] = {"n_events": mat["n_events"], "n_matured": mat["n_matured"]}
-    return grades, maturity, len(list(C6_DIR.glob("*.json"))) if C6_DIR.exists() else 0
+    return grades, maturity
 
 
 def _ledger_tip() -> dict:
@@ -118,19 +139,118 @@ def _replay_status() -> dict:
         return {"status": f"verifier error: {type(e).__name__}", "exit": None}
 
 
-def gather(today: date) -> dict:
-    grades, maturity, n_posture = _grades_and_maturity()
-    state = {
+# --------------------------------------------------------------------------- #
+# C6 posture set — single snapshot, pinned hash, fail-closed one-day delta
+# --------------------------------------------------------------------------- #
+def posture_set_sha256(accessions) -> str:
+    """HASH DEFINITION (ORDER 2026-08-29B): sorted UNIQUE accession strings,
+    byte-lexicographic order (locale-independent), UTF-8, joined with "\n",
+    NO trailing newline; sha256 of those bytes."""
+    uniq = sorted({a.encode("utf-8") for a in accessions})
+    return hashlib.sha256(b"\n".join(uniq)).hexdigest()
+
+
+def c6_snapshot() -> list[str]:
+    """The current cumulative C6 posture accession set — computed ONCE per
+    run; every artifact (endpoint, daily block, HTML) derives from it."""
+    if not C6_DIR.exists():
+        return []
+    return sorted({p.stem for p in C6_DIR.glob("*.json")})
+
+
+def _load_json(path: Path) -> dict | None:
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return None
+
+
+def previous_posture_set(today: date, current_endpoint: dict | None = None,
+                         today_daily: dict | None = None) -> tuple[set[str] | None, str]:
+    """Yesterday's set, or (None, reason) — FAIL CLOSED on any gap.
+
+    4a. The existing endpoint (captured BEFORE overwrite) with as_of == today-1.
+    4b. Bootstrap: no endpoint yet -> the legacy c6_posture_accessions array of
+        the archived daily file dated today-1 (same date check).
+    Same-UTC-day rerun (the chain runs more than once per day: preview +
+    cron): endpoint.as_of == today -> yesterday's set is reconstructed EXACTLY
+    as endpoint.accessions - today.added_today + today.removed_today from the
+    daily file already written today, provided that delta was itself
+    available; otherwise gap."""
+    yday = (today - timedelta(days=1)).isoformat()
+    ep = current_endpoint if current_endpoint is not None else (
+        _load_json(C6_CURRENT) if C6_CURRENT.exists() else None)
+    if ep is not None:
+        as_of = ep.get("as_of")
+        acc = ep.get("accessions")
+        if not isinstance(acc, list):
+            return None, f"endpoint corrupt (accessions not a list; as_of={as_of!r})"
+        if as_of == yday:
+            return set(acc), f"endpoint as_of={as_of} (yesterday)"
+        if as_of == today.isoformat():
+            td = today_daily if today_daily is not None else _load_json(
+                ARCHIVE_DIR / f"{today.isoformat()}.json")
+            blk = (td or {}).get("c6_posture") or {}
+            add, rem = blk.get("added_today"), blk.get("removed_today")
+            if (td or {}).get("date") == today.isoformat() and isinstance(add, list) \
+                    and isinstance(rem, list) and blk.get("set_sha256") == ep.get("set_sha256"):
+                prev = (set(acc) - set(add)) | set(rem)
+                return prev, (f"same-day rerun: reconstructed from endpoint as_of={as_of} "
+                              f"minus today's recorded delta (+{len(add)}/-{len(rem)})")
+            return None, (f"same-day rerun but today's recorded delta unavailable "
+                          f"(endpoint as_of={as_of})")
+        return None, f"endpoint as_of={as_of!r} != {yday} (previous-day snapshot gap)"
+    # 4b bootstrap from the legacy archive file dated yesterday
+    legacy = _load_json(ARCHIVE_DIR / f"{yday}.json")
+    if legacy and legacy.get("date") == yday and isinstance(
+            legacy.get("c6_posture_accessions"), list):
+        return set(legacy["c6_posture_accessions"]), \
+            f"bootstrap: legacy c6_posture_accessions from evidence_changes/{yday}.json"
+    return None, f"no endpoint and no legacy archive dated {yday} (previous-day snapshot gap)"
+
+
+def build_posture_block(snapshot: list[str], prev: set[str] | None, reason: str) -> dict:
+    blk: dict = {"files": len(snapshot), "set_sha256": posture_set_sha256(snapshot)}
+    if prev is None:
+        blk["added_today"] = None
+        blk["removed_today"] = None
+        blk["delta_status"] = GAP_STATUS
+        print(f"[render_todays_evidence] !!! C6 POSTURE DELTA UNAVAILABLE — {reason}; "
+              f"publishing added_today/removed_today = null (fail-closed; a multi-day "
+              f"accumulation is never published as a one-day delta)", file=sys.stderr, flush=True)
+        print(f"[render_todays_evidence] !!! C6 POSTURE DELTA UNAVAILABLE — {reason}", flush=True)
+    else:
+        cur = set(snapshot)
+        blk["added_today"] = sorted(cur - prev)
+        blk["removed_today"] = sorted(prev - cur)
+        blk["delta_status"] = "OK"
+        print(f"[render_todays_evidence] c6 posture delta vs {reason}: "
+              f"+{len(blk['added_today'])} / -{len(blk['removed_today'])} "
+              f"(files={len(snapshot)})", flush=True)
+    blk["current_url"] = C6_CURRENT_URL
+    return blk
+
+
+def build_endpoint(today: date, snapshot: list[str]) -> dict:
+    return {"as_of": today.isoformat(), "files": len(snapshot),
+            "set_sha256": posture_set_sha256(snapshot), "accessions": list(snapshot)}
+
+
+def gather(today: date, snapshot: list[str] | None = None,
+           prev_set: set[str] | None = None, prev_reason: str = "") -> dict:
+    grades, maturity = _grades_and_maturity()
+    if snapshot is None:
+        snapshot = c6_snapshot()
+    parts = {
         "date": today.isoformat(),
         "counts": _db_counts(today),
+        "c6_posture": build_posture_block(snapshot, prev_set, prev_reason),
         "grades": grades,
-        "maturity": maturity,
-        "c6_posture_files": n_posture,
-        "c6_posture_accessions": sorted(p.stem for p in C6_DIR.glob("*.json")) if C6_DIR.exists() else [],
         "ledger": _ledger_tip(),
+        "maturity": maturity,
         "replay": _replay_status(),
     }
-    return state
+    return {k: parts[k] for k in DAILY_KEY_ORDER}   # explicit human-first key order
 
 
 def _previous_state(today: date) -> dict | None:
@@ -148,15 +268,12 @@ def _previous_state(today: date) -> dict | None:
 
 def _diffs(state: dict, prev: dict | None) -> dict:
     if not prev:
-        return {"baseline": True, "grade_changes": [], "posture_new": [],
-                "newly_matured": {}}
+        return {"baseline": True, "grade_changes": [], "newly_matured": {}}
     grade_changes = []
     pg = prev.get("grades", {})
     for tk, g in sorted(state["grades"].items()):
         if tk in pg and pg[tk] != g:
             grade_changes.append({"ticker": tk, "from": pg[tk], "to": g})
-    posture_new = sorted(set(state["c6_posture_accessions"])
-                         - set(prev.get("c6_posture_accessions", [])))
     newly_matured = {}
     pm = prev.get("maturity", {})
     for lens, m in state["maturity"].items():
@@ -164,22 +281,50 @@ def _diffs(state: dict, prev: dict | None) -> dict:
         if delta:
             newly_matured[lens] = delta
     return {"baseline": False, "grade_changes": grade_changes,
-            "posture_new": posture_new, "newly_matured": newly_matured,
-            "prev_date": prev.get("date")}
+            "newly_matured": newly_matured, "prev_date": prev.get("date")}
 
 
 def _archive(state: dict) -> None:
     ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    # No sort_keys: DAILY_KEY_ORDER is the canonical (human-first) order.
     (ARCHIVE_DIR / f"{state['date']}.json").write_text(
-        json.dumps(state, indent=1, default=str, sort_keys=True))
+        json.dumps(state, indent=1, default=str))
     days = sorted(ARCHIVE_DIR.glob("????-??-??.json"))
     for p in days[:-ARCHIVE_DAYS]:
         p.unlink()
 
 
+def _write_endpoint(endpoint: dict, path: Path | None = None) -> None:
+    (path or C6_CURRENT).write_text(json.dumps(endpoint, indent=1))
+
+
 # --------------------------------------------------------------------------- #
 # rendering
 # --------------------------------------------------------------------------- #
+def _posture_html(state: dict, prev: dict | None) -> str:
+    """Counts + delta + link ONLY — the accession array appears nowhere in
+    HTML. New-format states render their c6_posture block; legacy archived
+    states (< 2026-08-29) render counts derived from their inline arrays."""
+    blk = state.get("c6_posture")
+    if blk is not None:
+        sha = escape(str(blk.get("set_sha256", "")))
+        head = (f"{blk['files']} files in the current set · set_sha256 "
+                f"<code>{sha}</code>")
+        if blk.get("added_today") is None:
+            delta = (f"<span style='color:#FBA94B;font-weight:700'>delta {escape(str(blk.get('delta_status')))}"
+                     f"</span>")
+        else:
+            delta = f"today +{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed"
+        return (f"{head} · {delta} · <a href='c6_posture_current.json'>current set (JSON)</a>")
+    n = state.get("c6_posture_files", 0)
+    cur = set(state.get("c6_posture_accessions", []))
+    if prev is None or "c6_posture_accessions" not in prev:
+        return f"{n} files in the set (legacy inline list in the archived JSON)"
+    pv = set(prev["c6_posture_accessions"])
+    return (f"{n} files in the set · +{len(cur - pv)} added / −{len(pv - cur)} removed vs "
+            f"{escape(str(prev.get('date')))} (legacy inline list in the archived JSON)")
+
+
 def _kv_list(d: dict, empty: str) -> str:
     if not d:
         return f"<span style='color:#718096'>{escape(empty)}</span>"
@@ -199,23 +344,21 @@ def _form_label(form: str) -> str:
     return f"Form {form}" if core.isdigit() else form
 
 
-def _panel_rows(state: dict, diffs: dict) -> str:
+def _panel_rows(state: dict, diffs: dict, prev: dict | None = None) -> str:
     """The digest table body for one UTC day — shared by the in-progress
     panel and the last-completed-day panel (rendered from the archive)."""
     c = state["counts"]
+    posture_html = _posture_html(state, prev)
 
     if diffs["baseline"]:
         diff_note = ("<span style='color:#718096'>First archive day — change tracking begins "
                      "tomorrow (no prior day to compare against).</span>")
-        grade_html = posture_html = matured_html = diff_note
+        grade_html = matured_html = diff_note
     else:
         gc = diffs["grade_changes"]
         grade_html = (" · ".join(f"{escape(g['ticker'])}: {escape(g['from'])} → {escape(g['to'])}"
                                  for g in gc)
                       if gc else "<span style='color:#718096'>none</span>")
-        pn = diffs["posture_new"]
-        posture_html = (" · ".join(f"<code>{escape(a)}</code>" for a in pn)
-                        if pn else "<span style='color:#718096'>none</span>")
         nm = diffs["newly_matured"]
         matured_html = (" · ".join(f"{escape(l)}: +{n}" for l, n in sorted(nm.items()))
                         if nm else "<span style='color:#718096'>none</span>")
@@ -238,7 +381,7 @@ def _panel_rows(state: dict, diffs: dict) -> str:
         row("New filings ingested", _kv_list({_form_label(k): v for k, v in c["new_filings"].items()}, "none")),
         row("New accepted events", _kv_list(c["new_events"], "none")),
         row("Grade changes", grade_html),
-        row("C6 posture changes", posture_html),
+        row("C6 posture set", posture_html),
         row("Newly matured CAR events", matured_html),
         row("Form-4 arrivals", f"{_plural(f4['filings'], 'filing')} → {f4['buys']} buy / {f4['sells']} sell "
                                f"{_plural(f4['buys'] + f4['sells'], 'event', count=False)} across "
@@ -253,10 +396,11 @@ def _panel_rows(state: dict, diffs: dict) -> str:
 
 
 def render(state: dict, diffs: dict,
-           last_state: dict | None, last_diffs: dict | None) -> str:
+           last_state: dict | None, last_diffs: dict | None,
+           last_prev: dict | None = None) -> str:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-    rows = _panel_rows(state, diffs)
+    rows = _panel_rows(state, diffs, last_state)
 
     # Last completed UTC day — rendered from the archived daily JSON, so a
     # viewer ahead of UTC (for whom "today" is empty by construction early in
@@ -270,7 +414,7 @@ def render(state: dict, diffs: dict,
         Rendered from the archived daily JSON:
         <a href="evidence_changes/{escape(last_date)}.json">evidence_changes/{escape(last_date)}.json</a>
       </p>
-      <table><tbody>{_panel_rows(last_state, last_diffs)}</tbody></table>
+      <table><tbody>{_panel_rows(last_state, last_diffs, last_prev)}</tbody></table>
     </div>"""
     else:
         last_panel = ""
@@ -325,6 +469,11 @@ def render(state: dict, diffs: dict,
     <div class="panel">
       <div class="panel-title">Archive — rolling {ARCHIVE_DAYS} days (JSON, one file per day)</div>
       <p style="font-size:12px;color:#A0AEC0;line-height:1.8">{archive_links or '<span style="color:#718096">first day — archive begins today</span>'}</p>
+      <p style="font-size:11.5px;color:#718096;margin-top:8px;line-height:1.6">
+        Files before 2026-08-29 carry the cumulative posture list inline; from 2026-08-29 the current set
+        lives at <a href="c6_posture_current.json">/c6_posture_current.json</a> and daily files carry deltas.
+        Schema and hash definition: <a href="for_ai_builders.html#evidence-changes">for AI builders</a>.
+      </p>
     </div>
 
     <div class="footer">
@@ -341,16 +490,27 @@ def render(state: dict, diffs: dict,
 
 def main(argv: list[str] | None = None) -> int:
     today = datetime.now(timezone.utc).date()
-    state = gather(today)
+    # 4c SINGLE SNAPSHOT — computed once; endpoint, daily block, HTML derive from it.
+    snapshot = c6_snapshot()
+    # 4a capture the existing endpoint BEFORE it is overwritten (no read-after-write).
+    prev_endpoint = _load_json(C6_CURRENT) if C6_CURRENT.exists() else None
+    today_daily = _load_json(ARCHIVE_DIR / f"{today.isoformat()}.json")
+    prev_set, reason = previous_posture_set(today, prev_endpoint, today_daily)
+    state = gather(today, snapshot, prev_set, reason)
+    endpoint = build_endpoint(today, snapshot)
     last_state = _previous_state(today)
     diffs = _diffs(state, last_state)
-    last_diffs = (_diffs(last_state, _previous_state(date.fromisoformat(last_state["date"])))
-                  if last_state else None)
+    last_prev = _previous_state(date.fromisoformat(last_state["date"])) if last_state else None
+    last_diffs = _diffs(last_state, last_prev) if last_state else None
     _archive(state)
-    html = render(state, diffs, last_state, last_diffs)
+    _write_endpoint(endpoint)
+    html = render(state, diffs, last_state, last_diffs, last_prev)
     OUT.write_text(html)
     print(f"[render_todays_evidence] wrote {OUT} ({len(html)} bytes) "
-          f"archive={state['date']} replay={state['replay']['status']}", flush=True)
+          f"archive={state['date']} c6_files={endpoint['files']} "
+          f"set_sha256={endpoint['set_sha256'][:16]}… "
+          f"delta={state['c6_posture']['delta_status']} "
+          f"replay={state['replay']['status']}", flush=True)
     return 0
 
 

@@ -130,6 +130,10 @@ fi
 /usr/bin/python3 tools/check_no_forms.py || exit 30
 # Index-completeness gate (audit F2, 2026-08-05): machine surface never lags.
 /usr/bin/python3 tools/check_index_completeness.py || exit 36
+# Evidence-changes gate (ORDER 2026-08-29B): date-aware daily schema (legacy
+# < 2026-08-29 / c6_posture block >= 2026-08-29), endpoint hash recompute,
+# JSON<->HTML equality, zero accession strings in HTML.
+/usr/bin/python3 tools/check_evidence_changes.py || exit 49
 
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
@@ -180,6 +184,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/canada_resources.html \
                  docs/replay/lab_replay_bundle.json \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
+                 docs/c6_posture_current.json \
                  docs/trace_su.html docs/replication.html docs/lane.html \
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
                  docs/signal_review.html docs/schemas \

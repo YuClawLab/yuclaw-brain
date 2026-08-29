@@ -1,27 +1,27 @@
 {
  "ticker": "LLY",
- "generated": "2026-08-27T23:01:07.092715+00:00",
+ "generated": "2026-08-29T11:47:27.536578+00:00",
  "label": "WEAKENING",
- "score": -0.1402,
+ "score": -0.0427,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1825,
+  "c1": -0.1465,
   "c2": 0.0,
-  "c3": -0.41824913,
+  "c3": 0.18569769,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.39797154,
-  "c7": -0.09897629,
+  "c6": -0.40420252,
+  "c7": -0.06986403,
   "c8": 0.0,
   "c9": -1.0
  },
  "evidence_coverage": {
-  "ecs": 81,
+  "ecs": 80,
   "events_90d": 6,
-  "recency_days": 9.1,
+  "recency_days": 10.6,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -108,6 +108,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-28",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-08-27",
    "label": "WEAKENING"
@@ -223,10 +227,6 @@
   {
    "date": "2026-07-20",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-17",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",

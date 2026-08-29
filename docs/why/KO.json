@@ -1,16 +1,16 @@
 {
  "ticker": "KO",
- "generated": "2026-08-27T23:01:07.092715+00:00",
- "label": "WEAKENING",
- "score": -0.104,
+ "generated": "2026-08-29T11:47:27.536578+00:00",
+ "label": "WATCH",
+ "score": 0.0325,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.0445,
+  "c1": 0.0325,
   "c2": 0.0,
-  "c3": -0.513775,
+  "c3": 0.45495054,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
@@ -19,9 +19,9 @@
   "c9": -0.4117647
  },
  "evidence_coverage": {
-  "ecs": 85,
+  "ecs": 84,
   "events_90d": 27,
-  "recency_days": 3.3,
+  "recency_days": 4.8,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -419,6 +419,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-28",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-27",
    "label": "WEAKENING"
   },
@@ -533,10 +537,6 @@
   {
    "date": "2026-07-20",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-17",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay KO --date D",

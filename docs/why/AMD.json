@@ -1,27 +1,27 @@
 {
  "ticker": "AMD",
- "generated": "2026-08-27T23:01:07.092715+00:00",
+ "generated": "2026-08-29T11:47:27.536578+00:00",
  "label": "WATCH",
- "score": 0.1601,
+ "score": 0.0255,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.2425,
+  "c1": 0.4195,
   "c2": 0.0,
-  "c3": 0.9289069,
+  "c3": -0.37415892,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.47560382,
-  "c7": 0.5115599,
+  "c6": -0.4743417,
+  "c7": 0.59117705,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 100,
+  "ecs": 99,
   "events_90d": 90,
-  "recency_days": 0.1,
+  "recency_days": 1.6,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-28",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-27",
    "label": "WATCH"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-20",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-17",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMD --date D",

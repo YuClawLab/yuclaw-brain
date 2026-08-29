@@ -116,11 +116,34 @@ entry for the last date ≤ D. Older dates beyond the ribbon: <code>yuclaw repla
 Worked example in <a href="llms.txt" style="color:#00E676">llms.txt</a>.</p>
 </div>
 
+<div class="card" id="evidence-changes"><h2>Daily evidence changes + the C6 posture set (schema effective 2026-08-29)</h2>
+<p style="font-size:13.5px"><code>/evidence_changes/{{YYYY-MM-DD}}.json</code> — one file per UTC day, rolling 30 days,
+key order <code>date, counts, c6_posture, grades, ledger, maturity, replay</code>. The cumulative C6 posture
+accession set is <em>not</em> inlined; it lives at <code>/c6_posture_current.json</code>
+(<code>{{as_of, files, set_sha256, accessions}}</code>) and each daily file carries only a one-day delta:</p>
+<pre>"c6_posture": {{ "files": N, "set_sha256": "…", "added_today": [...], "removed_today": [...],
+                "delta_status": "OK", "current_url": "/c6_posture_current.json" }}</pre>
+<ul style="margin-left:18px;font-size:13.5px">
+<li><strong>set_sha256 definition:</strong> sorted UNIQUE accession strings, byte-lexicographic order
+(locale-independent), UTF-8, joined with <code>"\n"</code>, NO trailing newline; sha256 of those bytes.
+Recompute it from <code>accessions</code> to verify the endpoint offline.</li>
+<li><strong>Pin semantics:</strong> <code>current_url</code> is mutable (always latest); the <code>set_sha256</code>
+inside each dated daily file is the historical pin for that day.</li>
+<li><strong>Fail-closed delta:</strong> the delta is computed only against a snapshot dated exactly the previous
+UTC day; on any gap <code>added_today</code>/<code>removed_today</code> are <code>null</code> with
+<code>delta_status</code> = <code>UNAVAILABLE (previous-day snapshot gap)</code> — a multi-day accumulation
+is never published as a one-day delta.</li>
+<li>Files dated before 2026-08-29 carry the legacy inline <code>c6_posture_accessions</code> /
+<code>c6_posture_files</code> keys and are never rewritten.</li>
+</ul>
+</div>
+
 <div class="card"><h2>Surfaces</h2>
 <ul style="margin-left:18px;font-size:13.5px">
 <li><code>/why/{{TICKER}}.json</code> — full anatomy + EvidenceObjects + label history (79 names)</li>
 <li><code>/capabilities.json</code> · <code>/evidence/verify.json</code> · <code>/ledger/{{DATE}}.json</code> — discovery + offline integrity verification</li>
 <li><code>/schemas/*.v1.json</code> — eight frozen object schemas</li>
+<li><code>/c6_posture_current.json</code> · <code>/evidence_changes/{{YYYY-MM-DD}}.json</code> — C6 posture set (pinned hash) + daily deltas</li>
 <li>MCP v2 tools: <code>get_evidence · get_signal_anatomy · check_claim · verify_snapshot · get_protocol</code></li>
 <li><a href="evidencebench.html" style="color:#00E676">EvidenceBench</a> — the contamination-resistant groundedness benchmark</li>
 </ul>

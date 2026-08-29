@@ -117,6 +117,8 @@ def build_endpoints() -> None:
             "verify": f"{base}/evidence/verify.json",
             "ledger_day": f"{base}/ledger/{{YYYY-MM-DD}}.json",
             "evidencebench": f"{base}/evidencebench/items.jsonl",
+            "c6_posture_current": f"{base}/c6_posture_current.json",
+            "evidence_changes_day": f"{base}/evidence_changes/{{YYYY-MM-DD}}.json",
         },
         "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is "
                          "uppercase (why/NVDA.json — why/nvda.json is a "

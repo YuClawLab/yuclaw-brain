@@ -55,6 +55,7 @@ DEFAULT_PATHS = [
     "canada_resources.html",
     "replication.html",
     "todays_evidence.html",
+    "c6_posture_current.json",
     "lane.html",
     "signal_review.html",
     "explorer.html",
