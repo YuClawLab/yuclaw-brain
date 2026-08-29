@@ -198,13 +198,25 @@ def previous_posture_set(today: date, current_endpoint: dict | None = None,
         blk = (td or {}).get("c6_posture") or {}
         add, rem, since = blk.get("added_today"), blk.get("removed_today"), blk.get("delta_since")
         if (td or {}).get("date") == today.isoformat() and isinstance(add, list) \
-                and isinstance(rem, list) and isinstance(since, str) \
-                and blk.get("set_sha256") == ep.get("set_sha256"):
+                and isinstance(rem, list) and blk.get("set_sha256") == ep.get("set_sha256"):
+            if not isinstance(since, str):      # 29B-era block: base was date-1 by construction
+                since = (today - timedelta(days=1)).isoformat()
             prev = (set(acc) - set(add)) | set(rem)
             return prev, since, (f"same-day rerun: base {since} reconstructed from endpoint "
                                  f"as_of={as_of} minus today's recorded delta (+{len(add)}/-{len(rem)})")
-        return None, None, (f"same-day rerun but today's recorded delta unavailable "
-                            f"(endpoint as_of={as_of})")
+        # Today's recorded delta is unusable: the last archived file dated
+        # before today whose set is recoverable (legacy inline array) is a
+        # truthful, explicitly labeled base. Archived files are read, never written.
+        for prior in sorted(ARCHIVE_DIR.glob("????-??-??.json"), reverse=True):
+            if prior.stem >= today.isoformat():
+                continue
+            pj = _load_json(prior)
+            if pj and pj.get("date") == prior.stem and isinstance(pj.get("c6_posture_accessions"), list):
+                return set(pj["c6_posture_accessions"]), prior.stem, (
+                    f"same-day rerun, today's recorded delta unavailable; base = archived "
+                    f"evidence_changes/{prior.stem}.json (legacy inline set)")
+        return None, None, (f"same-day rerun but today's recorded delta unavailable and no "
+                            f"archived file with a recoverable set (endpoint as_of={as_of})")
     return set(acc), as_of_d.isoformat(), f"previous endpoint as_of={as_of}"
 
 

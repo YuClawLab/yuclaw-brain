@@ -82,7 +82,7 @@
 
     <div class="fresh">
       <strong>Data through 2026-08-28</strong> (last completed U.S. trading day) ·
-      regenerated daily after market close · last build 2026-08-29 11:55 UTC
+      regenerated daily after market close · last build 2026-08-29 11:57 UTC
     </div>
 
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px"><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #FBA94B;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Forward OOS</div><div style="font-size:15px;font-weight:800;color:#FBA94B;font-family:JetBrains Mono,monospace;margin:3px 0">EARLY · n=68 periods</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">no significant alpha yet — underpowered, accruing daily</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #FBA94B;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">In-sample replay</div><div style="font-size:15px;font-weight:800;color:#FBA94B;font-family:JetBrains Mono,monospace;margin:3px 0">OPTIMISTIC</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">parametric look-ahead — educational only, collapsed below</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #00E676;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Ledger</div><div style="font-size:15px;font-weight:800;color:#00E676;font-family:JetBrains Mono,monospace;margin:3px 0">LIVE · 73 blocks</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">git-anchored daily · root bbb48546…</div></div><div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;border-left:3px solid #00E676;border-radius:10px;padding:12px 16px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">Reproducibility</div><div style="font-size:15px;font-weight:800;color:#00E676;font-family:JetBrains Mono,monospace;margin:3px 0">ONE-COMMAND VERIFY</div><div style="font-size:11px;color:#A0AEC0;line-height:1.45">stdlib script reproduces every statistic + ledger roots</div></div></div>
@@ -140,7 +140,7 @@
       <div class="panel-title">Latest rolling record</div>
       <div class="panel-sub">continuous display across the regime boundary · statistics stay strictly per-regime</div>
       <div class="panel-fresh" style="margin-bottom:4px">
-        Updated through <strong>2026-08-28</strong> · last build 2026-08-29 11:55 UTC · daily after U.S. market close
+        Updated through <strong>2026-08-28</strong> · last build 2026-08-29 11:57 UTC · daily after U.S. market close
       </div>
       
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 0 6px">
@@ -626,7 +626,7 @@
         <tr><td style='padding:6px 12px;font-family:JetBrains Mono,monospace;color:#A0AEC0'>2026-09-01</td>
         <td style='padding:6px 12px;color:#E2E8F0;font-size:12px'>Reversal coherence first read (protocol ea120b0a6b52)</td>
         <td style='padding:6px 12px;color:#A0AEC0;font-size:11px'>guard active (computation refuses before the date); accrual from 2026-07-27; floors 15 events/target, 3 targets</td></tr></tbody></table>
-      <div style='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 4px'>What changed and why (vs 2026-08-29 11:47 UTC)</div><ul style='margin-left:18px'><li style='font-size:11px;color:#718096'>no headline-statistic changes since the previous build</li></ul>
+      <div style='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 4px'>What changed and why (vs 2026-08-29 11:55 UTC)</div><ul style='margin-left:18px'><li style='font-size:11px;color:#718096'>no headline-statistic changes since the previous build</li></ul>
       <div style='font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:14px 0 4px'>Monitoring</div><p style='font-size:11px;color:#A0AEC0'>Known outage: 2026-06-26 to 2026-07-03 — snapshots continued point-in-time on frozen price inputs; zero retroactive edits (disclosed since it happened). Chain health: 30-minute monitor with alert file; push/deploy alarm: clear at build time; deploy-verify runs after every push (byte-identity against the live site).</p>
       <p style="font-size:11px;color:#718096;margin-top:8px">Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page.</p></div>
 
@@ -660,7 +660,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
         It exits non-zero on any mismatch.
       </p>
       <p style="font-size:11px;color:#718096;margin-top:8px;font-family:JetBrains Mono,monospace">
-        this build derives from: source commit 4d7e7c4aa5ba ·
+        this build derives from: source commit 987f1ca8d18a ·
         ledger block 2026-08-28 · daily root bbb4854697336805… ·
         73 public ledger blocks
       </p>
@@ -690,7 +690,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       </ul>
       <div style="margin-top:10px;background:#151A23;border:1px solid #1E232D;border-radius:8px;padding:10px 14px">
         <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin-bottom:4px">Cite this page</div>
-        <code style="font-size:11.5px;line-height:1.5;display:block;white-space:normal">YUCLAW Validation Lab, v5.3.3, data through 2026-08-28, built 2026-08-29, commit 4d7e7c4aa5ba; evidence-tier names excluded from scoring universe.</code>
+        <code style="font-size:11.5px;line-height:1.5;display:block;white-space:normal">YUCLAW Validation Lab, v5.3.3, data through 2026-08-28, built 2026-08-29, commit 987f1ca8d18a; evidence-tier names excluded from scoring universe.</code>
       </div>
     </div>
 
@@ -839,6 +839,6 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     });
   })();
   </script>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-08-29 11:55 UTC · ledger root e6b8092fb6de</footer>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-08-29 11:57 UTC · ledger root e6b8092fb6de</footer>
 </body>
 </html>
