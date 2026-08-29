@@ -8,11 +8,15 @@ docs/todays_evidence.html.
   LEGACY  (date <  2026-08-29): c6_posture_files (int) + c6_posture_accessions
           (list) REQUIRED; a "c6_posture" block is REJECTED. Never rewritten.
   CURRENT (date >= 2026-08-29): "c6_posture" block REQUIRED
-          {files, set_sha256, added_today, removed_today, [delta_status],
-           current_url}; EITHER legacy key is REJECTED; key order canonical
-          (date, counts, c6_posture, grades, ledger, maturity, replay);
-          added/removed are lists (delta_status OK) or BOTH null with
-          delta_status starting "UNAVAILABLE" (fail-closed gap).
+          {files, set_sha256, added_today, removed_today, delta_since,
+           delta_span_days, delta_status, current_url} (MICRO 2026-08-29C:
+          delta_since/delta_span_days REQUIRED, base labeled explicitly);
+          EITHER legacy key is REJECTED; key order canonical (date, counts,
+          c6_posture, grades, ledger, maturity, replay); added/removed are
+          lists with delta_since a date and delta_span_days == date -
+          delta_since (delta_status OK), or added/removed/delta_since/
+          delta_span_days ALL null with delta_status starting "UNAVAILABLE"
+          (previous endpoint missing/corrupt/undated).
   ENDPOINT: {as_of, files, set_sha256, accessions}; accessions sorted unique;
           files == len; set_sha256 == recomputed (sorted unique, byte-lex,
           UTF-8, "\\n"-joined, no trailing newline); must agree with the daily
@@ -82,10 +86,14 @@ def _check_daily(path: Path, problems: list[str]) -> dict | None:
         problems.append(f"{name}: c6_posture.set_sha256 not a sha256 hex")
     if blk.get("current_url") != CURRENT_URL:
         problems.append(f"{name}: c6_posture.current_url {blk.get('current_url')!r} != {CURRENT_URL}")
+    for k in ("delta_since", "delta_span_days", "delta_status"):
+        if k not in blk:
+            problems.append(f"{name}: c6_posture.{k} missing")
     add, rem, st = blk.get("added_today"), blk.get("removed_today"), blk.get("delta_status")
+    since, span = blk.get("delta_since"), blk.get("delta_span_days")
     if add is None or rem is None:
-        if not (add is None and rem is None):
-            problems.append(f"{name}: added_today/removed_today must be BOTH null on a gap")
+        if not (add is None and rem is None and since is None and span is None):
+            problems.append(f"{name}: added/removed/delta_since/delta_span_days must ALL be null on a gap")
         if not str(st).startswith("UNAVAILABLE"):
             problems.append(f"{name}: null delta without delta_status UNAVAILABLE")
     else:
@@ -93,8 +101,14 @@ def _check_daily(path: Path, problems: list[str]) -> dict | None:
             problems.append(f"{name}: added_today/removed_today must be lists")
         elif set(add) & set(rem):
             problems.append(f"{name}: accession both added and removed")
-        if st not in (None, "OK"):
+        if st != "OK":
             problems.append(f"{name}: delta_status {st!r} with non-null delta")
+        try:
+            want = (d - date.fromisoformat(str(since))).days
+            if span != want or want < 0:
+                problems.append(f"{name}: delta_span_days {span!r} != {path.stem} - {since} = {want}")
+        except ValueError:
+            problems.append(f"{name}: delta_since {since!r} not a date")
     return j
 
 
@@ -140,7 +154,8 @@ def _check_html(html: str, daily: dict, label: str, problems: list[str]) -> None
         if "UNAVAILABLE" not in html:
             problems.append(f"HTML: {label} delta UNAVAILABLE status not rendered")
     else:
-        want = f"+{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed"
+        want = (f"since {blk.get('delta_since')} ({blk.get('delta_span_days')}d span): "
+                f"+{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed")
         if want not in html:
             problems.append(f"HTML: {label} delta '{want}' not rendered")
     if "c6_posture_current.json" not in html:

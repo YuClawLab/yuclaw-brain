@@ -122,17 +122,20 @@ key order <code>date, counts, c6_posture, grades, ledger, maturity, replay</code
 accession set is <em>not</em> inlined; it lives at <code>/c6_posture_current.json</code>
 (<code>{{as_of, files, set_sha256, accessions}}</code>) and each daily file carries only a one-day delta:</p>
 <pre>"c6_posture": {{ "files": N, "set_sha256": "…", "added_today": [...], "removed_today": [...],
-                "delta_status": "OK", "current_url": "/c6_posture_current.json" }}</pre>
+                "delta_since": "YYYY-MM-DD", "delta_span_days": N, "delta_status": "OK",
+                "current_url": "/c6_posture_current.json" }}</pre>
 <ul style="margin-left:18px;font-size:13.5px">
 <li><strong>set_sha256 definition:</strong> sorted UNIQUE accession strings, byte-lexicographic order
 (locale-independent), UTF-8, joined with <code>"\n"</code>, NO trailing newline; sha256 of those bytes.
 Recompute it from <code>accessions</code> to verify the endpoint offline.</li>
 <li><strong>Pin semantics:</strong> <code>current_url</code> is mutable (always latest); the <code>set_sha256</code>
 inside each dated daily file is the historical pin for that day.</li>
-<li><strong>Fail-closed delta:</strong> the delta is computed only against a snapshot dated exactly the previous
-UTC day; on any gap <code>added_today</code>/<code>removed_today</code> are <code>null</code> with
-<code>delta_status</code> = <code>UNAVAILABLE (previous-day snapshot gap)</code> — a multi-day accumulation
-is never published as a one-day delta.</li>
+<li><strong>Labeled delta base:</strong> the delta is computed against the previous published endpoint;
+<code>delta_since</code> is that endpoint's <code>as_of</code> and <code>delta_span_days</code> the calendar days
+it covers (1 on consecutive build days; 3 after a weekend — the chain runs weekdays). Only when the previous
+endpoint is missing, corrupt or undated are <code>added_today</code>/<code>removed_today</code>/<code>delta_since</code>/
+<code>delta_span_days</code> <code>null</code> with <code>delta_status</code> =
+<code>UNAVAILABLE (previous endpoint missing/corrupt/undated)</code>.</li>
 <li>Files dated before 2026-08-29 carry the legacy inline <code>c6_posture_accessions</code> /
 <code>c6_posture_files</code> keys and are never rewritten.</li>
 </ul>

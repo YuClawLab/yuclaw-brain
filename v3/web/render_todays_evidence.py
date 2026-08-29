@@ -17,11 +17,12 @@ accession set lives at docs/c6_posture_current.json (mutable, always latest;
 "c6_posture" block {files, set_sha256, added_today, removed_today,
 current_url} — a true one-day delta. set_sha256 = sha256 of the sorted UNIQUE
 accession strings (byte-lexicographic, UTF-8) joined with "\n", no trailing
-newline. Temporal coupling is fail-closed: the delta is computed only when the
-previous snapshot is dated exactly yesterday (or, on a same-UTC-day rerun,
-exactly reconstructable from today's own recorded delta); any gap publishes
-added_today/removed_today = null with delta_status UNAVAILABLE — never a
-multi-day accumulation as a one-day delta. Files dated < 2026-08-29 keep the
+newline. Temporal coupling (MICRO 2026-08-29C): the delta is computed against
+the PREVIOUS ENDPOINT whenever it exists and parses, with the base labeled
+explicitly — delta_since = previous.as_of, delta_span_days = calendar days
+(a same-UTC-day rerun reconstructs the base exactly from today's own recorded
+delta). Only a missing/corrupt/undated previous endpoint publishes
+added_today/removed_today = null with delta_status UNAVAILABLE. Files dated < 2026-08-29 keep the
 legacy inline c6_posture_accessions / c6_posture_files keys and are never
 rewritten. The current set is computed ONCE per run (single snapshot) and the
 endpoint, the daily block and the HTML all derive from it.
@@ -52,7 +53,7 @@ C6_CURRENT = _REPO / "docs" / "c6_posture_current.json"
 C6_CURRENT_URL = "/c6_posture_current.json"
 POSTURE_SCHEMA_CUTOVER = date(2026, 8, 29)   # daily files >= this carry c6_posture
 DAILY_KEY_ORDER = ("date", "counts", "c6_posture", "grades", "ledger", "maturity", "replay")
-GAP_STATUS = "UNAVAILABLE (previous-day snapshot gap)"
+GAP_STATUS = "UNAVAILABLE (previous endpoint missing/corrupt/undated)"
 
 DISCLAIMER_LINE = ("Research & education only. Not investment advice. Counts and research "
                    "classifications only — nothing on this page is a recommendation.")
@@ -166,65 +167,68 @@ def _load_json(path: Path) -> dict | None:
 
 
 def previous_posture_set(today: date, current_endpoint: dict | None = None,
-                         today_daily: dict | None = None) -> tuple[set[str] | None, str]:
-    """Yesterday's set, or (None, reason) — FAIL CLOSED on any gap.
+                         today_daily: dict | None = None) -> tuple[set[str] | None, str | None, str]:
+    """(yesterday-or-earlier set, its as_of date, reason) — MICRO 2026-08-29C:
+    the delta is published against the PREVIOUS ENDPOINT whenever it exists
+    and parses, with the base labeled explicitly (delta_since / delta_span_days
+    in the block). UNAVAILABLE only when the endpoint is missing, corrupt or
+    undated. The endpoint is captured BEFORE it is overwritten.
 
-    4a. The existing endpoint (captured BEFORE overwrite) with as_of == today-1.
-    4b. Bootstrap: no endpoint yet -> the legacy c6_posture_accessions array of
-        the archived daily file dated today-1 (same date check).
-    Same-UTC-day rerun (the chain runs more than once per day: preview +
-    cron): endpoint.as_of == today -> yesterday's set is reconstructed EXACTLY
-    as endpoint.accessions - today.added_today + today.removed_today from the
-    daily file already written today, provided that delta was itself
-    available; otherwise gap."""
-    yday = (today - timedelta(days=1)).isoformat()
+    Same-UTC-day rerun (endpoint.as_of == today; the chain can run more than
+    once per day): the base is reconstructed EXACTLY as endpoint.accessions
+    - today.added_today + today.removed_today from the daily file already
+    written today, keeping that file's delta_since; if that recorded delta was
+    itself unavailable, so is this one."""
     ep = current_endpoint if current_endpoint is not None else (
         _load_json(C6_CURRENT) if C6_CURRENT.exists() else None)
-    if ep is not None:
-        as_of = ep.get("as_of")
-        acc = ep.get("accessions")
-        if not isinstance(acc, list):
-            return None, f"endpoint corrupt (accessions not a list; as_of={as_of!r})"
-        if as_of == yday:
-            return set(acc), f"endpoint as_of={as_of} (yesterday)"
-        if as_of == today.isoformat():
-            td = today_daily if today_daily is not None else _load_json(
-                ARCHIVE_DIR / f"{today.isoformat()}.json")
-            blk = (td or {}).get("c6_posture") or {}
-            add, rem = blk.get("added_today"), blk.get("removed_today")
-            if (td or {}).get("date") == today.isoformat() and isinstance(add, list) \
-                    and isinstance(rem, list) and blk.get("set_sha256") == ep.get("set_sha256"):
-                prev = (set(acc) - set(add)) | set(rem)
-                return prev, (f"same-day rerun: reconstructed from endpoint as_of={as_of} "
-                              f"minus today's recorded delta (+{len(add)}/-{len(rem)})")
-            return None, (f"same-day rerun but today's recorded delta unavailable "
-                          f"(endpoint as_of={as_of})")
-        return None, f"endpoint as_of={as_of!r} != {yday} (previous-day snapshot gap)"
-    # 4b bootstrap from the legacy archive file dated yesterday
-    legacy = _load_json(ARCHIVE_DIR / f"{yday}.json")
-    if legacy and legacy.get("date") == yday and isinstance(
-            legacy.get("c6_posture_accessions"), list):
-        return set(legacy["c6_posture_accessions"]), \
-            f"bootstrap: legacy c6_posture_accessions from evidence_changes/{yday}.json"
-    return None, f"no endpoint and no legacy archive dated {yday} (previous-day snapshot gap)"
+    if ep is None:
+        return None, None, "previous endpoint missing (c6_posture_current.json absent or unparseable)"
+    as_of, acc = ep.get("as_of"), ep.get("accessions")
+    if not isinstance(acc, list) or not all(isinstance(a, str) for a in acc):
+        return None, None, f"previous endpoint corrupt (accessions not a list of strings; as_of={as_of!r})"
+    try:
+        as_of_d = date.fromisoformat(str(as_of))
+    except (TypeError, ValueError):
+        return None, None, f"previous endpoint undated (as_of={as_of!r})"
+    if as_of_d > today:
+        return None, None, f"previous endpoint dated in the future (as_of={as_of})"
+    if as_of_d == today:
+        td = today_daily if today_daily is not None else _load_json(
+            ARCHIVE_DIR / f"{today.isoformat()}.json")
+        blk = (td or {}).get("c6_posture") or {}
+        add, rem, since = blk.get("added_today"), blk.get("removed_today"), blk.get("delta_since")
+        if (td or {}).get("date") == today.isoformat() and isinstance(add, list) \
+                and isinstance(rem, list) and isinstance(since, str) \
+                and blk.get("set_sha256") == ep.get("set_sha256"):
+            prev = (set(acc) - set(add)) | set(rem)
+            return prev, since, (f"same-day rerun: base {since} reconstructed from endpoint "
+                                 f"as_of={as_of} minus today's recorded delta (+{len(add)}/-{len(rem)})")
+        return None, None, (f"same-day rerun but today's recorded delta unavailable "
+                            f"(endpoint as_of={as_of})")
+    return set(acc), as_of_d.isoformat(), f"previous endpoint as_of={as_of}"
 
 
-def build_posture_block(snapshot: list[str], prev: set[str] | None, reason: str) -> dict:
+def build_posture_block(snapshot: list[str], prev: set[str] | None,
+                        since: str | None, reason: str, today: date) -> dict:
     blk: dict = {"files": len(snapshot), "set_sha256": posture_set_sha256(snapshot)}
-    if prev is None:
+    if prev is None or since is None:
         blk["added_today"] = None
         blk["removed_today"] = None
+        blk["delta_since"] = None
+        blk["delta_span_days"] = None
         blk["delta_status"] = GAP_STATUS
         print(f"[render_todays_evidence] !!! C6 POSTURE DELTA UNAVAILABLE — {reason}; "
-              f"publishing added_today/removed_today = null (fail-closed; a multi-day "
-              f"accumulation is never published as a one-day delta)", file=sys.stderr, flush=True)
+              f"publishing added_today/removed_today = null (fail-closed)", file=sys.stderr, flush=True)
         print(f"[render_todays_evidence] !!! C6 POSTURE DELTA UNAVAILABLE — {reason}", flush=True)
     else:
         cur = set(snapshot)
+        span = (today - date.fromisoformat(since)).days
         blk["added_today"] = sorted(cur - prev)
         blk["removed_today"] = sorted(prev - cur)
+        blk["delta_since"] = since
+        blk["delta_span_days"] = span
         blk["delta_status"] = "OK"
-        print(f"[render_todays_evidence] c6 posture delta vs {reason}: "
+        print(f"[render_todays_evidence] c6 posture delta since {since} (span {span}d; {reason}): "
               f"+{len(blk['added_today'])} / -{len(blk['removed_today'])} "
               f"(files={len(snapshot)})", flush=True)
     blk["current_url"] = C6_CURRENT_URL
@@ -237,14 +241,15 @@ def build_endpoint(today: date, snapshot: list[str]) -> dict:
 
 
 def gather(today: date, snapshot: list[str] | None = None,
-           prev_set: set[str] | None = None, prev_reason: str = "") -> dict:
+           prev_set: set[str] | None = None, prev_since: str | None = None,
+           prev_reason: str = "") -> dict:
     grades, maturity = _grades_and_maturity()
     if snapshot is None:
         snapshot = c6_snapshot()
     parts = {
         "date": today.isoformat(),
         "counts": _db_counts(today),
-        "c6_posture": build_posture_block(snapshot, prev_set, prev_reason),
+        "c6_posture": build_posture_block(snapshot, prev_set, prev_since, prev_reason, today),
         "grades": grades,
         "ledger": _ledger_tip(),
         "maturity": maturity,
@@ -314,7 +319,8 @@ def _posture_html(state: dict, prev: dict | None) -> str:
             delta = (f"<span style='color:#FBA94B;font-weight:700'>delta {escape(str(blk.get('delta_status')))}"
                      f"</span>")
         else:
-            delta = f"today +{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed"
+            delta = (f"since {escape(str(blk.get('delta_since')))} ({blk.get('delta_span_days')}d span): "
+                     f"+{len(blk['added_today'])} added / −{len(blk['removed_today'])} removed")
         return (f"{head} · {delta} · <a href='c6_posture_current.json'>current set (JSON)</a>")
     n = state.get("c6_posture_files", 0)
     cur = set(state.get("c6_posture_accessions", []))
@@ -495,8 +501,8 @@ def main(argv: list[str] | None = None) -> int:
     # 4a capture the existing endpoint BEFORE it is overwritten (no read-after-write).
     prev_endpoint = _load_json(C6_CURRENT) if C6_CURRENT.exists() else None
     today_daily = _load_json(ARCHIVE_DIR / f"{today.isoformat()}.json")
-    prev_set, reason = previous_posture_set(today, prev_endpoint, today_daily)
-    state = gather(today, snapshot, prev_set, reason)
+    prev_set, since, reason = previous_posture_set(today, prev_endpoint, today_daily)
+    state = gather(today, snapshot, prev_set, since, reason)
     endpoint = build_endpoint(today, snapshot)
     last_state = _previous_state(today)
     diffs = _diffs(state, last_state)
