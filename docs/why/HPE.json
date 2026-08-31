@@ -1,28 +1,28 @@
 {
  "ticker": "HPE",
- "generated": "2026-08-29T12:01:45.204960+00:00",
+ "generated": "2026-08-31T23:01:55.197843+00:00",
  "label": "NEUTRAL",
- "score": 0.328,
+ "score": 0.3459,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.8855,
+  "c1": 0.541,
   "c2": 0.0,
-  "c3": -0.37415892,
+  "c3": 0.5448867,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.58952093,
+  "c7": 0.18016173,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 83,
-  "events_90d": 7,
-  "recency_days": 24.8,
-  "type_diversity": 5,
+  "ecs": 69,
+  "events_90d": 5,
+  "recency_days": 27.3,
+  "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
@@ -249,6 +249,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-31",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-28",
    "label": "NEUTRAL"
   },
@@ -363,10 +367,6 @@
   {
    "date": "2026-07-21",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay HPE --date D",

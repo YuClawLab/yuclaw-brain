@@ -1,27 +1,27 @@
 {
  "ticker": "AAPL",
- "generated": "2026-08-29T12:01:45.204960+00:00",
- "label": "WEAKENING",
- "score": -0.0626,
+ "generated": "2026-08-31T23:01:55.197843+00:00",
+ "label": "WATCH",
+ "score": 0.0804,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.2735,
+  "c1": -0.2485,
   "c2": 0.0,
-  "c3": -0.37415892,
+  "c3": 0.5448867,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.13999845,
-  "c7": -0.062134337,
+  "c6": -0.10432512,
+  "c7": -0.07650918,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 80,
+  "ecs": 78,
   "events_90d": 6,
-  "recency_days": 1.6,
+  "recency_days": 4.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -219,6 +219,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-31",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-28",
    "label": "WEAKENING"
   },
@@ -333,10 +337,6 @@
   {
    "date": "2026-07-21",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",

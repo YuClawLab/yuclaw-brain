@@ -1,16 +1,16 @@
 {
  "ticker": "IBB",
- "generated": "2026-08-29T12:01:45.204960+00:00",
- "label": "WATCH",
- "score": 0.1659,
+ "generated": "2026-08-31T23:01:55.197843+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3868,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.5415,
+  "c1": 0.5025,
   "c2": 0.0,
-  "c3": -0.72460055,
+  "c3": 0.30056527,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-08-31",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-28",
    "label": "WATCH"
@@ -142,10 +146,6 @@
   {
    "date": "2026-07-21",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay IBB --date D",

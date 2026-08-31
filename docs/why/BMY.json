@@ -1,27 +1,27 @@
 {
  "ticker": "BMY",
- "generated": "2026-08-29T12:01:45.204960+00:00",
+ "generated": "2026-08-31T23:01:55.197843+00:00",
  "label": "NEUTRAL",
- "score": 0.2484,
+ "score": 0.2218,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.276,
+  "c1": 0.1505,
   "c2": 0.0,
-  "c3": 0.18569769,
+  "c3": -0.0076931776,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.038797583,
-  "c7": 0.17128429,
+  "c6": 0.0,
+  "c7": 0.24763484,
   "c8": 0.0,
-  "c9": -0.27272728
+  "c9": -0.33333334
  },
  "evidence_coverage": {
-  "ecs": 47,
+  "ecs": 46,
   "events_90d": 2,
-  "recency_days": 30.0,
+  "recency_days": 32.5,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -68,6 +68,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-08-31",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-08-28",
    "label": "NEUTRAL"
@@ -183,10 +187,6 @@
   {
    "date": "2026-07-21",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay BMY --date D",

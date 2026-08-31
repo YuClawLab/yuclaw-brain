@@ -1,27 +1,27 @@
 {
  "ticker": "MU",
- "generated": "2026-08-29T12:01:45.204960+00:00",
+ "generated": "2026-08-31T23:01:55.197843+00:00",
  "label": "WATCH",
- "score": 0.1172,
+ "score": 0.1145,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 1.0,
+  "c1": 0.4805,
   "c2": 0.0,
-  "c3": -0.37415892,
+  "c3": 0.5448867,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.54720247,
+  "c7": 0.1539502,
   "c8": 0.0,
-  "c9": -0.46666667
+  "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 91,
+  "ecs": 89,
   "events_90d": 173,
-  "recency_days": 3.2,
+  "recency_days": 5.6,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-08-31",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-28",
    "label": "WATCH"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-07-21",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MU --date D",
