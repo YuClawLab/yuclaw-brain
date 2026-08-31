@@ -14,6 +14,14 @@ top-level docs/*.html page:
   4. LINKS      — every internal href resolves to a real file, and every
                   #anchor (same-page or cross-page) resolves to a real id.
   5. DISCLAIMER — the research-only disclaimer appears on the page.
+  6. NO PLACEHOLDERS — no "[COUNSEL" / "[TODO" / "[DRAFT" / "[PLACEHOLDER"
+                  string anywhere in rendered public HTML (top-level pages
+                  AND all why/ pages). Draft/pending copy must stay in
+                  source or preview, never in a served page
+                  (MICRO 2026-08-31A).
+  7. VALIDATION-LAB N — the forward-OOS n in the header status card and
+                  the "Not proven" list's forward-alpha n are the same
+                  number (both must render from the one computed value).
 
 Scope: docs/*.html top level only. docs/preview/ is EXCLUDED BY DESIGN —
 previews are unlinked staged pages; linking one from a public page will fail
@@ -75,6 +83,11 @@ STATIC_MARK = "<!-- static-page -->"
 # English pages + the FR guide's equivalent ("Ni conseil en investissement")
 DISCLAIMER_RE = re.compile(
     r'not (investment|financial) advice|ni conseil en investissement', re.I)
+# Placeholder markers banned from every served page (MICRO 2026-08-31A) —
+# matched case-sensitively as the literal bracket-marker convention.
+PLACEHOLDER_MARKS = ("[COUNSEL", "[TODO", "[DRAFT", "[PLACEHOLDER")
+RE_HDR_FWD_N = re.compile(r"EARLY · n=(\d+) periods")
+RE_NOTPROVEN_FWD_N = re.compile(r"Forward alpha — n=(\d+) periods")
 MIN_CHIPS = 8   # nav chips in the shared header (site_header_html)
 CHIP_LABELS = ("Validation Lab", "SMH Evidence Lens", "XLK Evidence Lens", "Canada Resources",
                "Forward Tracking", "Signal Review", "Explorer", "Sectors", "GitHub", "PyPI", "Ledger",
@@ -147,6 +160,12 @@ def main(argv: list[str] | None = None) -> int:
         # ---- 5. disclaimer
         if not DISCLAIMER_RE.search(t):
             findings.append(f"{name}: disclaimer block not found")
+        # ---- 6. no placeholder markers in served HTML
+        for mark in PLACEHOLDER_MARKS:
+            if mark in t:
+                findings.append(f"{name}: placeholder marker '{mark}' in "
+                                f"rendered public HTML — draft copy must "
+                                f"never ship")
         # ---- 4. every internal href resolves (files + anchors)
         for target, frag, raw in _internal_targets(p, t):
             if "preview/" in raw:
@@ -199,6 +218,32 @@ def main(argv: list[str] | None = None) -> int:
                 if raw.partition("#")[0] and not eff.exists():
                     findings.append(f"why/{p.name}: dead link {raw}")
 
+    # ---- 6b. placeholder markers in why/ pages (all 79, cheap scan)
+    if why_dir.exists():
+        for p in sorted(why_dir.glob("*.html")):
+            t = p.read_text(errors="replace")
+            for mark in PLACEHOLDER_MARKS:
+                if mark in t:
+                    findings.append(f"why/{p.name}: placeholder marker "
+                                    f"'{mark}' in rendered public HTML")
+
+    # ---- 7. validation_lab: header forward-n == not-proven forward-n
+    vlab = html.get(DOCS / "validation_lab.html")
+    if vlab is not None:
+        m_hdr = RE_HDR_FWD_N.search(vlab)
+        m_np = RE_NOTPROVEN_FWD_N.search(vlab)
+        if not m_hdr:
+            findings.append("validation_lab.html: header forward-OOS "
+                            "'EARLY · n=X periods' card not found")
+        if not m_np:
+            findings.append("validation_lab.html: 'Forward alpha — n=X "
+                            "periods' not-proven line not found")
+        if m_hdr and m_np and m_hdr.group(1) != m_np.group(1):
+            findings.append(f"validation_lab.html: header forward n="
+                            f"{m_hdr.group(1)} != not-proven forward n="
+                            f"{m_np.group(1)} — both must render from the "
+                            f"one computed value")
+
     if findings:
         print(f"[site-walk] {len(findings)} finding(s):")
         for f in findings:
@@ -206,7 +251,8 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     print(f"[site-walk] OK — {len(pages)} pages: reachable≤{MAX_CLICKS} clicks, "
           f"shared header, freshness/static marker, all links+anchors resolve, "
-          f"disclaimer present")
+          f"disclaimer present, zero placeholder markers, vlab forward-n "
+          f"consistent")
     return 0
 
 

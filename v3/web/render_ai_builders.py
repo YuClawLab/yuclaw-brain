@@ -2,9 +2,11 @@
 "For AI builders" page (docs/for_ai_builders.html) — the agent surface,
 factually pitched: agents citing YUCLAW inherit accession-verified,
 point-in-time, hash-anchored evidence. Renders a REAL passport (NVDA,
-generated at build) with the five statuses explained. One
-[COUNSEL]-marked draft sentence on oversight/traceability — the marker
-is present, the claim is absent, per standing law.
+generated at build) with the five statuses explained. No oversight/
+regulation claim appears anywhere — nothing renders until counsel
+approves wording (MICRO 2026-08-31A removed the former [COUNSEL]
+placeholder; placeholder markers are now banned in public HTML by
+check_site_walk).
 """
 from __future__ import annotations
 
@@ -84,7 +86,6 @@ def main() -> int:
  .st{{color:#00E676;font-size:12px;white-space:nowrap}}
  code{{background:#1E232D;padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#00E676}}
  .muted{{color:#718096;font-size:12px}}
- .counsel{{border:1px dashed #FBA94B60;border-radius:8px;padding:12px 16px;font-size:12px;color:#718096;margin-top:12px}}
 </style>
 </head>
 <body><div class="container">
@@ -126,7 +127,7 @@ accession set is <em>not</em> inlined; it lives at <code>/c6_posture_current.jso
                 "current_url": "/c6_posture_current.json" }}</pre>
 <ul style="margin-left:18px;font-size:13.5px">
 <li><strong>set_sha256 definition:</strong> sorted UNIQUE accession strings, byte-lexicographic order
-(locale-independent), UTF-8, joined with <code>"\n"</code>, NO trailing newline; sha256 of those bytes.
+(locale-independent), UTF-8, joined with <code>"\\n"</code>, NO trailing newline; sha256 of those bytes.
 Recompute it from <code>accessions</code> to verify the endpoint offline.</li>
 <li><strong>Pin semantics:</strong> <code>current_url</code> is mutable (always latest); the <code>set_sha256</code>
 inside each dated daily file is the historical pin for that day.</li>
@@ -151,9 +152,6 @@ twice-run identity). Only a true cold start (no previous-day set at all) publish
 <li>MCP v2 tools: <code>get_evidence · get_signal_anatomy · check_claim · verify_snapshot · get_protocol</code></li>
 <li><a href="evidencebench.html" style="color:#00E676">EvidenceBench</a> — the contamination-resistant groundedness benchmark</li>
 </ul>
-<div class="counsel">[COUNSEL: draft sentence pending review — relevance of accession-level traceability
-and point-in-time reproducibility to oversight expectations under emerging AI regulation; no claim is made
-until counsel approves wording.]</div>
 </div>
 
 <div class="amber"><strong>Research and education only — not investment advice.</strong>

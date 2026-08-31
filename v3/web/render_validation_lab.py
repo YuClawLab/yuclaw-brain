@@ -683,7 +683,10 @@ def integrity_log_html() -> str:
     </details>"""
 
 
-def proven_html() -> str:
+def proven_html(fwd_n: int) -> str:
+    # fwd_n is the SAME computed value the header status card renders
+    # (fwd['evaluable_periods']) — never hardcode the n here; the site-walk
+    # gate asserts header n == not-proven n on every build.
     proven = [
         "Point-in-time snapshot discipline — daily as-of writes, zero retroactive edits (outage window included)",
         "Git-anchored replayable ledger — daily sha-256 roots committed publicly before pages update",
@@ -691,7 +694,7 @@ def proven_html() -> str:
         "Deterministic evidence grounding measurement — corpus grounding 0.75, citation fidelity 0.85 (definitions footnoted below)",
     ]
     not_proven = [
-        "Forward alpha — n=28 periods, underpowered; not significant at 5%",
+        f"Forward alpha — n={fwd_n} periods, underpowered; not significant at 5%",
         "IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only",
         "Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small",
         "C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)",
@@ -945,6 +948,10 @@ def render() -> str:
                 "archived replay for per-date n.",
         title="Label cohorts vs SPY — latest rolling record · updated daily after U.S. market close")
 
+    # ONE computed forward-n for every surface that states it (header status
+    # card + "Not proven" list) — the site-walk gate asserts they agree.
+    fwd_n = fwd["evaluable_periods"] if fwd["evaluable"] else 0
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1011,7 +1018,7 @@ def render() -> str:
       regenerated daily after market close · last build {escape(built)}
     </div>
 
-    {status_cards_html(fwd['evaluable_periods'] if fwd['evaluable'] else 0, ledger)}
+    {status_cards_html(fwd_n, ledger)}
 
     <div class="disclaimer-line">
       <strong>Disclaimer —</strong> {escape(DISCLAIMER_LINE)}
@@ -1021,7 +1028,7 @@ def render() -> str:
 
     {integrity_card_html()}
 
-    {proven_html()}
+    {proven_html(fwd_n)}
 
     <p style="font-size:14px;color:#A0AEC0;margin-bottom:18px;max-width:780px">
       A Fama–French-style <strong>decile-cohort event study</strong>: does YUCLAW's composite
