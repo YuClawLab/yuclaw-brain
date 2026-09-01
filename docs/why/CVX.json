@@ -1,27 +1,27 @@
 {
  "ticker": "CVX",
- "generated": "2026-08-31T23:01:55.197843+00:00",
+ "generated": "2026-09-01T23:01:46.839264+00:00",
  "label": "NEUTRAL",
- "score": 0.2773,
+ "score": 0.2473,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.3595,
+  "c1": 0.361,
   "c2": 0.0,
-  "c3": 0.9522779,
+  "c3": 0.78786993,
   "c4": 0.6,
-  "c5": 0.10269716,
+  "c5": -0.002323912,
   "c6": -0.46211717,
-  "c7": 0.71475244,
+  "c7": 0.7098261,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
-  "ecs": 80,
+  "ecs": 79,
   "events_90d": 22,
-  "recency_days": 11.1,
+  "recency_days": 12.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -569,6 +569,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-01",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-08-31",
    "label": "NEUTRAL"
   },
@@ -683,10 +687,6 @@
   {
    "date": "2026-07-22",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-21",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CVX --date D",

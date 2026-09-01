@@ -1,39 +1,39 @@
 {
  "ticker": "GS",
- "generated": "2026-08-31T23:01:55.197843+00:00",
+ "generated": "2026-09-01T23:01:46.839264+00:00",
  "label": "WATCH",
- "score": 0.161,
+ "score": 0.1097,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.005,
+  "c1": -0.0775,
   "c2": 0.0,
-  "c3": -0.24233273,
+  "c3": -0.2870237,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.20244847,
-  "c7": -0.006073906,
+  "c6": 0.06324213,
+  "c7": 0.011200378,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 94,
   "events_90d": 20,
-  "recency_days": 17.9,
+  "recency_days": 0.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
  "evidence_objects": [
   {
    "ticker": "GS",
-   "evidence_type": "INSIDER_BUY",
-   "filing_date": "2026-08-13",
-   "accession_number": "0000886982-26-000495",
-   "excerpt": "GOLDMAN SACHS GROUP INC P 500000 shares @ $17.00 on 2026-08-06 ($8,500,000)",
-   "source_hash": "d2752bcdf9e0e01b4ea9ad74bfd53583b865635d156b3c8c85040b41816f6cda",
-   "available_as_of": "2026-08-13T19:57:01.357579-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-01",
+   "accession_number": "0001910388-26-000010",
+   "excerpt": "LESLIE ERICKA T S 600 shares @ $1033.80 on 2026-08-28 ($620,280)",
+   "source_hash": "09e0c95e5a6612f29a9e12cb739ae65614f9557b3644e3687dfe644ef4cf6c1c",
+   "available_as_of": "2026-09-01T14:08:51.086168-06:00",
    "protocol_id": null
   },
   {
@@ -71,8 +71,18 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-08-13",
    "accession_number": "0000886982-26-000495",
-   "excerpt": "GOLDMAN SACHS GROUP INC S 6763 shares @ $21.61 on 2026-08-05 ($146,148)",
-   "source_hash": "61fff7d8fb0009c3ac1cdba10a065e999644532405b25be810cc46bf07d2e976",
+   "excerpt": "GOLDMAN SACHS GROUP INC S 76418 shares @ $21.04 on 2026-08-05 ($1,607,835)",
+   "source_hash": "e5a2e2b99a0389eaeff29d8369958ddddd276e768842f960d6a75955b289fea5",
+   "available_as_of": "2026-08-13T19:57:01.357579-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "GS",
+   "evidence_type": "INSIDER_BUY",
+   "filing_date": "2026-08-13",
+   "accession_number": "0000886982-26-000495",
+   "excerpt": "GOLDMAN SACHS GROUP INC P 500000 shares @ $17.00 on 2026-08-06 ($8,500,000)",
+   "source_hash": "d2752bcdf9e0e01b4ea9ad74bfd53583b865635d156b3c8c85040b41816f6cda",
    "available_as_of": "2026-08-13T19:57:01.357579-06:00",
    "protocol_id": null
   },
@@ -81,8 +91,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-08-13",
    "accession_number": "0000886982-26-000495",
-   "excerpt": "GOLDMAN SACHS GROUP INC S 76418 shares @ $21.04 on 2026-08-05 ($1,607,835)",
-   "source_hash": "e5a2e2b99a0389eaeff29d8369958ddddd276e768842f960d6a75955b289fea5",
+   "excerpt": "GOLDMAN SACHS GROUP INC S 6763 shares @ $21.61 on 2026-08-05 ($146,148)",
+   "source_hash": "61fff7d8fb0009c3ac1cdba10a065e999644532405b25be810cc46bf07d2e976",
    "available_as_of": "2026-08-13T19:57:01.357579-06:00",
    "protocol_id": null
   },
@@ -449,6 +459,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-01",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-31",
    "label": "WATCH"
   },
@@ -563,10 +577,6 @@
   {
    "date": "2026-07-22",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-21",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GS --date D",

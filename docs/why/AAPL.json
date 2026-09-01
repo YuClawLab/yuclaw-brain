@@ -1,27 +1,27 @@
 {
  "ticker": "AAPL",
- "generated": "2026-08-31T23:01:55.197843+00:00",
+ "generated": "2026-09-01T23:01:46.839264+00:00",
  "label": "WATCH",
- "score": 0.0804,
+ "score": 0.0133,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.2485,
+  "c1": 0.2625,
   "c2": 0.0,
-  "c3": 0.5448867,
+  "c3": -0.6085859,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.10432512,
-  "c7": -0.07650918,
+  "c6": -0.0945515,
+  "c7": 0.029533723,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 78,
+  "ecs": 77,
   "events_90d": 6,
-  "recency_days": 4.0,
+  "recency_days": 5.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -219,6 +219,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-01",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-08-31",
    "label": "WATCH"
   },
@@ -333,10 +337,6 @@
   {
    "date": "2026-07-22",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-21",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",
