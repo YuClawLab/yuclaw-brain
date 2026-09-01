@@ -502,10 +502,10 @@
  },
  "founding_entry": {
   "alpha": 0.05,
-  "expected_false_positives_at_alpha": 37.7,
+  "expected_false_positives_at_alpha": 37.8,
   "note": "secondary/exploratory cells remain descriptive and inherit this FP accounting; absorbed as the ledger's founding lineage entry",
   "source": "tools/yuclaw_protocol_registry.py test_ledger()",
-  "total_secondary_cells": 754
+  "total_secondary_cells": 756
  },
  "hypotheses": [
   {
@@ -841,8 +841,19 @@
    "population": "NOT_DECLARED_IN_SOURCE_LINE",
    "protocol_id": "ea120b0a6b52",
    "registered_at": "2026-07-27",
-   "result_lineage": [],
-   "status": "OPEN",
+   "result_lineage": [
+    {
+     "chain_line": 79,
+     "data_window": "forward accrual 2026-07-27..2026-08-31 (events day0 >= 2026-07-27 only; prices through 2026-08-31)",
+     "kind": "run",
+     "n_primary_cells": 1,
+     "n_secondary_cells": 2,
+     "note": "Reversal coherence FIRST read (guard expiry 2026-09-01) \u2014 verdict INSUFFICIENT per the locked labels (<3 targets at the >=15-events floor; the plan working, not a failure). Accrual per target: GDX=11, SMH-E4=5, URNM=1, XEG=3, ZEO=3. No coherence claim; wait and re-read on further accrual. Science-Trust research-state annotation: INSUFFICIENT_EVIDENCE.",
+     "result_hash": "a4883269326e36a1813ba3b7f6d17250064ae7a2b9e9a175f51db9c5e15d2004",
+     "run_date": "2026-09-01"
+    }
+   ],
+   "status": "ACCRUING",
    "universe": "NOT_DECLARED_IN_SOURCE_LINE",
    "verdict_annotation": null,
    "version": 1
@@ -1635,18 +1646,18 @@
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 78,
+  "chain_lines": 79,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "05c386244426899187db8c966440c6e1cf0bcda808b8008ee3e8b1250f8050f0",
+  "derivation_anchor_chain_tip": "be05bf7a9dc8fb9e72cfc3acc312dce79ce3b389a693bde4c991a9a7c8d0c92d",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
   "umbrella_protocol_id": "be8b34040c2e"
  },
  "status_counts": {
-  "ACCRUING": 17,
+  "ACCRUING": 18,
   "INCONCLUSIVE": 1,
-  "OPEN": 8,
+  "OPEN": 7,
   "REGISTERED": 7,
   "SUPERSEDED": 4
  }
