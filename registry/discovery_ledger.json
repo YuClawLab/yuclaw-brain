@@ -502,10 +502,10 @@
  },
  "founding_entry": {
   "alpha": 0.05,
-  "expected_false_positives_at_alpha": 37.8,
+  "expected_false_positives_at_alpha": 38.5,
   "note": "secondary/exploratory cells remain descriptive and inherit this FP accounting; absorbed as the ledger's founding lineage entry",
   "source": "tools/yuclaw_protocol_registry.py test_ledger()",
-  "total_secondary_cells": 756
+  "total_secondary_cells": 770
  },
  "hypotheses": [
   {
@@ -755,6 +755,16 @@
      "note": "Falsification top-up on the v3 extended population (58 events, 12 issuers) \u2014 same locked tests, no new protocol; sleeve noted per the v3 supersession.",
      "result_hash": "708afcad33e16a86",
      "run_date": "2026-08-01"
+    },
+    {
+     "chain_line": 80,
+     "data_window": "SMH backfill era + 4 Canada lens event sets, prices through 2026-09-01",
+     "kind": "run",
+     "n_primary_cells": 1,
+     "n_secondary_cells": 14,
+     "note": "ORDER v5.1 Part B. Primary = SMH-E4 date-shuffle percentile. Secondary = SMH sign-flip + placebo (2) + 4 lenses x 3 tests (12). Panels render into previews from output/oie/falsification_run.json.",
+     "result_hash": "86c42ab92e0c503a",
+     "run_date": "2026-09-02"
     }
    ],
    "status": "ACCRUING",
@@ -1646,9 +1656,9 @@
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 79,
+  "chain_lines": 80,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "be05bf7a9dc8fb9e72cfc3acc312dce79ce3b389a693bde4c991a9a7c8d0c92d",
+  "derivation_anchor_chain_tip": "0774615d31345430ceacd09852e607089ec2b5d0e9d4b5c5e087bf8edcadffa0",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
