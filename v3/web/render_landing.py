@@ -110,9 +110,11 @@ def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
         f"<tr>"
         f"<td style='padding:9px 14px;font-weight:600;color:#FFF;font-size:13px'>{escape(r['ticker'])}</td>"
         f"<td style='padding:9px 14px'>"
-        f"<span style='background:{color}26;color:{color};border:1px solid {color}80;"
+        f"<a href='methodology.html#thresholds' title='label definition (locked "
+        f"score-to-label thresholds)' style='background:{color}26;color:{color};"
+        f"border:1px solid {color}80;text-decoration:none;"
         f"padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.5px'>"
-        f"{escape(label)}</span></td>"
+        f"{escape(label)}</a></td>"
         f"<td style='padding:9px 14px;color:{score_color};font-weight:600;"
         f"font-family:JetBrains Mono,monospace;font-size:13px'>{score:+.3f}</td>"
         f"<td style='padding:9px 14px;color:#A0AEC0;"
@@ -231,14 +233,15 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         Labels are research classifications, not buy/sell recommendations:
       </p>
       <p style="font-family:JetBrains Mono,monospace;font-size:12px;color:#E2E8F0;line-height:1.9">
-        <span style="color:#00E676">STRONG_BULLISH</span> ·
-        <span style="color:#00E676">BULLISH</span> ·
-        <span style="color:#A0AEC0">NEUTRAL</span> ·
-        <span style="color:#A0AEC0">WATCH</span> ·
-        <span style="color:#FF3366">WEAKENING</span> ·
-        <span style="color:#FF3366">NEGATIVE_EVENT</span> ·
-        <span style="color:#FF3366">BEARISH_WATCH</span> ·
-        <span style="color:#FBA94B">RISK_ALERT</span>
+        <a href="methodology.html#thresholds" style="color:#00E676;text-decoration:none">STRONG_BULLISH</a> ·
+        <a href="methodology.html#thresholds" style="color:#00E676;text-decoration:none">BULLISH</a> ·
+        <a href="methodology.html#thresholds" style="color:#A0AEC0;text-decoration:none">NEUTRAL</a> ·
+        <a href="methodology.html#thresholds" style="color:#A0AEC0;text-decoration:none">WATCH</a> ·
+        <a href="methodology.html#thresholds" style="color:#FF3366;text-decoration:none">WEAKENING</a> ·
+        <a href="methodology.html#thresholds" style="color:#FF3366;text-decoration:none">NEGATIVE_EVENT</a> ·
+        <a href="methodology.html#thresholds" style="color:#FF3366;text-decoration:none">BEARISH_WATCH</a> ·
+        <a href="methodology.html#thresholds" style="color:#FBA94B;text-decoration:none">RISK_ALERT</a>
+        <span style="font-size:11px;color:#718096">(each label links to its locked threshold definition)</span>
       </p>
       <p style="font-size:12px;color:#718096;margin-top:10px">
         There is no <code>SELL</code> or <code>SHORT</code> label.

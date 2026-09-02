@@ -1,24 +1,34 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XOM --date D",
  "components": {
-  "c1": 0.553,
+  "c1": 0.293,
   "c2": 0.0,
-  "c3": -0.30487168,
+  "c3": 0.78786993,
   "c4": 0.6,
-  "c5": -0.32161936,
-  "c6": 0.14185968,
-  "c7": 0.7065028,
+  "c5": -0.002323912,
+  "c6": 0.039401893,
+  "c7": 0.7208922,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 52,
-  "events_90d": 2,
-  "recency_days": 16.3,
+  "ecs": 62,
+  "events_90d": 3,
+  "recency_days": 4.5,
   "substrate_active": 1,
   "type_diversity": 1
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001193125-26-373026",
+   "available_as_of": "2026-08-28T05:26:26-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of Each Class Trading Symbol Name of Each Exchange on Which Registered Common Stock, par value $0.001 per share XOM New York Stock Exchange",
+   "filing_date": "2026-08-28",
+   "protocol_id": null,
+   "source_hash": "690a3dc1c813563b88baf73c4a3513afb10ea58c0261f3323514a5699ab491a4",
+   "ticker": "XOM"
+  },
   {
    "accession_number": "0000034088-26-000093",
    "available_as_of": "2026-08-03T08:55:38-06:00",
@@ -60,9 +70,45 @@
    "ticker": "XOM"
   }
  ],
- "generated": "2026-08-19T23:03:42.028493+00:00",
- "label": "NEUTRAL",
+ "generated": "2026-09-02T01:20:52.344397+00:00",
+ "label": "BULLISH",
  "label_history": [
+  {
+   "date": "2026-09-01",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-08-31",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-08-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-27",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-08-26",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-08-25",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-24",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-21",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-08-20",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-08-19",
    "label": "NEUTRAL"
@@ -146,42 +192,6 @@
   {
    "date": "2026-07-22",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-21",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-20",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-17",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-16",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-15",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-14",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-13",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-10",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-09",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -218,7 +228,7 @@
     "insider_form4": "LOW",
     "macro_series": "NOT_APPLICABLE",
     "pricing": "MEDIUM",
-    "sec_primary": "LOW"
+    "sec_primary": "MEDIUM"
    }
   },
   "forward_maturity": {
@@ -283,16 +293,16 @@
   }
  },
  "science_trust_meta": {
-  "anchor": "05c386244426899187db8c966440c6e1cf0bcda808b8008ee3e8b1250f8050f0",
+  "anchor": "0774615d31345430ceacd09852e607089ec2b5d0e9d4b5c5e087bf8edcadffa0",
   "derivation_protocol": "ad599b80d2db",
   "renderer_version": "1.0.0",
   "staged": true,
   "surface": "preview"
  },
- "score": 0.261,
+ "score": 0.4082,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.55,
+  "floor": 0.4
  },
  "ticker": "XOM",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

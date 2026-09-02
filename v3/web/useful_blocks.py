@@ -135,22 +135,29 @@ def footer_stamp_html(stamp: str) -> str:
 
 
 def build_footer() -> str:
-    """The demoted raw build timestamp + ledger root, small mono, for
-    auditors' ledger cross-reference. The ONLY place a raw build UTC
-    timestamp may appear (site-walk enforces this)."""
+    """The demoted raw build timestamp + evidence-ledger root, small mono,
+    for auditors' ledger cross-reference. The ONLY place a raw build UTC
+    timestamp may appear (site-walk enforces this). Label names the exact
+    cryptographic object (ORDER 2026-09-02A B3-ii): root_sha256 of the
+    latest docs/ledger/{DATE}.json daily block, dated — never the registry
+    chain head, which is a different object and must never share this
+    label (consumer-posture gate enforces the separation)."""
     from datetime import datetime, timezone
-    root = "n/a"
+    root, block_date = "n/a", ""
     try:
         led = sorted((Path(__file__).resolve().parents[2] / "docs" /
                       "ledger").glob("*.json"))
         if led:
-            root = json.loads(led[-1].read_text())["root_sha256"][:12]
+            blk = json.loads(led[-1].read_text())
+            root = blk["root_sha256"][:12]
+            block_date = blk.get("date") or led[-1].stem
     except Exception:                                 # noqa: BLE001
         pass
-    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     return (f'<footer class="buildinfo" style="font-family:\'JetBrains '
             f'Mono\',monospace;font-size:10px;color:#4A5568;'
-            f'margin:18px 0 6px">build {ts} UTC · ledger root {root}</footer>')
+            f'margin:18px 0 6px">build '
+            f'{datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")} UTC · '
+            f'evidence-ledger root {root} (block {block_date})</footer>')
 
 
 def site_header_html(subtitle: str = "", active: str = "") -> str:
@@ -209,7 +216,7 @@ C6_APPROVED_SENTENCE = (
 # Part H — proven / not proven / accruing (single source, four pages)
 # ---------------------------------------------------------------------------
 STATUS_PROVEN = [
-    "Replay works — one command reproduces every Lab statistic and ledger root from published data",
+    "Replay works — one command reproduces every Lab statistic and evidence-ledger root from published data",
     "Ledger anchored daily — sha-256 daily roots committed to a public git repository before pages update",
     "Evidence traces to filings — every accepted event carries a source URL, accession number, and verified excerpt",
     "Coverage measured — SEC-filer weight per lens is stated as measured, never rounded up",
@@ -284,7 +291,7 @@ def use_in_research_html(packet_href: str | None = None,
             <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code>.<br>
             No install: <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/tools/replay_lab.py">tools/replay_lab.py</a>
             (stdlib only) against the published bundle.<br>
-            Exit 0 = every statistic and ledger root reproduced. <a href="replication.html">How to report a replication →</a>
+            Exit 0 = every statistic and evidence-ledger root reproduced. <a href="replication.html">How to report a replication →</a>
           </p>
         </div>
         <div style="flex:1;min-width:240px">
@@ -348,7 +355,7 @@ def packet_block_html(page_label: str, packet_href: str, contents: list[str],
       </p>
       <ul style="list-style:none;padding:0;font-size:11.5px;color:#718096;font-family:JetBrains Mono,monospace">
         {items}
-        <li style='margin:3px 0'>METADATA.json — data-through, build date, source commit, ledger root, methodology version, scope, known limitations</li>
+        <li style='margin:3px 0'>METADATA.json — data-through, build date, source commit, evidence-ledger root, methodology version, scope, known limitations</li>
         <li style='margin:3px 0'>CITATION.txt — the snippet below</li>
       </ul>
       <div style="margin-top:10px;background:#151A23;border:1px solid #1E232D;border-radius:8px;padding:10px 14px">

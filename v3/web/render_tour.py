@@ -50,7 +50,7 @@ def _latest_replay_evidence() -> str:
     except Exception:
         pass
     return ("at the v5.1.0 release this ran from a fresh venv and "
-            "reproduced 33 daily ledger roots exactly (2,926 leaf hashes "
+            "reproduced 33 daily evidence-ledger roots exactly (2,926 leaf hashes "
             "recomputed), exit 0")
 
 
@@ -103,7 +103,7 @@ def main() -> int:
                 "yuclaw replay-lab",
                 "REPRODUCTION OK  (exit 0)",
                 f"Exit 0 means every published Lab statistic and every "
-                f"daily ledger root recomputed exactly from the public "
+                f"daily evidence-ledger root recomputed exactly from the public "
                 f"bundle; any mismatch exits non-zero. Not run at page "
                 f"build (it takes minutes) — {replay_note}."),
         station(4, "Check the pre-registration chain yourself",

@@ -257,11 +257,26 @@ def cmd_drain() -> int:
     # Order 2026-08-28C FIX 2a: the worker's rc IS the drain's rc, and both
     # stream tails go to the shadow log every run (19 silent rc=1 days).
     print(f"[drain] bounded shadow drain (cap {DRAIN_CAP}) rc={r.returncode}")
+    # ORDER 2026-09-02A B4: the yuclaw_v5 InsufficientPrivilege lines are
+    # EXPECTED — isolation by privilege (28C 1e): the u350_writer twin role
+    # deliberately has no grant on the yuclaw_v5 schema, so the prose
+    # fallback-cover probe and reclassify path fail closed for shadow
+    # names. Classified in the tail summary; GRANT NOTHING.
+    n_expected_priv = 0
     for name, stream in (("stdout", r.stdout), ("stderr", r.stderr)):
         lines = (stream or "").strip().splitlines()[-20:]
         print(f"[drain] worker {name} tail ({len(lines)} lines):")
         for line in lines:
-            print(f"   {line}")
+            if ("InsufficientPrivilege" in line
+                    and "yuclaw_v5" in line):
+                n_expected_priv += 1
+                print(f"   {line}  [EXPECTED — isolation by privilege (28C 1e)]")
+            else:
+                print(f"   {line}")
+    if n_expected_priv:
+        print(f"[drain] {n_expected_priv} yuclaw_v5 InsufficientPrivilege "
+              f"line(s) in tails: EXPECTED — isolation by privilege "
+              f"(28C 1e); no grant is or will be added")
     return r.returncode
 
 

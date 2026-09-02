@@ -544,7 +544,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       </p>
       <p style="font-size:11px;color:#718096;margin-top:8px;font-family:JetBrains Mono,monospace">
         this build derives from: source commit {escape((source_commit or '—')[:12])} ·
-        ledger block {escape(ledger.get('date') or '—')} · daily root {escape(root_short)}… ·
+        ledger block {escape(ledger.get('date') or '—')} · evidence-ledger root {escape(root_short)}… ·
         {ledger.get('blocks', '—')} public ledger blocks
       </p>
       <p style="font-size:11px;color:#718096;margin-top:6px">
@@ -625,19 +625,32 @@ FORM4_LIVE_TEXT = (
 
 
 def status_cards_html(fwd_n: int, ledger: dict) -> str:
+    # Every numeric on a status card carries data-source naming where the
+    # number comes from (ORDER 2026-09-02A B2/P5): a same-page panel id
+    # ("#panel-…") or a canonical artifact path ("ledger:…"). The
+    # consumer-posture gate machine-checks the mapping on every build.
     cards = [
-        ("Forward OOS", f"EARLY · n={fwd_n} periods", "no significant alpha yet — underpowered, accruing daily", "#FBA94B"),
-        ("In-sample replay", "OPTIMISTIC", "parametric look-ahead — educational only, collapsed below", "#FBA94B"),
-        ("Ledger", f"LIVE · {ledger.get('blocks', '—')} blocks", f"git-anchored daily · root {escape((ledger.get('root') or '')[:8])}…", "#00E676"),
-        ("Reproducibility", "ONE-COMMAND VERIFY", "stdlib script reproduces every statistic + ledger roots", "#00E676"),
+        ("Forward OOS", f"EARLY · n={fwd_n} periods",
+         "no significant alpha yet — underpowered, accruing daily",
+         "#FBA94B", "#panel-forward"),
+        ("In-sample replay", "OPTIMISTIC",
+         "parametric look-ahead — educational only, collapsed below",
+         "#FBA94B", ""),
+        ("Ledger", f"LIVE · {ledger.get('blocks', '—')} blocks",
+         f"git-anchored daily · evidence-ledger root {escape((ledger.get('root') or '')[:8])}…",
+         "#00E676", f"ledger:docs/ledger/{escape(ledger.get('date') or '')}.json"),
+        ("Reproducibility", "ONE-COMMAND VERIFY",
+         "stdlib script reproduces every statistic + evidence-ledger roots",
+         "#00E676", ""),
     ]
     tiles = "".join(
-        f'<div style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;'
+        f'<div{(" data-source=" + chr(34) + src + chr(34)) if src else ""}'
+        f' style="flex:1;min-width:200px;background:#151A23;border:1px solid #1E232D;'
         f'border-left:3px solid {c};border-radius:10px;padding:12px 16px">'
         f'<div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#718096">{escape(t)}</div>'
         f'<div style="font-size:15px;font-weight:800;color:{c};font-family:JetBrains Mono,monospace;margin:3px 0">{v}</div>'
         f'<div style="font-size:11px;color:#A0AEC0;line-height:1.45">{d}</div></div>'
-        for t, v, d, c in cards)
+        for t, v, d, c, src in cards)
     return f'<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">{tiles}</div>'
 
 
@@ -1052,7 +1065,7 @@ def render() -> str:
     {universe_panel_html(fwd)}
 
     <div class="panel" style="border:1px solid #00E67640">
-      <div class="panel-title">Panel 1 · Forward (Out-of-Sample)<span class="lead-tag">LOOK-AHEAD-FREE</span></div>
+      <div class="panel-title" id="panel-forward">Panel 1 · Forward (Out-of-Sample)<span class="lead-tag">LOOK-AHEAD-FREE</span></div>
       <div class="panel-sub">is_backfill = false · Day 0 = {escape(FORWARD_DAY0.isoformat())} · the honest panel</div>
       {fwd_body}
     </div>

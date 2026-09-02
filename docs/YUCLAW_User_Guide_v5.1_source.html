@@ -78,7 +78,7 @@ ul { margin: 1mm 0 2.6mm 5mm; padding: 0; } li { margin-bottom: 1.2mm; }
 <rect class="b" x="322" y="48" width="150" height="38" rx="6"/><text class="t" x="397" y="64" text-anchor="middle">Evidence tier</text><text class="s" x="397" y="77" text-anchor="middle">lenses · never scored (enforced)</text>
 <rect class="b" x="504" y="20" width="188" height="52" rx="6"/><text class="t" x="598" y="36" text-anchor="middle">Research under locked protocols</text><text class="s" x="598" y="49" text-anchor="middle">event studies · falsification · baselines</text><text class="s" x="598" y="61" text-anchor="middle">structure · robustness · lifecycle</text>
 <rect class="b" x="120" y="118" width="204" height="50" rx="6"/><text class="t" x="222" y="134" text-anchor="middle">Gates &amp; daily chain</text><text class="s" x="222" y="147" text-anchor="middle">language · copy-integrity · site-walk</text><text class="s" x="222" y="159" text-anchor="middle">registry chain-verify · reconciliation</text>
-<rect class="b" x="368" y="118" width="212" height="50" rx="6"/><text class="t" x="474" y="134" text-anchor="middle">Public record</text><text class="s" x="474" y="147" text-anchor="middle">pages · packets · weekly note · llms.txt</text><text class="s" x="474" y="159" text-anchor="middle">daily SHA-256 ledger roots → public git</text>
+<rect class="b" x="368" y="118" width="212" height="50" rx="6"/><text class="t" x="474" y="134" text-anchor="middle">Public record</text><text class="s" x="474" y="147" text-anchor="middle">pages · packets · weekly note · llms.txt</text><text class="s" x="474" y="159" text-anchor="middle">daily SHA-256 evidence-ledger roots → public git</text>
 <rect x="120" y="204" width="460" height="42" rx="6" fill="#EDF7F1" stroke="#0B7A43" stroke-width="1.4"/><text class="g" x="350" y="221" text-anchor="middle">Anyone verifies · anytime</text><text class="s" x="350" y="236" text-anchor="middle" fill="#33413a">yuclaw replay-lab · make replicate · registry chain check · evidence trace — exit 0 = reproduced</text>
 <path class="a" d="M126,43 L156,43"/><path class="a" d="M290,36 L320,26"/><path class="a" d="M290,52 L320,64"/><path class="a" d="M472,23 L502,32"/><path class="a" d="M472,67 L502,58"/>
 <path class="a" d="M598,72 L474,116"/><path class="a" d="M397,86 L280,116"/><path class="a" d="M324,143 L366,143"/>
@@ -91,7 +91,7 @@ yuclaw demo          <span class="c"># guided 3-minute tour — works on any mac
 yuclaw replay-lab    <span class="c"># reproduce the published Lab statistics from the public bundle</span>
 yuclaw verify AMD --date 2026-05-20   <span class="c"># check a signal against the public ledger</span></pre>
 <p>Every command in the read/verify family works from any computer with internet access — they consume only the published public bundle. Commands that read the research backend (<span class="mono">events, lens, memo, export</span>) require access to a YUCLAW research node; on other machines they print a clear one-paragraph explanation and exit with code 3 — never a stack trace.</p>
-<div class="note"><b>First thing worth doing:</b> run <span class="mono">yuclaw replay-lab</span>. It recomputes every statistic and ledger root on the Validation Lab from published data. Exit code 0 means your machine just reproduced the site. That single command is the platform's thesis in miniature.</div>
+<div class="note"><b>First thing worth doing:</b> run <span class="mono">yuclaw replay-lab</span>. It recomputes every statistic and evidence-ledger root on the Validation Lab from published data. Exit code 0 means your machine just reproduced the site. That single command is the platform's thesis in miniature.</div>
 
 <h2>3 · A map of the website (yuclaw.ca)</h2>
 <table>
@@ -131,7 +131,7 @@ yuclaw verify AMD --date 2026-05-20   <span class="c"># check a signal against t
 <tr><td class="mono">yuclaw demo</td><td>Guided three-minute tour of the platform's ideas.</td><td>anywhere</td></tr>
 <tr><td class="mono">yuclaw why TICKER --as-of DATE</td><td>Signal anatomy: which components and events produced a score, point-in-time.</td><td>anywhere*</td></tr>
 <tr><td class="mono">yuclaw verify TICKER --date DATE</td><td>Checks a signal against the public ledger; prints VERIFIED or a plain-language explanation of what could not be checked on this machine.</td><td>anywhere</td></tr>
-<tr><td class="mono">yuclaw replay-lab</td><td>Recomputes the published Lab statistics and ledger roots from the public bundle. Exit 0 = full reproduction.</td><td>anywhere</td></tr>
+<tr><td class="mono">yuclaw replay-lab</td><td>Recomputes the published Lab statistics and evidence-ledger roots from the public bundle. Exit 0 = full reproduction.</td><td>anywhere</td></tr>
 <tr><td class="mono">yuclaw events --ticker T [--since D]</td><td>Lists accepted evidence events with filing citations.</td><td>backend</td></tr>
 <tr><td class="mono">yuclaw lens NAME</td><td>Lens summary: coverage, admission verdict, current posture.</td><td>backend</td></tr>
 <tr><td class="mono">yuclaw memo --ticker T</td><td>Generates an evidence memo with per-sentence, machine-verified citations under a restricted conclusion vocabulary.</td><td>backend</td></tr>
@@ -164,7 +164,7 @@ yuclaw verify AMD --date 2026-05-20   <span class="c"># check a signal against t
 <p>YUCLAW's core claim is that you do not have to trust it. Four verification workflows, in increasing depth:</p>
 <h3>7.1 · Reproduce the Lab (one command)</h3>
 <pre>pip install yuclaw && yuclaw replay-lab
-<span class="c"># exit 0: every statistic and daily ledger root recomputed from published data</span></pre>
+<span class="c"># exit 0: every statistic and daily evidence-ledger root recomputed from published data</span></pre>
 <h3>7.2 · Full replication in a clean environment</h3>
 <pre>git clone https://github.com/YuClawLab/yuclaw-brain && cd yuclaw-brain
 make replicate   <span class="c"># scrubbed-env fetch → verifier → diff against published outputs</span></pre>
@@ -200,7 +200,7 @@ python3 -c "import yuclaw_protocol_registry as r; \
 <div class="pagebreak"></div>
 <h2>10 · Evidence packets, exports &amp; the AI layer</h2>
 <h3>10.1 · Evidence packets</h3>
-<p>Each research surface ships a downloadable packet: coverage statement, event-study summary, events CSV with event IDs, engine outputs, METADATA (data-through date, build commit, ledger root, methodology version, known limitations) and a ready CITATION.txt. Packets regenerate in the daily chain.</p>
+<p>Each research surface ships a downloadable packet: coverage statement, event-study summary, events CSV with event IDs, engine outputs, METADATA (data-through date, build commit, evidence-ledger root, methodology version, known limitations) and a ready CITATION.txt. Packets regenerate in the daily chain.</p>
 <h3>10.2 · Export rules — stated plainly</h3>
 <p>YUCLAW-derived data is exportable: signals, components, classifications, extracted events from public SEC filings, hashes, statistics, the track record. Raw vendor market data (price series, options data) is never redistributed — that is a licensing boundary, disclosed rather than blurred.</p>
 <h3>10.3 · For AI agents</h3>
@@ -231,7 +231,7 @@ python3 -c "import yuclaw_protocol_registry as r; \
 <p class="small">This mirrors the shared status block rendered on the site from a single source. Statuses are measured, not aspirational; the live pages are canonical.</p>
 <table>
 <tr><th style="width:22%">Status</th><th>Item</th></tr>
-<tr><td class="ok">✓ Verifiable today</td><td>Replay reproduces every Lab statistic and ledger root from published data · daily SHA-256 roots anchored to public git before pages update · every accepted event traces to a filing with accession number and verified excerpt · coverage stated as measured · snapshots are point-in-time with zero retroactive edits · evidence-tier names are never scored.</td></tr>
+<tr><td class="ok">✓ Verifiable today</td><td>Replay reproduces every Lab statistic and evidence-ledger root from published data · daily SHA-256 roots anchored to public git before pages update · every accepted event traces to a filing with accession number and verified excerpt · coverage stated as measured · snapshots are point-in-time with zero retroactive edits · evidence-tier names are never scored.</td></tr>
 <tr><td class="no">✗ Not established</td><td>Forward alpha — no spread, IC, or alpha significant at 5% with adequate power · directional meaning of the label set (calibration interval includes 0.5) · C6 risk-gate sign confirmation (first computable read scheduled under a locked protocol) · event-study lead over peer models.</td></tr>
 <tr><td class="acc">· Accruing</td><td>The forward out-of-sample record, daily · matured event-study windows · the C6 elevated arm under live ingestion · robustness grids over new results · external replications, as reported.</td></tr>
 </table>

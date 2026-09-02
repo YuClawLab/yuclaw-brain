@@ -442,7 +442,7 @@ def render() -> str:
       forward record. Current research status: filing-weight coverage ranges from {min_coverage:.0f}%
       to {max_coverage:.0f}%; peer-adjusted event results do not yet establish a reliable return
       advantage; Form 4 evidence covers only eligible US domestic issuers; C6 sign confirmation is
-      accruing — direction is not yet established; all statistics, source links and ledger roots are
+      accruing — direction is not yet established; all statistics, source links and evidence-ledger roots are
       available for replay.
       <br><strong>Research-only. Evidence dashboard. Not investment advice.</strong>
     </div>

@@ -141,6 +141,10 @@ fi
 # Header-layout gate (2026-08-07 clean-header order): zero stamps in any
 # header, exactly one stamp per page anywhere, badge == package version.
 /usr/bin/python3 tools/check_header_layout.py || exit 43
+# Consumer-posture gate (ORDER 2026-09-02A B2): five deterministic
+# stranger personas over the rendered/served surfaces; MANUAL_REVIEW
+# items print but never drive the exit code.
+/usr/bin/python3 tools/check_consumer_posture.py || exit 50
 # Truncation-ledger gate (Truncation & Error Budget v1, 2026-08-07, active
 # immediately): every truncation/filter/cap has a ledger entry; anchored
 # truncation code cannot drift without a same-commit ledger update; new

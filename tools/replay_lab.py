@@ -4,6 +4,10 @@ replay bundle — standalone, Python 3.10+ standard library ONLY (runs in a fres
 venv with no installs; `pip install yuclaw` optionally provides the full SDK,
 but is NOT required by this script).
 
+REPLICATION CONTRACT (machine-readable; consumer-posture gate P2 asserts it):
+    STDLIB_ONLY = True          # no third-party import anywhere in this file
+    SUPPORTED_PYTHON = ("3.10", "3.11", "3.12", "3.13")   # tested pins
+
 Usage:
     curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
     python3 replay_lab.py lab_replay_bundle.json
