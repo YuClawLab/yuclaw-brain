@@ -196,7 +196,7 @@ PROTOCOL_ID = hashlib.sha256(
 # slot is an owner act; the METHOD_SPEC hash does not cover it, so arming
 # does not require supersession. Constraints on the slotted value are
 # in-spec and enforced below.
-FIRST_READ_DATE: str | None = None
+FIRST_READ_DATE: str | None = "2026-09-03"
 
 
 def _registry_guard(pid: str) -> None:
