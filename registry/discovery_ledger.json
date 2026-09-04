@@ -502,10 +502,10 @@
  },
  "founding_entry": {
   "alpha": 0.05,
-  "expected_false_positives_at_alpha": 38.5,
+  "expected_false_positives_at_alpha": 38.95,
   "note": "secondary/exploratory cells remain descriptive and inherit this FP accounting; absorbed as the ledger's founding lineage entry",
   "source": "tools/yuclaw_protocol_registry.py test_ledger()",
-  "total_secondary_cells": 770
+  "total_secondary_cells": 779
  },
  "hypotheses": [
   {
@@ -1499,7 +1499,18 @@
    "population": "NOT_DECLARED_IN_SOURCE_LINE",
    "protocol_id": "bace258b0bbb",
    "registered_at": "2026-08-07",
-   "result_lineage": [],
+   "result_lineage": [
+    {
+     "chain_line": 82,
+     "data_window": "SMH lens (A1.3, 25 tickers), sessions 2026-07-06..2026-09-03 by session-of(available_as_of); frozen inputs 5a7a505814e61c32",
+     "kind": "run",
+     "n_primary_cells": 9,
+     "n_secondary_cells": 9,
+     "note": "Layered Evidence Dependency v1 FIRST READ (structural) under Addendum A1 line 81 (68e6a989916f). Verdict STRUCTURE_PRINTED (A1.8 label set); structural_completeness PARTIAL; N_eff PENDING; READ_SCOPE = STRUCTURAL_ONLY; eligible_events=421; clusters=9; Q1-Q4 NOT_EVALUATED, Q5 MANUAL_REVIEW; no rollout.",
+     "result_hash": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+     "run_date": "2026-09-04"
+    }
+   ],
    "status": "REGISTERED",
    "universe": "NOT_DECLARED_IN_SOURCE_LINE",
    "verdict_annotation": null,
@@ -1656,9 +1667,9 @@
  "purpose": "No result is presented as though the related tests were never run.",
  "spec": {
   "adjudication_state": "UNCOMPUTED",
-  "chain_lines": 81,
+  "chain_lines": 82,
   "counting_state": "ACTIVE",
-  "derivation_anchor_chain_tip": "68e6a989916fb564a0fefc55c7534ccd374d0ef8237f68409da56bb0082c86cd",
+  "derivation_anchor_chain_tip": "ac51ddfe97eb709a368f15f2aa6af9ab759ea4d319f48f45eeb121736d82d0c3",
   "method_hash": "6e51c975d2b6dedb",
   "name": "Discovery Ledger v1 (Science Trust addendum)",
   "protocol_id": "d904d68bfa90",
