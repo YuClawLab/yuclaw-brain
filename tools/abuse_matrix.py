@@ -43,6 +43,11 @@ import sys
 import tempfile
 from pathlib import Path
 
+# Real corpus fixtures (stable historical filings in the published corpus):
+UNIQUE_ACCESSION = "0001045810-26-000019"      # one covered name (NVDA)
+AMBIGUOUS_ACCESSION = "0001645590-26-000045"   # many covered names
+UNKNOWN_ACCESSION = "0000000000-00-000000"     # well-formed, not in the corpus
+
 CASES = [
     ("no args", []),
     ("unknown flag", ["--definitely-not-a-flag"]),
@@ -72,10 +77,6 @@ COMMANDS: dict[str, list[list[str]]] = {
     "replay-lab": [["--definitely-not-a-flag"]],
     "demo": [["--definitely-not-a-flag"]],
 }
-# Real corpus fixtures (stable historical filings in the published corpus):
-UNIQUE_ACCESSION = "0001045810-26-000019"      # one covered name (NVDA)
-AMBIGUOUS_ACCESSION = "0001645590-26-000045"   # many covered names
-UNKNOWN_ACCESSION = "0000000000-00-000000"     # well-formed, not in the corpus
 OK_EXITS = {0, 1, 2, 3}
 TRACE_MARKERS = ("Traceback (most recent call last)", "KeyError:",
                  "TypeError:", "ValueError:", "AttributeError:",
