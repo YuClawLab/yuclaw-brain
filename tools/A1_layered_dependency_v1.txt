@@ -1,0 +1,179 @@
+LAYERED EVIDENCE DEPENDENCY v1 — CLARIFICATION ADDENDUM A1 (FINAL v2,
+reviewer-amended + schema-validated 2026-09-04; for REGISTRATION with lineage to protocol bace258b0bbb,
+METHOD_HASH fc2779b55aee5f67, registry line 66). Scope: the SMH pilot
+FIRST READ only. The parent spec is not edited.
+
+A1.0 METHODOLOGICAL STATUS
+Rules introduced by A1 are PROSPECTIVE BINDINGS of previously
+under-determined parent-spec choices. They are not represented as
+uniquely implied by the parent specification. They were selected
+without access to governed outcome values and become governing only
+upon registration of A1. READ_SCOPE = STRUCTURAL_ONLY.
+
+A1.1 EVIDENCE STORE BINDING
+- Store: yuclaw_events.public.events; accepted row := event_status =
+  'accepted'.
+- Event identity: event_id MUST be non-null and unique within the
+  eligible row set; violation → verdict NOT_EXECUTABLE.
+- Issuer key := events.ticker (string equality as stored).
+- Event date := session-of(events.available_as_of) per A1.2.
+- Accession := parsed from persisted events.source_url by the locked
+  regex r'/Archives/edgar/data/(\d+)/(\d{18})/' → accession =
+  d[0:10]-d[10:12]-d[12:18]. No match → accession NONE (counted as
+  UNPARSED; no filing edge). No join to events_raw (no locked FK).
+- Filing identity := accession string. Rule 1 (extracted-from) exists
+  iff both events' accessions are equal and non-NONE.
+
+A1.2 TRADING CALENDAR AND SESSION MAPPING
+- Calendar := persisted module v3/u350/market_calendar.py at the source
+  commit recorded in the run entry (file sha256 recorded), adopted BY
+  REGISTRATION: NYSE full-day closures + weekend rule, session close
+  16:00:00 America/New_York.
+- session-of(ts) := the EARLIEST trading session S such that close(S)
+  >= ts converted to America/New_York. Hence: ts at or before a
+  session's 16:00:00 ET close → that session (boundary inclusive);
+  ts after the close → the next trading session; weekend/closure
+  timestamps → the next trading session.
+- Rule 3 "within 5 trading days strictly after" := 1 <=
+  session_index(later) - session_index(earlier) <= 5.
+
+A1.3 SMH LENS MEMBERSHIP
+- Membership := the ticker set of v3/lab/etf_evidence.SMH_HOLDINGS at
+  the same source commit, as-of 2026-07-03 as recorded in that
+  artifact (file sha256 recorded). The ETF ticker "SMH" is NOT a member.
+
+A1.4 CUTOFF, WINDOW, NULLS, EMPTIES
+- Availability field := events.available_as_of; timezone :=
+  America/New_York via A1.2; granularity := trading session.
+- Read window := sessions [2026-07-03 .. last completed session
+  strictly before the registration session of this addendum],
+  inclusive at both ends. DISCLOSURE: 2026-07-03 is an NYSE closure in
+  the registered calendar, so the first in-window session is
+  2026-07-06; the window is defined by sessions, not calendar dates.
+- Eligible event := accepted row, ticker ∈ A1.3, session-of
+  (available_as_of) ∈ window, event_id valid.
+- Nulls: null available_as_of → ineligible (counted); null ticker →
+  ineligible (counted); null/empty source_url → accession NONE.
+- Empties: zero eligible events → INSUFFICIENT; zero story-clusters
+  with >= 2 events → INSUFFICIENT.
+
+A1.5 GRAPH NODE SET, CLUSTERING, IDENTIFIERS
+- Vertices for clustering := EVENTS ONLY. Filings, components,
+  issuer-days, registry runs, forward outcomes, surfaces, truncation
+  sites are NOT vertices; edges touching them (rules 11–16) are typed
+  ANNOTATIONS and never contribute to connectivity.
+- Story := maximal connected component of events under rules 1 and 3.
+  Story-cluster := maximal connected component of events under the
+  union of EXECUTABLE event↔event edges among rules 1–10 (A1.6).
+- Issuer-event projection printed per parent text; issuers are
+  isolated vertices in it (parent literal reading, DISCLOSED).
+- c := the number of connected components of the graph represented by
+  the specific structure record on which r is computed. For a maximal
+  story-cluster record c = 1 by construction; c remains an explicit
+  field in the canonical calculation.
+- Cluster id := first 16 hex of sha256 of the sorted newline-joined
+  member event_ids. Member order := event_id ascending. Edge order :=
+  (rule number, event_id_a, event_id_b) ascending, a < b by event_id.
+
+A1.6 EDGE RULES 5–16: ARTIFACTS, EXECUTABILITY, COVERAGE
+- Rule 5 shared-source: normalized URL := parse with a strict RFC-3986
+  split (scheme, host, port, path, query, fragment); require scheme
+  and host present (else UNPARSED); lowercase scheme and host; drop
+  the port only if it equals the scheme default (80 http / 443 https),
+  otherwise retain byte-for-byte; path retained byte-for-byte except
+  one trailing '/' removed; query retained byte-for-byte; fragment
+  dropped; relative or otherwise malformed URLs → UNPARSED; null/empty
+  → NONE. No other library heuristic may alter the string. Edge iff
+  normalized URLs byte-equal AND parsed accessions differ (both
+  non-NONE).
+- Rule 6 shared-exhibit: no persisted exhibit-id field → ABSENT.
+- Rule 7 cascade: artifact := events.parent_event_id; edge iff
+  child.parent_event_id == parent.event_id (both eligible).
+- Rules 8, 9 SUPPORTS/CONTRADICTS: no persisted relation store → ABSENT.
+- Rule 10 amendment: no persisted intake linkage, no "/A" forms → ABSENT.
+- Rule 11 affects-component (annotation): artifact := the LAST persisted
+  public.signal_snapshots row of the event's session for the event's
+  ticker whose evidence_event_ids contains the event_id, where
+  LAST := maximal signal_time, ties broken by maximal snapshot_id
+  (string order); null signal_time rows are never selected; no such
+  row → NONE. Annotation := the set of component keys in
+  component_anatomy whose persisted evidence_ids list contains the
+  event_id (the persisted attribution record "lists that component").
+  DISCLOSURE: no per-component weight is persisted (component objects
+  carry confidence, evidence_ids, not_implemented, rationale, score);
+  the parent's "nonzero weight" is bound prospectively to listing by
+  evidence_ids membership.
+- Rule 12 changes-label (annotation): signal_label of LAST snapshot of
+  session D vs LAST snapshot of session D-1 (same LAST definition) for
+  the ticker → changed / unchanged / NONE (either side missing).
+- Rule 13 tested-by: registry data_window is free text → ABSENT.
+- Rule 14 matured-into (annotation): artifact := public.track_record;
+  completed row := (ticker, session D) with ANY of return_1d,
+  return_5d, return_20d non-null (the parent's "any k"); annotation
+  := the list of completed k in {1, 5, 20}; none non-null or no row
+  → NONE.
+- Rules 15, 16: no per-event exclusion/drop records → ABSENT.
+- EDGE-COVERAGE STATE (canonical, mandatory):
+  ABSENT means the registered relation type has no persisted store
+  available to this read. It does NOT mean zero matching relations
+  existed, that the relation is empirically absent, or that it could
+  not change connectivity. Three states are distinct and printed:
+  EXECUTED (n edges, n may be 0) | ABSENT | NOT_EXECUTABLE.
+  Canonical field: edge_rule_coverage {executable: [1,2,3,4,5,7 +
+  annotations 11,12,14], absent: [6,8,9,10,13,15,16],
+  structural_completeness: PARTIAL}.
+
+A1.7 NUMERICS FOR THE FIRST READ
+- Per cluster: |V|, |E|, c, r = |E| - |V| + c (integers).
+- Structure class precedence: clique-like evaluated FIRST
+  (|V| >= 4 and |E| >= ceil(0.6 * |V|*(|V|-1)/2), integer
+  arithmetic); otherwise class by r (tree r=0 / single-cycle r=1 /
+  multi-cycle r>=2).
+- Pooled statistic S, V_indep, C_t, N_eff := PENDING for the first
+  read; printed verbatim "N_eff: PENDING — no pooled statistic
+  designated (A1.7)". Consequence: integers only; no float
+  representation or rounding rule is needed or defined. N_eff PENDING
+  prevents this read from establishing any claim whose registered
+  semantics depend on S, V_indep, C_t, or N_eff.
+
+A1.8 VERDICT MAPPING FOR THE FIRST READ
+- Locked label set: STRUCTURE_PRINTED | INSUFFICIENT | NOT_EXECUTABLE.
+- STRUCTURE_PRINTED := the registered structural computation over the
+  EXECUTABLE registered edge subset completed and printed its
+  structure, with >= 1 story-cluster of >= 2 events. It is a
+  COMPUTATION-STATUS verdict, not an evidentiary-strength or
+  scientific-support verdict, and does not imply that the full
+  parent-protocol dependency graph was observed. Every surface that
+  displays STRUCTURE_PRINTED MUST display
+  structural_completeness=PARTIAL adjacent to it.
+- INSUFFICIENT := zero eligible events or zero such clusters.
+- NOT_EXECUTABLE := a required artifact named in A1.1–A1.6 is missing
+  or invalid at read time (incl. event_id integrity failure).
+- Q1–Q4 := NOT_EVALUATED (comparators require PENDING S and further
+  registered text). Q5 := MANUAL_REVIEW outside run(), never
+  affecting the label. Site-wide rollout := deferred to a later read
+  under a further addendum; the first read licenses NO rollout.
+
+A1.9 OUTPUT SCHEMA
+Canonical result JSON (sorted keys, UTF-8, LF, no NaN): protocol_id;
+addendum_id; read_scope; read_window; calendar_sha256;
+membership_sha256; eligible_events; ineligible_counts
+{null_available_as_of, null_ticker, not_in_lens, out_of_window};
+accession_unparsed_count; edge_rule_coverage; rules {n: {status,
+edges}}; stories [...]; clusters [{cluster_id, members, edges, V, E,
+c, r, structure_class}]; annotations {11, 12, 14 per event}; n_eff:
+"PENDING"; verdict. Execution metadata (timestamps, host, durations,
+paths) in a SEPARATE file, excluded from the canonical hash.
+
+A1.10 REGISTRATION AND READ TIMING
+This addendum is appended to the chain with lineage to line 66 and its
+full text. The first read MUST use an addendum registration timestamp
+strictly earlier than the first governed-outcome access timestamp.
+Before any governed outcome access: verify chain; verify the A1 line
+hash; record chain line/tip; record source commit; freeze the input
+manifest. No minimum wall-clock sleep interval is required.
+
+GATE #6 SEMANTICS UNDER A1: Gate #6 GREEN = the registered structural
+first-read computation reproduced byte-identically from frozen inputs.
+It does not imply complete edge coverage, N_eff validation, scientific
+support, independence established, or rollout authorization.
