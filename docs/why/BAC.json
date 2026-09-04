@@ -1,27 +1,27 @@
 {
  "ticker": "BAC",
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "NEUTRAL",
- "score": 0.336,
+ "generated": "2026-09-04T23:01:32.922045+00:00",
+ "label": "WATCH",
+ "score": 0.1665,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.011,
+  "c1": -0.045,
   "c2": 0.0,
-  "c3": 0.7354436,
+  "c3": -0.33971453,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -3.188118e-06,
-  "c7": -0.005135701,
+  "c6": -2.8875543e-06,
+  "c7": 0.040586002,
   "c8": 0.0,
   "c9": 0.5
  },
  "evidence_coverage": {
   "ecs": 55,
   "events_90d": 2,
-  "recency_days": 22.7,
+  "recency_days": 23.2,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -118,6 +118,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-04",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-03",
    "label": "NEUTRAL"
@@ -233,10 +237,6 @@
   {
    "date": "2026-07-27",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay BAC --date D",

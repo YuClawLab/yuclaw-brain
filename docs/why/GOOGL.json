@@ -1,16 +1,16 @@
 {
  "ticker": "GOOGL",
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "WATCH",
- "score": 0.0973,
+ "generated": "2026-09-04T23:01:32.922045+00:00",
+ "label": "WEAKENING",
+ "score": -0.0451,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.4655,
+  "c1": -0.3305,
   "c2": 0.0,
-  "c3": 0.310722,
+  "c3": -0.55670255,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": 0.0,
@@ -21,7 +21,7 @@
  "evidence_coverage": {
   "ecs": 73,
   "events_90d": 35,
-  "recency_days": 24.7,
+  "recency_days": 25.3,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -739,6 +739,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-04",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-03",
    "label": "WATCH"
   },
@@ -853,10 +857,6 @@
   {
    "date": "2026-07-27",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GOOGL --date D",

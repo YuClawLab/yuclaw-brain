@@ -1,27 +1,27 @@
 {
  "ticker": "SLV",
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "BULLISH",
- "score": 0.4006,
+ "generated": "2026-09-04T23:01:32.922045+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3364,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.623,
+  "c1": 0.3345,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.040175132,
+  "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.2
+  "c9": 0.13333334
  },
  "evidence_coverage": {
   "ecs": 44,
   "events_90d": 1,
-  "recency_days": 29.6,
+  "recency_days": 30.1,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -38,6 +38,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-04",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-03",
    "label": "BULLISH"
@@ -153,10 +157,6 @@
   {
    "date": "2026-07-27",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLV --date D",

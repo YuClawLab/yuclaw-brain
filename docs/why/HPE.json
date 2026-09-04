@@ -1,27 +1,27 @@
 {
  "ticker": "HPE",
- "generated": "2026-09-04T09:51:14.495454+00:00",
+ "generated": "2026-09-04T23:01:32.922045+00:00",
  "label": "NEUTRAL",
- "score": 0.2558,
+ "score": 0.209,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.1955,
+  "c1": -0.1145,
   "c2": 0.0,
-  "c3": 0.60686815,
+  "c3": 0.574836,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.10509127,
+  "c7": 0.014078471,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
   "ecs": 68,
   "events_90d": 5,
-  "recency_days": 30.7,
+  "recency_days": 31.3,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -249,6 +249,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-04",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-09-03",
    "label": "NEUTRAL"
   },
@@ -363,10 +367,6 @@
   {
    "date": "2026-07-27",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay HPE --date D",

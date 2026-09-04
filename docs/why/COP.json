@@ -1,27 +1,27 @@
 {
  "ticker": "COP",
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "WATCH",
- "score": 0.1565,
+ "generated": "2026-09-04T23:01:32.922045+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2273,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.754,
+  "c1": 0.8355,
   "c2": 0.0,
-  "c3": -0.79025453,
+  "c3": -0.38733843,
   "c4": 0.6,
-  "c5": -0.45885494,
-  "c6": -0.13646427,
-  "c7": 0.7083345,
+  "c5": -0.4864875,
+  "c6": -0.123737484,
+  "c7": 0.7489971,
   "c8": 0.0,
   "c9": 0.13333334
  },
  "evidence_coverage": {
   "ecs": 83,
   "events_90d": 7,
-  "recency_days": 10.7,
+  "recency_days": 11.2,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -219,6 +219,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-04",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-09-03",
    "label": "WATCH"
   },
@@ -333,10 +337,6 @@
   {
    "date": "2026-07-27",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COP --date D",
