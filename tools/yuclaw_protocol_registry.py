@@ -170,6 +170,41 @@ class Registry:
                                "superseding version")
         return p
 
+    # ---- addenda (ORDER 2026-09-03B): a registered clarification of a
+    # LOCKED protocol. The parent METHOD_SPEC is never edited; the addendum
+    # carries its own full text and sha256, with lineage to the parent line.
+    def register_addendum(self, protocol_id: str, text: str, name: str,
+                          source_file: str, registered_utc: str,
+                          scope: str = "") -> str:
+        parent = self.assert_registered(protocol_id)
+        if not text.strip():
+            raise ValueError("addendum text must be non-empty")
+        parent_idx = parent_hash = None
+        for i, l in enumerate(self._lines, start=1):
+            if (l["kind"] == "protocol"
+                    and l["payload"]["protocol_id"] == protocol_id):
+                parent_idx, parent_hash = i, l["line_hash"]
+        method_hash = _h(text)
+        addendum_id = method_hash[:12]
+        if any(l["kind"] == "addendum"
+               and l["payload"]["addendum_id"] == addendum_id
+               for l in self._lines):
+            raise ValueError(f"addendum {addendum_id} already registered")
+        return self._append("addendum", {
+            "addendum_id": addendum_id,
+            "protocol_id": protocol_id,
+            "parent_line": parent_idx,
+            "parent_line_hash": parent_hash,
+            "parent_method_hash": parent["method_hash"],
+            "method_hash": method_hash,
+            "name": name,
+            "scope": scope,
+            "source_file": source_file,
+            "registered_utc": registered_utc,
+            "lock_date": registered_utc[:10],
+            "text": text,
+        })
+
     # ---- runs
     def record_run(self, r: Run) -> str:
         self.assert_registered(r.protocol_id)
