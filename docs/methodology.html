@@ -41,7 +41,7 @@
             <span style="display:inline-block;background:#00E67620;color:#00E676;
                          border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
                          font-size:10px;font-weight:700;letter-spacing:0.5px;
-                         font-family:JetBrains Mono,monospace">v6.0.0</span>
+                         font-family:JetBrains Mono,monospace">v6.0.1</span>
           </a>
           <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Methodology</span>
         </div>
@@ -56,7 +56,7 @@ This page is generated from the canonical source
 <a href="methodology/backfill.md" style="color:#FBA94B">methodology/backfill.md</a> (served raw for machines);
 the source is what the threshold-match gate reads.</div>
 <div class="md"><h1 id="methodology-in-sample-validation-forward-tracking">Methodology — In-Sample Validation + Forward Tracking</h1>
-<p><strong>Last updated:</strong> 2026-05-20</p>
+<p><strong>Last updated:</strong> 2026-09-05 (look-ahead statement reconciled; construction unchanged)</p>
 <p>This document describes how the two YUCLAW v3.0 panels are produced:</p>
 <ol>
 <li><strong>In-Sample Validation Results — Replay</strong></li>
@@ -73,13 +73,32 @@ the source is what the threshold-match gate reads.</div>
 <p>Why this window: the SEC EDGAR backfill that populates the <code>events</code> evidence layer ran for 90 days ending 2026-05-17 (the Sunday before the v3.0 public surface launched). Anything earlier is currently unevidenced.</p>
 <hr />
 <h2 id="2-llm-look-ahead-bias">2. LLM look-ahead bias</h2>
-<ul>
-<li><strong>Model:</strong> Llama 3.1 70B (served locally via Ollama as <code>yuclaw-llm-70b</code>).</li>
-<li><strong>Training cutoff (per Meta model card):</strong> December 2023.</li>
-<li><strong>Backfill window vs cutoff:</strong> the earliest backfill date (2026-02-18) is ~26 months <em>after</em> the training cutoff.</li>
-</ul>
-<p>Therefore the LLM cannot have parametric look-ahead into any event in the backfill — none of the 2026 filings existed when it was trained. This rules out the most common look-ahead failure mode in LLM-driven validation runs.</p>
-<p>The Replay engine adds a secondary safeguard: any <code>as_of</code> earlier than 2024-07-01 is flagged with an "in LLM training window" warning. The current backfill window does not trigger this flag.</p>
+<p class="canonical"><!-- LOOKAHEAD-CANONICAL BEGIN -->
+In-sample look-ahead statement. The in-sample replay rows (signal dates 2026-02-18
+to 2026-05-13, evidence window 2026-02-18 to 2026-05-17) were built from evidence
+events extracted by one language model, Meta Llama 3.1 70B Instruct (served
+locally as yuclaw-llm-70b), whose published pretraining cutoff is December 2023
+(Meta model card). Form 4 events in the window come from a deterministic XML
+parser with no language model. The earliest in-sample date is about 26 months
+after that cutoff, so no filing text in the window could have been seen in
+training: there is no parametric look-ahead from the filings themselves, and the
+model's general market knowledge also ends before the window begins. The replay
+engine flags any as-of date before 2024-07-01 as inside the model's training
+window; no in-sample date triggers it. In-sample results nonetheless remain a
+replay reconstruction, not a live record: the scoring design was finalized in May
+2026, after the window it is replayed over, market-layer components read
+approximated inputs, and no in-sample signal was exposed to external challenge in
+real time. In-sample results are therefore treated as systematically optimistic
+and educational only; the forward record (signal dates from 2026-05-20) is the
+look-ahead-free record.
+<!-- LOOKAHEAD-CANONICAL END --></p>
+<p>Retained records behind this statement: every <code>events</code> row carries <code>llm_model</code>
+(all language-model rows inside the window are <code>yuclaw-llm-70b</code>); the local model
+manifest for that tag resolves to the Meta Llama 3.1 70B Instruct weights; the
+published cutoff is from Meta's model card. The statement above is the single
+canonical text (<code>docs/methodology/lookahead_statement.txt</code>); every surface embeds
+it verbatim between fixed markers and the copy-consistency release gate checks
+each copy byte-for-byte.</p>
 <hr />
 <h2 id="3-in-sample-reconstruction-limitation">3. In-sample reconstruction limitation</h2>
 <p>In-sample signals were <strong>reconstructed via the replay engine</strong>, not emitted live. For each (ticker, Wednesday) pair, we called <code>v3.replay.engine.replay(ticker, as_of)</code> which:</p>
@@ -378,5 +397,5 @@ Past results — in-sample or forward-tracked — do not predict future performa
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 canonical source: <a href="methodology/backfill.md" style="color:#A0AEC0">methodology/backfill.md</a></p>
 <div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Updated 2026-09-04</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-04 02:10 UTC · evidence-ledger root 501adb8ec42e (block 2026-09-03)</footer>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-04 09:51 UTC · daily evidence block root 501adb8ec42e (block 2026-09-03)</footer>
 </div></body></html>

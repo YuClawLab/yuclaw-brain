@@ -7,6 +7,30 @@
 > price target. The platform is the open evidence layer underneath AI
 > research tools.
 
+## Release (auto-generated from release_manifest.json — do not hand-edit)
+
+- Version: yuclaw 6.0.1
+- Canonical base URL: https://yuclaw.ca
+- Discovery: https://yuclaw.ca/capabilities.json · index: https://yuclaw.ca/evidence_index.json
+- Machine surfaces (kind · content type):
+  - /capabilities.json · static · application/json
+  - /evidence_index.json · static · application/json
+  - /llms.txt · static · text/plain
+  - /why/{TICKER}.json · templated · application/json
+  - /why/{TICKER}.html · templated · text/html
+  - /explorer_data.json · static · application/json
+  - /schemas/{Name}.v1.json · templated · application/json
+  - /evidence/verify.json · static · application/json
+  - /ledger/{YYYY-MM-DD}.json · wildcard_family · application/json — discovery: GET /evidence/verify.json and read days[].date; the latest date is the representative
+  - /evidencebench/items.jsonl · static · application/octet-stream
+  - /evidencebench/meta.json · static · application/json
+  - /c6_posture_current.json · static · application/json
+  - /evidence_changes/{YYYY-MM-DD}.json · wildcard_family · application/json — discovery: GET /c6_posture_current.json and read as_of; that date is the latest daily file; earlier days are one file per UTC day back to 2026-07-29; a 404 means no block for that day
+  - /packets/manifest.json · static · application/json
+  - /packets/{zip} · templated · application/zip — discovery: zip names come from /packets/manifest.json
+  - /replay/lab_replay_bundle.json · static · application/json
+  - /methodology/backfill.md · static · text/markdown
+
 ## What you are reading
 
 - Signals use a locked eight-label vocabulary, rendered verbatim:

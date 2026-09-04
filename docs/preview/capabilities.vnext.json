@@ -1,21 +1,47 @@
 {
  "as_of_recipe": "evidence as of D = evidence_objects with available_as_of <= D; classification at D = label_history last entry <= D; beyond the ribbon: the replay CLI",
+ "base_url": "https://yuclaw.ca",
  "cli": {
-  "check_claim": "yuclaw check-claim --ticker X --type T --date-range A..B  (or --text '...')",
+  "check_claim": "yuclaw check-claim --ticker X --type T --date-range A..B  (or --text '...', or --accession N alone when the accession maps to one name)",
+  "help": "yuclaw --help",
   "install": "pip install yuclaw",
   "replay": "yuclaw replay TICKER --date D",
   "reproduce": "yuclaw replay-lab"
  },
  "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is uppercase (why/NVDA.json \u2014 why/nvda.json is a 404); the CLI uppercases ticker arguments for you",
+ "endpoint_kinds": {
+  "c6_posture_current": "static",
+  "discovery": "static",
+  "evidence_changes_day": "wildcard_family",
+  "evidencebench": "static",
+  "evidencebench_meta": "static",
+  "explorer_data": "static",
+  "index": "static",
+  "ledger_day": "wildcard_family",
+  "llms": "static",
+  "methodology_md": "static",
+  "packet_zip": "templated",
+  "packets_manifest": "static",
+  "replay_bundle": "static",
+  "schemas": "templated",
+  "verify": "static",
+  "why_html": "templated",
+  "why_json": "templated"
+ },
  "endpoints": {
   "c6_posture_current": "https://yuclaw.ca/c6_posture_current.json",
   "discovery": "https://yuclaw.ca/capabilities.json",
   "evidence_changes_day": "https://yuclaw.ca/evidence_changes/{YYYY-MM-DD}.json",
   "evidencebench": "https://yuclaw.ca/evidencebench/items.jsonl",
+  "evidencebench_meta": "https://yuclaw.ca/evidencebench/meta.json",
   "explorer_data": "https://yuclaw.ca/explorer_data.json",
   "index": "https://yuclaw.ca/evidence_index.json",
   "ledger_day": "https://yuclaw.ca/ledger/{YYYY-MM-DD}.json",
   "llms": "https://yuclaw.ca/llms.txt",
+  "methodology_md": "https://yuclaw.ca/methodology/backfill.md",
+  "packet_zip": "https://yuclaw.ca/packets/{zip}",
+  "packets_manifest": "https://yuclaw.ca/packets/manifest.json",
+  "replay_bundle": "https://yuclaw.ca/replay/lab_replay_bundle.json",
   "schemas": "https://yuclaw.ca/schemas/{Name}.v1.json",
   "verify": "https://yuclaw.ca/evidence/verify.json",
   "why_html": "https://yuclaw.ca/why/{TICKER}.html",
@@ -24,8 +50,9 @@
  "formats": {
   "evidencebench": "JSONL \u2014 one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
  },
- "generated": "2026-09-04T02:10:55.132608+00:00",
- "name": "YUCLAW Ground Truth API",
+ "former_name": "YUCLAW Ground Truth API",
+ "generated": "2026-09-04T09:51:15.175784+00:00",
+ "name": "YUCLAW Evidence API",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
  "positioning": "The open evidence layer for financial AI.",
  "schema_preview": "vNext",
@@ -67,5 +94,9 @@
    "value": "preview/why/{TICKER}.json"
   }
  },
- "version": "v6.0.0"
+ "version": "v6.0.1",
+ "wildcard_discovery": {
+  "evidence_changes_day": "GET /c6_posture_current.json and read as_of; that date is the latest daily file; earlier days are one file per UTC day back to 2026-07-29; a 404 means no block for that day",
+  "ledger_day": "GET /evidence/verify.json and read days[].date; the latest date is the representative"
+ }
 }
