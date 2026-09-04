@@ -310,8 +310,11 @@ def main() -> int:
              and a1["payload"]["method_hash"] == _sha(ld.ADDENDUM_FILE))
 
     # ---- gates: run the battery fresh
-    checks = {t + (" " + " ".join(args[:2]) if args and args[0].startswith("--") else ""): _run(t, args)
-              for t, args in CHECKS}
+    def _key(t, args):
+        if args and args[0] == "--only":            # one tool, several gate rows
+            return f"{t} {args[0]} {args[1]}"
+        return t + (" " + args[0] if args and args[0].startswith("--") else "")
+    checks = {_key(t, args): _run(t, args) for t, args in CHECKS}
     extra = {name: _run_argv(argv) for name, argv in EXTRA_CHECKS}
     def ok(name):
         return checks[name]["rc"] == 0

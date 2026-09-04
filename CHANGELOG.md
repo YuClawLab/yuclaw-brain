@@ -2,6 +2,58 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [6.0.1] — 2026-09-05
+
+Research & education only. Not investment advice.
+
+### YUCLAW 6.0.1 — patch: public synchronization and CLI first-touch
+
+patch — public synchronization and CLI first-touch; no methodology change; chain unchanged at 82.
+
+#### Look-ahead statement — reconciled from retained records
+
+A2 state (ii) — FACT ESTABLISHED, surfaces conflicted. From retained records only (the per-row llm_model tag on every evidence row, the local model manifest for that tag dated before the rows, the model blob's own GGUF header, the ingestion log and the worker configuration history), the only language model behind the governed in-sample rows is yuclaw-llm-70b = Meta Llama 3.1 70B Instruct, whose published pretraining cutoff is December 2023 (Meta model card); Form 4 rows come from a deterministic XML parser. The earliest in-sample date (2026-02-18) is about 26 months after that cutoff, so no filing text in the window could have been seen in training and the model's general market context also ends before the window — the README and Validation Lab wording that the cutoff "overlaps" the window was unsupported, while the methodology page's wording was correct. The supported conservative statement now stands on every surface: no parametric look-ahead from filings or market context; in-sample results remain a replay reconstruction (scoring design finalized after the window, market-layer inputs approximated, never exposed to real-time challenge) and stay disclosed as systematically optimistic and educational only. No disclosure was silently weakened: the optimism caveat is retained; only its unsupported mechanism was corrected. The registry chain records no look-ahead claim, so no registered statement is reinterpreted.
+
+> In-sample look-ahead statement. The in-sample replay rows (signal dates 2026-02-18
+> to 2026-05-13, evidence window 2026-02-18 to 2026-05-17) were built from evidence
+> events extracted by one language model, Meta Llama 3.1 70B Instruct (served
+> locally as yuclaw-llm-70b), whose published pretraining cutoff is December 2023
+> (Meta model card). Form 4 events in the window come from a deterministic XML
+> parser with no language model. The earliest in-sample date is about 26 months
+> after that cutoff, so no filing text in the window could have been seen in
+> training: there is no parametric look-ahead from the filings themselves, and the
+> model's general market knowledge also ends before the window begins. The replay
+> engine flags any as-of date before 2024-07-01 as inside the model's training
+> window; no in-sample date triggers it. In-sample results nonetheless remain a
+> replay reconstruction, not a live record: the scoring design was finalized in May
+> 2026, after the window it is replayed over, market-layer components read
+> approximated inputs, and no in-sample signal was exposed to external challenge in
+> real time. In-sample results are therefore treated as systematically optimistic
+> and educational only; the forward record (signal dates from 2026-05-20) is the
+> look-ahead-free record.
+
+#### Changed (copy and CLI ergonomics only)
+
+- README and PyPI description: current-release framing (6.0.x → the GitHub Release), a first-touch command block with expected exit codes and a transcript from the release-candidate wheel, and the replication sentence derived from the public log (External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0).
+- Canada Resources: the evidence-tier count reads 53 = 49 Canada Resources issuers + 4 SMH-lens foreign filers (ASML, NXPI, STM, TSM), mirrored in the page's JSON.
+- Today's Evidence: the two visible hashes carry distinct labels for the two distinct objects they are — "evidence-ledger root" (the Verified Research Ledger daily root) and "daily evidence block root" (the per-day public block root); no value, machine field or ledger meaning changed.
+- SMH and XLK lenses: "effective evidence count" keeps its registered meaning; the line "Not the Phase-6 N_eff, which is PENDING." now sits beside it.
+- Discovery: the capabilities name is "YUCLAW Evidence API" (former name recorded); the evidence index and llms.txt declare the version, the canonical base URL https://yuclaw.ca and every machine surface, all from one release manifest.
+- Homepage: "Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work."
+- CLI: `yuclaw --help` / `-h` / `help` list every command with a one-line description (exit 0); `yuclaw check-claim --accession N` alone resolves the name from the same corpus the ticker path uses (one name → the existing passport; several → exit 2 with the candidates; none → UNSUPPORTED; malformed → exit 2); never a bare usage dump. Twelve first-touch cases are recorded against the built wheel.
+- Release gates added: copy-consistency (canonical blocks byte-identical), version, base URL and endpoint inventory.
+
+#### Unchanged
+
+- Protocol registry: 82 chained lines, tip ac51ddfe…, byte-identical to 6.0.0. No statistic, estimator, threshold, artifact hash or ledger row changed.
+
+#### Not in this release
+
+- N_eff PENDING (the Phase-6 pooled-statistic N_eff — not the lens pages' effective evidence count)
+- Phase-5 contribution anatomy NOT YET
+- user-comprehension study NOT YET
+- unaffiliated replications 0
+
 ## [6.0.0] — 2026-09-04
 
 Research & education only. Not investment advice.
