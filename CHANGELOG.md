@@ -2,6 +2,41 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [6.0.0] — 2026-09-04
+
+Research & education only. Not investment advice.
+
+### YUCLAW 6.0.0 — Evidence-First Financial AI · The Science Trust Layer for Financial AI
+
+Financial AI normally gives you an answer. YUCLAW gives you the evidence, what that evidence can support, what it cannot support, and whether that conclusion survived time.
+
+#### Shipped objects — name · receipt · status
+
+- Layered Evidence Dependency v1, first read · chain lines 81–82, sha256 0b2ac8a5967b13aa… · STRUCTURE_PRINTED — structural_completeness = PARTIAL; N_eff PENDING; READ_SCOPE = STRUCTURAL_ONLY (chain 81–82)
+- Science Trust surfaces — per-name research-state cards + machine JSON, 132 names · anchor ac51ddfe97eb… · gate GREEN (machine JSON equals the human card, byte-reproducible); staged preview, not linked from the live navigation
+- Research states · sha256 0163fe63f72bb13f… · 132 names: INSUFFICIENT_EVIDENCE 132 — derived, never hand-maintained
+- Discovery Ledger · sha256 4951bd6ade88722a… · 37 hypotheses in bijection with 37 registered protocol lines; status counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4 — negative and inconclusive findings preserved
+- Anytime Evidence Record · sha256 ac37757aa2fb8f62… · 3 prospective enrollments — ACCRUING, not adjudicated
+- Evidence Completeness Profiles · sha256 3c3b4f0e6e494dfa… · 132 names; ETF class membership BLOCKED_BY_REGISTRATION
+- Protocol registry · 82 chained lines, tip ac51ddfe…, chain-verified
+- Public daily evidence ledger · 77 daily blocks, latest 2026-09-03 root 501adb8ec42e… · append-only, replayable
+- C6 risk channel: rare-by-construction confirmed OOS (22% fire rate, n=9 held-out); sign positive at n=2 elevated — accruing · fourth read chain line 77 (98dcf74a827a…): DESCRIPTIVE
+- Cross-lens reversal coherence · chain line 79 (be05bf7a9dc8…) · INSUFFICIENT — accruing, no coherence claim (chain 79)
+- Consumer-posture gate · five deterministic stranger personas · GREEN (scaffold); full-form user-comprehension study NOT YET
+- Replication · public log 1 entry, bundle sha256 f431f9c629ac38b5… · REPRODUCED — External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0
+- yuclaw 6.0.0 package · wheel + sdist sha256 attached to this release · CLI · REST · MCP · SDK
+
+#### Not in this release
+
+- N_eff PENDING
+- Phase-5 contribution anatomy NOT YET
+- user-comprehension study NOT YET
+- unaffiliated replications 0
+
+#### Made in Canada
+
+Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.
+
 ## [5.3.3] — 2026-08-06
 
 ### Fixed
