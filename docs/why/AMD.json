@@ -1,27 +1,27 @@
 {
  "ticker": "AMD",
- "generated": "2026-09-02T01:20:52.344397+00:00",
+ "generated": "2026-09-04T02:10:54.446240+00:00",
  "label": "WEAKENING",
- "score": -0.1822,
+ "score": -0.0472,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1735,
+  "c1": -0.602,
   "c2": 0.0,
-  "c3": -0.6085859,
+  "c3": 0.60686815,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.4703634,
-  "c7": -0.059439816,
+  "c6": -0.48430312,
+  "c7": 0.13562645,
   "c8": 0.0,
-  "c9": -0.26666668
+  "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 96,
+  "ecs": 95,
   "events_90d": 90,
-  "recency_days": 5.1,
+  "recency_days": 7.2,
   "type_diversity": 4,
   "substrate_active": 1
  },
@@ -1029,6 +1029,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-01",
    "label": "WEAKENING"
   },
@@ -1139,14 +1147,6 @@
   {
    "date": "2026-07-24",
    "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMD --date D",

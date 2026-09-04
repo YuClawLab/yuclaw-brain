@@ -1,27 +1,27 @@
 {
  "ticker": "ARM",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "WEAKENING",
- "score": -0.0508,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "WATCH",
+ "score": 0.0801,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.1015,
+  "c1": -0.6765,
   "c2": 0.0,
-  "c3": -0.6085859,
+  "c3": 0.60686815,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.44423705,
-  "c7": -0.055492677,
+  "c6": -0.37283176,
+  "c7": 0.13105007,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 91,
   "events_90d": 22,
-  "recency_days": 1.1,
+  "recency_days": 3.2,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -459,6 +459,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-01",
    "label": "WEAKENING"
   },
@@ -569,14 +577,6 @@
   {
    "date": "2026-07-24",
    "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ARM --date D",

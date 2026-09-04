@@ -1,16 +1,16 @@
 {
  "ticker": "XLE",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "BULLISH",
- "score": 0.4302,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "WATCH",
+ "score": 0.0959,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4385,
+  "c1": 0.521,
   "c2": 0.0,
-  "c3": 0.78786993,
+  "c3": -0.79025453,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,14 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-01",
    "label": "BULLISH"
@@ -138,14 +146,6 @@
   {
    "date": "2026-07-24",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLE --date D",

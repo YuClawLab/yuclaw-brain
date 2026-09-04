@@ -1,27 +1,27 @@
 {
  "ticker": "AXP",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "WATCH",
- "score": 0.0948,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2279,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.1795,
+  "c1": -0.2435,
   "c2": 0.0,
-  "c3": -0.2870237,
+  "c3": 0.7354436,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.16078526,
-  "c7": 0.007848586,
+  "c6": -0.13227281,
+  "c7": -0.0066646673,
   "c8": 0.0,
   "c9": 0.4
  },
  "evidence_coverage": {
-  "ecs": 79,
+  "ecs": 78,
   "events_90d": 10,
-  "recency_days": 13.1,
+  "recency_days": 15.3,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -189,6 +189,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-09-01",
    "label": "WATCH"
   },
@@ -299,14 +307,6 @@
   {
    "date": "2026-07-24",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",

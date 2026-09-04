@@ -1,27 +1,27 @@
 {
  "ticker": "CVX",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "NEUTRAL",
- "score": 0.2473,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "WATCH",
+ "score": 0.0316,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.361,
+  "c1": 0.5495,
   "c2": 0.0,
-  "c3": 0.78786993,
+  "c3": -0.79025453,
   "c4": 0.6,
-  "c5": -0.002323912,
+  "c5": -0.45885494,
   "c6": -0.46211717,
-  "c7": 0.7098261,
+  "c7": 0.74068713,
   "c8": 0.0,
-  "c9": -0.05263158
+  "c9": -0.1
  },
  "evidence_coverage": {
-  "ecs": 79,
+  "ecs": 78,
   "events_90d": 22,
-  "recency_days": 12.1,
+  "recency_days": 14.2,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -569,6 +569,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-09-01",
    "label": "NEUTRAL"
   },
@@ -679,14 +687,6 @@
   {
    "date": "2026-07-24",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CVX --date D",

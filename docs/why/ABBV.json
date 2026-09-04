@@ -1,31 +1,41 @@
 {
  "ticker": "ABBV",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "NEUTRAL",
- "score": 0.252,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "WATCH",
+ "score": 0.1804,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.1805,
+  "c1": 0.3365,
   "c2": 0.0,
-  "c3": 0.5938274,
+  "c3": -0.2631663,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.24309932,
-  "c7": 0.30255705,
+  "c6": -0.20073368,
+  "c7": 0.41485056,
   "c8": 0.0,
-  "c9": 0.2631579
+  "c9": 0.3
  },
  "evidence_coverage": {
-  "ecs": 75,
-  "events_90d": 7,
-  "recency_days": 14.1,
+  "ecs": 87,
+  "events_90d": 8,
+  "recency_days": 0.7,
   "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-09-03",
+   "accession_number": "0001104659-26-104940",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock, $0.01 Par Value ABBV New York Stock Exchange",
+   "source_hash": "2d93639a59b9a9606adf5f8593ddba4e9aebf7349d610e272e61d2516d9479b3",
+   "available_as_of": "2026-09-03T02:47:46-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "INSIDER_SELL",
@@ -111,16 +121,6 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-03-03",
    "accession_number": "0001951400-26-000006",
-   "excerpt": "Siatis Perry C S 2600 shares @ $235.26 on 2026-03-02 ($611,676)",
-   "source_hash": "c3dbc6cadf3824d1bf2e5a76937246d2a76b8d5de59801586d9d24b1716ba8a0",
-   "available_as_of": "2026-03-03T16:10:12-07:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "ABBV",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-03-03",
-   "accession_number": "0001951400-26-000006",
    "excerpt": "Siatis Perry C S 5777 shares @ $233.51 on 2026-03-02 ($1,348,987)",
    "source_hash": "a7867d9fd5cd78724a78e56ad180c6e4ea1dc54084547a4c53affaf5b96121cc",
    "available_as_of": "2026-03-03T16:10:12-07:00",
@@ -139,6 +139,16 @@
   {
    "ticker": "ABBV",
    "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-03-03",
+   "accession_number": "0001951400-26-000006",
+   "excerpt": "Siatis Perry C S 2600 shares @ $235.26 on 2026-03-02 ($611,676)",
+   "source_hash": "c3dbc6cadf3824d1bf2e5a76937246d2a76b8d5de59801586d9d24b1716ba8a0",
+   "available_as_of": "2026-03-03T16:10:12-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "ABBV",
+   "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-02-27",
    "accession_number": "0001951400-26-000004",
    "excerpt": "Siatis Perry C S 22381 shares @ $230.00 on 2026-02-25 ($5,147,630)",
@@ -148,6 +158,14 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-01",
    "label": "NEUTRAL"
@@ -259,14 +277,6 @@
   {
    "date": "2026-07-24",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",

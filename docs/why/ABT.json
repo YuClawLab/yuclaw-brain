@@ -1,27 +1,27 @@
 {
  "ticker": "ABT",
- "generated": "2026-09-02T01:20:52.344397+00:00",
+ "generated": "2026-09-04T02:10:54.446240+00:00",
  "label": "WATCH",
- "score": 0.1817,
+ "score": 0.0718,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.153,
+  "c1": 0.158,
   "c2": 0.0,
-  "c3": 0.5938274,
+  "c3": -0.2631663,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.30575445,
+  "c7": 0.43300837,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 85,
   "events_90d": 7,
-  "recency_days": 5.1,
+  "recency_days": 7.2,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -179,6 +179,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-09-01",
    "label": "WATCH"
   },
@@ -289,14 +297,6 @@
   {
    "date": "2026-07-24",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABT --date D",

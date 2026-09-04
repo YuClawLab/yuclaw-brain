@@ -1,27 +1,27 @@
 {
  "ticker": "TMO",
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "NEUTRAL",
- "score": 0.2089,
+ "generated": "2026-09-04T02:10:54.446240+00:00",
+ "label": "WATCH",
+ "score": 0.1424,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.228,
+  "c1": 0.4755,
   "c2": 0.0,
-  "c3": 0.5938274,
+  "c3": -0.2631663,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.29701343,
+  "c7": 0.40039617,
   "c8": 0.0,
   "c9": 0.7
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 68,
-  "recency_days": 0.1,
+  "recency_days": 2.2,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -1029,6 +1029,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-03",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-09-01",
    "label": "NEUTRAL"
   },
@@ -1139,14 +1147,6 @@
   {
    "date": "2026-07-24",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "STRONG_BULLISH"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay TMO --date D",
