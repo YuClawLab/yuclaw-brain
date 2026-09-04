@@ -2,7 +2,9 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
-## [6.0.1] — 2026-09-05
+## [6.0.1] — 2026-09-04
+
+_Release date corrected to actual publish date (2026-09-04 10:07 UTC)._
 
 Research & education only. Not investment advice.
 
