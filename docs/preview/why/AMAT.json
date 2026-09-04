@@ -1,20 +1,20 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
  "components": {
-  "c1": -0.6485,
+  "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.6085859,
+  "c3": 0.60686815,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.69698447,
-  "c7": -0.08526973,
+  "c6": -0.60856986,
+  "c7": 0.11020629,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 90,
+  "ecs": 88,
   "events_90d": 36,
-  "recency_days": 5.1,
+  "recency_days": 7.1,
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -440,9 +440,17 @@
    "ticker": "AMAT"
   }
  ],
- "generated": "2026-09-02T01:20:52.344397+00:00",
- "label": "NEGATIVE_EVENT",
+ "generated": "2026-09-03T23:01:08.815648+00:00",
+ "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-09-03",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-02",
+   "label": "NEGATIVE_EVENT"
+  },
   {
    "date": "2026-09-01",
    "label": "NEGATIVE_EVENT"
@@ -554,14 +562,6 @@
   {
    "date": "2026-07-24",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-23",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-22",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -663,16 +663,16 @@
   }
  },
  "science_trust_meta": {
-  "anchor": "0774615d31345430ceacd09852e607089ec2b5d0e9d4b5c5e087bf8edcadffa0",
+  "anchor": "ac51ddfe97eb709a368f15f2aa6af9ab759ea4d319f48f45eeb121736d82d0c3",
   "derivation_protocol": "ad599b80d2db",
   "renderer_version": "1.0.0",
   "staged": true,
   "surface": "preview"
  },
- "score": -0.2476,
+ "score": -0.0777,
  "threshold_band": {
-  "ceiling": -0.2,
-  "floor": -0.4
+  "ceiling": 0.0,
+  "floor": -0.2
  },
  "ticker": "AMAT",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"
