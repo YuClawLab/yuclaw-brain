@@ -1,4 +1,18 @@
 {
-  "note": "Public replication log. Entries are added from GitHub issues filed with the 'Replication report' template (.github/ISSUE_TEMPLATE/replication.md), verbatim, pass and fail alike. Never edited retroactively.",
-  "replications": []
+  "note": "Public replication log. Entries are recorded verbatim — from GitHub issues filed with the 'Replication report' template (.github/ISSUE_TEMPLATE/replication.md) or from the project's own documented external-machine runs — pass and fail alike; every entry names its operator and affiliation. Never edited retroactively.",
+  "replications": [
+    {
+      "date": "2026-09-04",
+      "replication_machine_external": true,
+      "operator": "Claude — project drafter/verifier role",
+      "operator_affiliation": "AFFILIATED",
+      "unaffiliated_replications_to_date": 0,
+      "source": "fresh public clone of YuClawLab/yuclaw-brain at 57a52ec0",
+      "package": "yuclaw from PyPI, fresh venv",
+      "bundle": "docs/replay/lab_replay_bundle.json sha256 f431f9c629ac38b5… (built 2026-09-01, source 6a63cfb6, ledger e42dd233612a)",
+      "path": "documented manual bundle path (default make-replicate fetch of yuclawlab.github.io blocked by the operator's egress proxy, 403; tool printed the fallback, fallback used)",
+      "replication_result": "REPRODUCED",
+      "detail": "74 daily roots exact + 1 anchored-subset day, 6165 leaf hashes recomputed, all forward (n=70) and in-sample (n=13) statistics match"
+    }
+  ]
 }

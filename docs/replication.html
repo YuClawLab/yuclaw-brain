@@ -101,13 +101,27 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
 
     <div class="panel">
       <div class="panel-title">4 · Public replication log</div>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.7;margin-bottom:10px">
+        Entries are recorded verbatim — from filed replication issues, or from the project's own
+        documented external-machine runs — and every entry names its operator and affiliation.
+        Pass and fail alike; never edited retroactively. The disclosure line above the table is
+        derived from the entries: this log never states more independence than the entries record.
+      </p>
       
-      <div style="background:#10141C;border:1px dashed #2D3748;border-radius:8px;padding:16px 18px;
-                  font-size:12.5px;color:#A0AEC0;line-height:1.6">
-        <strong style="color:#E2E8F0">No external replications recorded yet; this log accrues as they
-        arrive.</strong> Entries are added verbatim from filed replication issues — pass and fail alike —
-        and are never edited retroactively.
-      </div>
+      <div style="background:#10141C;border:1px solid #2D3748;border-radius:8px;padding:12px 16px;margin-bottom:12px;
+                  font-size:12.5px;color:#E2E8F0;line-height:1.6"><strong>External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0</strong></div>
+      <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
+        <thead><tr>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Date</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Operator · affiliation</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Machine</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Source · package</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Bundle</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Path</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Result</th>
+          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Detail</th>
+        </tr></thead><tbody style="font-size:12px;color:#A0AEC0"><tr><td style='padding:8px 12px;vertical-align:top'>2026-09-04</td><td style='padding:8px 12px;vertical-align:top'>Claude — project drafter/verifier role · AFFILIATED</td><td style='padding:8px 12px;vertical-align:top'>external</td><td style='padding:8px 12px;vertical-align:top'>fresh public clone of YuClawLab/yuclaw-brain at 57a52ec0 · yuclaw from PyPI, fresh venv</td><td style='padding:8px 12px;vertical-align:top'><code>docs/replay/lab_replay_bundle.json sha256 f431f9c629ac38b5… (built 2026-09-01, source 6a63cfb6, ledger e42dd233612a)</code></td><td style='padding:8px 12px;vertical-align:top'>documented manual bundle path (default make-replicate fetch of yuclawlab.github.io blocked by the operator&#x27;s egress proxy, 403; tool printed the fallback, fallback used)</td><td style='padding:8px 12px;vertical-align:top;font-weight:700;color:#00E676'>REPRODUCED</td><td style='padding:8px 12px;vertical-align:top'>74 daily roots exact + 1 anchored-subset day, 6165 leaf hashes recomputed, all forward (n=70) and in-sample (n=13) statistics match</td></tr></tbody>
+      </table></div>
     </div>
 
     
@@ -125,12 +139,12 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     </div>
 
     <div class="footer">
-      YUCLAW Independent Replication · source commit <code>62468e7e7856</code> ·
+      YUCLAW Independent Replication · source commit <code>57a52ec08084</code> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 <div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 Ground Truth anatomy documents, and the per-day evidence-ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-01 (last completed U.S. trading day) · regenerated daily after market close</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-02 01:21 UTC · evidence-ledger root cdc048137a0f (block 2026-09-01)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-03 (last completed U.S. trading day) · regenerated daily after market close</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-04 02:05 UTC · evidence-ledger root 501adb8ec42e (block 2026-09-03)</footer>
 </body>
 </html>

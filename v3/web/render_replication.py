@@ -39,6 +39,76 @@ def _log_entries() -> list[dict]:
         return []
 
 
+_TH = ("padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;"
+       "color:#718096;border-bottom:1px solid #2D3748")
+_TD = "padding:8px 12px;vertical-align:top"
+_PASS = ("PASS", "REPRODUCED")
+
+
+def _result(e: dict) -> str:
+    return str(e.get("replication_result") or e.get("result") or "")
+
+
+def _passed(e: dict) -> bool:
+    return _result(e).upper().startswith(_PASS)
+
+
+def _disclosure(entries: list[dict]) -> str:
+    """Affiliation disclosure, derived from the entries — never typed.
+    Counts external-machine reproductions and unaffiliated entries; the
+    log never claims more independence than the entries record."""
+    ext = [e for e in entries if e.get("replication_machine_external") is True and _passed(e)]
+    unaff = sum(1 for e in entries
+                if str(e.get("operator_affiliation", "")).upper() == "UNAFFILIATED")
+    if not entries:
+        return "No replications recorded; unaffiliated replications: 0"
+    if ext and unaff == 0:
+        who = "an affiliated operator" if len(ext) == 1 else f"{len(ext)} affiliated operators"
+        return (f"External-machine reproduction completed by {who}; "
+                f"unaffiliated replications: 0")
+    return (f"External-machine reproductions: {len(ext)}; "
+            f"unaffiliated replications: {unaff}; entries: {len(entries)}")
+
+
+def _row_html(e: dict) -> str:
+    """One table row; accepts both the canonical field set (date,
+    replication_machine_external, operator, operator_affiliation, source,
+    package, bundle, path, replication_result, detail) and the older
+    issue-template fields (os, python, command, output_hash, result,
+    issue_url)."""
+    def c(v): return escape(str(v)) if v not in (None, "") else "—"
+    operator = e.get("operator") or ("issue report" if e.get("issue_url") else "")
+    who = c(operator)
+    if e.get("operator_affiliation"):
+        who += f" · {c(e['operator_affiliation'])}"
+    if e.get("replication_machine_external") is True:
+        machine = "external"
+    else:
+        machine = " · ".join(x for x in (e.get("os"), e.get("python")) if x) or "—"
+        machine = escape(machine)
+    source = " · ".join(x for x in (e.get("source"), e.get("package"), e.get("command")) if x)
+    bundle = e.get("bundle") or e.get("bundle_build_metadata") or ""
+    path = e.get("path") or ""
+    result = _result(e)
+    detail = e.get("detail") or e.get("notes") or ""
+    if e.get("output_hash"):
+        detail = (detail + " · " if detail else "") + f"output sha256 {str(e['output_hash'])[:16]}…"
+    if e.get("issue_url"):
+        detail = (detail + " · " if detail else "") + f"<a href='{escape(str(e['issue_url']))}'>issue</a>"
+        detail_html = detail
+    else:
+        detail_html = c(detail)
+    color = "#00E676" if _passed(e) else "#FF3366"
+    return (f"<tr><td style='{_TD}'>{c(e.get('date'))}</td>"
+            f"<td style='{_TD}'>{who}</td>"
+            f"<td style='{_TD}'>{machine}</td>"
+            f"<td style='{_TD}'>{c(source)}</td>"
+            f"<td style='{_TD}'><code>{c(bundle)}</code></td>"
+            f"<td style='{_TD}'>{c(path)}</td>"
+            f"<td style='{_TD};font-weight:700;color:{color}'>{c(result)}</td>"
+            f"<td style='{_TD}'>{detail_html}</td></tr>")
+
+
 def _commit() -> str:
     r = subprocess.run(["git", "rev-parse", "HEAD"], cwd=_REPO, capture_output=True, text=True)
     return r.stdout.strip()[:12] if r.returncode == 0 else "unknown"
@@ -48,28 +118,22 @@ def render() -> str:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     entries = _log_entries()
 
+    disclosure = _disclosure(entries)
     if entries:
-        rows = "".join(
-            f"<tr><td style='padding:8px 12px'>{escape(str(e.get('date','')))}</td>"
-            f"<td style='padding:8px 12px'>{escape(str(e.get('os','')))}</td>"
-            f"<td style='padding:8px 12px'>{escape(str(e.get('python','')))}</td>"
-            f"<td style='padding:8px 12px'><code>{escape(str(e.get('command','')))}</code></td>"
-            f"<td style='padding:8px 12px'><code>{escape(str(e.get('output_hash',''))[:16])}…</code></td>"
-            f"<td style='padding:8px 12px;font-weight:700;color:"
-            f"{'#00E676' if str(e.get('result','')).upper().startswith('PASS') else '#FF3366'}'>"
-            f"{escape(str(e.get('result','')))}</td>"
-            f"<td style='padding:8px 12px'><a href='{escape(str(e.get('issue_url','#')))}'>issue</a></td></tr>"
-            for e in entries)
+        rows = "".join(_row_html(e) for e in entries)
         log_html = f"""
+      <div style="background:#10141C;border:1px solid #2D3748;border-radius:8px;padding:12px 16px;margin-bottom:12px;
+                  font-size:12.5px;color:#E2E8F0;line-height:1.6"><strong>{escape(disclosure)}</strong></div>
       <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse">
         <thead><tr>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Date</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">OS</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Python</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Command</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Output hash</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Result</th>
-          <th style="padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;color:#718096;border-bottom:1px solid #2D3748">Source</th>
+          <th style="{_TH}">Date</th>
+          <th style="{_TH}">Operator · affiliation</th>
+          <th style="{_TH}">Machine</th>
+          <th style="{_TH}">Source · package</th>
+          <th style="{_TH}">Bundle</th>
+          <th style="{_TH}">Path</th>
+          <th style="{_TH}">Result</th>
+          <th style="{_TH}">Detail</th>
         </tr></thead><tbody style="font-size:12px;color:#A0AEC0">{rows}</tbody>
       </table></div>"""
     else:
@@ -163,6 +227,12 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
 
     <div class="panel">
       <div class="panel-title">4 · Public replication log</div>
+      <p style="font-size:12px;color:#A0AEC0;line-height:1.7;margin-bottom:10px">
+        Entries are recorded verbatim — from filed replication issues, or from the project's own
+        documented external-machine runs — and every entry names its operator and affiliation.
+        Pass and fail alike; never edited retroactively. The disclosure line above the table is
+        derived from the entries: this log never states more independence than the entries record.
+      </p>
       {log_html}
     </div>
 
