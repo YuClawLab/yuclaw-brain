@@ -78,6 +78,10 @@ DEFAULT_PATHS = [
     # extension) — previously checked by hand after copy orders
     "YUCLAW_User_Guide_v5.1.pdf",
     "YUCLAW_User_Guide_v5.1_source.html",
+    # versionless guide entry points (ORDER 2026-09-05B B1/B4) — the README
+    # and every page link these; the versioned files stay for old links
+    "YUCLAW_User_Guide.pdf",
+    "YUCLAW_Guide_Utilisateur_FR.pdf",
     # French edition (2026-08-03). The English edition + live pages are
     # canonical per the FR guide's own final disclaimer ("En cas de
     # divergence, l'édition anglaise et les pages en direct font foi").

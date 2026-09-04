@@ -38,6 +38,44 @@ COMMANDS: dict[str, str] = {
 }
 
 
+# One-line descriptions for `yuclaw --help` (ORDER 2026-09-05B D1). Every
+# command in COMMANDS has one; the help gate in the abuse matrix asserts it.
+DESCRIPTIONS: dict[str, str] = {
+    "why": "composite classification + ranked evidence with SEC source URLs for one ticker",
+    "memo": "evidence memo for a ticker — grounded, citation-verified, language-linted",
+    "cascade": "supply-chain cascade view for a ticker (deterministic, evidence-backed)",
+    "share": "share a research view (derived data only)",
+    "keys": "manage API keys for the REST server",
+    "demo": "3-minute guided offline journey — zero config, no backend",
+    "verify": "Verified Research Ledger integrity check for a ticker/date",
+    "replay-lab": "reproduce the Validation Lab from the public bundle (exit 0 = reproduced)",
+    "events": "accepted-events export (derived data only)",
+    "intake-check": "client-side pre-check of a signal CSV for Signal Review (never transmits)",
+    "check-claim": "Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)",
+    "lens": "lens summary-card data as JSON (the numbers the page renders)",
+    "export": "lens events export (--format csv|json; --page builds the evidence packet)",
+    "replay": "point-in-time classification for a ticker at end of a date",
+    "validation": "in-sample event validation + forward tracking ledger (text)",
+    "profile": "ticker profile (legacy v3 helper)",
+    "watch": "watch a ticker for new evidence (legacy v3 helper)",
+    "brief": "evidence brief (legacy v3 helper)",
+}
+EXIT_CODES = ("Exit codes: 0 = success · 1 = operation ran, negative result "
+              "(e.g. verify mismatch, replay-lab mismatch) · "
+              "2 = usage/validation error · 3 = environment unsupported")
+
+
+def help_text() -> str:
+    width = max(len(c) for c in COMMANDS)
+    lines = [f"yuclaw {_version()} — evidence-first financial research CLI "
+             f"(research and education only; not investment advice)",
+             "", "usage: yuclaw <command> [args]   ·   yuclaw <command> --help", "", "commands:"]
+    for name in sorted(COMMANDS):
+        lines.append(f"  {name.ljust(width)}  {DESCRIPTIONS.get(name, '')}")
+    lines += ["", EXIT_CODES]
+    return "\n".join(lines)
+
+
 def _resolve(spec: str):
     mod, attr = spec.split(":")
     return getattr(importlib.import_module(mod), attr)
@@ -57,16 +95,18 @@ def main(argv: list[str] | None = None) -> int:
     if argv and argv[0] in ("--version", "version", "-V"):
         print(f"yuclaw {_version()}")
         return 0
+    if argv and argv[0] in ("--help", "-h", "help"):
+        print(help_text())
+        return 0
     if not argv:
-        print(f"usage: yuclaw <command> [args]\ncommands: {', '.join(sorted(COMMANDS))}\n"
-              f"Exit codes: 0 = success · 1 = operation ran, negative result "
-              f"(e.g. verify mismatch, replay-lab mismatch) · "
-              f"2 = usage/validation error · 3 = environment unsupported",
+        print(f"usage: yuclaw <command> [args]   (yuclaw --help lists the commands)\n"
+              f"commands: {', '.join(sorted(COMMANDS))}\n{EXIT_CODES}",
               file=sys.stderr)
         return 2
     cmd, *rest = argv
     if cmd not in COMMANDS:
-        print(f"unknown command: {cmd}\ncommands: {', '.join(sorted(COMMANDS))}", file=sys.stderr)
+        print(f"unknown command: {cmd!r}\ncommands: {', '.join(sorted(COMMANDS))}\n"
+              f"(yuclaw --help lists them with one-line descriptions)", file=sys.stderr)
         return 2
     return _resolve(COMMANDS[cmd])(rest)
 

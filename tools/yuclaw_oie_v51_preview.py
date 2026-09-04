@@ -288,6 +288,7 @@ def geometry_html() -> str:
         <div class="tile"><div class="v">{g['n_stories']}</div><div class="k">stories (linked clusters)</div></div>
         <div class="tile"><div class="v">{g['n_eff_story']}</div><div class="k">effective evidence count</div></div>
       </div>
+      <p style="font-size:11px;color:#718096;margin:0 0 8px">Not the Phase-6 N_eff, which is PENDING.</p>
       <table>
         <thead><tr><th>Story size</th><th>Event mass</th><th>Dominant issuer</th><th>Dominant type</th><th>Span</th></tr></thead>
         <tbody>{t5}</tbody>

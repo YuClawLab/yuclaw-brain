@@ -413,9 +413,15 @@ def _panel_rows(state: dict, diffs: dict, prev: dict | None = None) -> str:
                                f"{_plural(f4['buys'] + f4['sells'], 'event', count=False)} across "
                                f"{_plural(f4['tickers'], 'ticker')}"),
         row("Failed-ingestion notes", fail_html),
-        row("Ledger root", f"block {escape(str(ledger.get('date')))} · "
-                           f"<code>{escape(str(ledger.get('root') or '')[:16])}…</code> · "
-                           f"{ledger.get('blocks', '—')} blocks total"),
+        # C2 identity guard (ORDER 2026-09-05B): this value is the Verified
+        # Research Ledger daily_root (yuclaw-trust/verified_research_ledger.jsonl,
+        # sha256 of the day's sorted content hashes joined by '|') — labeled
+        # "evidence-ledger root"; the footer's "daily evidence block root" is
+        # a different object (docs/ledger/{DATE}.json root_sha256).
+        row("Evidence-ledger root", f"block {escape(str(ledger.get('date')))} · "
+                                    f"<code>{escape(str(ledger.get('root') or '')[:16])}…</code> · "
+                                    f"{ledger.get('blocks', '—')} blocks total · Verified Research "
+                                    f"Ledger <code>daily_root</code> (yuclaw-trust)"),
         row("Replay status", f"<span style='color:{replay_color};font-weight:700'>"
                              f"{escape(replay['status'])}</span> — stdlib verifier vs the published bundle"),
     ])

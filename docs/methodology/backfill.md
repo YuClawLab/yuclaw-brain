@@ -1,6 +1,6 @@
 # Methodology — In-Sample Validation + Forward Tracking
 
-**Last updated:** 2026-05-20
+**Last updated:** 2026-09-05 (look-ahead statement reconciled; construction unchanged)
 
 This document describes how the two YUCLAW v3.0 panels are produced:
 
@@ -23,13 +23,33 @@ Why this window: the SEC EDGAR backfill that populates the `events` evidence lay
 
 ## 2. LLM look-ahead bias
 
-- **Model:** Llama 3.1 70B (served locally via Ollama as `yuclaw-llm-70b`).
-- **Training cutoff (per Meta model card):** December 2023.
-- **Backfill window vs cutoff:** the earliest backfill date (2026-02-18) is ~26 months *after* the training cutoff.
+<!-- LOOKAHEAD-CANONICAL BEGIN -->
+In-sample look-ahead statement. The in-sample replay rows (signal dates 2026-02-18
+to 2026-05-13, evidence window 2026-02-18 to 2026-05-17) were built from evidence
+events extracted by one language model, Meta Llama 3.1 70B Instruct (served
+locally as yuclaw-llm-70b), whose published pretraining cutoff is December 2023
+(Meta model card). Form 4 events in the window come from a deterministic XML
+parser with no language model. The earliest in-sample date is about 26 months
+after that cutoff, so no filing text in the window could have been seen in
+training: there is no parametric look-ahead from the filings themselves, and the
+model's general market knowledge also ends before the window begins. The replay
+engine flags any as-of date before 2024-07-01 as inside the model's training
+window; no in-sample date triggers it. In-sample results nonetheless remain a
+replay reconstruction, not a live record: the scoring design was finalized in May
+2026, after the window it is replayed over, market-layer components read
+approximated inputs, and no in-sample signal was exposed to external challenge in
+real time. In-sample results are therefore treated as systematically optimistic
+and educational only; the forward record (signal dates from 2026-05-20) is the
+look-ahead-free record.
+<!-- LOOKAHEAD-CANONICAL END -->
 
-Therefore the LLM cannot have parametric look-ahead into any event in the backfill — none of the 2026 filings existed when it was trained. This rules out the most common look-ahead failure mode in LLM-driven validation runs.
-
-The Replay engine adds a secondary safeguard: any `as_of` earlier than 2024-07-01 is flagged with an "in LLM training window" warning. The current backfill window does not trigger this flag.
+Retained records behind this statement: every `events` row carries `llm_model`
+(all language-model rows inside the window are `yuclaw-llm-70b`); the local model
+manifest for that tag resolves to the Meta Llama 3.1 70B Instruct weights; the
+published cutoff is from Meta's model card. The statement above is the single
+canonical text (`docs/methodology/lookahead_statement.txt`); every surface embeds
+it verbatim between fixed markers and the copy-consistency release gate checks
+each copy byte-for-byte.
 
 ---
 

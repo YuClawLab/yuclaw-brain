@@ -192,6 +192,7 @@ def render() -> str:
     <div class="panel">
       <div class="panel-title">Evidence structure</div>
       <div class="panel-sub">story clustering (pre-committed linkage) · effective evidence count</div>
+      <p style="font-size:11px;color:#718096;margin:0 0 8px">Not the Phase-6 N_eff, which is PENDING.</p>
       <p style="font-size:12px;color:#A0AEC0">{geo['n_events']} events → {geo['n_stories']} stories →
         <strong style="color:#E2E8F0">{geo['n_eff_story']} effective</strong> (design effect {geo['deff_story']};
         issuer-level {geo['n_eff_issuer']}). Top story {geo['top_story_share_pct']}% of event mass.

@@ -27,9 +27,26 @@ OUT = _REPO / "docs" / "methodology.html"
 
 def main() -> int:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    # Canonical copy block (ORDER 2026-09-05B PART A / G1): the marker-
+    # delimited look-ahead statement passes through VERBATIM — markdown
+    # never rewraps or escapes it — so the rendered page carries the same
+    # bytes as backfill.md and the canonical file, and the copy-
+    # consistency gate can extract it between the same markers.
+    import re as _re
+    src = SRC.read_text()
+    BEGIN, END = "<!-- LOOKAHEAD-CANONICAL BEGIN -->", "<!-- LOOKAHEAD-CANONICAL END -->"
+    m = _re.search(_re.escape(BEGIN) + r"\n(.*?)\n" + _re.escape(END), src, _re.S)
+    if not m:
+        raise SystemExit("render_methodology: LOOKAHEAD canonical markers missing in backfill.md")
+    token = "@@LOOKAHEAD-CANONICAL-BLOCK@@"
+    src = src[:m.start()] + token + src[m.end():]
     body = markdown.markdown(
-        SRC.read_text(),
+        src,
         extensions=["tables", "attr_list", "fenced_code", "toc"])
+    wrapped = f'<p class="canonical">{BEGIN}\n{m.group(1)}\n{END}</p>'
+    if body.count(f"<p>{token}</p>") != 1:
+        raise SystemExit("render_methodology: canonical placeholder did not render as one paragraph")
+    body = body.replace(f"<p>{token}</p>", wrapped)
     header = site_header_html(subtitle="Methodology",
                               active="methodology.html")
     OUT.write_text(f"""<!DOCTYPE html>

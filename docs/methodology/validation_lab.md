@@ -82,10 +82,29 @@ The two panels are **never blended into one curve**:
 1. **Forward (Out-of-Sample)** — `is_backfill = FALSE`, **Day 0 = 2026-05-18**.
    The honest, look-ahead-free panel; it leads the page.
 2. **In-Sample Replay** — `is_backfill = TRUE`. **Look-ahead disclosure:** the
-   evidence-extraction model (local Llama) has a training cutoff that overlaps
-   the in-sample window, so in-sample signals carry an unavoidable parametric
-   look-ahead bias (the same disclosure as the backfill methodology). In-sample
-   results are a *replay*, not a forecast, and systematically optimistic.
+   canonical look-ahead statement below (identical on every surface, checked by
+   the copy-consistency gate). In-sample results are a *replay*, not a forecast,
+   and systematically optimistic.
+
+<!-- LOOKAHEAD-CANONICAL BEGIN -->
+In-sample look-ahead statement. The in-sample replay rows (signal dates 2026-02-18
+to 2026-05-13, evidence window 2026-02-18 to 2026-05-17) were built from evidence
+events extracted by one language model, Meta Llama 3.1 70B Instruct (served
+locally as yuclaw-llm-70b), whose published pretraining cutoff is December 2023
+(Meta model card). Form 4 events in the window come from a deterministic XML
+parser with no language model. The earliest in-sample date is about 26 months
+after that cutoff, so no filing text in the window could have been seen in
+training: there is no parametric look-ahead from the filings themselves, and the
+model's general market knowledge also ends before the window begins. The replay
+engine flags any as-of date before 2024-07-01 as inside the model's training
+window; no in-sample date triggers it. In-sample results nonetheless remain a
+replay reconstruction, not a live record: the scoring design was finalized in May
+2026, after the window it is replayed over, market-layer components read
+approximated inputs, and no in-sample signal was exposed to external challenge in
+real time. In-sample results are therefore treated as systematically optimistic
+and educational only; the forward record (signal dates from 2026-05-20) is the
+look-ahead-free record.
+<!-- LOOKAHEAD-CANONICAL END -->
 
 ## Metrics shown
 

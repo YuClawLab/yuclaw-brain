@@ -203,6 +203,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     <div class="disclaimer-line">
       <strong>Disclaimer —</strong> Research &amp; education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations.
     </div>
+    <p class="provenance-line" style="font-size:11.5px;color:#718096;margin:-12px 0 22px;line-height:1.5">Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.</p>
 
     <div class="card">
       <div class="card-title">Current signals — Forward Tracking Ledger</div>
@@ -323,8 +324,8 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       <a href="tour.html">🚀 5-minute tour</a> ·
       <a href="for_ai_builders.html">🤖 For AI builders</a> ·
       <a href="evidencebench.html">📐 EvidenceBench</a> ·
-      <a href="YUCLAW_User_Guide_v5.1.pdf">📖 User Guide (PDF)</a> ·
-      <a href="YUCLAW_Guide_Utilisateur_v5.1_FR.pdf">📖 Guide de l'utilisateur (FR)</a> ·
+      <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
+      <a href="YUCLAW_Guide_Utilisateur_FR.pdf">📖 Guide de l'utilisateur (FR)</a> ·
       <a href="methodology/backfill.md">Methodology</a> ·
       <a href="replication.html">Replication</a> ·
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·

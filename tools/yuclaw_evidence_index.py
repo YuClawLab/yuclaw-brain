@@ -20,7 +20,10 @@ for p in (str(_REPO), str(_REPO / "tools")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
-BASE = "https://yuclawlab.github.io/yuclaw-brain"
+MANIFEST = _REPO / "release_manifest.json"
+_M = json.loads(MANIFEST.read_text())
+BASE = _M["public_base_url"].rstrip("/")     # canonical base URL (ORDER 2026-09-05B C5/G3): never github.io
+VERSION = _M["version"]
 OUT = _REPO / "docs" / "evidence_index.json"
 
 PAGES = {
@@ -95,8 +98,16 @@ def main() -> int:
                  "is investment advice; classifications are not "
                  "recommendations."),
         "generated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "version": f"v{VERSION}",
         "base_url": BASE,
         "llms_txt": f"{BASE}/llms.txt",
+        "capabilities": f"{BASE}/capabilities.json",
+        # every v6 machine surface, generated from release_manifest.json
+        "machine_surfaces": [{"key": e["key"], "url": f"{BASE}{e['path']}", "kind": e["kind"],
+                              "content_type": e["content_type"], "what": e["what"],
+                              **({"discovery_rule": e["discovery_rule"]} if "discovery_rule" in e else {}),
+                              **({"members": e["members"]} if "members" in e else {})}
+                             for e in _M["machine_surfaces"]],
         "locked_vocabulary": ["STRONG_BULLISH", "BULLISH", "NEUTRAL", "WATCH",
                               "WEAKENING", "NEGATIVE_EVENT", "BEARISH_WATCH",
                               "RISK_ALERT"],
@@ -112,8 +123,7 @@ def main() -> int:
                     for k, v in packets.items() if isinstance(v, dict)},
         "replay_bundle": f"{BASE}/replay/lab_replay_bundle.json",
         "schemas": {n: f"{BASE}/schemas/{n}.v1.json" for n in
-                    ("SignalSnapshot", "EvidenceEvent", "ResearchProtocol",
-                     "RobustnessCell", "ResearchMemo")},
+                    next(e for e in _M["machine_surfaces"] if e["key"] == "schemas")["members"]},
         "registry": {"where": "registry/protocols.jsonl in "
                               "github.com/YuClawLab/yuclaw-brain "
                               "(hash-chained, append-only)",
@@ -131,6 +141,22 @@ def main() -> int:
     # same PAGES dict every build so the machine surface can never lag.
     lp = _REPO / "docs" / "llms.txt"
     txt = lp.read_text()
+    # Release block (ORDER 2026-09-05B C5): declared version, canonical base
+    # URL and the complete machine-surface inventory, generated from
+    # release_manifest.json between fixed markers; the release gates parse it.
+    RS, RE_ = "## Release (auto-generated from release_manifest.json — do not hand-edit)", "## What you are reading"
+    rel = [RS, "", f"- Version: yuclaw {VERSION}", f"- Canonical base URL: {BASE}",
+           f"- Discovery: {BASE}/capabilities.json · index: {BASE}/evidence_index.json",
+           "- Machine surfaces (kind · content type):"]
+    for e in _M["machine_surfaces"]:
+        extra = f" — discovery: {e['discovery_rule']}" if e.get("discovery_rule") else ""
+        rel.append(f"  - {e['path']} · {e['kind']} · {e['content_type']}{extra}")
+    rel += ["", RE_]
+    import re as _re0
+    if RS in txt:
+        txt = _re0.sub(_re0.escape(RS) + r".*?" + _re0.escape(RE_), "\n".join(rel), txt, flags=_re0.S)
+    else:
+        txt = txt.replace(RE_, "\n".join(rel), 1)
     START = "## Pages (auto-generated from the evidence index — do not hand-edit)"
     END = "## How to cite"
     lines = [START, ""]

@@ -336,9 +336,17 @@ def render() -> str:
                        for t in data["lenses"][lens]["posture"]["holdings"]})
 
     # §24 intro block numbers — all queried, none typed.
-    from v3.universe_tiers import evidence_tier_tickers, scoring_universe
+    from v3.universe_tiers import evidence_tier_records, evidence_tier_tickers, scoring_universe
     n_evidence = len(evidence_tier_tickers())
     n_scoring = len(scoring_universe())
+    # C1 (ORDER 2026-09-05B): the evidence tier is larger than this page —
+    # name its composition so "53" never reads as a Canada count. Derived
+    # from universe.json coverage_vertical, never typed.
+    _recs = evidence_tier_records()
+    n_canada = sum(1 for r in _recs if r.get("coverage_vertical") == "canada_resources")
+    _foreign = sorted(r["ticker"] for r in _recs if r.get("coverage_vertical") == "smh_foreign")
+    n_foreign = len(_foreign)
+    foreign_list = ", ".join(_foreign)
     covs = [data["lenses"][lens]["posture"]["sec_filer_weight_pct"]
             for lens in CANADA_LENS_KEYS]
     min_coverage, max_coverage = min(covs), max(covs)
@@ -437,9 +445,10 @@ def render() -> str:
       resource lenses: XEG, ZEO, GDX and URNM. YUCLAW tracks filings, extracts material evidence,
       classifies events, measures coverage and follows event outcomes as their forward windows mature.
       Every accepted event links to a primary filing and can be reproduced from the published evidence
-      bundle. These {n_evidence} issuers belong to an evidence-only research tier. They are not included
-      in YUCLAW's {n_scoring}-ticker scoring universe, are not ranked and do not affect the existing
-      forward record. Current research status: filing-weight coverage ranges from {min_coverage:.0f}%
+      bundle. The evidence tier holds {n_evidence} issuers: the {n_canada} Canada Resources issuers on this
+      page plus {n_foreign} SMH-lens foreign filers ({escape(foreign_list)}). All of them belong to an
+      evidence-only research tier: they are not included in YUCLAW's {n_scoring}-ticker scoring universe,
+      are not ranked and do not affect the existing forward record. Current research status: filing-weight coverage ranges from {min_coverage:.0f}%
       to {max_coverage:.0f}%; peer-adjusted event results do not yet establish a reliable return
       advantage; Form 4 evidence covers only eligible US domestic issuers; C6 sign confirmation is
       accruing — direction is not yet established; all statistics, source links and evidence-ledger roots are

@@ -99,27 +99,33 @@ def _pkg_version() -> str:
     return pv()
 
 
+def _release_manifest() -> dict:
+    """release_manifest.json at the repo root — the single source for the
+    public version, canonical base URL and machine-endpoint inventory
+    (ORDER 2026-09-05B C4/C5/G2-G4). Its version must equal the package
+    version; a mismatch is a build failure, never a silent skew."""
+    m = json.loads((_REPO / "release_manifest.json").read_text())
+    if m["version"] != _pkg_version():
+        raise SystemExit(f"release_manifest.version {m['version']} != package "
+                         f"version {_pkg_version()} — fix one, never publish both")
+    return m
+
+
 def build_endpoints() -> None:
-    base = "https://yuclaw.ca"
+    m = _release_manifest()
+    base = m["public_base_url"].rstrip("/")
+    endpoints = {e["key"]: f"{base}{e['path']}" for e in m["machine_surfaces"]}
     (_REPO / "docs" / "capabilities.json").write_text(json.dumps({
-        "name": "YUCLAW Ground Truth API",
-        "version": f"v{_pkg_version()}", "generated":
+        "name": m["api_name"],
+        "former_name": m["api_former_name"],
+        "version": f"v{m['version']}", "generated":
             datetime.now(timezone.utc).isoformat(),
+        "base_url": base,
         "positioning": "The open evidence layer for financial AI.",
-        "endpoints": {
-            "discovery": f"{base}/capabilities.json",
-            "index": f"{base}/evidence_index.json",
-            "llms": f"{base}/llms.txt",
-            "why_json": f"{base}/why/{{TICKER}}.json",
-            "why_html": f"{base}/why/{{TICKER}}.html",
-            "explorer_data": f"{base}/explorer_data.json",
-            "schemas": f"{base}/schemas/{{Name}}.v1.json",
-            "verify": f"{base}/evidence/verify.json",
-            "ledger_day": f"{base}/ledger/{{YYYY-MM-DD}}.json",
-            "evidencebench": f"{base}/evidencebench/items.jsonl",
-            "c6_posture_current": f"{base}/c6_posture_current.json",
-            "evidence_changes_day": f"{base}/evidence_changes/{{YYYY-MM-DD}}.json",
-        },
+        "endpoints": endpoints,
+        "endpoint_kinds": {e["key"]: e["kind"] for e in m["machine_surfaces"]},
+        "wildcard_discovery": {e["key"]: e["discovery_rule"] for e in m["machine_surfaces"]
+                               if e["kind"] == "wildcard_family"},
         "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is "
                          "uppercase (why/NVDA.json — why/nvda.json is a "
                          "404); the CLI uppercases ticker arguments for "
@@ -131,8 +137,10 @@ def build_endpoints() -> None:
                              "item-set hash and scoring rule",
         },
         "cli": {"install": "pip install yuclaw",
+                "help": "yuclaw --help",
                 "check_claim": "yuclaw check-claim --ticker X --type T "
-                               "--date-range A..B  (or --text '...')",
+                               "--date-range A..B  (or --text '...', or "
+                               "--accession N alone when the accession maps to one name)",
                 "replay": "yuclaw replay TICKER --date D",
                 "reproduce": "yuclaw replay-lab"},
         "as_of_recipe": ("evidence as of D = evidence_objects with "

@@ -92,7 +92,11 @@ fi
 # Language rail (pages mode): regenerated prose must stay inside the locked
 # public vocabulary. Hard gate before anything is committed — same contract
 # as the deploy-verify gate below (nonzero exit aborts the chain).
-/usr/bin/python3 tools/check_language.py --pages docs/*.html README.md COMPARISON.md || exit 16
+/usr/bin/python3 tools/check_language.py --pages docs/*.html README.md COMPARISON.md CHANGELOG.md || exit 16
+# ORDER 2026-09-05B: generated replication sentence + copy-consistency (G1) + release-manifest gates (G2/G3/G4, local)
+/usr/bin/python3 tools/yuclaw_replication_sentence.py --check || exit 61
+/usr/bin/python3 tools/check_copy_consistency.py || exit 62
+/usr/bin/python3 tools/check_release_manifest.py || exit 63
 # Copy-integrity rail (2026-07-22): clipped decimals, unclosed parens,
 # cut-off paragraphs, dead local links — same hard-gate contract.
 /usr/bin/python3 tools/check_copy_integrity.py docs/*.html || exit 18

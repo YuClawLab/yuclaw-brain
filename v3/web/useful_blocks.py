@@ -38,6 +38,42 @@ def _pkg_version() -> str:
 
 VERSION = f"v{_pkg_version()}"
 
+# ---------------------------------------------------------------------------
+# Canonical copy blocks (ORDER 2026-09-05B PART A / G1). ONE named source
+# file per block; every surface embeds the bytes verbatim between fixed
+# BEGIN/END markers and tools/check_copy_consistency.py asserts
+# sha256(target block) == sha256(canonical block). Blocks are plain text:
+# UTF-8, LF, no HTML tags, no characters that would need HTML escaping.
+_CANONICAL_DIR = Path(__file__).resolve().parents[2] / "docs"
+CANONICAL_BLOCKS = {
+    "LOOKAHEAD": _CANONICAL_DIR / "methodology" / "lookahead_statement.txt",
+    "REPLICATION-SENTENCE": _CANONICAL_DIR / "replication" / "replication_sentence.txt",
+}
+
+
+def canonical_marker(name: str, which: str) -> str:
+    """The fixed marker line: <!-- NAME-CANONICAL BEGIN|END -->."""
+    assert which in ("BEGIN", "END")
+    return f"<!-- {name}-CANONICAL {which} -->"
+
+
+def canonical_block(name: str) -> str:
+    """The canonical text of `name` (trailing newline stripped), refusing
+    anything that is not plain LF text free of HTML-significant bytes."""
+    import re as _re
+    text = CANONICAL_BLOCKS[name].read_text(encoding="utf-8")
+    if "\r" in text or _re.search(r"[&<>]", text):
+        raise ValueError(f"canonical block {name}: CR or HTML-significant byte present")
+    return text.rstrip("\n")
+
+
+def canonical_html(name: str, open_tag: str, close_tag: str) -> str:
+    """The block embedded verbatim between its markers, wrapped in the
+    caller's open/close tags (the markers are HTML comments; the text
+    between them is byte-identical to the canonical file)."""
+    return (f"{open_tag}{canonical_marker(name, 'BEGIN')}\n{canonical_block(name)}\n"
+            f"{canonical_marker(name, 'END')}{close_tag}")
+
 # Locked public signal vocabulary — the ONLY signal labels any public page may
 # render (mirrors the homepage "Public signal vocabulary" legend). Pages render
 # these verbatim; display-layer remaps that invent labels outside this set
@@ -135,13 +171,19 @@ def footer_stamp_html(stamp: str) -> str:
 
 
 def build_footer() -> str:
-    """The demoted raw build timestamp + evidence-ledger root, small mono,
-    for auditors' ledger cross-reference. The ONLY place a raw build UTC
-    timestamp may appear (site-walk enforces this). Label names the exact
-    cryptographic object (ORDER 2026-09-02A B3-ii): root_sha256 of the
-    latest docs/ledger/{DATE}.json daily block, dated — never the registry
-    chain head, which is a different object and must never share this
-    label (consumer-posture gate enforces the separation)."""
+    """The demoted raw build timestamp + daily evidence block root, small
+    mono, for auditors' ledger cross-reference. The ONLY place a raw build
+    UTC timestamp may appear (site-walk enforces this). Label names the
+    exact cryptographic object (ORDER 2026-09-02A B3-ii, relabeled under
+    the 2026-09-05B C2 identity guard): field root_sha256 of the latest
+    docs/ledger/{DATE}.json daily evidence block = sha256 over the
+    sorted-keys JSON dump of that day's entries (producer
+    v3/web/render_why_json.build_endpoints). It is a DIFFERENT object from
+    the Verified Research Ledger daily_root (yuclaw-trust; sha256 of the
+    sorted content hashes joined by '|'), which pages label
+    "evidence-ledger root", and from the registry chain head. Two distinct
+    cryptographic objects never share a visible label (consumer-posture
+    gate P5 enforces all three separations)."""
     from datetime import datetime, timezone
     root, block_date = "n/a", ""
     try:
@@ -157,7 +199,7 @@ def build_footer() -> str:
             f'Mono\',monospace;font-size:10px;color:#4A5568;'
             f'margin:18px 0 6px">build '
             f'{datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")} UTC · '
-            f'evidence-ledger root {root} (block {block_date})</footer>')
+            f'daily evidence block root {root} (block {block_date})</footer>')
 
 
 def site_header_html(subtitle: str = "", active: str = "") -> str:
@@ -276,9 +318,9 @@ def use_in_research_html(packet_href: str | None = None,
     guide_link: landing only — adds the User Guide (PDF) line to the block."""
     cite_href = packet_href or "validation_lab.html#evidence-packet"
     guide = ('<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
-             '<a href="YUCLAW_User_Guide_v5.1.pdf">\U0001F4D6 User Guide (PDF)</a>'
+             '<a href="YUCLAW_User_Guide.pdf">\U0001F4D6 User Guide (PDF)</a>'
              ' — from pip install to full verification, six pages. · '
-             '<a href="YUCLAW_Guide_Utilisateur_v5.1_FR.pdf">\U0001F4D6 '
+             '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">\U0001F4D6 '
              "Guide de l'utilisateur (FR)</a></p>"
              ) if guide_link else ""
     return f"""

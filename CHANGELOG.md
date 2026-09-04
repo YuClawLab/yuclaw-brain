@@ -12,7 +12,7 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 #### Shipped objects — name · receipt · status
 
-- Layered Evidence Dependency v1, first read · chain lines 81–82, sha256 0b2ac8a5967b13aa… · STRUCTURE_PRINTED — structural_completeness = PARTIAL; N_eff PENDING; READ_SCOPE = STRUCTURAL_ONLY (chain 81–82)
+- Layered Evidence Dependency v1, first read · chain lines 81–82, sha256 0b2ac8a5967b13aa… · STRUCTURE_PRINTED — structural_completeness = PARTIAL; N_eff PENDING (the Phase-6 pooled-statistic N_eff — not the lens pages' effective evidence count); READ_SCOPE = STRUCTURAL_ONLY (chain 81–82)
 - Science Trust surfaces — per-name research-state cards + machine JSON, 132 names · anchor ac51ddfe97eb… · gate GREEN (machine JSON equals the human card, byte-reproducible); staged preview, not linked from the live navigation
 - Research states · sha256 0163fe63f72bb13f… · 132 names: INSUFFICIENT_EVIDENCE 132 — derived, never hand-maintained
 - Discovery Ledger · sha256 4951bd6ade88722a… · 37 hypotheses in bijection with 37 registered protocol lines; status counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4 — negative and inconclusive findings preserved
@@ -28,7 +28,7 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 #### Not in this release
 
-- N_eff PENDING
+- N_eff PENDING (the Phase-6 pooled-statistic N_eff — not the lens pages' effective evidence count)
 - Phase-5 contribution anatomy NOT YET
 - user-comprehension study NOT YET
 - unaffiliated replications 0
@@ -42,7 +42,7 @@ Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — wit
 ### Fixed
 
 - **Passport status semantics**: `PARTIAL_MATCH` now requires at least
-  one matched EvidenceObject (with some claim elements unmatched). A
+  one matched EvidenceObject (with some claim elements not matched). A
   claim that matches ZERO objects is `UNSUPPORTED` — the caption is
   unchanged: "not found in YUCLAW's corpus — never a truth verdict".
   The trigger was the empty-corpus-name case (DIA-style: a universe

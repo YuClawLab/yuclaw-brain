@@ -17,7 +17,16 @@ against YUCLAW's evidence corpus. Statuses are the mechanical five:
                    is never called unsupported)
 
 Structured mode is exact: --ticker X --type T --date-range A..B
-[--accession N]. Text mode (--text "...") is CONSERVATIVE keyword/type
+[--accession N]. Accession-only mode (--accession N, no --ticker; v6.0.1,
+ORDER 2026-09-05B D2): the accession is normalized with the SAME rule the
+text parser uses (10-2-6 digits, dashed), then looked up in the SAME
+canonical corpus the ticker+accession path queries, one scoring-universe
+name at a time — no new matching logic. Exactly one name -> the existing
+ticker+accession path runs unchanged (payload identical except the
+input echo); zero -> the existing UNSUPPORTED outcome ("not found in
+YUCLAW's corpus — never a truth verdict", exit 0); more than one ->
+exit 2 with the deterministic sorted candidates and
+"--accession requires --ticker when ambiguous". Never a bare usage dump. Text mode (--text "...") is CONSERVATIVE keyword/type
 matching — it only structures a claim when it finds an unambiguous
 ticker plus either a known event-type keyword or an accession number;
 anything less is NOT_PARSEABLE. Limits: no numeric-magnitude checking,
@@ -118,6 +127,27 @@ def _parse_text(text: str, universe: set) -> dict | None:
             "type": types[0] if types else None,
             "accession": "-".join(acc.groups()) if acc else None,
             "date_range": None}
+
+
+def normalize_accession(raw: str) -> str | None:
+    """The existing canonical accession normalization (the text parser's
+    rule, applied to the whole argument): 10-2-6 digits, dashes optional
+    on input, dashed on output. Anything else -> None (malformed)."""
+    m = _ACC_TEXT_RE.fullmatch((raw or "").strip())
+    return "-".join(m.groups()) if m else None
+
+
+def resolve_accession(acc: str, universe: set) -> tuple[list, dict | None]:
+    """Names whose corpus objects carry `acc` — searching ONLY the same
+    canonical corpus the ticker+accession path queries (_corpus, name by
+    name over the scoring universe). Returns (sorted tickers, corpus
+    scope block of the last lookup — None on a research node)."""
+    hits, scope = [], None
+    for t in sorted(universe):
+        objs, scope = _corpus(t)
+        if any(o.get("accession_number") == acc for o in objs):
+            hits.append(t)
+    return sorted(hits), scope
 
 
 def _match(claim: dict, objs: list) -> tuple[str, list, list]:
@@ -224,7 +254,16 @@ def main(argv=None) -> int:
     p.add_argument("--text", help="free-text claim (conservative parse)")
     a = p.parse_args(argv)
 
-    if not a.text and not a.ticker:
+    if not a.text and not a.ticker and a.accession:
+        acc = normalize_accession(a.accession)
+        if acc is None:
+            print(f"--accession {a.accession!r} is not an SEC accession number "
+                  f"(expected 10 digits-2 digits-6 digits, e.g. 0001045810-26-000019)",
+                  file=sys.stderr)
+            return 2
+        a.accession = acc
+        # resolved below, after the universe loads (needs the corpus)
+    elif not a.text and not a.ticker:
         p.print_help()
         return 2
     if a.type and a.type.upper() not in VALID_TYPES:
@@ -239,8 +278,42 @@ def main(argv=None) -> int:
               f"({type(exc).__name__}) — is this a full checkout/install?",
               file=sys.stderr)
         return 3
+    claim_raw = None
+    if not a.text and not a.ticker and a.accession:
+        try:
+            hits, scope = resolve_accession(a.accession, uni)
+        except CorpusUnavailable:
+            print(f"corpus matching needs a YUCLAW research node — but this "
+                  f"evidence is publicly checkable at "
+                  f"https://yuclaw.ca/why/{{TICKER}}.json (see "
+                  f"'evidence_objects'; the as-of recipe is in "
+                  f"capabilities.json)", file=sys.stderr)
+            return 3
+        if len(hits) > 1:
+            print(f"--accession requires --ticker when ambiguous\n"
+                  f"accession {a.accession} appears under {len(hits)} covered names: "
+                  f"{', '.join(hits)}\nre-run with --ticker <one of them> --accession "
+                  f"{a.accession}", file=sys.stderr)
+            return 2
+        if not hits:
+            doc = {"claim_as_given": json.dumps({"accession": a.accession}),
+                   "claim_as_parsed": {"ticker": None, "type": None,
+                                       "accession": a.accession, "date_range": None},
+                   "generated": datetime.now(timezone.utc).isoformat(),
+                   "status": "UNSUPPORTED", "matched_evidence": [],
+                   "misses": [f"accession {a.accession} not in corpus for any "
+                              f"covered name"],
+                   "replay": f"yuclaw check-claim --accession {a.accession}",
+                   "not_advice": NOT_ADVICE,
+                   "note": "not found in YUCLAW's corpus — never a truth verdict"}
+            if scope is not None:
+                doc["corpus"] = scope
+            print(json.dumps(doc, indent=1))
+            return 0
+        a.ticker = hits[0]                       # exactly one: the existing path
+        claim_raw = json.dumps({"accession": a.accession})
     try:
-        doc = _run(a, uni)
+        doc = _run(a, uni, claim_raw)
     except CorpusUnavailable as exc:
         print(f"corpus matching needs a YUCLAW research node — but this "
               f"evidence is publicly checkable at "
@@ -254,8 +327,11 @@ def main(argv=None) -> int:
     return 0
 
 
-def _run(a, uni: set) -> dict | None:
-    """Build the passport for parsed args; None → usage error (exit 2)."""
+def _run(a, uni: set, claim_raw: str | None = None) -> dict | None:
+    """Build the passport for parsed args; None → usage error (exit 2).
+    claim_raw: the input echo (claim_as_given) — the accession-only path
+    passes what the user typed so the payload differs from the explicit
+    ticker+accession path ONLY in input-echo metadata."""
     if a.text:
         claim = _parse_text(a.text, uni)
         ok = claim is not None and claim["ticker"] in uni
@@ -278,7 +354,7 @@ def _run(a, uni: set) -> dict | None:
     claim = {"ticker": a.ticker.upper(),
              "type": a.type.upper() if a.type else None,
              "accession": a.accession, "date_range": dr}
-    return passport(json.dumps(
+    return passport(claim_raw if claim_raw is not None else json.dumps(
         {k: v for k, v in claim.items() if v}), claim,
         claim["ticker"] in uni)
 

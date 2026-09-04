@@ -25,7 +25,7 @@ from v3.lab.cohort_engine import (DSN, FORWARD_DAY0, MIN_UNIVERSE_FOR_DECILES,
                                   compute_all, current_top_decile)
 from v3.lab.qualified import compute_qualified
 from v3.lab.rigor import compute_rigor
-from v3.web.useful_blocks import (freshness_strip, build_footer, site_header_html,
+from v3.web.useful_blocks import (freshness_strip, build_footer, site_header_html, canonical_html,
                                   packet_block_from_manifest as _packet_block,
                                   public_label as display_label,
                                   status_block_html as _shared_status_block,
@@ -397,7 +397,7 @@ def rigor_panel_html(rig: dict) -> str:
     """Panel 3 — statistical rigor. Every number carries its n and window."""
     PANEL_META = {
         "forward": ("Forward OOS", "#00E676", "look-ahead-free"),
-        "in_sample": ("In-Sample Replay", "#FBA94B", "parametric look-ahead — optimistic"),
+        "in_sample": ("In-Sample Replay", "#FBA94B", "replay reconstruction — optimistic"),
     }
     SPREAD_LABEL = {"top_minus_bottom": "Top − Bottom decile",
                     "top_minus_universe": "Top decile − EW universe"}
@@ -560,7 +560,7 @@ def innovation_panel_html(ledger: dict, c6: dict) -> str:
     c6i = c6.get("in_sample")
     rows = [
         ("Git-anchored replayable ledger",
-         f"{ledger.get('blocks', '—')} daily blocks · latest root {escape((ledger.get('root') or '')[:12])}… ({escape(ledger.get('date') or '—')})",
+         f"{ledger.get('blocks', '—')} daily blocks · latest evidence-ledger root {escape((ledger.get('root') or '')[:12])}… ({escape(ledger.get('date') or '—')})",
          "LIVE — anchored daily before pages publish", "#00E676"),
         ("Evidence grounding (v5 Layer-1 corpus)",
          "corpus grounding 0.52 → 0.75 · citation fidelity 0.66 → 0.85 after the prose-first extraction fix (commit f130983e)",
@@ -634,7 +634,7 @@ def status_cards_html(fwd_n: int, ledger: dict) -> str:
          "no significant alpha yet — underpowered, accruing daily",
          "#FBA94B", "#panel-forward"),
         ("In-sample replay", "OPTIMISTIC",
-         "parametric look-ahead — educational only, collapsed below",
+         "replay reconstruction — educational only, collapsed below",
          "#FBA94B", ""),
         ("Ledger", f"LIVE · {ledger.get('blocks', '—')} blocks",
          f"git-anchored daily · evidence-ledger root {escape((ledger.get('root') or '')[:8])}…",
@@ -1075,7 +1075,8 @@ def render() -> str:
     <details class="acc">
       <summary>Panel 2 · In-Sample Replay — Educational replay only (n={ins['evaluable_periods']} rebalances) · collapsed</summary>
       <div class="acc-body">
-      <p style="font-size:12px;color:#FBA94B;margin-bottom:12px">⚠ Educational replay only. The evidence-extraction model's training cutoff overlaps this window — in-sample results carry an unavoidable parametric look-ahead bias and are <strong>systematically optimistic</strong>. Label cohorts can be as small as a single name on some dates — treat all label-cohort figures below as illustrative, not evidence. The replay's final holding period is capped at forward Day 0 ({escape(FORWARD_DAY0.isoformat())}) so this window never overlaps Panel 1's.</p>
+      {canonical_html("LOOKAHEAD", '<p style="font-size:12px;color:#FBA94B;margin-bottom:10px;line-height:1.6">', "</p>")}
+      <p style="font-size:12px;color:#FBA94B;margin-bottom:12px">⚠ Educational replay only — in-sample results are <strong>systematically optimistic</strong> (see the look-ahead statement above). Label cohorts can be as small as a single name on some dates — treat all label-cohort figures below as illustrative, not evidence. The replay's final holding period is capped at forward Day 0 ({escape(FORWARD_DAY0.isoformat())}) so this window never overlaps Panel 1's.</p>
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Archived replay (methodology view) · return window {escape(ins['first_entry_date'])} → {escape(ins['last_exit_date'])} · {ins['span_trading_days']} trading days</div>
 
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:6px 0 8px">Decile cohorts vs equal-weight universe and SPY (n=8-name cohorts)</div>
@@ -1091,7 +1092,7 @@ def render() -> str:
       </div>
       {spread_svg}
 
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">Label cohorts vs SPY (n= per-date membership in the table below — as small as 1; look-ahead-optimistic figures)</div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#718096;margin:20px 0 8px">Label cohorts vs SPY (n= per-date membership in the table below — as small as 1; replay-optimistic figures)</div>
       {ins_label_svg}
       <table>
         <thead><tr><th>Cohort</th><th>Cumulative return</th><th>Max drawdown</th><th>Volatility (periodic)</th><th>Hit-rate vs SPY</th><th>n (min/med/max)</th></tr></thead>

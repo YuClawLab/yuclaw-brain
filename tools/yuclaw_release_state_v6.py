@@ -39,7 +39,8 @@ sys.path.insert(0, str(_REPO / "tools"))
 sys.path.insert(0, str(_REPO))
 from yuclaw_protocol_registry import Registry  # noqa: E402
 
-VERSION = "6.0.0"
+VERSION = next(l.split('"')[1] for l in (_REPO / "pyproject.toml").read_text().splitlines()
+               if l.startswith("version"))     # never typed: the package version IS the release version
 GATE_NAMES = {
     1: "P0 registrations valid", 2: "chain verifies",
     3: "zero unexplained ledger breaks", 4: "point-in-time guard",
@@ -54,6 +55,11 @@ GATE_NAMES = {
     13: "negative/inconclusive findings preserved",
     14: "language rails pass", 15: "user comprehension test passes",
     16: "stranger-machine reproduction passes",
+    # ORDER 2026-09-05B PART G — deterministic gates, exit nonzero on mismatch
+    17: "G1 copy-consistency (canonical blocks byte-identical)",
+    18: "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+    19: "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+    20: "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
 }
 # The registered gate #16 sentence, verbatim from the master plan (Phase 13 —
 # V6 RELEASE GATES). It names the MACHINE ("stranger-machine"), not the
@@ -65,7 +71,7 @@ GATE16_READING = ("requires reproduction on an external (stranger) MACHINE; it d
                   "require an unaffiliated operator — affiliation is disclosed, never implied away")
 
 CHECKS = [  # (tool, args) — the nightly battery, run fresh
-    ("check_language.py", ["--pages"] + sorted(str(p.relative_to(_REPO)) for p in (_REPO / "docs").glob("*.html")) + ["README.md", "COMPARISON.md", "docs/architecture.md"]),
+    ("check_language.py", ["--pages"] + sorted(str(p.relative_to(_REPO)) for p in (_REPO / "docs").glob("*.html")) + ["README.md", "COMPARISON.md", "docs/architecture.md", "CHANGELOG.md"]),
     ("check_copy_integrity.py", sorted(str(p.relative_to(_REPO)) for p in (_REPO / "docs").glob("*.html"))),
     ("check_weekly_note.py", []), ("check_universe_integrity.py", []),
     ("check_u350_isolation.py", []), ("check_schemas.py", []),
@@ -76,11 +82,19 @@ CHECKS = [  # (tool, args) — the nightly battery, run fresh
     ("check_anytime_record.py", []), ("yuclaw_anytime_record.py", ["--selftest"]),
     ("check_completeness_profile.py", []), ("check_research_state.py", []),
     ("check_science_trust.py", []), ("check_dual_copy.py", []),
+    # ORDER 2026-09-05B: generated-copy + release-manifest gates
+    ("yuclaw_replication_sentence.py", ["--check"]),
+    ("check_copy_consistency.py", []),
+    ("check_release_manifest.py", ["--only", "g2"]),
+    ("check_release_manifest.py", ["--only", "g3"]),
+    ("check_release_manifest.py", ["--only", "g4"]),
+    ("cli_transcript.py", ["--check"]),
 ]
 # Release-critical checks beyond the nightly battery (full argv after python).
 EXTRA_CHECKS = [
     ("pytest tests", ["-m", "pytest", "tests", "-q"]),
     ("abuse_matrix.py (on-box)", ["tools/abuse_matrix.py"]),
+    ("cli_acceptance_matrix.py (on-box, D3)", ["tools/cli_acceptance_matrix.py"]),
 ]
 
 
@@ -186,10 +200,82 @@ def classify_gate16(repl: dict) -> dict:
                                 f"{e.get('replication_result') or e.get('result')}" for e in entries]}
 
 
+def _patch_public(version: str, tip: str, n_lines: int, g16: dict, ev: dict) -> str:
+    """Tier-2 notes for a PATCH release (ORDER 2026-09-05B F Phase 1): the
+    one-line patch statement, the A2 look-ahead paragraph with the canonical
+    block verbatim, the copy/CLI change list, and what is unchanged."""
+    block = (_REPO / "docs" / "methodology" / "lookahead_statement.txt").read_text().rstrip("\n")
+    a2 = ev["lookahead_reconciliation"]
+    quoted = "\n".join("> " + l for l in block.splitlines())
+    return f"""Research & education only. Not investment advice.
+
+### YUCLAW {version} — patch: public synchronization and CLI first-touch
+
+patch — public synchronization and CLI first-touch; no methodology change; chain unchanged at {n_lines}.
+
+#### Look-ahead statement — reconciled from retained records
+
+{a2['paragraph']}
+
+{quoted}
+
+#### Changed (copy and CLI ergonomics only)
+
+- README and PyPI description: current-release framing (6.0.x → the GitHub Release), a first-touch command block with expected exit codes and a transcript from the release-candidate wheel, and the replication sentence derived from the public log ({g16['disclosure']}).
+- Canada Resources: the evidence-tier count reads 53 = 49 Canada Resources issuers + 4 SMH-lens foreign filers (ASML, NXPI, STM, TSM), mirrored in the page's JSON.
+- Today's Evidence: the two visible hashes carry distinct labels for the two distinct objects they are — "evidence-ledger root" (the Verified Research Ledger daily root) and "daily evidence block root" (the per-day public block root); no value, machine field or ledger meaning changed.
+- SMH and XLK lenses: "effective evidence count" keeps its registered meaning; the line "Not the Phase-6 N_eff, which is PENDING." now sits beside it.
+- Discovery: the capabilities name is "YUCLAW Evidence API" (former name recorded); the evidence index and llms.txt declare the version, the canonical base URL https://yuclaw.ca and every machine surface, all from one release manifest.
+- Homepage: "Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work."
+- CLI: `yuclaw --help` / `-h` / `help` list every command with a one-line description (exit 0); `yuclaw check-claim --accession N` alone resolves the name from the same corpus the ticker path uses (one name → the existing passport; several → exit 2 with the candidates; none → UNSUPPORTED; malformed → exit 2); never a bare usage dump. Twelve first-touch cases are recorded against the built wheel.
+- Release gates added: copy-consistency (canonical blocks byte-identical), version, base URL and endpoint inventory.
+
+#### Unchanged
+
+- Protocol registry: {n_lines} chained lines, tip {tip[:8]}…, byte-identical to 6.0.0. No statistic, estimator, threshold, artifact hash or ledger row changed.
+
+#### Not in this release
+
+- N_eff PENDING (the Phase-6 pooled-statistic N_eff — not the lens pages' effective evidence count)
+- Phase-5 contribution anatomy NOT YET
+- user-comprehension study NOT YET
+- unaffiliated replications {g16['unaffiliated']}
+"""
+
+
+def _patch_internal(version, now, ev, head_sha, head_tree, branch, base, base_ver, head_ver, counts, tip, n_lines,
+                    g16, checks, extra, public, public_sha) -> str:
+    a2 = ev["lookahead_reconciliation"]
+    failing = [c for c, v in {**checks, **extra}.items() if v["rc"] != 0]
+    return f"""# YUCLAW {version} — patch release record, Tier 1 (internal; generated {now[:16]} UTC)
+
+INTERNAL — never published; its sha256 is recorded in the release-state
+manifest. release_authorized is flipped only by the release-day order's
+Phase 2, outside the tree.
+
+ORDER {ev['order']} · release date {ev['release']['release_date']} · candidate HEAD {head_sha[:12]}
+(tree {head_tree[:12]}) on {branch} · base main {base[:12]} (pyproject {base_ver}) ·
+candidate pyproject {head_ver} · release kind {ev['release'].get('release_kind')}.
+
+GATES: {counts.get('GREEN', 0)} GREEN · {counts.get('MANUAL_REVIEW', 0)} MANUAL_REVIEW · {counts.get('PENDING_EXTERNAL', 0)} PENDING_EXTERNAL
+· {counts.get('RED', 0)} RED (16-gate table + G1–G4 in internal/release_state_manifest_v{version}.json,
+chain tip {tip[:12]}, {n_lines} lines — NO chain writes this patch). Failing checks: {failing or 'none'}.
+
+PART A — look-ahead reconciliation: state {a2['state']}. Evidence record: {a2['evidence_path']}
+(sha256 {a2['evidence_sha256'][:16]}). Paragraph: {a2['paragraph']}
+
+Gate #16: {g16['result']} — {g16['disclosure']}.
+
+## Tier 2 (public) — sha256 {public_sha}
+
+{public}"""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
+    ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
     a = ap.parse_args()
     ev = json.loads(Path(a.evidence).read_text())
     now = datetime.now(timezone.utc).isoformat()
@@ -224,7 +310,7 @@ def main() -> int:
              and a1["payload"]["method_hash"] == _sha(ld.ADDENDUM_FILE))
 
     # ---- gates: run the battery fresh
-    checks = {t + (" " + " ".join(args[:1]) if args and args[0].startswith("--") else ""): _run(t, args)
+    checks = {t + (" " + " ".join(args[:2]) if args and args[0].startswith("--") else ""): _run(t, args)
               for t, args in CHECKS}
     extra = {name: _run_argv(argv) for name, argv in EXTRA_CHECKS}
     def ok(name):
@@ -278,6 +364,10 @@ def main() -> int:
         14: (G(ok("check_language.py --pages") and ok("check_no_forms.py") and ok("check_header_layout.py") and ok("check_weekly_note.py")), "language rail (pages + README + COMPARISON + architecture) + no-forms + header layout (badge == package version) + weekly-note reconciliation"),
         15: ("MANUAL_REVIEW" if ok("check_consumer_posture.py") else "RED", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"),
         16: (g16["result"], f"{g16['disclosure']} — registered sentence \"{GATE16_SENTENCE}\" ({GATE16_READING}); public log entries: {g16['entries']}, external-machine REPRODUCED: {g16['external_machine_reproduced']}, failed: {g16['failed']}"),
+        17: (G(ok("check_copy_consistency.py") and ok("yuclaw_replication_sentence.py --check")), checks["check_copy_consistency.py"]["last"]),
+        18: (G(ok("check_release_manifest.py --only g2") and ok("cli_transcript.py --check")), checks["check_release_manifest.py --only g2"]["last"]),
+        19: (G(ok("check_release_manifest.py --only g3")), checks["check_release_manifest.py --only g3"]["last"]),
+        20: (G(ok("check_release_manifest.py --only g4")), checks["check_release_manifest.py --only g4"]["last"]),
     }
     table = [{"gate": n, "name": GATE_NAMES[n], "result": r, "evidence": e}
              for n, (r, e) in sorted(gates.items())]
@@ -313,7 +403,7 @@ def main() -> int:
     reg_public = f"{len(lines)} chained lines, tip {tip[:8]}…, chain-verified"
     rs_public = (f"{len(rs['names'])} names: {_plain_counts(rs_states)} — derived, never hand-maintained")
     tw = ev["tripwire"]
-    tripwire_pre_ok = (not tw["git_tags_v6"] and not tw["origin_tags_v6"]
+    tripwire_pre_ok = (not tw.get("git_tags_this_version", tw.get("git_tags_v6")) and not tw.get("origin_tags_this_version", tw.get("origin_tags_v6"))
                        and tw["github_latest_release"] != f"v{VERSION}"
                        and tw["pypi_published"] != VERSION
                        and tw["live_capabilities_version"] == "v" + tw["pypi_published"] == "v" + tw["origin_main_pyproject_version"]
@@ -359,10 +449,12 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.
 """
+    if a.patch:
+        public = _patch_public(VERSION, tip, len(lines), g16, ev)
     for banned in ("docs/", "registry/", "output/", "tools/", "check_", ".py", "seed", "bootstrap", "CI [", "{'", "generated"):
         assert banned not in public, f"Tier-2 rule violation: {banned!r} present"
     assert "independently replicated" not in public.lower()
-    (_REPO / "internal" / "release_notes_v6_PUBLIC.md").write_text(public)
+    (_REPO / "internal" / f"release_notes_v{VERSION}_PUBLIC.md").write_text(public)
     public_sha = _sha_bytes(public.encode())
 
     # ---- Tier 1 (internal) — the full release record; never published
@@ -459,13 +551,16 @@ Never rendered: "independently replicated".
 ## Tier 2 (public) — sha256 {public_sha}
 
 {public}"""
-    (_REPO / "internal" / "release_notes_v6_DRAFT.md").write_text(notes)
+    if a.patch:
+        notes = _patch_internal(VERSION, now, ev, head_sha, head_tree, branch, base, base_ver, head_ver,
+                                counts, tip, len(lines), g16, checks, extra, public, public_sha)
+    (_REPO / "internal" / f"release_notes_v{VERSION}_DRAFT.md").write_text(notes)
     internal_sha = _sha_bytes(notes.encode())
 
     manifest = {
         "generated_utc": now,
         "order": ev["order"],
-        "release": {"version": VERSION, "release_date": release_date,
+        "release": {"version": VERSION, "release_date": release_date, "release_kind": ev["release"].get("release_kind", "minor"),
                     "base_main_sha": base, "base_main_pyproject_version": base_ver,
                     "candidate_sha": head_sha,
                     "candidate_tree": head_tree,
@@ -502,8 +597,9 @@ Never rendered: "independently replicated".
         "package_version_candidate": head_ver, "package_version_published": tw["pypi_published"],
         "rehearsal_artifacts": ev.get("rehearsal"),
         "gate_suite_commit": head_sha,
-        "notes": {"internal_path": "internal/release_notes_v6_DRAFT.md", "internal_sha256": internal_sha,
-                  "public_path": "internal/release_notes_v6_PUBLIC.md", "public_sha256": public_sha},
+        "notes": {"internal_path": f"internal/release_notes_v{VERSION}_DRAFT.md", "internal_sha256": internal_sha,
+                  "public_path": f"internal/release_notes_v{VERSION}_PUBLIC.md", "public_sha256": public_sha},
+        "lookahead_reconciliation": ev.get("lookahead_reconciliation"),
         "release_authorized": False, "publishing_permitted": False,
         "remaining_blockers": [
             "gate #15 full-form user comprehension study does not exist (deterministic scaffold only) — MANUAL_REVIEW",
@@ -515,7 +611,7 @@ Never rendered: "independently replicated".
         ],
         "authorization_note": "Only the release-day order's Phase 2 may flip release_authorized/publishing_permitted, after the owner's verbatim authorization of the frozen source.",
     }
-    (_REPO / "internal" / "release_state_manifest_v6.json").write_text(json.dumps(manifest, indent=1, sort_keys=False, ensure_ascii=False) + "\n")
+    (_REPO / "internal" / f"release_state_manifest_v{VERSION}.json").write_text(json.dumps(manifest, indent=1, sort_keys=False, ensure_ascii=False) + "\n")
 
     print(f"[release-state-v6] gates {dict(counts)} · tripwire(pre) {manifest['tripwire_pre_publish']['status']} · "
           f"chain {len(lines)}/{tip[:12]} · phase6 {p6_line} · gate16 {g16['result']}")

@@ -271,6 +271,21 @@ def build_canada_packet(built: str, commit: str, ledger: dict) -> tuple[Path, li
         }
         scope_lines.append(f"{lens}: {p['uncovered_scope']}")
 
+    # C1 (ORDER 2026-09-05B): mirror the page's evidence-tier composition
+    # in the page's JSON — 53 = 49 Canada Resources + 4 SMH-lens foreign
+    # filers, derived from universe.json (coverage_vertical), never typed.
+    from v3.universe_tiers import evidence_tier_records
+    _recs = evidence_tier_records()
+    coverage["evidence_tier_composition"] = {
+        "total_issuers": len(_recs),
+        "canada_resources": sorted(r["ticker"] for r in _recs
+                                   if r.get("coverage_vertical") == "canada_resources"),
+        "smh_lens_foreign_filers": sorted(r["ticker"] for r in _recs
+                                          if r.get("coverage_vertical") == "smh_foreign"),
+        "note": ("The lens keys above cover the Canada Resources issuers only; "
+                 "the evidence tier also carries the SMH-lens foreign filers. "
+                 "Evidence-only — never scored."),
+    }
     files["coverage.json"] = _json_bytes(coverage)
     files["lens_summaries.json"] = _json_bytes(lens_summaries)
     files["scope_disclosures.txt"] = ("\n".join([

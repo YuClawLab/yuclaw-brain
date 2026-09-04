@@ -1,0 +1,36 @@
+{
+ "schema": "yuclaw-release-manifest/1",
+ "version": "6.0.1",
+ "release_line": "6.0.x",
+ "release_kind": "patch",
+ "public_base_url": "https://yuclaw.ca",
+ "github_repo": "YuClawLab/yuclaw-brain",
+ "github_release_url": "https://github.com/YuClawLab/yuclaw-brain/releases/tag/v6.0.1",
+ "pypi_project": "yuclaw",
+ "api_name": "YUCLAW Evidence API",
+ "api_former_name": "YUCLAW Ground Truth API",
+ "advertised_user_guide": {
+  "en": "YUCLAW_User_Guide.pdf",
+  "fr": "YUCLAW_Guide_Utilisateur_FR.pdf"
+ },
+ "machine_surfaces": [
+  {"key": "discovery", "path": "/capabilities.json", "kind": "static", "content_type": "application/json", "format": "json", "required_keys": ["name", "former_name", "version", "base_url", "endpoints"], "what": "ONE-URL discovery of the whole agent surface"},
+  {"key": "index", "path": "/evidence_index.json", "kind": "static", "content_type": "application/json", "format": "json", "required_keys": ["version", "base_url", "pages", "packets", "schemas", "machine_surfaces"], "what": "index of every page, packet, protocol and machine surface with data-through dates"},
+  {"key": "llms", "path": "/llms.txt", "kind": "static", "content_type": "text/plain", "format": "text", "what": "llms.txt — the agent-facing summary; declares version and canonical base URL"},
+  {"key": "why_json", "path": "/why/{TICKER}.json", "kind": "templated", "representative": "/why/AAPL.json", "content_type": "application/json", "format": "json", "required_keys": ["ticker", "evidence_objects", "label_history"], "what": "per-name evidence anatomy + EvidenceObjects + label history (79 names)"},
+  {"key": "why_html", "path": "/why/{TICKER}.html", "kind": "templated", "representative": "/why/AAPL.html", "content_type": "text/html", "format": "html", "what": "human twin of why_json"},
+  {"key": "explorer_data", "path": "/explorer_data.json", "kind": "static", "content_type": "application/json", "format": "json", "what": "the full 79-name table as JSON"},
+  {"key": "schemas", "path": "/schemas/{Name}.v1.json", "kind": "templated", "representative": "/schemas/SignalSnapshot.v1.json", "content_type": "application/json", "format": "jsonschema", "members": ["SignalSnapshot", "EvidenceEvent", "ResearchProtocol", "RobustnessCell", "ResearchMemo", "EvidenceObject", "PassportResult", "WhyAnatomy"], "what": "the frozen v1 JSON Schemas"},
+  {"key": "verify", "path": "/evidence/verify.json", "kind": "static", "content_type": "application/json", "format": "json", "required_keys": ["how", "days"], "what": "offline snapshot-integrity recipe + the list of ledger days"},
+  {"key": "ledger_day", "path": "/ledger/{YYYY-MM-DD}.json", "kind": "wildcard_family", "discovery_rule": "GET /evidence/verify.json and read days[].date; the latest date is the representative", "content_type": "application/json", "format": "json", "required_keys": ["date", "root_sha256", "entries"], "what": "per-day daily evidence block (root_sha256 over the sorted-keys JSON dump of the day's entries)"},
+  {"key": "evidencebench", "path": "/evidencebench/items.jsonl", "kind": "static", "content_type": "application/octet-stream", "format": "jsonl", "what": "EvidenceBench items + keys (weekly regeneration)"},
+  {"key": "evidencebench_meta", "path": "/evidencebench/meta.json", "kind": "static", "content_type": "application/json", "format": "json", "what": "EvidenceBench item-set hash and scoring rule"},
+  {"key": "c6_posture_current", "path": "/c6_posture_current.json", "kind": "static", "content_type": "application/json", "format": "json", "required_keys": ["as_of", "files", "set_sha256"], "what": "current C6 posture accession set with its pinned hash"},
+  {"key": "evidence_changes_day", "path": "/evidence_changes/{YYYY-MM-DD}.json", "kind": "wildcard_family", "discovery_rule": "GET /c6_posture_current.json and read as_of; that date is the latest daily file; earlier days are one file per UTC day back to 2026-07-29; a 404 means no block for that day", "content_type": "application/json", "format": "json", "required_keys": ["date", "c6_posture"], "what": "one-day evidence-change delta"},
+  {"key": "packets_manifest", "path": "/packets/manifest.json", "kind": "static", "content_type": "application/json", "format": "json", "what": "evidence packet manifest (zip names, build commit, data-through)"},
+  {"key": "packet_zip", "path": "/packets/{zip}", "kind": "templated", "representative": "/packets/yuclaw_validation_lab_packet.zip", "discovery_rule": "zip names come from /packets/manifest.json", "content_type": "application/zip", "format": "zip", "what": "downloadable evidence packets"},
+  {"key": "replay_bundle", "path": "/replay/lab_replay_bundle.json", "kind": "static", "content_type": "application/json", "format": "json", "what": "the Validation Lab replay bundle (yuclaw replay-lab)"},
+  {"key": "methodology_md", "path": "/methodology/backfill.md", "kind": "static", "content_type": "text/markdown", "format": "text", "what": "the canonical methodology, served raw for machines"}
+ ],
+ "optional_or_dynamic": ["ledger_day", "evidence_changes_day"]
+}

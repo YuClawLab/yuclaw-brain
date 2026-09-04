@@ -27,6 +27,14 @@ on a machine without the backend.
 v5.3.3 adds the status-semantics case: an empty-corpus universe name
 (DIA-style) must come back UNSUPPORTED — zero matched objects is never
 a PARTIAL_MATCH with an empty matched_evidence array.
+
+v6.0.1 (ORDER 2026-09-05B D3) adds the CLI first-touch cases permanently:
+top-level --help / -h / help (exit 0, every command listed with a
+description), --version (exit 0), the malformed generic input (empty
+command, exit 2), and the accession-only check-claim branches — unique
+(passport, exit 0, payload equal to the explicit ticker+accession path
+except input echo), ambiguous (exit 2 with sorted candidates), unknown
+(UNSUPPORTED, exit 0) and malformed (exit 2) — never a bare usage dump.
 """
 from __future__ import annotations
 
@@ -56,10 +64,18 @@ COMMANDS: dict[str, list[list[str]]] = {
                          "2026-07-31..2026-07-01"],
                     ["--ticker", "NVDA", "--type", "BANANA_EVENT"],
                     ["--ticker", "NVDA", "--date-range", "a..b"],
-                    ["--text", ""]],
+                    ["--text", ""],
+                    # v6.0.1 accession-only hostile inputs: malformed and
+                    # ambiguous both exit 2 with a message, never a usage dump
+                    ["--accession", "not-an-accession"],
+                    ["--accession", AMBIGUOUS_ACCESSION]],
     "replay-lab": [["--definitely-not-a-flag"]],
     "demo": [["--definitely-not-a-flag"]],
 }
+# Real corpus fixtures (stable historical filings in the published corpus):
+UNIQUE_ACCESSION = "0001045810-26-000019"      # one covered name (NVDA)
+AMBIGUOUS_ACCESSION = "0001645590-26-000045"   # many covered names
+UNKNOWN_ACCESSION = "0000000000-00-000000"     # well-formed, not in the corpus
 OK_EXITS = {0, 1, 2, 3}
 TRACE_MARKERS = ("Traceback (most recent call last)", "KeyError:",
                  "TypeError:", "ValueError:", "AttributeError:",
@@ -101,6 +117,49 @@ def _empty_corpus_unsupported(rc, out, err):
             f"(zero matched objects is never PARTIAL_MATCH)")
 
 
+def _accession_unknown_unsupported(rc, out, err):
+    if rc == 0 and '"status": "UNSUPPORTED"' in out and "any covered name" in out:
+        return None
+    if rc == 3 and "yuclaw.ca/why/" in err:
+        return None                       # no corpus at all → friendly pointer
+    return f"exit {rc} — unknown accession must be the UNSUPPORTED outcome"
+
+
+def _accession_ambiguous_exit2(rc, out, err):
+    if rc == 2 and "--accession requires --ticker when ambiguous" in err \
+            and out == "":
+        return None
+    if rc == 3 and "yuclaw.ca/why/" in err:
+        return None
+    return (f"exit {rc} — ambiguous accession must exit 2 with the "
+            f"candidates, never a usage dump or a passport")
+
+
+def _accession_malformed_exit2(rc, out, err):
+    if rc == 2 and "not an SEC accession number" in err and out == "":
+        return None
+    return f"exit {rc} — malformed accession must exit 2 with a message"
+
+
+def _help_ok(rc, out, err):
+    if rc == 0 and "commands:" in out and "check-claim" in out \
+            and "replay-lab" in out and "Exit codes" in out:
+        return None
+    return f"exit {rc} — help must list every command with a description, exit 0"
+
+
+def _version_ok(rc, out, err):
+    if rc == 0 and out.startswith("yuclaw "):
+        return None
+    return f"exit {rc} — --version must print 'yuclaw <version>', exit 0"
+
+
+def _empty_command_exit2(rc, out, err):
+    if rc == 2 and "unknown command" in err:
+        return None
+    return f"exit {rc} — malformed generic input must exit 2 with a message"
+
+
 WELLFORMED = [
     ("check-claim", ["--ticker", "NVDA", "--type", "INSIDER_SELL",
                      "--date-range", "2026-05-01..2026-05-31"], _claim_ok),
@@ -109,6 +168,19 @@ WELLFORMED = [
     ("check-claim", ["--ticker", "DIA", "--type", "INSIDER_SELL",
                      "--date-range", "2026-05-01..2026-05-31"],
      _empty_corpus_unsupported),
+    # v6.0.1 first-touch (ORDER 2026-09-05B D3)
+    ("check-claim", ["--ticker", "NVDA", "--accession", UNIQUE_ACCESSION], _claim_ok),
+    ("check-claim", ["--accession", UNIQUE_ACCESSION], _claim_ok),
+    ("check-claim", ["--accession", UNKNOWN_ACCESSION], _accession_unknown_unsupported),
+    ("check-claim", ["--accession", AMBIGUOUS_ACCESSION], _accession_ambiguous_exit2),
+    ("check-claim", ["--accession", "not-an-accession"], _accession_malformed_exit2),
+]
+# Top-level (no subcommand) cases: (argv, checker)
+TOPLEVEL = [
+    (["--help"], _help_ok), (["-h"], _help_ok), (["help"], _help_ok),
+    (["--version"], _version_ok),
+    ([""], _empty_command_exit2),                       # malformed generic input
+    (["--definitely-not-a-flag"], _empty_command_exit2),
 ]
 
 EXCEL_FLAVORED = (b"\xef\xbb\xbf" + "\r\n".join(
@@ -161,6 +233,29 @@ def run_matrix(exe: list[str]) -> int:
             n_hostile += 1
     for cmd, args, checker in wellformed:
         _run_one(cmd, args, checker)
+    for argv, checker in TOPLEVEL:
+        _run_one(argv[0], argv[1:], checker)
+    # D2 assertion: payload(accession-only unique) == payload(explicit
+    # ticker+accession) byte-for-byte except input-echo metadata
+    try:
+        a = subprocess.run(exe + ["check-claim", "--accession", UNIQUE_ACCESSION],
+                           capture_output=True, text=True, timeout=120)
+        b = subprocess.run(exe + ["check-claim", "--ticker", "NVDA", "--accession",
+                                  UNIQUE_ACCESSION], capture_output=True, text=True, timeout=120)
+        n += 1
+        if a.returncode == 0 and b.returncode == 0:
+            import json as _json
+            da, db = _json.loads(a.stdout), _json.loads(b.stdout)
+            for k in ("claim_as_given", "generated"):
+                da.pop(k, None); db.pop(k, None)
+            if _json.dumps(da, sort_keys=True) != _json.dumps(db, sort_keys=True):
+                failures.append("D2: accession-only payload != explicit "
+                                "ticker+accession payload (beyond input echo)")
+        elif not (a.returncode == 3 and b.returncode == 3):
+            failures.append(f"D2: exits {a.returncode}/{b.returncode} — the two "
+                            f"paths must resolve identically")
+    except subprocess.TimeoutExpired:
+        failures.append("D2 payload identity: TIMEOUT")
 
     if failures:
         print(f"ABUSE MATRIX: {len(failures)}/{n} cases failed:")
@@ -168,10 +263,11 @@ def run_matrix(exe: list[str]) -> int:
             print(f"  · {f}")
         return 1
     print(f"[abuse-matrix] OK — {n} cases across {len(COMMANDS)} commands "
-          f"({n_hostile} hostile + {n - n_hostile} well-formed-in-stranger-"
-          f"conditions): zero tracebacks, hostile exits within the contract "
+          f"({n_hostile} hostile + {n - n_hostile} well-formed/first-touch/"
+          f"top-level): zero tracebacks, hostile exits within the contract "
           f"(0/1/2/3), valid claims resolve offline or point at the public "
-          f"JSON, Excel-flavored CSV passes clean")
+          f"JSON, help/version exit 0, accession-only branches per D2, "
+          f"Excel-flavored CSV passes clean")
     return 0
 
 

@@ -41,9 +41,13 @@ drive the exit code.
                            resolving to a same-page panel id or an
                            existing canonical artifact; header forward-n
                            == not-proven forward-n; label separation of
-                           cryptographic objects: 'evidence-ledger root'
-                           vs 'registry chain head' may never share a
-                           label or swap values (negative invariant).
+                           cryptographic objects (negative invariant,
+                           extended by ORDER 2026-09-05B C2): THREE
+                           distinct objects — 'evidence-ledger root'
+                           (yuclaw-trust daily_root), 'daily evidence
+                           block root' (docs/ledger/{DATE}.json
+                           root_sha256) and 'registry chain head' — may
+                           never share a visible label or swap values.
 
 MANUAL_REVIEW register (never exit-driving):
   - ETF coverage posture (Audit #1 item i): the registered completeness
@@ -206,6 +210,14 @@ def p3_ai_agent() -> list[str]:
             path = re.sub(r"^https://[^/]+", "", url)
             path = path.replace("{TICKER}", subs["{TICKER}"])
             path = path.replace("{Name}", subs["{Name}"])
+            if "{zip}" in path:            # packet family: names come from the packet manifest
+                pm = DOCS / "packets" / "manifest.json"
+                zips = [v["zip"] for v in json.loads(pm.read_text()).values()
+                        if isinstance(v, dict)] if pm.exists() else []
+                if not zips:
+                    f.append(f"P3: endpoint {name}: packet manifest lists no zip")
+                    continue
+                path = path.replace("{zip}", sorted(zips)[0])
             if "{YYYY-MM-DD}" in path:
                 src = ledger_files if "ledger" in path else ec_files
                 if not src:
@@ -346,34 +358,57 @@ def p5_institutional_reader() -> list[str]:
     elif h.group(1) != n.group(1):
         f.append(f"P5: header forward n={h.group(1)} != not-proven "
                  f"n={n.group(1)}")
-    # cryptographic-object label separation (negative invariant)
+    # cryptographic-object label separation (negative invariant). Three
+    # distinct objects, three distinct human labels (C2 identity guard):
+    #   trust daily_root  (yuclaw-trust/verified_research_ledger.jsonl,
+    #                      sha256 of the day's sorted content hashes '|')
+    #                      → label "evidence-ledger root"
+    #   block root_sha256 (docs/ledger/{DATE}.json, sha256 of the sorted-
+    #                      keys JSON dump of the entries)
+    #                      → label "daily evidence block root"
+    #   registry chain head (registry/protocols.jsonl last line_hash)
+    #                      → label "registry chain head"
     led = sorted((DOCS / "ledger").glob("*.json"))
-    daily_root = json.loads(led[-1].read_text())["root_sha256"][:12] if led else ""
+    block_root = json.loads(led[-1].read_text())["root_sha256"][:12] if led else ""
+    trust_root = ""
+    trust = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
+    if trust.exists():
+        try:
+            trust_root = json.loads(trust.read_text().splitlines()[-1])["daily_root"][:12]
+        except Exception:                             # noqa: BLE001
+            trust_root = ""
     chain_tip = ""
     reg = REPO / "registry" / "protocols.jsonl"
     if reg.exists():
         chain_tip = json.loads(
             reg.read_text().splitlines()[-1])["line_hash"][:12]
+    if block_root and trust_root and block_root == trust_root:
+        f.append("P5: daily evidence block root and evidence-ledger root "
+                 "collide on 12 hex — labels cannot be told apart")
+    LABELS = {"trust": "evidence-ledger root", "block": "daily evidence block root",
+              "chain": "registry chain head"}
+    values = {"trust": trust_root, "block": block_root, "chain": chain_tip}
     for page in DOCS.glob("*.html"):
         text = page.read_text(errors="replace")
-        for m in re.finditer(r"ledger root", text):
+        for m in re.finditer(r"ledger root", text, re.I):
             pre = text[max(0, m.start() - 9):m.start()]
-            if pre != "evidence-":
+            if pre.lower() != "evidence-":
                 f.append(f"P5: bare 'ledger root' label in {page.name} — "
                          f"must name the exact object (evidence-ledger root)")
-        if chain_tip and chain_tip in text:
-            for m in re.finditer(re.escape(chain_tip), text):
-                ctx = text[max(0, m.start() - 120):m.start()]
-                if "registry chain head" not in ctx and "anchor" not in ctx:
-                    f.append(f"P5: registry chain head value {chain_tip} in "
-                             f"{page.name} without its label — two "
-                             f"cryptographic objects may never share a label")
-        if daily_root and daily_root in text:
-            for m in re.finditer(re.escape(daily_root), text):
-                ctx = text[max(0, m.start() - 120):m.start()]
-                if "registry chain head" in ctx:
-                    f.append(f"P5: daily evidence-ledger root {daily_root} "
-                             f"labeled as registry chain head in {page.name}")
+        for kind, val in values.items():
+            if not val or val not in text:
+                continue
+            for m in re.finditer(re.escape(val), text):
+                ctx = text[max(0, m.start() - 160):m.start()].lower()
+                own = LABELS[kind].lower() in ctx or (kind == "chain" and "anchor" in ctx)
+                foreign = [LABELS[o] for o in LABELS if o != kind and LABELS[o].lower() in ctx
+                           and ctx.rfind(LABELS[o].lower()) > ctx.rfind(LABELS[kind].lower())]
+                if foreign:
+                    f.append(f"P5: {LABELS[kind]} value {val} in {page.name} carries the "
+                             f"label of a different cryptographic object ({foreign[0]})")
+                elif not own:
+                    f.append(f"P5: {LABELS[kind]} value {val} in {page.name} without its "
+                             f"label — two cryptographic objects may never share a label")
     return f
 
 

@@ -210,7 +210,7 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       <ul style="font-size:12.5px;color:#A0AEC0;line-height:1.8;margin-left:18px">
         <li><strong style="color:#E2E8F0">Exit code 0.</strong> Any statistic or hash mismatch exits non-zero with a diff report.</li>
         <li><strong style="color:#E2E8F0">Statistics match</strong> the bundle's published <code>expected</code> block exactly (same seed, same estimators).</li>
-        <li><strong style="color:#E2E8F0">Ledger roots match</strong> — every recomputed daily root equals the root committed to the public yuclaw-trust repository.</li>
+        <li><strong style="color:#E2E8F0">Evidence-ledger roots match</strong> — every recomputed daily root equals the evidence-ledger root committed to the public yuclaw-trust repository.</li>
         <li><strong style="color:#E2E8F0">Build metadata matches</strong> — the bundle's data-through date, build date, and source commit agree with the page and packet you downloaded them from.</li>
       </ul>
     </div>
