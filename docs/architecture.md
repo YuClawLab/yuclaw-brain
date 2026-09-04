@@ -60,6 +60,10 @@ docs/methodology/   Methodology + limitations + leak audit + Lab methodology
 - **All local.** No cloud LLM calls anywhere in the pipeline. SEC EDGAR is the
   only external data source for the evidence layer.
 
+## Made in Canada
+
+YUCLAW is developed and operated in Canada by FarJasper Stories Canada, from Calgary, Alberta, on owner-controlled hardware.
+
 ---
 
 *Research and education only — not investment advice. Signal labels are
