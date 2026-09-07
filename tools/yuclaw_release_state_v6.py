@@ -89,6 +89,7 @@ CHECKS = [  # (tool, args) — the nightly battery, run fresh
     ("check_release_manifest.py", ["--only", "g3"]),
     ("check_release_manifest.py", ["--only", "g4"]),
     ("cli_transcript.py", ["--check"]),
+    ("check_leak_sweep.py", []),          # MICRO 2026-09-07B: private witness denylist, fail-closed
 ]
 # Release-critical checks beyond the nightly battery (full argv after python).
 EXTRA_CHECKS = [
@@ -364,7 +365,7 @@ def main() -> int:
         11: (G(ok("check_science_trust.py")), checks["check_science_trust.py"]["last"]),
         12: (G(ok("check_site_walk.py") and ok("check_index_completeness.py") and ok("check_copy_integrity.py")), "site-walk: all links + anchors resolve; index completeness; copy integrity"),
         13: (G(neg_preserved), f"discovery status_counts {_plain_counts(dl['status_counts'])}; questions {', '.join(f'{k} {v[chr(115)+chr(116)+chr(97)+chr(116)+chr(117)+chr(115)]}' for k, v in qs.items())}; reversal first read INSUFFICIENT preserved"),
-        14: (G(ok("check_language.py --pages") and ok("check_no_forms.py") and ok("check_header_layout.py") and ok("check_weekly_note.py")), "language rail (pages + README + COMPARISON + architecture) + no-forms + header layout (badge == package version) + weekly-note reconciliation"),
+        14: (G(ok("check_language.py --pages") and ok("check_no_forms.py") and ok("check_header_layout.py") and ok("check_weekly_note.py") and ok("check_leak_sweep.py")), "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"),
         15: ("MANUAL_REVIEW" if ok("check_consumer_posture.py") else "RED", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"),
         16: (g16["result"], f"{g16['disclosure']} — registered sentence \"{GATE16_SENTENCE}\" ({GATE16_READING}); public log entries: {g16['entries']}, external-machine REPRODUCED: {g16['external_machine_reproduced']}, failed: {g16['failed']}"),
         17: (G(ok("check_copy_consistency.py") and ok("yuclaw_replication_sentence.py --check")), checks["check_copy_consistency.py"]["last"]),

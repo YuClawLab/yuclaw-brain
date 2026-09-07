@@ -50,7 +50,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # Validation Lab (added 2026-07-05 — was a one-time v4.2 artifact and went
 # stale; now rebuilt daily so the page's freshness stamp stays honest).
 /usr/bin/python3 -m v3.web.render_validation_lab || exit 6
-# AI-ETF Evidence module (added 2026-07-05, Deng Part 2 — same freshness
+# AI-ETF Evidence module (added 2026-07-05, reviewer feedback Part 2 — same freshness
 # contract as the Lab).
 /usr/bin/python3 -m v3.web.render_etf_evidence || exit 7
 # XLK lens (second sector lens, admission-standard-driven; 2026-07-31).
@@ -98,6 +98,8 @@ fi
 # MICRO 2026-09-07A: the MISSION & VISION block carries generated counts; refill README before G1
 /usr/bin/python3 tools/yuclaw_mission_vision.py --write-readme || exit 64
 /usr/bin/python3 tools/check_copy_consistency.py || exit 62
+# MICRO 2026-09-07B: leak sweep over every tracked public surface (private denylist under internal/, fail-closed)
+/usr/bin/python3 tools/check_leak_sweep.py || exit 65
 /usr/bin/python3 tools/check_release_manifest.py || exit 63
 # Copy-integrity rail (2026-07-22): clipped decimals, unclosed parens,
 # cut-off paragraphs, dead local links — same hard-gate contract.

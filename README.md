@@ -342,7 +342,7 @@ Deep dives: [system architecture, operations, hardware](docs/architecture.md) ·
 ## Signal Validation Lab
 
 A decile-cohort event study of whether YUCLAW's composite score carries forward
-information — built from feedback by **Prof. Deng Shijie (Georgia Tech)**:
+information — methodology reviewed by two senior finance/methodology academics, plus a structured multi-AI critique loop:
 
 - **Regenerated daily** after U.S. market close, freshness-stamped, with a
   staleness alarm in the health monitor.

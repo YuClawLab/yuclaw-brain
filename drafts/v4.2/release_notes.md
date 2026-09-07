@@ -3,7 +3,7 @@
 ## Signal Validation Lab (new)
 
 A Fama–French-style **decile-cohort event study** — built from feedback by
-Prof. Deng Shijie (Georgia Tech) — testing whether YUCLAW's composite score
+methodology reviewed by two senior finance/methodology academics, plus a structured multi-AI critique loop — testing whether YUCLAW's composite score
 carries forward information. It is **research cohort analysis, not portfolio
 management, not a strategy, not trade advice**. Cohorts are grouped by score
 decile or signal label (never by trade direction); the market-neutral line is

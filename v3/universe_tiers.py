@@ -3,7 +3,7 @@
 v3/universe.json now carries TWO tiers under an explicit ``tier_contract``:
 
   scoring tier   — the four legacy keys (equities / sector_etfs / broad_etfs /
-                   macro), the Deng-reviewed 79-ticker record. scoring_eligible
+                   macro), the academically reviewed 79-ticker record. scoring_eligible
                    and lab_universe are TRUE here and only here.
   evidence tier  — the ``evidence_tier`` key (49 Canada Resources SEC filers).
                    Ingested, parsed, classified, and shown on evidence

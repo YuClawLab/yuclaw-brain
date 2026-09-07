@@ -11,7 +11,7 @@ subsequent realized returns. It is **research cohort analysis**, not portfolio
 management, not a trading strategy, and not a record of any account. Cohorts are
 named by score decile or signal label — never by trade direction.
 
-Built from feedback by Prof. Deng Shijie (Georgia Tech) after reviewing YUCLAW
+Methodology reviewed by two senior finance/methodology academics, plus a structured multi-AI critique loop, after reviewing YUCLAW
 with his class.
 
 ## What is measured
@@ -109,7 +109,7 @@ look-ahead-free record.
 ## Metrics shown
 
 Per cohort and for the spread, per panel: **cumulative return** over the window,
-**max drawdown** (Prof. Deng's "min return"), **periodic volatility**, and
+**max drawdown** (the reviewers' "min return"), **periodic volatility**, and
 **hit-rate vs. benchmark** (fraction of rebalance periods the cohort outperformed
 SPY). Descriptive statistics only.
 
@@ -256,7 +256,7 @@ and the 79-ticker forward-track record.
 
 The boundary is enforced by **positive gating** (`v3/universe_tiers.py`): no
 security is scoring-eligible unless its tier is explicitly marked
-`scoring_eligible=true`. The scoring tier remains exactly the Deng-reviewed 79;
+`scoring_eligible=true`. The scoring tier remains exactly the academically reviewed 79;
 adding coverage mid-record without this boundary would have been a methodology
 event and broken forward comparability. Evidence-tier metadata per name:
 `evidence_eligible=true, scoring_eligible=false, lab_universe=false,

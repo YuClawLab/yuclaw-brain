@@ -451,8 +451,8 @@ and the legacy v2.x momentum/trading stack is archived (see "Removed").
   before push, so the cron self-heals from divergence.
   ([`bf12ef8`](../../commit/bf12ef8))
 - **`health_monitor.sh` path bug** — was checking
-  `/home/zhangd2/Yuclaw/docs/data/dashboard_state.json` (capital Y, the
-  rarely-updated publishable clone) instead of `/home/zhangd2/yuclaw/...`
+  `~/Yuclaw/docs/data/dashboard_state.json` (capital Y, the
+  rarely-updated publishable clone) instead of `~/yuclaw/...`
   (lowercase, the cron's working copy). Result: continuous STALE alerts
   against a file nothing was keeping fresh.
   ([`bf12ef8`](../../commit/bf12ef8))
