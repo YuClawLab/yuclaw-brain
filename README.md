@@ -1,53 +1,60 @@
-<div align="center">
+<p align="center"><b>Research &amp; education only. Not investment advice.</b></p>
 
-# YUCLAW
-
-**Research & education only. Not investment advice.**
-
-</div>
-
-<pre>
 <!-- MISSION-VISION-CANONICAL:BEGIN -->
-Evidence-First Financial AI
+<h1 align="center">YUCLAW</h1>
+
+<p align="center">
+<b>Evidence-First Financial AI</b><br>
 The Science Trust Layer for Financial AI.
+</p>
 
-Financial AI normally gives you an answer.
-YUCLAW gives you the evidence — what was known, when it was known,
-what it can support, what it cannot, and whether the conclusion
-survived.
+<h2 align="center">Evidence before answers.</h2>
 
-MISSION
-Make financial AI accountable to evidence.
-Every claim traced to the filing it came from. Every method locked
-before the data arrived. Every conclusion carrying its own limits.
-Every result kept — including the ones we wished had come out
-differently — in a public, hash-linked record built to be recomputed
-by anyone.
+> Financial AI normally gives you an answer.
+>
+> **YUCLAW gives you the evidence** — what was known, when it was known, what it can support, what it cannot, and whether the conclusion survived.
 
-VISION
-Become the Science Trust Layer for Financial AI: the evidence
-infrastructure that AI systems, researchers and institutions use to
-decide what deserves to be believed.
+### Mission
 
-HOW WE WORK
-We don't ask you to trust us. We give you the hash.
-We don't predict. We register, compute once, and disclose.
-We don't hide the days we were wrong. We chain them.
+**Make financial AI accountable to evidence.**
 
-WHAT YOU GET
-Analysts: the evidence behind every label, and the label's limits.
-Builders: machine-readable receipts — passports, endpoints, a
-registry you can walk line by line.
-Institutions: a record that can be audited without asking us.
+- **Trace every claim** to the filing it came from.
+- **Lock every method** before the data arrives.
+- **State every conclusion’s limits.**
+- **Keep every result** — including the ones we wished had come out differently.
 
-Statistics is one instrument. Evidence is the foundation. Science
-is the discipline. AI is the market. Trust is the product.
-Accountability is the mission.
+A public, hash-linked record, built to be recomputed by anyone.
 
-82 chained protocol lines · 132 names,
-honestly labeled · Built in Canada.
+### Vision
+
+**Become the Science Trust Layer for Financial AI.**
+
+The evidence infrastructure that AI systems, researchers, and institutions use to decide what deserves to be believed.
+
+### How we work
+
+| Principle | Practice |
+| :--- | :--- |
+| **We don’t ask you to trust us.** | We give you the hash. |
+| **We don’t predict.** | We register, compute once, and disclose. |
+| **We don’t hide the days we were wrong.** | We chain them. |
+
+### What you get
+
+| For | What you get |
+| :--- | :--- |
+| **Analysts** | The evidence behind every label, and the label’s limits. |
+| **Builders** | Machine-readable receipts — passports, endpoints, and a registry you can walk line by line. |
+| **Institutions** | A record that can be audited without asking us. |
+
+---
+
+> *Statistics is one instrument. Evidence is the foundation. Science is the discipline.*
+>
+> *AI is the market. Trust is the product. Accountability is the mission.*
+
+<p align="center">🍁 <b>Built in Canada</b></p>
 <!-- MISSION-VISION-CANONICAL:END -->
-</pre>
 
 <div align="center">
 

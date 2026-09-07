@@ -138,28 +138,30 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     use_research_block = use_in_research_html(None, guide_link=True)
     status_block = status_block_html()
 
-    # MISSION & VISION canonical block (MICRO 2026-09-07A): the About card
-    # carries the whole owner-approved text VERBATIM between the G1 markers
-    # (byte-identical to README and the User Guide; placeholders filled by the
-    # generator from the registry — never typed here); the strip near the
-    # disclaimer repeats HOW WE WORK / WHAT YOU GET and the counts line
-    # compactly, from the same generator.
+    # MISSION & VISION canonical block (MICRO 2026-09-07A, redesigned 2026-09-07C):
+    # the About card renders the canonical Markdown through the site's Markdown
+    # renderer (one source, no second copy); the strip near the disclaimer shows
+    # the HOW WE WORK / WHAT YOU GET table rows from the section parser.
     import sys as _sys
     _tools = str(Path(__file__).resolve().parents[2] / "tools")
     if _tools not in _sys.path:
         _sys.path.insert(0, _tools)
     import yuclaw_mission_vision as _mv
     _sec = _mv.sections()
-    _li = lambda items: "".join(f"<li>{escape(i)}</li>" for i in items)   # noqa: E731
+    def _strip_block(heading: str) -> str:
+        rows = _sec[heading]["rows"]
+        items = "".join(f"<li><b>{escape(r[0])}</b> {escape(r[1])}</li>" for r in rows)
+        return f'<div><div class="mv-k">{escape(heading)}</div><ul>{items}</ul></div>'
     mv_strip = f"""<div class="mv-strip">
-      <div><div class="mv-k">How we work</div><ul>{_li(_sec['how_we_work'])}</ul></div>
-      <div><div class="mv-k">What you get</div><ul>{_li(_sec['what_you_get'])}</ul></div>
-      <div class="mv-counts">{escape(_sec['counts'])}</div>
+      {_strip_block("How we work")}
+      {_strip_block("What you get")}
     </div>"""
-    mv_about = f"""<div class="card" id="about">
-      <div class="card-title">About YUCLAW — mission and vision</div>
-      <pre class="mv">{_mv.wrapped()}</pre>
-    </div>"""
+    mv_about = f"""<section class="mv-card" id="about" aria-labelledby="about-title">
+      <div class="card-title" id="about-title">About YUCLAW — mission and vision</div>
+      <!-- mv-html:begin -->
+{_mv.render_html("site")}
+      <!-- mv-html:end -->
+    </section>"""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -190,9 +192,40 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     .mv-strip>div{{flex:1;min-width:260px}}
     .mv-k{{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px}}
     .mv-strip ul{{margin:0;padding-left:16px;font-size:12.5px;color:#A0AEC0;line-height:1.55}}
-    .mv-strip li{{margin:2px 0}}
-    .mv-counts{{flex-basis:100%;font-family:JetBrains Mono,monospace;font-size:11.5px;color:#718096;margin-top:4px}}
-    .mv{{white-space:pre-wrap;font-family:Inter,system-ui,sans-serif;font-size:13.5px;line-height:1.65;color:#E2E8F0;background:transparent;margin:0;padding:0}}
+    .mv-strip li{{margin:3px 0}} .mv-strip li b{{color:#E2E8F0;font-weight:600}}
+    /* About card — emerald editorial treatment, scoped (MICRO 2026-09-07C) */
+    .mv-card{{background:#0b1110;color:#f3f6f4;border:1px solid #1e2a25;border-radius:12px;padding:44px 48px;margin-bottom:20px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:17px;line-height:1.65}}
+    .mv-card .card-title{{color:#b7c5bd;margin-bottom:28px}}
+    .mv-card p,.mv-card li,.mv-card blockquote{{max-width:70ch}}
+    .mv-card .mv-wordmark{{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1;margin:0 0 14px;text-align:center}}
+    .mv-card .mv-yu{{color:#fff}} .mv-card .mv-claw{{color:#4ade80}}
+    .mv-card .mv-center{{text-align:center;color:#b7c5bd;font-size:15px;line-height:1.5;margin:0 auto 34px;max-width:none}}
+    .mv-card .mv-center b{{color:#f3f6f4;font-weight:600}}
+    .mv-card .mv-h2{{text-align:center;font-size:36px;font-weight:700;letter-spacing:-0.5px;line-height:1.15;margin:0 0 30px;color:#f3f6f4}}
+    .mv-card blockquote{{margin:0 0 40px;padding:6px 0 6px 22px;border-left:3px solid #4ade80;color:#f3f6f4;font-size:18px}}
+    .mv-card blockquote p{{margin:0 0 10px}} .mv-card blockquote p:last-child{{margin-bottom:0}}
+    .mv-card h3{{font-size:20px;font-weight:700;color:#f3f6f4;margin:44px 0 16px;letter-spacing:-0.2px}}
+    .mv-card h3::after{{content:"";display:block;width:36px;height:3px;background:#4ade80;margin-top:10px;border-radius:2px}}
+    .mv-card p{{margin:0 0 14px}} .mv-card strong{{color:#f3f6f4;font-weight:700}}
+    .mv-card ul{{margin:0 0 16px 0;padding-left:22px}} .mv-card li{{margin:6px 0}}
+    .mv-card table{{border-collapse:collapse;width:100%;max-width:70ch;margin:8px 0 12px;font-size:16px}}
+    .mv-card th{{text-align:left;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#b7c5bd;padding:0 16px 10px 0;border:none;background:transparent}}
+    .mv-card td{{padding:9px 16px 9px 0;vertical-align:top;border:none;background:transparent;color:#f3f6f4}}
+    .mv-card td:first-child{{font-weight:700;white-space:nowrap}}
+    .mv-card tr:nth-child(even) td{{background:transparent}}
+    .mv-card hr{{border:none;border-top:1px solid #1e2a25;margin:40px 0 28px}}
+    .mv-card hr + blockquote{{border-left-color:#2f3d36;color:#b7c5bd;font-size:16px;font-style:italic;margin-bottom:34px}}
+    .mv-card hr + blockquote em{{font-style:italic}}
+    .mv-card > p:last-child,.mv-card .mv-center:last-child{{text-align:center;color:#f3f6f4;font-size:16px;margin:0}}
+    @media (max-width:640px){{
+      .mv-card{{padding:22px 20px;font-size:16px}}
+      .mv-card .mv-wordmark{{font-size:40px;letter-spacing:-1px}}
+      .mv-card .mv-h2{{font-size:28px}}
+      .mv-card blockquote{{font-size:17px;padding-left:16px}}
+      .mv-card td:first-child{{white-space:normal}}
+      .mv-card th,.mv-card td{{display:block;padding:4px 0}}
+      .mv-card thead{{display:none}} .mv-card tr{{display:block;padding:8px 0}}
+    }}
     .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}}
     .disclaimer strong{{color:#FBA94B}}
     .card{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}}

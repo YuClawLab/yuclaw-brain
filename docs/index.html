@@ -28,9 +28,40 @@
     .mv-strip>div{flex:1;min-width:260px}
     .mv-k{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px}
     .mv-strip ul{margin:0;padding-left:16px;font-size:12.5px;color:#A0AEC0;line-height:1.55}
-    .mv-strip li{margin:2px 0}
-    .mv-counts{flex-basis:100%;font-family:JetBrains Mono,monospace;font-size:11.5px;color:#718096;margin-top:4px}
-    .mv{white-space:pre-wrap;font-family:Inter,system-ui,sans-serif;font-size:13.5px;line-height:1.65;color:#E2E8F0;background:transparent;margin:0;padding:0}
+    .mv-strip li{margin:3px 0} .mv-strip li b{color:#E2E8F0;font-weight:600}
+    /* About card — emerald editorial treatment, scoped (MICRO 2026-09-07C) */
+    .mv-card{background:#0b1110;color:#f3f6f4;border:1px solid #1e2a25;border-radius:12px;padding:44px 48px;margin-bottom:20px;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:17px;line-height:1.65}
+    .mv-card .card-title{color:#b7c5bd;margin-bottom:28px}
+    .mv-card p,.mv-card li,.mv-card blockquote{max-width:70ch}
+    .mv-card .mv-wordmark{font-size:64px;font-weight:800;letter-spacing:-2px;line-height:1;margin:0 0 14px;text-align:center}
+    .mv-card .mv-yu{color:#fff} .mv-card .mv-claw{color:#4ade80}
+    .mv-card .mv-center{text-align:center;color:#b7c5bd;font-size:15px;line-height:1.5;margin:0 auto 34px;max-width:none}
+    .mv-card .mv-center b{color:#f3f6f4;font-weight:600}
+    .mv-card .mv-h2{text-align:center;font-size:36px;font-weight:700;letter-spacing:-0.5px;line-height:1.15;margin:0 0 30px;color:#f3f6f4}
+    .mv-card blockquote{margin:0 0 40px;padding:6px 0 6px 22px;border-left:3px solid #4ade80;color:#f3f6f4;font-size:18px}
+    .mv-card blockquote p{margin:0 0 10px} .mv-card blockquote p:last-child{margin-bottom:0}
+    .mv-card h3{font-size:20px;font-weight:700;color:#f3f6f4;margin:44px 0 16px;letter-spacing:-0.2px}
+    .mv-card h3::after{content:"";display:block;width:36px;height:3px;background:#4ade80;margin-top:10px;border-radius:2px}
+    .mv-card p{margin:0 0 14px} .mv-card strong{color:#f3f6f4;font-weight:700}
+    .mv-card ul{margin:0 0 16px 0;padding-left:22px} .mv-card li{margin:6px 0}
+    .mv-card table{border-collapse:collapse;width:100%;max-width:70ch;margin:8px 0 12px;font-size:16px}
+    .mv-card th{text-align:left;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#b7c5bd;padding:0 16px 10px 0;border:none;background:transparent}
+    .mv-card td{padding:9px 16px 9px 0;vertical-align:top;border:none;background:transparent;color:#f3f6f4}
+    .mv-card td:first-child{font-weight:700;white-space:nowrap}
+    .mv-card tr:nth-child(even) td{background:transparent}
+    .mv-card hr{border:none;border-top:1px solid #1e2a25;margin:40px 0 28px}
+    .mv-card hr + blockquote{border-left-color:#2f3d36;color:#b7c5bd;font-size:16px;font-style:italic;margin-bottom:34px}
+    .mv-card hr + blockquote em{font-style:italic}
+    .mv-card > p:last-child,.mv-card .mv-center:last-child{text-align:center;color:#f3f6f4;font-size:16px;margin:0}
+    @media (max-width:640px){
+      .mv-card{padding:22px 20px;font-size:16px}
+      .mv-card .mv-wordmark{font-size:40px;letter-spacing:-1px}
+      .mv-card .mv-h2{font-size:28px}
+      .mv-card blockquote{font-size:17px;padding-left:16px}
+      .mv-card td:first-child{white-space:normal}
+      .mv-card th,.mv-card td{display:block;padding:4px 0}
+      .mv-card thead{display:none} .mv-card tr{display:block;padding:8px 0}
+    }
     .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}
     .disclaimer strong{color:#FBA94B}
     .card{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}
@@ -93,9 +124,8 @@
     </div>
     <p class="provenance-line" style="font-size:11.5px;color:#718096;margin:-12px 0 22px;line-height:1.5">Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.</p>
     <div class="mv-strip">
-      <div><div class="mv-k">How we work</div><ul><li>We don&#x27;t ask you to trust us. We give you the hash.</li><li>We don&#x27;t predict. We register, compute once, and disclose.</li><li>We don&#x27;t hide the days we were wrong. We chain them.</li></ul></div>
-      <div><div class="mv-k">What you get</div><ul><li>Analysts: the evidence behind every label, and the label&#x27;s limits.</li><li>Builders: machine-readable receipts — passports, endpoints, a registry you can walk line by line.</li><li>Institutions: a record that can be audited without asking us.</li></ul></div>
-      <div class="mv-counts">82 chained protocol lines · 132 names, honestly labeled · Built in Canada.</div>
+      <div><div class="mv-k">How we work</div><ul><li><b>We don’t ask you to trust us.</b> We give you the hash.</li><li><b>We don’t predict.</b> We register, compute once, and disclose.</li><li><b>We don’t hide the days we were wrong.</b> We chain them.</li></ul></div>
+      <div><div class="mv-k">What you get</div><ul><li><b>Analysts</b> The evidence behind every label, and the label’s limits.</li><li><b>Builders</b> Machine-readable receipts — passports, endpoints, and a registry you can walk line by line.</li><li><b>Institutions</b> A record that can be audited without asking us.</li></ul></div>
     </div>
 
     <div class="card">
@@ -177,49 +207,89 @@
       </div>
     </details>
 
-    <div class="card" id="about">
-      <div class="card-title">About YUCLAW — mission and vision</div>
-      <pre class="mv"><!-- MISSION-VISION-CANONICAL:BEGIN -->
-Evidence-First Financial AI
+    <section class="mv-card" id="about" aria-labelledby="about-title">
+      <div class="card-title" id="about-title">About YUCLAW — mission and vision</div>
+      <!-- mv-html:begin -->
+<!-- mv-source sha256:c3b3d26ca94fba1f9e4b447e14ffb024f6dd63a102203f27122d184d8d21d266 -->
+<h1 class="mv-wordmark"><span class="mv-yu">YU</span><span class="mv-claw">CLAW</span></h1>
+
+<p class="mv-center">
+<b>Evidence-First Financial AI</b><br>
 The Science Trust Layer for Financial AI.
+</p>
 
-Financial AI normally gives you an answer.
-YUCLAW gives you the evidence — what was known, when it was known,
-what it can support, what it cannot, and whether the conclusion
-survived.
+<h2 class="mv-h2">Evidence before answers.</h2>
 
-MISSION
-Make financial AI accountable to evidence.
-Every claim traced to the filing it came from. Every method locked
-before the data arrived. Every conclusion carrying its own limits.
-Every result kept — including the ones we wished had come out
-differently — in a public, hash-linked record built to be recomputed
-by anyone.
-
-VISION
-Become the Science Trust Layer for Financial AI: the evidence
-infrastructure that AI systems, researchers and institutions use to
-decide what deserves to be believed.
-
-HOW WE WORK
-We don't ask you to trust us. We give you the hash.
-We don't predict. We register, compute once, and disclose.
-We don't hide the days we were wrong. We chain them.
-
-WHAT YOU GET
-Analysts: the evidence behind every label, and the label's limits.
-Builders: machine-readable receipts — passports, endpoints, a
-registry you can walk line by line.
-Institutions: a record that can be audited without asking us.
-
-Statistics is one instrument. Evidence is the foundation. Science
-is the discipline. AI is the market. Trust is the product.
-Accountability is the mission.
-
-82 chained protocol lines · 132 names,
-honestly labeled · Built in Canada.
-<!-- MISSION-VISION-CANONICAL:END --></pre>
-    </div>
+<blockquote>
+<p>Financial AI normally gives you an answer.</p>
+<p><strong>YUCLAW gives you the evidence</strong> — what was known, when it was known, what it can support, what it cannot, and whether the conclusion survived.</p>
+</blockquote>
+<h3>Mission</h3>
+<p><strong>Make financial AI accountable to evidence.</strong></p>
+<ul>
+<li><strong>Trace every claim</strong> to the filing it came from.</li>
+<li><strong>Lock every method</strong> before the data arrives.</li>
+<li><strong>State every conclusion’s limits.</strong></li>
+<li><strong>Keep every result</strong> — including the ones we wished had come out differently.</li>
+</ul>
+<p>A public, hash-linked record, built to be recomputed by anyone.</p>
+<h3>Vision</h3>
+<p><strong>Become the Science Trust Layer for Financial AI.</strong></p>
+<p>The evidence infrastructure that AI systems, researchers, and institutions use to decide what deserves to be believed.</p>
+<h3>How we work</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Principle</th>
+<th style="text-align: left;">Practice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>We don’t ask you to trust us.</strong></td>
+<td style="text-align: left;">We give you the hash.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>We don’t predict.</strong></td>
+<td style="text-align: left;">We register, compute once, and disclose.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>We don’t hide the days we were wrong.</strong></td>
+<td style="text-align: left;">We chain them.</td>
+</tr>
+</tbody>
+</table>
+<h3>What you get</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">For</th>
+<th style="text-align: left;">What you get</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Analysts</strong></td>
+<td style="text-align: left;">The evidence behind every label, and the label’s limits.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Builders</strong></td>
+<td style="text-align: left;">Machine-readable receipts — passports, endpoints, and a registry you can walk line by line.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Institutions</strong></td>
+<td style="text-align: left;">A record that can be audited without asking us.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><em>Statistics is one instrument. Evidence is the foundation. Science is the discipline.</em></p>
+<p><em>AI is the market. Trust is the product. Accountability is the mission.</em></p>
+</blockquote>
+<p class="mv-center">🍁 <b>Built in Canada</b></p>
+      <!-- mv-html:end -->
+    </section>
 
     
     <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">
@@ -315,7 +385,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       Apache-2.0 Licensed
     </div>
     <div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-04 (last completed U.S. trading day) · regenerated daily after market close</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-07 02:13 UTC · daily evidence block root 664478f10f8a (block 2026-09-04)</footer>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-07 04:54 UTC · daily evidence block root 664478f10f8a (block 2026-09-04)</footer>
   </div>
 </body>
 </html>

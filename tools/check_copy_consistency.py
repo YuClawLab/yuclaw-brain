@@ -41,12 +41,15 @@ BLOCKS = {
     # carries its own markers (colon form) and two generator placeholders
     # ({{CHAIN_LINES}}, {{NAME_COUNT}}) that every target must show FILLED;
     # the comparison is against the filled source.
+    # Redesigned 2026-09-07C: Markdown source docs/methodology/mission_vision.md.
+    # G1 payload = bytes after the BEGIN marker's LF up to (excluding) the END
+    # marker line, final LF included; sha256 of those bytes. README is compared
+    # as raw bytes; the homepage and the User Guide are checked on the exact
+    # Markdown input their real renderers consumed (see _mission_vision_surfaces),
+    # never on rendered HTML or PDF bytes against Markdown bytes.
     "MISSION-VISION": {
-        "canonical": "docs/methodology/mission_vision.txt",
-        "marker": "<!-- MISSION-VISION-CANONICAL:{which} -->",
-        "source_has_markers": True,
-        "fill": "mission_vision",
-        "targets": ["README.md", "docs/index.html"],
+        "canonical": "docs/methodology/mission_vision.md",
+        "mode": "mission_vision",
     },
     "LOOKAHEAD": {
         "canonical": "docs/methodology/lookahead_statement.txt",
@@ -135,6 +138,56 @@ def extract(target_rel: str, name: str, problems: list[str], spec: dict | None =
     return block.encode("utf-8")
 
 
+def _block_sha(name: str, spec: dict) -> str:
+    if spec.get("mode") == "mission_vision":
+        import yuclaw_mission_vision as mv
+        return mv.payload_sha256()
+    return _sha(canonical_bytes(spec["canonical"], [], spec, name))
+
+
+def _mission_vision_surfaces(problems: list[str], report: list) -> None:
+    """MISSION-VISION (2026-09-07C): canonical payload bytes vs README raw bytes;
+    homepage About card == fresh render of the canonical payload through the
+    same renderer + embedded source sha; User Guide build input bytes."""
+    import yuclaw_mission_vision as mv
+    can = mv.payload().encode("utf-8")
+    sha = hashlib.sha256(can).hexdigest()
+    # README: raw bytes between the markers, LF-inclusive, exactly one pair
+    try:
+        got = mv.extract_payload((_REPO / "README.md").read_text(encoding="utf-8"), "README.md").encode("utf-8")
+        same = got == can
+        report.append(("MISSION-VISION", "README.md (raw payload bytes)", same))
+        if not same:
+            problems.append(f"README.md: MISSION-VISION payload sha256 {hashlib.sha256(got).hexdigest()[:16]} != canonical {sha[:16]}")
+    except SystemExit as e:
+        problems.append(str(e))
+    # homepage: the real render path is yuclaw_mission_vision.render_html("site"), which
+    # reads the canonical file and stamps the payload sha; the deployed HTML must carry
+    # that stamp and be byte-identical to a fresh render (HTML vs HTML, same renderer)
+    idx = (_REPO / "docs" / "index.html").read_text(encoding="utf-8")
+    m = re.search(r"<!-- mv-html:begin -->\n(.*?)\n\s*<!-- mv-html:end -->", idx, re.S)
+    if not m:
+        problems.append("docs/index.html: About card render region markers missing")
+    else:
+        fresh = mv.render_html("site")
+        stamp_ok = f"<!-- mv-source sha256:{sha} -->" in m.group(1)
+        same = m.group(1) == fresh and stamp_ok
+        report.append(("MISSION-VISION", "docs/index.html (renderer input sha + fresh render)", same))
+        if not same:
+            problems.append(f"docs/index.html: About card is not the fresh render of the canonical payload (stamp ok: {stamp_ok})")
+    # User Guide: the exact Markdown bytes the guide renderer consumed (written by the build)
+    gi = _REPO / "docs" / "guide" / "build" / "mission_vision_input.md"
+    if gi.exists():
+        same = gi.read_bytes() == can
+        report.append(("MISSION-VISION", "docs/guide/build/mission_vision_input.md (guide renderer input)", same))
+        if not same:
+            problems.append("User Guide renderer input != canonical payload bytes")
+    # the retired .txt source must have no active consumer
+    for f in list((_REPO / "tools").glob("*.py")) + list((_REPO / "v3" / "web").glob("*.py")) + [_REPO / "cron" / "refresh_v3_pages.sh"]:
+        if "mission_vision.txt" in f.read_text(encoding="utf-8", errors="replace") and f.name != "check_copy_consistency.py":
+            problems.append(f"{f.relative_to(_REPO)}: still references the retired mission_vision.txt")
+
+
 def main() -> int:
     # --extra-target PATH [PATH ...]: additional LOOKAHEAD targets checked on
     # demand (ORDER 2026-09-05C G-c: the extracted text of the User Guide PDF
@@ -146,6 +199,9 @@ def main() -> int:
     problems: list[str] = []
     report = []
     for name, spec in BLOCKS.items():
+        if spec.get("mode") == "mission_vision":
+            _mission_vision_surfaces(problems, report)
+            continue
         if extra:
             b = _marker(spec, name, "BEGIN")
             hits = [x for x in extra if Path(x).exists() and b in Path(x).read_text(encoding="utf-8", errors="replace")]
@@ -177,7 +233,7 @@ def main() -> int:
             print("  ·", p)
         return 1
     print(f"[copy-consistency] OK — {len(report)} target blocks byte-identical to their canonical sources "
-          f"({', '.join(f'{n}: sha256 {_sha(canonical_bytes(s['canonical'], [], s, n))[:12]}' for n, s in BLOCKS.items())})")
+          f"({', '.join(f'{n}: sha256 {_block_sha(n, s)[:12]}' for n, s in BLOCKS.items())})")
     return 0
 
 
