@@ -2,9 +2,54 @@
 
 # YUCLAW
 
-**The open evidence layer for financial research — every claim carries its own audit trail.**
+**Research & education only. Not investment advice.**
 
-Statistics pre-registered before data. Adverse results published.
+</div>
+
+<pre>
+<!-- MISSION-VISION-CANONICAL:BEGIN -->
+Evidence-First Financial AI
+The Science Trust Layer for Financial AI.
+
+Financial AI normally gives you an answer.
+YUCLAW gives you the evidence — what was known, when it was known,
+what it can support, what it cannot, and whether the conclusion
+survived.
+
+MISSION
+Make financial AI accountable to evidence.
+Every claim traced to the filing it came from. Every method locked
+before the data arrived. Every conclusion carrying its own limits.
+Every result kept — including the ones we wished had come out
+differently — in a public, hash-linked record built to be recomputed
+by anyone.
+
+VISION
+Become the Science Trust Layer for Financial AI: the evidence
+infrastructure that AI systems, researchers and institutions use to
+decide what deserves to be believed.
+
+HOW WE WORK
+We don't ask you to trust us. We give you the hash.
+We don't predict. We register, compute once, and disclose.
+We don't hide the days we were wrong. We chain them.
+
+WHAT YOU GET
+Analysts: the evidence behind every label, and the label's limits.
+Builders: machine-readable receipts — passports, endpoints, a
+registry you can walk line by line.
+Institutions: a record that can be audited without asking us.
+
+Statistics is one instrument. Evidence is the foundation. Science
+is the discipline. AI is the market. Trust is the product.
+Accountability is the mission.
+
+82 chained protocol lines · 132 names,
+honestly labeled · Built in Canada.
+<!-- MISSION-VISION-CANONICAL:END -->
+</pre>
+
+<div align="center">
 
 <!-- REPLICATION-SENTENCE-CANONICAL BEGIN -->
 Designed for reproduction from published artifacts. One affiliated external-machine reproduction recorded; unaffiliated replications: 0.

@@ -138,6 +138,28 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     use_research_block = use_in_research_html(None, guide_link=True)
     status_block = status_block_html()
 
+    # MISSION & VISION canonical block (MICRO 2026-09-07A): the About card
+    # carries the whole owner-approved text VERBATIM between the G1 markers
+    # (byte-identical to README and the User Guide; placeholders filled by the
+    # generator from the registry — never typed here); the strip near the
+    # disclaimer repeats HOW WE WORK / WHAT YOU GET and the counts line
+    # compactly, from the same generator.
+    import sys as _sys
+    _tools = str(Path(__file__).resolve().parents[2] / "tools")
+    if _tools not in _sys.path:
+        _sys.path.insert(0, _tools)
+    import yuclaw_mission_vision as _mv
+    _sec = _mv.sections()
+    _li = lambda items: "".join(f"<li>{escape(i)}</li>" for i in items)   # noqa: E731
+    mv_strip = f"""<div class="mv-strip">
+      <div><div class="mv-k">How we work</div><ul>{_li(_sec['how_we_work'])}</ul></div>
+      <div><div class="mv-k">What you get</div><ul>{_li(_sec['what_you_get'])}</ul></div>
+      <div class="mv-counts">{escape(_sec['counts'])}</div>
+    </div>"""
+    mv_about = f"""<div class="card" id="about">
+      <div class="card-title">About YUCLAW — mission and vision</div>
+      <pre class="mv">{_mv.wrapped()}</pre>
+    </div>"""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,6 +186,13 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     .tagline{{font-size:15px;color:#A0AEC0}}
     .disclaimer-line{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:11px 16px;margin-bottom:22px;font-size:12px;line-height:1.55;color:#A0AEC0}}
     .disclaimer-line strong{{color:#FBA94B}}
+    .mv-strip{{display:flex;gap:18px;flex-wrap:wrap;background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:14px 18px;margin:-8px 0 22px}}
+    .mv-strip>div{{flex:1;min-width:260px}}
+    .mv-k{{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px}}
+    .mv-strip ul{{margin:0;padding-left:16px;font-size:12.5px;color:#A0AEC0;line-height:1.55}}
+    .mv-strip li{{margin:2px 0}}
+    .mv-counts{{flex-basis:100%;font-family:JetBrains Mono,monospace;font-size:11.5px;color:#718096;margin-top:4px}}
+    .mv{{white-space:pre-wrap;font-family:Inter,system-ui,sans-serif;font-size:13.5px;line-height:1.65;color:#E2E8F0;background:transparent;margin:0;padding:0}}
     .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}}
     .disclaimer strong{{color:#FBA94B}}
     .card{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}}
@@ -204,6 +233,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       <strong>Disclaimer —</strong> Research &amp; education only. Not investment advice. Signal labels are research classifications, not buy/sell recommendations.
     </div>
     <p class="provenance-line" style="font-size:11.5px;color:#718096;margin:-12px 0 22px;line-height:1.5">Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.</p>
+    {mv_strip}
 
     <div class="card">
       <div class="card-title">Current signals — Forward Tracking Ledger</div>
@@ -283,6 +313,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
         </div>
       </div>
     </details>
+
+    {mv_about}
 
     {use_research_block}
 

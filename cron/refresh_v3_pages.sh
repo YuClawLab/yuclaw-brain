@@ -95,6 +95,8 @@ fi
 /usr/bin/python3 tools/check_language.py --pages docs/*.html README.md COMPARISON.md CHANGELOG.md || exit 16
 # ORDER 2026-09-05B: generated replication sentence + copy-consistency (G1) + release-manifest gates (G2/G3/G4, local)
 /usr/bin/python3 tools/yuclaw_replication_sentence.py --check || exit 61
+# MICRO 2026-09-07A: the MISSION & VISION block carries generated counts; refill README before G1
+/usr/bin/python3 tools/yuclaw_mission_vision.py --write-readme || exit 64
 /usr/bin/python3 tools/check_copy_consistency.py || exit 62
 /usr/bin/python3 tools/check_release_manifest.py || exit 63
 # Copy-integrity rail (2026-07-22): clipped decimals, unclosed parens,
@@ -200,7 +202,8 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/sectors.html docs/tour.html docs/methodology.html \
                  docs/capabilities.json docs/evidence docs/ledger \
                  docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html \
-                 registry/completeness_profile.json registry/research_state.json
+                 registry/completeness_profile.json registry/research_state.json \
+                 README.md
 # Observation chain exists only once the first observation is admitted
 # (~2026-09-08); guarded add so an absent file never errors the chain.
 [ -f registry/anytime_observations.jsonl ] && /usr/bin/git add registry/anytime_observations.jsonl
