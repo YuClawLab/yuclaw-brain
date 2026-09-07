@@ -210,9 +210,9 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     .mv-card ul{{margin:0 0 16px 0;padding-left:22px}} .mv-card li{{margin:6px 0}}
     .mv-card table{{border-collapse:collapse;width:100%;max-width:70ch;margin:8px 0 12px;font-size:16px}}
     .mv-card th{{text-align:left;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#b7c5bd;padding:0 16px 10px 0;border:none;background:transparent}}
-    .mv-card td{{padding:9px 16px 9px 0;vertical-align:top;border:none;background:transparent;color:#f3f6f4}}
+    .mv-card td{{font-size:16px;line-height:1.55;padding:11px 18px 11px 0;vertical-align:top;border:none;background:transparent;color:#f3f6f4}}
     .mv-card td:first-child{{font-weight:700;white-space:nowrap}}
-    .mv-card tr:nth-child(even) td{{background:transparent}}
+    .mv-card tr:nth-child(even) td,.mv-card tr:hover td{{background:transparent}}
     .mv-card hr{{border:none;border-top:1px solid #1e2a25;margin:40px 0 28px}}
     .mv-card hr + blockquote{{border-left-color:#2f3d36;color:#b7c5bd;font-size:16px;font-style:italic;margin-bottom:34px}}
     .mv-card hr + blockquote em{{font-style:italic}}
@@ -223,7 +223,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       .mv-card .mv-h2{{font-size:28px}}
       .mv-card blockquote{{font-size:17px;padding-left:16px}}
       .mv-card td:first-child{{white-space:normal}}
-      .mv-card th,.mv-card td{{display:block;padding:4px 0}}
+      .mv-card th,.mv-card td{{display:block;padding:4px 0;font-size:16px}}
       .mv-card thead{{display:none}} .mv-card tr{{display:block;padding:8px 0}}
     }}
     .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:14px 18px;font-size:12px;line-height:1.55;color:#A0AEC0}}
@@ -260,6 +260,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       <h1>Evidence-First Financial AI</h1>
       <p class="tagline">Every signal traces to a real SEC filing.</p>
       <div class="features">Agent Research API <span>·</span> MCP <span>·</span> LangChain/LlamaIndex <span>·</span> pip install yuclaw</div>
+      <p class="hero-links" style="margin:14px 0 0"><a href="#about" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">About YUCLAW</a></p>
     </div>
 
     <div class="disclaimer-line">
