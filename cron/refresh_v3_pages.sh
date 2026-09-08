@@ -120,13 +120,16 @@ print('[registry] chain OK')" || exit 19
 # structurally isolated from the composite; non-fatal.
 /usr/bin/python3 tools/yuclaw_c2_challenger.py || echo "[refresh_v3_pages] c2 challenger failed (non-fatal)"
 
-# Weekly evidence note (2026-08-01): Fridays only; auto-drafted, railed at build.
-if [ "$(date +%u)" = "5" ]; then
-    /usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
-fi
+# Weekly evidence note (2026-08-01; cadence change 2026-09-08, V7-003E):
+# regenerated ONCE before every nightly check — it is a refreshable current
+# summary of the trailing 7-day window, not a Friday-only page (a mid-week
+# note drifted from the store on 09-02/09-03). Producer failure = exit 23.
+/usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
 # Note-reconciliation gate (P0.4, 2026-08-01): the published note must agree
 # with the registry and the evidence store — hard gate whenever a note exists.
-/usr/bin/python3 tools/check_weekly_note.py || exit 24
+# Scheduled path REQUIRES note contract v2 (window + as_of cutoff); no legacy
+# fallback here. Mismatch or missing metadata = exit 24.
+/usr/bin/python3 tools/check_weekly_note.py --require-contract v2 || exit 24
 # Universe-integrity gate (P1.7): threshold-table match + delisting watch.
 /usr/bin/python3 tools/check_universe_integrity.py || exit 25
 # U350 isolation gate (Phase 0, 2026-08-02): cross-universe refusals proven

@@ -9,7 +9,17 @@ calendar reads. Zero free prose invention: every sentence is a template
 filled from queried values. Full language rail + the forbidden-word set
 run AT BUILD TIME — the build fails rather than shipping a violation.
 Renders docs/weekly_note.html with the standing disclaimers; runs as a
-Friday step in the daily chain.
+nightly step in the daily chain (cadence change 2026-09-08, V7-003E: the
+note is a refreshable current summary, regenerated once before every
+nightly check; the trailing 7-day window contract is unchanged).
+
+Note contract v2 (2026-09-08): every generated note carries the window
+endpoints and one UTC ``as_of`` acceptance cutoff (``events.created_at <=
+as_of``; created_at is the insertion time, assigned at transaction start,
+never updated). The checker applies the same cutoff. A cutoff is not a
+database snapshot: a row whose inserting transaction began before as_of but
+committed after this generator read it is counted by the checker only —
+that residual race legitimately stops the chain.
 """
 from __future__ import annotations
 
@@ -29,6 +39,39 @@ from check_language import lint_text
 from v3.web.useful_blocks import footer_stamp_html, build_footer, freshness_strip, site_header_html
 
 OUT = _REPO / "docs" / "weekly_note.html"
+NOTE_CONTRACT = "v2"
+AS_OF_MEANING = "acceptance cutoff on events.created_at (insertion time)"
+AS_OF_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"          # full microsecond precision, UTC
+# Single SQL text for the accepted-event count, shared with check_weekly_note.py
+# (imported there) so producer and checker cannot drift apart.
+EVENTS_COUNT_SQL = """SELECT ticker, count(*) FROM events
+                   WHERE event_status='accepted'
+                     AND created_at::date BETWEEN %s AND %s
+                     AND created_at <= %s
+                   GROUP BY 1"""
+
+
+def format_as_of(as_of: datetime) -> str:
+    if as_of.tzinfo is None or as_of.utcoffset() != timedelta(0):
+        raise ValueError("as_of must be an aware UTC datetime")
+    return as_of.strftime(AS_OF_FORMAT)
+
+
+def count_params(start: date, end: date, as_of: datetime) -> tuple:
+    if as_of.tzinfo is None or as_of.utcoffset() != timedelta(0):
+        raise ValueError("as_of must be an aware UTC datetime")
+    return (start, end, as_of)
+
+
+def render_metadata(start: date, end: date, as_of: datetime) -> tuple[str, str]:
+    """(head_meta_html, visible_line_html) — the contract-v2 markers."""
+    s = format_as_of(as_of)
+    head = (f'  <meta name="yuclaw-note-contract" content="{NOTE_CONTRACT}">\n'
+            f'  <meta name="yuclaw-note-window" content="{start.isoformat()}/{end.isoformat()}">\n'
+            f'  <meta name="yuclaw-note-as-of" content="{s}">')
+    visible = (f'Weekly window · refreshed nightly · window {start.isoformat()} → {end.isoformat()} · '
+               f'as_of {s} ({escape(AS_OF_MEANING)})')
+    return head, visible
 FORBIDDEN = re.compile(r"\bproof\b|certificate|mathematical verification|"
                        r"validated|conservation law", re.I)
 IMPLICATION = ("Investment implication: none established — no buy, sell, or "
@@ -45,7 +88,7 @@ def week_window(today: date) -> tuple[date, date]:
     return start, end
 
 
-def gather(start: date, end: date) -> dict:
+def gather(start: date, end: date, as_of: datetime, *, connect=None, registry=None) -> dict:
     # evidence-changes archive
     total_filings, total_events, days = 0, 0, 0
     arch = _REPO / "docs" / "evidence_changes"
@@ -65,18 +108,20 @@ def gather(start: date, end: date) -> dict:
     # events accepted: DIRECT evidence-store count for the true window
     # (acceptance time), split canonical scoring universe vs evidence tier —
     # single source, no digest intermediary (correction of 2026-08-01).
-    import psycopg2
-    from v3.lab.cohort_engine import DSN
+    # Contract v2: one acceptance cutoff (as_of, UTC) applied on top of the
+    # unchanged window/eligibility predicates — the same SQL text and
+    # parameters the checker uses.
     from v3.universe_tiers import evidence_tier_tickers, scoring_universe
+    if connect is None:
+        import psycopg2
+        from v3.lab.cohort_engine import DSN
+        connect = lambda: psycopg2.connect(DSN)  # noqa: E731
     ev_canon = ev_tier = 0
-    with psycopg2.connect(DSN) as cn:
-        cn.set_session(readonly=True)
+    with connect() as cn:
+        if hasattr(cn, "set_session"):
+            cn.set_session(readonly=True)
         with cn.cursor() as cur:
-            cur.execute(
-                """SELECT ticker, count(*) FROM events
-                   WHERE event_status='accepted'
-                     AND created_at::date BETWEEN %s AND %s
-                   GROUP BY 1""", (start, end))
+            cur.execute(EVENTS_COUNT_SQL, count_params(start, end, as_of))
             tier = evidence_tier_tickers()
             canon = scoring_universe()
             for tk, n in cur.fetchall():
@@ -85,8 +130,10 @@ def gather(start: date, end: date) -> dict:
                 elif tk in canon:
                     ev_canon += n
 
-    from yuclaw_protocol_registry import Registry
-    reg = Registry(str(_REPO / "registry" / "protocols.jsonl"))
+    if registry is None:
+        from yuclaw_protocol_registry import Registry
+        registry = Registry(str(_REPO / "registry" / "protocols.jsonl"))
+    reg = registry
     protos, runs, sups = [], [], []
     for ln in reg._lines:
         pl = ln["payload"]
@@ -105,9 +152,11 @@ def gather(start: date, end: date) -> dict:
 
 
 def main() -> int:
-    today = datetime.now(timezone.utc).date()
+    as_of = datetime.now(timezone.utc)          # captured BEFORE any counting
+    today = as_of.date()
     start, end = week_window(today)
-    g = gather(start, end)
+    g = gather(start, end, as_of)
+    meta_head, meta_visible = render_metadata(start, end, as_of)
 
     proto_list = "".join(f"<li>{escape(n)}</li>" for n in g["protocols"]) or \
         "<li>none this week</li>"
@@ -134,6 +183,7 @@ def main() -> int:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>YUCLAW · Weekly Evidence Note</title>
   <meta name="description" content="Auto-drafted weekly note from live evidence sources. Research only — not investment advice.">
+{meta_head}
   <style>
     *{{margin:0;padding:0;box-sizing:border-box}}
     body{{background:#0B0E14;font-family:Inter,sans-serif;color:#E2E8F0;line-height:1.6}}
@@ -153,6 +203,8 @@ def main() -> int:
     <h1 style="font-size:24px;font-weight:800;margin-bottom:4px">Weekly Evidence Note</h1>
     <p style="font-size:13px;color:#718096;margin-bottom:14px;font-family:JetBrains Mono,monospace">
       week of {start} → {end} · auto-drafted from live sources</p>
+    <p style="font-size:12px;color:#718096;margin-bottom:14px;font-family:JetBrains Mono,monospace">
+      {meta_visible}</p>
     <div class="disclaimer"><strong>Disclaimer —</strong> {escape(DISCLAIMER)}
       Every sentence below is a template filled from queried values; nothing is hand-written.</div>
 
@@ -161,7 +213,9 @@ def main() -> int:
       <p style="font-size:13px;color:#A0AEC0">{g['filings']} new filings across {g['days']} archived
       days; {g['events']} events accepted into the evidence store in the window
       ({g['events_canonical']} on scoring-universe names, {g['events_tier']} on evidence-tier
-      names — counted directly from the store by acceptance time).</p>
+      names — counted directly from the store by acceptance time, up to the as_of cutoff above;
+      a count for an unchanged window can change on a later refresh when earlier events are
+      accepted or corrected).</p>
       <p style="font-size:11px;color:#718096;margin-top:6px">Counts corrected 2026-08-01;
       the generator now reads the registry and the evidence store directly (a prior build
       under-counted events via a digest-field mismatch).</p>
@@ -198,7 +252,7 @@ def main() -> int:
     OUT.write_text(html)
     # SELF-CHECK (red-team fix, 2026-08-01): the note's registry counts must
     # equal an independent recount from the chain — a mismatch FAILS the
-    # chain (the Friday step propagates the nonzero exit).
+    # chain (the nightly producer step propagates the nonzero exit, code 23).
     from yuclaw_protocol_registry import Registry as _R
     _r = _R(str(_REPO / "registry" / "protocols.jsonl"))
     chk_protos = sum(1 for l in _r._lines if l["kind"] == "protocol"
@@ -217,7 +271,7 @@ def main() -> int:
               f"{len(g['supersessions'])}s) != registry recount "
               f"({chk_protos}p/{chk_runs}r/{chk_sups}s)")
         return 1
-    print(f"[weekly-note] wrote {OUT} ({start} -> {end}; "
+    print(f"[weekly-note] wrote {OUT} ({start} -> {end}; as_of {format_as_of(as_of)}; "
           f"{g['filings']} filings, {g['n_runs']} runs; self-check OK)")
     return 0
 
