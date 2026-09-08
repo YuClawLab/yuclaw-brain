@@ -127,9 +127,10 @@ print('[registry] chain OK')" || exit 19
 /usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
 # Note-reconciliation gate (P0.4, 2026-08-01): the published note must agree
 # with the registry and the evidence store — hard gate whenever a note exists.
-# Scheduled path REQUIRES note contract v2 (window + as_of cutoff); no legacy
-# fallback here. Mismatch or missing metadata = exit 24.
-/usr/bin/python3 tools/check_weekly_note.py --require-contract v2 || exit 24
+# Scheduled path REQUIRES note contract v3 (window + as_of = generated at; live
+# recheck, no cutoff — V7-003E-C1); no legacy fallback here. Mismatch or
+# missing metadata = exit 24.
+/usr/bin/python3 tools/check_weekly_note.py --require-contract v3 || exit 24
 # Universe-integrity gate (P1.7): threshold-table match + delisting watch.
 /usr/bin/python3 tools/check_universe_integrity.py || exit 25
 # U350 isolation gate (Phase 0, 2026-08-02): cross-universe refusals proven

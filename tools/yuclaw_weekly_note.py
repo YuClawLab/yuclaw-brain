@@ -13,13 +13,17 @@ nightly step in the daily chain (cadence change 2026-09-08, V7-003E: the
 note is a refreshable current summary, regenerated once before every
 nightly check; the trailing 7-day window contract is unchanged).
 
-Note contract v2 (2026-09-08): every generated note carries the window
-endpoints and one UTC ``as_of`` acceptance cutoff (``events.created_at <=
-as_of``; created_at is the insertion time, assigned at transaction start,
-never updated). The checker applies the same cutoff. A cutoff is not a
-database snapshot: a row whose inserting transaction began before as_of but
-committed after this generator read it is counted by the checker only —
-that residual race legitimately stops the chain.
+Note contract v3 (2026-09-08, V7-003E-C1 — the approved Branch B fallback):
+every generated note carries the window endpoints and one UTC ``as_of`` that
+means GENERATED AT (the moment this page was produced). It is NOT an
+eligibility cutoff and NOT a snapshot: counts are recomputed live from the
+store under the original window/acceptance rules (CUTOFF_MODE=LIVE_RECHECK),
+so a count for an unchanged window can change on a later refresh as earlier
+events are accepted or corrected, and the checker recounts live too — an
+input change between production and check legitimately stops the chain.
+Contract v2 (acceptance-cutoff semantics, b8e46079) is superseded and never
+reinterpreted. SNAPSHOT_CONTRACT_PENDING: reconstructing the input state at a
+cutoff needs a design Astra has not issued.
 """
 from __future__ import annotations
 
@@ -39,15 +43,17 @@ from check_language import lint_text
 from v3.web.useful_blocks import footer_stamp_html, build_footer, freshness_strip, site_header_html
 
 OUT = _REPO / "docs" / "weekly_note.html"
-NOTE_CONTRACT = "v2"
-AS_OF_MEANING = "acceptance cutoff on events.created_at (insertion time)"
+NOTE_CONTRACT = "v3"                            # v2 = superseded acceptance-cutoff semantics
+AS_OF_MEANING = "generated-at"                  # machine marker; v3 as_of is generation time only
+AS_OF_MEANING_TEXT = "generated at, UTC — not a cutoff; counts are recomputed live"
 AS_OF_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"          # full microsecond precision, UTC
 # Single SQL text for the accepted-event count, shared with check_weekly_note.py
-# (imported there) so producer and checker cannot drift apart.
+# (imported there) so producer and checker cannot drift apart. ORIGINAL rules
+# only: accepted status + trailing window on created_at::date (session TZ).
+# No generation-time restriction (Branch B, LIVE_RECHECK).
 EVENTS_COUNT_SQL = """SELECT ticker, count(*) FROM events
                    WHERE event_status='accepted'
                      AND created_at::date BETWEEN %s AND %s
-                     AND created_at <= %s
                    GROUP BY 1"""
 
 
@@ -57,10 +63,9 @@ def format_as_of(as_of: datetime) -> str:
     return as_of.strftime(AS_OF_FORMAT)
 
 
-def count_params(start: date, end: date, as_of: datetime) -> tuple:
-    if as_of.tzinfo is None or as_of.utcoffset() != timedelta(0):
-        raise ValueError("as_of must be an aware UTC datetime")
-    return (start, end, as_of)
+def count_params(start: date, end: date) -> tuple:
+    """Parameters of EVENTS_COUNT_SQL — the window only (no cutoff argument)."""
+    return (start, end)
 
 
 def render_metadata(start: date, end: date, as_of: datetime) -> tuple[str, str]:
@@ -68,9 +73,10 @@ def render_metadata(start: date, end: date, as_of: datetime) -> tuple[str, str]:
     s = format_as_of(as_of)
     head = (f'  <meta name="yuclaw-note-contract" content="{NOTE_CONTRACT}">\n'
             f'  <meta name="yuclaw-note-window" content="{start.isoformat()}/{end.isoformat()}">\n'
-            f'  <meta name="yuclaw-note-as-of" content="{s}">')
+            f'  <meta name="yuclaw-note-as-of" content="{s}">\n'
+            f'  <meta name="yuclaw-note-as-of-meaning" content="{AS_OF_MEANING}">')
     visible = (f'Weekly window · refreshed nightly · window {start.isoformat()} → {end.isoformat()} · '
-               f'as_of {s} ({escape(AS_OF_MEANING)})')
+               f'as_of {s} ({escape(AS_OF_MEANING_TEXT)})')
     return head, visible
 FORBIDDEN = re.compile(r"\bproof\b|certificate|mathematical verification|"
                        r"validated|conservation law", re.I)
@@ -88,7 +94,7 @@ def week_window(today: date) -> tuple[date, date]:
     return start, end
 
 
-def gather(start: date, end: date, as_of: datetime, *, connect=None, registry=None) -> dict:
+def gather(start: date, end: date, *, connect=None, registry=None) -> dict:
     # evidence-changes archive
     total_filings, total_events, days = 0, 0, 0
     arch = _REPO / "docs" / "evidence_changes"
@@ -108,9 +114,8 @@ def gather(start: date, end: date, as_of: datetime, *, connect=None, registry=No
     # events accepted: DIRECT evidence-store count for the true window
     # (acceptance time), split canonical scoring universe vs evidence tier —
     # single source, no digest intermediary (correction of 2026-08-01).
-    # Contract v2: one acceptance cutoff (as_of, UTC) applied on top of the
-    # unchanged window/eligibility predicates — the same SQL text and
-    # parameters the checker uses.
+    # Branch B (LIVE_RECHECK): the ORIGINAL window/acceptance predicates only,
+    # through the same SQL text and parameters the checker uses. No cutoff.
     from v3.universe_tiers import evidence_tier_tickers, scoring_universe
     if connect is None:
         import psycopg2
@@ -121,7 +126,7 @@ def gather(start: date, end: date, as_of: datetime, *, connect=None, registry=No
         if hasattr(cn, "set_session"):
             cn.set_session(readonly=True)
         with cn.cursor() as cur:
-            cur.execute(EVENTS_COUNT_SQL, count_params(start, end, as_of))
+            cur.execute(EVENTS_COUNT_SQL, count_params(start, end))
             tier = evidence_tier_tickers()
             canon = scoring_universe()
             for tk, n in cur.fetchall():
@@ -152,10 +157,10 @@ def gather(start: date, end: date, as_of: datetime, *, connect=None, registry=No
 
 
 def main() -> int:
-    as_of = datetime.now(timezone.utc)          # captured BEFORE any counting
+    as_of = datetime.now(timezone.utc)          # generation time — display only, never a filter
     today = as_of.date()
     start, end = week_window(today)
-    g = gather(start, end, as_of)
+    g = gather(start, end)
     meta_head, meta_visible = render_metadata(start, end, as_of)
 
     proto_list = "".join(f"<li>{escape(n)}</li>" for n in g["protocols"]) or \
@@ -213,9 +218,9 @@ def main() -> int:
       <p style="font-size:13px;color:#A0AEC0">{g['filings']} new filings across {g['days']} archived
       days; {g['events']} events accepted into the evidence store in the window
       ({g['events_canonical']} on scoring-universe names, {g['events_tier']} on evidence-tier
-      names — counted directly from the store by acceptance time, up to the as_of cutoff above;
-      a count for an unchanged window can change on a later refresh when earlier events are
-      accepted or corrected).</p>
+      names — counted live from the store by acceptance time at generation; the as_of above is
+      the generation time, not a cutoff, so a count for this window can change on a later
+      refresh as earlier events are accepted or corrected).</p>
       <p style="font-size:11px;color:#718096;margin-top:6px">Counts corrected 2026-08-01;
       the generator now reads the registry and the evidence store directly (a prior build
       under-counted events via a digest-field mismatch).</p>
