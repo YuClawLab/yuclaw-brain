@@ -1,27 +1,27 @@
 {
  "ticker": "WFC",
- "generated": "2026-09-04T23:01:32.922045+00:00",
+ "generated": "2026-09-08T23:01:41.723069+00:00",
  "label": "WATCH",
- "score": 0.1946,
+ "score": 0.1679,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.045,
+  "c1": 0.021,
   "c2": 0.0,
-  "c3": -0.33971453,
+  "c3": -0.4693808,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.028767763,
+  "c7": -0.037519347,
   "c8": 0.0,
   "c9": 0.53333336
  },
  "evidence_coverage": {
-  "ecs": 55,
+  "ecs": 53,
   "events_90d": 3,
-  "recency_days": 16.3,
+  "recency_days": 20.3,
   "type_diversity": 1,
   "substrate_active": 1
  },
@@ -88,6 +88,14 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-04",
    "label": "WATCH"
@@ -199,14 +207,6 @@
   {
    "date": "2026-07-29",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WFC --date D",

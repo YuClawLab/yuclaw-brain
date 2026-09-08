@@ -1,27 +1,27 @@
 {
  "ticker": "LLY",
- "generated": "2026-09-04T23:01:32.922045+00:00",
+ "generated": "2026-09-08T23:01:41.723069+00:00",
  "label": "WEAKENING",
- "score": -0.0638,
+ "score": -0.138,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0875,
+  "c1": -0.2855,
   "c2": 0.0,
-  "c3": -0.48478267,
+  "c3": -0.84089726,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.30098143,
-  "c7": -0.041034997,
+  "c6": -0.20602573,
+  "c7": -0.05304702,
   "c8": 0.0,
-  "c9": -0.6666667
+  "c9": -0.53846157
  },
  "evidence_coverage": {
-  "ecs": 77,
+  "ecs": 75,
   "events_90d": 6,
-  "recency_days": 17.1,
+  "recency_days": 21.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -108,6 +108,14 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-08",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-04",
    "label": "WEAKENING"
@@ -219,14 +227,6 @@
   {
    "date": "2026-07-29",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LLY --date D",

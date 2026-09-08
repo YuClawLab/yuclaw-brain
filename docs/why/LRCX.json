@@ -1,27 +1,27 @@
 {
  "ticker": "LRCX",
- "generated": "2026-09-04T23:01:32.922045+00:00",
+ "generated": "2026-09-08T23:01:41.723069+00:00",
  "label": "WATCH",
- "score": 0.0366,
+ "score": 0.0674,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.0035,
+  "c1": 0.2395,
   "c2": 0.0,
-  "c3": 0.574836,
+  "c3": 0.49992236,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.01671599,
+  "c7": 0.017850906,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 90,
   "events_90d": 52,
-  "recency_days": 1.2,
+  "recency_days": 5.2,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -619,6 +619,14 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-09-04",
    "label": "WATCH"
   },
@@ -729,14 +737,6 @@
   {
    "date": "2026-07-29",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "NEGATIVE_EVENT"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LRCX --date D",
