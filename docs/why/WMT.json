@@ -1,27 +1,27 @@
 {
  "ticker": "WMT",
- "generated": "2026-09-08T23:01:41.723069+00:00",
+ "generated": "2026-09-09T23:01:45.668319+00:00",
  "label": "WEAKENING",
- "score": -0.0474,
+ "score": -0.0804,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.2685,
+  "c1": -0.269,
   "c2": 0.0,
-  "c3": -0.06200641,
+  "c3": -0.38027152,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.3434616,
-  "c7": 0.027555386,
+  "c6": -0.31335357,
+  "c7": 0.099902764,
   "c8": 0.0,
-  "c9": -0.2
+  "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 82,
   "events_90d": 31,
-  "recency_days": 6.1,
+  "recency_days": 7.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -699,6 +699,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-09",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-08",
    "label": "WEAKENING"
   },
@@ -813,10 +817,6 @@
   {
    "date": "2026-07-30",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-29",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WMT --date D",
