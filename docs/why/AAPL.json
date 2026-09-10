@@ -1,31 +1,41 @@
 {
  "ticker": "AAPL",
- "generated": "2026-09-09T23:01:45.668319+00:00",
- "label": "WATCH",
- "score": 0.1476,
+ "generated": "2026-09-10T23:01:30.439529+00:00",
+ "label": "WEAKENING",
+ "score": -0.0022,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.032,
+  "c1": 0.297,
   "c2": 0.0,
-  "c3": 0.6486519,
+  "c3": -0.5079329,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.09295321,
-  "c7": 0.035191715,
+  "c6": -0.17371018,
+  "c7": 0.003277731,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 7,
-  "recency_days": 6.0,
+  "ecs": 87,
+  "events_90d": 8,
+  "recency_days": 0.0,
   "type_diversity": 2,
   "substrate_active": 1
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-10",
+   "accession_number": "0001140361-26-036226",
+   "excerpt": "Newstead Jennifer S 1438 shares @ $317.23 on 2026-09-08 ($456,177)",
+   "source_hash": "3f7d7597176d720634d07d19ec92c4e8dc6dc775a63981ab4e81657ca48884c9",
+   "available_as_of": "2026-09-10T16:31:26.045231-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -171,8 +181,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-04-03",
    "accession_number": "0001140361-26-013190",
-   "excerpt": "COOK TIMOTHY D S 16083 shares @ $254.37 on 2026-04-02 ($4,091,033)",
-   "source_hash": "62c31695100263ee45bce92123f686da14f7d14ead80ff499559d9663ab193f8",
+   "excerpt": "COOK TIMOTHY D S 28188 shares @ $255.17 on 2026-04-02 ($7,192,732)",
+   "source_hash": "f0328e51d229e5a645cbf2c6589e3e01ed6ecb8d6b21ee4a9729200ad2b75eeb",
    "available_as_of": "2026-04-03T16:30:41-06:00",
    "protocol_id": null
   },
@@ -191,8 +201,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-04-03",
    "accession_number": "0001140361-26-013190",
-   "excerpt": "COOK TIMOTHY D S 28188 shares @ $255.17 on 2026-04-02 ($7,192,732)",
-   "source_hash": "f0328e51d229e5a645cbf2c6589e3e01ed6ecb8d6b21ee4a9729200ad2b75eeb",
+   "excerpt": "COOK TIMOTHY D S 4566 shares @ $256.00 on 2026-04-02 ($1,168,896)",
+   "source_hash": "531ae0be2c1654d2d3ab1549375e514f6cf107e9e569e254814283cb61b06bbb",
    "available_as_of": "2026-04-03T16:30:41-06:00",
    "protocol_id": null
   },
@@ -201,8 +211,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-04-03",
    "accession_number": "0001140361-26-013190",
-   "excerpt": "COOK TIMOTHY D S 4566 shares @ $256.00 on 2026-04-02 ($1,168,896)",
-   "source_hash": "531ae0be2c1654d2d3ab1549375e514f6cf107e9e569e254814283cb61b06bbb",
+   "excerpt": "COOK TIMOTHY D S 16083 shares @ $254.37 on 2026-04-02 ($4,091,033)",
+   "source_hash": "62c31695100263ee45bce92123f686da14f7d14ead80ff499559d9663ab193f8",
    "available_as_of": "2026-04-03T16:30:41-06:00",
    "protocol_id": null
   },
@@ -228,6 +238,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-10",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-09",
    "label": "WATCH"
@@ -343,10 +357,6 @@
   {
    "date": "2026-07-31",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-30",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",

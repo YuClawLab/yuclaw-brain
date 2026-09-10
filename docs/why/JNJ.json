@@ -1,27 +1,27 @@
 {
  "ticker": "JNJ",
- "generated": "2026-09-09T23:01:45.668319+00:00",
- "label": "WATCH",
- "score": 0.0446,
+ "generated": "2026-09-10T23:01:30.439529+00:00",
+ "label": "WEAKENING",
+ "score": -0.011,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.151,
+  "c1": 0.0865,
   "c2": 0.0,
-  "c3": 0.41239697,
+  "c3": 0.17449819,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.04533109,
+  "c7": -0.027684277,
   "c8": 0.0,
   "c9": -0.6
  },
  "evidence_coverage": {
   "ecs": 83,
   "events_90d": 16,
-  "recency_days": 5.4,
+  "recency_days": 6.4,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -339,6 +339,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-10",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-09",
    "label": "WATCH"
   },
@@ -453,10 +457,6 @@
   {
    "date": "2026-07-31",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-30",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay JNJ --date D",
