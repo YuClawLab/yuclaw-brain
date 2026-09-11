@@ -1,27 +1,27 @@
 {
  "ticker": "LUNR",
- "generated": "2026-09-10T23:01:30.439529+00:00",
- "label": "WATCH",
- "score": 0.0057,
+ "generated": "2026-09-11T23:01:47.795900+00:00",
+ "label": "WEAKENING",
+ "score": -0.0382,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.3675,
+  "c1": -0.646,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.39454812,
+  "c6": -0.36083513,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.46666667
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 28,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 3,
   "substrate_active": 1
  },
@@ -549,6 +549,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-11",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-09-10",
    "label": "WATCH"
   },
@@ -663,10 +667,6 @@
   {
    "date": "2026-08-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LUNR --date D",

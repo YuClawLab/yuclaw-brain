@@ -1,27 +1,27 @@
 {
  "ticker": "UNH",
- "generated": "2026-09-10T23:01:30.439529+00:00",
- "label": "WATCH",
- "score": 0.1181,
+ "generated": "2026-09-11T23:01:47.795900+00:00",
+ "label": "WEAKENING",
+ "score": -0.0501,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.2505,
+  "c1": -0.287,
   "c2": 0.0,
-  "c3": 0.17449819,
+  "c3": -0.6767205,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.01852168,
-  "c7": 0.0055305785,
+  "c6": -0.016775878,
+  "c7": -0.0039504324,
   "c8": 0.0,
   "c9": -0.16666667
  },
  "evidence_coverage": {
   "ecs": 61,
   "events_90d": 3,
-  "recency_days": 16.1,
+  "recency_days": 17.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -78,6 +78,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-11",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-10",
    "label": "WATCH"
@@ -193,10 +197,6 @@
   {
    "date": "2026-08-03",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay UNH --date D",

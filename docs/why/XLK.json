@@ -1,16 +1,16 @@
 {
  "ticker": "XLK",
- "generated": "2026-09-10T23:01:30.439529+00:00",
- "label": "WEAKENING",
- "score": -0.0054,
+ "generated": "2026-09-11T23:01:47.795900+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3234,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.0295,
+  "c1": 0.0425,
   "c2": 0.0,
-  "c3": -0.5079329,
+  "c3": 0.7440066,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -27,6 +27,10 @@
  },
  "evidence_objects": [],
  "label_history": [
+  {
+   "date": "2026-09-11",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-10",
    "label": "WEAKENING"
@@ -142,10 +146,6 @@
   {
    "date": "2026-08-03",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLK --date D",

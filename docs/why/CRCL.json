@@ -1,6 +1,6 @@
 {
  "ticker": "CRCL",
- "generated": "2026-09-10T23:01:30.439529+00:00",
+ "generated": "2026-09-11T23:01:47.795900+00:00",
  "label": "NEUTRAL",
  "score": 0.2147,
  "threshold_band": {
@@ -21,7 +21,7 @@
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 83,
-  "recency_days": 0.1,
+  "recency_days": 1.1,
   "type_diversity": 2,
   "substrate_active": 1
  },
@@ -1029,6 +1029,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-09-11",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-09-10",
    "label": "NEUTRAL"
   },
@@ -1143,10 +1147,6 @@
   {
    "date": "2026-08-03",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CRCL --date D",
