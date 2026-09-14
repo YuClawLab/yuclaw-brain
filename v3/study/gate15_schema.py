@@ -45,7 +45,9 @@ TASKS = {
         "critical": {"C5.1": "cannot record a challenge / template incomplete", "C5.2": "believes recording one changes the evidence or the counts"}},
 }
 
-FORM_FIELDS = ("session_code", "mode", "materials_manifest_sha256", "wheel_label", "tasks", "assistance", "relationship", "reviewer_role", "decided_at")
+FORM_FIELDS = ("session_code", "mode", "protocol_id", "materials_manifest_sha256", "wheel", "tasks", "assistance", "relationship", "reviewer_role", "decided_at", "synthetic")
+WHEEL_FIELDS = ("label", "artifact_type", "sha256", "size_bytes")          # the byte binding; the label is descriptive only
+MAX_TASK_MINUTES_RECORDED = 600
 TASK_FORM_FIELDS = ("task", "completed", "minutes", "elements", "critical", "note")
 WHEEL_LABELS = ("REHEARSAL", "RC", "FINAL", "NONE")
 RELATIONSHIPS = ("RELATED-DISCLOSED", "UNRELATED")
@@ -54,4 +56,5 @@ RELATIONSHIPS = ("RELATED-DISCLOSED", "UNRELATED")
 def as_dict() -> dict:
     return {"protocol_id": PROTOCOL_ID, "status": PROTOCOL_STATUS, "modes": MODES, "primary_mode": PRIMARY_MODE, "denominator": DENOMINATOR, "task_minutes": TASK_MINUTES,
             "candidate_threshold": CANDIDATE_THRESHOLD, "tasks": {str(k): v for k, v in TASKS.items()}, "task_results": TASK_RESULTS, "session_decisions": SESSION_DECISIONS,
-            "assistance": ASSISTANCE, "form_fields": FORM_FIELDS, "task_form_fields": TASK_FORM_FIELDS, "wheel_labels": WHEEL_LABELS, "relationships": RELATIONSHIPS}
+            "assistance": ASSISTANCE, "form_fields": FORM_FIELDS, "task_form_fields": TASK_FORM_FIELDS, "wheel_fields": WHEEL_FIELDS, "wheel_labels": WHEEL_LABELS, "relationships": RELATIONSHIPS,
+            "cohort_key": "(mode, protocol_id, materials_manifest_sha256, wheel.sha256, wheel.size_bytes) — sessions with different keys are never pooled"}

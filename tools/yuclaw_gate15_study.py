@@ -55,6 +55,14 @@ def cmd_check_docs(a) -> int:
             problems.append(f"participant script lacks Task {t}")
     for eid in re.findall(r"\b[EC]\d\.\d\b", script):
         problems.append(f"participant script exposes scoring id {eid}")
+    kit = (_REPO / "docs" / "methodology" / "gate15_formative_study_kit.md").read_text()
+    for doc_name, doc in (("scoring key", key), ("study kit", kit)):
+        for f in S.FORM_FIELDS + S.WHEEL_FIELDS:
+            if f not in doc:
+                problems.append(f"{doc_name} lacks form field {f}")
+        for phrase in ("never pooled", "distinct"):
+            if phrase not in doc:
+                problems.append(f"{doc_name} lacks the cohort rule ({phrase})")
     if "[claim text]" in script or "…" in re.sub(r"`[^`]*`", "", script).replace("…", "…") and "create …" in script:
         problems.append("participant script has a placeholder")
     print(json.dumps({"ok": not problems, "problems": problems, "schema_status": S.PROTOCOL_STATUS}, indent=1)); return 0 if not problems else 1
@@ -143,9 +151,10 @@ def cmd_evaluate(a) -> int:
 
 
 def cmd_gate_evidence(a) -> int:
-    ev = json.loads(Path(a.evaluation).read_text())["aggregate"]
+    doc = json.loads(Path(a.evaluation).read_text()); ev = doc["aggregate"]
     load = lambda p: json.loads(Path(p).read_text()) if p else None
-    out = E.gate_evidence(ev, protocol_adoption=load(a.adoption), applicability=load(a.applicability), reviewer_appointment=load(a.reviewer), human_records=a.human_records)
+    appointments = [json.loads(l) for l in Path(a.appointments).read_text().splitlines() if l.strip()] if a.appointments else []
+    out = E.gate_evidence(ev, protocol_adoption=load(a.adoption), applicability=load(a.applicability), reviewer_appointment=load(a.reviewer), appointments=appointments, human_records=load(a.human_records), sessions=doc.get("sessions", []))
     print(json.dumps({k: v for k, v in out.items() if k != "evaluation"}, indent=1)); return 0
 
 
@@ -155,7 +164,7 @@ def main(argv=None) -> int:
     b = s.add_parser("build-packet"); b.add_argument("out"); b.add_argument("--source", required=True); b.add_argument("--mode", required=True, choices=S.MODES); b.add_argument("--wheel"); b.add_argument("--wheel-label", choices=("REHEARSAL", "RC", "FINAL"))
     m = s.add_parser("manifest"); m.add_argument("--commit", required=True); m.add_argument("--packet", required=True); m.add_argument("--out", required=True); m.add_argument("--wheel"); m.add_argument("--wheel-label", choices=("REHEARSAL", "RC", "FINAL"))
     e = s.add_parser("evaluate"); e.add_argument("forms"); e.add_argument("--out")
-    g = s.add_parser("gate-evidence"); g.add_argument("evaluation"); g.add_argument("--adoption"); g.add_argument("--applicability"); g.add_argument("--reviewer"); g.add_argument("--human-records", action="store_true")
+    g = s.add_parser("gate-evidence"); g.add_argument("evaluation"); g.add_argument("--adoption"); g.add_argument("--applicability"); g.add_argument("--reviewer", help="{role, appointment_id}"); g.add_argument("--appointments", help="trusted appointments.jsonl of the receipt store"); g.add_argument("--human-records", help="JSON list of {session_code, reviewer_role, appointment_id, decided_at}")
     a = p.parse_args(argv)
     return {"schema": cmd_schema, "check-docs": cmd_check_docs, "build-packet": cmd_build_packet, "manifest": cmd_manifest, "evaluate": cmd_evaluate, "gate-evidence": cmd_gate_evidence}[a.cmd](a)
 

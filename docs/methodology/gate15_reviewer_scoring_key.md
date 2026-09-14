@@ -43,7 +43,10 @@ Critical errors: C5.1 cannot record a challenge / template incomplete; C5.2 beli
 
 ## Reviewer decision form (private; one per session)
 ```
-{session_code, mode: EXECUTION|TRANSCRIPT, materials_manifest_sha256, wheel_label: REHEARSAL|RC|FINAL|NONE,
- tasks: [{task, completed, minutes, elements: {E*: true|false}, critical: {C*: true|false}, result: PASS|FAIL_INCOMPLETE|FAIL_CRITICAL|INCOMPLETE, note}],
- assistance: NONE|LIVE_HELP, relationship: RELATED-DISCLOSED|UNRELATED, decision: PASS|FAIL|MISSING|ASSISTED, reviewer_role, decided_at}
+{session_code, mode: EXECUTION|TRANSCRIPT, protocol_id, materials_manifest_sha256,
+ wheel: {label: REHEARSAL|RC|FINAL|NONE, artifact_type: wheel|none, sha256, size_bytes},
+ tasks: [{task, completed, minutes (finite, 0..600), elements: {E*: true|false}, critical: {C*: true|false}, note}],
+ assistance: NONE|LIVE_HELP, relationship: RELATED-DISCLOSED|UNRELATED, reviewer_role, decided_at, synthetic: false}
+— per-task results and the session decision are DERIVED by the evaluator (`tools/yuclaw_gate15_study.py evaluate`), never typed in;
+   duplicated session codes are rejected (each eligible participant is one distinct session); cohorts (mode + protocol + materials manifest + wheel bytes) are reported separately, never pooled.
 ```
