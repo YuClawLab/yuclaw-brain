@@ -118,6 +118,7 @@ _NAV_CHIPS = (
     ("Signal Review", "signal_review.html"),
     ("Explorer", "explorer.html"),
     ("Sectors", "sectors.html"),
+    ("Evidence Scoreboard", "evidence_scoreboard.html"),
     ("GitHub", "https://github.com/YuClawLab/yuclaw-brain"),
     ("PyPI", "https://pypi.org/project/yuclaw/"),
     ("Ledger", "https://github.com/YuClawLab/yuclaw-trust"),

@@ -1,0 +1,85 @@
+{
+ "scoreboard_version": "v7-candidate-1",
+ "synthetic": false,
+ "source_timestamp": "2026-09-14T01:29:09.244466Z",
+ "definitions": {
+  "witnesses": "people who examined the methodology and left a reviewable receipt (none recorded: 0)",
+  "pilots": "BYOS pilot engagements with a signed scope (none: counsel review is the blocker)",
+  "replications": "attempts to reproduce published artifacts; primary population = qualified attempts (failed/inconclusive retained); successful reported separately",
+  "audits": "third-party audits with a receipt (internal gate runs are not audits)",
+  "refusals": "recorded refusals/held submissions (visible, never hidden)",
+  "packet_uses": "document-use receipts bound to an exact packet digest and exported with permission",
+  "challenges": "structured challenges by disposition; adverse = OPEN or CONFIRMED; RESOLVED keeps the original finding"
+ },
+ "columns": {
+  "witnesses": {
+   "count": 0,
+   "state": "ZERO"
+  },
+  "pilots": {
+   "count": 0,
+   "state": "PENDING_COUNSEL_REVIEW"
+  },
+  "replications": {
+   "attempts": 0,
+   "qualified": 0,
+   "successful": 0,
+   "visible": {
+    "failed": 0,
+    "inconclusive": 0,
+    "qualified_failed": 0,
+    "qualified_inconclusive": 0,
+    "unqualified": 0
+   },
+   "windows": {},
+   "registration": {
+    "status": "PENDING",
+    "note": "no registration anchor adopted; counts are unwindowed"
+   },
+   "artifacts": {
+    "successful_cohort_artifacts": 0,
+    "attempted_artifacts": 0,
+    "verified_artifacts": 0,
+    "attempted_by_type": {},
+    "successful_by_type": {},
+    "package_reproductions_successful": 0,
+    "note": "successful_cohort_artifacts are the artifacts of successful qualified attempts \u2014 not all tested artifacts; site/endpoint/chain checks are not package reproductions"
+   },
+   "program_evidence_legacy": {
+    "entries": 1,
+    "reproduced": 1,
+    "binding": "PREFIX_ONLY (historical; not exact-release evidence)",
+    "affiliated": 1
+   },
+   "exact_release_evidence": {
+    "successful_package_reproductions": 0,
+    "note": "counts only qualified successful attempts whose exact wheel/sdist bytes were verified"
+   },
+   "state": "PENDING_REGISTRATION"
+  },
+  "audits": {
+   "count": 0,
+   "state": "ZERO"
+  },
+  "refusals": {
+   "count": 0,
+   "held": 0,
+   "state": "OBSERVED"
+  },
+  "packet_uses": {
+   "count": 0,
+   "state": "OBSERVED"
+  },
+  "challenges": {
+   "by_disposition": {},
+   "adverse_open": 0,
+   "total": 0,
+   "state": "OBSERVED"
+  }
+ },
+ "receipts_public": [],
+ "challenges_public": [],
+ "decisions_public": [],
+ "policy_version": "receipt-policy-candidate-2026-09",
+ "not_advice": "Research and education only. Not investment advice. No composite trust score is computed."
+}

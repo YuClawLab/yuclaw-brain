@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>YUCLAW · Evidence Scoreboard</title>
+  <meta name="description" content="Derived evidence scoreboard: witnesses, pilots, replications, audits, refusals, packet uses and challenges — with counting definitions and real zero/pending states. Research only — not investment advice.">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:#0B0E14;font-family:Inter,sans-serif;color:#E2E8F0;line-height:1.6}
+    .container{max-width:960px;margin:0 auto;padding:24px}
+    .panel{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}
+    .panel-title{font-size:13px;font-weight:700;color:#FFF;margin-bottom:10px}
+    .disclaimer{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#A0AEC0}
+    .disclaimer strong{color:#FBA94B}
+    table{width:100%;border-collapse:collapse;font-size:13px} th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #1E232D;vertical-align:top} th{color:#A0AEC0;font-weight:600}
+    .mono{font-family:JetBrains Mono,monospace;font-size:12px;color:#A0AEC0} .muted{color:#718096;font-size:13px}
+    .state{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:JetBrains Mono,monospace}
+    .zero{background:#1E232D;color:#A0AEC0} .pend{background:#FBA94B20;color:#FBA94B} .obs{background:#00E67620;color:#00E676}
+    .wrap{overflow-x:auto} a{color:#00E676} code{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}
+    @media (max-width:640px){.container{padding:12px} td,th{padding:6px}}
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <div class="site-hdr" style="margin-bottom:20px;padding:14px 20px;background:#151A23;
+                border:1px solid #1E232D;border-radius:12px">
+      <div class="hdr-nav" style="display:flex;justify-content:space-between;align-items:center;
+                  flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <a href="index.html" style="text-decoration:none;display:inline-flex;
+                                      align-items:center;gap:12px">
+            <span style="font-size:20px;font-weight:800;color:#FFF">YU<span
+              style="color:#00E676">CLAW</span></span>
+            <span style="display:inline-block;background:#00E67620;color:#00E676;
+                         border:1px solid #00E67680;padding:3px 9px;border-radius:5px;
+                         font-size:10px;font-weight:700;letter-spacing:0.5px;
+                         font-family:JetBrains Mono,monospace">v6.0.1</span>
+          </a>
+          <span style="font-size:11px;color:#718096;font-family:JetBrains Mono,monospace">Evidence Scoreboard</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+          <a href="validation_lab.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Validation Lab</a><a href="etf_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">SMH Evidence Lens</a><a href="xlk_evidence.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">XLK Evidence Lens</a><a href="canada_resources.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Canada Resources Evidence</a><a href="validation.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Forward Tracking</a><a href="signal_review.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Signal Review</a><a href="explorer.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Explorer</a><a href="sectors.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Sectors</a><a href="evidence_scoreboard.html" aria-current="page" style="color:#00E676;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#00E67614;border:1px solid #00E67640;white-space:nowrap">Evidence Scoreboard</a><a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">GitHub</a><a href="https://pypi.org/project/yuclaw/" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">PyPI</a><a href="https://github.com/YuClawLab/yuclaw-trust" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Ledger</a><a href="methodology.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Methodology</a><a href="index.html" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">Home</a>
+        </div>
+      </div>
+    </div>
+    <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Evidence Scoreboard</h1>
+    <p class="muted" style="margin-bottom:14px;font-family:JetBrains Mono,monospace">source 2026-09-14T01:29:09.244466Z · policy receipt-policy-candidate-2026-09 · scoreboard v7-candidate-1</p>
+    <div class="disclaimer"><strong>Disclaimer —</strong> Research &amp; education only. Not investment advice. The scoreboard counts receipts and dispositions; it computes no trust score and no financial statistic. Zero and pending are shown as such.</div>
+    <div class="panel"><div class="panel-title">What is counted (each column shows its own definition; zero and pending are real states)</div>
+      <div class="wrap"><table><thead><tr><th>column</th><th>state</th><th>counts</th><th>counting definition</th></tr></thead><tbody><tr><td>witnesses</td><td><span class='state zero'>ZERO</span></td><td class='mono'>count=0</td><td>people who examined the methodology and left a reviewable receipt (none recorded: 0)</td></tr><tr><td>pilots</td><td><span class='state pend'>PENDING_COUNSEL_REVIEW</span></td><td class='mono'>count=0</td><td>BYOS pilot engagements with a signed scope (none: counsel review is the blocker)</td></tr><tr><td>replications</td><td><span class='state pend'>PENDING_REGISTRATION</span></td><td class='mono'>attempts=0, qualified=0, successful=0</td><td>attempts to reproduce published artifacts; primary population = qualified attempts (failed/inconclusive retained); successful reported separately</td></tr><tr><td>audits</td><td><span class='state zero'>ZERO</span></td><td class='mono'>count=0</td><td>third-party audits with a receipt (internal gate runs are not audits)</td></tr><tr><td>refusals</td><td><span class='state obs'>OBSERVED</span></td><td class='mono'>count=0, held=0</td><td>recorded refusals/held submissions (visible, never hidden)</td></tr><tr><td>packet_uses</td><td><span class='state obs'>OBSERVED</span></td><td class='mono'>count=0</td><td>document-use receipts bound to an exact packet digest and exported with permission</td></tr><tr><td>challenges</td><td><span class='state obs'>OBSERVED</span></td><td class='mono'>adverse_open=0, total=0</td><td>structured challenges by disposition; adverse = OPEN or CONFIRMED; RESOLVED keeps the original finding</td></tr><tr><td>replications · artifact coverage</td><td><span class='state obs'>PENDING</span></td><td class='mono'>successful-cohort artifacts=0, attempted=0, verified=0, exact-release package reproductions=0, legacy program entries=1 (PREFIX_ONLY)</td><td>successful_cohort_artifacts are the artifacts of successful qualified attempts — not all tested artifacts; site/endpoint/chain checks are not package reproductions</td></tr></tbody></table></div>
+      <p class="muted" style="margin-top:8px">Primary replication population = qualified attempts, including qualified failed and inconclusive outcomes; the successful cohort is reported separately. Program evidence (any release, legacy prefix-bound) is separate from exact-release evidence (verified wheel/sdist bytes). A site or endpoint check is never a package reproduction.</p>
+    </div>
+    <div class="panel"><div class="panel-title">Public receipts</div><div class="wrap"><p class='muted'>No public receipts yet — this is a real zero, not a hidden count.</p></div></div>
+    <div class="panel"><div class="panel-title">Challenges (adverse and unresolved findings are never hidden)</div><div class="wrap"><p class='muted'>No challenges recorded.</p></div><p class='muted'>History: compare two published scoreboard files with <code>python3 -c "from v3.receipts.scoreboard import history"</code> — the diff lists receipts added/superseded, challenges added and dispositions changed, with absolute movement (never a multiplier from a zero baseline).</p></div>
+    <div class="panel"><div class="panel-title">How to add evidence</div>
+      <p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Receipts are reviewed under a designated reviewer before they count; owner-operated checks and synthetic fixtures contribute zero outsiders.</p>
+    </div>
+    <p style="font-size:12px;color:#718096">Research and education only. Not investment advice.</p>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-11 (last completed U.S. trading day) · regenerated daily after market close</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-14 01:29 UTC · daily evidence block root e0026e804d91 (block 2026-09-11)</footer>
+  </div>
+</body>
+</html>

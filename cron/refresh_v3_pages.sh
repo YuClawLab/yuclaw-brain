@@ -78,6 +78,11 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # passport), EvidenceBench page; bench items regenerate weekly (Fridays).
 /usr/bin/python3 -m v3.web.render_why_json || exit 38
 /usr/bin/python3 -m v3.web.render_ai_builders || exit 39
+# v7 Evidence Scoreboard: derived from the PRIVATE receipt store (internal/receipts, never
+# fixtures) into docs/receipts/scoreboard.json, then rendered. A synthetic board is refused.
+mkdir -p docs/receipts internal/receipts
+/usr/bin/python3 -m v3.cli.receipts --store internal/receipts scoreboard --out docs/receipts/scoreboard.json || exit 66
+/usr/bin/python3 -m v3.web.render_scoreboard || exit 67
 if [ "$(date +%u)" = "5" ]; then
     /usr/bin/python3 tools/yuclaw_evidencebench.py generate || exit 40
     /usr/bin/python3 tools/yuclaw_evidencebench.py selfscore || exit 40
@@ -208,6 +213,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/sectors.html docs/tour.html docs/methodology.html \
                  docs/capabilities.json docs/evidence docs/ledger \
                  docs/evidencebench docs/evidencebench.html docs/for_ai_builders.html \
+                 docs/evidence_scoreboard.html docs/receipts \
                  registry/completeness_profile.json registry/research_state.json \
                  README.md
 # Observation chain exists only once the first observation is admitted
