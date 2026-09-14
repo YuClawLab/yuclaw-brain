@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 
 from v3.receipts.contracts import (ARTIFACT_TYPES, ASSISTANCE, BINDING, ContractError, EXEC_CONTROL, OUTCOMES, RELATIONSHIPS,
-                                   REVIEW_STATES, SCHEMA_VERSION, parse_ts)
+                                   REVIEW_AUTHORITIES, REVIEW_STATES, SCHEMA_VERSION, parse_ts)
 
 _REPO = Path(__file__).resolve().parents[2]
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -96,7 +96,7 @@ PUBLIC_SHAPE = {
     "environment": _obj({"os": _s(64), "python": _s(32)}),
     "outcome": _enum(OUTCOMES),
     "review_state": _enum(REVIEW_STATES),
-    "review_authority": _enum(("DESIGNATED", "SYNTHETIC", "NONE")),
+    "review_authority": _enum(REVIEW_AUTHORITIES),
     "binding_completeness": _enum(BINDING),
     "qualified": _bool,
     "successful": _bool,
@@ -172,3 +172,17 @@ def project(row: dict, store, *, mode: str) -> dict:
 
 def project_many(rows: list[dict], store, *, mode: str) -> list[dict]:
     return [project(r, store, mode=mode) for r in rows]
+
+
+def revalidate(row: dict) -> dict:
+    """Re-apply PUBLIC_SHAPE to a public row read back from disk (scoreboard loader): unknown keys and
+    unregistered values are errors, never passed through to a surface."""
+    if not isinstance(row, dict):
+        raise ContractError("public row: object required")
+    extra = set(row) - set(PUBLIC_SHAPE)
+    if extra:
+        raise ContractError(f"public row: unexpected keys {sorted(extra)}")
+    for k in ("schema_version", "synthetic", "attempt_id", "participant", "outcome", "review_state", "binding_completeness", "qualified", "successful", "receipt_digest"):
+        if k not in row:
+            raise ContractError(f"public row: missing {k}")
+    return {k: fn(row[k], k) for k, fn in PUBLIC_SHAPE.items() if k in row}

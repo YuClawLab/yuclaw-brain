@@ -227,11 +227,13 @@ def v1_receipts_scoreboard() -> dict[str, Any]:
     docs/receipts/scoreboard.json produced by the local receipt workflow; this endpoint grants no
     submission, review or export authority. A synthetic board is never served."""
     from pathlib import Path as _P
-    from v3.receipts.scoreboard import load_public
-    board = load_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
-    if board is None:
-        return _stamp({"status": "PENDING", "note": "no public scoreboard published yet; counts are zero/pending, not hidden"})
-    return _stamp(board)
+    from v3.receipts.scoreboard import inspect_public
+    info = inspect_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
+    if info["board"] is None:
+        state = "PENDING" if info["status"] == "ABSENT" else "UNAVAILABLE"
+        return _stamp({"status": state, "reason": info["status"], "note": ("no public scoreboard published yet; counts are pending, not hidden" if state == "PENDING"
+                                                                          else "public scoreboard file invalid or refused; counts are unavailable, not zero")})
+    return _stamp(info["board"])
 
 
 @app.get("/v1/universe")

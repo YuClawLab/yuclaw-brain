@@ -129,9 +129,13 @@ class Counting(Base):
         w = c["windows"]["unwindowed"]; self.assertEqual((w["primary_distinct_persons"], w["primary_distinct_groups"]), (3, 3)); self.assertEqual((w["successful_distinct_persons"], w["successful_distinct_groups"]), (1, 1))
         self.assertEqual(c["registration"]["status"], "PENDING"); self.assertEqual(c["artifacts"]["successful_cohort_artifacts"], 2); self.assertEqual(c["artifacts"]["package_reproductions_successful"], 2)
         self.assertEqual(c["visible"]["qualified_failed"], 1); self.assertEqual(c["visible"]["qualified_inconclusive"], 1)
-        c2 = counting.counts(self.derived(), registration={"protocol_id": "synthetic-receipts-2026", "anchor": "2026-09-01"})
+        from v3.receipts.contracts import POLICY_VERSION
+        reg = {"protocol_id": "synthetic-receipts-2026", "anchor": "2026-09-01", "registered_at": "2026-09-01T00:00:00.000000Z", "policy_version": POLICY_VERSION}
+        c2 = counting.counts(self.derived(), registration=reg)
         self.assertIn("synthetic-receipts-2026/w0", c2["windows"]); self.assertEqual(c2["registration"]["status"], "REGISTERED")
-        with self.assertRaises(ContractError): counting.counts(self.derived(), registration={"protocol_id": "x", "anchor": "2026-12-01"})   # pre-anchor observation
+        with self.assertRaises(ContractError): counting.counts(self.derived(), registration={"protocol_id": "x", "anchor": "2026-12-01"})   # anchor alone is not adoption (V3)
+        c3 = counting.counts(self.derived(), registration=dict(reg, protocol_id="x", anchor="2026-12-01", registered_at="2026-12-01T00:00:00.000000Z"))
+        self.assertNotIn("x/w0", c3["windows"]); self.assertEqual(c3["excluded_from_primary"]["other_protocols"], {"synthetic-receipts-2026": 4})   # never reassigned (V3)
     def test_site_check_is_not_package_reproduction_and_movement_undefined_on_zero(self):
         self.full(sub("s1", binding=bind("site-page", b"<html>synthetic</html>")), data=b"<html>synthetic</html>")
         c = counting.counts(self.derived()); self.assertEqual(c["artifacts"]["package_reproductions_successful"], 0); self.assertEqual(c["successful"], 1)

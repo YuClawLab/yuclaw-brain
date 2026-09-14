@@ -337,9 +337,12 @@ def get_evidence_scoreboard() -> dict[str, Any]:
     successful, artifact coverage), audits, refusals, packet uses, challenges — with definitions
     and source timestamp. Zero/pending states are real. No trust score; no write/review authority."""
     from pathlib import Path as _P
-    from v3.receipts.scoreboard import load_public
-    board = load_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
-    return board or {"status": "PENDING", "note": "no public scoreboard published yet"}
+    from v3.receipts.scoreboard import inspect_public
+    info = inspect_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
+    if info["board"] is None:
+        state = "PENDING" if info["status"] == "ABSENT" else "UNAVAILABLE"
+        return {"status": state, "reason": info["status"], "note": "no public scoreboard published yet" if state == "PENDING" else "public scoreboard file invalid or refused; counts are unavailable, not zero"}
+    return info["board"]
 
 
 @mcp.tool()

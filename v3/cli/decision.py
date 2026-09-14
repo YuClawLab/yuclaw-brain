@@ -1,4 +1,6 @@
-"""`yuclaw decision` — document-use receipts bound to an exact packet manifest digest (v7)."""
+"""`yuclaw decision` — document-use receipts bound to an exact packet manifest digest (v7).
+Exit 0 ok; 1 contract/input error; 2 usage. Context is private and never exported; recording a use is not
+evidence of investment benefit."""
 from __future__ import annotations
 
 import argparse, json, sys
@@ -14,7 +16,11 @@ def main(argv=None) -> int:
     a = p.parse_args(argv); ds = DecisionStore(a.store)
     try:
         if a.cmd == "record":
-            print(json.dumps(ds.record(a.decision_id, a.decision, packet_manifest_digest=a.packet_manifest_digest, claim_id=a.claim_id, context=json.loads(a.context), export_permitted=a.export_permitted, synthetic=a.synthetic), indent=1)); return 0
+            try:
+                ctx = json.loads(a.context)
+            except ValueError:
+                raise ContractError("--context: malformed JSON (a JSON object is required)") from None
+            print(json.dumps(ds.record(a.decision_id, a.decision, packet_manifest_digest=a.packet_manifest_digest, claim_id=a.claim_id, context=ctx, export_permitted=a.export_permitted, synthetic=a.synthetic), indent=1)); return 0
         if a.cmd == "export":
             print(json.dumps(ds.export(synthetic=a.synthetic), indent=1)); return 0
     except ContractError as exc:

@@ -17,7 +17,7 @@ from html import escape
 from pathlib import Path
 
 from v3.web.useful_blocks import footer_stamp_html, build_footer, freshness_strip, site_header_html
-from v3.receipts.scoreboard import DEFINITIONS, load_public
+from v3.receipts.scoreboard import DEFINITIONS, inspect_public
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "docs" / "evidence_scoreboard.html"
@@ -30,10 +30,14 @@ def _cell(v) -> str:
     return escape(str(v))
 
 
-def render(board: dict | None) -> str:
+def render(board: dict | None, status: str = "OK") -> str:
+    """board=None renders the explicit unavailable state: PENDING when no board exists yet, UNAVAILABLE when the
+    file is invalid or synthetic (never a measured zero)."""
     if board is None:
-        rows = "".join(f"<tr><td data-label='column'>{escape(k)}</td><td data-label='state'><span class='state pend'>PENDING</span></td><td data-label='counts'>—</td><td data-label='definition'>{escape(v)}</td></tr>" for k, v in DEFINITIONS.items())
-        stamp, receipts_html, chal_html, hist = "no public scoreboard published yet", "", "", ""
+        label = "PENDING" if status in ("OK", "ABSENT") else "UNAVAILABLE"
+        rows = "".join(f"<tr><td data-label='column'>{escape(k)}</td><td data-label='state'><span class='state pend'>{escape(label)}</span></td><td data-label='counts'>—</td><td data-label='definition'>{escape(v)}</td></tr>" for k, v in DEFINITIONS.items())
+        stamp = "no public scoreboard published yet" if label == "PENDING" else f"public scoreboard unavailable ({escape(status.lower().replace('_', ' '))}); counts are not shown as zero"
+        receipts_html, chal_html, hist = "", "", ""
     else:
         cols = board["columns"]
         def row(name, col):
@@ -43,19 +47,19 @@ def render(board: dict | None) -> str:
         rows = "".join(row(n, cols[n]) for n in DEFINITIONS)
         rep = cols["replications"]
         rows += (f"<tr><td data-label='column'>replications · artifact coverage</td><td data-label='state'><span class='state obs'>{_cell(rep['registration']['status'])}</span></td>"
-                 f"<td data-label='counts' class='mono'>successful-cohort artifacts={rep['artifacts']['successful_cohort_artifacts']}, attempted={rep['artifacts']['attempted_artifacts']}, "
-                 f"verified={rep['artifacts']['verified_artifacts']}, exact-release package reproductions={rep['exact_release_evidence']['successful_package_reproductions']}, "
-                 f"legacy program entries={rep['program_evidence_legacy']['entries']} (PREFIX_ONLY)</td>"
+                 f"<td data-label='counts' class='mono'>successful-cohort artifacts={_cell(rep['artifacts']['successful_cohort_artifacts'])}, attempted={_cell(rep['artifacts']['attempted_artifacts'])}, "
+                 f"verified={_cell(rep['artifacts']['verified_artifacts'])}, exact-release package reproductions={_cell(rep['exact_release_evidence']['successful_package_reproductions'])}, "
+                 f"legacy program entries={_cell(rep['program_evidence_legacy']['entries'])} (PREFIX_ONLY)</td>"
                  f"<td data-label='definition'>{escape(rep['artifacts']['note'])}</td></tr>")
         stamp = f"source {escape(board['source_timestamp'])} · policy {escape(board['policy_version'])} · scoreboard {escape(board['scoreboard_version'])}"
         recs = board.get("receipts_public", [])
         receipts_html = ("<p class='muted'>No public receipts yet — this is a real zero, not a hidden count.</p>" if not recs else
                          "<table><thead><tr><th>attempt</th><th>artifact</th><th>outcome</th><th>review</th><th>qualified</th><th>successful</th></tr></thead><tbody>" +
-                         "".join(f"<tr><td class='mono'>{escape(r['attempt_id'])}</td><td class='mono'>{escape(r['artifact_binding']['artifact_type'])} {escape(r['artifact_binding']['sha256'][:12])}…</td><td>{escape(r['outcome'])}</td><td>{escape(r['review_state'])} ({escape(r['review_authority'])})</td><td>{r['qualified']}</td><td>{r['successful']}</td></tr>" for r in recs) + "</tbody></table>")
+                         "".join(f"<tr><td class='mono'>{escape(r['attempt_id'])}</td><td class='mono'>{escape(r['artifact_binding']['artifact_type'])} {escape(r['artifact_binding']['sha256'][:12])}…</td><td>{escape(r['outcome'])}</td><td>{escape(r['review_state'])} ({escape(r['review_authority'])})</td><td>{_cell(r['qualified'])}</td><td>{_cell(r['successful'])}</td></tr>" for r in recs) + "</tbody></table>")
         chal = board.get("challenges_public", [])
         chal_html = ("<p class='muted'>No challenges recorded.</p>" if not chal else
                      "<table><thead><tr><th>challenge</th><th>artifact</th><th>disposition</th><th>adverse</th></tr></thead><tbody>" +
-                     "".join(f"<tr><td class='mono'>{escape(c['challenge_id'])}</td><td class='mono'>{escape(c['artifact']['artifact_type'])} {escape(c['artifact']['sha256'][:12])}…</td><td>{escape(c['disposition'])}</td><td>{'yes' if c['adverse'] else 'no'}</td></tr>" for c in chal) + "</tbody></table>")
+                     "".join(f"<tr><td class='mono'>{escape(c['challenge_id'])}</td><td class='mono'>{escape(c['artifact']['artifact_type'])} {escape(c['artifact']['sha256'][:12])}…</td><td>{escape(c['disposition'])}</td><td>{'yes' if c['adverse'] is True else 'no'}</td></tr>" for c in chal) + "</tbody></table>")
         hist = ("<p class='muted'>History: compare two published scoreboard files with <code>python3 -c \"from v3.receipts.scoreboard import history\"</code> — "
                 "the diff lists receipts added/superseded, challenges added and dispositions changed, with absolute movement (never a multiplier from a zero baseline).</p>")
     return f"""<!DOCTYPE html>
@@ -111,9 +115,10 @@ def render(board: dict | None) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    board = load_public(SRC)
-    OUT.write_text(render(board))
-    print(f"[render_scoreboard] wrote {OUT} ({'PENDING (no public board)' if board is None else board['source_timestamp']})")
+    info = inspect_public(SRC)
+    board = info["board"]
+    OUT.write_text(render(board, info["status"]))
+    print(f"[render_scoreboard] wrote {OUT} ({info['status'] + ': ' + info['reason'] if board is None else board['source_timestamp']})")
     return 0
 
 

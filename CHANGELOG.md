@@ -20,6 +20,13 @@ Research & education only. Not investment advice.
 
 **Unchanged scientific states**: Gate #15 MANUAL_REVIEW; Gate #16 GREEN with the affiliated-operator disclosure; Phase 6 STRUCTURE_PRINTED, N_eff PENDING; C6 DESCRIPTIVE, Layers 2–10 gated; U350 Phase A shadow only; calendar supported through 2027-12-31.
 
+### Candidate repairs (V7-004-V3, before release)
+- `yuclaw packet verify`: manifest structure validated before any read; replay target must be a listed INCLUDED artifact; traversal, absolute paths and symlinks in any component (manifest, artifact root, artifacts) refused at the read boundary; the replay runs on a private copy of the verified bytes; provenance (`--trusted-manifest`) reported separately from integrity — origin is UNVERIFIED unless an independent identity is supplied.
+- Receipt store: reviewer designation belongs to each appointment (role + credential + policy); legacy shared-Boolean files migrate to HELD (never inferred real); observations must bind the receipt's exact artifact and cannot be forged FULL; reviewer credentials via `--token-file` / `--token-fd` / no-echo prompt (a `--token` argument is refused).
+- Counting: validated registration record `{protocol_id, anchor, registered_at, policy_version}`; records are never reassigned to another protocol; pre-registration (including same-day) and pre-anchor attempts are excluded from the prospective floor but stay visible; corrections cannot move an attempt forward.
+- Challenges: CONFIRMED/REFUTED/RESOLVED need a reviewer appointment; RESOLVED needs the revised artifact's actual bytes plus a structured verification result. Decisions: context validated (private scalars). Scoreboard: public boards are validated before REST/MCP/site serve them; invalid or synthetic files are UNAVAILABLE, not zero.
+- Gate #15: candidate protocol with a fixed claim, scoring key, fixed N=5 denominator and generated materials manifest (unadopted; gate stays MANUAL_REVIEW on current evidence).
+
 ## [6.0.1] — 2026-09-04
 
 _Release date corrected to actual publish date (2026-09-04 10:07 UTC)._

@@ -31,6 +31,8 @@ ASSISTANCE = ("NONE", "PUBLIC-DOCS-ONLY", "DOCUMENTED-FALLBACK", "LIVE-HELP", "O
 OUTCOMES = ("REPRODUCED", "FAILED", "INCONCLUSIVE")
 REVIEW_STATES = ("RECEIVED", "HELD", "QUALIFIED", "DISQUALIFIED")
 BINDING = ("FULL", "PREFIX_ONLY", "UNVERIFIED", "NONE")
+REVIEW_AUTHORITIES = ("DESIGNATED", "SYNTHETIC", "HELD", "NONE")   # HELD = legacy/ambiguous appointment awaiting explicit designation
+OBSERVATION_SOURCES = ("bytes", "path", "unavailable")
 NON_QUALIFYING_RELATIONSHIPS = ("OWNER-AFFILIATED", "UNKNOWN")
 ENV_OS_MAX, ENV_PY_MAX, ID_MAX, TAG_MAX = 64, 32, 128, 64
 
@@ -221,3 +223,59 @@ def finite_number(v, field):
     if isinstance(v, bool) or not isinstance(v, (int, float)) or (isinstance(v, float) and not math.isfinite(v)):
         raise ContractError(f"{field}: finite number required")
     return v
+
+
+def validate_observation(obs, claim: dict) -> dict:
+    """An OBSERVATION as stored must (a) concern exactly the receipt's claimed artifact, (b) carry
+    observed values of the right types, and (c) have `verified` equal to the recomputed equality of
+    observed and claimed sha256 + length. Anything else is rejected — a caller cannot mark FULL."""
+    if not isinstance(obs, dict):
+        raise ContractError("observation: object required")
+    want = {"artifact_type", "claimed_sha256", "claimed_size_bytes", "observed_sha256", "observed_size_bytes", "verified", "source", "observed_at"}
+    if set(obs) != want:
+        raise ContractError(f"observation: keys must be exactly {sorted(want)}")
+    c = validate_binding_claim(claim)
+    if (obs["artifact_type"], obs["claimed_sha256"], obs["claimed_size_bytes"]) != (c["artifact_type"], c["sha256"], c["size_bytes"]):
+        raise ContractError("observation is for a different artifact than the receipt's binding")
+    oh, on = obs["observed_sha256"], obs["observed_size_bytes"]
+    if oh is not None and (not isinstance(oh, str) or not _HEX64.match(oh)):
+        raise ContractError("observation.observed_sha256: 64 lowercase hex or null")
+    if on is not None:
+        _nonneg_int(on, "observation.observed_size_bytes")
+    if (oh is None) != (on is None):
+        raise ContractError("observation: observed sha256 and size must both be present or both null")
+    _enum(obs["source"], "observation.source", OBSERVATION_SOURCES)
+    if obs["source"] == "unavailable" and oh is not None:
+        raise ContractError("observation: source 'unavailable' cannot carry observed values")
+    parse_ts(obs["observed_at"], "observation.observed_at")
+    recomputed = oh is not None and oh == c["sha256"] and on == c["size_bytes"]
+    if not isinstance(obs["verified"], bool) or obs["verified"] != recomputed:
+        raise ContractError("observation.verified is inconsistent with the observed values (forged or corrupted observation)")
+    return {k: obs[k] for k in sorted(want)}
+
+
+def validate_registration(reg) -> dict:
+    """A registration record is the OWNER's adoption of a prospective program: protocol id, the window
+    anchor (UTC date), the actual registration instant (RFC3339 UTC, microseconds) and the policy
+    version it binds. A supplied anchor alone is never evidence of adoption. The anchor may not precede
+    the registration instant's UTC date (no retrospective windows)."""
+    if not isinstance(reg, dict):
+        raise ContractError("registration: object required")
+    want = {"protocol_id", "anchor", "registered_at", "policy_version"}
+    if set(reg) - want:
+        raise ContractError(f"registration: unexpected keys {sorted(set(reg) - want)}")
+    if set(reg) != want:
+        raise ContractError(f"registration: keys must be exactly {sorted(want)} (a supplied anchor alone is not evidence of adoption)")
+    pid = _str(reg["protocol_id"], "registration.protocol_id", ID_MAX, _ID)
+    try:
+        anchor = date.fromisoformat(reg["anchor"]) if isinstance(reg["anchor"], str) else None
+    except ValueError:
+        anchor = None
+    if anchor is None:
+        raise ContractError("registration.anchor: YYYY-MM-DD UTC date required")
+    registered_at = parse_ts(reg["registered_at"], "registration.registered_at")
+    if anchor < registered_at.date():
+        raise ContractError("registration.anchor precedes the registration instant (retrospective windows are refused)")
+    if reg["policy_version"] != POLICY_VERSION:
+        raise ContractError(f"registration.policy_version {reg['policy_version']!r} != engine policy {POLICY_VERSION!r}")
+    return {"protocol_id": pid, "anchor": anchor.isoformat(), "registered_at": format_ts(registered_at), "policy_version": POLICY_VERSION}

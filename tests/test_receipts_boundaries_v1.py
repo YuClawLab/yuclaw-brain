@@ -73,8 +73,10 @@ class ExitCodeContract(unittest.TestCase):
             man = json.loads((pathlib.Path(d) / "p" / "PACKET_MANIFEST.json").read_text())
             man["files"][0]["size_bytes"] += 1; (pathlib.Path(d) / "p" / "PACKET_MANIFEST.json").write_text(json.dumps(man))      # wrong size in manifest
             rc, out, err = run(packet_cli.main, ["verify", str(pathlib.Path(d) / "p"), "--json"]); self.assertEqual(rc, 1); self.assertIn("byte mismatch", json.loads(out)["first_discrepancy"])
-            man["files"][0]["size_bytes"] -= 1; man["files"][0]["path"] = "docs/absent.json"; (pathlib.Path(d) / "p" / "PACKET_MANIFEST.json").write_text(json.dumps(man))
+            man["files"][0]["size_bytes"] -= 1; man["files"][1]["path"] = "docs/absent.json"; (pathlib.Path(d) / "p" / "PACKET_MANIFEST.json").write_text(json.dumps(man))
             rc, out, err = run(packet_cli.main, ["verify", str(pathlib.Path(d) / "p"), "--json"]); self.assertEqual(rc, 1); self.assertIn("missing artifact", json.loads(out)["first_discrepancy"])
+            man["files"][1]["path"] = "docs/packets/manifest.json"; man["files"][0]["path"] = "docs/renamed.json"; (pathlib.Path(d) / "p" / "PACKET_MANIFEST.json").write_text(json.dumps(man))
+            rc, out, err = run(packet_cli.main, ["verify", str(pathlib.Path(d) / "p"), "--json"]); self.assertEqual(rc, 3); self.assertIn("replay_target", json.loads(out)["first_discrepancy"])   # V3: the target must be a listed INCLUDED entry
     def test_receipts_challenge_decision_exit_codes(self):
         with tempfile.TemporaryDirectory() as d:
             st = str(pathlib.Path(d) / "s"); bad = pathlib.Path(d) / "bad.json"; bad.write_text(json.dumps({"schema_version": "receipt-9"}))

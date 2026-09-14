@@ -10,12 +10,14 @@ snapshots themselves."""
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 from v3.receipts import counting, export, legacy
-from v3.receipts.challenge import ChallengeStore
-from v3.receipts.decision import DecisionStore
+from v3.receipts.challenge import ChallengeStore, DISPOSITIONS
+from v3.receipts.contracts import ContractError, parse_ts, validate_binding_claim
+from v3.receipts.decision import DecisionStore, MEANING as DECISION_MEANING, PUBLIC_FIELDS as DECISION_FIELDS
 from v3.receipts.store import Store
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -55,7 +57,7 @@ def build(store_dir, *, synthetic: bool = False, registration: dict | None = Non
                               "state": "PENDING_REGISTRATION" if c["registration"]["status"] == "PENDING" else "REGISTERED"},
             "audits": {"count": 0, "state": "ZERO"},
             "refusals": {"count": c["visible"]["unqualified"], "held": sum(1 for r in derived if (r.get("review") or {}).get("state") == "HELD"), "state": "OBSERVED"},
-            "packet_uses": {"count": len(ds.export(synthetic=synthetic)), "state": "OBSERVED"},
+            "packet_uses": {"count": len(ds.export(synthetic=synthetic)), "state": "OBSERVED", "note": DECISION_MEANING},
             "challenges": {"by_disposition": by_disp, "adverse_open": sum(1 for r in chal if r["adverse"]), "total": len(chal), "state": "OBSERVED"},
         },
         "receipts_public": rows, "challenges_public": chal, "decisions_public": ds.export(synthetic=synthetic),
@@ -77,11 +79,110 @@ def history(a: dict, b: dict) -> dict:
                                           {"attempts": mb["attempts"], "qualified": mb["qualified"], "successful": mb["successful"]})}
 
 
-def load_public(path: Path) -> dict | None:
-    """Read-only loader for deployed surfaces (API/MCP/site): a derived non-synthetic scoreboard file."""
-    if not path.exists():
-        return None
-    board = json.loads(path.read_text())
+_HEX64 = re.compile(r"^[0-9a-f]{64}$")
+_PRINTABLE = re.compile(r"^[^\x00-\x1f\x7f]*$")      # no control characters; Unicode punctuation allowed
+
+
+def _s(v, field, maxlen=2000):
+    if not isinstance(v, str) or len(v) > maxlen or not _PRINTABLE.match(v):
+        raise ContractError(f"board {field}: bounded string without control characters required")
+    return v
+
+
+def _int(v, field):
+    if isinstance(v, bool) or not isinstance(v, int) or v < 0:
+        raise ContractError(f"board {field}: nonnegative integer required")
+    return v
+
+
+def validate_board(board) -> dict:
+    """Typed validation of a PUBLIC scoreboard file before any surface serves it. Synthetic boards are
+    refused; malformed boards are errors (surfaces then show UNAVAILABLE, never a measured zero)."""
+    if not isinstance(board, dict):
+        raise ContractError("board: object required")
     if board.get("synthetic") is not False:
-        return None                          # a synthetic board is never served as public
+        raise ContractError("board is synthetic or unlabeled; a public surface never serves it")
+    for k in ("scoreboard_version", "source_timestamp", "definitions", "columns", "receipts_public", "challenges_public", "decisions_public", "policy_version", "not_advice"):
+        if k not in board:
+            raise ContractError(f"board: missing {k}")
+    _s(board["scoreboard_version"], "scoreboard_version", 64); _s(board["policy_version"], "policy_version", 64); _s(board["not_advice"], "not_advice", 500)
+    parse_ts(board["source_timestamp"], "board.source_timestamp")
+    if not isinstance(board["definitions"], dict) or set(board["definitions"]) != set(DEFINITIONS):
+        raise ContractError("board.definitions: must carry exactly the registered columns")
+    cols = board["columns"]
+    if not isinstance(cols, dict) or set(cols) != set(DEFINITIONS):
+        raise ContractError("board.columns: must carry exactly the registered columns")
+    for name, col in cols.items():
+        if not isinstance(col, dict) or not isinstance(col.get("state"), str):
+            raise ContractError(f"board.columns.{name}: object with state required")
+        _s(col["state"], f"columns.{name}.state", 64)
+        for k, v in col.items():
+            if isinstance(v, str):
+                _s(v, f"columns.{name}.{k}")
+            elif isinstance(v, int) and not isinstance(v, bool):
+                _int(v, f"columns.{name}.{k}")
+    rep = cols["replications"]
+    for k in ("attempts", "qualified", "successful"):
+        _int(rep.get(k), f"replications.{k}")
+    for k in ("visible", "windows", "registration", "artifacts", "program_evidence_legacy", "exact_release_evidence"):
+        if not isinstance(rep.get(k), dict):
+            raise ContractError(f"replications.{k}: object required")
+    for k in ("successful_cohort_artifacts", "attempted_artifacts", "verified_artifacts", "package_reproductions_successful"):
+        _int(rep["artifacts"].get(k), f"replications.artifacts.{k}")
+    _s(rep["artifacts"].get("note", ""), "replications.artifacts.note")
+    _int(rep["exact_release_evidence"].get("successful_package_reproductions"), "exact_release_evidence.successful_package_reproductions")
+    for k in ("entries", "reproduced", "affiliated"):
+        _int(rep["program_evidence_legacy"].get(k), f"program_evidence_legacy.{k}")
+    _s(rep["registration"].get("status", ""), "registration.status", 64)
+    for w, v in rep["windows"].items():
+        _s(w, "windows.key", 256)
+        if not isinstance(v, dict):
+            raise ContractError("windows: object per window required")
+        for k, n in v.items():
+            if isinstance(n, bool):
+                continue
+            _int(n, f"windows.{w}.{k}")
+    if not isinstance(board["receipts_public"], list) or not isinstance(board["challenges_public"], list) or not isinstance(board["decisions_public"], list):
+        raise ContractError("board: receipts_public/challenges_public/decisions_public must be lists")
+    for r in board["receipts_public"]:
+        row = export.revalidate(r)
+        if row["synthetic"] is not False:
+            raise ContractError("board.receipts_public: synthetic row in a public board")
+    for c in board["challenges_public"]:
+        if not isinstance(c, dict) or set(c) - {"challenge_id", "artifact", "claim_id", "disposition", "version", "created_at", "synthetic", "disposed_by_authority", "resolution", "adverse"}:
+            raise ContractError("board.challenges_public: unexpected shape")
+        _s(c.get("challenge_id"), "challenge.challenge_id", 128); _s(c.get("claim_id"), "challenge.claim_id", 128)
+        validate_binding_claim(c.get("artifact"), "challenge.artifact")
+        if c.get("disposition") not in DISPOSITIONS or not isinstance(c.get("adverse"), bool) or c.get("synthetic") is not False:
+            raise ContractError("board.challenges_public: disposition/adverse/synthetic invalid")
+        _int(c.get("version"), "challenge.version"); parse_ts(c.get("created_at"), "challenge.created_at")
+    for d in board["decisions_public"]:
+        if not isinstance(d, dict) or set(d) != set(DECISION_FIELDS):
+            raise ContractError("board.decisions_public: unexpected shape")
+        if not isinstance(d["packet_manifest_digest"], str) or not _HEX64.match(d["packet_manifest_digest"]) or d["synthetic"] is not False:
+            raise ContractError("board.decisions_public: digest/synthetic invalid")
+        _s(d["decision_id"], "decision.decision_id", 128); _s(d["decision"], "decision.decision", 32); _s(d["claim_id"], "decision.claim_id", 128); parse_ts(d["decided_at"], "decision.decided_at")
     return board
+
+
+def inspect_public(path: Path) -> dict:
+    """{'status': 'OK'|'ABSENT'|'INVALID'|'SYNTHETIC_REFUSED', 'reason': str, 'board': dict|None}.
+    ABSENT/INVALID are UNAVAILABLE states for surfaces — never a measured zero."""
+    path = Path(path)
+    if not path.exists():
+        return {"status": "ABSENT", "reason": "no public scoreboard file", "board": None}
+    try:
+        board = json.loads(path.read_text())
+    except (OSError, ValueError) as exc:
+        return {"status": "INVALID", "reason": f"unreadable: {exc.__class__.__name__}", "board": None}
+    if isinstance(board, dict) and board.get("synthetic") is not False:
+        return {"status": "SYNTHETIC_REFUSED", "reason": "a synthetic board is never served as public", "board": None}
+    try:
+        return {"status": "OK", "reason": "validated", "board": validate_board(board)}
+    except ContractError as exc:
+        return {"status": "INVALID", "reason": str(exc)[:200], "board": None}
+
+
+def load_public(path: Path) -> dict | None:
+    """Read-only loader for deployed surfaces (API/MCP/site): a VALIDATED, non-synthetic scoreboard file or None."""
+    return inspect_public(path)["board"]

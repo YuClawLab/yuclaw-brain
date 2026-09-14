@@ -59,17 +59,21 @@ class Challenge(unittest.TestCase):
     def setUp(self): self.tmp = tempfile.TemporaryDirectory(); self.store = str(pathlib.Path(self.tmp.name) / "s")
     def tearDown(self): self.tmp.cleanup()
     def test_adverse_findings_survive_and_resolution_needs_revised_artifact(self):
+        from v3.receipts.store import Store
         h = hashlib.sha256(b"SYNTHETIC artifact").hexdigest()
         rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "create", "ch-1", "--artifact-type", "wheel", "--sha256", h, "--size-bytes", "18", "--claim-id", "claim-synthetic-1", "--expected", "replay exit 0", "--observed", "replay exit 1 at root day 3"])
         self.assertEqual(rc, 0, err)
-        cs = ChallengeStore(self.store)
-        with self.assertRaises(ContractError): cs.dispose("ch-1", "RESOLVED", revised_artifact={"artifact_type": "wheel", "sha256": h, "size_bytes": 18}, verification="x")   # same bytes cannot resolve
-        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "CONFIRMED", "--reason", "synthetic confirmation"]); self.assertEqual(rc, 0, err)
-        h2 = hashlib.sha256(b"SYNTHETIC artifact revised").hexdigest()
-        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--verification", "synthetic re-test exit 0"]); self.assertEqual(rc, 0, err)
+        cs = ChallengeStore(self.store); Store(self.store).designate_reviewer("rev-syn", "T", designated=False)
+        tok = pathlib.Path(self.tmp.name) / "tok"; tok.write_text("T\n"); os.chmod(tok, 0o600)
+        ver = json.dumps({"method": "replay-lab", "result": "SUCCESS", "reference": "c" * 64})
+        with self.assertRaises(ContractError): cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact={"artifact_type": "wheel", "sha256": h, "size_bytes": 18}, revised_bytes=b"SYNTHETIC artifact", verification=json.loads(ver))   # same bytes cannot resolve
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "CONFIRMED", "--reason", "synthetic confirmation"]); self.assertEqual(rc, 1)   # V3: challenger cannot confirm (no authority)
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "CONFIRMED", "--role", "rev-syn", "--token-file", str(tok), "--reason", "synthetic confirmation"]); self.assertEqual(rc, 0, err)
+        revised = pathlib.Path(self.tmp.name) / "revised.bin"; revised.write_bytes(b"SYNTHETIC artifact revised"); h2 = hashlib.sha256(revised.read_bytes()).hexdigest()
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--verification-json", ver]); self.assertEqual(rc, 1)   # V3: digest alone is not a test
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--revised-path", str(revised), "--allowed-root", self.tmp.name, "--verification-json", ver]); self.assertEqual(rc, 0, err)
         view = cs.public_view(synthetic=True)[0]; self.assertEqual(view["disposition"], "RESOLVED"); self.assertTrue(view["resolution"]["original_finding_retained"]); self.assertEqual(len(cs.history("ch-1")), 3)
         self.assertNotIn("private", json.dumps(view)); self.assertEqual(cs.public_view(synthetic=False), [])
-
 
 class DocumentUse(unittest.TestCase):
     def test_decision_bound_to_packet_digest_and_export_needs_permission(self):
@@ -98,7 +102,7 @@ class ScoreboardAndParity(unittest.TestCase):
             p.write_text(json.dumps(scoreboard.build(pathlib.Path(d) / "s", synthetic=False))); self.assertIsNotNone(scoreboard.load_public(p))
         # API and MCP read through the same loader (source text check: no separate hard-coded examples)
         for f in ("v3/api/server.py", "v3/mcp/server.py"):
-            t = (REPO / f).read_text(); self.assertIn("from v3.receipts.scoreboard import load_public", t); self.assertIn('"docs" / "receipts" / "scoreboard.json"', t)
+            t = (REPO / f).read_text(); self.assertIn("from v3.receipts.scoreboard import inspect_public", t); self.assertIn('"docs" / "receipts" / "scoreboard.json"', t)
     def test_cli_receipts_end_to_end_synthetic(self):
         with tempfile.TemporaryDirectory() as d:
             st = str(pathlib.Path(d) / "s"); art = pathlib.Path(d) / "wheel.bin"; art.write_bytes(b"SYNTHETIC wheel bytes")
@@ -109,9 +113,11 @@ class ScoreboardAndParity(unittest.TestCase):
             sp = pathlib.Path(d) / "sub.json"; sp.write_text(json.dumps(sub))
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "import", str(sp)]); self.assertEqual(rc, 0, err); dig = json.loads(out)["digest"]; self.assertTrue(json.loads(out)["diagnostics"])
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "observe", dig, "--path", str(art), "--allowed-root", d]); self.assertEqual(rc, 0, err); self.assertTrue(json.loads(out)["verified"])
-            rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "nobody", "--token", "x"]); self.assertEqual(rc, 1)   # unauthorized
-            from v3.receipts.store import Store; Store(st).designate_reviewer("rev-syn", "T", designated=False)
-            rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev-syn", "--token", "T"]); self.assertEqual(rc, 0, err)
+            tok = pathlib.Path(d) / "tok"; tok.write_text("x\n"); os.chmod(tok, 0o600)
+            rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "nobody", "--token-file", str(tok)]); self.assertEqual(rc, 1)   # unauthorized
+            rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "nobody", "--token", "x"]); self.assertEqual(rc, 1); self.assertIn("--token-file", err)   # V3: no process-argument token
+            from v3.receipts.store import Store; Store(st).designate_reviewer("rev-syn", "T", designated=False); tok.write_text("T\n")
+            rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev-syn", "--token-file", str(tok)]); self.assertEqual(rc, 0, err)
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "counts"]); c = json.loads(out); self.assertEqual((c["attempts"], c["qualified"], c["successful"]), (1, 1, 1))
             rc, out, err = run(receipts_cli.main, ["--store", st, "export"]); self.assertEqual(json.loads(out), [])                # public export excludes synthetic
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "export"]); ex = json.loads(out); self.assertEqual(len(ex), 1); self.assertNotIn("P-CLI", out); self.assertTrue(ex[0]["synthetic"])
