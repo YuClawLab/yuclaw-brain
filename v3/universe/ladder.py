@@ -13,7 +13,10 @@ from dataclasses import dataclass, field, asdict
 RUNGS = (150, 250, 350, 550)
 GATES = ("G1_IDENTITY", "G2_PRICE", "G3_LIQUIDITY", "G4_SUBSTRATE", "G5_SHADOW_RUN", "G6_CROSS_SECTIONAL_FIT")
 MIN_SESSIONS = 252
-EXCLUSION_REASONS = ("DUPLICATE_TICKER", "MISSING_CIK", "PRICE_HISTORY_SHORT", "LIQUIDITY_BELOW_THRESHOLD", "NO_SUBSTRATE_PATH", "EVIDENCE_TIER_STOP", "CANONICAL_OVERLAP")
+# Vocabulary of per-name NON-ADMISSION outcomes for FIXTURE validation. This module never filters real data: real
+# admission exclusions are governed by the registered admission protocol and the truncation ledger's allowlist
+# (tools/yuclaw_u350_admission.py); nothing here is a data cap or a live filter.
+NON_ADMISSION_REASONS = ("DUPLICATE_TICKER", "MISSING_CIK", "PRICE_HISTORY_SHORT", "LIQUIDITY_BELOW_THRESHOLD", "NO_SUBSTRATE_PATH", "EVIDENCE_TIER_STOP", "CANONICAL_OVERLAP")
 
 
 @dataclass
