@@ -47,7 +47,7 @@ TASKS = {
 
 FORM_FIELDS = ("session_code", "mode", "protocol_id", "materials_manifest_sha256", "wheel", "tasks", "assistance", "relationship", "reviewer_role", "decided_at", "synthetic")
 WHEEL_FIELDS = ("label", "artifact_type", "sha256", "size_bytes")          # the byte binding; the label is descriptive only
-MAX_TASK_MINUTES_RECORDED = 600
+TASK_MINUTES_RECORD_BOUND = 600          # validation bound on a recorded per-task duration (rejects, never truncates); disclosed in the scoring key
 TASK_FORM_FIELDS = ("task", "completed", "minutes", "elements", "critical", "note")
 WHEEL_LABELS = ("REHEARSAL", "RC", "FINAL", "NONE")
 RELATIONSHIPS = ("RELATED-DISCLOSED", "UNRELATED")

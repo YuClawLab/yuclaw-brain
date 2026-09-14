@@ -17,7 +17,7 @@ class FormError(ValueError):
 
 
 def _finite_minutes(v) -> bool:
-    return not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) and 0 <= v <= S.MAX_TASK_MINUTES_RECORDED
+    return not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v) and 0 <= v <= S.TASK_MINUTES_RECORD_BOUND
 
 
 def validate_wheel(w) -> dict:
@@ -43,7 +43,7 @@ def score_task(t: dict) -> dict:
         if k not in t:
             raise FormError(f"task {task}: missing form field {k}")
     if not isinstance(t["completed"], bool) or not _finite_minutes(t["minutes"]):
-        raise FormError(f"task {task}: completed must be bool; minutes must be a finite number in 0..{S.MAX_TASK_MINUTES_RECORDED} (NaN/inf/bool rejected)")
+        raise FormError(f"task {task}: completed must be bool; minutes must be a finite number in 0..{S.TASK_MINUTES_RECORD_BOUND} (NaN/inf/bool rejected)")
     if not isinstance(t["note"], str):
         raise FormError(f"task {task}: note must be a string")
     el, cr = t["elements"], t["critical"]
