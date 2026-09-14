@@ -86,7 +86,7 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript generated from the release-candidate wheel `yuclaw-7.0.0-py3-none-any.whl` (yuclaw 7.0.0, Python 3.12.3, 2026-09-14 UTC) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path.
+Transcript produced from the release-candidate wheel `yuclaw-7.0.0-py3-none-any.whl` (yuclaw 7.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact.
 
 ```text
 $ yuclaw --version

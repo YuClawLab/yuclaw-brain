@@ -121,6 +121,11 @@ def main(argv=None) -> int:
             print(json.dumps(c, indent=1)); return 0
         if a.cmd == "export":
             rows = export.project_many(derived, st, mode=("synthetic" if a.synthetic else "public"))
+            if not a.synthetic:
+                pol = export.publication_policy()
+                if pol["denylist"] != "AVAILABLE":
+                    raise ContractError("E_POLICY_UNAVAILABLE: the private publication denylist is unavailable; nothing is exported (a missing denylist is not an empty denylist)")
+                export.sweep_strings(rows, "export")            # whole-object sweep at the shared public boundary; field path only, never the value
             txt = json.dumps(rows, indent=1)
             if a.out: Path(a.out).write_text(txt + "\n")
             else: print(txt)

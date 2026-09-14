@@ -30,6 +30,16 @@ def _cell(v) -> str:
     return escape(str(v))
 
 
+def _lineage_cell(r: dict) -> str:
+    """Lineage cell for one public receipt row (kept out of any f-string expression: Python 3.10 grammar)."""
+    version = _cell(r["version"])
+    if r.get("corrected"):
+        head = "<span class='state pend'>CORRECTED</span> v" + version + " superseded " + escape(str(r.get("superseded_at")))
+    else:
+        head = "v" + version
+    return head + "; first observed " + escape(r["first_observed_at"])
+
+
 def render(board: dict | None, status: str = "OK") -> str:
     """board=None renders the explicit unavailable state: PENDING when no board exists yet, UNAVAILABLE when the
     file is invalid or synthetic (never a measured zero)."""
@@ -67,7 +77,7 @@ def render(board: dict | None, status: str = "OK") -> str:
         receipts_html = ("<p class='muted'>No public receipts yet — this is a real zero, not a hidden count (receipted: 0 · unreceipted relationships not counted).</p>" if not recs else
                          "<table><thead><tr><th>receipt</th><th>type</th><th>artifact</th><th>outcome</th><th>review</th><th>qualified</th><th>successful</th><th>lineage</th></tr></thead><tbody>" +
                          "".join(f"<tr><td class='mono'>{escape(r['receipt_id'][:14])}… · {escape(r['attempt_id'])}</td><td>{escape(r['activity_type'])}</td><td class='mono'>{escape(r['artifact_binding']['artifact_type'])} {escape(r['artifact_binding']['sha256'][:12])}… ({_cell(r['artifact_binding']['size_bytes'])} B)</td><td>{escape(r['outcome'])}</td><td>{escape(r['review_state'])} ({escape(r['review_authority'])})</td><td>{_cell(r['qualified'])}</td><td>{_cell(r['successful'])}</td>"
-                                 f"<td>{('<span class=\'state pend\'>CORRECTED</span> v' + _cell(r['version']) + ' superseded ' + escape(str(r.get('superseded_at')))) if r.get('corrected') else 'v' + _cell(r['version'])}; first observed {escape(r['first_observed_at'])}</td></tr>" for r in recs) + "</tbody></table>")
+                                 "<td>" + _lineage_cell(r) + "</td></tr>" for r in recs) + "</tbody></table>")
         chal = board.get("challenges_public", [])
         chal_html = ("<p class='muted'>No challenges recorded.</p>" if not chal else
                      "<table><thead><tr><th>challenge</th><th>artifact</th><th>criterion</th><th>disposition</th><th>adverse</th></tr></thead><tbody>" +

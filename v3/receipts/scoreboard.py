@@ -279,7 +279,7 @@ TARGET_ART = _obj({"artifact_type": _enum(PACKAGE_ARTIFACTS), "filename": _s(128
 COVERAGE_ART = _obj({"artifact_type": _enum(PACKAGE_ARTIFACTS), "filename": _s(128), "sha256": _hex, "size_bytes": _int, "qualified_successful_attempts": _int, "distinct_persons": _int, "distinct_groups": _int, "covered": _bool})
 COVERAGE = _obj({"state": _enum(("UNBOUND", "BOUND")), "note": _s(500), "per_artifact": _list(COVERAGE_ART), "artifacts_covered": _nullable(_int), "artifacts_total": _nullable(_int),
                  "successful_package_reproductions": _nullable(_int), "label": _enum(_target.LABELS), "release": _obj({"tag": _s(32), "version": _s(32), "source_sha": _s(40), "source_tree": _s(40)})},
-                required=("state", "per_artifact", "artifacts_covered", "artifacts_total", "successful_package_reproductions"))
+                required=("state", "note", "per_artifact", "artifacts_covered", "artifacts_total", "successful_package_reproductions"))
 TARGET = _obj({"state": _enum(("UNBOUND", "BOUND")), "note": _s(500), "label": _enum(_target.LABELS), "tag": _s(32), "version": _s(32), "source_sha": _s(40), "source_tree": _s(40),
                "artifacts": _list(TARGET_ART), "generated_from": _enum(_target.SOURCES)}, required=("state",))
 CATEGORY = _obj({"receipted": _int, "qualified": _int, "distinct_persons_qualified": _int, "state": _enum(("ZERO", "OBSERVED")), "by_outcome": _map(_enum(OUTCOMES), _int), "note": _s(500),
@@ -349,6 +349,29 @@ def validate_board(board) -> dict:
     for k, w in rep["windows"].items():
         if w["prospective"] != (w["eligibility"] == "prospective") or w["successful_attempts"] > w["primary_attempts"]:
             _err("columns.replications.windows", "window relationship violated")
+    # state-specific required keys (every nested object the CLI/HTML/REST/MCP consume)
+    tgt = out["target"]
+    if tgt["state"] == "BOUND":
+        for k in ("label", "tag", "version", "source_sha", "source_tree", "artifacts", "generated_from"):
+            if k not in tgt: _err("target", "E_MISSING")
+        if not tgt["artifacts"]: _err("target.artifacts", "E_MISSING")
+    else:
+        if "note" not in tgt: _err("target", "E_MISSING")
+        if any(k in tgt for k in ("label", "artifacts")): _err("target", "E_UNKNOWN_KEYS")
+    if cov["state"] == "BOUND":
+        for k in ("label", "release"):
+            if k not in cov: _err("columns.replications.exact_release_evidence.exact_target_evidence", "E_MISSING")
+        if any(cov[k] is None for k in ("artifacts_covered", "artifacts_total", "successful_package_reproductions")): _err("columns.replications.exact_release_evidence.exact_target_evidence", "E_MISSING")
+        if cov["label"] != tgt.get("label"): _err("columns.replications.exact_release_evidence.exact_target_evidence", "E_RELATION")
+    else:
+        if cov["per_artifact"] or any(cov[k] is not None for k in ("artifacts_covered", "artifacts_total", "successful_package_reproductions")): _err("columns.replications.exact_release_evidence.exact_target_evidence", "E_RELATION")
+        if any(k in cov for k in ("label", "release")): _err("columns.replications.exact_release_evidence.exact_target_evidence", "E_UNKNOWN_KEYS")
+    regn = rep["registration"]
+    if regn["status"] == "REGISTERED":
+        for k in ("protocol_id", "anchor", "registered_at", "policy_version", "window_days", "prospective_rule"):
+            if k not in regn: _err("columns.replications.registration", "E_MISSING")
+    elif "note" not in regn:
+        _err("columns.replications.registration", "E_MISSING")
     out["public_schema_version"] = BOARD_SCHEMA_VERSION
     return out
 

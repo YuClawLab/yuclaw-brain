@@ -30,8 +30,12 @@ def _pkg_version() -> str:
     snippets, and packet manifests all derive from here; no template may
     carry a hardcoded version string (display-defect order, 2026-08-06:
     the badge sat at a hand-typed v5.3.0 while PyPI served 5.3.3)."""
-    import tomllib
     pp = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    try:
+        import tomllib                                  # Python ≥ 3.11
+    except ImportError:                                 # Python 3.10 (declared minimum): the version line is a plain TOML string
+        import re
+        return re.search(r'^version = "([^"]+)"', pp.read_text(encoding="utf-8"), re.M).group(1)
     with open(pp, "rb") as f:
         return tomllib.load(f)["project"]["version"]
 

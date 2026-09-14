@@ -57,9 +57,11 @@ def _trim(out: str, max_lines: int = 14) -> str:
 def build(exe: str, wheel: str) -> str:
     cwd = str(Path.home())          # stranger conditions: never the checkout
     ver = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=120, cwd=cwd).stdout.strip()
-    parts = [f"Transcript generated from the release-candidate wheel `{wheel}` "
-             f"({ver}, Python {platform.python_version()}, {datetime.now(timezone.utc).strftime('%Y-%m-%d')} UTC) "
-             f"by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path.", ""]
+    pyv = ".".join(platform.python_version_tuple()[:2])
+    parts = [f"Transcript produced from the release-candidate wheel `{wheel}` "
+             f"({ver}, Python {pyv}) "
+             f"by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. "
+             f"No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact.", ""]
     for cmd in COMMANDS:
         shown = " ".join(f'"{c}"' if " " in c else c for c in cmd)
         r = subprocess.run([exe] + [c if not c.startswith("docs/") else str(_REPO / c) for c in cmd],
@@ -83,8 +85,7 @@ def main(argv=None) -> int:
     readme = _REPO / "README.md"
     text = readme.read_text(encoding="utf-8")
     if a.check:
-        import tomllib
-        pv = tomllib.load(open(_REPO / "pyproject.toml", "rb"))["project"]["version"]
+        pv = re.search(r'^version = "([^"]+)"', (_REPO / "pyproject.toml").read_text(encoding="utf-8"), re.M).group(1)   # no tomllib: Python 3.10 minimum
         m = re.search(re.escape(BEGIN) + r"\n(.*?)\n" + re.escape(END), text, re.S)
         if not m or f"yuclaw {pv}" not in m.group(1) or "pending" in m.group(1).lower():
             print(f"[cli-transcript] RED — README transcript block missing, pending, or not at {pv}")

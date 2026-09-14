@@ -54,7 +54,10 @@ BASE = MANIFEST["public_base_url"].rstrip("/")
 
 
 def _pyproject_version() -> str:
-    import tomllib
+    try:
+        import tomllib                                  # Python ≥ 3.11
+    except ImportError:                                 # Python 3.10 (declared minimum)
+        return re.search(r'^version = "([^"]+)"', (_REPO / "pyproject.toml").read_text(encoding="utf-8"), re.M).group(1)
     return tomllib.load(open(_REPO / "pyproject.toml", "rb"))["project"]["version"]
 
 

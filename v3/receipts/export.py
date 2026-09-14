@@ -13,6 +13,8 @@ Pseudonyms are store-keyed HMACs (opaque, unguessable from identity data); ident
 """
 from __future__ import annotations
 
+import os
+
 import math
 import re
 import sys
@@ -138,8 +140,9 @@ NEVER_EXPORTED = ("participant_id", "group_id", "private", "limitations", "reaso
 def _denylist_terms() -> list[str] | None:
     """The PRIVATE publication denylist. None when unavailable — which is NOT an empty denylist: free text is
     then never published and the board records the policy as UNAVAILABLE."""
-    p = _REPO / "internal" / "witness_denylist.txt"
-    if not p.exists():
+    override = os.environ.get("YUCLAW_PUBLICATION_DENYLIST")            # private path supplied by the operator (installed-package runs); never a default
+    p = Path(override) if override else _REPO / "internal" / "witness_denylist.txt"
+    if not p.is_file():
         return None
     try:
         return [(l.split("|")[-1].strip() if "|" in l else l.strip()) for l in p.read_text().splitlines() if l.strip() and not l.strip().startswith("#")]
