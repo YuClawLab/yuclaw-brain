@@ -1,6 +1,6 @@
 # v7 journeys — executable commands, representative output, expected exits and limits (candidate)
 
-Representative output below was produced by running the INSTALLED rehearsal wheel (built from candidate commit `49495fd13cee4854717ff930b6d78e2301566d10`; NOT the final artifact) in a directory outside any checkout, with an empty environment and synthetic stores. Exit-code contracts: `packet` 0 SUCCESS / 1 MISMATCH / 2 usage / 3 UNSUPPORTED; `receipts`, `challenge`, `decision` 0 ok / 1 contract, authority or input error / 2 usage / 3 (history) unusable snapshot. A synthetic walkthrough never becomes a real outsider receipt; a packet SUCCESS is not an outsider result, not proof of official origin and not a scientific validation.
+Representative output below was produced by running the INSTALLED rehearsal wheel (built from candidate commit `49495fd13cee4854717ff930b6d78e2301566d10`; NOT the final artifact) in a directory outside any checkout, with an empty environment and synthetic stores. Exit-code contracts: `packet` 0 SUCCESS / 1 MISMATCH / 2 usage / 3 UNSUPPORTED; `receipts`, `challenge`, `decision` 0 ok / 1 contract, authority or input error / 2 usage / 3 (history) unusable snapshot. A synthetic walkthrough never becomes a real outsider receipt; a packet SUCCESS is not an outsider result, not evidence of official origin and not a scientific validation.
 
 ## Journey 1 — check a claim
 
@@ -120,7 +120,7 @@ $ yuclaw decision --store ./store --synthetic export   # empty: permission not g
 ```
 ## Receipts — explain, target-bound coverage, history
 
-Limits: exact-target coverage is UNBOUND until a release target manifest is delivered as release evidence; `explain` shows reason codes publicly and private facts only with `--private`; `history` compares two validated snapshots and never reports a multiplier from a zero baseline.
+Limits: exact-target coverage is UNBOUND until a release target manifest is delivered as release evidence; `explain` shows reason codes publicly and private facts only with `--private`; `history` compares two checked snapshots and never reports a multiplier from a zero baseline.
 
 ```
 $ yuclaw receipts --store ./store --synthetic explain demo-1
