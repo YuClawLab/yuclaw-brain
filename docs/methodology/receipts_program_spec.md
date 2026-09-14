@@ -33,3 +33,7 @@ CONFIRMED, REFUTED and RESOLVED dispositions of a real challenge require a DESIG
 
 ## Privacy
 Identity mappings, relationship supporting facts, contacts and reviewer notes stay in the private store. No public hash commitment to guessable private material. Free text is published only with permission and after the language rail and the private denylist sweep.
+
+### Export boundary (V7-005 closure)
+
+`yuclaw receipts export` and `scoreboard` publish nothing without the private publication policy: a missing denylist is not an empty denylist, the command exits 1 and writes no file. Every string leaf of the exported object is swept at the shared boundary (field path only in the error). Installed-package runs name the private file through `YUCLAW_PUBLICATION_DENYLIST`; synthetic exports need no policy because they never reach a public surface. The public board schema requires the state-specific keys of `target` (BOUND: label, tag, version, source_sha, source_tree, artifacts; UNBOUND: note only), of exact-target coverage (BOUND: label + release + counts; UNBOUND: no counts, no label) and of registration (REGISTERED: protocol_id, anchor, registered_at, policy_version, window_days, prospective_rule), so a validated board never lacks a key the renderer reads.
