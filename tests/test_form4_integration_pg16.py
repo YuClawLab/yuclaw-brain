@@ -39,7 +39,9 @@ class Form4EndToEnd(unittest.TestCase):
         if subprocess.run([str(PGBIN / "pg_ctl"), "-D", cls.data, "-o", f"-p {cls.port} -k {cls.tmp} -c listen_addresses=''", "-l", os.path.join(cls.tmp, "log"), "start", "-w"], capture_output=True).returncode != 0:
             shutil.rmtree(cls.tmp, ignore_errors=True); raise unittest.SkipTest("pg_ctl start failed")
         import psycopg2
-        cls.connect = staticmethod(lambda: psycopg2.connect(host=cls.tmp, port=cls.port, user="t", dbname="postgres"))
+        def _connect():
+            cn = psycopg2.connect(host=cls.tmp, port=cls.port, user="t", dbname="postgres"); cn.set_client_encoding("UTF8"); return cn   # independent of the process locale (the generator runs with LC_ALL=C)
+        cls.connect = staticmethod(_connect)
         ddl = (REPO / "v3/schema.sql").read_text(); m = re.search(r"CREATE TABLE events \(.*?\);\n(?:CREATE (?:UNIQUE )?INDEX idx_events[^\n]*\n)+", ddl, re.S)
         cn = cls.connect(); cn.autocommit = True; cn.cursor().execute(m.group(0)); cn.close()
     @classmethod

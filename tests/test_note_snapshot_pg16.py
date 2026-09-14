@@ -32,7 +32,9 @@ class DisposablePG16(unittest.TestCase):
         if r.returncode != 0:
             shutil.rmtree(cls.tmp, ignore_errors=True); raise unittest.SkipTest("pg_ctl start failed: " + r.stderr[-200:])
         import psycopg2
-        cls.connect = staticmethod(lambda: psycopg2.connect(host=cls.tmp, port=cls.port, user="t", dbname="postgres"))
+        def _connect():
+            cn = psycopg2.connect(host=cls.tmp, port=cls.port, user="t", dbname="postgres"); cn.set_client_encoding("UTF8"); return cn   # independent of the process locale (the generator runs with LC_ALL=C)
+        cls.connect = staticmethod(_connect)
         cn = cls.connect(); cn.autocommit = True; cur = cn.cursor()
         cur.execute("CREATE TABLE events (id serial primary key, ticker text, event_status text, created_at timestamptz default now())")
         cur.execute("INSERT INTO events (ticker, event_status) VALUES ('AAA','accepted'), ('AAA','accepted'), ('BBB','accepted'), ('CCC','pending')"); cn.close()
