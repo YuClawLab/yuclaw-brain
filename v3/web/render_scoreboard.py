@@ -32,21 +32,21 @@ def _cell(v) -> str:
 
 def render(board: dict | None) -> str:
     if board is None:
-        rows = "".join(f"<tr><td>{escape(k)}</td><td><span class='state pend'>PENDING</span></td><td>—</td><td>{escape(v)}</td></tr>" for k, v in DEFINITIONS.items())
+        rows = "".join(f"<tr><td data-label='column'>{escape(k)}</td><td data-label='state'><span class='state pend'>PENDING</span></td><td data-label='counts'>—</td><td data-label='definition'>{escape(v)}</td></tr>" for k, v in DEFINITIONS.items())
         stamp, receipts_html, chal_html, hist = "no public scoreboard published yet", "", "", ""
     else:
         cols = board["columns"]
         def row(name, col):
             detail = {k: v for k, v in col.items() if k not in ("state",) and not isinstance(v, (dict, list))}
-            return (f"<tr><td>{escape(name)}</td><td><span class='state {'zero' if col.get('state') in ('ZERO',) else 'pend' if 'PENDING' in str(col.get('state')) else 'obs'}'>{_cell(col.get('state'))}</span></td>"
-                    f"<td class='mono'>{escape(', '.join(f'{k}={v}' for k, v in detail.items()) or '—')}</td><td>{escape(DEFINITIONS[name])}</td></tr>")
+            return (f"<tr><td data-label='column'>{escape(name)}</td><td data-label='state'><span class='state {'zero' if col.get('state') in ('ZERO',) else 'pend' if 'PENDING' in str(col.get('state')) else 'obs'}'>{_cell(col.get('state'))}</span></td>"
+                    f"<td data-label='counts' class='mono'>{escape(', '.join(f'{k}={v}' for k, v in detail.items()) or '—')}</td><td data-label='definition'>{escape(DEFINITIONS[name])}</td></tr>")
         rows = "".join(row(n, cols[n]) for n in DEFINITIONS)
         rep = cols["replications"]
-        rows += (f"<tr><td>replications · artifact coverage</td><td><span class='state obs'>{_cell(rep['registration']['status'])}</span></td>"
-                 f"<td class='mono'>successful-cohort artifacts={rep['artifacts']['successful_cohort_artifacts']}, attempted={rep['artifacts']['attempted_artifacts']}, "
+        rows += (f"<tr><td data-label='column'>replications · artifact coverage</td><td data-label='state'><span class='state obs'>{_cell(rep['registration']['status'])}</span></td>"
+                 f"<td data-label='counts' class='mono'>successful-cohort artifacts={rep['artifacts']['successful_cohort_artifacts']}, attempted={rep['artifacts']['attempted_artifacts']}, "
                  f"verified={rep['artifacts']['verified_artifacts']}, exact-release package reproductions={rep['exact_release_evidence']['successful_package_reproductions']}, "
                  f"legacy program entries={rep['program_evidence_legacy']['entries']} (PREFIX_ONLY)</td>"
-                 f"<td>{escape(rep['artifacts']['note'])}</td></tr>")
+                 f"<td data-label='definition'>{escape(rep['artifacts']['note'])}</td></tr>")
         stamp = f"source {escape(board['source_timestamp'])} · policy {escape(board['policy_version'])} · scoreboard {escape(board['scoreboard_version'])}"
         recs = board.get("receipts_public", [])
         receipts_html = ("<p class='muted'>No public receipts yet — this is a real zero, not a hidden count.</p>" if not recs else
@@ -78,7 +78,12 @@ def render(board: dict | None) -> str:
     .state{{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:JetBrains Mono,monospace}}
     .zero{{background:#1E232D;color:#A0AEC0}} .pend{{background:#FBA94B20;color:#FBA94B}} .obs{{background:#00E67620;color:#00E676}}
     .wrap{{overflow-x:auto}} a{{color:#00E676}} code{{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}}
-    @media (max-width:640px){{.container{{padding:12px}} td,th{{padding:6px}}}}
+    .mono{{word-break:break-word}}
+    @media (max-width:640px){{
+      .container{{padding:12px}}
+      table.defs thead{{display:none}} table.defs tr{{display:block;border-bottom:1px solid #1E232D;padding:8px 0}}
+      table.defs td{{display:block;border:none;padding:2px 0}} table.defs td::before{{content:attr(data-label) ": ";color:#718096;font-size:11px;font-family:JetBrains Mono,monospace}}
+    }}
   </style>
 </head>
 <body>
@@ -88,7 +93,7 @@ def render(board: dict | None) -> str:
     <p class="muted" style="margin-bottom:14px;font-family:JetBrains Mono,monospace">{escape(stamp)}</p>
     <div class="disclaimer"><strong>Disclaimer —</strong> {escape(DISCLAIMER)}</div>
     <div class="panel"><div class="panel-title">What is counted (each column shows its own definition; zero and pending are real states)</div>
-      <div class="wrap"><table><thead><tr><th>column</th><th>state</th><th>counts</th><th>counting definition</th></tr></thead><tbody>{rows}</tbody></table></div>
+      <div class="wrap"><table class="defs"><thead><tr><th>column</th><th>state</th><th>counts</th><th>counting definition</th></tr></thead><tbody>{rows}</tbody></table></div>
       <p class="muted" style="margin-top:8px">Primary replication population = qualified attempts, including qualified failed and inconclusive outcomes; the successful cohort is reported separately. Program evidence (any release, legacy prefix-bound) is separate from exact-release evidence (verified wheel/sdist bytes). A site or endpoint check is never a package reproduction.</p>
     </div>
     <div class="panel"><div class="panel-title">Public receipts</div><div class="wrap">{receipts_html}</div></div>
