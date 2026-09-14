@@ -221,6 +221,19 @@ def v1_verify(ticker: str, date: str = Query(..., description="YYYY-MM-DD"),
 
 
 # --- Always-free, no-auth metadata (Q4) ---
+@app.get("/v1/receipts/scoreboard")
+def v1_receipts_scoreboard() -> dict[str, Any]:
+    """v7: derived evidence scoreboard — READ-ONLY. Served from the derived non-synthetic file
+    docs/receipts/scoreboard.json produced by the local receipt workflow; this endpoint grants no
+    submission, review or export authority. A synthetic board is never served."""
+    from pathlib import Path as _P
+    from v3.receipts.scoreboard import load_public
+    board = load_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
+    if board is None:
+        return _stamp({"status": "PENDING", "note": "no public scoreboard published yet; counts are zero/pending, not hidden"})
+    return _stamp(board)
+
+
 @app.get("/v1/universe")
 def v1_universe() -> dict[str, Any]:
     return {"universe": _backend().universe()}

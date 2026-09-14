@@ -190,6 +190,31 @@ def _match(claim: dict, objs: list) -> tuple[str, list, list]:
     return "UNSUPPORTED", [], misses
 
 
+def support_limits(status: str, claim: dict, matched: list, misses: list) -> dict:
+    """v7: structured statement of what this passport establishes and what it never does — four
+    separate dimensions, plus the specific unsupported-conclusion response. No financial prediction
+    is ever introduced; research interpretation is always 'none'."""
+    source_match = {"SOURCE_MATCHED": "EXACT", "PARTIAL_MATCH": "PARTIAL", "UNSUPPORTED": "NONE"}.get(status, "NOT_EVALUATED")
+    dr = claim.get("date_range")
+    temporal = ("EVALUATED" if dr else "NOT_CONSTRAINED") if status in ("SOURCE_MATCHED", "PARTIAL_MATCH", "UNSUPPORTED") else "NOT_EVALUATED"
+    return {
+        "source_match": source_match,
+        "source_match_meaning": {"EXACT": "every parsed claim element matched a stored EvidenceObject",
+                                 "PARTIAL": "some elements matched; misses listed", "NONE": "no EvidenceObject matched",
+                                 "NOT_EVALUATED": "claim not parseable or outside coverage"}[source_match],
+        "temporal_eligibility": temporal,
+        "temporal_note": "matches are reported with their available_as_of; a date range constrains filing dates only",
+        "replay_status": "REPLAYABLE_BY_COMMAND" if status not in ("NOT_PARSEABLE", "NOT_IN_COVERAGE") else "NOT_APPLICABLE",
+        "research_interpretation": "NONE",
+        "research_interpretation_note": "the passport never states a truth verdict, direction, return, or prediction",
+        "unsupported_conclusion": ("This claim is NOT supported by YUCLAW's corpus: no matching evidence object exists. That is a "
+                                   "coverage statement, not a finding that the claim is false." if status == "UNSUPPORTED" else
+                                   "not applicable" if status in ("SOURCE_MATCHED", "PARTIAL_MATCH") else
+                                   "no conclusion: the claim could not be evaluated"),
+        "matched_count": len(matched), "miss_count": len(misses),
+    }
+
+
 def passport(claim_raw: str, claim: dict | None,
              universe_ok: bool | None) -> dict:
     doc = {"claim_as_given": claim_raw,
@@ -202,11 +227,13 @@ def passport(claim_raw: str, claim: dict | None,
         doc["note"] = ("the conservative text parser could not "
                        "confidently structure this claim — an unparsed "
                        "claim is never called unsupported")
+        doc["support_limits"] = support_limits("NOT_PARSEABLE", {}, [], [])
         return doc
     if universe_ok is False:
         doc["status"] = "NOT_IN_COVERAGE"
         doc["note"] = (f"{claim['ticker']} is outside the 79-name scoring "
                        f"universe — the corpus cannot speak to it")
+        doc["support_limits"] = support_limits("NOT_IN_COVERAGE", claim, [], [])
         return doc
     objs, corpus_scope = _corpus(claim["ticker"])
     if corpus_scope is not None:
@@ -221,6 +248,7 @@ def passport(claim_raw: str, claim: dict | None,
     if status == "UNSUPPORTED":
         doc["note"] = ("not found in YUCLAW's corpus — never a truth "
                        "verdict")
+    doc["support_limits"] = support_limits(status, claim, matched, misses)
     args = [f"--ticker {claim['ticker']}"]
     if claim.get("type"):
         args.append(f"--type {claim['type']}")

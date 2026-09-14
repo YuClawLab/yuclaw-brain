@@ -332,6 +332,17 @@ def verify_snapshot(ticker: str, date: str) -> dict[str, Any]:
 
 
 @mcp.tool()
+def get_evidence_scoreboard() -> dict[str, Any]:
+    """v7 derived evidence scoreboard (read-only): witnesses, pilots, replications (qualified vs
+    successful, artifact coverage), audits, refusals, packet uses, challenges — with definitions
+    and source timestamp. Zero/pending states are real. No trust score; no write/review authority."""
+    from pathlib import Path as _P
+    from v3.receipts.scoreboard import load_public
+    board = load_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
+    return board or {"status": "PENDING", "note": "no public scoreboard published yet"}
+
+
+@mcp.tool()
 def get_protocol(protocol_id: str) -> dict[str, Any]:
     """A protocol payload from the hash-chained registry — the
     specification locked BEFORE its statistic was computed."""

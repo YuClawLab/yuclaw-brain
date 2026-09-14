@@ -27,6 +27,11 @@ COMMANDS: dict[str, str] = {
     "intake-check": "v3.cli.intake_check:main",
     # 5.3: Evidence Passport — deterministic claim check
     "check-claim": "v3.cli.check_claim:main",
+    # v7: check → reproduce → challenge → document use (shared v3.receipts logic)
+    "packet": "v3.cli.packet:main",
+    "receipts": "v3.cli.receipts:main",
+    "challenge": "v3.cli.challenge:main",
+    "decision": "v3.cli.decision:main",
     "lens": "v3.cli.lens:main",
     "export": "v3.cli.export:main",
     # legacy v3 helpers (kept available; not part of the documented v4 surface)
@@ -52,6 +57,10 @@ DESCRIPTIONS: dict[str, str] = {
     "events": "accepted-events export (derived data only)",
     "intake-check": "client-side pre-check of a signal CSV for Signal Review (never transmits)",
     "check-claim": "Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)",
+    "packet": "offline verification packet — build from public artifacts, or verify exact bytes + replay the frozen bundle (v7)",
+    "receipts": "local receipt workflow — import / observe bytes / review (authorized) / derive / counts / export / scoreboard (v7)",
+    "challenge": "structured challenge bound to an exact artifact + claim id; dispositions keep the original finding (v7)",
+    "decision": "document-use receipt bound to an exact packet manifest digest; export needs permission (v7)",
     "lens": "lens summary-card data as JSON (the numbers the page renders)",
     "export": "lens events export (--format csv|json; --page builds the evidence packet)",
     "replay": "point-in-time classification for a ticker at end of a date",
