@@ -1,0 +1,6 @@
+# Capability and data-flow brief (factual; for counsel's existing review route) — v7
+
+What YUCLAW does: reads public SEC filings and derived public market data; classifies evidence into a locked vocabulary; publishes point-in-time snapshots, a hash-chained ledger, a Validation Lab with forward tracking, and machine-readable surfaces (CLI, REST, MCP). Research and education only; no advice, no execution, no client positions.
+Data flow (BYOS Signal Review, unchanged): a client CSV stays on the client's side (`yuclaw intake-check` never transmits); no upload endpoint exists on the site (no-form gate); analysis runs box-local; deliverables are derived data only (export rule: no raw vendor rows).
+What the receipt program adds (v7): outsiders can verify exact artifact bytes and reproduce published statistics offline (`yuclaw packet verify`), record challenges and decisions locally, and — after a designated review — appear on the public scoreboard under pseudonyms. Nothing about a client's data or decisions is published without explicit permission.
+Blockers (unchanged): counsel's data-versus-advice review of the pilot engagement terms and data-handling one-pager (drafts 2026-07-27; hard blocker for any real engagement); adviser-registration triggers; retention period. No pilot activation, eligibility promise or sovereignty claim beyond these documented facts.

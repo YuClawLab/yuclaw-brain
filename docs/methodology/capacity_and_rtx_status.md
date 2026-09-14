@@ -1,0 +1,5 @@
+# Measured capacity and the RTX PRO 6000 status (v7; factual)
+
+Measured (capacity audit 2026-08-02; fact packet §6): GPU-hours/day ≈ 1.10 today → 1.52 @150 → 2.11 @250 → 2.29 @350 names; U350 shadow drain 10.6–49.7 GPU-min/day (one breach of the 48.0-min budget on 2026-08-28). Box: GB10, 119 GiB RAM, single 3.7 TB filesystem, gpu-lock exclusivity contract (MemoryMax=100G scope).
+Admission interfaces: `tools/yuclaw_u350_admission.py` (resolve → enrich → prices → select under the Liquidity Addendum), constitution `tools/yuclaw_u350_constitution.py` (six gates; GATE 5 shadow-run requirement before Phase B), readiness reporting `tools/yuclaw_ladder_readiness.py` (v7 candidate).
+RTX PRO 6000: no commissioning, storage or availability record on the box. It is not assumed as capacity; its first project workload requires a commissioning order. The proposed evidence-only expansion deferral still needs the owner's disposition. Current evidence-only service (Canada Resources tier, 49 names) is preserved.
