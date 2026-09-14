@@ -9,7 +9,12 @@ delivery failure of the report is reported as DELIVERY_FAILED — never as job s
 Activation (heartbeat delivery) needs a scoped order; this module only computes and formats."""
 from __future__ import annotations
 
+import argparse
+import hashlib
+import json
 import re
+import subprocess
+import sys
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
@@ -132,3 +137,49 @@ def latest_status(log_path: Path = None, launcher_path: Path = LAUNCHER) -> dict
     if not segs:
         return {"state": "NO_RUN_FOUND"}
     return asdict(classify_run(log_lines, segs[-1], exits))
+
+
+def launch_identity(launcher_path: Path = LAUNCHER, repo: Path | None = None, start_stamp: str | None = None) -> dict:
+    """Identity of the launch: launcher file digest + the commit the run created (found read-only in the repo by
+    the run's own 'auto: v3.0 page refresh <stamp>' subject). Missing evidence stays explicit (None), never guessed."""
+    out = {"launcher_path": str(launcher_path), "launcher_sha256": None, "run_commit": None, "run_commit_subject": None}
+    try:
+        out["launcher_sha256"] = hashlib.sha256(Path(launcher_path).read_bytes()).hexdigest()
+    except OSError:
+        pass
+    if repo and start_stamp:
+        r = subprocess.run(["git", "--no-optional-locks", "log", "-1", "--format=%H%x00%s", f"--grep=auto: v3.0 page refresh {start_stamp}", "--fixed-strings"], cwd=str(repo), capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            sha, subj = r.stdout.strip().split("\x00", 1); out["run_commit"], out["run_commit_subject"] = sha, subj
+    return out
+
+
+def preview(log_path, launcher_path: Path = LAUNCHER, repo: Path | None = None, builds_reader=None) -> dict:
+    """Local preview of the latest nightly run (read-only): identity, start/end, exit/failing gate, push and
+    deploy outcome, Pages build through an injected reader (None → not queried). A missing log is NO_LOG, an
+    empty one NO_RUN_FOUND; the underlying exit status is preserved in `exit_code`. Nothing is sent."""
+    lp = Path(log_path)
+    if not lp.exists():
+        return {"state": "NO_LOG", "log": str(lp), "delivery": "NOT_ATTEMPTED"}
+    st = latest_status(lp, launcher_path)
+    if st.get("state") == "NO_RUN_FOUND":
+        return {**st, "log": str(lp), "delivery": "NOT_ATTEMPTED"}
+    ident = launch_identity(launcher_path, repo, st.get("start_stamp"))
+    report = {"identity": ident, "run": st, "log": str(lp), "delivery": "NOT_ATTEMPTED (preview; activation needs the owner's scoped decision)"}
+    if builds_reader is not None:
+        rs = RunStatus(**{k: v for k, v in st.items() if k in RunStatus.__dataclass_fields__})
+        report["run"]["build"] = attach_build(rs, builds_reader, ident.get("run_commit")).build
+    else:
+        report["run"]["build"] = {"status": None, "note": "Pages build not queried in preview"}
+    return report
+
+
+def main(argv=None) -> int:
+    p = argparse.ArgumentParser(prog="python3 -m v3.ops.nightly_status", description="Nightly status preview (read-only; sends nothing)")
+    p.add_argument("--log", default="/tmp/yuclaw_pipeline.log"); p.add_argument("--repo", default=str(_REPO)); p.add_argument("--launcher", default=str(LAUNCHER))
+    a = p.parse_args(argv)
+    print(json.dumps(preview(a.log, Path(a.launcher), Path(a.repo)), indent=1)); return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

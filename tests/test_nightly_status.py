@@ -36,5 +36,27 @@ class Adapter(unittest.TestCase):
         self.assertEqual(t.get("tools/check_truncation_ledger.py"), 44); self.assertEqual(t.get("tools/check_weekly_note.py"), 24); self.assertEqual(t.get("tools/yuclaw_weekly_note.py"), 23); self.assertEqual(t.get("tools/deploy_verify.py"), 15)
 
 
+class Preview(unittest.TestCase):
+    def test_preview_states_identity_and_delivery_never_upgrade(self):
+        import json, os, subprocess, tempfile
+        with tempfile.TemporaryDirectory() as d:
+            d = pathlib.Path(d); launcher = d / "launcher.sh"; launcher.write_text(LAUNCHER)
+            self.assertEqual(ns.preview(d / "missing.log", launcher)["state"], "NO_LOG")                                # missing evidence is explicit
+            (d / "empty.log").write_text("no runs here\n"); self.assertEqual(ns.preview(d / "empty.log", launcher)["state"], "NO_RUN_FOUND")
+            repo = d / "repo"; repo.mkdir(); subprocess.run(["git", "init", "-q", "-b", "main", str(repo)], check=True)
+            subprocess.run(["git", "-C", str(repo), "-c", "user.name=t", "-c", "user.email=t@example", "commit", "-q", "--allow-empty", "-m", "auto: v3.0 page refresh 2026-09-08 23:00 UTC"], check=True)
+            sha = subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+            (d / "ok.log").write_text("\n".join(SUCCESS) + "\n"); rep = ns.preview(d / "ok.log", launcher, repo)
+            self.assertEqual(rep["run"]["state"], "COMPLETED"); self.assertEqual(rep["identity"]["run_commit"], sha); self.assertEqual(len(rep["identity"]["launcher_sha256"]), 64)
+            self.assertTrue(rep["delivery"].startswith("NOT_ATTEMPTED")); self.assertIsNone(rep["run"]["build"]["status"])
+            (d / "int.log").write_text("\n".join(SUCCESS + INTERRUPTED) + "\n"); rep = ns.preview(d / "int.log", launcher, repo)
+            self.assertEqual(rep["run"]["state"], "INTERRUPTED_OR_RUNNING"); self.assertIsNone(rep["identity"]["run_commit"])          # no stamp → no commit inferred
+            (d / "fail.log").write_text("\n".join(FAIL_TRUNC) + "\n"); rep = ns.preview(d / "fail.log", launcher, repo, builds_reader=lambda s: {"status": "errored"})
+            self.assertEqual((rep["run"]["state"], rep["run"]["exit_code"], rep["run"]["failing_gate"]), ("FAILED", 44, "truncation-gate"))
+            self.assertIsNone(rep["run"]["build"]["status"]); self.assertIn("no commit", rep["run"]["build"]["note"])                    # a run that failed before its push has no commit to query
+            rep = ns.preview(d / "ok.log", launcher, repo, builds_reader=lambda s: {"status": "errored", "commit": s}); self.assertEqual(rep["run"]["build"]["status"], "errored")
+            delivered = ns.deliver(rep, lambda r: False); self.assertEqual(delivered["delivery"], "DELIVERY_FAILED"); self.assertEqual(delivered["run"]["state"], "FAILED")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
