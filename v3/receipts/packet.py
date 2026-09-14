@@ -60,7 +60,12 @@ def _git(*a, cwd: Path = _REPO) -> str:
 def source_root(explicit: str | Path | None = None) -> Path:
     """The checkout that holds the public artifacts: an explicit --source, else the package's own
     repo when run from a checkout, else the current directory (installed-wheel use)."""
-    for cand in ([Path(explicit)] if explicit else []) + [_REPO, Path.cwd()]:
+    if explicit is not None:
+        cand = Path(explicit)
+        if (cand / "release_manifest.json").exists() and (cand / "docs").is_dir():
+            return cand
+        raise ValueError("--source is not a YUCLAW checkout with public artifacts (no silent fallback to another tree)")
+    for cand in (_REPO, Path.cwd()):
         if (cand / "release_manifest.json").exists() and (cand / "docs").is_dir():
             return cand
     raise ValueError("no YUCLAW checkout with public artifacts found: pass --source <checkout>")
