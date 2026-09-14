@@ -61,7 +61,7 @@ class Challenge(unittest.TestCase):
     def test_adverse_findings_survive_and_resolution_needs_revised_artifact(self):
         from v3.receipts.store import Store
         h = hashlib.sha256(b"SYNTHETIC artifact").hexdigest()
-        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "create", "ch-1", "--artifact-type", "wheel", "--sha256", h, "--size-bytes", "18", "--claim-id", "claim-synthetic-1", "--expected", "replay exit 0", "--observed", "replay exit 1 at root day 3"])
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "create", "ch-1", "--artifact-type", "wheel", "--sha256", h, "--size-bytes", "18", "--claim-id", "claim-synthetic-1", "--expected", "replay exit 0", "--observed", "replay exit 1 at root day 3", "--criterion", "artifact-reproduction-by-qualified-receipt"])
         self.assertEqual(rc, 0, err)
         cs = ChallengeStore(self.store); Store(self.store).designate_reviewer("rev-syn", "T", designated=False)
         tok = pathlib.Path(self.tmp.name) / "tok"; tok.write_text("T\n"); os.chmod(tok, 0o600)

@@ -131,8 +131,8 @@ class RealAuthority(unittest.TestCase):
         (self.root / "reviewers.json").write_text(json.dumps({"designated": True, "roles": {"legacy": hashlib.sha256(b"L").hexdigest(), **{k: v["token_sha256"] for k, v in self.st.authority()["appointments"].items()}}}))
         self.st.designate_reviewer("rev-syn", "S", designated=False); self.st.designate_reviewer("rev-real", "R", designated=True)   # re-designate after the legacy migration
         self.cs = ChallengeStore(self.root); self.h = hashlib.sha256(b"REAL artifact").hexdigest()
-        self.cs.create("real-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-real", expected="a", observed="b", synthetic=False, now=T0)
-        self.cs.create("syn-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-syn", expected="a", observed="b", synthetic=True, now=T0)
+        self.cs.create("real-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-real", expected="a", observed="b", synthetic=False, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
+        self.cs.create("syn-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-syn", expected="a", observed="b", synthetic=True, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
     def tearDown(self): self.tmp.cleanup()
     def test_real_dispositions_need_designated(self):
         self.assertEqual(self.st.authority()["appointments"]["legacy"]["status"], "HELD")
@@ -159,7 +159,7 @@ class RealAuthority(unittest.TestCase):
         self.assertEqual(v_wrong["result"], "SUCCESS")
         with self.assertRaises(ContractError): self.cs.dispose("real-1", "RESOLVED", verification_id=v_wrong["verification_id"], **kw)   # valid record, different revised artifact
         # a record for another challenge
-        self.cs.create("real-2", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-real", expected="a", observed="b", synthetic=False, now=T0)
+        self.cs.create("real-2", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-real", expected="a", observed="b", synthetic=False, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
         rec2 = self.st.import_submission(sub("q2", data=rev), synthetic=False, received_at=T0)
         self.st.add_observation(rec2["digest"], verify.observe(rec2["submission"]["artifact_binding"], data=rev, now=T0)); self.st.add_review(rec2["digest"], "QUALIFIED", reviewer_role="rev-real", token="R", now=T0)
         v_other = self.cs.verify_revision("real-2", revised_artifact=ra, method="receipt", receipt_digest=rec2["digest"], now=T0); self.assertEqual(v_other["result"], "SUCCESS")
@@ -179,7 +179,7 @@ class RealAuthority(unittest.TestCase):
     def test_packet_verify_method_binds_observed_artifact(self):
         with tempfile.TemporaryDirectory() as d:
             d = pathlib.Path(d); data = b'{"revised": true}'; pk = mk(d, "pk", [ent("a.json", data)], "a.json", {"a.json": data})
-            self.cs.create("bundle-1", artifact={"artifact_type": "bundle", "sha256": "1" * 64, "size_bytes": 5}, claim_id="c", expected="a", observed="b", synthetic=False, now=T0)
+            self.cs.create("bundle-1", artifact={"artifact_type": "bundle", "sha256": "1" * 64, "size_bytes": 5}, claim_id="c", expected="a", observed="b", synthetic=False, criterion="packet-integrity-and-replay", now=T0)
             ra = {"artifact_type": "bundle", "sha256": hashlib.sha256(data).hexdigest(), "size_bytes": len(data)}
             with ReplaySpy():
                 v = self.cs.verify_revision("bundle-1", revised_artifact=ra, method="packet-verify", packet_dir=pk, now=T0)
@@ -191,7 +191,7 @@ class RealAuthority(unittest.TestCase):
             r = self.cs.dispose("bundle-1", "RESOLVED", reviewer_role="rev-real", token="R", revised_artifact=ra, revised_bytes=data, verification_id=v["verification_id"], now=T0)
             self.assertEqual(r["resolution"]["verification_method"], "packet-verify")
             tok = pathlib.Path(d) / "tok"; tok.write_text("R\n"); os.chmod(tok, 0o600); rp = d / "rev.bin"; rp.write_bytes(data)
-            self.cs.create("bundle-2", artifact={"artifact_type": "bundle", "sha256": "1" * 64, "size_bytes": 5}, claim_id="c", expected="a", observed="b", synthetic=False, now=T0)
+            self.cs.create("bundle-2", artifact={"artifact_type": "bundle", "sha256": "1" * 64, "size_bytes": 5}, claim_id="c", expected="a", observed="b", synthetic=False, criterion="packet-integrity-and-replay", now=T0)
             with ReplaySpy():
                 rc, out, err = run(challenge_cli.main, ["--store", str(self.root), "verify-revision", "bundle-2", "--revised-type", "bundle", "--revised-sha256", ra["sha256"], "--revised-size-bytes", str(ra["size_bytes"]), "--method", "packet-verify", "--packet", str(pk)])
             self.assertEqual(rc, 0, err); vid = json.loads(out)["verification_id"]

@@ -23,12 +23,23 @@ LEGACY_VERSION = "legacy-0"
 POLICY_VERSION = "receipt-policy-candidate-2026-09"      # candidate; adoption pending (owner)
 WINDOW_DAYS = 28                                         # candidate fixed window, UTC days
 
-ARTIFACT_TYPES = ("wheel", "sdist", "bundle", "site-page", "chain-line", "json-endpoint")
+ARTIFACT_TYPES = ("wheel", "sdist", "bundle", "site-page", "chain-line", "json-endpoint", "methodology-page", "product-response")
+# Receipt CATEGORIES (candidate, V5): each activity type has its own outcome vocabulary, scope and public rules.
+#   REPLICATION         — reproduce a published artifact (outcome REPRODUCED/FAILED/INCONCLUSIVE)
+#   WITNESS_REVIEW      — a person examined the methodology and left a reviewable receipt (outcome REVIEWED/DECLINED)
+#   AUDIT_BREAK_ATTEMPT — an outsider tried to break a published check (outcome NO_BREAK/BREAK_FOUND/INCONCLUSIVE); internal test runs are not audits
+#   REFUSAL             — a real user asked for an unsupported conclusion and the product refused (outcome REFUSED/NOT_REFUSED); the request text and identity stay private
+# Automated check-claim UNSUPPORTED/NOT_IDENTIFIABLE responses are private telemetry, never public refusal receipts.
+ACTIVITY_TYPES = ("REPLICATION", "WITNESS_REVIEW", "AUDIT_BREAK_ATTEMPT", "REFUSAL")
+OUTCOMES_BY_ACTIVITY = {"REPLICATION": ("REPRODUCED", "FAILED", "INCONCLUSIVE"), "WITNESS_REVIEW": ("REVIEWED", "DECLINED"),
+                        "AUDIT_BREAK_ATTEMPT": ("NO_BREAK", "BREAK_FOUND", "INCONCLUSIVE"), "REFUSAL": ("REFUSED", "NOT_REFUSED")}
+ARTIFACTS_BY_ACTIVITY = {"REPLICATION": ("wheel", "sdist", "bundle", "site-page", "chain-line", "json-endpoint"), "WITNESS_REVIEW": ("methodology-page", "site-page", "bundle"),
+                         "AUDIT_BREAK_ATTEMPT": ("wheel", "sdist", "bundle", "site-page", "chain-line", "json-endpoint"), "REFUSAL": ("product-response",)}
 PACKAGE_ARTIFACTS = ("wheel", "sdist")                   # only these are package reproductions
 RELATIONSHIPS = ("OWNER-AFFILIATED", "RELATED-DISCLOSED", "UNRELATED", "UNKNOWN")
 EXEC_CONTROL = ("SELF", "ASSISTED", "OPERATOR-RUN")
 ASSISTANCE = ("NONE", "PUBLIC-DOCS-ONLY", "DOCUMENTED-FALLBACK", "LIVE-HELP", "OTHER-DISCLOSED")
-OUTCOMES = ("REPRODUCED", "FAILED", "INCONCLUSIVE")
+OUTCOMES = ("REPRODUCED", "FAILED", "INCONCLUSIVE", "REVIEWED", "DECLINED", "NO_BREAK", "BREAK_FOUND", "REFUSED", "NOT_REFUSED")
 REVIEW_STATES = ("RECEIVED", "HELD", "QUALIFIED", "DISQUALIFIED")
 BINDING = ("FULL", "PREFIX_ONLY", "UNVERIFIED", "NONE")
 REVIEW_AUTHORITIES = ("DESIGNATED", "SYNTHETIC", "HELD", "NONE")   # HELD = legacy/ambiguous appointment awaiting explicit designation
@@ -177,10 +188,16 @@ def validate_submission(raw: dict) -> tuple[dict, list[str]]:
     if sub["execution_control"] == "ASSISTED" and sub["assistance"] == "NONE":
         raise ContractError("execution_control ASSISTED requires disclosed assistance")
     sub["incentive_outcome_dependent"] = _bool(src.get("incentive_outcome_dependent"), "incentive_outcome_dependent")
-    sub["outcome"] = _enum(src.get("outcome"), "outcome", OUTCOMES)
+    act = src.get("activity_type", "REPLICATION")            # compatibility: receipt-1 submissions without the field are replications
+    sub["activity_type"] = _enum(act, "activity_type", ACTIVITY_TYPES)
+    sub["outcome"] = _enum(src.get("outcome"), "outcome", OUTCOMES_BY_ACTIVITY[sub["activity_type"]])
     obs = parse_ts(src.get("observed_at"), "observed_at")
     sub["observed_at"] = format_ts(obs)
     sub["artifact_binding"] = validate_binding_claim(src.get("artifact_binding"))
+    if sub["artifact_binding"]["artifact_type"] not in ARTIFACTS_BY_ACTIVITY[sub["activity_type"]]:
+        raise ContractError(f"artifact_binding.artifact_type not permitted for activity_type {sub['activity_type']}")
+    if sub["activity_type"] == "REFUSAL" and (src.get("public_note") or src.get("disclosure_permitted")):
+        raise ContractError("REFUSAL receipts never carry a public note (the user's request and identity stay private)")
     sub["release_identity"] = validate_release_identity(src.get("release_identity"))
     sub["environment"] = validate_environment(src.get("environment"))
     lim = src.get("limitations", [])
@@ -204,7 +221,7 @@ def validate_submission(raw: dict) -> tuple[dict, list[str]]:
     sub["public_note"] = note
     sub["disclosure_permitted"] = _bool(src.get("disclosure_permitted", False), "disclosure_permitted")
     known = {"schema_version", "attempt_id", "activity_id", "participant_id", "protocol_id", "group_id", "relationship", "execution_control",
-             "assistance", "incentive_outcome_dependent", "outcome", "observed_at", "artifact_binding", "release_identity", "environment",
+             "assistance", "incentive_outcome_dependent", "activity_type", "outcome", "observed_at", "artifact_binding", "release_identity", "environment",
              "limitations", "private", "supersedes", "public_note", "disclosure_permitted"}
     unknown = set(src) - known
     if unknown:

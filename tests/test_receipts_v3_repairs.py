@@ -281,7 +281,7 @@ class ChallengeDecisionBoundaries(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.root = pathlib.Path(self.tmp.name) / "s"; self.st = Store(self.root)
         self.st.designate_reviewer("rev-syn", "T", designated=False); self.cs = ChallengeStore(self.root)
         self.h = hashlib.sha256(b"SYNTHETIC artifact").hexdigest()
-        self.cs.create("ch-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 18}, claim_id="claim-1", expected="exit 0", observed="exit 1", synthetic=True, now=T0)
+        self.cs.create("ch-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 18}, claim_id="claim-1", expected="exit 0", observed="exit 1", synthetic=True, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
         self.tokf = pathlib.Path(self.tmp.name) / "tok"; self.tokf.write_text("T\n"); os.chmod(self.tokf, 0o600)
     def tearDown(self): self.tmp.cleanup()
     def test_no_untrusted_self_resolution(self):
@@ -367,7 +367,7 @@ class SurfacesAndCli(unittest.TestCase):
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "HELD", "--role", "rev", "--token-file", str(tokf), "--token-fd", "0"]); self.assertEqual(rc, 1)
             regf = pathlib.Path(d) / "reg.json"; regf.write_text(json.dumps({"protocol_id": "p", "anchor": "2026-09-14"}))
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "--registration", str(regf), "counts"]); self.assertEqual(rc, 1); self.assertIn("not evidence of adoption", err)
-            rc, out, err = run(receipts_cli.main, ["--store", str(REPO / "docs" / "receipts" / "x"), "--synthetic", "counts"]); self.assertEqual(rc, 1); self.assertIn("public tree", err)
+            rc, out, err = run(receipts_cli.main, ["--store", str(REPO / "docs" / "receipts" / "x"), "--synthetic", "counts"]); self.assertEqual(rc, 1); self.assertIn("E_PUBLIC_TREE", err)
             self.assertFalse((REPO / "docs" / "receipts" / "x").exists())
 
 

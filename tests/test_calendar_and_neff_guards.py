@@ -11,15 +11,26 @@ from v3.u350 import market_calendar as mc  # noqa: E402
 class CalendarHorizon(unittest.TestCase):
     def test_range_and_boundaries(self):
         lo, hi = mc.CALENDAR_RANGE
-        self.assertEqual((lo, hi), (date(2026, 1, 1), date(2027, 12, 31)))
-        fn = next(getattr(mc, n) for n in ("is_trading_day", "trading_day", "is_session") if hasattr(mc, n))
-        self.assertIsInstance(fn(date(2027, 12, 31)), bool)            # last supported day answers
-        with self.assertRaises(ValueError) as cm: fn(date(2028, 1, 3))   # first weekday past the horizon: explicit, not guessed
+        self.assertEqual((lo, hi), (date(2026, 1, 1), date(2028, 12, 31)))                    # V5: official 2028 schedule registered
+        self.assertTrue(mc.is_session(date(2028, 1, 3)))                                      # Monday 3 Jan 2028 is a session (not unsupported merely because the old table stopped at 2027)
+        self.assertFalse(mc.is_session(date(2028, 1, 1))); self.assertFalse(mc.is_session(date(2028, 12, 31)))   # Saturday / Sunday
+        self.assertTrue(mc.is_session(date(2028, 12, 29)))                                    # last session of 2028 (Friday)
+        with self.assertRaises(ValueError) as cm: mc.is_session(date(2029, 1, 2))            # first weekday past the horizon: explicit, not guessed
         self.assertIn("extend HOLIDAYS", str(cm.exception))
-        with self.assertRaises(ValueError): fn(date(2025, 12, 31))
-    def test_no_2028_dates_without_provenance(self):
+        with self.assertRaises(ValueError): mc.is_session(date(2025, 12, 31))
+    def test_2028_official_closures_and_early_closes(self):
+        for d in (date(2028, 1, 17), date(2028, 2, 21), date(2028, 4, 14), date(2028, 5, 29), date(2028, 6, 19), date(2028, 7, 4), date(2028, 9, 4), date(2028, 11, 23), date(2028, 12, 25)):
+            self.assertFalse(mc.is_session(d), d)
+        self.assertEqual(sum(1 for d in mc.HOLIDAYS if d.year == 2028), 9)                   # no New Year's Day holiday observed for Saturday 1 Jan 2028
+        for d in (date(2028, 7, 3), date(2028, 11, 24)):
+            self.assertTrue(mc.is_session(d)); self.assertTrue(mc.is_early_close(d)); self.assertEqual(mc.close_time(d), mc.EARLY_CLOSE)
+        self.assertEqual(mc.close_utc(date(2028, 7, 3)).hour, 17)                             # 13:00 EDT = 17:00 UTC
+        self.assertEqual(mc.close_utc(date(2028, 7, 5)).hour, 20)                             # 16:00 EDT = 20:00 UTC
+        self.assertFalse(mc.is_early_close(date(2028, 7, 5))); self.assertIn("2025-12-23", mc.CALENDAR_SOURCES[2028]); self.assertIn("NYSE", mc.CALENDAR_SOURCES[2028])
+        self.assertTrue(mc.is_session(date(2026, 1, 2)))                                      # historical results preserved
+    def test_2028_dates_carry_provenance(self):
         src = (REPO / "v3/u350/market_calendar.py").read_text()
-        self.assertNotIn("2028", src.replace("before 2028", ""))          # no guessed 2028 closures in source
+        self.assertIn("2025-12-23", src); self.assertIn("rechecked", src)                    # every 2028 date is attributed to the official announcement
 
 
 class NeffGuard(unittest.TestCase):

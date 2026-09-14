@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from v3.receipts.contracts import ContractError, format_ts
+from v3.receipts.storage import resolve_store_root
 
 DECISIONS = ("INVESTIGATE_FURTHER", "DISCARD_CLAIM", "REQUEST_EVIDENCE")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$"); _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
@@ -39,9 +40,7 @@ def validate_context(ctx) -> dict:
 
 class DecisionStore:
     def __init__(self, root):
-        self.root = Path(root); self.root.mkdir(parents=True, exist_ok=True)
-        try: os.chmod(self.root, 0o700)
-        except OSError: pass
+        self.root = resolve_store_root(root)                 # location boundary BEFORE any write
         self.f = self.root / "decisions.jsonl"
 
     def _read(self):

@@ -32,6 +32,8 @@ import stat
 import subprocess
 import tempfile
 import unicodedata
+
+from v3.receipts import safeio
 from contextlib import redirect_stdout
 from datetime import datetime, timezone
 from pathlib import Path
@@ -88,17 +90,27 @@ def source_root(explicit: str | Path | None = None) -> Path:
 
 
 def build(out_dir: str | Path, *, repo: Path | None = None, now: datetime | None = None) -> dict:
+    """Collect the PERMITTED public artifacts through the shared contained reader rooted at the checkout: an
+    allowed pathname can never package private bytes through a symlink, and nothing outside the read bound is
+    packaged. Nothing is fetched, executed or recomputed."""
     repo = source_root(repo)
     out = Path(out_dir); out.mkdir(parents=True, exist_ok=True)
     files = []
-    for rel in PERMITTED:
-        if any(rel.startswith(n) for n in NEVER):
-            raise ValueError(f"refusing to package {rel}")
-        src = repo / rel
-        if not src.exists():
-            files.append({"path": rel, "status": "ABSENT"}); continue
-        dst = out / "artifacts" / rel; dst.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(src, dst)
-        h, n = _sha_len(dst); files.append({"path": rel, "sha256": h, "size_bytes": n, "status": "INCLUDED"})
+    root_fd = safeio.open_root(repo)
+    try:
+        for rel in PERMITTED:
+            if any(rel.startswith(n) for n in NEVER):
+                raise ValueError(f"refusing to package {rel}")
+            try:
+                data = safeio.read_contained(root_fd, rel, max_bytes=ARTIFACT_READ_BOUND)
+            except safeio.SafeReadError as exc:
+                if exc.code == "E_MISSING":
+                    files.append({"path": rel, "status": "ABSENT"}); continue
+                raise ValueError(f"refusing to package {rel}: {exc.code} (links are never followed; nothing outside the read bound is packaged)") from None
+            dst = out / "artifacts" / rel; dst.parent.mkdir(parents=True, exist_ok=True); dst.write_bytes(data)
+            files.append({"path": rel, "sha256": hashlib.sha256(data).hexdigest(), "size_bytes": len(data), "status": "INCLUDED"})
+    finally:
+        os.close(root_fd)
     man = {"packet_format": "yuclaw-verification-packet/1", "built_at": (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
            "source": {"head": _git("rev-parse", "HEAD", cwd=repo), "tree": _git("rev-parse", "HEAD^{tree}", cwd=repo), "describe": _git("describe", "--tags", "--always", cwd=repo), "root": "checkout (path not recorded)"},
            "files": files, "limitations": LIMITS, "verify": "yuclaw packet verify <packet_dir>  (or: python3 -m v3.cli.packet verify <packet_dir>)",
@@ -129,22 +141,16 @@ Built {man['built_at']} from source `{man['source']['head']}` (tree `{man['sourc
 
 
 
+_TEST_HOOK = None          # tests only: forwarded to safeio._TEST_HOOK for the duration of a contained read
+
+
 class PacketPathError(ValueError):
     """A manifest path or artifact could not be read inside the packet's containment boundary."""
 
 
 def canonical_relpath(p) -> str | None:
-    """Return `p` if it is a canonical, unambiguous, relative POSIX path; else None."""
-    if not isinstance(p, str) or not p or len(p) > 512:
-        return None
-    if "\x00" in p or "\\" in p or any(ord(c) < 0x20 or ord(c) == 0x7F for c in p):
-        return None
-    if p.startswith(("/", "~")) or unicodedata.normalize("NFC", p) != p or posixpath.normpath(p) != p:
-        return None
-    parts = p.split("/")
-    if any(part in ("", ".", "..") or part != part.strip() for part in parts):
-        return None
-    return p
+    """Return `p` if it is a canonical, unambiguous, relative POSIX path; else None (shared rule in safeio)."""
+    return safeio.canonical_relpath(p)
 
 
 def validate_manifest(man) -> tuple[dict | None, str | None]:
@@ -198,97 +204,38 @@ def validate_manifest(man) -> tuple[dict | None, str | None]:
     return {"files": norm, "replay_target": target, "limitations": lim, "source": src}, None
 
 
-_TEST_HOOK = None          # tests only: called as _TEST_HOOK(stage, rel) at "dir-opened" / "file-opened"; production leaves it None
-_O_DIR = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_CLOEXEC", 0)
-_O_FILE = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+MANIFEST_READ_BOUND = 16 << 20        # safety bounds (not data caps): larger inputs are refused, never truncated
+ARTIFACT_READ_BOUND = 256 << 20
 
 
 def platform_supported() -> tuple[bool, str]:
-    """Descriptor-relative, no-follow opens are the containment mechanism. Without them verification is refused
-    (an unsupported platform never silently drops the protection)."""
-    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
-        return False, "platform lacks O_NOFOLLOW/O_DIRECTORY"
-    if os.open not in os.supports_dir_fd or os.fstat is None:
-        return False, "platform lacks descriptor-relative open (dir_fd)"
-    return True, "ok"
-
-
-def _is_link(name: str, dir_fd: int | None) -> bool:
-    try:
-        return stat.S_ISLNK(os.stat(name, dir_fd=dir_fd, follow_symlinks=False).st_mode)
-    except OSError:
-        return False
-
-
-def _os_reason(exc: OSError, what: str, rel: str, name: str = "", dir_fd: int | None = None) -> str:
-    import errno as _e
-    if exc.errno == _e.ENOENT:
-        return f"missing artifact {rel}" if what == "artifact" else f"missing directory component in {rel}"
-    if exc.errno in (_e.ELOOP, _e.ENOTDIR) and name and _is_link(name, dir_fd):
-        return f"symlink component in {rel} (refused; links are never followed)"
-    if exc.errno == _e.ELOOP:
-        return f"symlink component in {rel} (refused; links are never followed)"
-    if exc.errno == _e.ENOTDIR:
-        return f"non-directory component in {rel}"
-    return f"cannot open {what} {rel} ({exc.__class__.__name__})"
+    return safeio.platform_supported()
 
 
 def _open_dir(name: str, dir_fd: int | None, rel: str = "") -> int:
     try:
-        return os.open(name, _O_DIR, dir_fd=dir_fd)
-    except OSError as exc:
-        raise PacketPathError(_os_reason(exc, "directory", rel or name, name, dir_fd)) from None
+        return safeio.open_dir(name, dir_fd, rel)
+    except safeio.SafeReadError as exc:
+        raise PacketPathError(str(exc)) from None
 
 
 def _read_contained(root_fd: int, rel: str) -> bytes:
-    """Read artifacts/<rel> through a chain of descriptor-relative, no-follow opens rooted at the pinned artifact
-    root descriptor: every directory component is opened with O_NOFOLLOW|O_DIRECTORY relative to the previous
-    descriptor, the file with O_NOFOLLOW relative to the last one, and the bytes come from that descriptor.
-    A path component swapped for a symlink after its descriptor was taken cannot redirect the chain; the final
-    descriptor is additionally required to be a regular file."""
-    parts = rel.split("/")
-    fds = []
+    """Read artifacts/<rel> through the SHARED pinned descriptor chain (safeio.read_contained)."""
+    prev = safeio._TEST_HOOK
+    safeio._TEST_HOOK = _TEST_HOOK
     try:
-        cur = root_fd
-        for part in parts[:-1]:
-            cur = _open_dir(part, cur, rel); fds.append(cur)
-            if _TEST_HOOK is not None:
-                _TEST_HOOK("dir-opened", rel)
-        try:
-            fd = os.open(parts[-1], _O_FILE, dir_fd=cur)
-        except OSError as exc:
-            raise PacketPathError(_os_reason(exc, "artifact", rel, parts[-1], cur)) from None
-        fds.append(fd)
-        if _TEST_HOOK is not None:
-            _TEST_HOOK("file-opened", rel)
-        st = os.fstat(fd)
-        if not stat.S_ISREG(st.st_mode):
-            raise PacketPathError(f"artifact {rel} is not a regular file")
-        chunks = []
-        while True:
-            b = os.read(fd, 1 << 20)
-            if not b:
-                break
-            chunks.append(b)
-        return b"".join(chunks)
-    except OSError as exc:
-        raise PacketPathError(f"cannot read artifact {rel} ({exc.__class__.__name__})") from None
+        return safeio.read_contained(root_fd, rel, max_bytes=ARTIFACT_READ_BOUND)
+    except safeio.SafeReadError as exc:
+        raise PacketPathError(_legacy_wording(exc)) from None
     finally:
-        for f in fds:
-            try:
-                os.close(f)
-            except OSError:
-                pass
+        safeio._TEST_HOOK = prev
 
 
-def _read_fd(fd: int) -> bytes:
-    chunks = []
-    while True:
-        b = os.read(fd, 1 << 20)
-        if not b:
-            break
-        chunks.append(b)
-    return b"".join(chunks)
+def _legacy_wording(exc) -> str:
+    return {"E_MISSING": f"missing artifact {exc.rel}", "E_SYMLINK": f"symlink component in {exc.rel} (refused; links are never followed)",
+            "E_NOT_DIR": f"non-directory component in {exc.rel}", "E_NOT_REGULAR": f"artifact {exc.rel} is not a regular file",
+            "E_TOO_LARGE": f"artifact {exc.rel} exceeds the read bound", "E_UNREADABLE": f"artifact {exc.rel} is unreadable",
+            "E_PLATFORM": f"refusing to verify: {exc.args[0]}"}.get(exc.code, f"cannot read artifact {exc.rel} ({exc.code})")
 
 
 def load_trusted(path: str | Path) -> dict:
@@ -372,13 +319,13 @@ def verify(packet_dir: str | Path, *, trusted: dict | None = None) -> dict:
     root_fd = None
     try:
         try:
-            mfd = os.open(MANIFEST, _O_FILE, dir_fd=pk_fd)
+            mfd = os.open(MANIFEST, safeio._O_FILE, dir_fd=pk_fd)
         except OSError as exc:
             return unsupported(f"{MANIFEST} missing or is a symlink (refused) [{exc.__class__.__name__}]")
         try:
-            if not stat.S_ISREG(os.fstat(mfd).st_mode):
-                return unsupported(f"{MANIFEST} is not a regular file")
-            raw = _read_fd(mfd)
+            raw = safeio.read_fd(mfd, max_bytes=MANIFEST_READ_BOUND, rel=MANIFEST)
+        except safeio.SafeReadError as exc:
+            return unsupported(f"manifest unreadable: {exc.code}")
         except OSError as exc:
             return unsupported(f"manifest unreadable: {exc.__class__.__name__}")
         finally:

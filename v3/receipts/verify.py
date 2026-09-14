@@ -12,7 +12,10 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
+from v3.receipts import safeio
 from v3.receipts.contracts import ContractError, format_ts, validate_binding_claim
+
+ARTIFACT_READ_BOUND = 256 << 20        # safety bound on one artifact read (not a data cap): larger files are refused, never truncated
 
 
 def sha256_len(data: bytes) -> tuple[str, int]:
@@ -20,20 +23,23 @@ def sha256_len(data: bytes) -> tuple[str, int]:
 
 
 def read_under_root(path: str | os.PathLike, allowed_roots: list[str | os.PathLike]) -> bytes:
-    """Read a regular file only if its resolved path is inside one of the allowed roots."""
-    p = Path(path)
-    if p.is_symlink():
-        raise ContractError(f"refusing symlink artifact path: {p.name}")
-    rp = p.resolve(strict=True)
-    if not rp.is_file():
-        raise ContractError("artifact path is not a regular file")
+    """Read a regular file only if it lies under one of the allowed roots — through the SHARED
+    descriptor-relative, no-follow reader (safeio): the relative path is computed textually, then every
+    component is opened relative to the previous descriptor, so a swapped ancestor cannot redirect the read."""
+    last = None
     for root in allowed_roots:
-        r = Path(root).resolve()
-        try:
-            rp.relative_to(r)
-            return rp.read_bytes()
-        except ValueError:
+        rel = safeio.rel_under_root(root, path)
+        if rel is None:
             continue
+        try:
+            return safeio.read_under_root(path, root, max_bytes=ARTIFACT_READ_BOUND)
+        except safeio.SafeReadError as exc:
+            last = exc
+            if exc.code == "E_OUTSIDE_ROOT":
+                continue
+            raise
+    if last is not None:
+        raise last
     raise ContractError("artifact path is outside every allowed root")
 
 

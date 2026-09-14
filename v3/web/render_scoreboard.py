@@ -45,23 +45,35 @@ def render(board: dict | None, status: str = "OK") -> str:
             return (f"<tr><td data-label='column'>{escape(name)}</td><td data-label='state'><span class='state {'zero' if col.get('state') in ('ZERO',) else 'pend' if 'PENDING' in str(col.get('state')) else 'obs'}'>{_cell(col.get('state'))}</span></td>"
                     f"<td data-label='counts' class='mono'>{escape(', '.join(f'{k}={v}' for k, v in detail.items()) or '—')}</td><td data-label='definition'>{escape(DEFINITIONS[name])}</td></tr>")
         rows = "".join(row(n, cols[n]) for n in DEFINITIONS)
-        rep = cols["replications"]
-        rows += (f"<tr><td data-label='column'>replications · artifact coverage</td><td data-label='state'><span class='state obs'>{_cell(rep['registration']['status'])}</span></td>"
-                 f"<td data-label='counts' class='mono'>successful-cohort artifacts={_cell(rep['artifacts']['successful_cohort_artifacts'])}, attempted={_cell(rep['artifacts']['attempted_artifacts'])}, "
-                 f"verified={_cell(rep['artifacts']['verified_artifacts'])}, exact-release package reproductions={_cell(rep['exact_release_evidence']['successful_package_reproductions'])}, "
-                 f"legacy program entries={_cell(rep['program_evidence_legacy']['entries'])} (PREFIX_ONLY)</td>"
-                 f"<td data-label='definition'>{escape(rep['artifacts']['note'])}</td></tr>")
-        stamp = f"source {escape(board['source_timestamp'])} · policy {escape(board['policy_version'])} · scoreboard {escape(board['scoreboard_version'])}"
+        rep = cols["replications"]; ere = rep["exact_release_evidence"]; cov = ere["exact_target_evidence"]; tgt = board.get("target", {})
+        rows += (f"<tr><td data-label='column'>replications · program-wide exact-artifact evidence</td><td data-label='state'><span class='state obs'>OBSERVED</span></td>"
+                 f"<td data-label='counts' class='mono'>successful package reproductions (any release)={_cell(ere['program_exact_artifact_evidence']['successful_package_reproductions'])}, "
+                 f"successful-cohort artifacts={_cell(rep['artifacts']['successful_cohort_artifacts'])}, attempted={_cell(rep['artifacts']['attempted_artifacts'])}, verified={_cell(rep['artifacts']['verified_artifacts'])}, "
+                 f"legacy program entries={_cell(rep['program_evidence_legacy']['entries'])} (PREFIX_ONLY; affiliated operators: {_cell(rep['program_evidence_legacy']['affiliated'])}; unaffiliated: {_cell(rep['program_evidence_legacy']['entries'] - rep['program_evidence_legacy']['affiliated'])}), corrected attempts={_cell(rep.get('corrected_attempts', 0))}</td>"
+                 f"<td data-label='definition'>{escape(ere['program_exact_artifact_evidence']['note'])}</td></tr>")
+        if cov["state"] == "BOUND":
+            arts = ", ".join(f"{escape(a['artifact_type'])} {escape(a['sha256'][:12])}… ({_cell(a['size_bytes'])} B) {'covered' if a['covered'] else 'not covered'}: {_cell(a['qualified_successful_attempts'])} qualified successful" for a in cov["per_artifact"])
+            rows += (f"<tr><td data-label='column'>replications · exact-target evidence</td><td data-label='state'><span class='state obs'>BOUND · {_cell(tgt.get('label'))}</span></td>"
+                     f"<td data-label='counts' class='mono'>target {escape(str(tgt.get('tag')))} ({escape(str(tgt.get('version')))}) source {escape(str(tgt.get('source_sha', ''))[:12])}…; artifacts covered={_cell(cov['artifacts_covered'])}/{_cell(cov['artifacts_total'])}; "
+                     f"successful package reproductions of the target={_cell(cov['successful_package_reproductions'])}; {arts}. Display prefixes never establish a binding — full hashes and lengths are in receipts/scoreboard.json</td>"
+                     f"<td data-label='definition'>{escape(cov['note'])}</td></tr>")
+        else:
+            rows += (f"<tr><td data-label='column'>replications · exact-target evidence</td><td data-label='state'><span class='state pend'>UNBOUND</span></td>"
+                     f"<td data-label='counts' class='mono'>no release target manifest bound — exact-target coverage is not measured (this is not a zero)</td><td data-label='definition'>{escape(cov['note'])}</td></tr>")
+        pol = board.get("publication_policy", {})
+        stamp = (f"source {escape(board['source_timestamp'])} · policy {escape(board['policy_version'])} · scoreboard {escape(board['scoreboard_version'])} · schema {escape(board.get('public_schema_version', ''))} · "
+                 f"target {escape(tgt.get('state', 'UNBOUND'))}{(' ' + escape(str(tgt.get('tag')))) if tgt.get('state') == 'BOUND' else ''} · free text {'publishable' if pol.get('free_text_publishable') else 'not publishable (policy unavailable)'}")
         recs = board.get("receipts_public", [])
-        receipts_html = ("<p class='muted'>No public receipts yet — this is a real zero, not a hidden count.</p>" if not recs else
-                         "<table><thead><tr><th>attempt</th><th>artifact</th><th>outcome</th><th>review</th><th>qualified</th><th>successful</th></tr></thead><tbody>" +
-                         "".join(f"<tr><td class='mono'>{escape(r['attempt_id'])}</td><td class='mono'>{escape(r['artifact_binding']['artifact_type'])} {escape(r['artifact_binding']['sha256'][:12])}…</td><td>{escape(r['outcome'])}</td><td>{escape(r['review_state'])} ({escape(r['review_authority'])})</td><td>{_cell(r['qualified'])}</td><td>{_cell(r['successful'])}</td></tr>" for r in recs) + "</tbody></table>")
+        receipts_html = ("<p class='muted'>No public receipts yet — this is a real zero, not a hidden count (receipted: 0 · unreceipted relationships not counted).</p>" if not recs else
+                         "<table><thead><tr><th>receipt</th><th>type</th><th>artifact</th><th>outcome</th><th>review</th><th>qualified</th><th>successful</th><th>lineage</th></tr></thead><tbody>" +
+                         "".join(f"<tr><td class='mono'>{escape(r['receipt_id'][:14])}… · {escape(r['attempt_id'])}</td><td>{escape(r['activity_type'])}</td><td class='mono'>{escape(r['artifact_binding']['artifact_type'])} {escape(r['artifact_binding']['sha256'][:12])}… ({_cell(r['artifact_binding']['size_bytes'])} B)</td><td>{escape(r['outcome'])}</td><td>{escape(r['review_state'])} ({escape(r['review_authority'])})</td><td>{_cell(r['qualified'])}</td><td>{_cell(r['successful'])}</td>"
+                                 f"<td>{('<span class=\'state pend\'>CORRECTED</span> v' + _cell(r['version']) + ' superseded ' + escape(str(r.get('superseded_at')))) if r.get('corrected') else 'v' + _cell(r['version'])}; first observed {escape(r['first_observed_at'])}</td></tr>" for r in recs) + "</tbody></table>")
         chal = board.get("challenges_public", [])
         chal_html = ("<p class='muted'>No challenges recorded.</p>" if not chal else
-                     "<table><thead><tr><th>challenge</th><th>artifact</th><th>disposition</th><th>adverse</th></tr></thead><tbody>" +
-                     "".join(f"<tr><td class='mono'>{escape(c['challenge_id'])}</td><td class='mono'>{escape(c['artifact']['artifact_type'])} {escape(c['artifact']['sha256'][:12])}…</td><td>{escape(c['disposition'])}</td><td>{'yes' if c['adverse'] is True else 'no'}</td></tr>" for c in chal) + "</tbody></table>")
-        hist = ("<p class='muted'>History: compare two published scoreboard files with <code>python3 -c \"from v3.receipts.scoreboard import history\"</code> — "
-                "the diff lists receipts added/superseded, challenges added and dispositions changed, with absolute movement (never a multiplier from a zero baseline).</p>")
+                     "<table><thead><tr><th>challenge</th><th>artifact</th><th>criterion</th><th>disposition</th><th>adverse</th></tr></thead><tbody>" +
+                     "".join(f"<tr><td class='mono'>{escape(c['challenge_id'])}</td><td class='mono'>{escape(c['artifact']['artifact_type'])} {escape(c['artifact']['sha256'][:12])}…</td><td>{escape(c.get('criterion', 'general'))}</td><td>{escape(c['disposition'])}</td><td>{'yes' if c['adverse'] is True else 'no'}</td></tr>" for c in chal) + "</tbody></table>")
+        hist = ("<p class='muted'>History: compare two published scoreboard files with <code>yuclaw receipts --store &lt;any private dir&gt; history a.json b.json</code> — "
+                "the comparison lists receipts added, supersessions (rendered CORRECTED inside their original window), disposition changes, per-window movement and absolute movement (never a multiplier from a zero baseline).</p>")
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +115,7 @@ def render(board: dict | None, status: str = "OK") -> str:
     <div class="panel"><div class="panel-title">Public receipts</div><div class="wrap">{receipts_html}</div></div>
     <div class="panel"><div class="panel-title">Challenges (adverse and unresolved findings are never hidden)</div><div class="wrap">{chal_html}</div>{hist}</div>
     <div class="panel"><div class="panel-title">How to add evidence</div>
-      <p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Receipts are reviewed under a designated reviewer before they count; owner-operated checks and synthetic fixtures contribute zero outsiders.</p>
+      <p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Why a receipt counted or not: <code>yuclaw receipts --store &lt;private&gt; explain &lt;receipt id&gt;</code>. Receipts are reviewed under a designated reviewer before they count; owner-operated checks and synthetic fixtures contribute zero outsiders; a site or endpoint check is never a package reproduction; program totals are distinct from a release's exact-target totals.</p>
     </div>
     <p style="font-size:12px;color:#718096">Research and education only. Not investment advice.</p>
 {footer_stamp_html(freshness_strip())}

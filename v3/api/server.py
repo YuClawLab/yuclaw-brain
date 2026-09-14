@@ -231,8 +231,8 @@ def v1_receipts_scoreboard() -> dict[str, Any]:
     info = inspect_public(_P(__file__).resolve().parents[2] / "docs" / "receipts" / "scoreboard.json")
     if info["board"] is None:
         state = "PENDING" if info["status"] == "ABSENT" else "UNAVAILABLE"
-        return _stamp({"status": state, "reason": info["status"], "note": ("no public scoreboard published yet; counts are pending, not hidden" if state == "PENDING"
-                                                                          else "public scoreboard file invalid or refused; counts are unavailable, not zero")})
+        return _stamp({"status": state, "code": info["code"], "field": info["field"], "note": ("no public scoreboard published yet; counts are pending, not hidden" if state == "PENDING"
+                                                                                                   else "public scoreboard file invalid or refused; counts are unavailable, not zero")})
     return _stamp(info["board"])
 
 

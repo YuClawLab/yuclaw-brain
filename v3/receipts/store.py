@@ -25,6 +25,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from v3.receipts.contracts import (ContractError, POLICY_VERSION, REVIEW_STATES, digest, format_ts, validate_observation, validate_submission)
+from v3.receipts.storage import resolve_store_root
 
 AUTH_FORMAT = "reviewers-2"
 _ROLE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$")
@@ -42,12 +43,7 @@ def _hash_token(token: str) -> str:
 
 class Store:
     def __init__(self, root: str | os.PathLike):
-        self.root = Path(root)
-        self.root.mkdir(parents=True, exist_ok=True)
-        try:
-            os.chmod(self.root, 0o700)
-        except OSError:
-            pass
+        self.root = resolve_store_root(root)                 # location boundary BEFORE any write (StorageError otherwise)
         self.f_sub = self.root / "submissions.jsonl"
         self.f_obs = self.root / "observations.jsonl"
         self.f_rev = self.root / "reviews.jsonl"
@@ -235,7 +231,24 @@ class Store:
         revs = [r for r in self._read(self.f_rev) if r["receipt_digest"] == receipt_digest]
         return revs[-1] if revs else None
 
-    # ---------- pseudonyms
+    # ---------- pseudonyms and public identities (store-keyed; unguessable without the private key)
     def pseudonym(self, participant_id: str) -> str:
         key = self.f_key.read_text().strip().encode()
         return "p-" + hmac.new(key, participant_id.encode(), hashlib.sha256).hexdigest()[:16]
+
+    def public_id(self, receipt_digest: str) -> str:
+        """Public receipt identity: a keyed digest of the private receipt digest. The private digest commits
+        to participant ids and private fields, so it is never published (a public commitment to guessable
+        private data would violate the privacy contract)."""
+        key = self.f_key.read_text().strip().encode()
+        return "r-" + hmac.new(key, b"receipt:" + receipt_digest.encode(), hashlib.sha256).hexdigest()[:32]
+
+    def find(self, ref: str) -> dict | None:
+        """Current receipt record by attempt_id, private digest or public receipt id."""
+        cur = self.current_submissions()
+        if ref in cur:
+            return cur[ref]
+        for rec in cur.values():
+            if rec["digest"] == ref or self.public_id(rec["digest"]) == ref:
+                return rec
+        return None

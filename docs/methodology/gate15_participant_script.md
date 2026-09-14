@@ -41,6 +41,8 @@ Then run `yuclaw challenge --store ~/yuclaw-study-store --synthetic list` and co
 
 TRANSCRIPT mode: fill in the challenge template printed in `VERIFY.md` (the same fields: artifact type, sha256, size, claim id, expected, observed) on your answer sheet.
 
-Question: **What did recording the challenge change about the published evidence?** Write 1–3 sentences.
+Question: **What did recording the challenge change about the published evidence?** Write 1–3 sentences. (For your information: the challenge you recorded is a local record in your own study store; the public scoreboard shows only challenges that were imported and, later, their dispositions by a designated reviewer; the disposition history is kept and the original finding is never erased.)
+
+Please do not open the `docs/methodology` folder of the website or repository during the session (it contains the reviewer's scoring key); tell the reviewer if you did.
 
 Thank you. Hand in the answer sheet. Your session code is the only identifier on it.

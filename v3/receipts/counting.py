@@ -98,8 +98,11 @@ def derive(store: Store, *, synthetic: bool) -> list[dict]:
         hist = store.history(aid)
         lineage = {"versions": len(hist),
                    "first_observed_at": min(h["submission"]["observed_at"] for h in hist),
-                   "first_imported_at": min(h["provenance"]["imported_at"] for h in hist)}
+                   "first_imported_at": min(h["provenance"]["imported_at"] for h in hist),
+                   "superseded_at": rec["provenance"]["imported_at"] if rec["version"] > 1 else None,
+                   "chain": [h["digest"] for h in hist]}
         out.append({"attempt_id": aid, "digest": d, "version": rec["version"], "submission": sub, "observation": obs, "review": rev,
+                    "activity_type": sub.get("activity_type", "REPLICATION"), "corrected": rec["version"] > 1,
                     "binding_completeness": binding, "qualified": qualified, "reasons": reasons, "lineage": lineage,
                     "successful": qualified and sub["outcome"] == "REPRODUCED", "synthetic": rec["provenance"]["synthetic"]})
     return out
@@ -113,8 +116,9 @@ def classify(row: dict, reg: dict | None) -> dict:
     """Typed placement of a derived row: {key, eligibility, protocol_id, window}. Eligibility is a closed value —
     never inferred from the key text. Never reassigns a protocol; never backdates. The prospective admission
     contract is applied to the WHOLE lineage: the earliest observed and first-imported instants must be at or
-    after the registration instant, and the earliest observed date must be on or after the anchor — a
-    correction cannot promote an attempt by moving its timestamp."""
+    after the registration instant, the earliest observed date must be on or after the anchor, and the counting
+    WINDOW is derived from that earliest observed date — a correction cannot promote an attempt by moving its
+    timestamp and cannot move it into a later window (it is rendered CORRECTED inside its original window)."""
     sub = row["submission"]; pid = sub["protocol_id"]
     if reg is None:
         return {"key": "unwindowed", "eligibility": "unwindowed", "protocol_id": pid, "window": None}
@@ -128,9 +132,9 @@ def classify(row: dict, reg: dict | None) -> dict:
     if earliest_obs < registered_at or (earliest_imp is not None and earliest_imp < registered_at):
         return {"key": f"{pid}/pre-registration", "eligibility": "pre_registration", "protocol_id": pid, "window": None}
     anchor = date.fromisoformat(reg["anchor"])
-    if earliest_obs.date() < anchor or observed.date() < anchor:
+    if earliest_obs.date() < anchor:
         return {"key": f"{pid}/pre-anchor", "eligibility": "pre_anchor", "protocol_id": pid, "window": None}
-    w = (observed.date() - anchor).days // WINDOW_DAYS
+    w = (earliest_obs.date() - anchor).days // WINDOW_DAYS          # PINNED to the original lineage: a correction never re-enters a later window
     return {"key": f"{pid}/w{w}", "eligibility": "prospective", "protocol_id": pid, "window": w}
 
 
@@ -138,9 +142,29 @@ def bucket(row: dict, reg: dict | None) -> str:
     return classify(row, reg)["key"]
 
 
+def category_counts(derived: list[dict]) -> dict:
+    """Per-activity-type derived counts (receipted = validated current submissions of that type; qualified =
+    derived qualification). Internal test runs and unreceipted relationships are not records and never count."""
+    out = {}
+    for t in ("REPLICATION", "WITNESS_REVIEW", "AUDIT_BREAK_ATTEMPT", "REFUSAL"):
+        rows = [r for r in derived if r["activity_type"] == t]
+        q = [r for r in rows if r["qualified"]]
+        by_outcome = {}
+        for r in q:
+            by_outcome[r["submission"]["outcome"]] = by_outcome.get(r["submission"]["outcome"], 0) + 1
+        out[t] = {"receipted": len(rows), "qualified": len(q), "unqualified": len(rows) - len(q),
+                  "distinct_persons_qualified": len({r["submission"]["participant_id"] for r in q}),
+                  "qualified_by_outcome": by_outcome}
+    return out
+
+
 def counts(derived: list[dict], *, registration: dict | None = None) -> dict:
-    """registration = validated owner adoption record when adopted; None → unwindowed (pending)."""
+    """registration = validated owner adoption record when adopted; None → unwindowed (pending).
+    The replication population (attempts/qualified/successful/windows/artifacts) covers REPLICATION receipts only;
+    the other categories are summarized separately in `categories`."""
     reg = validate_registration(registration) if registration is not None else None
+    all_rows = derived
+    derived = [r for r in derived if r["activity_type"] == "REPLICATION"]
     attempts = len(derived)
     q = [r for r in derived if r["qualified"]]
     s = [r for r in q if r["successful"]]
@@ -185,6 +209,8 @@ def counts(derived: list[dict], *, registration: dict | None = None) -> dict:
                          if reg else {"status": "PENDING", "note": "no registration record adopted; counts are unwindowed"}),
         "windows": windows_out,
         "excluded_from_primary": excluded if reg else {"note": "not applicable without registration"},
+        "corrected_attempts": sum(1 for r in derived if r["corrected"]),
+        "categories": category_counts(all_rows),
         "policy_version": POLICY_VERSION,
     }
 

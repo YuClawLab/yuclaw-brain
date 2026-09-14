@@ -81,7 +81,10 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # v7 Evidence Scoreboard: derived from the PRIVATE receipt store (internal/receipts, never
 # fixtures) into docs/receipts/scoreboard.json, then rendered. A synthetic board is refused.
 mkdir -p docs/receipts internal/receipts
-/usr/bin/python3 -m v3.cli.receipts --store internal/receipts scoreboard --out docs/receipts/scoreboard.json || exit 66
+# Exact-target coverage binds ONLY to a delivered release target manifest (release evidence, published after
+# Phase 2); without it the board is UNBOUND (not zero). The manifest is never derived from the source tree.
+TARGET_OPT=""; [ -f docs/receipts/target_manifest.json ] && TARGET_OPT="--target docs/receipts/target_manifest.json"
+/usr/bin/python3 -m v3.cli.receipts --store internal/receipts $TARGET_OPT scoreboard --out docs/receipts/scoreboard.json || exit 66
 /usr/bin/python3 -m v3.web.render_scoreboard || exit 67
 if [ "$(date +%u)" = "5" ]; then
     /usr/bin/python3 tools/yuclaw_evidencebench.py generate || exit 40

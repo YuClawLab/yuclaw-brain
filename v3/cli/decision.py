@@ -13,8 +13,9 @@ def main(argv=None) -> int:
     s = p.add_subparsers(dest="cmd", required=True)
     r = s.add_parser("record"); r.add_argument("decision_id"); r.add_argument("decision"); r.add_argument("--packet-manifest-digest", required=True); r.add_argument("--claim-id", required=True); r.add_argument("--export-permitted", action="store_true"); r.add_argument("--context", default="{}")
     s.add_parser("export")
-    a = p.parse_args(argv); ds = DecisionStore(a.store)
+    a = p.parse_args(argv)
     try:
+        ds = DecisionStore(a.store)
         if a.cmd == "record":
             try:
                 ctx = json.loads(a.context)
