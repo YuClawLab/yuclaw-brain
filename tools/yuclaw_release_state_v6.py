@@ -277,6 +277,7 @@ def main() -> int:
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
     ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
+    ap.add_argument("--release-policy", help="private release-policy record (allocation + Gate #15 route); the 7.x public notes are composed from it and bound to it")
     a = ap.parse_args()
     ev = json.loads(Path(a.evidence).read_text())
     now = datetime.now(timezone.utc).isoformat()
@@ -455,6 +456,16 @@ Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — wit
 """
     if a.patch:
         public = _patch_public(VERSION, tip, len(lines), g16, ev)
+    release_policy = json.loads(Path(a.release_policy).read_text()) if a.release_policy else None
+    board_path = _REPO / "docs" / "receipts" / "scoreboard.json"
+    public_board = json.loads(board_path.read_text()) if board_path.exists() else None
+    if VERSION.startswith("7."):
+        sys.path.insert(0, str(_REPO))
+        from v3.release import notes_v7
+        public = notes_v7.compose(public, version=VERSION, policy=release_policy, board=public_board)
+        corr = notes_v7.check_correspondence(public, release_policy)
+    else:
+        corr = ["not a 7.x release"]
     for banned in ("docs/", "registry/", "output/", "tools/", "check_", ".py", "seed", "bootstrap", "CI [", "{'", "generated"):
         assert banned not in public, f"Tier-2 rule violation: {banned!r} present"
     assert "independently replicated" not in public.lower()
@@ -602,7 +613,10 @@ Never rendered: "independently replicated".
         "rehearsal_artifacts": ev.get("rehearsal"),
         "gate_suite_commit": head_sha,
         "notes": {"internal_path": f"internal/release_notes_v{VERSION}_DRAFT.md", "internal_sha256": internal_sha,
-                  "public_path": f"internal/release_notes_v{VERSION}_PUBLIC.md", "public_sha256": public_sha},
+                  "public_path": f"internal/release_notes_v{VERSION}_PUBLIC.md", "public_sha256": public_sha,
+                  "policy_correspondence": corr, "public_board_sha256": (_sha("docs/receipts/scoreboard.json") if board_path.exists() else None)},
+        "release_policy": ({"path": a.release_policy, "sha256": _sha_bytes(Path(a.release_policy).read_bytes()), "route": release_policy.get("gate15", {}).get("route"),
+                            "allocation_document_id": release_policy.get("allocation", {}).get("document_id")} if release_policy else None),
         "lookahead_reconciliation": ev.get("lookahead_reconciliation"),
         "release_authorized": False, "publishing_permitted": False,
         "remaining_blockers": [
