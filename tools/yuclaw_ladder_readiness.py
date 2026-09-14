@@ -17,7 +17,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[1]
 RUNGS = (("U79", 79), ("U150", 150), ("U250", 250), ("U350", 350), ("U550", 550))
 CAPACITY_AUDIT_GPU_H = {79: 1.10, 150: 1.52, 250: 2.11, 350: 2.29}       # 2026-08-02 audit (documented); 550 not audited
-GPU_BUDGET_H = 2.0                                                        # candidate ceiling for readiness display only (owner input)
+DISPLAY_CEILING_GPU_H = 2.0                                                        # display-only readiness ceiling (owner input); not a data cap or truncation
 
 
 def rung_status(target: int, *, registered_window: dict | None, promotion_record: dict | None, phase_c_protocol_id: str | None, capacity_h: float | None) -> dict:
@@ -26,7 +26,7 @@ def rung_status(target: int, *, registered_window: dict | None, promotion_record
           "implementation": "READY" if target <= 350 else "NOT_IMPLEMENTED (no admission run above 350 exists)",
           "admission_gates": "REGISTERED (Admission v1, Selection v1, Liquidity Addendum)" if target <= 350 else "MISSING",
           "observation_window": ("REGISTERED" if registered_window else "MISSING") if target > 79 else "N/A (canonical)",
-          "capacity": ("UNKNOWN (not audited)" if capacity_h is None else ("WITHIN_BUDGET" if capacity_h <= GPU_BUDGET_H else "OVER_BUDGET")),
+          "capacity": ("UNKNOWN (not audited)" if capacity_h is None else ("WITHIN_BUDGET" if capacity_h <= DISPLAY_CEILING_GPU_H else "OVER_BUDGET")),
           "phase_c_protocol": ("REGISTERED" if phase_c_protocol_id else "MISSING") if target > 79 else "N/A",
           "promotion": ("DECIDED" if promotion_record else "NOT_DECIDED") if target > 79 else "N/A (canonical)"}
     st["promotable_now"] = (target > 79 and bool(registered_window) and bool(promotion_record) and bool(phase_c_protocol_id) and st["capacity"] == "WITHIN_BUDGET")

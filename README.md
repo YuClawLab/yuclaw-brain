@@ -86,30 +86,30 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript generated from the release-candidate wheel `yuclaw-6.0.1-py3-none-any.whl` (yuclaw 6.0.1, Python 3.12.3, 2026-09-04 UTC) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path.
+Transcript generated from the release-candidate wheel `yuclaw-7.0.0-py3-none-any.whl` (yuclaw 7.0.0, Python 3.12.3, 2026-09-14 UTC) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path.
 
 ```text
 $ yuclaw --version
-yuclaw 6.0.1
+yuclaw 7.0.0
 [exit 0]
 ```
 ```text
 $ yuclaw --help
-yuclaw 6.0.1 — evidence-first financial research CLI (research and education only; not investment advice)
+yuclaw 7.0.0 — evidence-first financial research CLI (research and education only; not investment advice)
 
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
 commands:
   brief         evidence brief (legacy v3 helper)
   cascade       supply-chain cascade view for a ticker (deterministic, evidence-backed)
+  challenge     structured challenge bound to an exact artifact + claim id; dispositions keep the original finding (v7)
   check-claim   Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)
+  decision      document-use receipt bound to an exact packet manifest digest; export needs permission (v7)
   demo          3-minute guided offline journey — zero config, no backend
   events        accepted-events export (derived data only)
   export        lens events export (--format csv|json; --page builds the evidence packet)
   intake-check  client-side pre-check of a signal CSV for Signal Review (never transmits)
-  keys          manage API keys for the REST server
-  lens          lens summary-card data as JSON (the numbers the page renders)
-... (11 more lines)
+... (15 more lines)
 [exit 0]
 ```
 ```text
@@ -124,7 +124,7 @@ $ yuclaw check-claim --text "NVDA reported an insider sale in May 2026"
  },
  "misses": [],
  "matched_evidence": "<5 object(s)>",
- "...": "<8 fields total; not_advice line present: True>"
+ "...": "<9 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```
@@ -140,7 +140,7 @@ $ yuclaw check-claim --ticker NVDA --accession 0001045810-26-000019
  },
  "misses": [],
  "matched_evidence": "<1 object(s)>",
- "...": "<8 fields total; not_advice line present: True>"
+ "...": "<9 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```
@@ -156,23 +156,23 @@ $ yuclaw check-claim --accession 0001045810-26-000019
  },
  "misses": [],
  "matched_evidence": "<1 object(s)>",
- "...": "<8 fields total; not_advice line present: True>"
+ "...": "<9 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```
 ```text
 $ yuclaw replay-lab docs/replay/lab_replay_bundle.json
-Replay bundle built 2026-09-04 09:51 UTC from source commit 251f13141ee6
-Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ c7f6fa2dd84d
+Replay bundle built 2026-09-14 01:37 UTC from source commit a1cdafa6caf7
+Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ defcca97ec53
 
-[forward] 72 rebalance periods, window ['2026-05-20', '2026-09-03']
-  spread top_minus_bottom   mean/period -0.00159  t=-0.47 p=0.640  n=72  CI95=(-0.00837,+0.00491)
-  spread top_minus_universe mean/period -0.00172  t=-0.97 p=0.335  n=72  CI95=(-0.00528,+0.00169)
-  IC  1d  mean +0.0081  NW-t=+0.28 (lag 0) p=0.778  T=76 dates
-  IC  5d  mean -0.0095  NW-t=-0.23 (lag 4) p=0.822  T=72 dates
-  IC 20d  mean -0.0300  NW-t=-0.73 (lag 19) p=0.467  T=57 dates  [T too small — descriptive only]
-  market-model vs_universe  alpha/period -0.00160 beta +0.90  t(alpha)=-0.89 p=0.376  R2=0.189  n=72
-  market-model vs_spy       alpha/period -0.00115 beta +0.80  t(alpha)=-0.63 p=0.529  R2=0.158  n=72
+[forward] 77 rebalance periods, window ['2026-05-20', '2026-09-11']
+  spread top_minus_bottom   mean/period -0.00174  t=-0.54 p=0.588  n=77  CI95=(-0.00798,+0.00441)
+  spread top_minus_universe mean/period -0.00160  t=-0.95 p=0.346  n=77  CI95=(-0.00492,+0.00162)
+  IC  1d  mean +0.0066  NW-t=+0.24 (lag 0) p=0.809  T=82 dates
+  IC  5d  mean -0.0145  NW-t=-0.36 (lag 4) p=0.717  T=77 dates
+  IC 20d  mean -0.0341  NW-t=-0.93 (lag 19) p=0.357  T=62 dates
+  market-model vs_universe  alpha/period -0.00148 beta +0.88  t(alpha)=-0.87 p=0.387  R2=0.185  n=77
+  market-model vs_spy       alpha/period -0.00102 beta +0.79  t(alpha)=-0.59 p=0.556  R2=0.157  n=77
 
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
   spread top_minus_bottom   mean/period +0.00553  t=+0.41 p=0.686  n=13  CI95=(-0.01937,+0.03079)
@@ -219,6 +219,25 @@ research classifications, not buy/sell recommendations.
 > not predict future performance.
 
 ---
+
+## v7 — check → reproduce → challenge → document use (outsider verification, offline)
+
+Everything below runs without an account or a hosted service. Outputs are from the 7.0.0 candidate checkout (operator runs; **not** outsider receipts).
+
+```
+$ yuclaw packet build ./yuclaw-packet --source <checkout>
+[packet] built ./yuclaw-packet: 10 files, source <sha>; verify with: yuclaw packet verify ./yuclaw-packet
+$ yuclaw packet verify ./yuclaw-packet
+[packet] SUCCESS — manifest b89617e9735ecd5d…; exact bytes verified and published Lab statistics/ledger roots reproduced from the frozen bundle; not an outsider receipt, not a research interpretation
+$ # after one byte of an artifact is changed:
+[packet] MISMATCH — manifest b89617e9735ecd5d…; first discrepancy: byte mismatch at docs/capabilities.json: expected 96beff4fa51b4f91…/3341 B, observed 4c2a56369d42a623…/3341 B
+```
+
+- `yuclaw check-claim …` now returns `support_limits` — source match, temporal eligibility, replay status and `research_interpretation: NONE` — plus an explicit unsupported-conclusion sentence ("a coverage statement, not a finding that the claim is false").
+- `yuclaw challenge --store <private> create …` records a challenge bound to an exact artifact (type, sha256, byte length) and a claim id; a `RESOLVED` disposition must name a tested **revised** artifact and never erases the original finding.
+- `yuclaw decision --store <private> record …` records a research decision (investigate further / discard / request evidence) bound to a packet manifest digest; export needs explicit permission.
+- `yuclaw receipts --store <private> …` imports an attempt, verifies artifact bytes, records a designated review and derives counts. Primary counts are **qualified attempts** (failed and inconclusive retained); successful attempts are reported separately; package evidence (wheel, sdist) is separate from site checks. A submission can describe an outcome; it cannot award itself qualification.
+- The **Evidence Scoreboard** (`evidence_scoreboard.html`, `/receipts/scoreboard.json`, REST `/v1/receipts/scoreboard`, MCP `get_evidence_scoreboard`) shows witnesses, pilots, replications, audits, refusals, packet uses and challenges with their counting definitions. Zero and pending are real states; no trust score is computed. Registration of the receipt program is pending (owner decision), so counts are unwindowed.
 
 ## Why this is different
 
@@ -285,12 +304,11 @@ mismatch.
 
 ## What is in 6.0.x
 
-Current package version: `6.0.1` — the release notes, the frozen wheel and sdist
+Current package version: `7.0.0` — the release notes, the frozen wheel and sdist
 SHA-256 hashes, and the shipped-object list live on the
-[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v6.0.1)
+[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v7.0.0)
 ([all releases](https://github.com/YuClawLab/yuclaw-brain/releases) ·
-[CHANGELOG](CHANGELOG.md)). 6.0.1 is a patch — public synchronization and CLI
-first-touch; no methodology change; protocol chain unchanged at 82 lines.
+[CHANGELOG](CHANGELOG.md)). 7.0.0 adds the receipt engine, the offline verification packet, structured claim-support limits, local challenges and document-use receipts, and the Evidence Scoreboard. Scientific states are unchanged: Gate #15 stays MANUAL_REVIEW, Phase 6 N_eff stays PENDING, C6 stays DESCRIPTIVE, U350 stays shadow-only. Zero outsider receipts exist at release; the scoreboard shows that as a real zero.
 
 ### Command surface
 

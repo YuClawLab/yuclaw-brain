@@ -1,24 +1,34 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
  "components": {
-  "c1": 0.124,
+  "c1": 0.105,
   "c2": 0.0,
-  "c3": 0.7354436,
+  "c3": 0.18158817,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.01629305,
+  "c7": -0.027787216,
   "c8": 0.0,
-  "c9": -0.71428573
+  "c9": -0.5
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 14,
-  "recency_days": 1.6,
+  "ecs": 85,
+  "events_90d": 15,
+  "recency_days": 3.2,
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001403161-26-000118",
+   "available_as_of": "2026-09-10T14:07:12.341986-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "ROTTENBERG JULIE B S 1867 shares @ $368.34 on 2026-09-09 ($687,691)",
+   "filing_date": "2026-09-10",
+   "protocol_id": null,
+   "source_hash": "cb55fccd4014c8969906312691d078327bc3be9eb2d940043d225ad641e6a1e7",
+   "ticker": "V"
+  },
   {
    "accession_number": "0001403161-26-000117",
    "available_as_of": "2026-09-02T14:25:08.758619-06:00",
@@ -113,20 +123,20 @@
    "accession_number": "0001403161-26-000089",
    "available_as_of": "2026-07-16T01:28:32.445213-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "MCINERNEY RYAN S 8852 shares @ $343.88 on 2026-07-01 ($3,044,069)",
+   "excerpt": "MCINERNEY RYAN S 1638 shares @ $344.55 on 2026-07-01 ($564,365)",
    "filing_date": "2026-07-02",
    "protocol_id": null,
-   "source_hash": "b2b41a7f2787caf002c176e0fbe0d8b4176c8a4b66846eac1530d61a2cce57d6",
+   "source_hash": "3b0288168776ec9c97bf1c4c4f8e7d50cfaa14242f968fd610fbfef1af035be2",
    "ticker": "V"
   },
   {
    "accession_number": "0001403161-26-000089",
    "available_as_of": "2026-07-16T01:28:32.445213-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "MCINERNEY RYAN S 1638 shares @ $344.55 on 2026-07-01 ($564,365)",
+   "excerpt": "MCINERNEY RYAN S 8852 shares @ $343.88 on 2026-07-01 ($3,044,069)",
    "filing_date": "2026-07-02",
    "protocol_id": null,
-   "source_hash": "3b0288168776ec9c97bf1c4c4f8e7d50cfaa14242f968fd610fbfef1af035be2",
+   "source_hash": "b2b41a7f2787caf002c176e0fbe0d8b4176c8a4b66846eac1530d61a2cce57d6",
    "ticker": "V"
   },
   {
@@ -200,9 +210,33 @@
    "ticker": "V"
   }
  ],
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "WATCH",
+ "generated": "2026-09-14T01:38:06.548076+00:00",
+ "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-09-11",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-08",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-04",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-03",
    "label": "WATCH"
@@ -297,30 +331,6 @@
   },
   {
    "date": "2026-08-03",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-24",
    "label": "WATCH"
   }
  ],
@@ -435,10 +445,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1046,
+ "score": -0.003,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.0,
+  "floor": -0.2
  },
  "ticker": "V",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

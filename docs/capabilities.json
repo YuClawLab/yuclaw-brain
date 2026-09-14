@@ -1,8 +1,8 @@
 {
  "name": "YUCLAW Evidence API",
  "former_name": "YUCLAW Ground Truth API",
- "version": "v6.0.1",
- "generated": "2026-09-11T23:01:48.446039+00:00",
+ "version": "v7.0.0",
+ "generated": "2026-09-14T01:38:07.215165+00:00",
  "base_url": "https://yuclaw.ca",
  "positioning": "The open evidence layer for financial AI.",
  "endpoints": {
@@ -22,7 +22,8 @@
   "packets_manifest": "https://yuclaw.ca/packets/manifest.json",
   "packet_zip": "https://yuclaw.ca/packets/{zip}",
   "replay_bundle": "https://yuclaw.ca/replay/lab_replay_bundle.json",
-  "methodology_md": "https://yuclaw.ca/methodology/backfill.md"
+  "methodology_md": "https://yuclaw.ca/methodology/backfill.md",
+  "receipts_scoreboard": "https://yuclaw.ca/receipts/scoreboard.json"
  },
  "endpoint_kinds": {
   "discovery": "static",
@@ -41,7 +42,8 @@
   "packets_manifest": "static",
   "packet_zip": "templated",
   "replay_bundle": "static",
-  "methodology_md": "static"
+  "methodology_md": "static",
+  "receipts_scoreboard": "static"
  },
  "wildcard_discovery": {
   "ledger_day": "GET /evidence/verify.json and read days[].date; the latest date is the representative",

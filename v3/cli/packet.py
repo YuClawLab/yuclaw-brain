@@ -12,11 +12,14 @@ from v3.receipts import packet
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw packet", description="Offline verification packet: build from the public artifacts on disk, or verify exact bytes + replay the frozen bundle. Research only — not investment advice.")
     s = p.add_subparsers(dest="cmd", required=True)
-    b = s.add_parser("build"); b.add_argument("out_dir")
+    b = s.add_parser("build"); b.add_argument("out_dir"); b.add_argument("--source", help="YUCLAW checkout holding the public artifacts (default: the package's checkout or the current directory)")
     v = s.add_parser("verify"); v.add_argument("packet_dir"); v.add_argument("--json", action="store_true")
     a = p.parse_args(argv)
     if a.cmd == "build":
-        man = packet.build(a.out_dir)
+        try:
+            man = packet.build(a.out_dir, repo=a.source)
+        except ValueError as exc:
+            print(f"[packet] {exc}", file=sys.stderr); return 3
         print(f"[packet] built {a.out_dir}: {sum(1 for f in man['files'] if f['status'] == 'INCLUDED')} files, source {man['source']['head'][:12]}; verify with: yuclaw packet verify {a.out_dir}")
         return 0
     res = packet.verify(a.packet_dir)

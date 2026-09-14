@@ -22,6 +22,7 @@
   "methodology_md": "static",
   "packet_zip": "templated",
   "packets_manifest": "static",
+  "receipts_scoreboard": "static",
   "replay_bundle": "static",
   "schemas": "templated",
   "verify": "static",
@@ -41,6 +42,7 @@
   "methodology_md": "https://yuclaw.ca/methodology/backfill.md",
   "packet_zip": "https://yuclaw.ca/packets/{zip}",
   "packets_manifest": "https://yuclaw.ca/packets/manifest.json",
+  "receipts_scoreboard": "https://yuclaw.ca/receipts/scoreboard.json",
   "replay_bundle": "https://yuclaw.ca/replay/lab_replay_bundle.json",
   "schemas": "https://yuclaw.ca/schemas/{Name}.v1.json",
   "verify": "https://yuclaw.ca/evidence/verify.json",
@@ -51,7 +53,7 @@
   "evidencebench": "JSONL \u2014 one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
  },
  "former_name": "YUCLAW Ground Truth API",
- "generated": "2026-09-04T09:51:15.175784+00:00",
+ "generated": "2026-09-14T01:38:07.215165+00:00",
  "name": "YUCLAW Evidence API",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
  "positioning": "The open evidence layer for financial AI.",
@@ -94,7 +96,7 @@
    "value": "preview/why/{TICKER}.json"
   }
  },
- "version": "v6.0.1",
+ "version": "v7.0.0",
  "wildcard_discovery": {
   "evidence_changes_day": "GET /c6_posture_current.json and read as_of; that date is the latest daily file; earlier days are one file per UTC day back to 2026-07-29; a 404 means no block for that day",
   "ledger_day": "GET /evidence/verify.json and read days[].date; the latest date is the representative"

@@ -1,20 +1,20 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
  "components": {
-  "c1": 1.0,
+  "c1": 0.7825,
   "c2": 0.0,
-  "c3": -0.79025453,
+  "c3": -0.22133754,
   "c4": 0.6,
-  "c5": -0.45885494,
-  "c6": -0.036441445,
-  "c7": 0.6293465,
+  "c5": -0.20229714,
+  "c6": 0.031500276,
+  "c7": 0.41129315,
   "c8": 0.0,
-  "c9": -0.12
+  "c9": -0.037037037
  },
  "evidence_coverage": {
-  "ecs": 78,
+  "ecs": 74,
   "events_90d": 15,
-  "recency_days": 13.7,
+  "recency_days": 23.4,
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -290,9 +290,33 @@
    "ticker": "PSX"
   }
  ],
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "WATCH",
+ "generated": "2026-09-14T01:38:06.548076+00:00",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-11",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-09",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-09-08",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-04",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-03",
    "label": "WATCH"
@@ -388,30 +412,6 @@
   {
    "date": "2026-08-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-30",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-07-29",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-24",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -519,10 +519,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1841,
+ "score": 0.2724,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "PSX",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

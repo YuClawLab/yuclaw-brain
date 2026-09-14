@@ -52,12 +52,22 @@ def _sha_len(p: Path) -> tuple[str, int]:
     b = p.read_bytes(); return hashlib.sha256(b).hexdigest(), len(b)
 
 
-def _git(*a) -> str:
-    r = subprocess.run(["git", "--no-optional-locks", *a], cwd=_REPO, capture_output=True, text=True)
+def _git(*a, cwd: Path = _REPO) -> str:
+    r = subprocess.run(["git", "--no-optional-locks", *a], cwd=cwd, capture_output=True, text=True)
     return r.stdout.strip() if r.returncode == 0 else ""
 
 
-def build(out_dir: str | Path, *, repo: Path = _REPO, now: datetime | None = None) -> dict:
+def source_root(explicit: str | Path | None = None) -> Path:
+    """The checkout that holds the public artifacts: an explicit --source, else the package's own
+    repo when run from a checkout, else the current directory (installed-wheel use)."""
+    for cand in ([Path(explicit)] if explicit else []) + [_REPO, Path.cwd()]:
+        if (cand / "release_manifest.json").exists() and (cand / "docs").is_dir():
+            return cand
+    raise ValueError("no YUCLAW checkout with public artifacts found: pass --source <checkout>")
+
+
+def build(out_dir: str | Path, *, repo: Path | None = None, now: datetime | None = None) -> dict:
+    repo = source_root(repo)
     out = Path(out_dir); out.mkdir(parents=True, exist_ok=True)
     files = []
     for rel in PERMITTED:
@@ -69,7 +79,7 @@ def build(out_dir: str | Path, *, repo: Path = _REPO, now: datetime | None = Non
         dst = out / "artifacts" / rel; dst.parent.mkdir(parents=True, exist_ok=True); shutil.copyfile(src, dst)
         h, n = _sha_len(dst); files.append({"path": rel, "sha256": h, "size_bytes": n, "status": "INCLUDED"})
     man = {"packet_format": "yuclaw-verification-packet/1", "built_at": (now or datetime.now(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-           "source": {"head": _git("rev-parse", "HEAD"), "tree": _git("rev-parse", "HEAD^{tree}"), "describe": _git("describe", "--tags", "--always")},
+           "source": {"head": _git("rev-parse", "HEAD", cwd=repo), "tree": _git("rev-parse", "HEAD^{tree}", cwd=repo), "describe": _git("describe", "--tags", "--always", cwd=repo), "root": "checkout (path not recorded)"},
            "files": files, "limitations": LIMITS, "verify": "yuclaw packet verify <packet_dir>  (or: python3 -m v3.cli.packet verify <packet_dir>)",
            "replay_target": "docs/replay/lab_replay_bundle.json", "not_advice": "Research and education only. Not investment advice."}
     (out / MANIFEST).write_text(json.dumps(man, indent=1, sort_keys=True) + "\n")

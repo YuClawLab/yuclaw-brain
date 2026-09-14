@@ -1,20 +1,20 @@
 {
  "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
  "components": {
-  "c1": -0.223,
+  "c1": 0.5605,
   "c2": 0.0,
-  "c3": 0.60686815,
+  "c3": 0.7440066,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.27025506,
-  "c7": 0.15862459,
+  "c6": -0.12485089,
+  "c7": 0.044768672,
   "c8": 0.0,
-  "c9": -0.26666668
+  "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 99,
-  "events_90d": 16,
-  "recency_days": 1.6,
+  "ecs": 92,
+  "events_90d": 15,
+  "recency_days": 11.2,
   "substrate_active": 1,
   "type_diversity": 4
  },
@@ -340,9 +340,33 @@
    "ticker": "MRVL"
   }
  ],
- "generated": "2026-09-04T09:51:14.495454+00:00",
- "label": "WATCH",
+ "generated": "2026-09-14T01:38:06.548076+00:00",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-11",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-07",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-04",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-03",
    "label": "WATCH"
@@ -437,30 +461,6 @@
   },
   {
    "date": "2026-08-03",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-31",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-07-29",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-28",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-27",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-07-24",
    "label": "WEAKENING"
   }
  ],
@@ -569,10 +569,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0989,
+ "score": 0.243,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "MRVL",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

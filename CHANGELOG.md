@@ -2,6 +2,24 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [7.0.0] — 2026-09-16 (candidate; date is the target, corrected to the actual publish date at release)
+
+Research & education only. Not investment advice.
+
+### YUCLAW 7.0.0 — check → reproduce → challenge → document use
+
+**Receipt engine** (`v3/receipts/`): four separated records — submission, artifact observation from actual bytes, reviewer decision bound to the exact receipt digest, and a typed public export. A submission can describe an outcome; it can never award itself qualification, verification or authority. Qualification is derived; primary counts are qualified attempts (failed and inconclusive retained), successful attempts are reported separately; package evidence (wheel, sdist) is kept apart from site/endpoint checks; program evidence (legacy log, prefix-bound) is kept apart from exact-release evidence. Registration is pending — counts are unwindowed and shown as such.
+
+**Offline verification packet** (`yuclaw packet build` / `yuclaw packet verify`): the permitted public artifacts with a SHA-256 + byte-length manifest, instructions and limitations; verify recomputes bytes first and then runs the existing replay on the packet's own frozen bundle, reporting the first actionable discrepancy. An operator's verify is not an outsider receipt.
+
+**Journeys**: `yuclaw check-claim` now carries `support_limits` (source match, temporal eligibility, replay status, research interpretation = none) and an explicit unsupported-conclusion response; `yuclaw challenge` records artifact- and claim-bound challenges whose resolutions must name a tested revised artifact; `yuclaw decision` records document-use receipts bound to a packet manifest digest (export needs permission).
+
+**Evidence Scoreboard** (`/evidence_scoreboard.html`, `/receipts/scoreboard.json`, REST `/v1/receipts/scoreboard`, MCP `get_evidence_scoreboard`): witnesses, pilots, replications, audits, refusals, packet uses and challenges with their counting definitions; zero and pending are real states; no composite score.
+
+**Program materials (proposals, not adopted)**: outsider receipt program specification; Gate #15 formative-study kit; Phase-C prospective protocol draft; A2 estimand requirements; Phase-5 decomposition contract; note snapshot proposal; ladder readiness tool; ETF class candidate validator; nightly status adapter (not activated).
+
+**Unchanged scientific states**: Gate #15 MANUAL_REVIEW; Gate #16 GREEN with the affiliated-operator disclosure; Phase 6 STRUCTURE_PRINTED, N_eff PENDING; C6 DESCRIPTIVE, Layers 2–10 gated; U350 Phase A shadow only; calendar supported through 2027-12-31.
+
 ## [6.0.1] — 2026-09-04
 
 _Release date corrected to actual publish date (2026-09-04 10:07 UTC)._
