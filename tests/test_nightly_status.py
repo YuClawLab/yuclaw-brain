@@ -54,8 +54,9 @@ class Preview(unittest.TestCase):
             (d / "fail.log").write_text("\n".join(FAIL_TRUNC) + "\n"); rep = ns.preview(d / "fail.log", launcher, repo, builds_reader=lambda s: {"status": "errored"})
             self.assertEqual((rep["run"]["state"], rep["run"]["exit_code"], rep["run"]["failing_gate"]), ("FAILED", 44, "truncation-gate"))
             self.assertIsNone(rep["run"]["build"]["status"]); self.assertIn("no commit", rep["run"]["build"]["note"])                    # a run that failed before its push has no commit to query
+            failed_preview = rep
             rep = ns.preview(d / "ok.log", launcher, repo, builds_reader=lambda s: {"status": "errored", "commit": s}); self.assertEqual(rep["run"]["build"]["status"], "errored")
-            delivered = ns.deliver(rep, lambda r: False); self.assertEqual(delivered["delivery"], "DELIVERY_FAILED"); self.assertEqual(delivered["run"]["state"], "FAILED")
+            delivered = ns.deliver(failed_preview, lambda r: False); self.assertEqual(delivered["delivery"], "DELIVERY_FAILED"); self.assertEqual(delivered["run"]["state"], "FAILED")
 
 
 if __name__ == "__main__":
