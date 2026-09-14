@@ -107,6 +107,24 @@ class StateSpecificSchema(unittest.TestCase):
                 os.environ.pop("YUCLAW_PUBLICATION_DENYLIST", None)
 
 
+class LegacyLogSource(unittest.TestCase):
+    def test_absent_legacy_log_is_reported_not_zeroed_silently(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            os.environ["YUCLAW_PUBLICATION_DENYLIST"] = str(pathlib.Path(tmp) / "deny.txt")
+            try:
+                f = Fixture(tmp); f.full("a1")
+                present = scoreboard.build(f.root, synthetic=False, now=T0, legacy_log=REPO / "docs" / "replication" / "replication_log.json")
+                absent = scoreboard.build(f.root, synthetic=False, now=T0, legacy_log=pathlib.Path(tmp) / "missing.json")
+                self.assertEqual(present["columns"]["replications"]["program_evidence_legacy"]["source"], "PRESENT"); self.assertGreaterEqual(present["columns"]["replications"]["program_evidence_legacy"]["entries"], 1)
+                self.assertEqual(absent["columns"]["replications"]["program_evidence_legacy"]["source"], "ABSENT"); self.assertEqual(absent["columns"]["replications"]["program_evidence_legacy"]["entries"], 0)
+                for b in (present, absent): scoreboard.validate_board(b); self.assertIn("legacy program log", render_scoreboard.render(b, "OK"))
+                self.assertIn("ABSENT", render_scoreboard.render(absent, "OK"))
+                rc, out, err = run(receipts_cli.main, ["--store", str(f.root), "--legacy-log", str(pathlib.Path(tmp) / "missing.json"), "--now", "2026-09-20T12:00:00.000001Z", "scoreboard"], env={"YUCLAW_PUBLICATION_DENYLIST": str(f.deny)})
+                self.assertEqual(rc, 0, err); self.assertEqual(json.loads(out)["columns"]["replications"]["program_evidence_legacy"]["source"], "ABSENT")
+            finally:
+                os.environ.pop("YUCLAW_PUBLICATION_DENYLIST", None)
+
+
 class MinimumPython(unittest.TestCase):
     def test_no_312_only_fstring_grammar(self):
         r = subprocess.run([sys.executable, str(REPO / "tools" / "check_py_minimum.py")], capture_output=True, text=True)

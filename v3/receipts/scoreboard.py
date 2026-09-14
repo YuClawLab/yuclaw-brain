@@ -52,8 +52,9 @@ def build(store_dir, *, synthetic: bool = False, registration: dict | None = Non
     cat = c["categories"]
     tgt = _target.validate_target(target) if target is not None else None
     cov = _target.coverage(derived, tgt)
-    log_path = legacy_log or (_REPO / "docs/replication/replication_log.json")
+    log_path = Path(legacy_log) if legacy_log else (_REPO / "docs/replication/replication_log.json")
     leg = legacy.adapt_log(json.loads(log_path.read_text())) if (log_path.exists() and not synthetic) else []
+    legacy_source = "SYNTHETIC_EXCLUDED" if synthetic else ("PRESENT" if log_path.exists() else "ABSENT")   # an absent log is reported, never counted as zero silently
     chal = cs.public_view(synthetic=synthetic)
     by_disp = {}
     for r in chal: by_disp[r["disposition"]] = by_disp.get(r["disposition"], 0) + 1
@@ -76,7 +77,7 @@ def build(store_dir, *, synthetic: bool = False, registration: dict | None = Non
             "pilots": {"count": 0, "state": "PENDING_COUNSEL_REVIEW"},
             "replications": {"attempts": c["attempts"], "qualified": c["qualified"], "successful": c["successful"], "visible": c["visible"],
                               "windows": c["windows"], "registration": c["registration"], "artifacts": c["artifacts"], "corrected_attempts": c["corrected_attempts"],
-                              "program_evidence_legacy": {"entries": len(leg), "reproduced": sum(1 for l in leg if l["outcome"] == "REPRODUCED"),
+                              "program_evidence_legacy": {"source": legacy_source, "entries": len(leg), "reproduced": sum(1 for l in leg if l["outcome"] == "REPRODUCED"),
                                                           "binding": "PREFIX_ONLY (historical; not exact-release evidence)", "affiliated": sum(1 for l in leg if l["relationship"] == "OWNER-AFFILIATED")},
                               "exact_release_evidence": {"program_exact_artifact_evidence": {"successful_package_reproductions": c["artifacts"]["package_reproductions_successful"],
                                                                                             "note": "qualified successful attempts whose exact wheel/sdist bytes were verified — any release (program-wide)"},
@@ -133,7 +134,7 @@ def history(a: dict, b: dict) -> dict:
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _TEXT = re.compile(r"^[^\x00-\x1f\x7f]*$")      # no control characters; Unicode punctuation allowed
-BOARD_SCHEMA_VERSION = "public-board-schema/1"
+BOARD_SCHEMA_VERSION = "public-board-schema/2"        # /2: program_evidence_legacy.source (PRESENT/ABSENT/SYNTHETIC_EXCLUDED) required
 from v3.receipts.contracts import ARTIFACT_TYPES, OUTCOMES, PACKAGE_ARTIFACTS, REVIEW_AUTHORITIES
 from v3.receipts.counting import ELIGIBILITY
 from v3.receipts.decision import DECISIONS
@@ -291,7 +292,7 @@ ARTIFACTS = _obj({"successful_cohort_artifacts": _int, "attempted_artifacts": _i
 REPLICATIONS = _obj({"attempts": _int, "qualified": _int, "successful": _int,
                      "visible": _obj({"failed": _int, "inconclusive": _int, "qualified_failed": _int, "qualified_inconclusive": _int, "unqualified": _int}),
                      "windows": _map(_s(256), WINDOW), "registration": REGISTRATION, "artifacts": ARTIFACTS,
-                     "program_evidence_legacy": _obj({"entries": _int, "reproduced": _int, "affiliated": _int, "binding": _s(200)}),
+                     "program_evidence_legacy": _obj({"source": _enum(("PRESENT", "ABSENT", "SYNTHETIC_EXCLUDED")), "entries": _int, "reproduced": _int, "affiliated": _int, "binding": _s(200)}),
                      "exact_release_evidence": _obj({"program_exact_artifact_evidence": _obj({"successful_package_reproductions": _int, "note": _s(500)}), "exact_target_evidence": COVERAGE}),
                      "corrected_attempts": _int,
                      "state": _enum(("PENDING_REGISTRATION", "REGISTERED"))})

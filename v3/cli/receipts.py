@@ -69,6 +69,7 @@ def main(argv=None) -> int:
     p.add_argument("--registration", help="JSON file with the owner's registration record {protocol_id, anchor, registered_at, policy_version}; absent → unwindowed (pending)")
     p.add_argument("--target", help="release TARGET manifest JSON (independently supplied; exact-target coverage is UNBOUND without it)")
     p.add_argument("--now", help="frozen clock for the board's source_timestamp (RFC3339 UTC with microseconds); default: now")
+    p.add_argument("--legacy-log", help="public legacy replication log JSON (default: the checkout's docs/replication/replication_log.json; ABSENT is reported, never counted as zero)")
     s = p.add_subparsers(dest="cmd", required=True)
     i = s.add_parser("import"); i.add_argument("submission_json")
     o = s.add_parser("observe"); o.add_argument("receipt_digest"); o.add_argument("--path"); o.add_argument("--allowed-root", action="append", default=[])
@@ -131,7 +132,7 @@ def main(argv=None) -> int:
             else: print(txt)
             return 0
         if a.cmd == "scoreboard":
-            board = scoreboard.build(a.store, synthetic=a.synthetic, registration=registration, target=target, now=now)
+            board = scoreboard.build(a.store, synthetic=a.synthetic, registration=registration, target=target, now=now, legacy_log=a.legacy_log)
             txt = scoreboard.canonical_bytes(board).decode("ascii")          # ONE canonical serialization: the static file == the served object
             if a.out: Path(a.out).write_bytes(txt.encode("ascii") + b"\n"); print(f"[receipts] scoreboard written {a.out} (synthetic={a.synthetic}; target {board['target']['state']})")
             else: print(txt)
