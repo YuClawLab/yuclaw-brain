@@ -23,7 +23,7 @@ DISPLAY_CEILING_GPU_H = 2.0                                                     
 def rung_status(target: int, *, registered_window: dict | None, promotion_record: dict | None, phase_c_protocol_id: str | None, capacity_h: float | None) -> dict:
     """Pure readiness classification for one rung; every dimension separate; nothing inferred from another."""
     st = {"target": target,
-          "implementation": "READY" if target <= 350 else "NOT_IMPLEMENTED (no admission run above 350 exists)",
+          "implementation": "READY" if target <= 350 else "VALIDATION_PATH_IMPLEMENTED (fixture validation only; no admission run above 350 exists)",
           "admission_gates": "REGISTERED (Admission v1, Selection v1, Liquidity Addendum)" if target <= 350 else "MISSING",
           "observation_window": ("REGISTERED" if registered_window else "MISSING") if target > 79 else "N/A (canonical)",
           "capacity": ("UNKNOWN (not audited)" if capacity_h is None else ("WITHIN_BUDGET" if capacity_h <= DISPLAY_CEILING_GPU_H else "OVER_BUDGET")),
@@ -48,7 +48,17 @@ def report() -> dict:
 
 
 def main(argv=None) -> int:
-    p = argparse.ArgumentParser(); p.add_argument("--json", action="store_true"); a = p.parse_args(argv)
+    p = argparse.ArgumentParser(); p.add_argument("--json", action="store_true"); p.add_argument("--fixture", help="synthetic ladder fixture JSON: validate every rung (incl. U550) on its own candidate set; no live admission")
+    a = p.parse_args(argv)
+    if a.fixture:
+        sys.path.insert(0, str(_REPO))
+        from v3.universe import ladder
+        out = ladder.validate_ladder(json.loads(Path(a.fixture).read_text()))
+        if a.json:
+            print(json.dumps(out, indent=1)); return 0
+        for k, r in out["ladder"].items():
+            print(f"U{k}: {r['status']}" + (f" admitted={r['admitted']}/{r['candidates']} gates={r['gates']} capacity={r['capacity'].get('status')} ready={r['ready']} not_ready={r['reasons_not_ready']}" if r["status"] == "VALIDATED" else ""))
+        return 0
     r = report()
     if a.json:
         print(json.dumps(r, indent=1)); return 0

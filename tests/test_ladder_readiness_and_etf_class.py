@@ -9,7 +9,7 @@ class Ladder(unittest.TestCase):
         r = lr.report(); self.assertTrue(r["constitution_gate5_shadow_requirement"])
         for row in r["rungs"]: self.assertFalse(row["promotable_now"]); self.assertFalse(lr.promote_allowed(row))
         by = {row["target"]: row for row in r["rungs"]}
-        self.assertEqual(by[550]["implementation"].split(" ")[0], "NOT_IMPLEMENTED"); self.assertEqual(by[550]["capacity"], "UNKNOWN (not audited)")
+        self.assertEqual(by[550]["implementation"].split(" ")[0], "VALIDATION_PATH_IMPLEMENTED"); self.assertEqual(by[550]["capacity"], "UNKNOWN (not audited)")
         self.assertEqual(by[350]["capacity"], "OVER_BUDGET"); self.assertEqual(by[150]["capacity"], "WITHIN_BUDGET")
     def test_boundary_promotion_requires_every_dimension(self):
         base = dict(registered_window={"start": "2026-10-01"}, promotion_record={"decided": True}, phase_c_protocol_id="pc-1", capacity_h=1.5)
