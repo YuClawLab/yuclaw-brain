@@ -38,19 +38,26 @@ RE_EXCL = re.compile(r"^(EXCLU[A-Z0-9_]*)\s*=", re.M)
 SKIP_NAMES = {"__pycache__"}
 
 
+LEDGER_REL = "registry/truncation_ledger.json"
+
+
 def _sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def main() -> int:
-    findings: list[str] = []
-    if not LEDGER.exists():
-        print("[truncation-gate] FAIL registry/truncation_ledger.json missing "
-              "— the gate fails closed", file=sys.stderr)
-        return 1
-    led = json.loads(LEDGER.read_text())
+def sha256_bytes(b: bytes) -> str:
+    """The ledger's digest contract: sha256 over the exact bytes, no normalization."""
+    return hashlib.sha256(b).hexdigest()
 
-    # (a) schema
+
+def validate_entries(led: dict, read_bytes) -> list[str]:
+    """Rules (a) SCHEMA and (b) DRIFT over one ledger object.
+
+    ``read_bytes(rel_path)`` returns the exact bytes of an anchored path from
+    whichever tree is being validated (working tree for the nightly gate, index
+    blobs for the staged pre-commit guard, V7-003F) or None when absent. Shared
+    by both callers so there is exactly one ledger validation implementation."""
+    findings: list[str] = []
     for e in led.get("entries", []):
         key = e.get("site_key", "<missing site_key>")
         for f in REQUIRED:
@@ -62,14 +69,35 @@ def main() -> int:
                             f"{sorted(FLAGS)}")
         # (b) anchor drift
         for a in e.get("anchors", []):
-            p = _REPO / a["path"]
-            if not p.exists():
+            if not isinstance(a, dict) or "path" not in a or "sha256" not in a:
+                findings.append(f"schema: {key} anchor entry malformed (needs path + sha256)")
+                continue
+            data = read_bytes(a["path"])
+            if data is None:
                 findings.append(f"drift: {key} anchor {a['path']} missing")
-            elif _sha(p) != a["sha256"]:
+            elif sha256_bytes(data) != a["sha256"]:
                 findings.append(
                     f"drift: {key} anchor {a['path']} changed — update this "
                     f"ledger entry (and its numbers if the mechanism moved) "
                     f"in the same commit")
+    return findings
+
+
+def _read_worktree(rel: str):
+    p = _REPO / rel
+    return p.read_bytes() if p.exists() else None
+
+
+def main() -> int:
+    findings: list[str] = []
+    if not LEDGER.exists():
+        print("[truncation-gate] FAIL registry/truncation_ledger.json missing "
+              "— the gate fails closed", file=sys.stderr)
+        return 1
+    led = json.loads(LEDGER.read_text())
+
+    # (a) schema + (b) anchor drift — shared implementation
+    findings.extend(validate_entries(led, _read_worktree))
 
     # (c) detector: new cap constants / exclusion enums vs allowlist
     allow = {(c["file"], c["name"])

@@ -1,0 +1,32 @@
+#!/bin/sh
+# yuclaw-anchor-guard v2 (dispatcher) — staged truncation-anchor guard (V7-003F, activated by V7-004 A1).
+# Lives in the repository's COMMON hooks dir, so Git invokes it for every worktree of this repository.
+# It ENFORCES ONLY in the enrolled checkout recorded in local Git metadata
+# (git config --local yuclaw.anchorguard.enrolledtoplevel); every other worktree keeps its prior
+# behavior (no enforcement, exit 0). In the enrolled checkout an unreadable/ambiguous enrollment or a
+# missing checker FAILS the commit explicitly. Read-only; preserves Git's hook context (cwd = worktree
+# root, GIT_INDEX_FILE and friends untouched). No bypass flag.
+TOP=$(git rev-parse --show-toplevel 2>/dev/null) || exit 2
+N=$(git config --get-all yuclaw.anchorguard.enrolledtoplevel 2>/dev/null | wc -l | tr -d ' ')
+if [ "$N" = "0" ]; then
+    exit 0                      # nothing enrolled in this repository: prior behavior
+fi
+if [ "$N" != "1" ]; then
+    echo "[anchor-guard] ERROR: ambiguous enrollment ($N values of yuclaw.anchorguard.enrolledtoplevel) — commit blocked (fails closed)" >&2
+    exit 2
+fi
+ENROLLED=$(git config --get yuclaw.anchorguard.enrolledtoplevel)
+TOP_P=$(cd "$TOP" 2>/dev/null && pwd -P) || exit 2
+ENR_P=$(cd "$ENROLLED" 2>/dev/null && pwd -P) || {
+    echo "[anchor-guard] ERROR: enrolled checkout path is unreadable — commit blocked (fails closed)" >&2
+    exit 2
+}
+if [ "$TOP_P" != "$ENR_P" ]; then
+    exit 0                      # a sibling worktree: not enrolled, prior behavior preserved
+fi
+CHECKER="$TOP/tools/check_truncation_anchors_staged.py"
+if [ ! -f "$CHECKER" ]; then
+    echo "[anchor-guard] ERROR: enrolled checkout is missing tools/check_truncation_anchors_staged.py — commit blocked (fails closed)" >&2
+    exit 2
+fi
+exec /usr/bin/env python3 -B "$CHECKER" --hook
