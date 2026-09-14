@@ -40,6 +40,33 @@ def _binding(obs: dict | None, sub: dict) -> str:
     return "UNVERIFIED"
 
 
+def _real_review_evidence(store: Store, rev: dict) -> list[str]:
+    """A REAL qualification rests on immutable appointment evidence, never on the review line's own label:
+    the review must name an appointment id whose record is DESIGNATED under the review's policy version, for the
+    same role, appointed no later than the decision. Legacy reviews without an appointment id are ambiguous and
+    need a new explicit review (history is never rewritten)."""
+    aid = rev.get("appointment_id")
+    if not aid:
+        return ["review lacks appointment evidence (legacy or ambiguous review; a new explicit designated review is required)"]
+    rec = store.appointment_record(aid)
+    if rec is None:
+        return ["review appointment id has no immutable appointment record"]
+    if rec.get("status") != "DESIGNATED" or rec.get("designated") is not True:
+        return [f"review appointment is {rec.get('status')} — not designated (real qualification pending)"]
+    if rec.get("role") != rev.get("reviewer_role"):
+        return ["review appointment belongs to a different role"]
+    if rec.get("policy_version") != rev.get("policy_version"):
+        return ["review appointment is bound to a different policy version"]
+    if rev.get("decided_at") and rec.get("appointed_at") and rev["decided_at"] < rec["appointed_at"]:
+        return ["review decided before its appointment existed"]
+    if rev.get("authority") != "DESIGNATED":
+        return ["review line authority label disagrees with its appointment record"]
+    return []
+
+
+ELIGIBILITY = ("unwindowed", "other_protocol", "pre_registration", "pre_anchor", "prospective")
+
+
 def derive(store: Store, *, synthetic: bool) -> list[dict]:
     """Derived view of CURRENT submissions whose provenance matches `synthetic`."""
     out = []
@@ -55,8 +82,8 @@ def derive(store: Store, *, synthetic: bool) -> list[dict]:
             reasons.append("review under a different policy version"); review_state = "RECEIVED"
         if review_state != "QUALIFIED":
             reasons.append(f"review state {review_state}")
-        elif rev.get("authority") != "DESIGNATED" and not synthetic:
-            reasons.append("review authority not designated (real qualification pending)")
+        elif not synthetic:
+            reasons.extend(_real_review_evidence(store, rev))
         if sub["relationship"] in NON_QUALIFYING_RELATIONSHIPS:
             reasons.append(f"relationship {sub['relationship']} never qualifies")
         if sub["execution_control"] == "OPERATOR-RUN":
@@ -82,24 +109,33 @@ def _artifact_key(sub: dict) -> tuple:
     b = sub["artifact_binding"]; return (b["artifact_type"], b["sha256"], b["size_bytes"])
 
 
-def bucket(row: dict, reg: dict | None) -> str:
-    """Where a derived row is counted. Never reassigns a protocol; never backdates."""
-    sub = row["submission"]
+def classify(row: dict, reg: dict | None) -> dict:
+    """Typed placement of a derived row: {key, eligibility, protocol_id, window}. Eligibility is a closed value —
+    never inferred from the key text. Never reassigns a protocol; never backdates. The prospective admission
+    contract is applied to the WHOLE lineage: the earliest observed and first-imported instants must be at or
+    after the registration instant, and the earliest observed date must be on or after the anchor — a
+    correction cannot promote an attempt by moving its timestamp."""
+    sub = row["submission"]; pid = sub["protocol_id"]
     if reg is None:
-        return "unwindowed"
-    if sub["protocol_id"] != reg["protocol_id"]:
-        return f"unregistered-protocol/{sub['protocol_id']}"
+        return {"key": "unwindowed", "eligibility": "unwindowed", "protocol_id": pid, "window": None}
+    if pid != reg["protocol_id"]:
+        return {"key": f"unregistered-protocol/{pid}", "eligibility": "other_protocol", "protocol_id": pid, "window": None}
     registered_at = parse_ts(reg["registered_at"], "registration.registered_at")
     observed = parse_ts(sub["observed_at"], "observed_at")
     lin = row.get("lineage") or {}
     earliest_obs = min(observed, parse_ts(lin["first_observed_at"], "lineage.first_observed_at")) if lin.get("first_observed_at") else observed
     earliest_imp = parse_ts(lin["first_imported_at"], "lineage.first_imported_at") if lin.get("first_imported_at") else None
     if earliest_obs < registered_at or (earliest_imp is not None and earliest_imp < registered_at):
-        return f"{reg['protocol_id']}/pre-registration"
+        return {"key": f"{pid}/pre-registration", "eligibility": "pre_registration", "protocol_id": pid, "window": None}
     anchor = date.fromisoformat(reg["anchor"])
-    if observed.date() < anchor:
-        return f"{reg['protocol_id']}/pre-anchor"
-    return f"{reg['protocol_id']}/w{(observed.date() - anchor).days // WINDOW_DAYS}"
+    if earliest_obs.date() < anchor or observed.date() < anchor:
+        return {"key": f"{pid}/pre-anchor", "eligibility": "pre_anchor", "protocol_id": pid, "window": None}
+    w = (observed.date() - anchor).days // WINDOW_DAYS
+    return {"key": f"{pid}/w{w}", "eligibility": "prospective", "protocol_id": pid, "window": w}
+
+
+def bucket(row: dict, reg: dict | None) -> str:
+    return classify(row, reg)["key"]
 
 
 def counts(derived: list[dict], *, registration: dict | None = None) -> dict:
@@ -111,7 +147,8 @@ def counts(derived: list[dict], *, registration: dict | None = None) -> dict:
     windows: dict[str, dict] = {}
     for bkt, rows in (("qualified", q), ("successful", s)):
         for r in rows:
-            w = windows.setdefault(bucket(r, reg), {"qualified": {"persons": set(), "groups": set(), "attempts": 0}, "successful": {"persons": set(), "groups": set(), "attempts": 0}})
+            c = classify(r, reg)
+            w = windows.setdefault(c["key"], {"eligibility": c["eligibility"], "qualified": {"persons": set(), "groups": set(), "attempts": 0}, "successful": {"persons": set(), "groups": set(), "attempts": 0}})
             w[bkt]["persons"].add(r["submission"]["participant_id"]); w[bkt]["attempts"] += 1
             if r["submission"]["group_id"]:
                 w[bkt]["groups"].add(r["submission"]["group_id"])
@@ -123,11 +160,11 @@ def counts(derived: list[dict], *, registration: dict | None = None) -> dict:
         p["attempts"] += 1; p["qualified"] += int(r["qualified"]); p["successful"] += int(r["successful"])
     windows_out = {k: {"primary_distinct_persons": len(v["qualified"]["persons"]), "primary_distinct_groups": len(v["qualified"]["groups"]), "primary_attempts": v["qualified"]["attempts"],
                        "successful_distinct_persons": len(v["successful"]["persons"]), "successful_distinct_groups": len(v["successful"]["groups"]), "successful_attempts": v["successful"]["attempts"],
-                       "prospective": bool(reg) and "/w" in k}
+                       "eligibility": v["eligibility"], "prospective": v["eligibility"] == "prospective"}
                    for k, v in sorted(windows.items())}
-    excluded = {"pre_registration": sum(v["primary_attempts"] for k, v in windows_out.items() if k.endswith("/pre-registration")),
-                "pre_anchor": sum(v["primary_attempts"] for k, v in windows_out.items() if k.endswith("/pre-anchor")),
-                "other_protocols": {k.split("/", 1)[1]: v["primary_attempts"] for k, v in windows_out.items() if k.startswith("unregistered-protocol/")},
+    excluded = {"pre_registration": sum(v["primary_attempts"] for v in windows_out.values() if v["eligibility"] == "pre_registration"),
+                "pre_anchor": sum(v["primary_attempts"] for v in windows_out.values() if v["eligibility"] == "pre_anchor"),
+                "other_protocols": {k.split("/", 1)[1]: v["primary_attempts"] for k, v in windows_out.items() if v["eligibility"] == "other_protocol"},
                 "note": "excluded from the prospective primary floor but retained and visible; never reassigned to another protocol; never backdated"}
     return {
         "attempts": attempts, "qualified": len(q), "successful": len(s),

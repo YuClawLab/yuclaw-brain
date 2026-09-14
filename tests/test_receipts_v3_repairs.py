@@ -89,7 +89,7 @@ class PacketBoundary(unittest.TestCase):
         pk = self.mk("p12", [ent("a.json", b"{}")], "a.json"); os.rename(pk / "artifacts", self.d / "moved"); os.symlink(self.d / "moved", pk / "artifacts")
         with ReplaySpy() as spy:
             r = packet.verify(pk)
-        self.assertEqual(r["result"], "UNSUPPORTED"); self.assertIn("artifact root is a symlink", r["first_discrepancy"]); self.assertEqual(spy.calls, [])
+        self.assertEqual(r["result"], "UNSUPPORTED"); self.assertIn("artifact root", r["first_discrepancy"]); self.assertEqual(spy.calls, [])
         pk = self.mk("p13", [ent("a.json", b"{}")], "a.json", {"a.json": b"{}"}); os.rename(pk / packet.MANIFEST, self.d / "m.json"); os.symlink(self.d / "m.json", pk / packet.MANIFEST)
         self.assertEqual(packet.verify(pk)["result"], "UNSUPPORTED")
         # wrong size / wrong hash / missing artifact → MISMATCH before replay
@@ -128,7 +128,7 @@ class PacketBoundary(unittest.TestCase):
             part = packet.verify(pk, trusted={"b.json": {"sha256": "0" * 64, "size_bytes": 2}})
         self.assertEqual((eq["result"], eq["provenance"]["official_artifact_equality"]), ("SUCCESS", "EQUAL"))
         self.assertEqual((diff["result"], diff["provenance"]["official_artifact_equality"]), ("SUCCESS", "DIFFERS"))   # integrity holds; origin differs
-        self.assertEqual(part["provenance"]["official_artifact_equality"], "PARTIAL")
+        self.assertEqual(part["provenance"]["official_artifact_equality"], "UNVERIFIED")                               # V4: nothing compared → never equal
         tp = self.d / "trusted.json"; tp.write_text(json.dumps({"files": [ent("a.json", b"{}")]}))
         with ReplaySpy():
             rc, out, err = run(packet_cli.main, ["verify", str(pk), "--trusted-manifest", str(tp)]); self.assertEqual(rc, 0, err)
@@ -158,11 +158,12 @@ class ReviewerAppointments(unittest.TestCase):
         self.st.add_observation(r["digest"], verify.observe(r["submission"]["artifact_binding"], data=kw.get("data", b"SYNTHETIC wheel v3\n"), now=T0)); return r
     def test_designation_belongs_to_the_appointment(self):
         self.st.designate_reviewer("rev-syn", "TOKEN-SYN", designated=False)
-        r = self.rec()
-        self.assertEqual(self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)["authority"], "SYNTHETIC")
+        r = self.rec(); rs = self.rec("s1", synthetic=True)
+        self.assertEqual(self.st.add_review(rs["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)["authority"], "SYNTHETIC")
         self.st.designate_reviewer("rev-real", "TOKEN-REAL", designated=True)
-        again = self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)
+        again = self.st.add_review(rs["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)
         self.assertEqual(again["authority"], "SYNTHETIC")                                     # no promotion of another role
+        with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN")   # V4: synthetic authority never touches a real receipt
         real = self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-real", token="TOKEN-REAL", now=T0)
         self.assertEqual(real["authority"], "DESIGNATED"); self.assertNotEqual(real["appointment_id"], again["appointment_id"])
         self.assertTrue(counting.derive(self.st, synthetic=False)[0]["qualified"])
@@ -183,8 +184,8 @@ class ReviewerAppointments(unittest.TestCase):
     def test_legacy_shared_boolean_is_held_never_inferred(self):
         (self.st.root / "reviewers.json").write_text(json.dumps({"designated": True, "roles": {"legacy-rev": hashlib.sha256(b"LT").hexdigest()}}))
         r = self.rec()
-        rev = self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="legacy-rev", token="LT", now=T0)
-        self.assertEqual(rev["authority"], "HELD"); self.assertFalse(counting.derive(self.st, synthetic=False)[0]["qualified"])
+        with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="legacy-rev", token="LT", now=T0)   # V4: HELD reviews nothing
+        self.assertFalse(counting.derive(self.st, synthetic=False)[0]["qualified"])
         self.assertEqual(self.st.authority()["appointments"]["legacy-rev"]["status"], "HELD")
         self.st.designate_reviewer("legacy-rev", "LT2", designated=True)
         self.assertEqual(self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="legacy-rev", token="LT2", now=T0)["authority"], "DESIGNATED")
@@ -292,24 +293,21 @@ class ChallengeDecisionBoundaries(unittest.TestCase):
         c = self.cs.dispose("ch-1", "CONFIRMED", reviewer_role="rev-syn", token="T", now=T0); self.assertEqual(c["disposed_by"]["authority"], "SYNTHETIC")
     def test_resolution_needs_actual_revised_bytes_and_structured_test(self):
         rev = b"SYNTHETIC artifact revised"; ra = {"artifact_type": "wheel", "sha256": hashlib.sha256(rev).hexdigest(), "size_bytes": len(rev)}
-        ok_ver = {"method": "packet-verify", "result": "SUCCESS", "reference": "a" * 64}
-        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, verification=ok_ver)          # digest alone
-        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=b"other", verification=ok_ver)   # bytes ≠ claim
-        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification="re-tested ok")   # free text
-        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification=dict(ok_ver, result="MISMATCH"))
+        # an EXECUTED verification record (receipt method on a qualified successful synthetic receipt binding the revised artifact)
+        rec = self.st.import_submission({"schema_version": "receipt-1", "attempt_id": "rv", "activity_id": "act", "participant_id": "P", "group_id": None, "relationship": "UNRELATED", "execution_control": "SELF", "assistance": "NONE",
+                                         "incentive_outcome_dependent": False, "outcome": "REPRODUCED", "observed_at": "2026-09-14T01:00:00.000000Z", "artifact_binding": ra, "release_identity": None, "environment": {}, "protocol_id": "syn"}, synthetic=True, received_at=T0)
+        self.st.add_observation(rec["digest"], verify.observe(ra, data=rev, now=T0)); self.st.add_review(rec["digest"], "QUALIFIED", reviewer_role="rev-syn", token="T", now=T0)
+        vid = self.cs.verify_revision("ch-1", revised_artifact=ra, method="receipt", receipt_digest=rec["digest"], now=T0)["verification_id"]
+        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, verification_id=vid)                     # digest alone
+        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=b"other", verification_id=vid)   # bytes ≠ claim
+        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification_id="re-tested ok")   # label
+        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification_id="f" * 64)   # unknown record
         same = {"artifact_type": "wheel", "sha256": self.h, "size_bytes": 18}
-        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=same, revised_bytes=b"SYNTHETIC artifact", verification=ok_ver)
-        r = self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification=ok_ver, now=T0)
+        with self.assertRaises(ContractError): self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=same, revised_bytes=b"SYNTHETIC artifact", verification_id=vid)
+        r = self.cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact=ra, revised_bytes=rev, verification_id=vid, now=T0)
         self.assertTrue(r["resolution"]["revised_observation"]["verified"]); self.assertEqual(r["resolution"]["original_finding_retained"], True)
-        view = self.cs.public_view(synthetic=True)[0]; self.assertEqual(view["resolution"]["verification_method"], "packet-verify"); self.assertNotIn("private", json.dumps(view))
-        # through the shipped CLI with a protected token file and the revised bytes on disk
-        rp = pathlib.Path(self.tmp.name) / "revised.bin"; rp.write_bytes(rev + b"2"); ra2 = {"artifact_type": "wheel", "sha256": hashlib.sha256(rev + b"2").hexdigest(), "size_bytes": len(rev) + 1}
-        self.cs.create("ch-2", artifact=same, claim_id="claim-1", expected="a", observed="b", synthetic=True, now=T0)
-        rc, out, err = run(challenge_cli.main, ["--store", str(self.root), "--synthetic", "dispose", "ch-2", "RESOLVED", "--role", "rev-syn", "--token-file", str(self.tokf), "--revised-type", "wheel",
-                                                "--revised-sha256", ra2["sha256"], "--revised-size-bytes", str(ra2["size_bytes"]), "--revised-path", str(rp), "--allowed-root", self.tmp.name,
-                                                "--verification-json", json.dumps(ok_ver)]); self.assertEqual(rc, 0, err)
-        rc, out, err = run(challenge_cli.main, ["--store", str(self.root), "--synthetic", "dispose", "ch-2", "CONFIRMED", "--role", "rev-syn", "--token", "T"]); self.assertEqual(rc, 1); self.assertIn("--token-file", err); self.assertNotIn("REJECTED: T\n", err)
-        rc, out, err = run(challenge_cli.main, ["--store", str(self.root), "--synthetic", "dispose", "ch-2", "CONFIRMED", "--role", "rev-syn", "--token-file", str(self.tokf), "--verification-json", "{bad"]); self.assertEqual(rc, 1)
+        view = self.cs.public_view(synthetic=True)[0]; self.assertEqual(view["resolution"]["verification_method"], "receipt"); self.assertNotIn("private", json.dumps(view))
+        rc, out, err = run(challenge_cli.main, ["--store", str(self.root), "--synthetic", "dispose", "ch-1", "CONFIRMED", "--role", "rev-syn", "--token", "T"]); self.assertEqual(rc, 1); self.assertIn("--token-file", err); self.assertNotIn("REJECTED: T\n", err)
     def test_decision_context_private_permission_and_malformed_json(self):
         ds = DecisionStore(self.root); dig = "b" * 64
         with self.assertRaises(ContractError): ds.record("d1", "DISCARD_CLAIM", packet_manifest_digest=dig, claim_id="c", context="text", synthetic=True)

@@ -65,13 +65,21 @@ class Challenge(unittest.TestCase):
         self.assertEqual(rc, 0, err)
         cs = ChallengeStore(self.store); Store(self.store).designate_reviewer("rev-syn", "T", designated=False)
         tok = pathlib.Path(self.tmp.name) / "tok"; tok.write_text("T\n"); os.chmod(tok, 0o600)
-        ver = json.dumps({"method": "replay-lab", "result": "SUCCESS", "reference": "c" * 64})
-        with self.assertRaises(ContractError): cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact={"artifact_type": "wheel", "sha256": h, "size_bytes": 18}, revised_bytes=b"SYNTHETIC artifact", verification=json.loads(ver))   # same bytes cannot resolve
+        with self.assertRaises(ContractError): cs.dispose("ch-1", "RESOLVED", reviewer_role="rev-syn", token="T", revised_artifact={"artifact_type": "wheel", "sha256": h, "size_bytes": 18}, revised_bytes=b"SYNTHETIC artifact", verification_id="c" * 64)   # same bytes cannot resolve
         rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "CONFIRMED", "--reason", "synthetic confirmation"]); self.assertEqual(rc, 1)   # V3: challenger cannot confirm (no authority)
         rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "CONFIRMED", "--role", "rev-syn", "--token-file", str(tok), "--reason", "synthetic confirmation"]); self.assertEqual(rc, 0, err)
         revised = pathlib.Path(self.tmp.name) / "revised.bin"; revised.write_bytes(b"SYNTHETIC artifact revised"); h2 = hashlib.sha256(revised.read_bytes()).hexdigest()
-        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--verification-json", ver]); self.assertEqual(rc, 1)   # V3: digest alone is not a test
-        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--revised-path", str(revised), "--allowed-root", self.tmp.name, "--verification-json", ver]); self.assertEqual(rc, 0, err)
+        # V4: the resolution test is EXECUTED by the store (receipt method: a qualified successful synthetic receipt binding the revised artifact)
+        from v3.receipts import verify as _v
+        sp = pathlib.Path(self.tmp.name) / "sub.json"
+        sp.write_text(json.dumps({"schema_version": "receipt-1", "attempt_id": "rev-1", "activity_id": "act", "participant_id": "P-R", "group_id": None, "relationship": "UNRELATED", "execution_control": "SELF", "assistance": "NONE",
+                                  "incentive_outcome_dependent": False, "outcome": "REPRODUCED", "observed_at": "2026-09-14T01:00:00.000000Z", "artifact_binding": {"artifact_type": "wheel", "sha256": h2, "size_bytes": 26}, "release_identity": None, "environment": {}, "protocol_id": "syn"}))
+        rc, out, err = run(receipts_cli.main, ["--store", self.store, "--synthetic", "import", str(sp)]); self.assertEqual(rc, 0, err); dig = json.loads(out)["digest"]
+        rc, out, err = run(receipts_cli.main, ["--store", self.store, "--synthetic", "observe", dig, "--path", str(revised), "--allowed-root", self.tmp.name]); self.assertEqual(rc, 0, err)
+        rc, out, err = run(receipts_cli.main, ["--store", self.store, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev-syn", "--token-file", str(tok)]); self.assertEqual(rc, 0, err)
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "verify-revision", "ch-1", "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--method", "receipt", "--receipt-digest", dig]); self.assertEqual(rc, 0, err); vid = json.loads(out)["verification_id"]
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--verification-id", vid]); self.assertEqual(rc, 1)   # V3: digest alone is not a test
+        rc, out, err = run(challenge_cli.main, ["--store", self.store, "--synthetic", "dispose", "ch-1", "RESOLVED", "--role", "rev-syn", "--token-file", str(tok), "--revised-type", "wheel", "--revised-sha256", h2, "--revised-size-bytes", "26", "--revised-path", str(revised), "--allowed-root", self.tmp.name, "--verification-id", vid]); self.assertEqual(rc, 0, err)
         view = cs.public_view(synthetic=True)[0]; self.assertEqual(view["disposition"], "RESOLVED"); self.assertTrue(view["resolution"]["original_finding_retained"]); self.assertEqual(len(cs.history("ch-1")), 3)
         self.assertNotIn("private", json.dumps(view)); self.assertEqual(cs.public_view(synthetic=False), [])
 

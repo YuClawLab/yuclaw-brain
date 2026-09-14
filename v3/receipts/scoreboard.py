@@ -80,89 +80,191 @@ def history(a: dict, b: dict) -> dict:
 
 
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
-_PRINTABLE = re.compile(r"^[^\x00-\x1f\x7f]*$")      # no control characters; Unicode punctuation allowed
+_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
+_TEXT = re.compile(r"^[^\x00-\x1f\x7f]*$")      # no control characters; Unicode punctuation allowed
+BOARD_SCHEMA_VERSION = "public-board-schema/1"
+from v3.receipts.contracts import ARTIFACT_TYPES, REVIEW_AUTHORITIES
+from v3.receipts.counting import ELIGIBILITY
+from v3.receipts.decision import DECISIONS
+
+# ---- schema combinators: every validator returns a FRESH value built only from validated fields; unknown keys
+# ---- at any depth are errors; error text names the field path only, never the offending value or key name.
 
 
-def _s(v, field, maxlen=2000):
-    if not isinstance(v, str) or len(v) > maxlen or not _PRINTABLE.match(v):
-        raise ContractError(f"board {field}: bounded string without control characters required")
+def _err(field, what):
+    raise ContractError(f"board {field}: {what}")
+
+
+def _s(maxlen=2000):
+    def f(v, field):
+        if not isinstance(v, str) or len(v) > maxlen or not _TEXT.match(v):
+            _err(field, "bounded string without control characters required")
+        return v
+    return f
+
+
+def _idv(v, field):
+    if not isinstance(v, str) or not _ID.match(v):
+        _err(field, "registered id shape required")
     return v
 
 
 def _int(v, field):
     if isinstance(v, bool) or not isinstance(v, int) or v < 0:
-        raise ContractError(f"board {field}: nonnegative integer required")
+        _err(field, "nonnegative integer required")
     return v
 
 
-def validate_board(board) -> dict:
-    """Typed validation of a PUBLIC scoreboard file before any surface serves it. Synthetic boards are
-    refused; malformed boards are errors (surfaces then show UNAVAILABLE, never a measured zero)."""
-    if not isinstance(board, dict):
-        raise ContractError("board: object required")
-    if board.get("synthetic") is not False:
-        raise ContractError("board is synthetic or unlabeled; a public surface never serves it")
-    for k in ("scoreboard_version", "source_timestamp", "definitions", "columns", "receipts_public", "challenges_public", "decisions_public", "policy_version", "not_advice"):
-        if k not in board:
-            raise ContractError(f"board: missing {k}")
-    _s(board["scoreboard_version"], "scoreboard_version", 64); _s(board["policy_version"], "policy_version", 64); _s(board["not_advice"], "not_advice", 500)
-    parse_ts(board["source_timestamp"], "board.source_timestamp")
-    if not isinstance(board["definitions"], dict) or set(board["definitions"]) != set(DEFINITIONS):
-        raise ContractError("board.definitions: must carry exactly the registered columns")
-    cols = board["columns"]
-    if not isinstance(cols, dict) or set(cols) != set(DEFINITIONS):
-        raise ContractError("board.columns: must carry exactly the registered columns")
-    for name, col in cols.items():
-        if not isinstance(col, dict) or not isinstance(col.get("state"), str):
-            raise ContractError(f"board.columns.{name}: object with state required")
-        _s(col["state"], f"columns.{name}.state", 64)
-        for k, v in col.items():
-            if isinstance(v, str):
-                _s(v, f"columns.{name}.{k}")
-            elif isinstance(v, int) and not isinstance(v, bool):
-                _int(v, f"columns.{name}.{k}")
-    rep = cols["replications"]
-    for k in ("attempts", "qualified", "successful"):
-        _int(rep.get(k), f"replications.{k}")
-    for k in ("visible", "windows", "registration", "artifacts", "program_evidence_legacy", "exact_release_evidence"):
-        if not isinstance(rep.get(k), dict):
-            raise ContractError(f"replications.{k}: object required")
-    for k in ("successful_cohort_artifacts", "attempted_artifacts", "verified_artifacts", "package_reproductions_successful"):
-        _int(rep["artifacts"].get(k), f"replications.artifacts.{k}")
-    _s(rep["artifacts"].get("note", ""), "replications.artifacts.note")
-    _int(rep["exact_release_evidence"].get("successful_package_reproductions"), "exact_release_evidence.successful_package_reproductions")
-    for k in ("entries", "reproduced", "affiliated"):
-        _int(rep["program_evidence_legacy"].get(k), f"program_evidence_legacy.{k}")
-    _s(rep["registration"].get("status", ""), "registration.status", 64)
-    for w, v in rep["windows"].items():
-        _s(w, "windows.key", 256)
+def _bool(v, field):
+    if not isinstance(v, bool):
+        _err(field, "bool required")
+    return v
+
+
+def _const(c):
+    def f(v, field):
+        if v is not c and v != c:
+            _err(field, "fixed value required")
+        return c
+    return f
+
+
+def _enum(allowed):
+    def f(v, field):
+        if not isinstance(v, str) or v not in allowed:
+            _err(field, "value not registered")
+        return v
+    return f
+
+
+def _ts(v, field):
+    if not isinstance(v, str):
+        _err(field, "timestamp required")
+    parse_ts(v, field); return v
+
+
+def _hex(v, field):
+    if not isinstance(v, str) or not _HEX64.match(v):
+        _err(field, "sha256 hex required")
+    return v
+
+
+def _binding(v, field):
+    try:
+        return validate_binding_claim(v, field)
+    except ContractError:
+        _err(field, "artifact binding {artifact_type, sha256, size_bytes} required")
+
+
+def _obj(shape, required=None, optional=()):
+    """Closed object: keys ⊆ shape; `required` (default: all keys not in `optional`) must be present."""
+    req = set(shape) - set(optional) if required is None else set(required)
+    def f(v, field):
         if not isinstance(v, dict):
-            raise ContractError("windows: object per window required")
-        for k, n in v.items():
-            if isinstance(n, bool):
-                continue
-            _int(n, f"windows.{w}.{k}")
-    if not isinstance(board["receipts_public"], list) or not isinstance(board["challenges_public"], list) or not isinstance(board["decisions_public"], list):
-        raise ContractError("board: receipts_public/challenges_public/decisions_public must be lists")
-    for r in board["receipts_public"]:
-        row = export.revalidate(r)
-        if row["synthetic"] is not False:
-            raise ContractError("board.receipts_public: synthetic row in a public board")
-    for c in board["challenges_public"]:
-        if not isinstance(c, dict) or set(c) - {"challenge_id", "artifact", "claim_id", "disposition", "version", "created_at", "synthetic", "disposed_by_authority", "resolution", "adverse"}:
-            raise ContractError("board.challenges_public: unexpected shape")
-        _s(c.get("challenge_id"), "challenge.challenge_id", 128); _s(c.get("claim_id"), "challenge.claim_id", 128)
-        validate_binding_claim(c.get("artifact"), "challenge.artifact")
-        if c.get("disposition") not in DISPOSITIONS or not isinstance(c.get("adverse"), bool) or c.get("synthetic") is not False:
-            raise ContractError("board.challenges_public: disposition/adverse/synthetic invalid")
-        _int(c.get("version"), "challenge.version"); parse_ts(c.get("created_at"), "challenge.created_at")
-    for d in board["decisions_public"]:
-        if not isinstance(d, dict) or set(d) != set(DECISION_FIELDS):
-            raise ContractError("board.decisions_public: unexpected shape")
-        if not isinstance(d["packet_manifest_digest"], str) or not _HEX64.match(d["packet_manifest_digest"]) or d["synthetic"] is not False:
-            raise ContractError("board.decisions_public: digest/synthetic invalid")
-        _s(d["decision_id"], "decision.decision_id", 128); _s(d["decision"], "decision.decision", 32); _s(d["claim_id"], "decision.claim_id", 128); parse_ts(d["decided_at"], "decision.decided_at")
-    return board
+            _err(field, "object required")
+        if set(v) - set(shape):
+            _err(field, f"unexpected keys ({len(set(v) - set(shape))})")
+        missing = req - set(v)
+        if missing:
+            _err(field, f"missing required keys ({len(missing)})")
+        return {k: shape[k](v[k], f"{field}.{k}") for k in shape if k in v}
+    return f
+
+
+def _nullable(fn):
+    def f(v, field):
+        return None if v is None else fn(v, field)
+    return f
+
+
+def _map(key_fn, val_fn, maxlen=10000):
+    def f(v, field):
+        if not isinstance(v, dict) or len(v) > maxlen:
+            _err(field, "bounded object required")
+        return {key_fn(k, f"{field}.key"): val_fn(x, f"{field}[]") for k, x in v.items()}
+    return f
+
+
+def _list(fn, maxlen=100000):
+    def f(v, field):
+        if not isinstance(v, list) or len(v) > maxlen:
+            _err(field, "bounded list required")
+        return [fn(x, f"{field}[{i}]") for i, x in enumerate(v)]
+    return f
+
+
+def _receipt_row(v, field):
+    try:
+        row = export.revalidate(v)
+    except ContractError:
+        _err(field, "public receipt row does not match PUBLIC_SHAPE")
+    for k in ("attempt_id", "artifact_binding", "outcome", "review_state", "review_authority", "binding_completeness", "qualified", "successful", "receipt_digest", "participant"):
+        if k not in row:
+            _err(field, "public receipt row missing a required field")
+    if row["synthetic"] is not False:
+        _err(field, "synthetic row in a public board")
+    return row
+
+
+WINDOW = _obj({"primary_distinct_persons": _int, "primary_distinct_groups": _int, "primary_attempts": _int, "successful_distinct_persons": _int,
+               "successful_distinct_groups": _int, "successful_attempts": _int, "eligibility": _enum(ELIGIBILITY), "prospective": _bool})
+REGISTRATION = _obj({"status": _enum(("PENDING", "REGISTERED")), "note": _s(500), "protocol_id": _idv, "anchor": _s(10), "registered_at": _ts,
+                     "policy_version": _s(64), "window_days": _int, "prospective_rule": _s(500)}, required=("status",))
+ARTIFACTS = _obj({"successful_cohort_artifacts": _int, "attempted_artifacts": _int, "verified_artifacts": _int, "package_reproductions_successful": _int,
+                  "attempted_by_type": _map(_enum(ARTIFACT_TYPES), _int), "successful_by_type": _map(_enum(ARTIFACT_TYPES), _int), "note": _s(500)})
+REPLICATIONS = _obj({"attempts": _int, "qualified": _int, "successful": _int,
+                     "visible": _obj({"failed": _int, "inconclusive": _int, "qualified_failed": _int, "qualified_inconclusive": _int, "unqualified": _int}),
+                     "windows": _map(_s(256), WINDOW), "registration": REGISTRATION, "artifacts": ARTIFACTS,
+                     "program_evidence_legacy": _obj({"entries": _int, "reproduced": _int, "affiliated": _int, "binding": _s(200)}),
+                     "exact_release_evidence": _obj({"successful_package_reproductions": _int, "note": _s(500)}),
+                     "state": _enum(("PENDING_REGISTRATION", "REGISTERED"))})
+COLUMNS = _obj({"witnesses": _obj({"count": _int, "state": _enum(("ZERO", "OBSERVED"))}),
+                "pilots": _obj({"count": _int, "state": _enum(("PENDING_COUNSEL_REVIEW", "ZERO", "OBSERVED"))}),
+                "replications": REPLICATIONS,
+                "audits": _obj({"count": _int, "state": _enum(("ZERO", "OBSERVED"))}),
+                "refusals": _obj({"count": _int, "held": _int, "state": _enum(("OBSERVED",))}),
+                "packet_uses": _obj({"count": _int, "state": _enum(("OBSERVED",)), "note": _s(500)}),
+                "challenges": _obj({"by_disposition": _map(_enum(DISPOSITIONS), _int), "adverse_open": _int, "total": _int, "state": _enum(("OBSERVED",))})})
+CHALLENGE_ROW = _obj({"challenge_id": _idv, "artifact": _binding, "claim_id": _idv, "disposition": _enum(DISPOSITIONS), "version": _int, "created_at": _ts,
+                      "synthetic": _const(False), "disposed_by_authority": _nullable(_enum(("DESIGNATED", "SYNTHETIC", "HELD", "challenger"))),
+                      "resolution": _nullable(_obj({"revised_artifact": _binding, "verification_method": _enum(("packet-verify", "receipt")), "original_finding_retained": _const(True)})),
+                      "adverse": _bool})
+DECISION_ROW = _obj({"decision_id": _idv, "decision": _enum(DECISIONS), "packet_manifest_digest": _hex, "claim_id": _idv, "decided_at": _ts, "synthetic": _const(False)})
+BOARD = _obj({"scoreboard_version": _s(64), "synthetic": _const(False), "source_timestamp": _ts,
+              "definitions": _obj({k: _s(500) for k in DEFINITIONS}), "columns": COLUMNS,
+              "receipts_public": _list(_receipt_row), "challenges_public": _list(CHALLENGE_ROW), "decisions_public": _list(DECISION_ROW),
+              "policy_version": _s(64), "not_advice": _s(500)})
+
+
+def validate_board(board) -> dict:
+    """Complete, versioned public schema (BOARD_SCHEMA_VERSION) applied to the WHOLE board. Returns a FRESH object
+    constructed only from validated fields: unknown or private data at any depth is an error, never passed
+    through; count relationships are checked; synthetic boards are refused. Error text carries field paths only."""
+    if not isinstance(board, dict):
+        _err("root", "object required")
+    if board.get("synthetic") is not False:
+        _err("synthetic", "board is synthetic or unlabeled; a public surface never serves it")
+    out = BOARD(board, "root")
+    rep = out["columns"]["replications"]; vis = rep["visible"]; ch = out["columns"]["challenges"]
+    if not (rep["successful"] <= rep["qualified"] <= rep["attempts"]):
+        _err("columns.replications", "count relationship violated (successful ≤ qualified ≤ attempts)")
+    if vis["unqualified"] != rep["attempts"] - rep["qualified"] or vis["qualified_failed"] > vis["failed"] or vis["qualified_inconclusive"] > vis["inconclusive"]:
+        _err("columns.replications.visible", "count relationship violated")
+    if out["columns"]["refusals"]["count"] != vis["unqualified"]:
+        _err("columns.refusals", "count relationship violated (refusals = unqualified attempts)")
+    if len(out["receipts_public"]) != rep["attempts"]:
+        _err("receipts_public", "row count must equal replications.attempts")
+    if ch["adverse_open"] > ch["total"] or sum(ch["by_disposition"].values()) != ch["total"] or len(out["challenges_public"]) != ch["total"]:
+        _err("columns.challenges", "count relationship violated")
+    if sum(1 for c in out["challenges_public"] if c["adverse"]) != ch["adverse_open"]:
+        _err("columns.challenges", "adverse_open must equal the adverse rows")
+    if (rep["registration"]["status"] == "REGISTERED") != (rep["state"] == "REGISTERED"):
+        _err("columns.replications.state", "state must agree with registration.status")
+    for k, w in rep["windows"].items():
+        if w["prospective"] != (w["eligibility"] == "prospective") or w["successful_attempts"] > w["primary_attempts"]:
+            _err("columns.replications.windows", "window relationship violated")
+    out["public_schema_version"] = BOARD_SCHEMA_VERSION
+    return out
 
 
 def inspect_public(path: Path) -> dict:
@@ -178,9 +280,9 @@ def inspect_public(path: Path) -> dict:
     if isinstance(board, dict) and board.get("synthetic") is not False:
         return {"status": "SYNTHETIC_REFUSED", "reason": "a synthetic board is never served as public", "board": None}
     try:
-        return {"status": "OK", "reason": "validated", "board": validate_board(board)}
+        return {"status": "OK", "reason": "validated against " + BOARD_SCHEMA_VERSION, "board": validate_board(board)}
     except ContractError as exc:
-        return {"status": "INVALID", "reason": str(exc)[:200], "board": None}
+        return {"status": "INVALID", "reason": str(exc)[:200], "board": None}      # field path only; no values echoed
 
 
 def load_public(path: Path) -> dict | None:

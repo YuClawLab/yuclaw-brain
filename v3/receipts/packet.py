@@ -198,30 +198,72 @@ def validate_manifest(man) -> tuple[dict | None, str | None]:
     return {"files": norm, "replay_target": target, "limitations": lim, "source": src}, None
 
 
-def _read_contained(root: Path, root_real: Path, rel: str) -> bytes:
-    """Read artifacts/<rel> only if no component is a symlink and the opened file IS the regular file at the
-    canonical location under the resolved root (device+inode identity, O_NOFOLLOW at the open)."""
-    cur = root
-    for part in rel.split("/"):
-        cur = cur / part
-        if cur.is_symlink():
-            raise PacketPathError(f"symlink component {part!r} in {rel}")
-    expected = root_real / rel
+_TEST_HOOK = None          # tests only: called as _TEST_HOOK(stage, rel) at "dir-opened" / "file-opened"; production leaves it None
+_O_DIR = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_CLOEXEC", 0)
+_O_FILE = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+
+
+def platform_supported() -> tuple[bool, str]:
+    """Descriptor-relative, no-follow opens are the containment mechanism. Without them verification is refused
+    (an unsupported platform never silently drops the protection)."""
+    if not hasattr(os, "O_NOFOLLOW") or not hasattr(os, "O_DIRECTORY"):
+        return False, "platform lacks O_NOFOLLOW/O_DIRECTORY"
+    if os.open not in os.supports_dir_fd or os.fstat is None:
+        return False, "platform lacks descriptor-relative open (dir_fd)"
+    return True, "ok"
+
+
+def _is_link(name: str, dir_fd: int | None) -> bool:
     try:
-        st_expected = os.stat(expected, follow_symlinks=False)
+        return stat.S_ISLNK(os.stat(name, dir_fd=dir_fd, follow_symlinks=False).st_mode)
     except OSError:
-        raise PacketPathError(f"missing artifact {rel}") from None
-    if not stat.S_ISREG(st_expected.st_mode):
-        raise PacketPathError(f"artifact {rel} is not a regular file")
-    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_CLOEXEC", 0)
+        return False
+
+
+def _os_reason(exc: OSError, what: str, rel: str, name: str = "", dir_fd: int | None = None) -> str:
+    import errno as _e
+    if exc.errno == _e.ENOENT:
+        return f"missing artifact {rel}" if what == "artifact" else f"missing directory component in {rel}"
+    if exc.errno in (_e.ELOOP, _e.ENOTDIR) and name and _is_link(name, dir_fd):
+        return f"symlink component in {rel} (refused; links are never followed)"
+    if exc.errno == _e.ELOOP:
+        return f"symlink component in {rel} (refused; links are never followed)"
+    if exc.errno == _e.ENOTDIR:
+        return f"non-directory component in {rel}"
+    return f"cannot open {what} {rel} ({exc.__class__.__name__})"
+
+
+def _open_dir(name: str, dir_fd: int | None, rel: str = "") -> int:
     try:
-        fd = os.open(cur, flags)
+        return os.open(name, _O_DIR, dir_fd=dir_fd)
     except OSError as exc:
-        raise PacketPathError(f"cannot open artifact {rel} ({exc.__class__.__name__})") from None
+        raise PacketPathError(_os_reason(exc, "directory", rel or name, name, dir_fd)) from None
+
+
+def _read_contained(root_fd: int, rel: str) -> bytes:
+    """Read artifacts/<rel> through a chain of descriptor-relative, no-follow opens rooted at the pinned artifact
+    root descriptor: every directory component is opened with O_NOFOLLOW|O_DIRECTORY relative to the previous
+    descriptor, the file with O_NOFOLLOW relative to the last one, and the bytes come from that descriptor.
+    A path component swapped for a symlink after its descriptor was taken cannot redirect the chain; the final
+    descriptor is additionally required to be a regular file."""
+    parts = rel.split("/")
+    fds = []
     try:
+        cur = root_fd
+        for part in parts[:-1]:
+            cur = _open_dir(part, cur, rel); fds.append(cur)
+            if _TEST_HOOK is not None:
+                _TEST_HOOK("dir-opened", rel)
+        try:
+            fd = os.open(parts[-1], _O_FILE, dir_fd=cur)
+        except OSError as exc:
+            raise PacketPathError(_os_reason(exc, "artifact", rel, parts[-1], cur)) from None
+        fds.append(fd)
+        if _TEST_HOOK is not None:
+            _TEST_HOOK("file-opened", rel)
         st = os.fstat(fd)
-        if not stat.S_ISREG(st.st_mode) or (st.st_dev, st.st_ino) != (st_expected.st_dev, st_expected.st_ino):
-            raise PacketPathError(f"artifact {rel} escapes the packet containment boundary")
+        if not stat.S_ISREG(st.st_mode):
+            raise PacketPathError(f"artifact {rel} is not a regular file")
         chunks = []
         while True:
             b = os.read(fd, 1 << 20)
@@ -232,7 +274,21 @@ def _read_contained(root: Path, root_real: Path, rel: str) -> bytes:
     except OSError as exc:
         raise PacketPathError(f"cannot read artifact {rel} ({exc.__class__.__name__})") from None
     finally:
-        os.close(fd)
+        for f in fds:
+            try:
+                os.close(f)
+            except OSError:
+                pass
+
+
+def _read_fd(fd: int) -> bytes:
+    chunks = []
+    while True:
+        b = os.read(fd, 1 << 20)
+        if not b:
+            break
+        chunks.append(b)
+    return b"".join(chunks)
 
 
 def load_trusted(path: str | Path) -> dict:
@@ -261,26 +317,39 @@ def load_trusted(path: str | Path) -> dict:
 
 
 def provenance(man: dict | None, checks: list, trusted: dict | None) -> dict:
-    """Reported SEPARATELY from integrity/reproduction. Without an independently supplied trusted identity the
-    origin is UNVERIFIED — a packet agreeing with its own manifest proves nothing about official artifacts."""
+    """Reported SEPARATELY from integrity/reproduction. Equality is derived ONLY from artifacts whose ACTUAL bytes
+    were observed and equal the manifest (check ok=True) AND are covered by the independently supplied identity.
+    Unread, missing, unreadable or mismatched artifacts are never assumed equal; an empty compared set is
+    UNVERIFIED, never EQUAL. The compared set is stated explicitly — it is a subset comparison, not a statement
+    about a whole release."""
     out = {"manifest_source": (man or {}).get("source"),
            "meaning": "integrity/reproduction concern the packet's own bytes; they never establish an official release artifact or an outsider verification"}
+    listed = [e["path"] for e in (man or {}).get("files", []) if e.get("status") == "INCLUDED"]
+    observed_ok = {c["path"]: c["observed"] for c in checks if c.get("check") == "sha256+length" and c.get("ok") is True and isinstance(c.get("observed"), dict)}
+    unobserved = [p for p in listed if p not in observed_ok]
     if trusted is None:
-        out.update(official_artifact_equality="UNVERIFIED", note="no independently supplied trusted identity: origin unverified (the packet's own manifest is not provenance)")
+        out.update(official_artifact_equality="UNVERIFIED", compared_set=[], observed_ok=sorted(observed_ok), unobserved=unobserved,
+                   note="no independently supplied trusted identity: origin unverified (the packet's own manifest is not provenance)")
         return out
-    observed = {c["path"]: c.get("observed") for c in checks if c.get("check") == "sha256+length"}
-    listed = {e["path"]: e for e in (man or {}).get("files", []) if e.get("status") == "INCLUDED"}
-    differs, uncovered = [], []
-    for p, e in listed.items():
-        ident = observed.get(p) or {"sha256": e["sha256"], "size_bytes": e["size_bytes"]}
-        t = trusted.get(p)
-        if t is None:
-            uncovered.append(p)
-        elif (t["sha256"], t["size_bytes"]) != (ident["sha256"], ident["size_bytes"]):
-            differs.append(p)
-    eq = "EQUAL" if not differs and not uncovered else ("DIFFERS" if differs else "PARTIAL")
-    out.update(official_artifact_equality=eq, differs=differs, uncovered_by_trusted_identity=uncovered, trusted_entries=len(trusted),
-               note="EQUAL means every INCLUDED artifact's bytes equal the independently supplied identity; it is still not an outsider receipt")
+    compared = sorted(p for p in listed if p in observed_ok and p in trusted)
+    equal = [p for p in compared if (trusted[p]["sha256"], trusted[p]["size_bytes"]) == (observed_ok[p]["sha256"], observed_ok[p]["size_bytes"])]
+    differs = [p for p in compared if p not in equal]
+    uncovered = [p for p in listed if p in observed_ok and p not in trusted]
+    if not listed or not compared:
+        eq = "UNVERIFIED"
+    elif differs:
+        eq = "DIFFERS"
+    elif unobserved or uncovered:
+        eq = "INCOMPLETE"
+    else:
+        eq = "EQUAL"
+    out.update(official_artifact_equality=eq, compared_set=compared, equal=equal, differs=differs, unobserved=unobserved,
+               uncovered_by_trusted_identity=uncovered, trusted_entries_not_in_packet=sorted(p for p in trusted if p not in listed), trusted_entries=len(trusted),
+               scope="the compared set only (observed bytes ∩ trusted identity); never whole-release equality",
+               note={"EQUAL": "every INCLUDED artifact's observed bytes equal the independently supplied identity; still not an outsider receipt",
+                     "INCOMPLETE": "every compared artifact equals the trusted identity, but some INCLUDED artifacts were not observed or not covered",
+                     "DIFFERS": "at least one observed artifact differs from the trusted identity",
+                     "UNVERIFIED": "nothing was compared (no observed bytes covered by the trusted identity)"}[eq])
     return out
 
 
@@ -290,43 +359,63 @@ def verify(packet_dir: str | Path, *, trusted: dict | None = None) -> dict:
     def unsupported(msg, mdig=None, checks=None, man=None):
         return {"result": "UNSUPPORTED", "first_discrepancy": msg, "checks": checks or [], "manifest_digest": mdig,
                 "replay": "NOT RUN", "provenance": provenance(man, checks or [], trusted)}
+    ok, why = platform_supported()
+    if not ok:
+        return unsupported(f"refusing to verify: {why}")
     pk = Path(packet_dir)
     if not pk.is_dir():
         return unsupported("packet directory missing")
-    mp = pk / MANIFEST
-    if mp.is_symlink():
-        return unsupported(f"{MANIFEST} is a symlink (refused)")
-    if not mp.is_file():
-        return unsupported(f"{MANIFEST} missing")
     try:
-        raw = mp.read_bytes()
-        man_raw = json.loads(raw.decode("utf-8"))
-    except (OSError, ValueError, UnicodeDecodeError) as exc:
-        return unsupported(f"manifest unreadable: {exc.__class__.__name__}")
-    mdig = hashlib.sha256(raw).hexdigest()
-    man, err = validate_manifest(man_raw)
-    if err:
-        return unsupported(f"manifest invalid: {err}", mdig)
-    root = pk / "artifacts"
-    if root.is_symlink():
-        return unsupported("artifact root is a symlink (refused)", mdig, man=man)
-    if not root.is_dir():
-        return unsupported("artifact root missing", mdig, man=man)
-    root_real = root.resolve(strict=True)
-    checks, first, target_bytes = [], None, None
-    for f in man["files"]:
-        if f["status"] != "INCLUDED":
-            checks.append({"path": f["path"], "check": "presence", "ok": None, "note": "absent at build (explicit limitation)"}); continue
+        pk_fd = os.open(pk, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_CLOEXEC", 0))
+    except OSError as exc:
+        return unsupported(f"packet directory unopenable ({exc.__class__.__name__})")
+    root_fd = None
+    try:
         try:
-            data = _read_contained(root, root_real, f["path"])
-        except PacketPathError as exc:
-            checks.append({"path": f["path"], "check": "containment", "ok": False, "note": str(exc)}); first = first or str(exc); continue
-        h, n = hashlib.sha256(data).hexdigest(), len(data); ok = (h == f["sha256"] and n == f["size_bytes"])
-        checks.append({"path": f["path"], "check": "sha256+length", "ok": ok, "observed": {"sha256": h, "size_bytes": n}})
-        if not ok:
-            first = first or f"byte mismatch at {f['path']}: expected {f['sha256'][:16]}…/{f['size_bytes']} B, observed {h[:16]}…/{n} B"
-        elif f["path"] == man["replay_target"]:
-            target_bytes = data
+            mfd = os.open(MANIFEST, _O_FILE, dir_fd=pk_fd)
+        except OSError as exc:
+            return unsupported(f"{MANIFEST} missing or is a symlink (refused) [{exc.__class__.__name__}]")
+        try:
+            if not stat.S_ISREG(os.fstat(mfd).st_mode):
+                return unsupported(f"{MANIFEST} is not a regular file")
+            raw = _read_fd(mfd)
+        except OSError as exc:
+            return unsupported(f"manifest unreadable: {exc.__class__.__name__}")
+        finally:
+            os.close(mfd)
+        try:
+            man_raw = json.loads(raw.decode("utf-8"))
+        except (ValueError, UnicodeDecodeError) as exc:
+            return unsupported(f"manifest unreadable: {exc.__class__.__name__}")
+        mdig = hashlib.sha256(raw).hexdigest()
+        man, err = validate_manifest(man_raw)
+        if err:
+            return unsupported(f"manifest invalid: {err}", mdig)
+        try:
+            root_fd = _open_dir("artifacts", pk_fd, "artifacts")   # pinned: no-follow, must be a directory
+        except PacketPathError:
+            return unsupported("artifact root missing or is a symlink (refused)", mdig, man=man)
+        checks, first, target_bytes = [], None, None
+        for f in man["files"]:
+            if f["status"] != "INCLUDED":
+                checks.append({"path": f["path"], "check": "presence", "ok": None, "note": "absent at build (explicit limitation)"}); continue
+            try:
+                data = _read_contained(root_fd, f["path"])
+            except PacketPathError as exc:
+                checks.append({"path": f["path"], "check": "containment", "ok": False, "note": str(exc)}); first = first or str(exc); continue
+            h, n = hashlib.sha256(data).hexdigest(), len(data); ok = (h == f["sha256"] and n == f["size_bytes"])
+            checks.append({"path": f["path"], "check": "sha256+length", "ok": ok, "observed": {"sha256": h, "size_bytes": n}})
+            if not ok:
+                first = first or f"byte mismatch at {f['path']}: expected {f['sha256'][:16]}…/{f['size_bytes']} B, observed {h[:16]}…/{n} B"
+            elif f["path"] == man["replay_target"]:
+                target_bytes = data
+    finally:
+        for fd in (root_fd, pk_fd):
+            if fd is not None:
+                try:
+                    os.close(fd)
+                except OSError:
+                    pass
     prov = provenance(man, checks, trusted)
     if first:
         return {"result": "MISMATCH", "first_discrepancy": first, "checks": checks, "manifest_digest": mdig, "replay": "NOT RUN (integrity failed first)", "provenance": prov}

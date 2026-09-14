@@ -18,7 +18,9 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[1]
 OUT = _REPO / "docs" / "methodology" / "gate15_materials_manifest.json"
 MATERIALS = [
-    ("docs/methodology/gate15_formative_study_kit.md", "task script, rubric, scoring key"),
+    ("docs/methodology/gate15_formative_study_kit.md", "protocol (rules, modes, outcomes, disclosure)"),
+    ("docs/methodology/gate15_participant_script.md", "participant-facing task script (no answers)"),
+    ("docs/methodology/gate15_reviewer_scoring_key.md", "reviewer scoring key (never given to participants)"),
     ("README.md", "Task 1 input: frozen CLI transcript block"),
     ("docs/evidence_scoreboard.html", "Task 3 input"),
     ("docs/receipts/scoreboard.json", "Task 3 input (machine copy)"),

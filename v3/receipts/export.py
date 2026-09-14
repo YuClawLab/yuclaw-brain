@@ -38,7 +38,7 @@ def _s(maxlen, pat=None):
 def _enum(allowed):
     def f(v, field):
         if v not in allowed:
-            raise ContractError(f"export {field}: {v!r} not registered")
+            raise ContractError(f"export {field}: value not registered")
         return v
     return f
 
@@ -73,7 +73,7 @@ def _obj(shape):
             raise ContractError(f"export {field}: object required")
         extra = set(v) - set(shape)
         if extra:
-            raise ContractError(f"export {field}: unexpected keys {sorted(extra)}")
+            raise ContractError(f"export {field}: unexpected keys ({len(extra)})")
         return {k: fn(v.get(k), f"{field}.{k}") for k, fn in shape.items() if k in v}
     return f
 
@@ -181,7 +181,7 @@ def revalidate(row: dict) -> dict:
         raise ContractError("public row: object required")
     extra = set(row) - set(PUBLIC_SHAPE)
     if extra:
-        raise ContractError(f"public row: unexpected keys {sorted(extra)}")
+        raise ContractError(f"public row: unexpected keys ({len(extra)})")
     for k in ("schema_version", "synthetic", "attempt_id", "participant", "outcome", "review_state", "binding_completeness", "qualified", "successful", "receipt_digest"):
         if k not in row:
             raise ContractError(f"public row: missing {k}")

@@ -1,7 +1,8 @@
 """`yuclaw challenge` — local structured challenges bound to artifact + claim identifiers (v7).
 Exit 0 ok; 1 contract/authority/input error; 2 usage. CONFIRMED / REFUTED / RESOLVED need a reviewer
 appointment (`--role` + credential from --token-file / --token-fd / no-echo prompt); RESOLVED also needs the
-revised artifact's actual bytes (`--revised-path`) and a structured `--verification-json`."""
+revised artifact's actual bytes (`--revised-path`) and a `--verification-id` produced by `verify-revision` (exit 1 when the
+executed verification did not succeed)."""
 from __future__ import annotations
 
 import argparse, json, sys
@@ -20,7 +21,10 @@ def main(argv=None) -> int:
     credentials.add_token_arguments(d)
     d.add_argument("--revised-type"); d.add_argument("--revised-sha256"); d.add_argument("--revised-size-bytes", type=int)
     d.add_argument("--revised-path", help="actual bytes of the revised artifact (must equal the claimed revised binding)"); d.add_argument("--allowed-root", action="append", default=[])
-    d.add_argument("--verification-json", help='structured test result: {"method": "packet-verify|replay-lab|receipt", "result": "SUCCESS", "reference": "<sha256>"}'); d.add_argument("--reason", default="")
+    d.add_argument("--verification-id", help="id of a verification record produced by `verify-revision` for this challenge and revised artifact"); d.add_argument("--reason", default="")
+    vr = s.add_parser("verify-revision", help="execute the permitted deterministic verifier for a revised artifact and record the result (packet-verify or receipt)")
+    vr.add_argument("challenge_id"); vr.add_argument("--revised-type", required=True); vr.add_argument("--revised-sha256", required=True); vr.add_argument("--revised-size-bytes", type=int, required=True)
+    vr.add_argument("--method", required=True, choices=["packet-verify", "receipt"]); vr.add_argument("--packet"); vr.add_argument("--receipt-digest")
     s.add_parser("list"); h = s.add_parser("history"); h.add_argument("challenge_id")
     a = p.parse_args(argv); cs = ChallengeStore(a.store)
     try:
@@ -29,18 +33,16 @@ def main(argv=None) -> int:
         if a.cmd == "dispose":
             token = credentials.read_token(a) if a.disposition in TRUSTED_DISPOSITIONS else None
             ra = {"artifact_type": a.revised_type, "sha256": a.revised_sha256, "size_bytes": a.revised_size_bytes} if a.revised_sha256 else None
-            ver = None
-            if a.verification_json is not None:
-                try:
-                    ver = json.loads(a.verification_json)
-                except ValueError:
-                    raise ContractError("--verification-json: malformed JSON") from None
             try:
                 rec = cs.dispose(a.challenge_id, a.disposition, reviewer_role=a.role, token=token, revised_artifact=ra, revised_path=a.revised_path,
-                                 allowed_roots=a.allowed_root or [str(Path.cwd())], verification=ver, reason=a.reason)
+                                 allowed_roots=a.allowed_root or [str(Path.cwd())], verification_id=a.verification_id, reason=a.reason)
             except OSError as exc:
                 raise ContractError(f"revised artifact path unreadable ({exc.__class__.__name__})") from None
             print(json.dumps(rec, indent=1)); return 0
+        if a.cmd == "verify-revision":
+            ra = {"artifact_type": a.revised_type, "sha256": a.revised_sha256, "size_bytes": a.revised_size_bytes}
+            rec = cs.verify_revision(a.challenge_id, revised_artifact=ra, method=a.method, packet_dir=a.packet, receipt_digest=a.receipt_digest)
+            print(json.dumps({k: rec[k] for k in ("verification_id", "challenge_id", "method", "result", "reason", "executed_at")}, indent=1)); return 0 if rec["result"] == "SUCCESS" else 1
         if a.cmd == "list":
             print(json.dumps(cs.public_view(synthetic=a.synthetic), indent=1)); return 0
         if a.cmd == "history":

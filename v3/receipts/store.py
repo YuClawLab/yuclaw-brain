@@ -203,12 +203,28 @@ class Store:
             raise ReviewAuthorityError(f"reviewer role {reviewer_role!r}: designated appointment is bound to policy {appt.get('policy_version')!r}; re-designate under {POLICY_VERSION!r}")
         return {"role": reviewer_role, "authority": authority, "appointment_id": appt["appointment_id"], "policy_version": appt.get("policy_version")}
 
+    def appointment_record(self, appointment_id: str) -> dict | None:
+        """The immutable appointment evidence (appointments.jsonl) for an id — historical validity is judged
+        against this record, never against the CURRENT credential state (replacement/revocation later does not
+        rewrite an earlier review's binding)."""
+        if not isinstance(appointment_id, str):
+            return None
+        for r in self._read(self.f_appt):
+            if r.get("kind") == "appointment" and r.get("appointment_id") == appointment_id:
+                return {k: v for k, v in r.items() if k != "token_sha256"}
+        return None
+
     def add_review(self, receipt_digest: str, state: str, *, reviewer_role: str, token: str, reason: str = "", now: datetime | None = None) -> dict:
         if state not in REVIEW_STATES:
             raise ContractError(f"review state {state!r} not in {list(REVIEW_STATES)}")
         appt = self.authorize(reviewer_role, token)
-        if self.receipt(receipt_digest) is None:
+        rec_sub = self.receipt(receipt_digest)
+        if rec_sub is None:
             raise ContractError("review must bind to an existing receipt digest")
+        if not rec_sub["provenance"]["synthetic"] and appt["authority"] != "DESIGNATED":
+            raise ReviewAuthorityError(f"reviewer role {reviewer_role!r} ({appt['authority']}) cannot review a REAL receipt: a DESIGNATED appointment is required (synthetic/held authority never touches real evidence)")
+        if rec_sub["provenance"]["synthetic"] and appt["authority"] == "HELD":
+            raise ReviewAuthorityError(f"reviewer role {reviewer_role!r} is HELD (ambiguous legacy appointment); re-designate explicitly")
         rec = {"kind": "review", "receipt_digest": receipt_digest, "policy_version": POLICY_VERSION, "state": state,
                "reviewer_role": reviewer_role, "authority": appt["authority"], "appointment_id": appt["appointment_id"],
                "decided_at": format_ts(now or datetime.now(timezone.utc)), "reason": str(reason)[:500]}

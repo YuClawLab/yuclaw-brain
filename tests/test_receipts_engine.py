@@ -57,9 +57,10 @@ class TrustBoundaries(Base):
         rec2 = self.imp(corr); self.assertEqual(rec2["version"], 2); self.observe(rec2, WHEEL)
         row = self.derived()[0]; self.assertFalse(row["qualified"]); self.assertIn("review state RECEIVED", row["reasons"]); self.assertEqual(len(self.store.history("a1")), 2)
     def test_real_qualification_pending_without_designated_authority(self):
-        rec = self.imp(sub("r1"), synthetic=False); self.observe(rec, WHEEL); self.review(rec)
+        rec = self.imp(sub("r1"), synthetic=False); self.observe(rec, WHEEL)
+        with self.assertRaises(ReviewAuthorityError): self.review(rec)                       # V4: a SYNTHETIC appointment cannot review a REAL receipt
         row = self.derived(synthetic=False)[0]
-        self.assertFalse(row["qualified"]); self.assertIn("review authority not designated (real qualification pending)", row["reasons"])
+        self.assertFalse(row["qualified"]); self.assertIn("review state RECEIVED", row["reasons"])
         self.store.designate_reviewer("reviewer-designated", "TOKEN-D", designated=True)
         self.store.add_review(rec["digest"], "QUALIFIED", reviewer_role="reviewer-designated", token="TOKEN-D", now=T0)
         self.assertTrue(self.derived(synthetic=False)[0]["qualified"])
