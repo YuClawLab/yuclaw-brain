@@ -52,7 +52,37 @@ class DisposablePG16(unittest.TestCase):
             self.assertEqual(a["rows"], [("AAA", 2), ("BBB", 1)]); self.assertTrue(co.require_equal(a, b))
             lab = co.label(); self.assertIn("snapshot_id", lab); self.assertNotIn("created_at", lab["meaning"].replace("never a created_at cutoff", ""))
         live = self.connect(); cur = live.cursor(); cur.execute(self.SQL); self.assertEqual(cur.fetchall()[0], ("AAA", 3)); live.close()   # the late commit exists outside the snapshot
-        self.assertEqual(co.readers, []); self.assertIsNone(co.exporter)
+        self.assertEqual(co.connections, []); self.assertIsNone(co.exporter); self.assertTrue(co.closed)
+    def open_connections(self):
+        cn = self.connect(); cur = cn.cursor(); cur.execute("SELECT count(*) FROM pg_stat_activity WHERE datname='postgres' AND pid <> pg_backend_pid() AND application_name=''"); n = cur.fetchone()[0]; cn.close(); return n
+    def test_setup_failure_cleans_up_and_slow_query_is_bounded(self):
+        base = self.open_connections()
+        bad = self.connect.__func__ if hasattr(self.connect, "__func__") else self.connect
+        class BrokenCursorConn:
+            def __init__(self, real): self.real = real; self.autocommit = False
+            def cursor(self): return self.real.cursor()
+            def close(self): self.real.close()
+        calls = []
+        def connect_then_fail():
+            cn = self.connect(); calls.append(cn)
+            class C:
+                autocommit = False
+                def cursor(_):
+                    class Cur:
+                        def execute(_, *a, **k): raise RuntimeError("SQL failure before the exporter is assigned")
+                    return Cur()
+                def close(_): cn.close()
+            return C()
+        with self.assertRaises(SnapshotError) as cm:
+            Coordinator(connect_then_fail, registry_files=[self.reg], lifetime_s=60).__enter__()
+        self.assertIn(cm.exception.code, ("E_CONNECT_FAILED", "E_EXPORT_FAILED")); self.assertEqual(self.open_connections(), base)         # the leaked-candidate connection was closed
+        with Coordinator(self.connect, registry_files=[self.reg], lifetime_s=1.0) as co:                                                    # statement_timeout ≈ 1 s bounds a slow query
+            with self.assertRaises(SnapshotError) as cm: co.read("producer", "SELECT pg_sleep(5)")
+            self.assertEqual(cm.exception.code, "E_READ_TIMEOUT"); self.assertTrue(co.closed)
+        self.assertEqual(self.open_connections(), base)
+        co = Coordinator(self.connect, registry_files=[self.reg], lifetime_s=60).__enter__(); a = co.read("producer", self.SQL); co._t0 -= 120   # expiry at completion/equality
+        with self.assertRaises(SnapshotError) as cm: co.require_equal(a, a)
+        self.assertEqual(cm.exception.code, "E_SNAPSHOT_EXPIRED"); self.assertEqual(self.open_connections(), base)
     def test_snapshot_expiry_and_import_failure(self):
         co = Coordinator(self.connect, registry_files=[self.reg], lifetime_s=60).__enter__()
         co.exporter.cursor().execute("ROLLBACK"); co.exporter.close(); co.exporter = None                # exporter gone → readers cannot import
@@ -61,8 +91,7 @@ class DisposablePG16(unittest.TestCase):
         co = Coordinator(self.connect, registry_files=[self.reg], lifetime_s=60).__enter__(); co.snapshot_id = "00000000-00000000-1"
         with self.assertRaises(SnapshotError) as cm: co.read("producer", self.SQL)
         self.assertEqual(cm.exception.code, "E_IMPORT_FAILED"); self.assertIsNone(co.exporter)                # cleaned up on failure
-        co = Coordinator(self.connect, registry_files=[self.reg], lifetime_s=0.0).__enter__()
-        with self.assertRaises(SnapshotError) as cm: co.read("producer", self.SQL)
+        with self.assertRaises(SnapshotError) as cm: Coordinator(self.connect, registry_files=[self.reg], lifetime_s=0.0).__enter__()   # exhausted lifetime: refused at setup
         self.assertEqual(cm.exception.code, "E_SNAPSHOT_EXPIRED")
     def test_registry_drift_and_strict_mismatch(self):
         with Coordinator(self.connect, registry_files=[self.reg], lifetime_s=60) as co:

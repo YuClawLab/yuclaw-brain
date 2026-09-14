@@ -8,6 +8,7 @@ supplied records (a missing record is UNKNOWN, never inferred). Nothing here rea
 canonical or shadow schema, or promotes anything."""
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field, asdict
 
 RUNGS = (150, 250, 350, 550)
@@ -16,7 +17,7 @@ MIN_SESSIONS = 252
 # Vocabulary of per-name NON-ADMISSION outcomes for FIXTURE validation. This module never filters real data: real
 # admission exclusions are governed by the registered admission protocol and the truncation ledger's allowlist
 # (tools/yuclaw_u350_admission.py); nothing here is a data cap or a live filter.
-NON_ADMISSION_REASONS = ("DUPLICATE_TICKER", "MISSING_CIK", "PRICE_HISTORY_SHORT", "LIQUIDITY_BELOW_THRESHOLD", "NO_SUBSTRATE_PATH", "EVIDENCE_TIER_STOP", "CANONICAL_OVERLAP")
+NON_ADMISSION_REASONS = ("DUPLICATE_TICKER", "MISSING_CIK", "MALFORMED_INPUT", "PRICE_HISTORY_SHORT", "LIQUIDITY_BELOW_THRESHOLD", "NO_SUBSTRATE_PATH", "EVIDENCE_TIER_STOP", "CANONICAL_OVERLAP")
 
 
 @dataclass
@@ -41,8 +42,13 @@ class RungResult:
     reasons_not_ready: list = field(default_factory=list)
 
 
+def _finite(v) -> bool:
+    return not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(v)
+
+
 def validate_candidates(cands: list[dict], p: RungParams, *, canonical: set[str], evidence_only: set[str]) -> tuple[list[str], dict]:
-    """Per-name admission under the parameterized gates; returns (admitted tickers, exclusions)."""
+    """Per-name admission under the parameterized gates; returns (admitted tickers, exclusions). Malformed numeric
+    fields (NaN/inf/bool/non-numbers) are MALFORMED, never admitted."""
     excluded: dict[str, list[str]] = {}
     seen = {}
     for c in cands:
@@ -52,12 +58,16 @@ def validate_candidates(cands: list[dict], p: RungParams, *, canonical: set[str]
         seen[t] = True
         if not c.get("cik"):
             r.append("MISSING_CIK")
-        if int(c.get("price_sessions", 0)) < p.min_sessions:
-            r.append("PRICE_HISTORY_SHORT")
-        if float(c.get("adv_usd", 0.0)) < p.min_adv_usd:
-            r.append("LIQUIDITY_BELOW_THRESHOLD")
-        fams = set(c.get("substrate_families", []))
-        if not set(p.families_required) <= fams:
+        ps, adv = c.get("price_sessions", 0), c.get("adv_usd", 0.0)
+        if not _finite(ps) or not _finite(adv) or ps < 0 or adv < 0:
+            r.append("MALFORMED_INPUT")
+        else:
+            if int(ps) < p.min_sessions:
+                r.append("PRICE_HISTORY_SHORT")
+            if float(adv) < p.min_adv_usd:
+                r.append("LIQUIDITY_BELOW_THRESHOLD")
+        fams = c.get("substrate_families", [])
+        if not isinstance(fams, list) or not set(p.families_required) <= set(fams):
             r.append("NO_SUBSTRATE_PATH")
         if t in evidence_only:
             r.append("EVIDENCE_TIER_STOP")                # scoring an evidence-only name is a STOP condition
@@ -85,17 +95,20 @@ def validate_rung(p: RungParams, cands: list[dict], *, canonical: set[str], evid
     # G6: disclosure-triggering, never exclusion
     res.fit = {"status": "DISCLOSED" if fit and fit.get("target") == p.target else "NOT_ASSESSED", **({k: v for k, v in (fit or {}).items()} if fit and fit.get("target") == p.target else {})}
     res.gates["G6_CROSS_SECTIONAL_FIT"] = "DISCLOSED" if res.fit["status"] == "DISCLOSED" else "MISSING"
-    # capacity: supplied audit record for THIS rung, else UNKNOWN
-    if capacity and capacity.get("target") == p.target and isinstance(capacity.get("gpu_h_per_day"), (int, float)):
-        res.capacity = {"status": "MEASURED" if capacity.get("measured") else "INFERRED", "gpu_h_per_day": capacity["gpu_h_per_day"], "ceiling_gpu_h": capacity.get("ceiling_gpu_h")}
-        if capacity.get("ceiling_gpu_h") is not None:
+    # capacity: supplied MEASURED audit record for THIS rung with finite values, else UNKNOWN/INFERRED (never sufficient)
+    if capacity and capacity.get("target") == p.target and _finite(capacity.get("gpu_h_per_day")) and capacity.get("gpu_h_per_day") >= 0:
+        res.capacity = {"status": "MEASURED" if capacity.get("measured") is True else "INFERRED", "gpu_h_per_day": capacity["gpu_h_per_day"], "ceiling_gpu_h": capacity.get("ceiling_gpu_h")}
+        if _finite(capacity.get("ceiling_gpu_h")):
             res.capacity["within_ceiling"] = capacity["gpu_h_per_day"] <= capacity["ceiling_gpu_h"]
     else:
-        res.capacity = {"status": "UNKNOWN", "note": f"no capacity record for target {p.target}"}
+        res.capacity = {"status": "UNKNOWN", "note": f"no finite capacity record for target {p.target}"}
+    # readiness = conjunction of EVERY documented requirement (fixture completeness; not admission authority)
     short = max(0, p.target - len(canonical) - len(admitted))
     if short > 0: res.reasons_not_ready.append(f"admitted names short of target by {short}")
+    if any("MALFORMED_INPUT" in r for r in excluded.values()): res.reasons_not_ready.append("malformed candidate inputs present")
     if res.gates["G5_SHADOW_RUN"] != "PASS": res.reasons_not_ready.append("shadow run for this rung missing or anomalous")
-    if res.capacity.get("within_ceiling") is not True: res.reasons_not_ready.append("capacity not measured within ceiling for this rung")
+    if res.gates["G6_CROSS_SECTIONAL_FIT"] != "DISCLOSED": res.reasons_not_ready.append("cross-sectional fit disclosure missing for this rung (disclosure-triggering; never an exclusion)")
+    if res.capacity.get("status") != "MEASURED" or res.capacity.get("within_ceiling") is not True: res.reasons_not_ready.append("capacity not MEASURED within ceiling for this rung (inferred/unknown never suffices)")
     if not registered_window: res.reasons_not_ready.append("no registered observation window")
     if not promotion_record: res.reasons_not_ready.append("no promotion decision")
     if not phase_c_protocol_id: res.reasons_not_ready.append("no registered Phase-C protocol")
@@ -115,5 +128,5 @@ def validate_ladder(fixture: dict) -> dict:
         params = RungParams(target=target, **{k: v for k, v in r.get("params", {}).items() if k in ("min_adv_usd", "min_sessions", "families_required")})
         res = validate_rung(params, r.get("candidates", []), canonical=canonical, evidence_only=evidence_only, shadow_run=r.get("shadow_run"), capacity=r.get("capacity"), fit=r.get("fit"),
                             registered_window=r.get("registered_window"), promotion_record=r.get("promotion_record"), phase_c_protocol_id=r.get("phase_c_protocol_id"))
-        out[str(target)] = {"status": "VALIDATED", **asdict(res)}
+        out[str(target)] = {"status": "VALIDATED", **asdict(res), "fixture_completeness": "COMPLETE" if res.ready else "INCOMPLETE", "admission_authority": "NONE (fixture validation; real admission is governed by the registered protocol)"}
     return {"ladder": out, "note": "fixture validation only: no live admission, promotion, threshold change or research read; each rung carries its own evidence"}

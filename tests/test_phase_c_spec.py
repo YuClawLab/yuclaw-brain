@@ -14,7 +14,11 @@ class Spec(unittest.TestCase):
         r = spec.validate_protocol(BASE); self.assertEqual(r["problems"], []); self.assertIn("decision_rule", r["unresolved"][0]); self.assertFalse(r["runnable"])
         full = dict(BASE, decision_rule={"threshold": 0.9, "comparison": ">=", "rationale": "labelled draft example, not adopted"})
         self.assertFalse(spec.validate_protocol(full)["runnable"])                                                                  # DRAFT never runs
-        reg = dict(full, status="REGISTERED", registration={"registered_at": "2026-10-01T00:00:00Z"}); self.assertTrue(spec.validate_protocol(reg)["runnable"])
+        reg = dict(full, status="REGISTERED", registration={"registered_at": "2026-10-01T00:00:00Z", "registered_by": "owner", "record_id": "reg-c-1"}); r = spec.validate_protocol(reg); self.assertTrue(r["runnable"]); self.assertTrue(r["shape_complete"])
+        for bad_reg in ({"registered_at": ""}, {"registered_at": "2026-10-01T00:00:00Z"}, {"registered_at": "not-a-time", "registered_by": "o", "record_id": "r"}):
+            r = spec.validate_protocol(dict(full, status="REGISTERED", registration=bad_reg)); self.assertFalse(r["runnable"]); self.assertTrue(r["problems"])
+        r = spec.validate_protocol(dict(reg, decision_rule={"threshold": float("nan"), "comparison": ">=", "rationale": "x"})); self.assertFalse(r["runnable"]); self.assertTrue(r["problems"])   # NaN threshold
+        r = spec.validate_protocol(dict(reg, decision_rule={"threshold": True, "comparison": ">=", "rationale": "x"})); self.assertFalse(r["runnable"])
         self.assertFalse(spec.validate_protocol(dict(full, status="DESIGNATED"))["runnable"])
         for bad in (dict(BASE, window={"start_rule": "backdated", "sessions": 20}), dict(BASE, integrity_reference="integrity threshold"), dict(BASE, decision_rule={"threshold": "0.9"}),
                     dict(BASE, prior_observation_disclosure={"disclosed": False}), dict(BASE, denominator={"basis": "enrolled-sessions", "fixed_n": 0})):

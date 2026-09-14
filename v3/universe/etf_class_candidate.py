@@ -10,7 +10,8 @@ import hashlib
 import json
 import re
 
-STATUSES = ("NOT_APPLICABLE", "BLOCKED_BY_REGISTRATION", "MEMBER", "NOT_MEMBER", "PROPOSED_MEMBER", "PROPOSED_NOT_MEMBER")
+STATUSES = ("NOT_APPLICABLE", "BLOCKED_BY_REGISTRATION", "MEMBER", "NOT_MEMBER", "PROPOSED_MEMBER", "PROPOSED_NOT_MEMBER", "PROPOSED_NOT_APPLICABLE")
+REGISTERED_FAMILIES_EXPECTED: dict = {}          # registered family rules (none registered today; a proposal never supplies them)
 _TICKER = re.compile(r"^[A-Z][A-Z0-9.\-]{0,9}$")
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -79,14 +80,16 @@ def apply_addendum(payload: dict, *, prior: dict | None = None) -> dict:
 
 
 def classify(ticker: str, family: str, *, registered_members: frozenset = ETF_SET_AT_REGISTRATION, families_expected: dict | None = None, proposed: dict | None = None) -> str:
-    """Membership/family status for one name. Registered set (empty today) governs MEMBER/NOT_MEMBER; a proposed
-    addendum yields PROPOSED_* only; NOT_APPLICABLE and BLOCKED_BY_REGISTRATION stay distinct."""
-    fe = families_expected if families_expected is not None else (proposed or {}).get("families_expected")
-    if fe is not None and fe.get(family) is False:
+    """Membership/family status for one name. `families_expected` = REGISTERED family rules (genuine NOT_APPLICABLE);
+    a proposed addendum's exemption yields PROPOSED_NOT_APPLICABLE only. The registered set governs MEMBER/NOT_MEMBER;
+    a proposal never clears BLOCKED_BY_REGISTRATION — it yields PROPOSED_* only."""
+    if families_expected is not None and families_expected.get(family) is False:
         return "NOT_APPLICABLE"
     if registered_members:
         return "MEMBER" if ticker in registered_members else "NOT_MEMBER"
     if proposed is not None:
+        if proposed.get("families_expected", {}).get(family) is False:
+            return "PROPOSED_NOT_APPLICABLE"
         return "PROPOSED_MEMBER" if ticker in proposed["members"] else "PROPOSED_NOT_MEMBER"
     return "BLOCKED_BY_REGISTRATION"
 

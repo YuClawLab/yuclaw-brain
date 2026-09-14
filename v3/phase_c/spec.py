@@ -6,6 +6,10 @@ numeric decision rule is a field of the fixture and may be marked UNRESOLVED. It
 observed outcomes or performs a read."""
 from __future__ import annotations
 
+import math
+import re
+from datetime import datetime
+
 REQUIRED = ("protocol_id", "status", "populations", "window", "endpoints", "denominator", "missing_session_rule", "statistic", "decision_rule", "stopping_rule", "controls", "prior_observation_disclosure")
 STATUSES = ("DRAFT", "DESIGNATED", "REGISTERED")
 INTEGRITY_REFERENCES = ("registry-chain-verified", "ledger-continuity-verified")     # replaces the ambiguous "integrity threshold" reference
@@ -47,8 +51,9 @@ def validate_protocol(p: dict) -> dict:
     dr = p["decision_rule"]
     if dr == "UNRESOLVED":
         unresolved.append("decision_rule (needs architectural input; no default is supplied by the software)")
-    elif not isinstance(dr, dict) or not isinstance(dr.get("threshold"), (int, float)) or isinstance(dr.get("threshold"), bool) or not dr.get("comparison") in (">=", "<=") or not dr.get("rationale"):
-        problems.append("decision_rule: UNRESOLVED or {threshold: number, comparison: >=|<=, rationale: text}")
+    elif (not isinstance(dr, dict) or isinstance(dr.get("threshold"), bool) or not isinstance(dr.get("threshold"), (int, float)) or not math.isfinite(dr.get("threshold"))
+          or not dr.get("comparison") in (">=", "<=") or not isinstance(dr.get("rationale"), str) or not dr.get("rationale").strip()):
+        problems.append("decision_rule: UNRESOLVED or {threshold: finite number, comparison: >=|<=, rationale: text}")
     sr = p["stopping_rule"]
     if not isinstance(sr, dict) or sr.get("kind") not in ("fixed-window", "sequential-registered") or not sr.get("text"):
         problems.append("stopping_rule: {kind: fixed-window|sequential-registered, text}")
@@ -60,6 +65,19 @@ def validate_protocol(p: dict) -> dict:
     ir = p.get("integrity_reference")
     if ir is not None and ir not in INTEGRITY_REFERENCES:
         problems.append(f"integrity_reference must be one of {list(INTEGRITY_REFERENCES)} (the former 'integrity threshold' wording is ambiguous)")
-    runnable = not problems and not unresolved and p["status"] == "REGISTERED" and p.get("registration", {}).get("registered_at") is not None
-    return {"status": p["status"], "unresolved": unresolved, "runnable": runnable, "problems": problems,
-            "note": "runnable only when REGISTERED with a fully specified decision rule; drafts and designations never run a read"}
+    reg = p.get("registration")
+    reg_ok = False
+    if p["status"] == "REGISTERED":
+        if not isinstance(reg, dict) or not isinstance(reg.get("registered_at"), str) or not re.match(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$", reg.get("registered_at", "")) \
+                or not reg.get("registered_by") or not reg.get("record_id"):
+            problems.append("registration: {registered_at: RFC3339 UTC, registered_by, record_id} required for a REGISTERED protocol")
+        else:
+            try:
+                datetime.strptime(reg["registered_at"][:19], "%Y-%m-%dT%H:%M:%S"); reg_ok = True
+            except ValueError:
+                problems.append("registration.registered_at: invalid timestamp")
+    shape_complete = not problems
+    runnable = shape_complete and not unresolved and p["status"] == "REGISTERED" and reg_ok
+    return {"status": p["status"], "unresolved": unresolved, "shape_complete": shape_complete, "runnable": runnable, "problems": problems,
+            "evidenced_registration": "REGISTERED" if reg_ok else "NONE",
+            "note": "shape_complete = the fixture is well-formed; runnable only when REGISTERED with an evidenced registration record and a fully specified finite decision rule; drafts and designations never run a read"}

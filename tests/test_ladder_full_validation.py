@@ -41,3 +41,19 @@ class Ladder(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class LadderReadinessConjunction(unittest.TestCase):
+    """V5 closure: readiness is the conjunction of every documented requirement; malformed numbers never admit."""
+    def base(self):
+        return {"canonical": [], "evidence_only": [], "rungs": {"150": {"params": {"min_adv_usd": 1e6}, "candidates": [cand(f"N{i}") for i in range(150)],
+                "shadow_run": {"target": 150, "days_observed": 25, "anomaly_days": 0}, "capacity": {"target": 150, "gpu_h_per_day": 1.52, "ceiling_gpu_h": 2.0, "measured": True}, "fit": {"target": 150, "note": "disclosed"},
+                "registered_window": {"id": "w"}, "promotion_record": {"id": "p"}, "phase_c_protocol_id": "pc"}}}
+    def test_missing_disclosure_inferred_capacity_and_nan_inputs(self):
+        f = self.base(); self.assertTrue(ladder.validate_ladder(f)["ladder"]["150"]["ready"])
+        f["rungs"]["150"]["fit"] = None; r = ladder.validate_ladder(f)["ladder"]["150"]; self.assertFalse(r["ready"]); self.assertTrue(any("disclosure missing" in x for x in r["reasons_not_ready"])); self.assertEqual(r["admitted"], 150)   # no invented exclusion
+        f = self.base(); f["rungs"]["150"]["capacity"]["measured"] = False; r = ladder.validate_ladder(f)["ladder"]["150"]; self.assertFalse(r["ready"]); self.assertEqual(r["capacity"]["status"], "INFERRED")
+        f = self.base(); f["rungs"]["150"]["capacity"]["gpu_h_per_day"] = float("nan"); r = ladder.validate_ladder(f)["ladder"]["150"]; self.assertEqual(r["capacity"]["status"], "UNKNOWN"); self.assertFalse(r["ready"])
+        f = self.base(); f["rungs"]["150"]["candidates"][0]["adv_usd"] = float("nan"); f["rungs"]["150"]["candidates"][1]["price_sessions"] = True
+        r = ladder.validate_ladder(f)["ladder"]["150"]; self.assertEqual(r["excluded"]["N0"], ["MALFORMED_INPUT"]); self.assertEqual(r["excluded"]["N1"], ["MALFORMED_INPUT"]); self.assertFalse(r["ready"])
+        self.assertEqual(r["fixture_completeness"], "INCOMPLETE"); self.assertTrue(r["admission_authority"].startswith("NONE"))

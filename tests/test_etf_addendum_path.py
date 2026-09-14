@@ -15,10 +15,12 @@ class AddendumPath(unittest.TestCase):
             self.assertTrue(etf.validate_addendum(bad))
         p = etf.apply_addendum(PAYLOAD); self.assertEqual(p["status"], "PROPOSED"); self.assertFalse(p["provenance"]["registered"]); self.assertEqual(p["chain"], [])
         self.assertEqual(etf.classify("SPY", "broad-index", proposed=p), "PROPOSED_MEMBER"); self.assertEqual(etf.classify("IWM", "broad-index", proposed=p), "PROPOSED_NOT_MEMBER")
-        self.assertEqual(etf.classify("AAPL", "single-name", proposed=p), "NOT_APPLICABLE")
+        self.assertEqual(etf.classify("AAPL", "single-name", proposed=p), "PROPOSED_NOT_APPLICABLE")                  # a proposal's exemption stays proposed
+        self.assertEqual(etf.classify("AAPL", "single-name", proposed=p, families_expected={"single-name": False}), "NOT_APPLICABLE")   # registered family rule → genuine
         self.assertEqual(etf.classify("SPY", "broad-index"), "BLOCKED_BY_REGISTRATION"); self.assertEqual(etf.classify("AAPL", "single-name", families_expected={"single-name": False}), "NOT_APPLICABLE")
         self.assertEqual(etf.classify("SPY", "broad-index", registered_members=frozenset({"SPY"})), "MEMBER"); self.assertEqual(etf.ETF_SET_AT_REGISTRATION, frozenset())   # registered set untouched
-        self.assertEqual(etf.classify_all([("SPY", "broad-index"), ("IWM", "broad-index"), ("AAPL", "single-name")], proposed=p), {"NOT_APPLICABLE": ["AAPL"], "PROPOSED_MEMBER": ["SPY"], "PROPOSED_NOT_MEMBER": ["IWM"]})
+        self.assertEqual(etf.classify_all([("SPY", "broad-index"), ("IWM", "broad-index"), ("AAPL", "single-name")], proposed=p), {"PROPOSED_MEMBER": ["SPY"], "PROPOSED_NOT_APPLICABLE": ["AAPL"], "PROPOSED_NOT_MEMBER": ["IWM"]})
+        self.assertEqual(etf.classify("SPY", "broad-index"), "BLOCKED_BY_REGISTRATION"); self.assertEqual(etf.REGISTERED_FAMILIES_EXPECTED, {})
     def test_corrections_chain_and_refusals(self):
         p1 = etf.apply_addendum(PAYLOAD)
         with self.assertRaises(ValueError): etf.apply_addendum(dict(PAYLOAD, members=["SPY"]), prior=p1)                          # correction must state supersedes

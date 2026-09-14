@@ -6,6 +6,8 @@ formula labelled "derived", no inference from edges/components alone. A requirem
 supply is labelled UNRESOLVED for that specific input; the interface reports which inputs block a designation."""
 from __future__ import annotations
 
+import math
+
 UNITS = ("bps", "pct", "log-return", "count")
 VARIANCE_BASES = ("cluster-robust", "hac", "iid", "block-bootstrap")
 RULE4 = ("APPLIED", "NOT_APPLIED", "UNRESOLVED")
@@ -26,6 +28,8 @@ def validate_requirements(req: dict) -> dict:
     if not isinstance(S, dict) or not S.get("id") or not S.get("definition"):
         unresolved.append("S (pooled statistic) not designated")
     ev = req.get("event_set")
+    if isinstance(ev, dict) and isinstance(ev.get("count"), bool):
+        raise A2Error("event_set.count: integer required (booleans rejected)")
     if not isinstance(ev, dict) or not ev.get("id") or not isinstance(ev.get("count"), int) or ev["count"] < 0:
         unresolved.append("event_set undefined or count not an integer")
     unit = req.get("units")
@@ -37,8 +41,12 @@ def validate_requirements(req: dict) -> dict:
     if w is not None:
         if not isinstance(w, dict) or w.get("scheme") not in ("equal", "inverse-variance", "explicit"):
             raise A2Error("weights: {scheme: equal|inverse-variance|explicit, ...} required")
-        if w["scheme"] == "explicit" and (not isinstance(w.get("values"), list) or not w["values"] or any((not isinstance(x, (int, float))) or isinstance(x, bool) or x < 0 for x in w["values"])):
-            raise A2Error("weights.values: non-negative numbers required for an explicit scheme")
+        if w["scheme"] == "explicit":
+            vals = w.get("values")
+            if not isinstance(vals, list) or not vals or any(isinstance(x, bool) or not isinstance(x, (int, float)) or not math.isfinite(x) or x < 0 for x in vals):
+                raise A2Error("weights.values: finite non-negative numbers required for an explicit scheme (NaN/inf/bool rejected)")
+            if isinstance(ev, dict) and isinstance(ev.get("count"), int) and not isinstance(ev.get("count"), bool) and len(vals) != ev["count"]:
+                raise A2Error("weights.values: cardinality must equal event_set.count")
         if w["scheme"] == "explicit" and S and isinstance(S, dict) and S.get("unit") and unit and S["unit"] != unit:
             raise A2Error("weights/units: S unit incompatible with the declared units")
     else:
@@ -66,9 +74,13 @@ def validate_requirements(req: dict) -> dict:
         unresolved.append("open incident dependency: " + ", ".join(i["id"] for i in inc if i["disposition"] == "OPEN"))
     if isinstance(S, dict) and S.get("unit") and unit and S["unit"] != unit:
         raise A2Error("S.unit incompatible with the declared units")
-    status = "DESIGNATED" if not unresolved else "UNRESOLVED"
-    return {"status": status, "unresolved": unresolved, "n_eff": "NOT_COMPUTED (a designated S is a prerequisite; edges/components alone never determine N_eff)",
-            "requirements": {"S": S, "event_set": ev, "units": unit, "weights": w, "horizon": h, "variance_basis": vb, "rule4_disposition": r4, "incident_dependencies": inc}}
+    reg = req.get("registration")
+    registered = isinstance(reg, dict) and bool(reg.get("registered_at")) and bool(reg.get("record_id")) and bool(reg.get("registered_by"))
+    status = "CANDIDATE_COMPLETE" if not unresolved else "UNRESOLVED"
+    return {"status": status, "registered_designation": "REGISTERED" if (registered and not unresolved) else "NOT_REGISTERED", "unresolved": unresolved,
+            "n_eff": "NOT_COMPUTED (a designated S is a prerequisite; edges/components alone never determine N_eff)",
+            "note": "CANDIDATE_COMPLETE = supplied facts are complete and consistent; a registered designation needs a registration record (registered_at, registered_by, record_id) — the software never invents one",
+            "requirements": {"S": S, "event_set": ev, "units": unit, "weights": w, "horizon": h, "variance_basis": vb, "rule4_disposition": r4, "incident_dependencies": inc, "registration": reg}}
 
 
 def from_source_metadata(meta: dict) -> dict:
