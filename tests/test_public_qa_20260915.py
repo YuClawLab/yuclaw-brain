@@ -128,6 +128,7 @@ class ExcerptQuality(unittest.TestCase):
         self.assertTrue(Q.is_event_bearing("On March 23, 2026, Hewlett Packard Enterprise Company priced a public offering of notes."))
         self.assertEqual(Q.finalize_display("Sales of R&amp;D services rose; the Company entered into the &"), "Sales of R&D services rose;")
         self.assertEqual(Q.finalize_display("plain sentence."), "plain sentence.")
+        self.assertEqual(Q.strip_ix_data_blocks("<p>prose</p><ix:hidden><xbrli:context id='c'>us-gaap:X</xbrli:context></ix:hidden><p>more</p>"), "<p>prose</p> <p>more</p>")   # unwired forward repair callable
         os.environ.pop(Q.GATE_ENV, None); self.assertEqual(Q.gate("us-gaap:CommonStockMember 2025-03-31"), (True, None))          # OFF by default: no runtime effect
         os.environ[Q.GATE_ENV] = "reject"
         try:
