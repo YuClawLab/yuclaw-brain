@@ -20,7 +20,8 @@ def main(argv=None) -> int:
     s = p.add_subparsers(dest="cmd", required=True)
     sc = s.add_parser("score", help="score predictions: item_id -> answer")
     sc.add_argument("predictions"); sc.add_argument("model_name"); sc.add_argument("--items", required=True, help="items.jsonl to score against (read exactly as given)")
-    sc.add_argument("--rubric", choices=list(B.RUBRICS), default="v1"); sc.add_argument("--expect-items-sha256", help="refuse unless the items file has this sha256")
+    sc.add_argument("--rubric", choices=list(B.RUBRICS), default="v1"); sc.add_argument("--expect-items-sha256", help="refuse unless the items FILE has this sha256")
+    sc.add_argument("--expect-item-set-hash", help="refuse unless the canonical item-set hash (the generator's item_set_hash) matches")
     sc.add_argument("--meta", help="meta.json carrying item_set_hash / items_sha256 (default: <items dir>/meta.json when present)"); sc.add_argument("--out", help="write the result JSON here")
     a = p.parse_args(argv)
     if a.cmd == "score":
@@ -31,17 +32,21 @@ def main(argv=None) -> int:
             print("[evidencebench] missing predictions file", file=sys.stderr); return 2
         try:
             ident = B.items_identity(items_path)
-            expect = a.expect_items_sha256
+            if a.expect_items_sha256 and a.expect_items_sha256 != ident["items_sha256"]:
+                raise B.BenchError(f"item-set identity mismatch: file sha256 {ident['items_sha256'][:16]}… != expected {a.expect_items_sha256[:16]}…")
+            expect_set = a.expect_item_set_hash
             meta_path = Path(a.meta) if a.meta else items_path.parent / "meta.json"
-            if not expect and meta_path.is_file():
+            if not expect_set and meta_path.is_file():
                 try:
-                    m = json.loads(meta_path.read_text()); expect = m.get("items_sha256") or m.get("item_set_hash")
+                    m = json.loads(meta_path.read_text()); expect_set = m.get("item_set_hash"); expect_file = m.get("items_sha256")
                 except ValueError:
                     raise B.BenchError("meta.json malformed")
-            if expect and expect != ident["items_sha256"]:
-                raise B.BenchError(f"item-set identity mismatch: file sha256 {ident['items_sha256'][:16]}… != expected {str(expect)[:16]}…")
+                if expect_file and expect_file != ident["items_sha256"]:
+                    raise B.BenchError("item-set identity mismatch: items file sha256 differs from meta.json items_sha256")
+            if expect_set and expect_set != ident["item_set_hash"]:
+                raise B.BenchError(f"item-set identity mismatch: canonical item_set_hash {str(ident['item_set_hash'])[:16]}… != expected {str(expect_set)[:16]}…")
             items = B.load_items(items_path); preds = B.load_predictions(a.predictions)
-            res = B.score(items, preds, rubric=a.rubric, label=a.model_name, items_sha256=ident["items_sha256"])
+            res = B.score(items, preds, rubric=a.rubric, label=a.model_name, items_sha256=ident["items_sha256"], item_set_hash_value=ident["item_set_hash"])
         except B.BenchError as exc:
             print(f"[evidencebench] REFUSED: {exc}", file=sys.stderr); return 3
         txt = json.dumps(res, indent=1)

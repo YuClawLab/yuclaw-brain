@@ -60,10 +60,21 @@ def _norm(s: str) -> str:
     return _norm_re.sub(" ", (s or "").lower()).strip()
 
 
+def item_set_hash(items: list[dict]) -> str:
+    """The v1 generator's canonical item-set identity, reproduced exactly: sha256 of json.dumps(items sorted by
+    item_id, sort_keys=True). Published as `item_set_hash` in meta.json since 7.0.0 (2026-09-11 set: 1bb76176…)."""
+    canon = json.dumps(sorted(items, key=lambda x: x["item_id"]), sort_keys=True)
+    return hashlib.sha256(canon.encode()).hexdigest()
+
+
 def items_identity(path) -> dict:
     b = Path(path).read_bytes()
     lines = [l for l in b.decode("utf-8").splitlines() if l.strip()]
-    return {"items_sha256": hashlib.sha256(b).hexdigest(), "n_items": len(lines), "bytes": len(b)}
+    try:
+        canonical = item_set_hash([json.loads(l) for l in lines])
+    except (ValueError, KeyError, TypeError):
+        canonical = None
+    return {"items_sha256": hashlib.sha256(b).hexdigest(), "item_set_hash": canonical, "n_items": len(lines), "bytes": len(b)}
 
 
 def load_items(path) -> list[dict]:
@@ -173,7 +184,7 @@ def _score_v2_item(it: dict, ans: str) -> tuple[float, str]:
     return 1.0, "SUPPORTED"
 
 
-def score(items: list[dict], preds: dict, *, rubric: str, label: str, items_sha256: str) -> dict:
+def score(items: list[dict], preds: dict, *, rubric: str, label: str, items_sha256: str, item_set_hash_value: str | None = None) -> dict:
     if rubric not in RUBRICS:
         raise BenchError(f"unsupported rubric {rubric!r}")
     per_type: dict[str, list] = {}; reasons: dict[str, int] = {}; abst = 0; missing = 0
@@ -187,7 +198,7 @@ def score(items: list[dict], preds: dict, *, rubric: str, label: str, items_sha2
         if _norm(ans) == _norm(ABSTAIN): abst += 1
         if not _norm(ans): missing += 1
     n = len(items)
-    out = {"label": label, "rubric_version": rubric, "items_sha256": items_sha256, "n_items": n, "scored": datetime.now(timezone.utc).isoformat(),
+    out = {"label": label, "rubric_version": rubric, "items_sha256": items_sha256, "item_set_hash": item_set_hash_value or item_set_hash(items), "n_items": n, "scored": datetime.now(timezone.utc).isoformat(),
            "aggregate": round(sum(sum(v) for v in per_type.values()) / max(n, 1), 4), "per_type": {k: round(sum(v) / len(v), 4) for k, v in sorted(per_type.items())},
            "abstentions": abst, "missing": missing, "reasons": dict(sorted(reasons.items())),
            "scoring_rule": ("v1: correct 1.0 · 'cannot verify' 0.25 · else 0.0 — T1 = token overlap >= 0.5 OR accession occurrence (lexical; a question echo scores 1.0 — reproduced, not validated)" if rubric == "v1"
