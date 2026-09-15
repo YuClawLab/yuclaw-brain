@@ -1,5 +1,12 @@
 <p align="center"><b>Research &amp; education only. Not investment advice.</b></p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="brand/human-trace-v1/yuclaw-human-trace-dark.png">
+    <img src="brand/human-trace-v1/yuclaw-human-trace-light.png" alt="YUCLAW logo: The Human Trace" width="220">
+  </picture>
+</p>
+
 <!-- MISSION-VISION-CANONICAL:BEGIN -->
 <h1 align="center">YUCLAW</h1>
 
