@@ -1,0 +1,97 @@
+{
+ "schema": "yuclaw-commitment-fixture/1",
+ "fixture_id": "FIX-COMMIT-005-unit-mismatch",
+ "variant": "unit_mismatch",
+ "fictional": true,
+ "fictional_notice": "FICTIONAL — Fictional Example Corp is not a real issuer; ticker ZZFX and CIK 0000000000 are reserved fictional identifiers; accession numbers 0000000000-26-00000N do not exist on EDGAR",
+ "issuer": {
+  "name": "Fictional Example Corp",
+  "ticker": "ZZFX",
+  "cik": "0000000000"
+ },
+ "claim": {
+  "claim_id": "ZZFX-FY2026-REV-GUIDE",
+  "kind": "commitment",
+  "metric": "revenue",
+  "statement": "The company expects full-year 2026 revenue of $110 million to $120 million.",
+  "range": {
+   "low": 110000000,
+   "high": 120000000
+  },
+  "unit": "USD",
+  "scale_as_stated": "millions",
+  "currency": "USD",
+  "fiscal_period": {
+   "label": "FY2026",
+   "start": "2026-01-01",
+   "end": "2026-12-31"
+  },
+  "basis": "GAAP",
+  "stated_at": "2026-02-10",
+  "source": {
+   "kind": "filing",
+   "form": "8-K (fictional)",
+   "accession": "0000000000-26-000001",
+   "url": null,
+   "filed_at": "2026-02-10",
+   "available_as_of": "2026-02-10T21:05:00Z",
+   "excerpt": "expects full-year 2026 revenue of $110 million to $120 million",
+   "source_hash": "45b937ee0c8496424b683e9e1887ff92630a155ee89ec124033e07234210d463",
+   "fictional": true
+  }
+ },
+ "revisions": [
+  {
+   "revision_id": "R1",
+   "type": "REVISED",
+   "range": {
+    "low": 105000000,
+    "high": 115000000
+   },
+   "unit": "USD",
+   "currency": "USD",
+   "basis": "GAAP",
+   "stated_at": "2026-05-12",
+   "source": {
+    "kind": "filing",
+    "form": "8-K (fictional)",
+    "accession": "0000000000-26-000002",
+    "url": null,
+    "filed_at": "2026-05-12",
+    "available_as_of": "2026-05-12T21:02:00Z",
+    "excerpt": "now expects full-year 2026 revenue of $105 million to $115 million",
+    "source_hash": "27df8c54726834a23b7413ff9b5d7c4157ed48e1aa5a1456812c466f75f692cc",
+    "fictional": true
+   }
+  }
+ ],
+ "outcome": {
+  "actual": 112000000,
+  "unit": "EUR",
+  "currency": "EUR",
+  "basis": "GAAP",
+  "fiscal_period": "FY2026",
+  "comparable": false,
+  "source": {
+   "kind": "filing",
+   "form": "10-K (fictional)",
+   "accession": "0000000000-26-000003",
+   "url": null,
+   "filed_at": "2027-02-09",
+   "available_as_of": "2027-02-09T21:10:00Z",
+   "excerpt": "full-year 2026 revenue was EUR 112 million",
+   "source_hash": "89ee651a8692c3daab8cd6f2a8a6e0adec6c10d59685c9fe5f055d1a82f0ea09",
+   "fictional": true
+  }
+ },
+ "expected": {
+  "adjudication": "UNIT_MISMATCH",
+  "original_contains_actual": null,
+  "revised_contains_actual": null,
+  "delta_vs_original_midpoint": null,
+  "delta_vs_revised_midpoint": null,
+  "history_events": 3,
+  "comparison_permitted": false
+ },
+ "not_advice": "Fixture for engine validation only. Not investment advice. No real company is described."
+}

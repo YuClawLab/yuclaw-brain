@@ -1,0 +1,125 @@
+{
+ "schema": "yuclaw-commitment-fixture/1",
+ "fixture_id": "FIX-COMMIT-007-corrected-source",
+ "variant": "corrected_source",
+ "fictional": true,
+ "fictional_notice": "FICTIONAL — Fictional Example Corp is not a real issuer; ticker ZZFX and CIK 0000000000 are reserved fictional identifiers; accession numbers 0000000000-26-00000N do not exist on EDGAR",
+ "issuer": {
+  "name": "Fictional Example Corp",
+  "ticker": "ZZFX",
+  "cik": "0000000000"
+ },
+ "claim": {
+  "claim_id": "ZZFX-FY2026-REV-GUIDE",
+  "kind": "commitment",
+  "metric": "revenue",
+  "statement": "The company expects full-year 2026 revenue of $110 million to $120 million.",
+  "range": {
+   "low": 110000000,
+   "high": 120000000
+  },
+  "unit": "USD",
+  "scale_as_stated": "millions",
+  "currency": "USD",
+  "fiscal_period": {
+   "label": "FY2026",
+   "start": "2026-01-01",
+   "end": "2026-12-31"
+  },
+  "basis": "GAAP",
+  "stated_at": "2026-02-10",
+  "source": {
+   "kind": "filing",
+   "form": "8-K (fictional)",
+   "accession": "0000000000-26-000001",
+   "url": null,
+   "filed_at": "2026-02-10",
+   "available_as_of": "2026-02-10T21:05:00Z",
+   "excerpt": "expects full-year 2026 revenue of $110 million to $120 million",
+   "source_hash": "45b937ee0c8496424b683e9e1887ff92630a155ee89ec124033e07234210d463",
+   "fictional": true
+  }
+ },
+ "revisions": [
+  {
+   "revision_id": "C1",
+   "type": "CORRECTED_SOURCE",
+   "range": {
+    "low": 110000000,
+    "high": 120000000
+   },
+   "unit": "USD",
+   "currency": "USD",
+   "basis": "GAAP",
+   "stated_at": "2026-02-12",
+   "supersedes": {
+    "accession": "0000000000-26-000001",
+    "reason": "the originally captured excerpt read '$100 million to $120 million' (transcription error); the filed text reads $110 million to $120 million; original record retained, never rewritten"
+   },
+   "source": {
+    "kind": "filing",
+    "form": "8-K/A (fictional)",
+    "accession": "0000000000-26-000005",
+    "url": null,
+    "filed_at": "2026-02-12",
+    "available_as_of": "2026-02-12T21:00:00Z",
+    "excerpt": "expects full-year 2026 revenue of $110 million to $120 million (corrected)",
+    "source_hash": "8c334ca055c6c0a27a12cd43d7781e8d5a2e1b6346b21330f6ef18054991c2d6",
+    "fictional": true
+   }
+  },
+  {
+   "revision_id": "R1",
+   "type": "REVISED",
+   "range": {
+    "low": 105000000,
+    "high": 115000000
+   },
+   "unit": "USD",
+   "currency": "USD",
+   "basis": "GAAP",
+   "stated_at": "2026-05-12",
+   "source": {
+    "kind": "filing",
+    "form": "8-K (fictional)",
+    "accession": "0000000000-26-000002",
+    "url": null,
+    "filed_at": "2026-05-12",
+    "available_as_of": "2026-05-12T21:02:00Z",
+    "excerpt": "now expects full-year 2026 revenue of $105 million to $115 million",
+    "source_hash": "27df8c54726834a23b7413ff9b5d7c4157ed48e1aa5a1456812c466f75f692cc",
+    "fictional": true
+   }
+  }
+ ],
+ "outcome": {
+  "actual": 112000000,
+  "unit": "USD",
+  "currency": "USD",
+  "basis": "GAAP",
+  "fiscal_period": "FY2026",
+  "comparable": true,
+  "source": {
+   "kind": "filing",
+   "form": "10-K (fictional)",
+   "accession": "0000000000-26-000003",
+   "url": null,
+   "filed_at": "2027-02-09",
+   "available_as_of": "2027-02-09T21:10:00Z",
+   "excerpt": "full-year 2026 revenue was $112 million",
+   "source_hash": "cf791a0be9c2dc4023a65e5e053b53bb6128a8a41f741b397dfa6f00cf6306cd",
+   "fictional": true
+  }
+ },
+ "expected": {
+  "adjudication": "IN_RANGE",
+  "original_contains_actual": true,
+  "revised_contains_actual": true,
+  "delta_vs_original_midpoint": -3000000,
+  "delta_vs_revised_midpoint": 2000000,
+  "history_events": 4,
+  "comparison_permitted": true,
+  "uses_corrected_range": true
+ },
+ "not_advice": "Fixture for engine validation only. Not investment advice. No real company is described."
+}
