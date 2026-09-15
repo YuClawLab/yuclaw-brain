@@ -1,0 +1,122 @@
+{
+ "schema": "yuclaw-commitment-fixture/1",
+ "fixture_id": "FIX-COMMIT-008-quarterly",
+ "variant": "quarterly",
+ "fictional": true,
+ "fictional_notice": "FICTIONAL — Fictional Example Corp is not a real issuer; ticker ZZFX and CIK 0000000000 are reserved fictional identifiers; accession numbers 0000000000-26-00000N do not exist on EDGAR",
+ "issuer": {
+  "name": "Fictional Example Corp",
+  "ticker": "ZZFX",
+  "cik": "0000000000"
+ },
+ "claim": {
+  "claim_id": "ZZFX-Q3FY2026-REV-GUIDE",
+  "kind": "commitment",
+  "metric": "revenue",
+  "statement": "The company expects third-quarter fiscal 2026 revenue of $27 million to $30 million.",
+  "range": {
+   "low": 27000000,
+   "high": 30000000
+  },
+  "unit": "USD",
+  "scale_as_stated": "millions",
+  "currency": "USD",
+  "fiscal_period": {
+   "label": "Q3 FY2026",
+   "type": "Q",
+   "start": "2026-07-01",
+   "end": "2026-09-30"
+  },
+  "basis": "GAAP",
+  "stated_at": "2026-08-05",
+  "source": {
+   "kind": "filing",
+   "form": "8-K (fictional)",
+   "accession": "0000000000-26-000011",
+   "url": null,
+   "filed_at": "2026-08-05",
+   "available_as_of": "2026-08-05T20:30:00Z",
+   "excerpt": "expects third-quarter fiscal 2026 revenue of $27 million to $30 million",
+   "source_hash": "aa000b2407afdacb6ef91d7d5cb10ce719c699748173eef0e6e1ea5f5d847f9f",
+   "fictional": true
+  }
+ },
+ "revisions": [
+  {
+   "revision_id": "R1",
+   "type": "REVISED",
+   "range": {
+    "low": 26000000,
+    "high": 29000000
+   },
+   "unit": "USD",
+   "currency": "USD",
+   "basis": "GAAP",
+   "stated_at": "2026-09-02",
+   "source": {
+    "kind": "filing",
+    "form": "8-K (fictional)",
+    "accession": "0000000000-26-000012",
+    "url": null,
+    "filed_at": "2026-09-02",
+    "available_as_of": "2026-09-02T20:15:00Z",
+    "excerpt": "now expects third-quarter fiscal 2026 revenue of $26 million to $29 million",
+    "source_hash": "49ab288c8c86221aa984c6196829a9954ee25e572ef413c0e3699fceeda62477",
+    "fictional": true
+   }
+  }
+ ],
+ "outcome": {
+  "actual": 28000000,
+  "unit": "USD",
+  "currency": "USD",
+  "basis": "GAAP",
+  "fiscal_period": {
+   "label": "Q3 FY2026",
+   "type": "Q",
+   "start": "2026-07-01",
+   "end": "2026-09-30"
+  },
+  "comparable": true,
+  "source": {
+   "kind": "filing",
+   "form": "10-Q (fictional)",
+   "accession": "0000000000-26-000013",
+   "url": null,
+   "filed_at": "2026-11-04",
+   "available_as_of": "2026-11-04T21:05:00Z",
+   "excerpt": "third-quarter fiscal 2026 revenue was $28 million",
+   "source_hash": "7b3524f8f91ff51aca86d25a718717e97a242988bdb89ed23303648ada23562f",
+   "fictional": true
+  }
+ },
+ "period_mismatch_case": {
+  "description": "the same actual reported for the full fiscal year must not resolve a quarterly commitment: an outcome whose fiscal period differs in label, type or dates is PERIOD_MISMATCH (unresolved), never a pass",
+  "outcome_fiscal_period": {
+   "label": "FY2026",
+   "type": "FY",
+   "start": "2026-01-01",
+   "end": "2026-12-31"
+  },
+  "expected_adjudication": "PERIOD_MISMATCH",
+  "date_only_mismatch": {
+   "outcome_fiscal_period": {
+    "label": "Q3 FY2026",
+    "type": "Q",
+    "start": "2026-07-01",
+    "end": "2026-09-29"
+   },
+   "expected_adjudication": "PERIOD_MISMATCH"
+  }
+ },
+ "expected": {
+  "adjudication": "IN_RANGE",
+  "original_contains_actual": true,
+  "revised_contains_actual": true,
+  "delta_vs_original_midpoint": -500000,
+  "delta_vs_revised_midpoint": 500000,
+  "history_events": 3,
+  "comparison_permitted": true
+ },
+ "not_advice": "Fixture for engine validation only. Not investment advice. No real company is described."
+}

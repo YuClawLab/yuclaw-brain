@@ -1,0 +1,43 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://yuclaw.ca/schemas/CommitmentClaim.v1.json",
+ "title": "CommitmentClaim.v1",
+ "description": "A typed financial commitment (e.g. revenue guidance) frozen in the YUCLAW v8 workbench. Every comparability field is explicit and mandatory; amounts are integers or decimal strings in the stated unit (floats are refused); the enforcing validator is v8/workbench/schema.py. Research and education only. Not investment advice.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["schema", "claim_id", "issuer", "metric", "kind", "statement", "range", "unit", "currency", "scale_as_stated", "basis", "fiscal_period", "resolution_rule", "stated_at", "source", "fictional"],
+ "properties": {
+  "schema": {"const": "yuclaw-commitment-claim/1"},
+  "claim_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"},
+  "issuer": {"type": "object", "additionalProperties": false, "required": ["name", "ticker", "cik"],
+             "properties": {"name": {"type": "string", "maxLength": 200}, "ticker": {"type": "string", "pattern": "^[A-Z][A-Z0-9.-]{0,9}$"}, "cik": {"type": "string", "pattern": "^[0-9]{10}$"}}},
+  "metric": {"type": "string", "minLength": 1, "maxLength": 64, "description": "e.g. revenue"},
+  "kind": {"const": "commitment"},
+  "statement": {"type": "string", "minLength": 1, "maxLength": 1000},
+  "range": {"type": "object", "additionalProperties": false, "required": ["low", "high"],
+            "properties": {"low": {"$ref": "#/$defs/amount"}, "high": {"$ref": "#/$defs/amount"}}, "description": "low <= high, in `unit`"},
+  "unit": {"type": "string", "minLength": 1, "description": "measurement unit; for money it equals `currency`"},
+  "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+  "scale_as_stated": {"enum": ["units", "thousands", "millions", "billions"], "description": "presentation scale of the source text; amounts are always stored in units"},
+  "basis": {"enum": ["GAAP", "IFRS", "non-GAAP", "non-GAAP adjusted", "other-stated"]},
+  "fiscal_period": {"$ref": "#/$defs/period"},
+  "resolution_rule": {"enum": ["RANGE_CONTAINS_ACTUAL"]},
+  "stated_at": {"type": "string", "format": "date", "description": "equals source.filed_at"},
+  "source": {"$ref": "#/$defs/source"},
+  "fictional": {"type": "boolean"}
+ },
+ "$defs": {
+  "amount": {"oneOf": [{"type": "integer"}, {"type": "string", "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]{1,12})?$"}], "description": "exact decimal; JSON floats are refused"},
+  "period": {"type": "object", "additionalProperties": false, "required": ["label", "type", "start", "end"],
+             "properties": {"label": {"type": "string", "maxLength": 32}, "type": {"enum": ["FY", "H", "Q", "M"]}, "start": {"type": "string", "format": "date"}, "end": {"type": "string", "format": "date"}}},
+  "source": {"type": "object", "additionalProperties": false,
+             "required": ["kind", "form", "accession", "url", "filed_at", "available_as_of", "excerpt", "source_hash", "fictional", "rights"],
+             "properties": {"kind": {"enum": ["filing", "press_release", "transcript", "other"]}, "form": {"type": "string", "maxLength": 64},
+                            "accession": {"type": "string", "pattern": "^[0-9]{10}-[0-9]{2}-[0-9]{6}$"}, "url": {"type": ["string", "null"], "maxLength": 500},
+                            "filed_at": {"type": "string", "format": "date"}, "available_as_of": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?Z$", "description": "when the source became publicly available (EDGAR acceptance); never the local action time"},
+                            "excerpt": {"type": "string", "maxLength": 4000, "description": "exact passage; rendered as inert text, never executed"},
+                            "source_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256 of the excerpt bytes; binds bytes, not publisher authenticity"},
+                            "fictional": {"type": "boolean"}, "rights": {"enum": ["FICTIONAL", "SEC_PUBLIC_FILING", "UNKNOWN"], "description": "UNKNOWN rights: the excerpt is never bundled into an export"}}}
+ },
+ "outcome": {"description": "yuclaw-commitment-outcome/1 (validated by the same module): schema, claim_id, metric, actual (amount), unit, currency, basis, fiscal_period (period), comparable (boolean declaration; the calculator re-checks every field), source, fictional"}
+}

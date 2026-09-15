@@ -24,12 +24,12 @@ class TestCommitmentFixtures(unittest.TestCase):
         self.fixtures = {e["path"]: json.loads((D / pathlib.Path(e["path"]).name).read_text()) for e in self.manifest["files"]}
 
     def test_manifest_hashes_and_count(self):
-        self.assertEqual(len(self.manifest["files"]), 7)
+        self.assertEqual(len(self.manifest["files"]), 8)
         for e in self.manifest["files"]:
             b = (D / pathlib.Path(e["path"]).name).read_bytes()
             self.assertEqual(hashlib.sha256(b).hexdigest(), e["sha256"], e["path"]); self.assertEqual(len(b), e["bytes"])
         self.assertEqual({e["variant"] for e in self.manifest["files"]},
-                         {"base", "missing_outcome", "withdrawal", "incompatible_basis", "unit_mismatch", "out_of_range_outcome", "corrected_source"})
+                         {"base", "missing_outcome", "withdrawal", "incompatible_basis", "unit_mismatch", "out_of_range_outcome", "corrected_source", "quarterly"})
 
     def test_every_fixture_is_marked_fictional_and_explicit(self):
         for path, f in self.fixtures.items():

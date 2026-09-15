@@ -1,6 +1,6 @@
 {
  "schema": "yuclaw-commitment-fixture-manifest/1",
- "order": "V8-001 \u00a75",
+ "order": "V8-001 §5",
  "fictional": true,
  "purpose": "source-to-export workbench acceptance fixtures: one commitment claim with a revision and a comparable outcome, plus the six failure/edge variants. Fixture validation is separate from real-data quality and from human benefit (both PENDING).",
  "files": [
@@ -59,6 +59,15 @@
    "sha256": "b00b3cf2b86b10c5410c65d0860b9dc256212216b3da0f102bbbef85fa082f5c",
    "bytes": 3747,
    "expected_adjudication": "IN_RANGE"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/008_quarterly.json",
+   "fixture_id": "FIX-COMMIT-008-quarterly",
+   "variant": "quarterly",
+   "sha256": "20ed4136ed3fd9ce5c1a98dbfd8f0e401071cd02ae8f5b58061f95fdfd3e2bad",
+   "bytes": 3568,
+   "expected_adjudication": "IN_RANGE"
   }
- ]
+ ],
+ "amended": "V8-002 §3 (2026-09-15): fixture 008 (separately identified quarterly commitment with explicit fiscal-quarter start/end dates and a documented period-mismatch case) added; fixtures 001–007 are byte-identical to V8-001"
 }
