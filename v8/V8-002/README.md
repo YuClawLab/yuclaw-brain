@@ -15,13 +15,13 @@ Mission: **Make financial AI accountable to evidence.**  Vision: **Become the Sc
 | 3 | FY2026 fixture preserved; quarterly fixture with explicit quarter dates and a new manifest entry; period mismatches tested; both calculations shown separately, no inference from two IN_RANGE results | COMPLETE | `tests/fixtures/v8/commitments/008_quarterly.json`, `manifest.json`; `tests/test_v8_workbench_calc.py` |
 | 4 | Append-only version/history storage, safe writes, operation identifiers, retry handling, interruption tests without duplicate durable events; three time axes; no backdating | COMPLETE | `v8/workbench/store.py`; `tests/test_v8_workbench_store.py` |
 | 5 | Local export separate from publication eligibility; PERMITTED class untouched; rights/privacy checks; canonical hashes AND recomputation in the fresh workspace; tampered/incomplete/unsafe packets rejected | COMPLETE | `v8/workbench/export.py`; `tests/test_v8_workbench_export.py` |
-| 6 | Loopback bind; write protection (Origin/Sec-Fetch-Site/cookie/CSRF); Host validated; file/network access restricted; source content inert | COMPLETE | `v8/workbench/server.py`; `tests/test_v8_workbench_server.py` |
+| 6 | Loopback bind; write protection (Origin/Sec-Fetch-Site/cookie/CSRF); Host allow-listed; file/network access restricted; source content inert | COMPLETE | `v8/workbench/server.py`; `tests/test_v8_workbench_server.py` |
 | 7 | At most one eligible SEC-reporting issuer for quarterly revenue guidance under the established criteria; missing sources/outcomes recorded honestly | COMPLETE as a record: **NO_ELIGIBLE_ISSUER** | `real_data_selection.json` |
 | 8 | Publisher drafting moved to V8-003; preservation of 6.0.x/7.0.0/7.0.1, journal operation identifiers and the PyPI README/logo rendering defect carried forward | CARRIED to V8-003 | proposal below |
 
 Journey score: **7/7 DEMONSTRATED** in Chromium on candidate `a41dc39e` (every positive and negative acceptance case of the
 scope's §5 table; see `scorecard.json`). Human benefit **PENDING**; experimental audits **EXPERIMENTAL** and absent; the fixture
-data is clearly fictional and a demonstration, not a validated dataset product. Gate #15 stays NOT_SATISFIED for v8 (the v7
+data is clearly fictional and a demonstration, not a dataset product whose quality has been established. Gate #15 stays NOT_SATISFIED for v8 (the v7
 exception is not inherited). Backups stay canceled. `release_authorized` stays false.
 
 ## Start the workbench (owner-operated, loopback only)
@@ -74,7 +74,7 @@ positive and negative assertions passed in the browser; HTTP-level and unit test
   NOT ELIGIBLE (commitments are not in the receipts `PERMITTED` class; adding them is an owner decision).
 - **Server**: `127.0.0.1` only; CSP `default-src 'none'` (no scripts anywhere); Host allow-list; POST requires same-origin
   `Origin`, `Sec-Fetch-Site` same-origin/none when sent, the HttpOnly `SameSite=Strict` session cookie and its HMAC token;
-  bounded bodies; exports served by validated id; uploads verified in memory; all output escaped, passages in `<pre>`.
+  bounded bodies; exports served only by an id matching a fixed pattern; uploads verified in memory; all output escaped, passages in `<pre>`.
 - **v7 reuse**: `v3.receipts.contracts` (canonical JSON, digests, timestamps), `v3.receipts.storage.resolve_store_root`
   (public-tree boundary), `v3.receipts.export` publication policy and free-text gates, `v3.receipts.packet.PERMITTED`
   (read, never changed). The fixture loader replays the V8-001 fixtures under fixture-suffixed claim ids.
