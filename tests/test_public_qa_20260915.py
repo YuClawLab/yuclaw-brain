@@ -115,7 +115,9 @@ class BenchRubrics(unittest.TestCase):
             rc, out, _ = run(["score", str(p), "m", "--items", str(b), "--rubric", "v2"]); self.assertEqual(rc, 0); self.assertEqual(json.loads(out)["per_type"]["T2"], 1.0)   # a different file is really read
             rc, _, err = run(["score", str(p), "m", "--items", str(d / "missing.jsonl")]); self.assertEqual(rc, 2)
             rc, _, err = run(["score", str(p), "m", "--items", str(a), "--expect-items-sha256", "0" * 64]); self.assertEqual(rc, 3); self.assertIn("identity mismatch", err)
-            (d / "meta.json").write_text(json.dumps({"item_set_hash": B.items_identity(a)["items_sha256"]})); rc, out, _ = run(["score", str(p), "m", "--items", str(a)]); self.assertEqual(rc, 0)
+            (d / "meta.json").write_text(json.dumps({"item_set_hash": B.items_identity(a)["item_set_hash"]})); rc, out, _ = run(["score", str(p), "m", "--items", str(a)]); self.assertEqual(rc, 0)   # canonical set hash (the generator's)
+            (d / "meta.json").write_text(json.dumps({"item_set_hash": "f" * 64})); rc, _, err = run(["score", str(p), "m", "--items", str(a)]); self.assertEqual(rc, 3); self.assertIn("item_set_hash", err)
+            self.assertEqual(B.item_set_hash([json.loads(l) for l in (REPO / "docs" / "evidencebench" / "items.jsonl").read_text().splitlines() if l.strip()]), json.loads((REPO / "docs" / "evidencebench" / "meta.json").read_text())["item_set_hash"])   # reproduces the published identity
 
 
 class ExcerptQuality(unittest.TestCase):
