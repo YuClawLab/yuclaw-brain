@@ -55,6 +55,17 @@ def finalize_display(excerpt: str) -> str:
     return t
 
 
+_IX_DATA_BLOCKS_RE = re.compile(r"<ix:hidden\b.*?</ix:hidden>|<xbrli:context\b.*?</xbrli:context>|<xbrli:unit\b.*?</xbrli:unit>|<ix:resources\b.*?</ix:resources>", re.I | re.S)
+
+
+def strip_ix_data_blocks(raw_html: str) -> str:
+    """Forward repair candidate (QA-05 E5): remove iXBRL context/unit/hidden/resources blocks — the source of
+    context-token soup outside <ix:header> — before prose extraction. NOT wired into the paired live-ingestion
+    modules (v3/extract/narrative.py and its v5 twin must stay byte-consistent); wiring both copies is the
+    registered activation step for this methodology-input change."""
+    return _IX_DATA_BLOCKS_RE.sub(" ", raw_html or "")
+
+
 def gate_mode() -> str:
     m = os.environ.get(GATE_ENV, "off").strip().lower()
     return m if m in ("off", "record", "reject") else "off"
