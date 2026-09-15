@@ -3,7 +3,7 @@ race hook), DESIGNATED-only real dispositions, executed verification records, ap
 of real reviews, typed prospective eligibility, and the complete constructed public schema at REST/MCP/renderer.
 Synthetic fixtures; the only real input is the existing frozen public Lab bundle (offline replay)."""
 import contextlib, hashlib, io, json, os, pathlib, sys, tempfile, unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 REPO = pathlib.Path(__file__).resolve().parents[1]; sys.path.insert(0, str(REPO))
 from v3.receipts import packet, counting, verify, scoreboard, export  # noqa: E402
@@ -127,9 +127,10 @@ class PinnedContainment(unittest.TestCase):
 class RealAuthority(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.root = pathlib.Path(self.tmp.name) / "s"; self.st = Store(self.root)
-        self.st.designate_reviewer("rev-syn", "S", designated=False); self.st.designate_reviewer("rev-real", "R", designated=True)
+        D0 = T0 - timedelta(days=1)                                                                                                 # appointments precede the fixed review clock T0 (wall-clock independent)
+        self.st.designate_reviewer("rev-syn", "S", designated=False, now=D0); self.st.designate_reviewer("rev-real", "R", designated=True, now=D0)
         (self.root / "reviewers.json").write_text(json.dumps({"designated": True, "roles": {"legacy": hashlib.sha256(b"L").hexdigest(), **{k: v["token_sha256"] for k, v in self.st.authority()["appointments"].items()}}}))
-        self.st.designate_reviewer("rev-syn", "S", designated=False); self.st.designate_reviewer("rev-real", "R", designated=True)   # re-designate after the legacy migration
+        self.st.designate_reviewer("rev-syn", "S", designated=False, now=D0); self.st.designate_reviewer("rev-real", "R", designated=True, now=D0)   # re-designate after the legacy migration
         self.cs = ChallengeStore(self.root); self.h = hashlib.sha256(b"REAL artifact").hexdigest()
         self.cs.create("real-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-real", expected="a", observed="b", synthetic=False, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
         self.cs.create("syn-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 13}, claim_id="claim-syn", expected="a", observed="b", synthetic=True, criterion="artifact-reproduction-by-qualified-receipt", now=T0)

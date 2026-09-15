@@ -1,0 +1,22 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://yuclaw.ca/schemas/ExcerptCorrection.v1.json",
+ "title": "ExcerptCorrection.v1",
+ "description": "A separate annotation on one frozen EvidenceObject's explanatory excerpt (QA-05). The original object and its source_hash are never modified: the hash authenticates the ORIGINAL bytes only. A corrected display excerpt carries its own digest and correction time; a quality flag records a detector hit that stays SUSPECTED until verified against the primary document.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["correction_id", "kind", "status", "original", "rule_ids", "reason", "recorded_at"],
+ "properties": {
+  "correction_id": {"type": "string"},
+  "kind": {"enum": ["display_correction", "quality_flag"]},
+  "status": {"enum": ["SUSPECTED", "CONFIRMED", "CORRECTED"]},
+  "original": {"type": "object", "required": ["ticker", "source_hash", "excerpt_sha256"], "properties": {"ticker": {"type": "string"}, "accession_number": {"type": ["string", "null"]}, "source_hash": {"type": "string"}, "excerpt_sha256": {"type": "string"}}},
+  "rule_ids": {"type": "array", "items": {"type": "string"}},
+  "reason": {"type": "string"},
+  "corrected_excerpt": {"type": ["string", "null"]},
+  "corrected_sha256": {"type": ["string", "null"]},
+  "source_location": {"type": ["object", "null"], "properties": {"accession_number": {"type": ["string", "null"]}, "document_url": {"type": ["string", "null"]}, "char_offset": {"type": ["integer", "null"]}, "verified_against": {"type": ["string", "null"]}}},
+  "recorded_at": {"type": "string"},
+  "corrected_at": {"type": ["string", "null"]}
+ }
+}

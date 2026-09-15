@@ -68,7 +68,7 @@ def main() -> int:
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>YUCLAW for AI builders — the open evidence layer for financial AI</title>
-<meta name="description" content="Ground Truth JSON API, Evidence Passport claim-checker, MCP tools, EvidenceBench. Agents citing YUCLAW inherit accession-verified, point-in-time, hash-anchored evidence. Research only — not investment advice.">
+<meta name="description" content="Evidence Objects JSON API, Evidence Passport claim-checker, MCP tools, EvidenceBench. Agents citing YUCLAW inherit accession-verified, point-in-time, hash-anchored evidence. Research only — not investment advice.">
 <style>
  *{{margin:0;padding:0;box-sizing:border-box}}
  body{{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.6}}
@@ -110,9 +110,17 @@ five mechanical statuses. Below is a real passport generated at this page's buil
 <table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody>{statuses}</tbody></table>
 </div>
 
-<div class="card"><h2>The as-of recipe (point-in-time reconstruction)</h2>
-<p style="font-size:13.5px">To reconstruct name X as of date D from <code>why/X.json</code>: evidence =
-objects with <code>available_as_of ≤ D</code>; the classification at D = the <code>label_history</code>
+<div class="card"><h2>The as-of recipe (point-in-time reconstruction) — complete source required</h2>
+<p style="font-size:13.5px"><strong><code>why/X.json</code> carries a PREVIEW</strong> (the newest 100 objects; see its
+<code>evidence_objects_collection</code>: scope, returned, total_available, cap, ordering with tie-breaker, oldest returned availability,
+build_id, completeness). A preview can omit relevant older objects for <em>any</em> D, so an as-of answer from it is
+<code>INCOMPLETE</code> unless <code>returned == total_available</code>. Reconstruct from the complete per-ticker file
+<code>why/X.history.json</code> (schema <code>WhyHistory.v1</code>, same <code>build_id</code>; verify its sha256 in
+<code>why/history_manifest.json</code> — a mixed-build or missing file is incomplete): evidence as of D =
+objects with <code>available_as_of ≤ D</code> (the recorded availability, never <code>filing_date</code> or a generated timestamp).
+Status vocabulary: <code>COMPLETE</code> · <code>COMPLETE_EMPTY</code> · <code>INCOMPLETE</code> · <code>OUT_OF_RANGE</code>
+(D outside the declared corpus_start/corpus_end). Completeness is for the declared corpus and build — not a claim to hold every SEC filing ever made.
+The classification at D = the <code>label_history</code>
 entry for the last date ≤ D. Older dates beyond the ribbon: <code>yuclaw replay X --date D</code>.
 Worked example in <a href="llms.txt" style="color:#00E676">llms.txt</a>.</p>
 </div>

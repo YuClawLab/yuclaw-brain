@@ -128,7 +128,7 @@ def render(board: dict | None, status: str = "OK") -> str:
       <p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Why a receipt counted or not: <code>yuclaw receipts --store &lt;private&gt; explain &lt;receipt id&gt;</code>. Receipts are reviewed under a designated reviewer before they count; owner-operated checks and synthetic fixtures contribute zero outsiders; a site or endpoint check is never a package reproduction; program totals are distinct from a release's exact-target totals.</p>
     </div>
     <p style="font-size:12px;color:#718096">Research and education only. Not investment advice.</p>
-{footer_stamp_html(freshness_strip())}
+{footer_stamp_html(freshness_strip(board['source_timestamp'][:10] if board else None))}
 {build_footer()}
   </div>
 </body>

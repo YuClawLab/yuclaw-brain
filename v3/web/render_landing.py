@@ -88,14 +88,16 @@ def _fetch_current_signals() -> tuple[list[dict[str, Any]], datetime | None]:
 
 
 def _load_ecs() -> dict:
-    """Evidence Coverage v1 (protocol e3d51f5b0ca3) artifact — coverage,
-    not prediction; rendered with its locked caption."""
-    import json as _j
-    f = Path(__file__).resolve().parents[2] / "output" / "oie" / "evidence_coverage.json"
-    try:
-        return _j.loads(f.read_text()).get("scores", {})
-    except Exception:
-        return {}
+    """Evidence Coverage v1 (protocol e3d51f5b0ca3) — read from the ONE shared public artifact
+    docs/coverage.json (QA-01), never from the private artifact, so every surface shows the same
+    values bound to the same as_of/source identity."""
+    from v3.web.coverage_public import read as _read_cov
+    return _read_cov()["scores"]
+
+
+def _coverage_identity() -> dict | None:
+    from v3.web.coverage_public import read as _read_cov
+    return _read_cov()["identity"]
 
 
 def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
@@ -131,6 +133,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
     ecs = _load_ecs()
+    from v3.web.coverage_public import identity_attrs as _ia
+    _cov_attrs = _ia(_coverage_identity())
     table_body = "".join(_row_html(r, ecs) for r in rows) or (
         "<tr><td colspan='3' style='padding:14px;color:#718096;font-style:italic'>"
         "Forward Tracking Ledger Day 0 — first signals materialize at 17:00 MDT cron."
@@ -271,7 +275,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 
     <div class="card">
       <div class="card-title">Current signals — Forward Tracking Ledger</div>
-      <table>
+      <table {_cov_attrs}>
         <caption style="caption-side:top;text-align:left;font-size:12px;color:#A0AEC0;padding:0 0 10px">
           Current research classifications — not recommendations</caption>
         <thead>

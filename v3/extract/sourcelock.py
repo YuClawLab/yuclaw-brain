@@ -144,6 +144,12 @@ def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional
                 if _jaccard(excerpt, raw_text) < 0.85:
                     return False, "R7_excerpt_verifiable"
 
+    # R9 — excerpt quality (QA-05, 2026-09-15): OFF by default; activation is a registered methodology step
+    from v3.extract.excerpt_quality import gate as _quality_gate
+    _ok, _why = _quality_gate(excerpt)
+    if not _ok:
+        return False, _why
+
     # R8 — advice-language in excerpt or rationale
     rationale = llm_json.get("rationale", "") or ""
     if _ADVICE_RE.search(excerpt) or _ADVICE_RE.search(rationale):

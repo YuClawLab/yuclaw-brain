@@ -48,6 +48,12 @@ _ANCHORS = [
 ]
 
 _IX_HEADER_RE = re.compile(r"<ix:header\b.*?</ix:header>", re.I | re.S)
+_IX_HIDDEN_RE = re.compile(r"<ix:hidden\b.*?</ix:hidden>|<xbrli:context\b.*?</xbrli:context>|<xbrli:unit\b.*?</xbrli:unit>|<ix:resources\b.*?</ix:resources>", re.I | re.S)
+
+
+def _quality_gate_mode() -> str:
+    from v3.extract.excerpt_quality import gate_mode
+    return gate_mode()
 _SCRIPT_STYLE_RE = re.compile(r"<(script|style)\b.*?</\1>", re.I | re.S)
 _COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
 _TAG_RE = re.compile(r"<[^>]+>")
@@ -86,6 +92,8 @@ def strip_filing(raw_html: str) -> str:
     """HTML/iXBRL -> plain text. Crucially removes the ``<ix:header>`` block (the source of
     the taxonomy-URL soup), plus scripts/styles/comments, then tags; unescapes entities."""
     s = _IX_HEADER_RE.sub(" ", raw_html)
+    if _quality_gate_mode() != "off":                                   # QA-05: context/unit blocks outside the header are data, not prose
+        s = _IX_HIDDEN_RE.sub(" ", s)
     s = _SCRIPT_STYLE_RE.sub(" ", s)
     s = _COMMENT_RE.sub(" ", s)
     s = _TAG_RE.sub(" ", s)

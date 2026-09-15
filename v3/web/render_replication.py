@@ -10,6 +10,8 @@ CLI: python3 -m v3.web.render_replication
 """
 from __future__ import annotations
 
+import re
+
 import json
 import subprocess
 import sys
@@ -28,6 +30,17 @@ DISCLAIMER_LINE = ("Research & education only. Not investment advice. Replicatio
 
 ISSUE_URL = ("https://github.com/YuClawLab/yuclaw-brain/issues/new"
              "?template=replication.md&labels=replication")
+
+
+def _replication_data_through() -> str:
+    """The replication page's own artifact date: the latest public replication-log entry (QA-G3)."""
+    try:
+        log = json.loads((_REPO / "docs" / "replication" / "replication_log.json").read_text())
+        dates = [str(e.get("date") or e.get("run_date") or e.get("completed") or "")[:10] for e in log.get("replications", [])]
+        dates = [d for d in dates if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d)]
+        return max(dates) if dates else "unavailable"
+    except Exception:                                                     # noqa: BLE001
+        return "unavailable"
 
 
 def _log_entries() -> list[dict]:
@@ -243,8 +256,8 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
-<div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 Ground Truth anatomy documents, and the per-day evidence-ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
-{footer_stamp_html(freshness_strip())}
+<div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 why/{{TICKER}} anatomy documents, and the per-day evidence-ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
+{footer_stamp_html(freshness_strip(_replication_data_through()))}
 {build_footer()}
 </body>
 </html>

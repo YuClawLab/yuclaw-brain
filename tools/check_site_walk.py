@@ -47,6 +47,7 @@ SOURCE_DOCS = {"YUCLAW_User_Guide_v5.1_source.html",     # print source (EN PDF)
                "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html"}  # print source (FR PDF)
 
 RE_SCRIPT = re.compile(r"<script\b.*?</script>", re.S | re.I)
+RE_PLACEHOLDER = re.compile(r"\[[A-Z][A-Z0-9 /—-]{2,}PLACEHOLDER[^\]]*\]|\bLOREM IPSUM\b|\bTBD\b|\bTODO:", re.I)
 RE_HREF = re.compile(r'href=[\'"]([^\'"]+)[\'"]')
 RE_ID = re.compile(r'id=[\'"]([^\'"]+)[\'"]')
 RE_LOGO = re.compile(r'<a href="index\.html"[^>]*>\s*<span[^>]*>YU', re.S)
@@ -64,7 +65,9 @@ RE_STAMP = re.compile(r'(built|generated|as of|data through)\s*:?\s*20\d\d-',
 RE_DATA_THROUGH = re.compile(r'data through\s*:?\s*20\d\d-\d\d-\d\d', re.I)
 RE_FRESH_BOX = re.compile(r'<div class="fresh"[^>]*>.*?</div>', re.S)
 RE_STRIP_PHRASE = re.compile(
-    r"\(last completed U\.S\. trading day[^)]*\) · regenerated (daily|weekly)", re.I)
+    r"(?:Data through \d{4}-\d{2}-\d{2}(?: \(last completed U\.S\. trading day\))?; generated at \d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC\.)"
+    r"|(?:\(last completed U\.S\. trading day[^)]*\) · regenerated (?:daily|weekly))",
+    re.I)
 RE_UPDATED = re.compile(r"Updated 20\d\d-\d\d-\d\d")
 
 
@@ -153,10 +156,14 @@ def main(argv: list[str] | None = None) -> int:
             elif n_stamp > 1:
                 findings.append(f"{name}: {n_stamp} freshness "
                                 f"stamps — exactly one allowed")
-            for m in RE_RAW_TS.finditer(body):
+            for m in RE_RAW_TS.finditer(RE_STRIP_PHRASE.sub(" ", body)):
                 findings.append(f"{name}: raw '{m.group(0)[:40]}' outside "
                                 f"the buildinfo footer — demote it")
                 break
+        # ---- 4b. placeholders (QA-G2): unfinished copy never ships
+        for m in RE_PLACEHOLDER.finditer(RE_SCRIPT.sub("", t)):
+            findings.append(f"{name}: placeholder text '{m.group(0)[:40]}' on a public page")
+            break
         # ---- 5. disclaimer
         if not DISCLAIMER_RE.search(t):
             findings.append(f"{name}: disclaimer block not found")
@@ -188,7 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     # Walking all 79 nightly is redundant — they share one template. We
     # pin the template hash (drift = a reviewed gate edit) and spot-walk
     # 5 random pages for the invariants every page must carry.
-    WHY_TEMPLATE_PIN = "64d6a82edc0ba9c4"  # clean-header order, 2026-08-07
+    WHY_TEMPLATE_PIN = "6d694ee7e60a96af"  # 2026-09-15: data-ecs binding + excerpt-corrections card (QA-01/QA-05)
     why_dir = DOCS / "why"
     if why_dir.exists():
         import random

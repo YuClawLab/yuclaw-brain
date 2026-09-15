@@ -1,0 +1,20 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://yuclaw.ca/schemas/WhyHistory.v1.json",
+ "title": "WhyHistory.v1",
+ "description": "The COMPLETE per-ticker evidence history (why/{TICKER}.history.json): every accepted EvidenceObject for the ticker in the declared corpus and build, oldest first with a stable tie-breaker, plus typed collection metadata. Successor to the capped preview inside why/{TICKER}.json; the preview stays for compatibility and now declares itself a PREVIEW.",
+ "type": "object",
+ "additionalProperties": true,
+ "required": ["schema", "ticker", "build_id", "generated", "collection", "evidence_objects", "not_advice"],
+ "properties": {
+  "schema": {"const": "WhyHistory.v1"},
+  "ticker": {"type": "string"},
+  "build_id": {"type": "string", "description": "one build = one consistent read; equals the manifest and preview build_id"},
+  "generated": {"type": "string"},
+  "collection": {"type": "object", "required": ["schema", "scope", "returned", "total_available", "cap", "ordering", "build_id", "completeness"],
+                 "properties": {"schema": {"const": "evidence-collection/1"}, "returned": {"type": "integer"}, "total_available": {"type": "integer"}, "cap": {"type": ["integer", "null"]},
+                                "ordering": {"type": "string"}, "completeness": {"enum": ["COMPLETE"]}, "corpus_start": {"type": ["string", "null"]}, "corpus_end": {"type": ["string", "null"]}}},
+  "evidence_objects": {"type": "array", "items": {"$ref": "EvidenceObject.v1.json"}},
+  "not_advice": {"type": "string"}
+ }
+}

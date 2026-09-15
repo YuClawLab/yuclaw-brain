@@ -149,8 +149,50 @@ def check_research_footer(text: str) -> bool:
     return bool(RESEARCH_FOOTER_RE.search(text))
 
 
+BRAND_AVOID = ["Ground Truth"]                      # obsolete product wording (QA-G1); descriptive copy only
+CLAIM_COMPAT_KEYS = {"former_name"}                # deliberate compatibility fields: retained, not descriptive copy
+
+
+def lint_claims(path) -> list[str]:
+    """Brand-avoid scan over CURRENT machine-readable product claims (capabilities.json, llms.txt, ...): every JSON
+    string value except deliberate compatibility keys, or every line of a text file. Frozen schema descriptions and
+    archived files are out of scope by construction (never passed here)."""
+    import json as _json
+    from pathlib import Path as _P
+    text = _P(path).read_text(encoding="utf-8")
+    vals = []
+    if str(path).endswith(".json"):
+        def walk(v, k=""):
+            if isinstance(v, dict):
+                for kk, vv in v.items():
+                    if kk in CLAIM_COMPAT_KEYS:
+                        continue
+                    walk(vv, kk)
+            elif isinstance(v, list):
+                for x in v:
+                    walk(x, k)
+            elif isinstance(v, str):
+                vals.append((k, v))
+        walk(_json.loads(text))
+    else:
+        vals = [(f"line {i}", l) for i, l in enumerate(text.splitlines(), 1)]
+    out = []
+    for k, v in vals:
+        for term in BRAND_AVOID:
+            if term.lower() in v.lower():
+                out.append(f"{path}: {k}: brand-avoid term present")
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     args = list(argv if argv is not None else sys.argv[1:])
+    if "--claims" in args:
+        args.remove("--claims")
+        probs = [x for f in args for x in lint_claims(f)]
+        for x in probs:
+            print(f"FAIL {x}")
+        print(f"[language] claims scan: {len(args)} file(s), {len(probs)} finding(s)")
+        return 1 if probs else 0
     pages_mode = "--pages" in args
     if pages_mode:
         args.remove("--pages")

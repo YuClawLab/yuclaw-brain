@@ -55,7 +55,17 @@ def cases(bundle: str) -> list[tuple[str, list[str], set[int]]]:
         ("check-claim --accession <malformed>", ["check-claim", "--accession", "not-an-accession"], {2}),
         ("malformed generic input (empty command)", [""], {2}),
         ("replay-lab <documented local-bundle path>", ["replay-lab", bundle], {0}),
+        # 7.0.1: packaged EvidenceBench scorer reads the SUPPLIED item file; missing file = usage error (2)
+        ("evidencebench score <empty predictions> --items <checkout items>", ["evidencebench", "score", _empty_predictions(), "acceptance-matrix", "--items", str(Path(bundle).resolve().parents[2] / "evidencebench" / "items.jsonl"), "--rubric", "v1"], {0}),
+        ("evidencebench score --items <missing>", ["evidencebench", "score", _empty_predictions(), "x", "--items", "/nonexistent/items.jsonl"], {2}),
     ]
+
+
+def _empty_predictions() -> str:
+    import tempfile
+    p = Path(tempfile.gettempdir()) / "yuclaw_matrix_empty_predictions.json"
+    p.write_text("{}")
+    return str(p)
 
 
 def main(argv=None) -> int:

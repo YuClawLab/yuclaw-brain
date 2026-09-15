@@ -279,10 +279,43 @@ def p3_ai_agent() -> list[str]:
             if str(e.get("available_as_of", ""))[:10] > d:
                 f.append(f"P3: worked example as-of filter violated")
                 break
+    _p3_history_recipe(f)
     return f
 
 
 # ---------------------------------------------------------------- P4
+def _p3_history_recipe(f: list[str]) -> None:
+    """QA-02: an agent following the documented recipe gets INCOMPLETE from a preview and a complete answer from the
+    history file for a date before the preview window (the DELL 2026-09-09 mechanism), using recorded availability."""
+    import sys as _sys
+    if str(DOCS.parent) not in _sys.path:
+        _sys.path.insert(0, str(DOCS.parent))
+    from v3.evidence import history as H
+    man = DOCS / "why" / "history_manifest.json"
+    if not man.exists():
+        f.append("P3: why/history_manifest.json missing — the historical recipe has no complete source"); return
+    m = json.loads(man.read_text())
+    probes = 0
+    for tk, ent in sorted(m.get("files", {}).items()):
+        hp = DOCS / ent["path"]; pp = DOCS / "why" / f"{tk.replace('.', '-')}.json"
+        if not hp.exists() or not pp.exists():
+            f.append(f"P3: {tk}: history/preview file missing"); continue
+        hist = json.loads(hp.read_text()); prev = json.loads(pp.read_text())
+        objs = hist["evidence_objects"]; pobjs = prev.get("evidence_objects", []); pm = prev.get("evidence_objects_collection")
+        if not pm:
+            f.append(f"P3: {tk}: preview undeclared (no evidence_objects_collection)"); continue
+        if len(objs) > len(pobjs) and pobjs:
+            d = min(o["available_as_of"] for o in pobjs)[:10]
+            r1 = H.as_of_query(pm, pobjs, d); r2 = H.as_of_query(hist["collection"], objs, d)
+            if r1["status"] != "INCOMPLETE" or r2["status"] not in ("COMPLETE", "COMPLETE_EMPTY", "OUT_OF_RANGE"):
+                f.append(f"P3: {tk}: recipe statuses {r1['status']}/{r2['status']} for {d}")
+            probes += 1
+            if probes >= 5:
+                break
+    if probes == 0 and m.get("files"):
+        f.append("P3: no ticker with a capped preview could be probed — recipe untested")
+
+
 def p4_first_time_visitor() -> list[str]:
     f: list[str] = []
     idx = (DOCS / "index.html").read_text()
@@ -422,13 +455,26 @@ MANUAL_REVIEW = [
 ]
 
 
+def p6_mobile_reader() -> list[str]:
+    """P6 (QA-06, 2026-09-15): a phone reader at 390 px — every current public route fits the viewport and every
+    table stays reachable; keyboard scrolling works. Uses tools/check_viewport.py; a browser outage or a time
+    cap yields findings (PARTIAL is never a pass)."""
+    import check_viewport as cv
+    rep = cv.run()
+    out = [f"P6: {f['route']}: {f['findings'][0]}" for f in rep["failed"]]
+    if rep["untested"]:
+        out.append(f"P6: {len(rep['untested'])} current route(s) untested ({rep['browser']}) — not a pass")
+    return out
+
+
 def main() -> int:
     findings: list[str] = []
     for name, fn in (("P1 skeptical-quant", p1_skeptical_quant),
                      ("P2 replicator", p2_replicator),
                      ("P3 ai-agent", p3_ai_agent),
                      ("P4 first-time-visitor", p4_first_time_visitor),
-                     ("P5 institutional-reader", p5_institutional_reader)):
+                     ("P5 institutional-reader", p5_institutional_reader),
+                     ("P6 mobile-reader", p6_mobile_reader)):
         try:
             got = fn()
         except Exception as e:                        # noqa: BLE001
@@ -444,8 +490,8 @@ def main() -> int:
         for x in findings:
             print(f"  FAIL {x}")
         return 1
-    print("[consumer-posture] OK — five personas green (deterministic, "
-          "local, wall-clock-independent)")
+    print("[consumer-posture] OK — six personas green (deterministic, "
+          "local; P6 renders in a headless browser)")
     return 0
 
 

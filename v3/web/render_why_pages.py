@@ -62,6 +62,19 @@ def _threshold_context(score: float, label: str) -> str:
     return f"score {score:+.4f}"
 
 
+COVERAGE_IDENTITY: dict | None = None
+
+
+def _corrections_card(tk: str) -> str:
+    """QA-05: correction annotations and quality flags for this name's explanatory excerpts — the original excerpt
+    and its hash are retained; a corrected display excerpt is shown separately with its own digest and date."""
+    try:
+        from v3.web.excerpt_corrections import card_html
+        return card_html(tk)
+    except Exception:                                                     # noqa: BLE001
+        return ""
+
+
 def _load_all():
     with psycopg2.connect("dbname=yuclaw_events") as cn:
         cn.set_session(readonly=True)
@@ -97,11 +110,11 @@ def _load_all():
             events: dict[str, list] = {}
             for r in cur.fetchall():
                 events.setdefault(r[0], []).append(r)
-    try:
-        ecs = json.loads((_REPO / "output" / "oie" /
-                          "evidence_coverage.json").read_text())["scores"]
-    except Exception:
-        ecs = {}
+    # QA-01: the ONE shared public coverage artifact (identity kept for the JSON/HTML binding)
+    from v3.web.coverage_public import read as _read_cov
+    _cov = _read_cov(); ecs = _cov["scores"]
+    global COVERAGE_IDENTITY
+    COVERAGE_IDENTITY = _cov["identity"]
     stories = {}
     try:
         geo = json.loads((_REPO / "output" / "oie" /
@@ -224,9 +237,10 @@ Signal labels are research classifications, not buy/sell recommendations.
 the current snapshot's stored values. C6 event impact carries the highest single weight by design —
 evidence is meant to correct price-only signals, not echo them.</p></div>
 
+{_corrections_card(tk)}
 <div class="card"><h2>Evidence coverage — the four terms</h2>
 <div class="terms">
-  <div class="term"><div class="v">{e.get('ecs', '—')}</div><div class="k">ECS (0–100)</div></div>
+  <div class="term"><div class="v" data-ecs="{e.get('ecs', '—')}">{e.get('ecs', '—')}</div><div class="k">ECS (0–100)</div></div>
   <div class="term"><div class="v">{e.get('events_90d', '—')}</div><div class="k">accepted events, 90d</div></div>
   <div class="term"><div class="v">{rec if rec is not None else '—'}</div><div class="k">days since latest event</div></div>
   <div class="term"><div class="v">{e.get('type_diversity', '—')}</div><div class="k">distinct event types</div></div>

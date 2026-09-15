@@ -86,6 +86,35 @@ def evidence_objects(ticker: str, as_of: Optional[str] = None,
     return out
 
 
+def evidence_history(ticker: str) -> dict:
+    """COMPLETE accepted-object history for `ticker` from ONE consistent read (REPEATABLE READ), oldest first with
+    a stable tie-breaker (available_as_of, accession, content_hash); returns {'objects', 'total', 'corpus_start',
+    'corpus_end', 'read_at'} where corpus_start/end are the store-wide earliest/latest accepted availability.
+    Never capped; never derived from a preview."""
+    try:
+        import psycopg2
+    except ImportError as exc:
+        raise BackendUnavailable(f"psycopg2 not installed: {exc}") from exc
+    try:
+        cn = psycopg2.connect(DSN)
+    except psycopg2.OperationalError as exc:
+        raise BackendUnavailable(f"events DB unreachable: {exc}") from exc
+    objs = []
+    with cn:
+        cn.set_session(readonly=True, isolation_level="REPEATABLE READ")
+        with cn.cursor() as cur:
+            cur.execute("SELECT min(available_as_of), max(available_as_of), now() FROM events WHERE event_status = 'accepted'")
+            cs, ce, read_at = cur.fetchone()
+            cur.execute("""SELECT event_id, ticker, event_type, source_publish_time::date, source_url, raw_excerpt, content_hash, available_as_of
+                           FROM events WHERE ticker = %s AND event_status = 'accepted'
+                           ORDER BY available_as_of ASC, event_id ASC, content_hash ASC""", [ticker.upper()])
+            for (eid, tk, etype, fdate, url, excerpt, chash, avail) in cur.fetchall():
+                objs.append({"ticker": tk, "evidence_type": etype, "filing_date": fdate.isoformat() if fdate else None, "accession_number": _accession(eid, url),
+                             "excerpt": (excerpt or "")[:400], "source_hash": chash, "available_as_of": avail.isoformat(), "protocol_id": None})
+    objs.sort(key=lambda o: (o["available_as_of"], o.get("accession_number") or "", o.get("source_hash") or ""))
+    return {"objects": objs, "total": len(objs), "corpus_start": cs.isoformat() if cs else None, "corpus_end": ce.isoformat() if ce else None, "read_at": read_at.isoformat()}
+
+
 def in_universe(ticker: str) -> bool:
     from v3.universe_tiers import scoring_universe
     return ticker.upper() in scoring_universe()

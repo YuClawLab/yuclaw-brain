@@ -1175,6 +1175,8 @@ def render() -> str:
 def main() -> int:
     html = render()
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    from v3.web.useful_blocks import wrap_tables, TABLE_WRAP_CSS           # QA-06: reachable tables at 390 px
+    html = wrap_tables(html.replace("</style>", TABLE_WRAP_CSS + "</style>", 1), "Validation Lab table")
     OUT.write_text(html)
     print(f"[render_validation_lab] wrote {OUT} ({len(html)} bytes)")
     return 0

@@ -40,7 +40,8 @@ RE_SCRIPT = re.compile(r"<script\b.*?</script>", re.S | re.I)
 RE_BUILDINFO = re.compile(r'<footer class="buildinfo".*?</footer>', re.S)
 RE_FRESH_BOX = re.compile(r'<div class="fresh"[^>]*>.*?</div>', re.S)
 RE_STRIP_PHRASE = re.compile(
-    r"\(last completed U\.S\. trading day[^)]*\) · regenerated (daily|weekly)",
+    r"(?:Data through \d{4}-\d{2}-\d{2}(?: \(last completed U\.S\. trading day\))?; generated at \d{4}-\d{2}-\d{2} \d{2}:\d{2} UTC\.)"
+    r"|(?:\(last completed U\.S\. trading day[^)]*\) · regenerated (?:daily|weekly))",
     re.I)
 RE_UPDATED = re.compile(r"Updated 20\d\d-\d\d-\d\d")
 

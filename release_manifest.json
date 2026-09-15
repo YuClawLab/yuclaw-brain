@@ -220,6 +220,60 @@
     "not_advice"
    ],
    "what": "derived evidence scoreboard (v7): receipts, challenges, dispositions with counting definitions; zero/pending are real states; no trust score"
+  },
+  {
+   "key": "why_history_json",
+   "path": "/why/{TICKER}.history.json",
+   "kind": "templated",
+   "representative": "/why/AAPL.history.json",
+   "content_type": "application/json",
+   "format": "json",
+   "required_keys": [
+    "schema",
+    "ticker",
+    "build_id",
+    "collection",
+    "evidence_objects"
+   ],
+   "what": "COMPLETE per-name evidence history bound to one build (WhyHistory.v1); the preview in /why/{TICKER}.json declares itself a PREVIEW"
+  },
+  {
+   "key": "why_history_manifest",
+   "path": "/why/history_manifest.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "format": "json",
+   "required_keys": [
+    "build_id",
+    "files"
+   ],
+   "what": "build id + sha256/count of every history file (a mixed-build result is incomplete)"
+  },
+  {
+   "key": "coverage_json",
+   "path": "/coverage.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "format": "json",
+   "required_keys": [
+    "schema",
+    "metric_id",
+    "as_of",
+    "tickers"
+   ],
+   "what": "the ONE shared Evidence Coverage artifact every surface renders from"
+  },
+  {
+   "key": "excerpt_corrections",
+   "path": "/evidence/excerpt_corrections.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "format": "json",
+   "required_keys": [
+    "schema",
+    "records"
+   ],
+   "what": "separate correction/flag annotations for explanatory excerpts; originals retained"
   }
  ],
  "optional_or_dynamic": [

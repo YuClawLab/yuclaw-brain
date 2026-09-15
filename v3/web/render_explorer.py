@@ -25,7 +25,7 @@ if str(_REPO) not in sys.path:
 
 import psycopg2
 
-from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_strip, site_header_html)
+from v3.web.useful_blocks import (TABLE_WRAP_CSS, footer_stamp_html, build_footer, freshness_strip, site_header_html)
 
 OUT_HTML = _REPO / "docs" / "explorer.html"
 OUT_JSON = _REPO / "docs" / "explorer_data.json"
@@ -66,11 +66,8 @@ def grade_of(ecs) -> str:
 
 def build_data() -> dict:
     u = json.loads((_REPO / "v3" / "universe.json").read_text())
-    try:
-        ecs_art = json.loads((_REPO / "output" / "oie" /
-                              "evidence_coverage.json").read_text())["scores"]
-    except Exception:
-        ecs_art = {}
+    from v3.web.coverage_public import read as _read_cov         # ONE shared public artifact (QA-01)
+    _cov = _read_cov(); ecs_art = _cov["scores"]; cov_identity = _cov["identity"]
     rows = []
     with psycopg2.connect("dbname=yuclaw_events") as cn:
         cn.set_session(readonly=True)
@@ -103,12 +100,15 @@ def build_data() -> dict:
             "why": f"why/{tk.replace('.', '-')}.html",
         })
     return {"generated": datetime.now(timezone.utc).isoformat(),
+            "coverage_source": cov_identity,
             "caption": "research classifications — not recommendations; "
                        "counts and coverage are display, never inference",
             "rows": rows}
 
 
 def render(data: dict) -> str:
+    from v3.web.coverage_public import identity_attrs
+    cov_attrs = identity_attrs(data.get("coverage_source"))
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     header = site_header_html(subtitle="Universe Explorer",
                               active="explorer.html")
@@ -133,6 +133,7 @@ def render(data: dict) -> str:
  .bar{{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}}
  input,select{{background:#151A23;border:1px solid #1E232D;border-radius:8px;color:#E2E8F0;padding:8px 12px;font-size:13px}}
  table{{width:100%;border-collapse:collapse;background:#151A23;border:1px solid #1E232D;border-radius:12px;overflow:hidden}}
+ {TABLE_WRAP_CSS}
  th{{padding:10px 12px;color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;text-align:left;cursor:pointer;user-select:none;background:#10141C}}
  th:hover{{color:#00E676}}
  td{{padding:9px 12px;border-top:1px solid #1E232D;font-size:13px}}
@@ -160,7 +161,8 @@ over data embedded in the page.</div>
 
 <div class="capline">research classifications — not recommendations · evidence grade = display bucket of the
 coverage score (coverage, not prediction) · <span id="count"></span></div>
-<table>
+<div class="table-wrap" role="region" aria-label="Universe table" tabindex="0">
+<table {cov_attrs}>
   <thead><tr>
     <th onclick="sortBy('ticker')">Ticker</th>
     <th onclick="sortBy('label')">Label</th>
@@ -173,6 +175,7 @@ coverage score (coverage, not prediction) · <span id="count"></span></div>
   </tr></thead>
   <tbody id="tb"></tbody>
 </table>
+</div>
 <p class="muted" style="margin-top:10px">Every row links to its Why page — the full anatomy of the current
 classification. Point-in-time, never edited.</p>
 

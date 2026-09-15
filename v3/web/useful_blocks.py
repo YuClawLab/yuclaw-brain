@@ -20,6 +20,8 @@ research classifications, not recommendations.
 """
 from __future__ import annotations
 
+import re
+
 import json
 from html import escape
 from pathlib import Path
@@ -144,16 +146,53 @@ def _data_through_date() -> str:
         return "unavailable"
 
 
-def freshness_strip(data_through: str | None = None) -> str:
-    """The standard header strip for DATA-BEARING pages (2026-08-05 final
-    form): 'Data through YYYY-MM-DD (last completed U.S. trading day) ·
-    regenerated daily after market close'. Derived, never typed; pages
-    whose data genuinely lags (e.g. the matured forward ledger) pass
-    their own derived date. Raw build timestamps live in build_footer(),
-    never here."""
-    return (f"Data through {data_through or _data_through_date()} "
-            f"(last completed U.S. trading day) · regenerated daily "
-            f"after market close")
+def _is_last_completed_session(data_through: str, generated_at) -> bool:
+    """True only when the artifact's data date IS the last completed U.S. session at generation time
+    (NYSE calendar incl. registered holidays/early closes). An old artifact rendered today never earns it."""
+    try:
+        from datetime import date as _date
+        from v3.u350.market_calendar import latest_completed_session
+        return _date.fromisoformat(data_through[:10]) == latest_completed_session(generated_at)
+    except Exception:                                 # noqa: BLE001
+        return False
+
+
+def freshness_strip(data_through: str | None = None, generated_at=None) -> str:
+    """The standard stamp for DATA-BEARING pages (2026-09-15 form, QA-G3): per-ARTIFACT inputs —
+    'Data through X; generated at Y UTC.' The phrase '(last completed U.S. trading day)' is added ONLY
+    when X is the last completed session at generation time under the NYSE calendar; an artifact whose
+    data lags is never described as current. data_through defaults to the signal-snapshot date (the
+    artifact of the signal pages); pages built from another artifact pass that artifact's own date.
+    generated_at is the render time (UTC) of THIS page."""
+    from datetime import datetime as _dt, timezone as _tz
+    gen = generated_at or _dt.now(_tz.utc)
+    if gen.tzinfo is None:
+        gen = gen.replace(tzinfo=_tz.utc)
+    x = data_through or _data_through_date()
+    tag = " (last completed U.S. trading day)" if _is_last_completed_session(x, gen) else ""
+    return f"Data through {x}{tag}; generated at {gen.astimezone(_tz.utc).strftime('%Y-%m-%d %H:%M')} UTC."
+
+
+def wrap_tables(html: str, label: str = "data table") -> str:
+    """Wrap every <table> in an accessible horizontal-scroll region (QA-06): keyboard-focusable
+    (tabindex=0), labelled, overflow-x:auto — columns stay reachable at narrow viewports without
+    hiding or clipping content. Idempotent: already-wrapped tables are left alone."""
+    out, i, n = [], 0, 0
+    for m in re.finditer(r"<table\b[^>]*>.*?</table>", html, re.S | re.I):
+        before = html[i:m.start()]
+        already = before.rstrip().endswith('tabindex="0">')
+        out.append(before)
+        if already:
+            out.append(m.group(0))
+        else:
+            n += 1
+            out.append(f'<div class="table-wrap" role="region" aria-label="{label} {n}" tabindex="0">{m.group(0)}</div>')
+        i = m.end()
+    out.append(html[i:])
+    return "".join(out)
+
+
+TABLE_WRAP_CSS = ".table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;margin:0 0 6px}.table-wrap:focus{outline:2px solid #00E676;outline-offset:2px}.table-wrap table{min-width:560px}pre{overflow-x:auto;max-width:100%}body{overflow-wrap:anywhere}"
 
 
 def updated_strip() -> str:

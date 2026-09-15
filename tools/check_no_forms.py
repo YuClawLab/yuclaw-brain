@@ -36,6 +36,8 @@ def main() -> int:
     problems = []
     for p in sorted(DOCS.rglob("*.html")):
         t = p.read_text(errors="replace")
+        # verbatim filing excerpts are quoted text, never a payment integration (QA-05 correction cards)
+        t = re.sub(r'<em class="excerpt-quote">.*?</em>', " ", t, flags=re.S)
         rel = p.relative_to(DOCS)
         for label, rx in (("F1 form", F1), ("F2 input/upload", F2),
                           ("F3 payment marker", F3)):

@@ -60,9 +60,9 @@ STEPS = [
     ("📅", "Request a slot",
      "Contact + a short scope call.",
      "Working path today: open a GitHub issue titled \"Signal Review slot "
-     "request\" with <em>no data attached</em> — [CONTACT CHANNEL "
-     "PLACEHOLDER — published after counsel sign-off on the delivery "
-     "path]."),
+     "request\" with <em>no data attached</em>. No other contact channel is "
+     "published and no intake is open; slots are not being scheduled until "
+     "counsel signs off on the delivery path."),
     ("🔒", "Protocol locked before computation",
      "You receive the spec and its hash.",
      "Your engagement's statistical specification is registered in a "
@@ -376,8 +376,8 @@ It may save you far more than the fee.</div>
 <div class="card" style="margin-top:26px">
   <h2>Request a slot</h2>
   <p style="font-size:13.5px;color:#CBD5E1">Contact + a short scope call. Working path today: open a GitHub
-  issue titled "Signal Review slot request" with <em>no data attached</em> — [CONTACT CHANNEL PLACEHOLDER —
-  published after counsel sign-off on the delivery path].</p>
+  issue titled "Signal Review slot request" with <em>no data attached</em>. No other contact channel is published
+  and no intake is open; slots are not being scheduled until counsel signs off on the delivery path.</p>
 </div>
 
 <div class="amber"><strong>Research and education only — not investment advice.</strong> Signal labels and

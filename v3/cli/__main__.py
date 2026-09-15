@@ -30,6 +30,7 @@ COMMANDS: dict[str, str] = {
     # v7: check → reproduce → challenge → document use (shared v3.receipts logic)
     "packet": "v3.cli.packet:main",
     "receipts": "v3.cli.receipts:main",
+    "evidencebench": "v3.cli.evidencebench:main",
     "challenge": "v3.cli.challenge:main",
     "decision": "v3.cli.decision:main",
     "lens": "v3.cli.lens:main",
@@ -59,6 +60,7 @@ DESCRIPTIONS: dict[str, str] = {
     "check-claim": "Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)",
     "packet": "offline verification packet — build from public artifacts, or verify exact bytes + replay the frozen bundle (v7)",
     "receipts": "local receipt workflow — import / observe bytes / review (authorized) / derive / counts / export / scoreboard (v7)",
+    "evidencebench": "score EvidenceBench predictions against a supplied item set (--items; rubric v1 exact, v2 candidate; stdlib-only) (7.0.1)",
     "challenge": "structured challenge bound to an exact artifact + claim id; dispositions keep the original finding (v7)",
     "decision": "document-use receipt bound to an exact packet manifest digest; export needs permission (v7)",
     "lens": "lens summary-card data as JSON (the numbers the page renders)",

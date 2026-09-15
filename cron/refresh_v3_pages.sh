@@ -36,6 +36,10 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.sources.macro_series --accrue || echo "[refresh_v3_pages] macro accrual failed (non-fatal)"
 
 # Generate fresh pages — output paths default to $REPO_DIR/docs/.
+# QA-01 (2026-09-15): Evidence Coverage is computed ONCE per build, projected into the ONE shared public artifact
+# docs/coverage.json, and every surface (homepage, Explorer, Why HTML/JSON) reads that artifact — before any render.
+/usr/bin/python3 tools/yuclaw_evidence_coverage.py --refresh || exit 31
+/usr/bin/python3 -m v3.web.coverage_public || exit 70
 /usr/bin/python3 -m v3.web.render_landing || exit 2
 /usr/bin/python3 -m v3.track.render_html || exit 3
 # Replay bundle FIRST (usefulness build 2026-07-16): the Lab evidence packet
@@ -68,7 +72,6 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 /usr/bin/python3 -m v3.web.render_signal_review || exit 29
 # Universe Surface (2026-08-04): ECS artifact refresh (no run line) then
 # Explorer + 79 Why pages + Sectors + Tour — display layer, no statistics.
-/usr/bin/python3 tools/yuclaw_evidence_coverage.py --refresh || exit 31
 /usr/bin/python3 -m v3.web.render_explorer || exit 32
 /usr/bin/python3 -m v3.web.render_why_pages || exit 33
 /usr/bin/python3 -m v3.web.render_sectors || exit 34
@@ -158,6 +161,11 @@ print('[registry] chain OK')" || exit 19
 # Stranger-walk gate (2026-07-23): every public page reachable ≤3 clicks,
 # shared header, freshness stamp, no dead links/anchors, disclaimer present.
 /usr/bin/python3 tools/check_site_walk.py || exit 20
+# QA-01 / QA-02 / QA-G1 permanent gates (2026-09-15): same-metric coverage consistency across surfaces;
+# historical evidence collection completeness (preview metadata + complete per-ticker history); brand-avoid claims scan.
+/usr/bin/python3 tools/check_coverage_consistency.py || exit 71
+/usr/bin/python3 tools/check_history_completeness.py || exit 72
+/usr/bin/python3 tools/check_language.py --claims docs/capabilities.json docs/llms.txt || exit 73
 # Header-layout gate (2026-08-07 clean-header order): zero stamps in any
 # header, exactly one stamp per page anywhere, badge == package version.
 /usr/bin/python3 tools/check_header_layout.py || exit 43

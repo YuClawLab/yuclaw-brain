@@ -22,6 +22,14 @@ from v3.web.useful_blocks import (footer_stamp_html, build_footer, freshness_str
 OUT = _REPO / "docs" / "evidencebench.html"
 
 
+def _bench_data_through() -> str:
+    """The benchmark page's own artifact date: the item set's generation date (QA-G3), never the signal date."""
+    try:
+        return json.loads((_REPO / "docs" / "evidencebench" / "meta.json").read_text())["generated"][:10]
+    except Exception:                                                     # noqa: BLE001
+        return "unavailable"
+
+
 def main() -> int:
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     meta = json.loads((_REPO / "docs" / "evidencebench" /
@@ -76,15 +84,24 @@ def main() -> int:
 EvidenceBench measures groundedness against disclosed evidence; nothing here measures or implies future
 returns. Signal labels are research classifications, not buy/sell recommendations.</div>
 
-<div class="card"><h2>How to run</h2>
-<pre class="mono" style="background:#10141C;border:1px solid #1E232D;border-radius:8px;padding:12px;white-space:pre-wrap">curl -sO https://yuclaw.ca/evidencebench/items.jsonl
-# answer each item_id with your model → predictions.json {{"item_id": "answer", ...}}
-pip install yuclaw
-python3 -m tools.yuclaw_evidencebench score predictions.json "your-model-name"</pre>
-<p style="font-size:13px;margin-top:8px"><strong>Scoring rule (exact, from the registered spec):</strong>
-grounded/exact correct = 1.0 · an answer of <code>cannot verify</code> = 0.25 · anything else, including
-confident fabrication, = 0.0. <em>An honest abstention always outscores a wrong answer — by
-construction.</em></p></div>
+<div class="card"><h2>How to run (v1 rubric — checkout method)</h2>
+<p style="font-size:13.5px">The released 7.0.0 package does <strong>not</strong> ship the scorer module (<code>tools.yuclaw_evidencebench</code> lives in the
+repository, not in the wheel), so score from a pinned checkout. The released script reads the fixed <code>docs/evidencebench/items.jsonl</code>
+of that checkout and ignores extra arguments — there is no <code>--items</code> flag in 7.0.0. Run from the checkout root:</p>
+<pre>git clone --branch v7.0.0 --depth 1 https://github.com/YuClawLab/yuclaw-brain.git
+cd yuclaw-brain
+python3 -m tools.yuclaw_evidencebench score /absolute/path/predictions.json "your-model-name"</pre>
+<p style="font-size:13.5px"><code>predictions.json</code> maps <code>item_id</code> → answer string; the literal abstention string is
+"cannot verify from the evidence provided". The pinned checkout carries the same item file the leaderboard was scored on.</p>
+<p style="font-size:13px;color:#A0AEC0"><strong>Rubric v1 limitation (disclosed, preserved):</strong> T1 credit is lexical — token overlap ≥ 0.5 with the keyed
+excerpt <em>or</em> the keyed accession appearing in the answer. Because T1 questions quote the accession, an answer that merely echoes the question
+scores 1.0 on those items. v1 numbers therefore reproduce a flawed rubric; they do not measure groundedness. v1 items and results
+stay byte-identical for reproducibility.</p>
+<p style="font-size:13px;color:#A0AEC0"><strong>Rubric v2 status: candidate, not registered, not available.</strong> A structured-fact rule (accession + event type +
+keyed numeric facts, question tokens excluded, contradictions score 0) is implemented and contract-tested in the next patch release as
+<code>yuclaw evidencebench score … --items … --rubric v2</code>; it is bounded lexical/numeric matching, not semantic verification. No v2 item set exists:
+generating one requires a prospective protocol registration (a research-chain append) that has not been adopted. There is no pooled leaderboard across versions.</p>
+</div>
 
 <div class="card"><h2>Leaderboard</h2>
 <table><thead><tr><th>System</th><th>Aggregate</th><th>Per-type</th><th>Abstentions</th></tr></thead>
@@ -104,7 +121,7 @@ the repository (dataset citability: see CITATION.cff at the repo root and the
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="for_ai_builders.html" style="color:#A0AEC0">For AI builders</a></p>
-{footer_stamp_html(freshness_strip())}
+{footer_stamp_html(freshness_strip(_bench_data_through()))}
 {build_footer()}
 </div></body></html>""")
     print(f"[render_evidencebench] {meta['n_items']} items · "
