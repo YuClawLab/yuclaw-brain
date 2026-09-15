@@ -15,6 +15,7 @@ from v3.cli import packet as packet_cli, receipts as receipts_cli, challenge as 
 from v3.lab import replay_check  # noqa: E402
 
 T0 = datetime(2026, 9, 14, 12, 0, 0, 1, tzinfo=timezone.utc)
+D0 = T0 - timedelta(days=1)                      # appointments precede the fixed review clock T0 (wall-clock independent)
 FMT = "yuclaw-verification-packet/1"
 
 
@@ -157,10 +158,10 @@ class ReviewerAppointments(unittest.TestCase):
         r = self.st.import_submission(sub(aid, **kw), synthetic=synthetic, received_at=T0)
         self.st.add_observation(r["digest"], verify.observe(r["submission"]["artifact_binding"], data=kw.get("data", b"SYNTHETIC wheel v3\n"), now=T0)); return r
     def test_designation_belongs_to_the_appointment(self):
-        self.st.designate_reviewer("rev-syn", "TOKEN-SYN", designated=False)
+        self.st.designate_reviewer("rev-syn", "TOKEN-SYN", designated=False, now=D0)
         r = self.rec(); rs = self.rec("s1", synthetic=True)
         self.assertEqual(self.st.add_review(rs["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)["authority"], "SYNTHETIC")
-        self.st.designate_reviewer("rev-real", "TOKEN-REAL", designated=True)
+        self.st.designate_reviewer("rev-real", "TOKEN-REAL", designated=True, now=D0)
         again = self.st.add_review(rs["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN", now=T0)
         self.assertEqual(again["authority"], "SYNTHETIC")                                     # no promotion of another role
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-SYN")   # V4: synthetic authority never touches a real receipt
@@ -170,9 +171,9 @@ class ReviewerAppointments(unittest.TestCase):
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-real", token="TOKEN-SYN")   # wrong credential
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev-syn", token="TOKEN-REAL")
     def test_credential_replacement_revocation_and_history_untouched(self):
-        self.st.designate_reviewer("rev", "OLD", designated=True); r = self.rec()
+        self.st.designate_reviewer("rev", "OLD", designated=True, now=D0); r = self.rec()
         first = self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev", token="OLD", now=T0)
-        new = self.st.designate_reviewer("rev", "NEW", designated=True)
+        new = self.st.designate_reviewer("rev", "NEW", designated=True, now=D0)
         self.assertEqual(new["supersedes_appointment_id"], first["appointment_id"]); self.assertNotIn("token_sha256", new)
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev", token="OLD")
         self.assertEqual(self.st.review_for(r["digest"])["appointment_id"], first["appointment_id"])                   # history untouched
@@ -187,19 +188,19 @@ class ReviewerAppointments(unittest.TestCase):
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="legacy-rev", token="LT", now=T0)   # V4: HELD reviews nothing
         self.assertFalse(counting.derive(self.st, synthetic=False)[0]["qualified"])
         self.assertEqual(self.st.authority()["appointments"]["legacy-rev"]["status"], "HELD")
-        self.st.designate_reviewer("legacy-rev", "LT2", designated=True)
+        self.st.designate_reviewer("legacy-rev", "LT2", designated=True, now=D0)
         self.assertEqual(self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="legacy-rev", token="LT2", now=T0)["authority"], "DESIGNATED")
         pub = export.project(counting.derive(self.st, synthetic=False)[0], self.st, mode="public"); self.assertEqual(pub["review_authority"], "DESIGNATED")
     def test_policy_bound_designation_and_changed_receipt(self):
-        self.st.designate_reviewer("rev", "T", designated=True, policy_version="receipt-policy-other")
+        self.st.designate_reviewer("rev", "T", designated=True, policy_version="receipt-policy-other", now=D0)
         r = self.rec()
         with self.assertRaises(ReviewAuthorityError): self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev", token="T")
-        self.st.designate_reviewer("rev", "T", designated=True); self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev", token="T", now=T0)
+        self.st.designate_reviewer("rev", "T", designated=True, now=D0); self.st.add_review(r["digest"], "QUALIFIED", reviewer_role="rev", token="T", now=T0)
         self.assertTrue(counting.derive(self.st, synthetic=False)[0]["qualified"])
         r2 = self.st.import_submission(sub("a1", outcome="FAILED", supersedes={"digest": r["digest"], "reason": "correction"}), synthetic=False, received_at=T0)
         self.assertIsNone(self.st.review_for(r2["digest"])); self.assertFalse(counting.derive(self.st, synthetic=False)[0]["qualified"])
     def test_observation_binding_and_forged_inputs(self):
-        self.st.designate_reviewer("rev", "T", designated=True)
+        self.st.designate_reviewer("rev", "T", designated=True, now=D0)
         r = self.st.import_submission(sub("o1"), synthetic=False, received_at=T0)
         b = r["submission"]["artifact_binding"]
         with self.assertRaises(ContractError): self.st.add_observation("0" * 64, verify.observe(b, data=b"x", now=T0))                       # unknown receipt
@@ -217,7 +218,7 @@ class ReviewerAppointments(unittest.TestCase):
 
 class RegisteredCounting(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory(); self.st = Store(pathlib.Path(self.tmp.name) / "s"); self.st.designate_reviewer("rev", "T", designated=False)
+        self.tmp = tempfile.TemporaryDirectory(); self.st = Store(pathlib.Path(self.tmp.name) / "s"); self.st.designate_reviewer("rev", "T", designated=False, now=D0)
     def tearDown(self): self.tmp.cleanup()
     def full(self, aid, imported=T0, **kw):
         r = self.st.import_submission(sub(aid, **kw), synthetic=True, received_at=imported)
@@ -279,7 +280,7 @@ class RegisteredCounting(unittest.TestCase):
 class ChallengeDecisionBoundaries(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.root = pathlib.Path(self.tmp.name) / "s"; self.st = Store(self.root)
-        self.st.designate_reviewer("rev-syn", "T", designated=False); self.cs = ChallengeStore(self.root)
+        self.st.designate_reviewer("rev-syn", "T", designated=False, now=D0); self.cs = ChallengeStore(self.root)
         self.h = hashlib.sha256(b"SYNTHETIC artifact").hexdigest()
         self.cs.create("ch-1", artifact={"artifact_type": "wheel", "sha256": self.h, "size_bytes": 18}, claim_id="claim-1", expected="exit 0", observed="exit 1", synthetic=True, criterion="artifact-reproduction-by-qualified-receipt", now=T0)
         self.tokf = pathlib.Path(self.tmp.name) / "tok"; self.tokf.write_text("T\n"); os.chmod(self.tokf, 0o600)
@@ -358,7 +359,7 @@ class SurfacesAndCli(unittest.TestCase):
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "observe", dig, "--path", str(pathlib.Path(d) / "nofile"), "--allowed-root", d]); self.assertEqual(rc, 1); self.assertNotIn("Traceback", err)
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "observe", "0" * 64]); self.assertEqual(rc, 1)
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev", "--token", "T"]); self.assertEqual(rc, 1); self.assertIn("--token-file", err); self.assertNotIn("Traceback", err)
-            Store(st).designate_reviewer("rev", "T", designated=False)
+            Store(st).designate_reviewer("rev", "T", designated=False, now=D0)
             tokf = pathlib.Path(d) / "tok"; tokf.write_text("T\n"); os.chmod(tokf, 0o644)
             rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev", "--token-file", str(tokf)]); self.assertEqual(rc, 1); self.assertIn("chmod 0600", err)
             os.chmod(tokf, 0o600); rc, out, err = run(receipts_cli.main, ["--store", st, "--synthetic", "review", dig, "QUALIFIED", "--role", "rev", "--token-file", str(tokf)]); self.assertEqual(rc, 0, err); self.assertNotIn("\"T\"", out)

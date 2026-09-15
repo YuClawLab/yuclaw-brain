@@ -12,6 +12,7 @@ from v3.receipts import verify, counting, export, legacy  # noqa: E402
 
 WHEEL = b"SYNTHETIC wheel bytes v7 A\n"; SDIST = b"SYNTHETIC sdist bytes v7 A\n"; WHEEL_B = b"SYNTHETIC wheel bytes v7 B (rebuilt)\n"
 T0 = datetime(2026, 9, 14, 12, 0, 0, 123456, tzinfo=timezone.utc)
+D0 = T0 - timedelta(days=1)                      # appointments precede the fixed review clock T0 (wall-clock independent)
 
 
 def bind(t, b): h, n = verify.sha256_len(b); return {"artifact_type": t, "sha256": h, "size_bytes": n}
@@ -29,7 +30,7 @@ def sub(aid, pid="P-A", grp="G-A", rel="UNRELATED", ctrl="SELF", assist="NONE", 
 class Base(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.store = Store(pathlib.Path(self.tmp.name) / "store")
-        self.store.designate_reviewer("reviewer-synthetic", "TOKEN-SYN", designated=False)
+        self.store.designate_reviewer("reviewer-synthetic", "TOKEN-SYN", designated=False, now=D0)
     def tearDown(self): self.tmp.cleanup()
     def imp(self, raw, synthetic=True): return self.store.import_submission(raw, synthetic=synthetic, received_at=T0)
     def observe(self, rec, data): self.store.add_observation(rec["digest"], verify.observe(rec["submission"]["artifact_binding"], data=data, now=T0))
@@ -61,7 +62,7 @@ class TrustBoundaries(Base):
         with self.assertRaises(ReviewAuthorityError): self.review(rec)                       # V4: a SYNTHETIC appointment cannot review a REAL receipt
         row = self.derived(synthetic=False)[0]
         self.assertFalse(row["qualified"]); self.assertIn("review state RECEIVED", row["reasons"])
-        self.store.designate_reviewer("reviewer-designated", "TOKEN-D", designated=True)
+        self.store.designate_reviewer("reviewer-designated", "TOKEN-D", designated=True, now=D0)
         self.store.add_review(rec["digest"], "QUALIFIED", reviewer_role="reviewer-designated", token="TOKEN-D", now=T0)
         self.assertTrue(self.derived(synthetic=False)[0]["qualified"])
     def test_exact_bytes_wheel_vs_sdist_vs_rebuilt_and_absent(self):
