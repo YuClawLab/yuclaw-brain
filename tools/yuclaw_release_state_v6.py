@@ -454,15 +454,20 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.
 """
+    patch_changes = None
     if a.patch:
-        public = _patch_public(VERSION, tip, len(lines), g16, ev)
+        pc = _REPO / "docs" / "methodology" / f"release_notes_{VERSION}_changes.md"
+        if VERSION.startswith("7.") and pc.exists():
+            patch_changes = pc.read_text()                     # tracked, source-bound patch change list
+        else:
+            public = _patch_public(VERSION, tip, len(lines), g16, ev)
     release_policy = json.loads(Path(a.release_policy).read_text()) if a.release_policy else None
     board_path = _REPO / "docs" / "receipts" / "scoreboard.json"
     public_board = json.loads(board_path.read_text()) if board_path.exists() else None
     if VERSION.startswith("7."):
         sys.path.insert(0, str(_REPO))
         from v3.release import notes_v7
-        public = notes_v7.compose(public, version=VERSION, policy=release_policy, board=public_board)
+        public = notes_v7.compose(public, version=VERSION, policy=release_policy, board=public_board, patch_changes=patch_changes)
         corr = notes_v7.check_correspondence(public, release_policy)
     else:
         corr = ["not a 7.x release"]

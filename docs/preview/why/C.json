@@ -1,20 +1,51 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay C --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 6 of 6 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay C --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.1125,
+  "c1": -0.051,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.028154979,
+  "c7": 0.16361897,
   "c8": 0.0,
   "c9": 0.06666667
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-e5cef6f850c90673",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000831001-26-000045",
+    "excerpt_sha256": "987d3f9789d9630b95d5f8ffc9b8723dfb91abf247d5d03072478112786a2522",
+    "source_hash": "e5cef6f850c90673215098c94fa57484494880db253577a5cc56af3210d36496",
+    "ticker": "C"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "taxonomy_url"
+   ],
+   "source_location": {
+    "accession_number": "0000831001-26-000045",
+    "char_offset": 113,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000045/c-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 41,
   "events_90d": 1,
-  "recency_days": 38.3,
+  "metric_id": "ecs",
+  "recency_days": 39.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 1
  },
@@ -80,9 +111,30 @@
    "ticker": "C"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.201170-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-06T11:14:34-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-24T14:09:46-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 6,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for C in the declared corpus",
+  "total_available": 6
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/C.history.json",
  "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -197,10 +249,6 @@
   },
   {
    "date": "2026-08-04",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
    "label": "WATCH"
   }
  ],
@@ -345,7 +393,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2428,
+ "score": 0.2129,
  "threshold_band": {
   "ceiling": 0.4,
   "floor": 0.2

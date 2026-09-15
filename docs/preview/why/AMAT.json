@@ -1,20 +1,51 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 43 of 43 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.6575,
+  "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.38303664,
-  "c7": -0.09224339,
+  "c6": -0.29120594,
+  "c7": 0.02093144,
   "c8": 0.0,
   "c9": -0.26666668
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-de2df7c4b19eef39",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001628280-26-058235",
+    "excerpt_sha256": "dd1a33341a2d3cac15c2efcb20403b9ddc462262e41e21c781b7979264912ad9",
+    "source_hash": "de2df7c4b19eef393f94f61193c40e24479fa9dedfd4cb4da499b4157d50d004",
+    "ticker": "AMAT"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "taxonomy_url"
+   ],
+   "source_location": {
+    "accession_number": "0001628280-26-058235",
+    "char_offset": 15,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/6951/000162828026058235/amat-20260726.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 91,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 90,
   "events_90d": 37,
-  "recency_days": 3.2,
+  "metric_id": "ecs",
+  "recency_days": 4.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -103,16 +134,6 @@
    "accession_number": "0001628280-26-041314",
    "available_as_of": "2026-07-16T01:21:17.734409-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Raja Prabu G. S 25309 shares @ $504.66 on 2026-06-04 ($12,772,440)",
-   "filing_date": "2026-06-05",
-   "protocol_id": null,
-   "source_hash": "7796a30a345f8d712920ce7ea61c96c7604c0adea92ac81c387022cb262ef70f",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-041314",
-   "available_as_of": "2026-07-16T01:21:17.734409-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Raja Prabu G. S 1803 shares @ $507.06 on 2026-06-04 ($914,229)",
    "filing_date": "2026-06-05",
    "protocol_id": null,
@@ -130,6 +151,16 @@
    "ticker": "AMAT"
   },
   {
+   "accession_number": "0001628280-26-041314",
+   "available_as_of": "2026-07-16T01:21:17.734409-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Raja Prabu G. S 25309 shares @ $504.66 on 2026-06-04 ($12,772,440)",
+   "filing_date": "2026-06-05",
+   "protocol_id": null,
+   "source_hash": "7796a30a345f8d712920ce7ea61c96c7604c0adea92ac81c387022cb262ef70f",
+   "ticker": "AMAT"
+  },
+  {
    "accession_number": "0001628280-26-044039",
    "available_as_of": "2026-07-16T01:21:17.135240-06:00",
    "evidence_type": "INSIDER_SELL",
@@ -137,46 +168,6 @@
    "filing_date": "2026-06-17",
    "protocol_id": null,
    "source_hash": "9d6fb9a455d6cba803f3823a8e2eb393ef331875b20d82a3bb074dc446f49899",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044046",
-   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 10411 shares @ $592.18 on 2026-06-16 ($6,165,186)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "1cada81c46f598a6e783657e11721081b3e68fe998a519b370d48d3cb9143113",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044046",
-   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 9186 shares @ $591.40 on 2026-06-16 ($5,432,600)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "5879c8abd5459257b9d0df94b1029fe34d65a9838e6dda07c628962638df17d2",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044046",
-   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 4682 shares @ $593.51 on 2026-06-16 ($2,778,814)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "84718be63cb1b1e2993f4097110a1e275f57273c1cf7504513414a46e7e23c80",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044046",
-   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 4535 shares @ $594.74 on 2026-06-16 ($2,697,146)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "2b22fb0a21a2f33dee1326988031295c178ce2bd1bb715bdf0e7e2d801ba03f8",
    "ticker": "AMAT"
   },
   {
@@ -193,10 +184,10 @@
    "accession_number": "0001628280-26-044046",
    "available_as_of": "2026-07-16T01:21:16.532340-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 13505 shares @ $596.82 on 2026-06-16 ($8,060,054)",
+   "excerpt": "DICKERSON GARY E S 11273 shares @ $590.03 on 2026-06-15 ($6,651,408)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "60fd89caf4356d031faa0da3804839b9279d4a20932190e71922cbfe435df9ef",
+   "source_hash": "ac5ecebd6b9904db3d419b3b949a629ca76104bf2dc5b2ec1f1770da8b0a1627",
    "ticker": "AMAT"
   },
   {
@@ -213,10 +204,40 @@
    "accession_number": "0001628280-26-044046",
    "available_as_of": "2026-07-16T01:21:16.532340-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 2426 shares @ $598.56 on 2026-06-16 ($1,452,107)",
+   "excerpt": "DICKERSON GARY E S 4682 shares @ $593.51 on 2026-06-16 ($2,778,814)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "5033a3ff602a01ee6bb02c5ce1bc637b650075e34650f08add13eba7a917ed82",
+   "source_hash": "84718be63cb1b1e2993f4097110a1e275f57273c1cf7504513414a46e7e23c80",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044046",
+   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "DICKERSON GARY E S 13505 shares @ $596.82 on 2026-06-16 ($8,060,054)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "60fd89caf4356d031faa0da3804839b9279d4a20932190e71922cbfe435df9ef",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044046",
+   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "DICKERSON GARY E S 15755 shares @ $590.52 on 2026-06-16 ($9,303,643)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "5eae91f563ecb17a4282e16c764714a0a21177917855a715a1aa04480b801b27",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044046",
+   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "DICKERSON GARY E S 9186 shares @ $591.40 on 2026-06-16 ($5,432,600)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "5879c8abd5459257b9d0df94b1029fe34d65a9838e6dda07c628962638df17d2",
    "ticker": "AMAT"
   },
   {
@@ -233,20 +254,30 @@
    "accession_number": "0001628280-26-044046",
    "available_as_of": "2026-07-16T01:21:16.532340-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 11273 shares @ $590.03 on 2026-06-15 ($6,651,408)",
+   "excerpt": "DICKERSON GARY E S 2426 shares @ $598.56 on 2026-06-16 ($1,452,107)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "ac5ecebd6b9904db3d419b3b949a629ca76104bf2dc5b2ec1f1770da8b0a1627",
+   "source_hash": "5033a3ff602a01ee6bb02c5ce1bc637b650075e34650f08add13eba7a917ed82",
    "ticker": "AMAT"
   },
   {
    "accession_number": "0001628280-26-044046",
    "available_as_of": "2026-07-16T01:21:16.532340-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 15755 shares @ $590.52 on 2026-06-16 ($9,303,643)",
+   "excerpt": "DICKERSON GARY E S 4535 shares @ $594.74 on 2026-06-16 ($2,697,146)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "5eae91f563ecb17a4282e16c764714a0a21177917855a715a1aa04480b801b27",
+   "source_hash": "2b22fb0a21a2f33dee1326988031295c178ce2bd1bb715bdf0e7e2d801ba03f8",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044046",
+   "available_as_of": "2026-07-16T01:21:16.532340-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "DICKERSON GARY E S 10411 shares @ $592.18 on 2026-06-16 ($6,165,186)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "1cada81c46f598a6e783657e11721081b3e68fe998a519b370d48d3cb9143113",
    "ticker": "AMAT"
   },
   {
@@ -263,20 +294,10 @@
    "accession_number": "0001628280-26-044048",
    "available_as_of": "2026-07-16T01:21:15.944583-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Nalamasu Omkaram S 6938 shares @ $590.20 on 2026-06-15 ($4,094,808)",
+   "excerpt": "Nalamasu Omkaram S 3799 shares @ $595.14 on 2026-06-15 ($2,260,937)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "5639691d1b726046835be2264c4a56dad0f6f7ead21925b3c9cb62a48f3733d8",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044048",
-   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Nalamasu Omkaram S 4028 shares @ $595.50 on 2026-06-16 ($2,398,674)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "047f6f3c26da5c95f8e15d3e78f14ae60f75281c43a73415335314e329dfb6b3",
+   "source_hash": "9c061035ceadddbb00452b09d5c2c26903ccb9afe2aa90fd1a9f071ed6df5637",
    "ticker": "AMAT"
   },
   {
@@ -293,30 +314,30 @@
    "accession_number": "0001628280-26-044048",
    "available_as_of": "2026-07-16T01:21:15.944583-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Nalamasu Omkaram S 4782 shares @ $591.53 on 2026-06-16 ($2,828,696)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "69ac257e8478d100d4faaf00925b0167dc58fea66a269c9551547e569c64f4b8",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044048",
+   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Nalamasu Omkaram S 6938 shares @ $590.20 on 2026-06-15 ($4,094,808)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "5639691d1b726046835be2264c4a56dad0f6f7ead21925b3c9cb62a48f3733d8",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044048",
+   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Nalamasu Omkaram S 4726 shares @ $593.58 on 2026-06-16 ($2,805,259)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
    "source_hash": "55ba9b38f952af00581d0fdf50bd5af4bd4ab579d153b50f0cabb4f141635c20",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044048",
-   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Nalamasu Omkaram S 1125 shares @ $594.85 on 2026-06-16 ($669,206)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "0a9e00d62bd09f1d0d6d643c37d10190183410cd4c6ce7e052d10000dc215470",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-044048",
-   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Nalamasu Omkaram S 3799 shares @ $595.14 on 2026-06-15 ($2,260,937)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "9c061035ceadddbb00452b09d5c2c26903ccb9afe2aa90fd1a9f071ed6df5637",
    "ticker": "AMAT"
   },
   {
@@ -333,10 +354,20 @@
    "accession_number": "0001628280-26-044048",
    "available_as_of": "2026-07-16T01:21:15.944583-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Nalamasu Omkaram S 4782 shares @ $591.53 on 2026-06-16 ($2,828,696)",
+   "excerpt": "Nalamasu Omkaram S 1125 shares @ $594.85 on 2026-06-16 ($669,206)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "69ac257e8478d100d4faaf00925b0167dc58fea66a269c9551547e569c64f4b8",
+   "source_hash": "0a9e00d62bd09f1d0d6d643c37d10190183410cd4c6ce7e052d10000dc215470",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-044048",
+   "available_as_of": "2026-07-16T01:21:15.944583-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Nalamasu Omkaram S 4028 shares @ $595.50 on 2026-06-16 ($2,398,674)",
+   "filing_date": "2026-06-17",
+   "protocol_id": null,
+   "source_hash": "047f6f3c26da5c95f8e15d3e78f14ae60f75281c43a73415335314e329dfb6b3",
    "ticker": "AMAT"
   },
   {
@@ -363,16 +394,6 @@
    "accession_number": "0001628280-26-046609",
    "available_as_of": "2026-07-16T01:21:14.176356-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "DICKERSON GARY E S 7989 shares @ $701.33 on 2026-06-29 ($5,602,925)",
-   "filing_date": "2026-07-01",
-   "protocol_id": null,
-   "source_hash": "6dbe86b35933800f7e796fc161455793e5be9f7536e3b8c241913dd3b88803b3",
-   "ticker": "AMAT"
-  },
-  {
-   "accession_number": "0001628280-26-046609",
-   "available_as_of": "2026-07-16T01:21:14.176356-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "DICKERSON GARY E S 19970 shares @ $735.22 on 2026-06-30 ($14,682,343)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
@@ -387,6 +408,16 @@
    "filing_date": "2026-07-01",
    "protocol_id": null,
    "source_hash": "6ed37efa3d15cfcc3529090efe07ab000135d80d93f390ab0d590b3fe46cb5cb",
+   "ticker": "AMAT"
+  },
+  {
+   "accession_number": "0001628280-26-046609",
+   "available_as_of": "2026-07-16T01:21:14.176356-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "DICKERSON GARY E S 7989 shares @ $701.33 on 2026-06-29 ($5,602,925)",
+   "filing_date": "2026-07-01",
+   "protocol_id": null,
+   "source_hash": "6dbe86b35933800f7e796fc161455793e5be9f7536e3b8c241913dd3b88803b3",
    "ticker": "AMAT"
   },
   {
@@ -413,20 +444,20 @@
    "accession_number": "0001628280-26-011308",
    "available_as_of": "2026-02-24T16:14:22-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "BRUNER JUDY S 2458 shares @ $376.49 on 2026-02-23 ($925,412)",
+   "excerpt": "BRUNER JUDY S 1511 shares @ $377.89 on 2026-02-23 ($570,992)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "9f58f49281fb09bca5ab9b06b183feec57eb0f13d3ac0f3cab746558373fc00d",
+   "source_hash": "d41ade12522952df6777e50fb4be713f28540ec449cafd1105038b2dfa18f174",
    "ticker": "AMAT"
   },
   {
    "accession_number": "0001628280-26-011308",
    "available_as_of": "2026-02-24T16:14:22-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "BRUNER JUDY S 1511 shares @ $377.89 on 2026-02-23 ($570,992)",
+   "excerpt": "BRUNER JUDY S 2458 shares @ $376.49 on 2026-02-23 ($925,412)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "d41ade12522952df6777e50fb4be713f28540ec449cafd1105038b2dfa18f174",
+   "source_hash": "9f58f49281fb09bca5ab9b06b183feec57eb0f13d3ac0f3cab746558373fc00d",
    "ticker": "AMAT"
   },
   {
@@ -450,9 +481,30 @@
    "ticker": "AMAT"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WEAKENING",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.114380-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-10T15:10:26.418938-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-18T16:48:35-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 43,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for AMAT in the declared corpus",
+  "total_available": 43
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/AMAT.history.json",
+ "label": "NEGATIVE_EVENT",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEGATIVE_EVENT"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -568,10 +620,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -679,10 +727,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0131,
+ "score": -0.214,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": -0.2,
+  "floor": -0.4
  },
  "ticker": "AMAT",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

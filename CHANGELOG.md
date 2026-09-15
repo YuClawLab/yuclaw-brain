@@ -2,6 +2,25 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [7.0.1] — 2026-09-15
+
+Research & education only. Not investment advice.
+
+### YUCLAW 7.0.1 — patch: public-QA corrections (six reproduced defects and three content observations)
+
+Software and data-presentation changes only. No statistic, estimator, threshold, protocol registration, universe promotion, activation or research-chain line changed.
+
+- Coverage consistency (QA-01): Evidence Coverage is computed once per build and published as ONE shared artifact (`/coverage.json`, bound by as_of + sha256); the homepage, Explorer HTML/JSON and Why HTML/JSON read that artifact and embed its identity. Cause of the defect: surfaces rendered from different generations of a moving artifact (the homepage rendered before the nightly's coverage refresh). New gate: same-metric values joined on ticker + metric + identity across every surface; expected ticker set from the bound universe artifact.
+- Complete evidence history (QA-02): `/why/{TICKER}.json` declares its 100-object collection a PREVIEW with typed metadata (scope, returned, total available, cap, ordering with tie-breaker, oldest returned availability, build id, completeness); the complete per-name history ships as `/why/{TICKER}.history.json` (WhyHistory.v1) bound to one build by `/why/history_manifest.json`; the as-of recipe answers INCOMPLETE from a preview, and COMPLETE / COMPLETE_EMPTY / OUT_OF_RANGE from the complete source, filtering by recorded availability. New gate: history completeness.
+- EvidenceBench (QA-03/04): the scorer ships in the package (`yuclaw evidencebench score <predictions.json> <model> --items <items.jsonl>`, stdlib-only, exit codes 0/2/3, item-set identity bound into every result). Rubric v1 is reproduced exactly and its limitation disclosed: T1 credit is lexical (token overlap ≥ 0.5 or accession occurrence), so a question echo scores 1.0 on accession-quoting items; v1 items and results stay byte-identical and do not measure groundedness. Rubric v2 is a CANDIDATE structured-fact contract (accession + event type + keyed numeric facts, question tokens excluded, contradictions score 0; bounded lexical/numeric matching, not semantic verification); no v2 item set exists because its prospective registration (a research-chain append) has not been adopted; no pooled leaderboard across versions.
+- Excerpt quality (QA-05): shared detector rules; corrections are separate annotations (`/evidence/excerpt_corrections.json`, ExcerptCorrection.v1) that retain the original excerpt and hash — the hash authenticates the original bytes only; corrected display text carries its own digest and date; XBRL-context excerpts carry a confirmed flag, not invented prose. Scan basis at correction time: 3,586 unique public objects, 68 detector hits, all verified against primary documents (43 corrected display excerpts, 25 confirmed flags, 0 unverified). The forward extractor gate R9 ships OFF; activating it for live extraction is a registered methodology step, not this release.
+- Responsive tables (QA-06): Explorer and Validation Lab tables sit in keyboard-focusable horizontal scroll regions; new viewport gate at 390 px and 1440 px over every current public route (archived pages reported untested, never rewritten).
+- Content: obsolete product wording removed from current copy (compatibility field retained, frozen schemas untouched) with a brand-avoid claims scan; Signal Review states its actual availability (no contact channel invented, no intake); freshness stamps read "Data through X; generated at Y UTC." per artifact, naming the last completed U.S. trading day only when true.
+- Publisher (private): served-byte verification by expected hash and length with no size floor; download proof writes evidence and a completion entry and resumes on matching evidence.
+
+### Unchanged
+- Protocol registry: byte-identical to 7.0.0 (no line added). Gate #15 stays MANUAL_REVIEW / NOT SATISFIED; the human study remains deferred. Outsider receipts produced: 0. Every proposed activation stays INACTIVE.
+
 ## [7.0.0] — 2026-09-14
 
 Research & education only. Not investment advice.

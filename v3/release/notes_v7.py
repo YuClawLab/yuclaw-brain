@@ -81,14 +81,21 @@ def policy_disclosure(policy: dict | None) -> str:
     return "\n".join(lines)
 
 
-def compose(v6_style_public: str, *, version: str, policy: dict | None, board: dict | None) -> str:
+def compose(v6_style_public: str, *, version: str, policy: dict | None, board: dict | None, patch_changes: str | None = None) -> str:
     """Rebuild the Tier-2 text for 7.x from the derived v6-style block: keep the disclaimer/title/tagline and the
-    continuing objects; add the 7.0 feature account, evidence totals, activation status and policy disclosure."""
+    continuing objects; add the feature account (7.0.0) or the tracked patch change list (7.0.x), evidence totals,
+    activation status and policy disclosure."""
     head, rest = v6_style_public.split("#### Shipped objects", 1)
     objects, tail = rest.split("#### Not in this release", 1)
     objects = objects.split("\n", 1)[1].strip("\n")
+    if patch_changes:
+        new_title = f"#### Changed in {version} — patch: public-QA corrections (software and data presentation; no methodology change)"
+        new_body = patch_changes.strip("\n")
+    else:
+        new_title = f"#### New in {version} — check → reproduce → challenge → document use"
+        new_body = FEATURES
     parts = [head.rstrip("\n"), "",
-             f"#### New in {version} — check → reproduce → challenge → document use", "", FEATURES, "",
+             new_title, "", new_body, "",
              "#### Evidence totals (public scoreboard at composition)", "", evidence_totals(board), "",
              "#### Activation status (every proposed activation)", "", activation_status(policy), "",
              "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", policy_disclosure(policy), "",

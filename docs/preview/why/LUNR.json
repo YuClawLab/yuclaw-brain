@@ -1,20 +1,177 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LUNR --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 52 of 52 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LUNR --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.646,
+  "c1": -0.9055,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.36083513,
+  "c6": -0.25762922,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.46666667
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-87a54713d6ddf51c",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001628280-26-056821",
+    "excerpt_sha256": "3c0dd75f9c0a5031191aea27b14c6093e733607014b0a73bbb25b607f1b7d90e",
+    "source_hash": "87a54713d6ddf51c264889ce68ab1de831d4b650d2ad4856b9dff58aa35ff12d",
+    "ticker": "LUNR"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0001628280-26-056821",
+    "char_offset": 1494,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000162828026056821/lunr-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On August 3, 2026, Intuitive Machines, LLC (\u201cBuyer\u201d), a wholly owned subsidiary of Intuitive Machines, Inc. (the \u201cCompany\u201d), entered into a Membership Interest Pu",
+   "corrected_sha256": "ae17b6e4f547911691cd5ad00a20daaecca2c4a3710261906465b96de9f45a06",
+   "correction_id": "exc-75be812e22ccb425",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-330778",
+    "excerpt_sha256": "66879029969818adc8f63f902acfc80cc7830e036059e8296ae3bf3007187eaf",
+    "source_hash": "75be812e22ccb42541dcf427c8ab5cc029ce77f7693ef4577a22367a24afade8",
+    "ticker": "LUNR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-330778",
+    "char_offset": 2034,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000119312526330778/d323986d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Sales Agreement In connection with Intuitive Machines, Inc.\u2019s (the \u201cCompany\u201d) Registration Statement on Form S-3 (File No.",
+   "corrected_sha256": "89035c7608d935cdea54350a7f20c3eceb70fe559a743ca46bd370cee0850fe3",
+   "correction_id": "exc-fa95b6d338e14a16",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-254475",
+    "excerpt_sha256": "0e059ab95efe813d048871727ad172daa74627e21037b1a2e2c054d9a2213114",
+    "source_hash": "fa95b6d338e14a169a4d80c750a3b99da426d24d8a6e44314667b7d19c0a9bfe",
+    "ticker": "LUNR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_fragment_end",
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-254475",
+    "char_offset": 2034,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000119312526254475/d62861d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On March 19, 2026, Intuitive Machines, Inc. (the \u201cCompany\u201d) issued a press release announcing its financial results for the fiscal quarter ended December 31, 2025.",
+   "corrected_sha256": "11f24c238d13e956007facd78a310823ae0178c60857431bd52217fc546b02e5",
+   "correction_id": "exc-d2f96b9868166577",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001628280-26-019633",
+    "excerpt_sha256": "93cf0e0114459ecb3bd4c06ac6a3cdf6e2eb92d86aec2f7c2ae4be76d3989fc1",
+    "source_hash": "d2f96b98681665775e3a6e544ab2ff4369369a1aa597a562a1a51be167d64569",
+    "ticker": "LUNR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001628280-26-019633",
+    "char_offset": 2037,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000162828026019633/lunr-20260319.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 1.01 Entry Into a Material Definitive Agreement. On February 27, 2026 (the \u201c Closing Date \u201d), Intuitive Machines, Inc. (the \u201c Company",
+   "corrected_sha256": "5970c47c0f360b39cd0a4ad3345c4ad3be2ffb516a6ffd03fa4fd25145804902",
+   "correction_id": "exc-0299bfe67112ab63",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-082954",
+    "excerpt_sha256": "0a5876b02810da97a866bdca68eed629ff48fdeb9cbca878232f3f9b136904ac",
+    "source_hash": "0299bfe67112ab637e0352b1b228cbaa27ecd71c00be9c2738ba87c2770faeb6",
+    "ticker": "LUNR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-082954",
+    "char_offset": 2056,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000119312526082954/d103562d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 1.01 Entry Into a Material Definitive Agreement. On February 25, 2026, Intuitive Machines, Inc.",
+   "corrected_sha256": "1d2e684a2cdd029a0a481b4d511d0d8e6cfcb92abc94c8a35f8e2a0d4b926309",
+   "correction_id": "exc-6924f2e6af2e8b8b",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-068729",
+    "excerpt_sha256": "e76fae019bbd181bee438d697ed3e8f65ddb45463c01e60911ab4198aab4c00b",
+    "source_hash": "6924f2e6af2e8b8b9345d7d11b71bf353773d4e9f9a3207f6b0c8824274fd5d6",
+    "ticker": "LUNR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-068729",
+    "char_offset": 2056,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1844452/000119312526068729/d51414d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 91,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 90,
   "events_90d": 28,
-  "recency_days": 3.2,
+  "metric_id": "ecs",
+  "recency_days": 4.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -113,10 +270,30 @@
    "accession_number": "0001213900-26-059681",
    "available_as_of": "2026-07-16T01:25:20.073742-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ghaffarian Kamal Seyed S 7051 shares @ $37.34 on 2026-05-18 ($263,282)",
+   "filing_date": "2026-05-20",
+   "protocol_id": null,
+   "source_hash": "f68f3725fa2cab2f779adb936fbdd6bf81033b22061463ab401f184b1a3d2738",
+   "ticker": "LUNR"
+  },
+  {
+   "accession_number": "0001213900-26-059681",
+   "available_as_of": "2026-07-16T01:25:20.073742-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Ghaffarian Kamal Seyed S 71988 shares @ $33.27 on 2026-05-18 ($2,395,286)",
    "filing_date": "2026-05-20",
    "protocol_id": null,
    "source_hash": "eef143313d2ca01bf43075b6db7557f81d336c22cb8453702138b38c063a0505",
+   "ticker": "LUNR"
+  },
+  {
+   "accession_number": "0001213900-26-059681",
+   "available_as_of": "2026-07-16T01:25:20.073742-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ghaffarian Kamal Seyed S 7151 shares @ $37.99 on 2026-05-18 ($271,671)",
+   "filing_date": "2026-05-20",
+   "protocol_id": null,
+   "source_hash": "cecf22587b961ca7300cb4f46e18bb9986a67ed8d83c84cc978c849a7c125390",
    "ticker": "LUNR"
   },
   {
@@ -150,23 +327,13 @@
    "ticker": "LUNR"
   },
   {
-   "accession_number": "0001213900-26-059681",
-   "available_as_of": "2026-07-16T01:25:20.073742-06:00",
+   "accession_number": "0001213900-26-064904",
+   "available_as_of": "2026-07-16T01:25:18.882327-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 7051 shares @ $37.34 on 2026-05-18 ($263,282)",
-   "filing_date": "2026-05-20",
+   "excerpt": "Ghaffarian Kamal Seyed S 8301 shares @ $40.25 on 2026-06-01 ($334,104)",
+   "filing_date": "2026-06-03",
    "protocol_id": null,
-   "source_hash": "f68f3725fa2cab2f779adb936fbdd6bf81033b22061463ab401f184b1a3d2738",
-   "ticker": "LUNR"
-  },
-  {
-   "accession_number": "0001213900-26-059681",
-   "available_as_of": "2026-07-16T01:25:20.073742-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 7151 shares @ $37.99 on 2026-05-18 ($271,671)",
-   "filing_date": "2026-05-20",
-   "protocol_id": null,
-   "source_hash": "cecf22587b961ca7300cb4f46e18bb9986a67ed8d83c84cc978c849a7c125390",
+   "source_hash": "b877ceeba44452fc72bf4906fe7c0b442b2b3f8f7e39d2aa318fa51b2e5e30f2",
    "ticker": "LUNR"
   },
   {
@@ -187,16 +354,6 @@
    "filing_date": "2026-06-03",
    "protocol_id": null,
    "source_hash": "5e3c0ce60053a5e74b4a785e4165c3668e49c76a27dc33dc10ae16df53582fd7",
-   "ticker": "LUNR"
-  },
-  {
-   "accession_number": "0001213900-26-064904",
-   "available_as_of": "2026-07-16T01:25:18.882327-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 8301 shares @ $40.25 on 2026-06-01 ($334,104)",
-   "filing_date": "2026-06-03",
-   "protocol_id": null,
-   "source_hash": "b877ceeba44452fc72bf4906fe7c0b442b2b3f8f7e39d2aa318fa51b2e5e30f2",
    "ticker": "LUNR"
   },
   {
@@ -233,20 +390,20 @@
    "accession_number": "0001213900-26-069750",
    "available_as_of": "2026-07-16T01:25:15.285501-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 121809 shares @ $26.03 on 2026-06-15 ($3,170,956)",
+   "excerpt": "Ghaffarian Kamal Seyed S 19334 shares @ $26.86 on 2026-06-15 ($519,253)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "7df70caf8f73f1322a8f2752f3b3dced87295d05d495f706d20889094f4406ea",
+   "source_hash": "ea86e9c15395975313fdae73519a38cb513ebe5354e65a3d01eb21c58be68bf9",
    "ticker": "LUNR"
   },
   {
    "accession_number": "0001213900-26-069750",
    "available_as_of": "2026-07-16T01:25:15.285501-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 19334 shares @ $26.86 on 2026-06-15 ($519,253)",
+   "excerpt": "Ghaffarian Kamal Seyed S 121809 shares @ $26.03 on 2026-06-15 ($3,170,956)",
    "filing_date": "2026-06-17",
    "protocol_id": null,
-   "source_hash": "ea86e9c15395975313fdae73519a38cb513ebe5354e65a3d01eb21c58be68bf9",
+   "source_hash": "7df70caf8f73f1322a8f2752f3b3dced87295d05d495f706d20889094f4406ea",
    "ticker": "LUNR"
   },
   {
@@ -273,20 +430,20 @@
    "accession_number": "0001213900-26-074545",
    "available_as_of": "2026-07-16T01:25:14.059191-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 47010 shares @ $20.80 on 2026-06-29 ($977,893)",
+   "excerpt": "Ghaffarian Kamal Seyed S 94899 shares @ $20.24 on 2026-06-29 ($1,921,002)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
-   "source_hash": "63b3c5994dd1dc21164b60abbdbaef0d5a67bb265f6e9575f1959e3da736b978",
+   "source_hash": "d13d135779e6dca7f294b0325cf1e3da2e288ac6e35d8b800d582fa3e081d71f",
    "ticker": "LUNR"
   },
   {
    "accession_number": "0001213900-26-074545",
    "available_as_of": "2026-07-16T01:25:14.059191-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 94899 shares @ $20.24 on 2026-06-29 ($1,921,002)",
+   "excerpt": "Ghaffarian Kamal Seyed S 47010 shares @ $20.80 on 2026-06-29 ($977,893)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
-   "source_hash": "d13d135779e6dca7f294b0325cf1e3da2e288ac6e35d8b800d582fa3e081d71f",
+   "source_hash": "63b3c5994dd1dc21164b60abbdbaef0d5a67bb265f6e9575f1959e3da736b978",
    "ticker": "LUNR"
   },
   {
@@ -333,16 +490,6 @@
    "accession_number": "0001213900-26-052941",
    "available_as_of": "2026-05-06T16:15:08-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 49170 shares @ $25.41 on 2026-05-04 ($1,249,193)",
-   "filing_date": "2026-05-06",
-   "protocol_id": null,
-   "source_hash": "43fefe0cdc10135581fa71f5dd8a8e05ab2125c1af6d23a371e1aea1423e5f8f",
-   "ticker": "LUNR"
-  },
-  {
-   "accession_number": "0001213900-26-052941",
-   "available_as_of": "2026-05-06T16:15:08-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Ghaffarian Kamal Seyed S 92739 shares @ $25.00 on 2026-05-04 ($2,318,382)",
    "filing_date": "2026-05-06",
    "protocol_id": null,
@@ -350,13 +497,13 @@
    "ticker": "LUNR"
   },
   {
-   "accession_number": "0001213900-26-046720",
-   "available_as_of": "2026-04-22T15:31:21-06:00",
+   "accession_number": "0001213900-26-052941",
+   "available_as_of": "2026-05-06T16:15:08-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 8899 shares @ $29.51 on 2026-04-20 ($262,609)",
-   "filing_date": "2026-04-22",
+   "excerpt": "Ghaffarian Kamal Seyed S 49170 shares @ $25.41 on 2026-05-04 ($1,249,193)",
+   "filing_date": "2026-05-06",
    "protocol_id": null,
-   "source_hash": "051430168c5bd03c2b925781c604860f0c896f0edc9d3c65f42885dd207e6a3e",
+   "source_hash": "43fefe0cdc10135581fa71f5dd8a8e05ab2125c1af6d23a371e1aea1423e5f8f",
    "ticker": "LUNR"
   },
   {
@@ -377,6 +524,16 @@
    "filing_date": "2026-04-22",
    "protocol_id": null,
    "source_hash": "2233f145474160f16b5dff0378c140c3f766a49e02e6c2fe6e17d2778f8a8a0a",
+   "ticker": "LUNR"
+  },
+  {
+   "accession_number": "0001213900-26-046720",
+   "available_as_of": "2026-04-22T15:31:21-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ghaffarian Kamal Seyed S 8899 shares @ $29.51 on 2026-04-20 ($262,609)",
+   "filing_date": "2026-04-22",
+   "protocol_id": null,
+   "source_hash": "051430168c5bd03c2b925781c604860f0c896f0edc9d3c65f42885dd207e6a3e",
    "ticker": "LUNR"
   },
   {
@@ -443,20 +600,20 @@
    "accession_number": "0001213900-26-034914",
    "available_as_of": "2026-03-26T16:30:03-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 51099 shares @ $19.70 on 2026-03-24 ($1,006,456)",
+   "excerpt": "Ghaffarian Kamal Seyed S 30109 shares @ $20.34 on 2026-03-24 ($612,507)",
    "filing_date": "2026-03-26",
    "protocol_id": null,
-   "source_hash": "1561277fece5d454e754689d3bddcc1e4c2e785d2fbe26dcf04f02e1299cf7e1",
+   "source_hash": "b29cb68c5de075d51de07846208578fc607f6a033b00c2c29f3f3b56e2d5b74d",
    "ticker": "LUNR"
   },
   {
    "accession_number": "0001213900-26-034914",
    "available_as_of": "2026-03-26T16:30:03-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 30109 shares @ $20.34 on 2026-03-24 ($612,507)",
+   "excerpt": "Ghaffarian Kamal Seyed S 135021 shares @ $18.59 on 2026-03-24 ($2,509,541)",
    "filing_date": "2026-03-26",
    "protocol_id": null,
-   "source_hash": "b29cb68c5de075d51de07846208578fc607f6a033b00c2c29f3f3b56e2d5b74d",
+   "source_hash": "5bc2e712a03e968497ba145110b61eff650dab7d9b9dadf611c21c19f8d68746",
    "ticker": "LUNR"
   },
   {
@@ -473,20 +630,10 @@
    "accession_number": "0001213900-26-034914",
    "available_as_of": "2026-03-26T16:30:03-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ghaffarian Kamal Seyed S 135021 shares @ $18.59 on 2026-03-24 ($2,509,541)",
+   "excerpt": "Ghaffarian Kamal Seyed S 51099 shares @ $19.70 on 2026-03-24 ($1,006,456)",
    "filing_date": "2026-03-26",
    "protocol_id": null,
-   "source_hash": "5bc2e712a03e968497ba145110b61eff650dab7d9b9dadf611c21c19f8d68746",
-   "ticker": "LUNR"
-  },
-  {
-   "accession_number": "0001213900-26-032987",
-   "available_as_of": "2026-03-23T15:00:02-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Crain Timothy Price II S 29102 shares @ $18.81 on 2026-03-19 ($547,301)",
-   "filing_date": "2026-03-23",
-   "protocol_id": null,
-   "source_hash": "4c87d125f425d692dd2875605d6655efd60af169d3e6236c4fa330ab955b1593",
+   "source_hash": "1561277fece5d454e754689d3bddcc1e4c2e785d2fbe26dcf04f02e1299cf7e1",
    "ticker": "LUNR"
   },
   {
@@ -507,6 +654,16 @@
    "filing_date": "2026-03-23",
    "protocol_id": null,
    "source_hash": "83b6f2cbd6e6313f211d9142f5ecb5545594524939f0dd33e5b407624955b365",
+   "ticker": "LUNR"
+  },
+  {
+   "accession_number": "0001213900-26-032987",
+   "available_as_of": "2026-03-23T15:00:02-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Crain Timothy Price II S 29102 shares @ $18.81 on 2026-03-19 ($547,301)",
+   "filing_date": "2026-03-23",
+   "protocol_id": null,
+   "source_hash": "4c87d125f425d692dd2875605d6655efd60af169d3e6236c4fa330ab955b1593",
    "ticker": "LUNR"
   },
   {
@@ -540,9 +697,30 @@
    "ticker": "LUNR"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.465189-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-10T15:33:57.202103-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-25T06:49:24-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 52,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for LUNR in the declared corpus",
+  "total_available": 52
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/LUNR.history.json",
  "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -658,10 +836,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -769,7 +943,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0382,
+ "score": -0.0057,
  "threshold_band": {
   "ceiling": 0.0,
   "floor": -0.2

@@ -1,20 +1,77 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 16 of 16 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.2215,
+  "c1": 0.0675,
   "c2": 0.0,
-  "c3": -0.22133754,
+  "c3": -0.2298169,
   "c4": 0.6,
-  "c5": -0.20229714,
-  "c6": -0.2365735,
-  "c7": 0.55402243,
+  "c5": -0.50082165,
+  "c6": -0.1772743,
+  "c7": 0.4952555,
   "c8": 0.0,
   "c9": 0.2
  },
+ "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 7.01 Regulation FD Disclosure. On August 31, 2026, SLB Limited (\u201cSLB\u201d) issued a press release announcing that it has signed an agreement to acquire Kelvion, a global provider of thermal management and heat exchange technologies.",
+   "corrected_sha256": "ba1b35c2fa04ecfb272d9f6cbd428eb170768aea66ac44dba6f102e3d2f5a275",
+   "correction_id": "exc-bee6a4907384aeb9",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-375358",
+    "excerpt_sha256": "2de6c58db0c022a82cccbae5c2ac8427ab0c961fae86c3df404aa63626181b03",
+    "source_hash": "bee6a4907384aeb9ef66fa44665cfee15d01725702cc45954b686514fb7c2bc1",
+    "ticker": "SLB"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_fragment_end",
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-375358",
+    "char_offset": 2152,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/87347/000119312526375358/d106278d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 7.01 Regulation FD Disclosure.",
+   "corrected_sha256": "067727d53a58ec07d55d565c20d24f40e9b39b84ebd5ddc395aab8c628a5a864",
+   "correction_id": "exc-a9e547580f5d33bd",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-265771",
+    "excerpt_sha256": "5f8dfb0fefdcc738983d0d6682c9809061661afead8d2da6a59ef58e47459386",
+    "source_hash": "a9e547580f5d33bdf31769f3ae17e92434625af4dbba350d7d113b63e97daf8f",
+    "ticker": "SLB"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-265771",
+    "char_offset": 2152,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/87347/000119312526265771/d143063d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 76,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 75,
   "events_90d": 7,
-  "recency_days": 12.2,
+  "metric_id": "ecs",
+  "recency_days": 13.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -143,20 +200,20 @@
    "accession_number": "0000087347-26-000073",
    "available_as_of": "2026-03-26T14:06:29-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "de La Chevardiere Patrick S 2000 shares @ $51.95 on 2026-03-26 ($103,900)",
+   "excerpt": "de La Chevardiere Patrick S 2000 shares @ $52.10 on 2026-03-25 ($104,200)",
    "filing_date": "2026-03-26",
    "protocol_id": null,
-   "source_hash": "723cca38f85ef4c391a24c9c84db39d333ef236aca9f8fed1430106a9ec126d0",
+   "source_hash": "aa4a11e18e62153d0ebc852e16d7bfedf2e01d6a986af8d2a46e9f0a62bdca32",
    "ticker": "SLB"
   },
   {
    "accession_number": "0000087347-26-000073",
    "available_as_of": "2026-03-26T14:06:29-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "de La Chevardiere Patrick S 2000 shares @ $52.10 on 2026-03-25 ($104,200)",
+   "excerpt": "de La Chevardiere Patrick S 2000 shares @ $51.95 on 2026-03-26 ($103,900)",
    "filing_date": "2026-03-26",
    "protocol_id": null,
-   "source_hash": "aa4a11e18e62153d0ebc852e16d7bfedf2e01d6a986af8d2a46e9f0a62bdca32",
+   "source_hash": "723cca38f85ef4c391a24c9c84db39d333ef236aca9f8fed1430106a9ec126d0",
    "ticker": "SLB"
   },
   {
@@ -180,9 +237,30 @@
    "ticker": "SLB"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.669008-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-01T15:36:20.085472-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 16,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for SLB in the declared corpus",
+  "total_available": 16
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/SLB.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -298,10 +376,6 @@
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -409,7 +483,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.132,
+ "score": 0.0948,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

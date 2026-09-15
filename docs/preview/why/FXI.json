@@ -1,7 +1,8 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay FXI --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 0 of 0 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay FXI --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.164,
+  "c1": -0.0555,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -11,17 +12,42 @@
   "c8": 0.0,
   "c9": -0.5
  },
+ "corrections": [],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 0,
   "events_90d": 0,
+  "metric_id": "ecs",
   "recency_days": null,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 0,
   "type_diversity": 0
  },
  "evidence_objects": [],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.313125-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": null,
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": null,
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 0,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for FXI in the declared corpus",
+  "total_available": 0
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/FXI.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -137,10 +163,6 @@
   {
    "date": "2026-08-04",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "BULLISH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -249,7 +271,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1507,
+ "score": 0.1884,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

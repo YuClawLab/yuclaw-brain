@@ -1,9 +1,10 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GOOGL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 71 of 71 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GOOGL --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.077,
+  "c1": 0.085,
   "c2": 0.0,
-  "c3": 0.5086457,
+  "c3": 0.7790872,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": 0.0,
@@ -11,10 +12,65 @@
   "c8": 0.0,
   "c9": 0.13333334
  },
+ "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported) June 2, 2026 ___________________________________________________________",
+   "corrected_sha256": "241ba0a6fcc1c826488a0400ccf29596a90b3ca693d3fb1ae3e76416bb538ad0",
+   "correction_id": "exc-dc69265b191a2f44",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001652044-26-000059",
+    "excerpt_sha256": "5498fa7da7243d3f509cf17d15560a7acbede520c85b8f484a07e57f0a6f2ceb",
+    "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+    "ticker": "GOOGL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001652044-26-000059",
+    "char_offset": 1839,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000059/goog-20260602.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported) June 2, 2026 ___________________________________________________________",
+   "corrected_sha256": "241ba0a6fcc1c826488a0400ccf29596a90b3ca693d3fb1ae3e76416bb538ad0",
+   "correction_id": "exc-dc69265b191a2f44",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001652044-26-000059",
+    "excerpt_sha256": "5498fa7da7243d3f509cf17d15560a7acbede520c85b8f484a07e57f0a6f2ceb",
+    "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+    "ticker": "GOOGL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001652044-26-000059",
+    "char_offset": 1839,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000059/goog-20260602.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 70,
   "events_90d": 34,
-  "recency_days": 34.4,
+  "metric_id": "ecs",
+  "recency_days": 35.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -63,20 +119,20 @@
    "accession_number": "0001168404-26-000039",
    "available_as_of": "2026-07-27T16:24:43.303923-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 23417 shares @ $18.88 on 2026-07-24 ($442,001)",
+   "excerpt": "GV 2019 GP, L.L.C. S 63297 shares @ $19.06 on 2026-07-23 ($1,206,270)",
    "filing_date": "2026-07-27",
    "protocol_id": null,
-   "source_hash": "737cd10dfee4bcf142dfc28872faed00ddd77bbfdc6c41d7beb497bc92248efb",
+   "source_hash": "ee5a4805fc281a043aefbf0b59d47251963d0f30faa2e971ca0428e7d838a77b",
    "ticker": "GOOGL"
   },
   {
    "accession_number": "0001168404-26-000039",
    "available_as_of": "2026-07-27T16:24:43.303923-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 63297 shares @ $19.06 on 2026-07-23 ($1,206,270)",
+   "excerpt": "GV 2019 GP, L.L.C. S 23417 shares @ $18.88 on 2026-07-24 ($442,001)",
    "filing_date": "2026-07-27",
    "protocol_id": null,
-   "source_hash": "ee5a4805fc281a043aefbf0b59d47251963d0f30faa2e971ca0428e7d838a77b",
+   "source_hash": "737cd10dfee4bcf142dfc28872faed00ddd77bbfdc6c41d7beb497bc92248efb",
    "ticker": "GOOGL"
   },
   {
@@ -123,20 +179,20 @@
    "accession_number": "0001168404-26-000031",
    "available_as_of": "2026-07-21T15:18:22.757025-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 20534 shares @ $18.68 on 2026-07-17 ($383,614)",
+   "excerpt": "GV 2019 GP, L.L.C. S 18386 shares @ $18.87 on 2026-07-20 ($346,859)",
    "filing_date": "2026-07-21",
    "protocol_id": null,
-   "source_hash": "307df97bde792cd598d2328c0ef8e6413a454da45c1d23ec4375fe2213b548b9",
+   "source_hash": "7611d3fb49d10bb9baeb18d35ba5a30dc1834ae879e6ed7d5b0b5c4bc0c7555b",
    "ticker": "GOOGL"
   },
   {
    "accession_number": "0001168404-26-000031",
    "available_as_of": "2026-07-21T15:18:22.757025-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 18386 shares @ $18.87 on 2026-07-20 ($346,859)",
+   "excerpt": "GV 2019 GP, L.L.C. S 20534 shares @ $18.68 on 2026-07-17 ($383,614)",
    "filing_date": "2026-07-21",
    "protocol_id": null,
-   "source_hash": "7611d3fb49d10bb9baeb18d35ba5a30dc1834ae879e6ed7d5b0b5c4bc0c7555b",
+   "source_hash": "307df97bde792cd598d2328c0ef8e6413a454da45c1d23ec4375fe2213b548b9",
    "ticker": "GOOGL"
   },
   {
@@ -153,16 +209,6 @@
    "accession_number": "0001168404-26-000029",
    "available_as_of": "2026-07-17T18:17:08.901752-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 12500 shares @ $18.79 on 2026-07-15 ($234,912)",
-   "filing_date": "2026-07-17",
-   "protocol_id": null,
-   "source_hash": "596ff461994e6e7b0d8c5cb5e0128dee83bcc162dca949ec6a7a6039c0df0737",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001168404-26-000029",
-   "available_as_of": "2026-07-17T18:17:08.901752-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "GV 2019 GP, L.L.C. S 61992 shares @ $19.84 on 2026-07-15 ($1,229,772)",
    "filing_date": "2026-07-17",
    "protocol_id": null,
@@ -170,13 +216,13 @@
    "ticker": "GOOGL"
   },
   {
-   "accession_number": "0001168404-26-000025",
-   "available_as_of": "2026-07-16T01:24:23.331677-06:00",
+   "accession_number": "0001168404-26-000029",
+   "available_as_of": "2026-07-17T18:17:08.901752-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GV 2019 GP, L.L.C. S 60077 shares @ $23.01 on 2026-05-14 ($1,382,330)",
-   "filing_date": "2026-05-18",
+   "excerpt": "GV 2019 GP, L.L.C. S 12500 shares @ $18.79 on 2026-07-15 ($234,912)",
+   "filing_date": "2026-07-17",
    "protocol_id": null,
-   "source_hash": "b21fa3de13da025faf5693b4da8e14e009d39cd645a446108e56d0b94341b68d",
+   "source_hash": "596ff461994e6e7b0d8c5cb5e0128dee83bcc162dca949ec6a7a6039c0df0737",
    "ticker": "GOOGL"
   },
   {
@@ -200,33 +246,23 @@
    "ticker": "GOOGL"
   },
   {
-   "accession_number": "0001193125-26-231383",
-   "available_as_of": "2026-07-16T01:24:22.738210-06:00",
+   "accession_number": "0001168404-26-000025",
+   "available_as_of": "2026-07-16T01:24:23.331677-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 134 shares @ $392.86 on 2026-05-15 ($52,643)",
-   "filing_date": "2026-05-19",
+   "excerpt": "GV 2019 GP, L.L.C. S 60077 shares @ $23.01 on 2026-05-14 ($1,382,330)",
+   "filing_date": "2026-05-18",
    "protocol_id": null,
-   "source_hash": "54ff47426165029b539cd494c7300ce4fc724a835d083bf1ee208f456aec2361",
+   "source_hash": "b21fa3de13da025faf5693b4da8e14e009d39cd645a446108e56d0b94341b68d",
    "ticker": "GOOGL"
   },
   {
    "accession_number": "0001193125-26-231383",
    "available_as_of": "2026-07-16T01:24:22.738210-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 138 shares @ $393.79 on 2026-05-15 ($54,343)",
+   "excerpt": "Hennessy John L. S 134 shares @ $392.41 on 2026-05-15 ($52,583)",
    "filing_date": "2026-05-19",
    "protocol_id": null,
-   "source_hash": "de5e6940f4144ed3667c045e192beda6df87af6b7c28661dab81de224d84fc53",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-231383",
-   "available_as_of": "2026-07-16T01:24:22.738210-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 199 shares @ $392.79 on 2026-05-15 ($78,165)",
-   "filing_date": "2026-05-19",
-   "protocol_id": null,
-   "source_hash": "021bee0d1992805b2e7cec547d03d6a8c7ad0426c94c5e513c5447afaf262879",
+   "source_hash": "f409a1fd3b694d30432843e6d30ea315f35f8d524a4bf840cba6ed4077638e65",
    "ticker": "GOOGL"
   },
   {
@@ -243,20 +279,30 @@
    "accession_number": "0001193125-26-231383",
    "available_as_of": "2026-07-16T01:24:22.738210-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 134 shares @ $392.41 on 2026-05-15 ($52,583)",
+   "excerpt": "Hennessy John L. S 138 shares @ $393.79 on 2026-05-15 ($54,343)",
    "filing_date": "2026-05-19",
    "protocol_id": null,
-   "source_hash": "f409a1fd3b694d30432843e6d30ea315f35f8d524a4bf840cba6ed4077638e65",
+   "source_hash": "de5e6940f4144ed3667c045e192beda6df87af6b7c28661dab81de224d84fc53",
    "ticker": "GOOGL"
   },
   {
-   "accession_number": "0001193125-26-276111",
-   "available_as_of": "2026-07-16T01:24:11.935967-06:00",
+   "accession_number": "0001193125-26-231383",
+   "available_as_of": "2026-07-16T01:24:22.738210-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 158 shares @ $369.66 on 2026-06-15 ($58,406)",
-   "filing_date": "2026-06-18",
+   "excerpt": "Hennessy John L. S 134 shares @ $392.86 on 2026-05-15 ($52,643)",
+   "filing_date": "2026-05-19",
    "protocol_id": null,
-   "source_hash": "552478fb88297844a6ea04b031ab80ad091aa6063722d39126700095e1bbfd8a",
+   "source_hash": "54ff47426165029b539cd494c7300ce4fc724a835d083bf1ee208f456aec2361",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-231383",
+   "available_as_of": "2026-07-16T01:24:22.738210-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Hennessy John L. S 199 shares @ $392.79 on 2026-05-15 ($78,165)",
+   "filing_date": "2026-05-19",
+   "protocol_id": null,
+   "source_hash": "021bee0d1992805b2e7cec547d03d6a8c7ad0426c94c5e513c5447afaf262879",
    "ticker": "GOOGL"
   },
   {
@@ -267,6 +313,16 @@
    "filing_date": "2026-06-18",
    "protocol_id": null,
    "source_hash": "c3163ce852e9fe886486ebdc301ca66d079a5fcd445c2efea9270c7f9b3dbc09",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-276111",
+   "available_as_of": "2026-07-16T01:24:11.935967-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Hennessy John L. S 158 shares @ $369.66 on 2026-06-15 ($58,406)",
+   "filing_date": "2026-06-18",
+   "protocol_id": null,
+   "source_hash": "552478fb88297844a6ea04b031ab80ad091aa6063722d39126700095e1bbfd8a",
    "ticker": "GOOGL"
   },
   {
@@ -303,6 +359,16 @@
    "accession_number": "0001193125-26-292904",
    "available_as_of": "2026-07-16T01:24:05.500230-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 2400 shares @ $350.49 on 2026-06-29 ($841,176)",
+   "filing_date": "2026-07-01",
+   "protocol_id": null,
+   "source_hash": "817c3c4fedb8b91c0ff1187f986ff4aa53ab5d26c91864c3e4c2572f2d9557cf",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-292904",
+   "available_as_of": "2026-07-16T01:24:05.500230-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "WALKER JOHN KENT S 2358 shares @ $351.21 on 2026-06-29 ($828,153)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
@@ -313,10 +379,10 @@
    "accession_number": "0001193125-26-292904",
    "available_as_of": "2026-07-16T01:24:05.500230-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 2400 shares @ $350.49 on 2026-06-29 ($841,176)",
+   "excerpt": "WALKER JOHN KENT S 520 shares @ $347.25 on 2026-06-29 ($180,570)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
-   "source_hash": "817c3c4fedb8b91c0ff1187f986ff4aa53ab5d26c91864c3e4c2572f2d9557cf",
+   "source_hash": "6f7d13aea66e8b6502c4ad6a81c327cd8cb623f616cb6dc45936e507d87ab34f",
    "ticker": "GOOGL"
   },
   {
@@ -333,16 +399,6 @@
    "accession_number": "0001193125-26-292904",
    "available_as_of": "2026-07-16T01:24:05.500230-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 760 shares @ $345.18 on 2026-06-29 ($262,337)",
-   "filing_date": "2026-07-01",
-   "protocol_id": null,
-   "source_hash": "0d7e1e9bf16ceb65db44fc33beaa7a0194d953592eab8af592f63b5d0feb91dc",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-292904",
-   "available_as_of": "2026-07-16T01:24:05.500230-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "WALKER JOHN KENT S 920 shares @ $346.13 on 2026-06-29 ($318,440)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
@@ -353,10 +409,10 @@
    "accession_number": "0001193125-26-292904",
    "available_as_of": "2026-07-16T01:24:05.500230-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 520 shares @ $347.25 on 2026-06-29 ($180,570)",
+   "excerpt": "WALKER JOHN KENT S 760 shares @ $345.18 on 2026-06-29 ($262,337)",
    "filing_date": "2026-07-01",
    "protocol_id": null,
-   "source_hash": "6f7d13aea66e8b6502c4ad6a81c327cd8cb623f616cb6dc45936e507d87ab34f",
+   "source_hash": "0d7e1e9bf16ceb65db44fc33beaa7a0194d953592eab8af592f63b5d0feb91dc",
    "ticker": "GOOGL"
   },
   {
@@ -423,20 +479,10 @@
    "accession_number": "0001193125-26-135334",
    "available_as_of": "2026-03-31T19:43:02-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 1300 shares @ $278.30 on 2026-03-27 ($361,790)",
+   "excerpt": "WALKER JOHN KENT S 1400 shares @ $276.21 on 2026-03-27 ($386,694)",
    "filing_date": "2026-03-31",
    "protocol_id": null,
-   "source_hash": "28bc72e70808d3a551bb889ba664617d5b974a715325de0fb1603a3428c2d09f",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-135334",
-   "available_as_of": "2026-03-31T19:43:02-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 2677 shares @ $273.91 on 2026-03-27 ($733,257)",
-   "filing_date": "2026-03-31",
-   "protocol_id": null,
-   "source_hash": "30145e7721b2bbb967d4320cf3e2f974c5a4723e998caad363005792554b08ec",
+   "source_hash": "d1427e9e3fcc2cbbcee995bc312d59e8bde4d677496386811028e99b2aff359c",
    "ticker": "GOOGL"
   },
   {
@@ -453,16 +499,6 @@
    "accession_number": "0001193125-26-135334",
    "available_as_of": "2026-03-31T19:43:02-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 1400 shares @ $276.21 on 2026-03-27 ($386,694)",
-   "filing_date": "2026-03-31",
-   "protocol_id": null,
-   "source_hash": "d1427e9e3fcc2cbbcee995bc312d59e8bde4d677496386811028e99b2aff359c",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-135334",
-   "available_as_of": "2026-03-31T19:43:02-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "WALKER JOHN KENT S 1516 shares @ $274.93 on 2026-03-27 ($416,794)",
    "filing_date": "2026-03-31",
    "protocol_id": null,
@@ -470,13 +506,33 @@
    "ticker": "GOOGL"
   },
   {
+   "accession_number": "0001193125-26-135334",
+   "available_as_of": "2026-03-31T19:43:02-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 2677 shares @ $273.91 on 2026-03-27 ($733,257)",
+   "filing_date": "2026-03-31",
+   "protocol_id": null,
+   "source_hash": "30145e7721b2bbb967d4320cf3e2f974c5a4723e998caad363005792554b08ec",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-135334",
+   "available_as_of": "2026-03-31T19:43:02-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 1300 shares @ $278.30 on 2026-03-27 ($361,790)",
+   "filing_date": "2026-03-31",
+   "protocol_id": null,
+   "source_hash": "28bc72e70808d3a551bb889ba664617d5b974a715325de0fb1603a3428c2d09f",
+   "ticker": "GOOGL"
+  },
+  {
    "accession_number": "0001193125-26-114859",
    "available_as_of": "2026-03-18T19:48:35-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 168 shares @ $302.97 on 2026-03-16 ($50,899)",
+   "excerpt": "Hennessy John L. S 232 shares @ $303.55 on 2026-03-16 ($70,424)",
    "filing_date": "2026-03-18",
    "protocol_id": null,
-   "source_hash": "bd713d2c02157ea39ff03121b38f635800b1cb7dd31a47d8a132212bf561ce77",
+   "source_hash": "f9179ee0696e4021cb58df53d27b81da277d6818db746499ad13eb34ce38d6f6",
    "ticker": "GOOGL"
   },
   {
@@ -493,30 +549,10 @@
    "accession_number": "0001193125-26-114859",
    "available_as_of": "2026-03-18T19:48:35-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Hennessy John L. S 232 shares @ $303.55 on 2026-03-16 ($70,424)",
+   "excerpt": "Hennessy John L. S 168 shares @ $302.97 on 2026-03-16 ($50,899)",
    "filing_date": "2026-03-18",
    "protocol_id": null,
-   "source_hash": "f9179ee0696e4021cb58df53d27b81da277d6818db746499ad13eb34ce38d6f6",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-114850",
-   "available_as_of": "2026-03-18T19:44:51-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 9969 shares @ $309.00 on 2026-03-18 ($3,080,421)",
-   "filing_date": "2026-03-18",
-   "protocol_id": null,
-   "source_hash": "6477556140dce551423aeb45626d2b7af678a0c69573837d8145d9e7f275dfd1",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-114850",
-   "available_as_of": "2026-03-18T19:44:51-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 6621 shares @ $308.18 on 2026-03-18 ($2,040,460)",
-   "filing_date": "2026-03-18",
-   "protocol_id": null,
-   "source_hash": "6fc2d0b1625e80e911ec21015959fe99d157c80946a6c70b75285445f660e1b7",
+   "source_hash": "bd713d2c02157ea39ff03121b38f635800b1cb7dd31a47d8a132212bf561ce77",
    "ticker": "GOOGL"
   },
   {
@@ -533,16 +569,6 @@
    "accession_number": "0001193125-26-114850",
    "available_as_of": "2026-03-18T19:44:51-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 6193 shares @ $306.21 on 2026-03-18 ($1,896,359)",
-   "filing_date": "2026-03-18",
-   "protocol_id": null,
-   "source_hash": "4b12c94235178fd70f70cd2bc157b8e42b342db5381443f9150d9b5c2539c7da",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-114850",
-   "available_as_of": "2026-03-18T19:44:51-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Pichai Sundar S 1615 shares @ $310.18 on 2026-03-18 ($500,941)",
    "filing_date": "2026-03-18",
    "protocol_id": null,
@@ -550,23 +576,33 @@
    "ticker": "GOOGL"
   },
   {
-   "accession_number": "0001193125-26-097008",
-   "available_as_of": "2026-03-06T15:43:01-07:00",
+   "accession_number": "0001193125-26-114850",
+   "available_as_of": "2026-03-18T19:44:51-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 15767 shares @ $303.47 on 2026-03-04 ($4,784,811)",
-   "filing_date": "2026-03-06",
+   "excerpt": "Pichai Sundar S 6621 shares @ $308.18 on 2026-03-18 ($2,040,460)",
+   "filing_date": "2026-03-18",
    "protocol_id": null,
-   "source_hash": "d8f3e593d271a00cb2bcac3b0906954fb7aa8ffb8005a83dfbd3547f08f23f4b",
+   "source_hash": "6fc2d0b1625e80e911ec21015959fe99d157c80946a6c70b75285445f660e1b7",
    "ticker": "GOOGL"
   },
   {
-   "accession_number": "0001193125-26-097008",
-   "available_as_of": "2026-03-06T15:43:01-07:00",
+   "accession_number": "0001193125-26-114850",
+   "available_as_of": "2026-03-18T19:44:51-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 8660 shares @ $302.66 on 2026-03-04 ($2,621,036)",
-   "filing_date": "2026-03-06",
+   "excerpt": "Pichai Sundar S 9969 shares @ $309.00 on 2026-03-18 ($3,080,421)",
+   "filing_date": "2026-03-18",
    "protocol_id": null,
-   "source_hash": "44ecc7fee60ddbc37ff6a5dd3cb5ee5412991e105620acdbcd3d197147d0cfce",
+   "source_hash": "6477556140dce551423aeb45626d2b7af678a0c69573837d8145d9e7f275dfd1",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-114850",
+   "available_as_of": "2026-03-18T19:44:51-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Pichai Sundar S 6193 shares @ $306.21 on 2026-03-18 ($1,896,359)",
+   "filing_date": "2026-03-18",
+   "protocol_id": null,
+   "source_hash": "4b12c94235178fd70f70cd2bc157b8e42b342db5381443f9150d9b5c2539c7da",
    "ticker": "GOOGL"
   },
   {
@@ -593,6 +629,26 @@
    "accession_number": "0001193125-26-097008",
    "available_as_of": "2026-03-06T15:43:01-07:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Pichai Sundar S 15767 shares @ $303.47 on 2026-03-04 ($4,784,811)",
+   "filing_date": "2026-03-06",
+   "protocol_id": null,
+   "source_hash": "d8f3e593d271a00cb2bcac3b0906954fb7aa8ffb8005a83dfbd3547f08f23f4b",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-097008",
+   "available_as_of": "2026-03-06T15:43:01-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Pichai Sundar S 8660 shares @ $302.66 on 2026-03-04 ($2,621,036)",
+   "filing_date": "2026-03-06",
+   "protocol_id": null,
+   "source_hash": "44ecc7fee60ddbc37ff6a5dd3cb5ee5412991e105620acdbcd3d197147d0cfce",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-097008",
+   "available_as_of": "2026-03-06T15:43:01-07:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Pichai Sundar S 400 shares @ $305.14 on 2026-03-04 ($122,056)",
    "filing_date": "2026-03-06",
    "protocol_id": null,
@@ -613,20 +669,20 @@
    "accession_number": "0001193125-26-061632",
    "available_as_of": "2026-02-20T15:14:05-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 1425 shares @ $305.36 on 2026-02-18 ($435,138)",
+   "excerpt": "Pichai Sundar S 14603 shares @ $304.46 on 2026-02-18 ($4,446,029)",
    "filing_date": "2026-02-20",
    "protocol_id": null,
-   "source_hash": "61e7a23ad6cf5f677976690d4cffbbcd2e4acd29048750a72c6098befcd24a36",
+   "source_hash": "9d24606bcdb5a58e4ddd807d0b83184ab69ad136f2cbe64b6a04becd06b584bb",
    "ticker": "GOOGL"
   },
   {
    "accession_number": "0001193125-26-061632",
    "available_as_of": "2026-02-20T15:14:05-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pichai Sundar S 14603 shares @ $304.46 on 2026-02-18 ($4,446,029)",
+   "excerpt": "Pichai Sundar S 1425 shares @ $305.36 on 2026-02-18 ($435,138)",
    "filing_date": "2026-02-20",
    "protocol_id": null,
-   "source_hash": "9d24606bcdb5a58e4ddd807d0b83184ab69ad136f2cbe64b6a04becd06b584bb",
+   "source_hash": "61e7a23ad6cf5f677976690d4cffbbcd2e4acd29048750a72c6098befcd24a36",
    "ticker": "GOOGL"
   },
   {
@@ -653,36 +709,6 @@
    "accession_number": "0001193125-26-060024",
    "available_as_of": "2026-02-19T18:48:14-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 600 shares @ $304.47 on 2026-02-17 ($182,682)",
-   "filing_date": "2026-02-19",
-   "protocol_id": null,
-   "source_hash": "19e9daf02131d4956d77cfdbe7fc5a833808f7f34fc6cf76da39ba7345da0421",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-060024",
-   "available_as_of": "2026-02-19T18:48:14-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 5402 shares @ $303.41 on 2026-02-17 ($1,639,021)",
-   "filing_date": "2026-02-19",
-   "protocol_id": null,
-   "source_hash": "5372c4376fbf23c8a3ee2f65d9eef92bf6ddb179e63ae2f7e73ed59a631c5216",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-060024",
-   "available_as_of": "2026-02-19T18:48:14-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 14641 shares @ $302.64 on 2026-02-17 ($4,430,952)",
-   "filing_date": "2026-02-19",
-   "protocol_id": null,
-   "source_hash": "707af0b6c5b0619fc62110f652fe6e596e4658c2050eb39224af5858c668ab63",
-   "ticker": "GOOGL"
-  },
-  {
-   "accession_number": "0001193125-26-060024",
-   "available_as_of": "2026-02-19T18:48:14-07:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "WALKER JOHN KENT S 11531 shares @ $301.69 on 2026-02-17 ($3,478,787)",
    "filing_date": "2026-02-19",
    "protocol_id": null,
@@ -703,20 +729,40 @@
    "accession_number": "0001193125-26-060024",
    "available_as_of": "2026-02-19T18:48:14-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 4400 shares @ $299.50 on 2026-02-17 ($1,317,800)",
+   "excerpt": "WALKER JOHN KENT S 4900 shares @ $298.60 on 2026-02-17 ($1,463,140)",
    "filing_date": "2026-02-19",
    "protocol_id": null,
-   "source_hash": "07b6f41c288062a2e04fde14361de8d34f5d6d501ea98eb1d5b2c9e61816dd02",
+   "source_hash": "94fc36a03cf4845d97120fa98f77dd8109419e90edc33d94c851c7308480a4e9",
    "ticker": "GOOGL"
   },
   {
    "accession_number": "0001193125-26-060024",
    "available_as_of": "2026-02-19T18:48:14-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "WALKER JOHN KENT S 4900 shares @ $298.60 on 2026-02-17 ($1,463,140)",
+   "excerpt": "WALKER JOHN KENT S 14641 shares @ $302.64 on 2026-02-17 ($4,430,952)",
    "filing_date": "2026-02-19",
    "protocol_id": null,
-   "source_hash": "94fc36a03cf4845d97120fa98f77dd8109419e90edc33d94c851c7308480a4e9",
+   "source_hash": "707af0b6c5b0619fc62110f652fe6e596e4658c2050eb39224af5858c668ab63",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-060024",
+   "available_as_of": "2026-02-19T18:48:14-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 5402 shares @ $303.41 on 2026-02-17 ($1,639,021)",
+   "filing_date": "2026-02-19",
+   "protocol_id": null,
+   "source_hash": "5372c4376fbf23c8a3ee2f65d9eef92bf6ddb179e63ae2f7e73ed59a631c5216",
+   "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-060024",
+   "available_as_of": "2026-02-19T18:48:14-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 600 shares @ $304.47 on 2026-02-17 ($182,682)",
+   "filing_date": "2026-02-19",
+   "protocol_id": null,
+   "source_hash": "19e9daf02131d4956d77cfdbe7fc5a833808f7f34fc6cf76da39ba7345da0421",
    "ticker": "GOOGL"
   },
   {
@@ -728,11 +774,42 @@
    "protocol_id": null,
    "source_hash": "1558be5e996dbb1488b4afa58393fdc263b21204d4f9c31475d1e8d395ab5773",
    "ticker": "GOOGL"
+  },
+  {
+   "accession_number": "0001193125-26-060024",
+   "available_as_of": "2026-02-19T18:48:14-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "WALKER JOHN KENT S 4400 shares @ $299.50 on 2026-02-17 ($1,317,800)",
+   "filing_date": "2026-02-19",
+   "protocol_id": null,
+   "source_hash": "07b6f41c288062a2e04fde14361de8d34f5d6d501ea98eb1d5b2c9e61816dd02",
+   "ticker": "GOOGL"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.326800-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-10T10:10:48-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-19T18:48:14-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 71,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for GOOGL in the declared corpus",
+  "total_available": 71
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/GOOGL.history.json",
  "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -848,10 +925,6 @@
   {
    "date": "2026-08-04",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -959,7 +1032,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2417,
+ "score": 0.339,
  "threshold_band": {
   "ceiling": 0.4,
   "floor": 0.2

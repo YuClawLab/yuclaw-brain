@@ -1,20 +1,51 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 21 of 21 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.4485,
+  "c1": 0.51,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.15762018,
-  "c7": 0.050933827,
+  "c6": -0.11388119,
+  "c7": -0.11422597,
   "c8": 0.0,
   "c9": -0.13333334
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-d0f121aedaf6a8d4",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000320193-26-000020",
+    "excerpt_sha256": "6c55f81d63ceba9e5cdd8f56fa227a0290dbc66634b83f7dfaeec23a95b284a8",
+    "source_hash": "d0f121aedaf6a8d4e6d0a622175f75ba090ffd06d3bf7e219dc71236a5dd100e",
+    "ticker": "AAPL"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000320193-26-000020",
+    "char_offset": 1506,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019326000020/aapl-20260627.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 85,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 84,
   "events_90d": 8,
-  "recency_days": 3.1,
+  "metric_id": "ecs",
+  "recency_days": 4.2,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -153,6 +184,16 @@
    "accession_number": "0001140361-26-013192",
    "available_as_of": "2026-04-03T16:30:45-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "O'BRIEN DEIRDRE S 20338 shares @ $255.12 on 2026-04-02 ($5,188,631)",
+   "filing_date": "2026-04-03",
+   "protocol_id": null,
+   "source_hash": "af2392237f5a3edb7b8b67382db52015b8ed79689ab66fd5b63b99e50bfdf245",
+   "ticker": "AAPL"
+  },
+  {
+   "accession_number": "0001140361-26-013192",
+   "available_as_of": "2026-04-03T16:30:45-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "O'BRIEN DEIRDRE S 9664 shares @ $255.82 on 2026-04-02 ($2,472,244)",
    "filing_date": "2026-04-03",
    "protocol_id": null,
@@ -160,13 +201,13 @@
    "ticker": "AAPL"
   },
   {
-   "accession_number": "0001140361-26-013192",
-   "available_as_of": "2026-04-03T16:30:45-06:00",
+   "accession_number": "0001140361-26-013190",
+   "available_as_of": "2026-04-03T16:30:41-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "O'BRIEN DEIRDRE S 20338 shares @ $255.12 on 2026-04-02 ($5,188,631)",
+   "excerpt": "COOK TIMOTHY D S 9147 shares @ $252.11 on 2026-04-02 ($2,306,050)",
    "filing_date": "2026-04-03",
    "protocol_id": null,
-   "source_hash": "af2392237f5a3edb7b8b67382db52015b8ed79689ab66fd5b63b99e50bfdf245",
+   "source_hash": "f24d81de03ba2493b66b186b25e607ece110744fe0ebad2b25f2762a24f10842",
    "ticker": "AAPL"
   },
   {
@@ -193,10 +234,10 @@
    "accession_number": "0001140361-26-013190",
    "available_as_of": "2026-04-03T16:30:41-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "COOK TIMOTHY D S 4566 shares @ $256.00 on 2026-04-02 ($1,168,896)",
+   "excerpt": "COOK TIMOTHY D S 1878 shares @ $253.13 on 2026-04-02 ($475,378)",
    "filing_date": "2026-04-03",
    "protocol_id": null,
-   "source_hash": "531ae0be2c1654d2d3ab1549375e514f6cf107e9e569e254814283cb61b06bbb",
+   "source_hash": "6819e7de931180fc1edeb374889499622ccfe622ed596c2f3b475d1b70727615",
    "ticker": "AAPL"
   },
   {
@@ -213,26 +254,37 @@
    "accession_number": "0001140361-26-013190",
    "available_as_of": "2026-04-03T16:30:41-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "COOK TIMOTHY D S 1878 shares @ $253.13 on 2026-04-02 ($475,378)",
+   "excerpt": "COOK TIMOTHY D S 4566 shares @ $256.00 on 2026-04-02 ($1,168,896)",
    "filing_date": "2026-04-03",
    "protocol_id": null,
-   "source_hash": "6819e7de931180fc1edeb374889499622ccfe622ed596c2f3b475d1b70727615",
-   "ticker": "AAPL"
-  },
-  {
-   "accession_number": "0001140361-26-013190",
-   "available_as_of": "2026-04-03T16:30:41-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "COOK TIMOTHY D S 9147 shares @ $252.11 on 2026-04-02 ($2,306,050)",
-   "filing_date": "2026-04-03",
-   "protocol_id": null,
-   "source_hash": "f24d81de03ba2493b66b186b25e607ece110744fe0ebad2b25f2762a24f10842",
+   "source_hash": "531ae0be2c1654d2d3ab1549375e514f6cf107e9e569e254814283cb61b06bbb",
    "ticker": "AAPL"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.073238-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-10T16:31:26.045231-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 21,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for AAPL in the declared corpus",
+  "total_available": 21
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/AAPL.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -348,10 +400,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -459,7 +507,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1963,
+ "score": 0.0326,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

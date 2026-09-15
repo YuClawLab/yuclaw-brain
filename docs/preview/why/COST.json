@@ -1,20 +1,51 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 7 of 7 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.2095,
+  "c1": -0.1615,
   "c2": 0.0,
-  "c3": -0.19229461,
+  "c3": 0.57633233,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.039666466,
+  "c7": 0.026724508,
   "c8": 0.0,
   "c9": -0.06666667
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-3171359e4b40477e",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000909832-26-000051",
+    "excerpt_sha256": "599a6f7d0e7238918b307d34c2da331accccf0b5e716402901f3a8475f747296",
+    "source_hash": "3171359e4b40477e817d7a799e668be9362f2218d6e6d8124d3a4c0f72308501",
+    "ticker": "COST"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000909832-26-000051",
+    "char_offset": 152,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/909832/000090983226000051/cost-20260510.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 47,
   "events_90d": 2,
-  "recency_days": 59.8,
+  "metric_id": "ecs",
+  "recency_days": 60.9,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -90,9 +121,30 @@
    "ticker": "COST"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WATCH",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.224745-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-07-16T01:22:17.957356-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-03-05T14:19:07-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 7,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for COST in the declared corpus",
+  "total_available": 7
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/COST.history.json",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -208,10 +260,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -319,10 +367,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0755,
+ "score": 0.2351,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "COST",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

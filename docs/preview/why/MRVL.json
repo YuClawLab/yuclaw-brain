@@ -1,20 +1,126 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 32 of 32 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.5605,
+  "c1": 0.04,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.12485089,
-  "c7": 0.044768672,
+  "c6": -0.09298096,
+  "c7": -0.08920181,
   "c8": 0.0,
   "c9": -0.4
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-85b95b3a2bc2bec9",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001835632-26-000025",
+    "excerpt_sha256": "0af072c27d3b8d9f14f59245bdcf69be4c7901f5feb5d7f7acd52d3741356438",
+    "source_hash": "85b95b3a2bc2bec9229507c3c70828477d95543bfe33ac264d4e81caba2371cb",
+    "ticker": "MRVL"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0001835632-26-000025",
+    "char_offset": 540,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1835632/000183563226000025/mrvl-20260801.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On July 29, 2026, Marvell Technology, Inc. (the \u201cCompany\u201d) and Google LLC (\u201cGoogle\u201d) entered into a commercial agreement relating to the Company\u2019s development of custom semiconductor products to Google (the \u201cCustom Products\u201d).",
+   "corrected_sha256": "bbca9b16f13565c00abfd0d7d1dd3537000a6ac00d03bc0f6061f88c12ab0a22",
+   "correction_id": "exc-6c306977bc4d87dd",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-356217",
+    "excerpt_sha256": "9ab0a8d884c9d373105ac979045ab6dbec653afed0452f18cf33ef8d37c8b549",
+    "source_hash": "6c306977bc4d87dd854e908691a911991187bdb69126198cf3162e065727aa1f",
+    "ticker": "MRVL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-356217",
+    "char_offset": 2043,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1835632/000119312526356217/d412696d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On July 9, 2026, Marvell Technology, Inc. filed a prospectus supplement to its automatic shelf registration statement on Form S-3 (Registration No. 333-285742) with the Securities and Exchange Commission.",
+   "corrected_sha256": "c2142267f8d881c31a16851665f6085d8b760077dd0dea42387acab07df85a6f",
+   "correction_id": "exc-2fbaae91df5bd367",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-299843",
+    "excerpt_sha256": "578c397a3c815b3c5cce3131d50a0337fd86279c89b15a4fe8571ca5c538f090",
+    "source_hash": "2fbaae91df5bd367fcce4cea4468ef901410e805bad0399eaab5524a89ec1d64",
+    "ticker": "MRVL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-299843",
+    "char_offset": 1979,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1835632/000119312526299843/d82462d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Resignation of Chief Financial Officer On June 11, 2026, Marvell Technology, Inc.",
+   "corrected_sha256": "626790a79349c1a242a845f8b18403d744d870cb13834d56033ab97fdc0aeb87",
+   "correction_id": "exc-90ac76662f1d9b9b",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-267688",
+    "excerpt_sha256": "a0f6bef37582f0f2f5a753bcc22a908dfa66409047d48d6f1e8cfea6f9ffca7c",
+    "source_hash": "90ac76662f1d9b9b9e3901812557b157019af61d4646d9f8e8a825d4c010e3bf",
+    "ticker": "MRVL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-267688",
+    "char_offset": 2113,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1835632/000119312526267688/d151562d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 92,
   "events_90d": 15,
-  "recency_days": 11.2,
+  "metric_id": "ecs",
+  "recency_days": 12.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 4
  },
@@ -273,20 +379,20 @@
    "accession_number": "0001628280-26-023325",
    "available_as_of": "2026-04-02T15:56:26-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Casper Mark S 10854 shares @ $107.01 on 2026-04-02 ($1,161,487)",
+   "excerpt": "Casper Mark S 7000 shares @ $105.11 on 2026-04-01 ($735,770)",
    "filing_date": "2026-04-02",
    "protocol_id": null,
-   "source_hash": "585eaf0f7de5525a0c64f24800dc3baf53852ab2a34d4b97ad9611d09089c6ce",
+   "source_hash": "bea9738b5d28b70843f3b10b5ae58ae50f902c88eaf6f5354f3bd9f5b1fd5c07",
    "ticker": "MRVL"
   },
   {
    "accession_number": "0001628280-26-023325",
    "available_as_of": "2026-04-02T15:56:26-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Casper Mark S 7000 shares @ $105.11 on 2026-04-01 ($735,770)",
+   "excerpt": "Casper Mark S 10854 shares @ $107.01 on 2026-04-02 ($1,161,487)",
    "filing_date": "2026-04-02",
    "protocol_id": null,
-   "source_hash": "bea9738b5d28b70843f3b10b5ae58ae50f902c88eaf6f5354f3bd9f5b1fd5c07",
+   "source_hash": "585eaf0f7de5525a0c64f24800dc3baf53852ab2a34d4b97ad9611d09089c6ce",
    "ticker": "MRVL"
   },
   {
@@ -340,9 +446,30 @@
    "ticker": "MRVL"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "NEUTRAL",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.521581-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-02T14:24:53.602195-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 32,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for MRVL in the declared corpus",
+  "total_available": 32
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/MRVL.history.json",
+ "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -458,10 +585,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -569,10 +692,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.243,
+ "score": -0.0362,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.0,
+  "floor": -0.2
  },
  "ticker": "MRVL",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

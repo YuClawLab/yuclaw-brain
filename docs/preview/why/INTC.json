@@ -1,20 +1,76 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 11 of 11 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.2675,
+  "c1": -0.186,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.061795864,
-  "c7": 0.060863353,
+  "c6": 0.0,
+  "c7": 0.06416145,
   "c8": 0.0,
   "c9": 0.0
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-a51fcf821a0bf5f1",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000050863-26-000157",
+    "excerpt_sha256": "7552f24da1bb384736388d6ad2e4ab7d881fc9760e8bff860a1f66832c58ecb4",
+    "source_hash": "a51fcf821a0bf5f1df71677a93b17ce10416f1e0df9a963f8a3d63e5c3ccb99d",
+    "ticker": "INTC"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000050863-26-000157",
+    "char_offset": 764,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/50863/000005086326000157/intc-20260627.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On July 23, 2026, Intel Corporation (\u201cIntel\u201d or the \"Company\") issued a press release announcing the financial results of its second quarter ended June 27, 2026 and forward-looking statements relating to its third quarter of 2026.",
+   "corrected_sha256": "edb70a24ff12b587cfc61462a7e85a941d189ef723f7de46dcdf9cd437a4aec3",
+   "correction_id": "exc-4143d250c031dbf8",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000050863-26-000155",
+    "excerpt_sha256": "6fab334e3f61636422f8a2f33edb32b46a22ae8b1ace95b056ea52c1a6218c91",
+    "source_hash": "4143d250c031dbf8c8c5520a5202f255143692738bcaac6a5bebc182d89bc531",
+    "ticker": "INTC"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000050863-26-000155",
+    "char_offset": 2145,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/50863/000005086326000155/intc-20260723.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 75,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 74,
   "events_90d": 5,
-  "recency_days": 30.2,
+  "metric_id": "ecs",
+  "recency_days": 31.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 5
  },
@@ -130,9 +186,30 @@
    "ticker": "INTC"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "NEUTRAL",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.378109-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-14T14:33:47.880102-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-04-03T10:50:37-06:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 11,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for INTC in the declared corpus",
+  "total_available": 11
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/INTC.history.json",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -248,10 +325,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -359,10 +432,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.3291,
+ "score": 0.0228,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "INTC",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

@@ -1,20 +1,76 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MS --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 20 of 20 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MS --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.016,
+  "c1": -0.254,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": 0.036408648,
+  "c7": 0.14112765,
   "c8": 0.0,
   "c9": 0.2
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-fa9d294b7a716929",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000895421-26-000212",
+    "excerpt_sha256": "fed80e53a4ce25a9e632d23299d63b5d3e6ac111c3b692056781830c7a3f29cb",
+    "source_hash": "fa9d294b7a7169294b732d671efda047af1d0c6340a17686d6404568de473135",
+    "ticker": "MS"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000895421-26-000212",
+    "char_offset": 925,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542126000212/ms-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant To Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "35183cde40b32775e5bbc5a0fcc82f93dffcd4a1f9faf1165997a7bca940683e",
+   "correction_id": "exc-4c0dc60b7a54bd13",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000895421-26-000207",
+    "excerpt_sha256": "f0eb4efca845ff0fe0f5cf361370e8931ca801d5800b59c0c1355624ff0d3729",
+    "source_hash": "4c0dc60b7a54bd13751f4c0435c26aaf2a2534c7653a8b209d55b5ba0a9d98a4",
+    "ticker": "MS"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000895421-26-000207",
+    "char_offset": 834,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/895421/000089542126000207/ms-20260715.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 69,
   "events_90d": 8,
-  "recency_days": 40.4,
+  "metric_id": "ecs",
+  "recency_days": 41.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -43,20 +99,20 @@
    "accession_number": "0001628280-26-048656",
    "available_as_of": "2026-07-17T14:14:14.726688-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "YESHAYA SHARON S 6382 shares @ $222.51 on 2026-07-16 ($1,420,059)",
+   "excerpt": "YESHAYA SHARON S 9172 shares @ $222.51 on 2026-07-16 ($2,040,862)",
    "filing_date": "2026-07-17",
    "protocol_id": null,
-   "source_hash": "0347efe0ad0f41f0a7809e569c2fbb894dbc153feb4435950ed0c737202aa13b",
+   "source_hash": "0b5810d8427f92b5be6341f8919558ecd1e78aecb8c8431755fd6755e8358e4e",
    "ticker": "MS"
   },
   {
    "accession_number": "0001628280-26-048656",
    "available_as_of": "2026-07-17T14:14:14.726688-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "YESHAYA SHARON S 9172 shares @ $222.51 on 2026-07-16 ($2,040,862)",
+   "excerpt": "YESHAYA SHARON S 6382 shares @ $222.51 on 2026-07-16 ($1,420,059)",
    "filing_date": "2026-07-17",
    "protocol_id": null,
-   "source_hash": "0b5810d8427f92b5be6341f8919558ecd1e78aecb8c8431755fd6755e8358e4e",
+   "source_hash": "0347efe0ad0f41f0a7809e569c2fbb894dbc153feb4435950ed0c737202aa13b",
    "ticker": "MS"
   },
   {
@@ -103,20 +159,20 @@
    "accession_number": "0001628280-26-026008",
    "available_as_of": "2026-04-20T14:23:01-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GROSSMAN ERIC F S 5559 shares @ $190.00 on 2026-04-20 ($1,056,210)",
+   "excerpt": "GROSSMAN ERIC F S 5559 shares @ $191.50 on 2026-04-20 ($1,064,548)",
    "filing_date": "2026-04-20",
    "protocol_id": null,
-   "source_hash": "c84665c977bcb51b2170290f2bb8d20764f93d128eb61fa148bd74a07bae8b5e",
+   "source_hash": "d6ab6c4f2b94fa2c7043bb67360391ae267c6b70ad18cca4d60d83ddfb20927e",
    "ticker": "MS"
   },
   {
    "accession_number": "0001628280-26-026008",
    "available_as_of": "2026-04-20T14:23:01-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "GROSSMAN ERIC F S 5559 shares @ $191.50 on 2026-04-20 ($1,064,548)",
+   "excerpt": "GROSSMAN ERIC F S 5559 shares @ $190.00 on 2026-04-20 ($1,056,210)",
    "filing_date": "2026-04-20",
    "protocol_id": null,
-   "source_hash": "d6ab6c4f2b94fa2c7043bb67360391ae267c6b70ad18cca4d60d83ddfb20927e",
+   "source_hash": "c84665c977bcb51b2170290f2bb8d20764f93d128eb61fa148bd74a07bae8b5e",
    "ticker": "MS"
   },
   {
@@ -127,36 +183,6 @@
    "filing_date": "2026-04-17",
    "protocol_id": null,
    "source_hash": "e21cb56359c784859e099fe1a621219beeb577b2c999599de2970f0107d2cea0",
-   "ticker": "MS"
-  },
-  {
-   "accession_number": "0001628280-26-025791",
-   "available_as_of": "2026-04-17T14:38:02-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SAPERSTEIN ANDREW M S 1400 shares @ $190.44 on 2026-04-16 ($266,621)",
-   "filing_date": "2026-04-17",
-   "protocol_id": null,
-   "source_hash": "71d1f73159d2caf0cd37787e8b26820bf752e941bb943fa8192780b4b5983822",
-   "ticker": "MS"
-  },
-  {
-   "accession_number": "0001628280-26-025791",
-   "available_as_of": "2026-04-17T14:38:02-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SAPERSTEIN ANDREW M S 3190 shares @ $191.30 on 2026-04-16 ($610,238)",
-   "filing_date": "2026-04-17",
-   "protocol_id": null,
-   "source_hash": "0dcd3a5f9da854eccbea7f1efc0f49f873f10c34530c26d3caa8e5db8ccb4d56",
-   "ticker": "MS"
-  },
-  {
-   "accession_number": "0001628280-26-025791",
-   "available_as_of": "2026-04-17T14:38:02-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SAPERSTEIN ANDREW M S 600 shares @ $192.12 on 2026-04-16 ($115,269)",
-   "filing_date": "2026-04-17",
-   "protocol_id": null,
-   "source_hash": "2f5120d7dd7caaba0428e88438d3d28c73cd40db0dcb3a1ca012a6c2442bfb82",
    "ticker": "MS"
   },
   {
@@ -183,10 +209,50 @@
    "accession_number": "0001628280-26-025791",
    "available_as_of": "2026-04-17T14:38:02-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "SAPERSTEIN ANDREW M S 1400 shares @ $190.44 on 2026-04-16 ($266,621)",
+   "filing_date": "2026-04-17",
+   "protocol_id": null,
+   "source_hash": "71d1f73159d2caf0cd37787e8b26820bf752e941bb943fa8192780b4b5983822",
+   "ticker": "MS"
+  },
+  {
+   "accession_number": "0001628280-26-025791",
+   "available_as_of": "2026-04-17T14:38:02-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SAPERSTEIN ANDREW M S 600 shares @ $192.12 on 2026-04-16 ($115,269)",
+   "filing_date": "2026-04-17",
+   "protocol_id": null,
+   "source_hash": "2f5120d7dd7caaba0428e88438d3d28c73cd40db0dcb3a1ca012a6c2442bfb82",
+   "ticker": "MS"
+  },
+  {
+   "accession_number": "0001628280-26-025791",
+   "available_as_of": "2026-04-17T14:38:02-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "SAPERSTEIN ANDREW M S 6584 shares @ $187.20 on 2026-04-16 ($1,232,539)",
    "filing_date": "2026-04-17",
    "protocol_id": null,
    "source_hash": "1d74d81f6e8f56c13f8661a4886936f7f35b6b39ed88a7be107ce012877ba1f7",
+   "ticker": "MS"
+  },
+  {
+   "accession_number": "0001628280-26-025791",
+   "available_as_of": "2026-04-17T14:38:02-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SAPERSTEIN ANDREW M S 3190 shares @ $191.30 on 2026-04-16 ($610,238)",
+   "filing_date": "2026-04-17",
+   "protocol_id": null,
+   "source_hash": "0dcd3a5f9da854eccbea7f1efc0f49f873f10c34530c26d3caa8e5db8ccb4d56",
+   "ticker": "MS"
+  },
+  {
+   "accession_number": "0001628280-26-025789",
+   "available_as_of": "2026-04-17T14:36:55-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "CRAWLEY MANDELL S 2546 shares @ $187.25 on 2026-04-16 ($476,743)",
+   "filing_date": "2026-04-17",
+   "protocol_id": null,
+   "source_hash": "b8cb3e0f5486ea10a36bcc3e0f7244dfc53cf7d1367ea34face2e1c34d0364f4",
    "ticker": "MS"
   },
   {
@@ -208,21 +274,32 @@
    "protocol_id": null,
    "source_hash": "82637d857868b050b3117f93067fbf604ceab5222225f3a139d380433927ff3d",
    "ticker": "MS"
-  },
-  {
-   "accession_number": "0001628280-26-025789",
-   "available_as_of": "2026-04-17T14:36:55-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "CRAWLEY MANDELL S 2546 shares @ $187.25 on 2026-04-16 ($476,743)",
-   "filing_date": "2026-04-17",
-   "protocol_id": null,
-   "source_hash": "b8cb3e0f5486ea10a36bcc3e0f7244dfc53cf7d1367ea34face2e1c34d0364f4",
-   "ticker": "MS"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "NEUTRAL",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.533872-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-04T10:04:32-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-04-17T14:36:55-06:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 20,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for MS in the declared corpus",
+  "total_available": 20
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/MS.history.json",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -338,10 +415,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -449,10 +522,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2486,
+ "score": 0.1889,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "MS",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

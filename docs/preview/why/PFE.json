@@ -1,20 +1,101 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PFE --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 8 of 8 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PFE --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.2065,
+  "c1": 0.268,
   "c2": 0.0,
-  "c3": -0.6767205,
+  "c3": 0.6277762,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.033990413,
+  "c7": -0.0071600974,
   "c8": 0.0,
   "c9": 0.27272728
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-3cd41ec100537688",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000078003-26-000095",
+    "excerpt_sha256": "bfbdee3a7b4640b7673ffc7dec8b7b16448807d0f1075eaeec58973b6a4ee076",
+    "source_hash": "3cd41ec100537688b97977769f409bcc3e96af80a2dfc94f2ce1edc1017357ad",
+    "ticker": "PFE"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000078003-26-000095",
+    "char_offset": 587,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/78003/000007800326000095/pfe-20260628.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of report (Date of earliest event reported): June 18, 2026 PFIZER INC .",
+   "corrected_sha256": "7fdb50127228f5207c84bb8dbb7119e05f12c59dea17b9de799dafd75e507c06",
+   "correction_id": "exc-ad6936e8d9cfc8cb",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000078003-26-000087",
+    "excerpt_sha256": "f99034470291843a3a2a901997386cde2bb67ed50429d0762be153bff6919b71",
+    "source_hash": "ad6936e8d9cfc8cb6d1fc76e6a475794d288ea9c98a7802c66043a3c5855ad28",
+    "ticker": "PFE"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000078003-26-000087",
+    "char_offset": 424,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/78003/000007800326000087/pfe-20260618.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of report (Date of earliest event reported): June 18, 2026 PFIZER INC .",
+   "corrected_sha256": "7fdb50127228f5207c84bb8dbb7119e05f12c59dea17b9de799dafd75e507c06",
+   "correction_id": "exc-ad6936e8d9cfc8cb",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000078003-26-000087",
+    "excerpt_sha256": "f99034470291843a3a2a901997386cde2bb67ed50429d0762be153bff6919b71",
+    "source_hash": "ad6936e8d9cfc8cb6d1fc76e6a475794d288ea9c98a7802c66043a3c5855ad28",
+    "ticker": "PFE"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000078003-26-000087",
+    "char_offset": 424,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/78003/000007800326000087/pfe-20260618.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 77,
   "events_90d": 8,
-  "recency_days": 32.2,
+  "metric_id": "ecs",
+  "recency_days": 33.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -100,9 +181,30 @@
    "ticker": "PFE"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WATCH",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.598041-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-12T14:08:09.837133-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-06-18T11:17:22-06:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 8,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for PFE in the declared corpus",
+  "total_available": 8
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/PFE.history.json",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -218,10 +320,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -329,10 +427,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0808,
+ "score": 0.3636,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "PFE",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

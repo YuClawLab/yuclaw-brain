@@ -1,20 +1,76 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 9 of 9 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.176,
+  "c1": -0.0615,
   "c2": 0.0,
-  "c3": -0.6767205,
+  "c3": 0.6277762,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.29674593,
-  "c7": 0.0015308534,
+  "c6": -0.22348173,
+  "c7": -0.01197016,
   "c8": 0.0,
   "c9": 0.4117647
  },
+ "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 __________________ FORM 8-K __________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "966c589f2d6d53bd734e235bfdecb5ffa5d8ab8153b7e6458e5bec00fa9f96c4",
+   "correction_id": "exc-6c72c66cc13562e4",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000313616-26-000163",
+    "excerpt_sha256": "f252fcee1d055126b201e37deaa5f72e9da94764afa68355c57654ce66d51714",
+    "source_hash": "6c72c66cc13562e4801f9f8737435cb11d342e41cdae72d1149d97cc17158592",
+    "ticker": "DHR"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000313616-26-000163",
+    "char_offset": 910,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/313616/000031361626000163/dhr-20260721.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-ae3654a53f191a2b",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0000313616-26-000161",
+    "excerpt_sha256": "3701766b92eff38c02aca2c872ddb478af865fbe2fe3caa354db6f6ff1299895",
+    "source_hash": "ae3654a53f191a2b129c333d3400fd5cc5a87549534f0168b38e9ad547db9d26",
+    "ticker": "DHR"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0000313616-26-000161",
+    "char_offset": 240,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/313616/000031361626000161/dhr-20260626.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 69,
   "events_90d": 6,
-  "recency_days": 20.2,
+  "metric_id": "ecs",
+  "recency_days": 21.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -23,10 +79,10 @@
    "accession_number": "0000313616-26-000187",
    "available_as_of": "2026-08-24T15:07:26.467020-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Blair Rainer S 11307 shares @ $217.77 on 2026-08-21 ($2,462,338)",
+   "excerpt": "Blair Rainer S 39193 shares @ $218.73 on 2026-08-21 ($8,572,704)",
    "filing_date": "2026-08-24",
    "protocol_id": null,
-   "source_hash": "0f005d44549ceebeaa407b4a3651df95625a86e1b4b5ed6d2c07cbf5f06ce249",
+   "source_hash": "d0ba6f22a82cbc7afe09ae6ccef74b38b607c9c62d71fd66d4c22620edd65f9e",
    "ticker": "DHR"
   },
   {
@@ -43,10 +99,10 @@
    "accession_number": "0000313616-26-000187",
    "available_as_of": "2026-08-24T15:07:26.467020-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Blair Rainer S 39193 shares @ $218.73 on 2026-08-21 ($8,572,704)",
+   "excerpt": "Blair Rainer S 11307 shares @ $217.77 on 2026-08-21 ($2,462,338)",
    "filing_date": "2026-08-24",
    "protocol_id": null,
-   "source_hash": "d0ba6f22a82cbc7afe09ae6ccef74b38b607c9c62d71fd66d4c22620edd65f9e",
+   "source_hash": "0f005d44549ceebeaa407b4a3651df95625a86e1b4b5ed6d2c07cbf5f06ce249",
    "ticker": "DHR"
   },
   {
@@ -110,9 +166,30 @@
    "ticker": "DHR"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WEAKENING",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.286946-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-24T15:07:26.467020-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 9,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for DHR in the declared corpus",
+  "total_available": 9
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/DHR.history.json",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -228,10 +305,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -339,10 +412,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0345,
+ "score": 0.2058,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "DHR",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

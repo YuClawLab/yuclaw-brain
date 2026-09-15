@@ -1,20 +1,76 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MA --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 65 of 65 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MA --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.069,
+  "c1": 0.131,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.32176685,
-  "c7": -0.026021024,
+  "c6": -0.24292107,
+  "c7": -0.026220607,
   "c8": 0.0,
   "c9": -0.4
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-b82183b0e6442cb0",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001141391-26-000083",
+    "excerpt_sha256": "cd9d836295dba293879f829eaae20989631cf55f4374de5a287711cbda441462",
+    "source_hash": "b82183b0e6442cb09504f3f79c1f07f544920b2e907a5592d1dd997c597133a4",
+    "ticker": "MA"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0001141391-26-000083",
+    "char_offset": 398,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1141391/000114139126000083/ma-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions (see General Instruction A.2. below)",
+   "corrected_sha256": "10aec2fc812da36bbc197e754ab93fac17759d5d8e98fd00206cba89ee94a3f1",
+   "correction_id": "exc-833719a8bdbffe6e",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001141391-26-000037",
+    "excerpt_sha256": "722bfa669a1afcd8ad4e8a7e95cfac03ac5ab62a85d5dc306670e9222e5c8029",
+    "source_hash": "833719a8bdbffe6e80d34a786c4e6eec9b4494afc9b6c401d8eafd35ca0043ab",
+    "ticker": "MA"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "operator_tail"
+   ],
+   "source_location": {
+    "accession_number": "0001141391-26-000037",
+    "char_offset": 1185,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1141391/000114139126000037/ma-20260529.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 80,
   "events_90d": 48,
-  "recency_days": 10.2,
+  "metric_id": "ecs",
+  "recency_days": 11.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -43,10 +99,60 @@
    "accession_number": "0001427531-26-000005",
    "available_as_of": "2026-08-20T16:42:26.105608-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "SACHIN J. MEHRA S 966 shares @ $573.99 on 2026-08-19 ($554,477)",
+   "filing_date": "2026-08-20",
+   "protocol_id": null,
+   "source_hash": "e0dd006c3804a302c361a24a27c41dc3dc9057a6b83fe2391bd5dc7aaa6acd0b",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001427531-26-000005",
+   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SACHIN J. MEHRA S 1000 shares @ $572.07 on 2026-08-20 ($572,070)",
+   "filing_date": "2026-08-20",
+   "protocol_id": null,
+   "source_hash": "c10f9d9326e8f66a5390e6c6556d2c887a7c917d894acde088b173015cabfeae",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001427531-26-000005",
+   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SACHIN J. MEHRA S 160 shares @ $582.25 on 2026-08-19 ($93,160)",
+   "filing_date": "2026-08-20",
+   "protocol_id": null,
+   "source_hash": "99284a46ff67b95444ab6d695bb83bb3df643e499037d53ccdfc975a707d41b0",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001427531-26-000005",
+   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SACHIN J. MEHRA S 400 shares @ $579.35 on 2026-08-19 ($231,742)",
+   "filing_date": "2026-08-20",
+   "protocol_id": null,
+   "source_hash": "8b568c16d7d70c5dc4940117ef6a820330650480ccbd39b82a5b2ae8e0acca39",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001427531-26-000005",
+   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "SACHIN J. MEHRA S 1280 shares @ $576.82 on 2026-08-19 ($738,331)",
    "filing_date": "2026-08-20",
    "protocol_id": null,
    "source_hash": "83db7b8f0c3b12be58b06c20d82f2f7c2f7532658cef734c523dd6600c7f8b10",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001427531-26-000005",
+   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "SACHIN J. MEHRA S 120 shares @ $572.41 on 2026-08-19 ($68,690)",
+   "filing_date": "2026-08-20",
+   "protocol_id": null,
+   "source_hash": "7f6398d31a299247a26522a859543b027a39e91eb889810d3b399fe76f7b7f6f",
    "ticker": "MA"
   },
   {
@@ -73,30 +179,10 @@
    "accession_number": "0001427531-26-000005",
    "available_as_of": "2026-08-20T16:42:26.105608-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 400 shares @ $579.35 on 2026-08-19 ($231,742)",
+   "excerpt": "SACHIN J. MEHRA S 628 shares @ $577.90 on 2026-08-19 ($362,922)",
    "filing_date": "2026-08-20",
    "protocol_id": null,
-   "source_hash": "8b568c16d7d70c5dc4940117ef6a820330650480ccbd39b82a5b2ae8e0acca39",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001427531-26-000005",
-   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 120 shares @ $572.41 on 2026-08-19 ($68,690)",
-   "filing_date": "2026-08-20",
-   "protocol_id": null,
-   "source_hash": "7f6398d31a299247a26522a859543b027a39e91eb889810d3b399fe76f7b7f6f",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001427531-26-000005",
-   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 966 shares @ $573.99 on 2026-08-19 ($554,477)",
-   "filing_date": "2026-08-20",
-   "protocol_id": null,
-   "source_hash": "e0dd006c3804a302c361a24a27c41dc3dc9057a6b83fe2391bd5dc7aaa6acd0b",
+   "source_hash": "77b69c993c9263e6e8086bc5b95ff95d52e68bc93e2fee04146b8437aed6cf0e",
    "ticker": "MA"
   },
   {
@@ -120,36 +206,6 @@
    "ticker": "MA"
   },
   {
-   "accession_number": "0001427531-26-000005",
-   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 628 shares @ $577.90 on 2026-08-19 ($362,922)",
-   "filing_date": "2026-08-20",
-   "protocol_id": null,
-   "source_hash": "77b69c993c9263e6e8086bc5b95ff95d52e68bc93e2fee04146b8437aed6cf0e",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001427531-26-000005",
-   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 1000 shares @ $572.07 on 2026-08-20 ($572,070)",
-   "filing_date": "2026-08-20",
-   "protocol_id": null,
-   "source_hash": "c10f9d9326e8f66a5390e6c6556d2c887a7c917d894acde088b173015cabfeae",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001427531-26-000005",
-   "available_as_of": "2026-08-20T16:42:26.105608-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 160 shares @ $582.25 on 2026-08-19 ($93,160)",
-   "filing_date": "2026-08-20",
-   "protocol_id": null,
-   "source_hash": "99284a46ff67b95444ab6d695bb83bb3df643e499037d53ccdfc975a707d41b0",
-   "ticker": "MA"
-  },
-  {
    "accession_number": "0001141391-26-000100",
    "available_as_of": "2026-08-18T14:15:01.235241-06:00",
    "evidence_type": "INSIDER_SELL",
@@ -167,36 +223,6 @@
    "filing_date": "2026-08-06",
    "protocol_id": null,
    "source_hash": "2e6223d6422fb5ed3ce148fe221db218dd95692cac50c9b51bb3eb73791fac36",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000099",
-   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 440 shares @ $573.75 on 2026-08-05 ($252,451)",
-   "filing_date": "2026-08-06",
-   "protocol_id": null,
-   "source_hash": "3112b893ed372f1cdb4717ae2dc854f1620764f8326497972d4f9fbcb20b9d97",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000099",
-   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 280 shares @ $572.69 on 2026-08-05 ($160,352)",
-   "filing_date": "2026-08-06",
-   "protocol_id": null,
-   "source_hash": "2def2f30aa94d25037c342a927840a585370f37526370238e9c24f075fd50374",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000099",
-   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "SACHIN J. MEHRA S 880 shares @ $571.38 on 2026-08-05 ($502,817)",
-   "filing_date": "2026-08-06",
-   "protocol_id": null,
-   "source_hash": "63ed3aa835dc08908abc7b40233acc43b65118fc538ddf51f5381dcf5b5a3964",
    "ticker": "MA"
   },
   {
@@ -230,43 +256,33 @@
    "ticker": "MA"
   },
   {
-   "accession_number": "0001141391-26-000094",
-   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "accession_number": "0001141391-26-000099",
+   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kirkpatrick Linda Pistecchia S 120 shares @ $572.89 on 2026-08-04 ($68,747)",
-   "filing_date": "2026-08-05",
+   "excerpt": "SACHIN J. MEHRA S 880 shares @ $571.38 on 2026-08-05 ($502,817)",
+   "filing_date": "2026-08-06",
    "protocol_id": null,
-   "source_hash": "89fba3fc3c87bf21313464b8b8aca559fc8743c580ae1747046f0fb83424a55f",
+   "source_hash": "63ed3aa835dc08908abc7b40233acc43b65118fc538ddf51f5381dcf5b5a3964",
    "ticker": "MA"
   },
   {
-   "accession_number": "0001141391-26-000094",
-   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "accession_number": "0001141391-26-000099",
+   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kirkpatrick Linda Pistecchia S 600 shares @ $566.68 on 2026-08-04 ($340,011)",
-   "filing_date": "2026-08-05",
+   "excerpt": "SACHIN J. MEHRA S 440 shares @ $573.75 on 2026-08-05 ($252,451)",
+   "filing_date": "2026-08-06",
    "protocol_id": null,
-   "source_hash": "a4e41da4ebfabc5c3673c20c030848304be1b6ae8bb775355d9f3ed9ade1cec8",
+   "source_hash": "3112b893ed372f1cdb4717ae2dc854f1620764f8326497972d4f9fbcb20b9d97",
    "ticker": "MA"
   },
   {
-   "accession_number": "0001141391-26-000094",
-   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "accession_number": "0001141391-26-000099",
+   "available_as_of": "2026-08-06T14:18:28.896847-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kirkpatrick Linda Pistecchia S 200 shares @ $568.00 on 2026-08-04 ($113,601)",
-   "filing_date": "2026-08-05",
+   "excerpt": "SACHIN J. MEHRA S 280 shares @ $572.69 on 2026-08-05 ($160,352)",
+   "filing_date": "2026-08-06",
    "protocol_id": null,
-   "source_hash": "e5ea67d0ee2512a82ce60681aed785cb8545c914ab8b854783727da4b2d386d6",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000094",
-   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kirkpatrick Linda Pistecchia S 360 shares @ $569.18 on 2026-08-04 ($204,904)",
-   "filing_date": "2026-08-05",
-   "protocol_id": null,
-   "source_hash": "1a15e3137eff46f4e34e2fd593c2255ac2d4204d6f08b1ba174eddfb11e13fce",
+   "source_hash": "2def2f30aa94d25037c342a927840a585370f37526370238e9c24f075fd50374",
    "ticker": "MA"
   },
   {
@@ -283,10 +299,40 @@
    "accession_number": "0001141391-26-000094",
    "available_as_of": "2026-08-05T14:23:09.666264-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Kirkpatrick Linda Pistecchia S 200 shares @ $568.00 on 2026-08-04 ($113,601)",
+   "filing_date": "2026-08-05",
+   "protocol_id": null,
+   "source_hash": "e5ea67d0ee2512a82ce60681aed785cb8545c914ab8b854783727da4b2d386d6",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000094",
+   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Kirkpatrick Linda Pistecchia S 1680 shares @ $571.22 on 2026-08-04 ($959,655)",
    "filing_date": "2026-08-05",
    "protocol_id": null,
    "source_hash": "b68c697f9cbec08fb7e034bcebce73876a66396864267f8e18723cc34f326ab8",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000094",
+   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Kirkpatrick Linda Pistecchia S 600 shares @ $566.68 on 2026-08-04 ($340,011)",
+   "filing_date": "2026-08-05",
+   "protocol_id": null,
+   "source_hash": "a4e41da4ebfabc5c3673c20c030848304be1b6ae8bb775355d9f3ed9ade1cec8",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000094",
+   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Kirkpatrick Linda Pistecchia S 120 shares @ $572.89 on 2026-08-04 ($68,747)",
+   "filing_date": "2026-08-05",
+   "protocol_id": null,
+   "source_hash": "89fba3fc3c87bf21313464b8b8aca559fc8743c580ae1747046f0fb83424a55f",
    "ticker": "MA"
   },
   {
@@ -300,13 +346,13 @@
    "ticker": "MA"
   },
   {
-   "accession_number": "0001141391-26-000085",
-   "available_as_of": "2026-08-04T14:24:40.705326-06:00",
+   "accession_number": "0001141391-26-000094",
+   "available_as_of": "2026-08-05T14:23:09.666264-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Miebach Michael S 16628 shares @ $567.68 on 2026-07-31 ($9,439,383)",
-   "filing_date": "2026-08-04",
+   "excerpt": "Kirkpatrick Linda Pistecchia S 360 shares @ $569.18 on 2026-08-04 ($204,904)",
+   "filing_date": "2026-08-05",
    "protocol_id": null,
-   "source_hash": "0202282fe61917be4ed0a4385cd6e7fc76b7b03c79a0d782847a793d03ac8040",
+   "source_hash": "1a15e3137eff46f4e34e2fd593c2255ac2d4204d6f08b1ba174eddfb11e13fce",
    "ticker": "MA"
   },
   {
@@ -317,6 +363,16 @@
    "filing_date": "2026-08-04",
    "protocol_id": null,
    "source_hash": "08b2be7f24af55a31f313e6e273ee087311a3a0ac4eb70b0a55d4566ef110715",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000085",
+   "available_as_of": "2026-08-04T14:24:40.705326-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Miebach Michael S 16628 shares @ $567.68 on 2026-07-31 ($9,439,383)",
+   "filing_date": "2026-08-04",
+   "protocol_id": null,
+   "source_hash": "0202282fe61917be4ed0a4385cd6e7fc76b7b03c79a0d782847a793d03ac8040",
    "ticker": "MA"
   },
   {
@@ -353,16 +409,6 @@
    "accession_number": "0001141391-26-000070",
    "available_as_of": "2026-07-16T01:25:22.589335-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Seshadri Raj S 4828 shares @ $525.00 on 2026-07-01 ($2,534,700)",
-   "filing_date": "2026-07-02",
-   "protocol_id": null,
-   "source_hash": "2fe904c66b7c3e1fc186c88a8d3c056e4f9e7fd8d18c3a58684339204cf0d200",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000070",
-   "available_as_of": "2026-07-16T01:25:22.589335-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Seshadri Raj S 1977 shares @ $529.73 on 2026-07-02 ($1,047,276)",
    "filing_date": "2026-07-02",
    "protocol_id": null,
@@ -370,13 +416,13 @@
    "ticker": "MA"
   },
   {
-   "accession_number": "0001141391-26-000072",
-   "available_as_of": "2026-07-16T01:25:22.061580-06:00",
+   "accession_number": "0001141391-26-000070",
+   "available_as_of": "2026-07-16T01:25:22.589335-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Arkell Sandra A S 200 shares @ $540.00 on 2026-07-07 ($108,000)",
-   "filing_date": "2026-07-08",
+   "excerpt": "Seshadri Raj S 4828 shares @ $525.00 on 2026-07-01 ($2,534,700)",
+   "filing_date": "2026-07-02",
    "protocol_id": null,
-   "source_hash": "314db5d962494461ce46295949ddb9bf639f957c1fbfe48cda74c889a891a4a7",
+   "source_hash": "2fe904c66b7c3e1fc186c88a8d3c056e4f9e7fd8d18c3a58684339204cf0d200",
    "ticker": "MA"
   },
   {
@@ -387,6 +433,16 @@
    "filing_date": "2026-07-08",
    "protocol_id": null,
    "source_hash": "8b713e4e8d523cec9c3a3acb1b10429d83dd9d13dd334b7d0af42fd03da2d297",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000072",
+   "available_as_of": "2026-07-16T01:25:22.061580-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Arkell Sandra A S 200 shares @ $540.00 on 2026-07-07 ($108,000)",
+   "filing_date": "2026-07-08",
+   "protocol_id": null,
+   "source_hash": "314db5d962494461ce46295949ddb9bf639f957c1fbfe48cda74c889a891a4a7",
    "ticker": "MA"
   },
   {
@@ -413,16 +469,6 @@
    "accession_number": "0001141391-26-000077",
    "available_as_of": "2026-07-16T01:19:44.761972-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "McLaughlin Edward Grunde S 1108 shares @ $530.67 on 2026-07-15 ($587,986)",
-   "filing_date": "2026-07-15",
-   "protocol_id": null,
-   "source_hash": "06da9bfe3b14fb59d9890399db5dd9b86b35b4950450d7be6e868eae1f4d4d53",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000077",
-   "available_as_of": "2026-07-16T01:19:44.761972-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "McLaughlin Edward Grunde S 1903 shares @ $529.45 on 2026-07-15 ($1,007,540)",
    "filing_date": "2026-07-15",
    "protocol_id": null,
@@ -433,10 +479,10 @@
    "accession_number": "0001141391-26-000077",
    "available_as_of": "2026-07-16T01:19:44.761972-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "McLaughlin Edward Grunde S 3431 shares @ $538.09 on 2026-07-15 ($1,846,192)",
+   "excerpt": "McLaughlin Edward Grunde S 160 shares @ $531.63 on 2026-07-15 ($85,060)",
    "filing_date": "2026-07-15",
    "protocol_id": null,
-   "source_hash": "1d2c48fcddd0749f322fcaf4ae472d6992d98b4c0b97e58bd140f047a3067e04",
+   "source_hash": "cca933dc55fe5dd4206670707e27680425707b67568b4dc7b0eb96ab5870373f",
    "ticker": "MA"
   },
   {
@@ -483,10 +529,20 @@
    "accession_number": "0001141391-26-000077",
    "available_as_of": "2026-07-16T01:19:44.761972-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "McLaughlin Edward Grunde S 160 shares @ $531.63 on 2026-07-15 ($85,060)",
+   "excerpt": "McLaughlin Edward Grunde S 3431 shares @ $538.09 on 2026-07-15 ($1,846,192)",
    "filing_date": "2026-07-15",
    "protocol_id": null,
-   "source_hash": "cca933dc55fe5dd4206670707e27680425707b67568b4dc7b0eb96ab5870373f",
+   "source_hash": "1d2c48fcddd0749f322fcaf4ae472d6992d98b4c0b97e58bd140f047a3067e04",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000077",
+   "available_as_of": "2026-07-16T01:19:44.761972-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "McLaughlin Edward Grunde S 1108 shares @ $530.67 on 2026-07-15 ($587,986)",
+   "filing_date": "2026-07-15",
+   "protocol_id": null,
+   "source_hash": "06da9bfe3b14fb59d9890399db5dd9b86b35b4950450d7be6e868eae1f4d4d53",
    "ticker": "MA"
   },
   {
@@ -523,40 +579,50 @@
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 440 shares @ $504.96 on 2026-02-23 ($222,180)",
+   "excerpt": "Ling Hai S 454 shares @ $507.01 on 2026-02-23 ($230,185)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "454d7f02dbd4adf8278599908f4d4a6b59923a8633ba2bf2b2795b7e5d2aa3db",
+   "source_hash": "f9c09dc95540633eb4dab5a67426bad616557077a7b29b770211c22748a2b889",
    "ticker": "MA"
   },
   {
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 294 shares @ $495.18 on 2026-02-23 ($145,582)",
+   "excerpt": "Ling Hai S 240 shares @ $509.54 on 2026-02-23 ($122,290)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "3bf68b69d4be8d3004926950277066ac04351fd6dc17eec43ff64daa7ec4ce41",
+   "source_hash": "f40c4110c9ef9066a7449e37ecca8a5ed17602c6a7d481459f40ef56e6532b56",
    "ticker": "MA"
   },
   {
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 241 shares @ $490.90 on 2026-02-23 ($118,308)",
+   "excerpt": "Ling Hai S 120 shares @ $519.34 on 2026-02-23 ($62,320)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "2e808268c46a5b0217dc2db30ee2c509e695fbc243beed3e761de01369f59814",
+   "source_hash": "c7fbc999bc0852a00372e83f6a93c64c3f1a31e5935577f81c9de9734810d359",
    "ticker": "MA"
   },
   {
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 360 shares @ $492.17 on 2026-02-23 ($177,180)",
+   "excerpt": "Ling Hai S 120 shares @ $502.75 on 2026-02-23 ($60,330)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "3a8f80606579623aced6ffeb9036037b07835cb1fcf5eb2ee2941cdc192f2307",
+   "source_hash": "b88e386126933217c57c9db8e8d054c4d5db6631b636979147100a93c8a9061c",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000016",
+   "available_as_of": "2026-02-25T14:06:16-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ling Hai S 512 shares @ $506.07 on 2026-02-23 ($259,109)",
+   "filing_date": "2026-02-25",
+   "protocol_id": null,
+   "source_hash": "b634e018e954a36b897d92c72d3b9c9264e9368225c3da38e4bea63e09be49c1",
    "ticker": "MA"
   },
   {
@@ -567,16 +633,6 @@
    "filing_date": "2026-02-25",
    "protocol_id": null,
    "source_hash": "9a6a02b40bd0d6375a7a464fef36ebe226857008b717efdfe699beda7de2fdbf",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000016",
-   "available_as_of": "2026-02-25T14:06:16-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 120 shares @ $494.09 on 2026-02-23 ($59,291)",
-   "filing_date": "2026-02-25",
-   "protocol_id": null,
-   "source_hash": "0860588170a910b8021453373d37e3576670402dfdbfbe63eda3d57ab359cca4",
    "ticker": "MA"
   },
   {
@@ -603,16 +659,6 @@
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 120 shares @ $519.34 on 2026-02-23 ($62,320)",
-   "filing_date": "2026-02-25",
-   "protocol_id": null,
-   "source_hash": "c7fbc999bc0852a00372e83f6a93c64c3f1a31e5935577f81c9de9734810d359",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000016",
-   "available_as_of": "2026-02-25T14:06:16-07:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Ling Hai S 4485 shares @ $495.71 on 2026-02-24 ($2,223,269)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
@@ -623,10 +669,30 @@
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 240 shares @ $509.54 on 2026-02-23 ($122,290)",
+   "excerpt": "Ling Hai S 440 shares @ $504.96 on 2026-02-23 ($222,180)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "f40c4110c9ef9066a7449e37ecca8a5ed17602c6a7d481459f40ef56e6532b56",
+   "source_hash": "454d7f02dbd4adf8278599908f4d4a6b59923a8633ba2bf2b2795b7e5d2aa3db",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000016",
+   "available_as_of": "2026-02-25T14:06:16-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ling Hai S 294 shares @ $495.18 on 2026-02-23 ($145,582)",
+   "filing_date": "2026-02-25",
+   "protocol_id": null,
+   "source_hash": "3bf68b69d4be8d3004926950277066ac04351fd6dc17eec43ff64daa7ec4ce41",
+   "ticker": "MA"
+  },
+  {
+   "accession_number": "0001141391-26-000016",
+   "available_as_of": "2026-02-25T14:06:16-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Ling Hai S 360 shares @ $492.17 on 2026-02-23 ($177,180)",
+   "filing_date": "2026-02-25",
+   "protocol_id": null,
+   "source_hash": "3a8f80606579623aced6ffeb9036037b07835cb1fcf5eb2ee2941cdc192f2307",
    "ticker": "MA"
   },
   {
@@ -643,36 +709,47 @@
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 454 shares @ $507.01 on 2026-02-23 ($230,185)",
+   "excerpt": "Ling Hai S 241 shares @ $490.90 on 2026-02-23 ($118,308)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "f9c09dc95540633eb4dab5a67426bad616557077a7b29b770211c22748a2b889",
+   "source_hash": "2e808268c46a5b0217dc2db30ee2c509e695fbc243beed3e761de01369f59814",
    "ticker": "MA"
   },
   {
    "accession_number": "0001141391-26-000016",
    "available_as_of": "2026-02-25T14:06:16-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 512 shares @ $506.07 on 2026-02-23 ($259,109)",
+   "excerpt": "Ling Hai S 120 shares @ $494.09 on 2026-02-23 ($59,291)",
    "filing_date": "2026-02-25",
    "protocol_id": null,
-   "source_hash": "b634e018e954a36b897d92c72d3b9c9264e9368225c3da38e4bea63e09be49c1",
-   "ticker": "MA"
-  },
-  {
-   "accession_number": "0001141391-26-000016",
-   "available_as_of": "2026-02-25T14:06:16-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ling Hai S 120 shares @ $502.75 on 2026-02-23 ($60,330)",
-   "filing_date": "2026-02-25",
-   "protocol_id": null,
-   "source_hash": "b88e386126933217c57c9db8e8d054c4d5db6631b636979147100a93c8a9061c",
+   "source_hash": "0860588170a910b8021453373d37e3576670402dfdbfbe63eda3d57ab359cca4",
    "ticker": "MA"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.477521-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-03T14:25:31.155987-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-25T14:06:16-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 65,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for MA in the declared corpus",
+  "total_available": 65
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/MA.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -788,10 +865,6 @@
   {
    "date": "2026-08-04",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -899,7 +972,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0125,
+ "score": 0.0162,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

@@ -1,24 +1,90 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 101 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.2845,
+  "c1": -0.257,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.46211717,
-  "c7": -0.07567872,
+  "c6": -0.45588148,
+  "c7": 0.06094852,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": -0.06666667
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-10474f8b3c4d7be8",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001018724-26-000026",
+    "excerpt_sha256": "2d558d16a406816a741e5e59185f28927dc98bce0a7df89aea3c0a5b7f034b57",
+    "source_hash": "10474f8b3c4d7be8826ff9cc7eaacac6d06f2dc2044bb6413f2c96f2e97e22af",
+    "ticker": "AMZN"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "source_location": {
+    "accession_number": "0001018724-26-000026",
+    "char_offset": 1391,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1018724/000101872426000026/amzn-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION W ASHINGTON , D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 April 14, 2026 Date of Report (Date of earliest event reported) AMAZON.COM, INC.",
+   "corrected_sha256": "577fb392a2b41eca1b3319a59b738c359dff46d02eb5f823120383946e950e97",
+   "correction_id": "exc-bb2c9d041d16582b",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001104659-26-042880",
+    "excerpt_sha256": "525dc0b1894c5f0a102e3d382616d8168117a8126c9afce42b95c40545d225ad",
+    "source_hash": "bb2c9d041d16582bab9a92a176792b04a0a15d71597486601454dc5bf15fe763",
+    "ticker": "AMZN"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001104659-26-042880",
+    "char_offset": 733,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1018724/000110465926042880/tm2611746d1_8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 59,
-  "recency_days": 4.4,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 87,
+  "events_90d": 60,
+  "metric_id": "ecs",
+  "recency_days": 0.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001104659-26-107526",
+   "available_as_of": "2026-09-14T10:45:41-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington , D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "filing_date": "2026-09-14",
+   "protocol_id": null,
+   "source_hash": "f93b94254388bab45c30142eb3d31d0af9d1542797ead2fdeb78f70396d85305",
+   "ticker": "AMZN"
+  },
   {
    "accession_number": "0001018724-26-000036",
    "available_as_of": "2026-09-09T10:28:21-06:00",
@@ -43,10 +109,10 @@
    "accession_number": "0001374545-26-000010",
    "available_as_of": "2026-08-25T15:11:04.224083-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 3197 shares @ $257.63 on 2026-08-21 ($823,657)",
+   "excerpt": "Jassy Andrew R S 7514 shares @ $259.61 on 2026-08-21 ($1,950,685)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
-   "source_hash": "8ed85aecef4449d3d7f9060b0f3388e612c2b0ed0b8f7f9d809240db00fa2587",
+   "source_hash": "fcc0a95c795a9d57ea7fe2c349baef39fea2a8b2ce2ce49737f7978aaa079c24",
    "ticker": "AMZN"
   },
   {
@@ -63,10 +129,10 @@
    "accession_number": "0001374545-26-000010",
    "available_as_of": "2026-08-25T15:11:04.224083-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 7514 shares @ $259.61 on 2026-08-21 ($1,950,685)",
+   "excerpt": "Jassy Andrew R S 3197 shares @ $257.63 on 2026-08-21 ($823,657)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
-   "source_hash": "fcc0a95c795a9d57ea7fe2c349baef39fea2a8b2ce2ce49737f7978aaa079c24",
+   "source_hash": "8ed85aecef4449d3d7f9060b0f3388e612c2b0ed0b8f7f9d809240db00fa2587",
    "ticker": "AMZN"
   },
   {
@@ -83,20 +149,20 @@
    "accession_number": "0002024813-26-000010",
    "available_as_of": "2026-08-25T15:05:12.980091-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 5191 shares @ $258.66 on 2026-08-21 ($1,342,701)",
+   "excerpt": "Garman Matthew S S 2159 shares @ $257.60 on 2026-08-21 ($556,148)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
-   "source_hash": "5b9584a4ac789cb8631e55ecfd7b134423423de678beb4cf7f3b98b51665e3bf",
+   "source_hash": "b2ccef7ea7e1122d335f9c8f8a4fe85106a89c443d7cead9c5da2499f6839c9c",
    "ticker": "AMZN"
   },
   {
    "accession_number": "0002024813-26-000010",
    "available_as_of": "2026-08-25T15:05:12.980091-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 1951 shares @ $260.34 on 2026-08-21 ($507,923)",
+   "excerpt": "Garman Matthew S S 5191 shares @ $258.66 on 2026-08-21 ($1,342,701)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
-   "source_hash": "086deb01ab731d544aff0eded8c995c85815f83e541bb8ad98e8b79268418c49",
+   "source_hash": "5b9584a4ac789cb8631e55ecfd7b134423423de678beb4cf7f3b98b51665e3bf",
    "ticker": "AMZN"
   },
   {
@@ -113,10 +179,10 @@
    "accession_number": "0002024813-26-000010",
    "available_as_of": "2026-08-25T15:05:12.980091-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 2159 shares @ $257.60 on 2026-08-21 ($556,148)",
+   "excerpt": "Garman Matthew S S 1951 shares @ $260.34 on 2026-08-21 ($507,923)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
-   "source_hash": "b2ccef7ea7e1122d335f9c8f8a4fe85106a89c443d7cead9c5da2499f6839c9c",
+   "source_hash": "086deb01ab731d544aff0eded8c995c85815f83e541bb8ad98e8b79268418c49",
    "ticker": "AMZN"
   },
   {
@@ -153,26 +219,6 @@
    "accession_number": "0001557979-26-000008",
    "available_as_of": "2026-08-25T14:47:35.865543-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Zapolsky David S 1138 shares @ $257.70 on 2026-08-21 ($293,265)",
-   "filing_date": "2026-08-25",
-   "protocol_id": null,
-   "source_hash": "57351a5e42e817934c3bbf6ba13df897648958bfa616bd867f72c384a9141b76",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001557979-26-000008",
-   "available_as_of": "2026-08-25T14:47:35.865543-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Zapolsky David S 9258 shares @ $259.77 on 2026-08-24 ($2,404,951)",
-   "filing_date": "2026-08-25",
-   "protocol_id": null,
-   "source_hash": "531298852d043733a15eda6f5a007ab2ab4db3144f98bf000595f4f2315c8121",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001557979-26-000008",
-   "available_as_of": "2026-08-25T14:47:35.865543-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Zapolsky David S 1119 shares @ $260.45 on 2026-08-21 ($291,442)",
    "filing_date": "2026-08-25",
    "protocol_id": null,
@@ -200,6 +246,26 @@
    "ticker": "AMZN"
   },
   {
+   "accession_number": "0001557979-26-000008",
+   "available_as_of": "2026-08-25T14:47:35.865543-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zapolsky David S 1138 shares @ $257.70 on 2026-08-21 ($293,265)",
+   "filing_date": "2026-08-25",
+   "protocol_id": null,
+   "source_hash": "57351a5e42e817934c3bbf6ba13df897648958bfa616bd867f72c384a9141b76",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001557979-26-000008",
+   "available_as_of": "2026-08-25T14:47:35.865543-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zapolsky David S 9258 shares @ $259.77 on 2026-08-24 ($2,404,951)",
+   "filing_date": "2026-08-25",
+   "protocol_id": null,
+   "source_hash": "531298852d043733a15eda6f5a007ab2ab4db3144f98bf000595f4f2315c8121",
+   "ticker": "AMZN"
+  },
+  {
    "accession_number": "0001639902-26-000008",
    "available_as_of": "2026-08-25T14:41:48.169135-06:00",
    "evidence_type": "INSIDER_SELL",
@@ -207,6 +273,16 @@
    "filing_date": "2026-08-25",
    "protocol_id": null,
    "source_hash": "a082456c84cd939f9e92ddd20ed2a92152f8901f9656e103f3f7a04c9b91a1cf",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001397333-26-000006",
+   "available_as_of": "2026-08-25T14:36:01.478150-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Reynolds Shelley S 675 shares @ $257.77 on 2026-08-21 ($173,992)",
+   "filing_date": "2026-08-25",
+   "protocol_id": null,
+   "source_hash": "a81967c54167dc9c085754503c41bf43f23ec9649317e5c47ba471996c6dd0e5",
    "ticker": "AMZN"
   },
   {
@@ -230,23 +306,13 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001397333-26-000006",
-   "available_as_of": "2026-08-25T14:36:01.478150-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Reynolds Shelley S 675 shares @ $257.77 on 2026-08-21 ($173,992)",
-   "filing_date": "2026-08-25",
-   "protocol_id": null,
-   "source_hash": "a81967c54167dc9c085754503c41bf43f23ec9649317e5c47ba471996c6dd0e5",
-   "ticker": "AMZN"
-  },
-  {
    "accession_number": "0001936006-26-000020",
    "available_as_of": "2026-08-19T15:30:05.246763-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 400 shares @ $265.09 on 2026-08-17 ($106,037)",
+   "excerpt": "Herrington Douglas J S 1441 shares @ $262.05 on 2026-08-17 ($377,607)",
    "filing_date": "2026-08-19",
    "protocol_id": null,
-   "source_hash": "190ac6beabc31d052c0faf4cde8a9461b2ead5c050e7e472c70f6d25866342d5",
+   "source_hash": "895005f32fd2ce2dc17a92e5048c2698272e8b4078043e0e23baf7e9c6c27aa1",
    "ticker": "AMZN"
   },
   {
@@ -263,10 +329,10 @@
    "accession_number": "0001936006-26-000020",
    "available_as_of": "2026-08-19T15:30:05.246763-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 1441 shares @ $262.05 on 2026-08-17 ($377,607)",
+   "excerpt": "Herrington Douglas J S 400 shares @ $265.09 on 2026-08-17 ($106,037)",
    "filing_date": "2026-08-19",
    "protocol_id": null,
-   "source_hash": "895005f32fd2ce2dc17a92e5048c2698272e8b4078043e0e23baf7e9c6c27aa1",
+   "source_hash": "190ac6beabc31d052c0faf4cde8a9461b2ead5c050e7e472c70f6d25866342d5",
    "ticker": "AMZN"
   },
   {
@@ -313,16 +379,6 @@
    "accession_number": "0001936006-26-000016",
    "available_as_of": "2026-07-16T01:21:34.515932-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 1044 shares @ $261.74 on 2026-05-15 ($273,261)",
-   "filing_date": "2026-05-19",
-   "protocol_id": null,
-   "source_hash": "356a892cb24caf843071a6eb4e7c5f97cd1621e893107ffbbaee17c65d11acf7",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001936006-26-000016",
-   "available_as_of": "2026-07-16T01:21:34.515932-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Herrington Douglas J S 600 shares @ $263.57 on 2026-05-15 ($158,144)",
    "filing_date": "2026-05-19",
    "protocol_id": null,
@@ -340,13 +396,23 @@
    "ticker": "AMZN"
   },
   {
+   "accession_number": "0001936006-26-000016",
+   "available_as_of": "2026-07-16T01:21:34.515932-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Herrington Douglas J S 1044 shares @ $261.74 on 2026-05-15 ($273,261)",
+   "filing_date": "2026-05-19",
+   "protocol_id": null,
+   "source_hash": "356a892cb24caf843071a6eb4e7c5f97cd1621e893107ffbbaee17c65d11acf7",
+   "ticker": "AMZN"
+  },
+  {
    "accession_number": "0002024813-26-000006",
    "available_as_of": "2026-07-16T01:21:33.991422-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 3389 shares @ $261.79 on 2026-05-15 ($887,202)",
+   "excerpt": "Garman Matthew S S 6151 shares @ $262.85 on 2026-05-15 ($1,616,762)",
    "filing_date": "2026-05-19",
    "protocol_id": null,
-   "source_hash": "785b70d5722c9101eb790906dc7c2e63fb5e810996952853fe922607377bffdd",
+   "source_hash": "d54db90999dc5b61cd00deea34676b8dc25c6c3910bee0bf5011347ceea740f9",
    "ticker": "AMZN"
   },
   {
@@ -363,20 +429,10 @@
    "accession_number": "0002024813-26-000006",
    "available_as_of": "2026-07-16T01:21:33.991422-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 6151 shares @ $262.85 on 2026-05-15 ($1,616,762)",
+   "excerpt": "Garman Matthew S S 3389 shares @ $261.79 on 2026-05-15 ($887,202)",
    "filing_date": "2026-05-19",
    "protocol_id": null,
-   "source_hash": "d54db90999dc5b61cd00deea34676b8dc25c6c3910bee0bf5011347ceea740f9",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001018724-26-000018",
-   "available_as_of": "2026-07-16T01:21:33.469407-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Reynolds Shelley S 463 shares @ $263.25 on 2026-05-21 ($121,883)",
-   "filing_date": "2026-05-26",
-   "protocol_id": null,
-   "source_hash": "837396719a5299f0c245da18b4c7ebbba0418a3e7289b9fde379700cb937a478",
+   "source_hash": "785b70d5722c9101eb790906dc7c2e63fb5e810996952853fe922607377bffdd",
    "ticker": "AMZN"
   },
   {
@@ -387,6 +443,16 @@
    "filing_date": "2026-05-26",
    "protocol_id": null,
    "source_hash": "b76e01c3c20cb3512e119dde52202c5a1a97dbd7d0e98b3baed69aa583a8f3f8",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001018724-26-000018",
+   "available_as_of": "2026-07-16T01:21:33.469407-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Reynolds Shelley S 463 shares @ $263.25 on 2026-05-21 ($121,883)",
+   "filing_date": "2026-05-26",
+   "protocol_id": null,
+   "source_hash": "837396719a5299f0c245da18b4c7ebbba0418a3e7289b9fde379700cb937a478",
    "ticker": "AMZN"
   },
   {
@@ -453,10 +519,10 @@
    "accession_number": "0001018724-26-000020",
    "available_as_of": "2026-07-16T01:21:31.871514-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 4200 shares @ $261.88 on 2026-05-21 ($1,099,888)",
+   "excerpt": "Herrington Douglas J S 1370 shares @ $263.12 on 2026-05-21 ($360,468)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
-   "source_hash": "1d33b61aa72cc31781bcf00f937eeeb14754536e48fd9e2eb1d56734ef7cf9ff",
+   "source_hash": "b512b525fbb274986687c8d3e81678db4b92ece763c2de7bdc426307e5eb7694",
    "ticker": "AMZN"
   },
   {
@@ -473,40 +539,10 @@
    "accession_number": "0001018724-26-000020",
    "available_as_of": "2026-07-16T01:21:31.871514-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 1370 shares @ $263.12 on 2026-05-21 ($360,468)",
+   "excerpt": "Herrington Douglas J S 4200 shares @ $261.88 on 2026-05-21 ($1,099,888)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
-   "source_hash": "b512b525fbb274986687c8d3e81678db4b92ece763c2de7bdc426307e5eb7694",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0002024813-26-000008",
-   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 2534 shares @ $264.95 on 2026-05-21 ($671,374)",
-   "filing_date": "2026-05-26",
-   "protocol_id": null,
-   "source_hash": "cd9c2df713f444308f472b635ebb5ad2336cb50a8a1821a1a1795aa1cc43809f",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0002024813-26-000008",
-   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 3689 shares @ $264.03 on 2026-05-21 ($974,010)",
-   "filing_date": "2026-05-26",
-   "protocol_id": null,
-   "source_hash": "2ba115c069afee18a18d1f07e057050a0c8be6b90cb3289e74db27f3b1fdac4f",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0002024813-26-000008",
-   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 4554 shares @ $263.18 on 2026-05-21 ($1,198,522)",
-   "filing_date": "2026-05-26",
-   "protocol_id": null,
-   "source_hash": "96f13849700dfed4ffca93efd1875b785d6eff5891ebd0d0f8162fa83bf92969",
+   "source_hash": "1d33b61aa72cc31781bcf00f937eeeb14754536e48fd9e2eb1d56734ef7cf9ff",
    "ticker": "AMZN"
   },
   {
@@ -523,6 +559,26 @@
    "accession_number": "0002024813-26-000008",
    "available_as_of": "2026-07-16T01:21:31.323432-06:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Garman Matthew S S 2534 shares @ $264.95 on 2026-05-21 ($671,374)",
+   "filing_date": "2026-05-26",
+   "protocol_id": null,
+   "source_hash": "cd9c2df713f444308f472b635ebb5ad2336cb50a8a1821a1a1795aa1cc43809f",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0002024813-26-000008",
+   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Garman Matthew S S 4554 shares @ $263.18 on 2026-05-21 ($1,198,522)",
+   "filing_date": "2026-05-26",
+   "protocol_id": null,
+   "source_hash": "96f13849700dfed4ffca93efd1875b785d6eff5891ebd0d0f8162fa83bf92969",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0002024813-26-000008",
+   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Garman Matthew S S 433 shares @ $265.64 on 2026-05-21 ($115,023)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
@@ -530,33 +586,23 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001374545-26-000008",
-   "available_as_of": "2026-07-16T01:21:30.781110-06:00",
+   "accession_number": "0002024813-26-000008",
+   "available_as_of": "2026-07-16T01:21:31.323432-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 3600 shares @ $264.97 on 2026-05-21 ($953,908)",
+   "excerpt": "Garman Matthew S S 3689 shares @ $264.03 on 2026-05-21 ($974,010)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
-   "source_hash": "2284fe4a91d634637f66f3b0bf18c4eb00595c6199a60a6a404880fec825b50e",
+   "source_hash": "2ba115c069afee18a18d1f07e057050a0c8be6b90cb3289e74db27f3b1fdac4f",
    "ticker": "AMZN"
   },
   {
    "accession_number": "0001374545-26-000008",
    "available_as_of": "2026-07-16T01:21:30.781110-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 5227 shares @ $263.10 on 2026-05-21 ($1,375,238)",
+   "excerpt": "Jassy Andrew R S 5206 shares @ $261.95 on 2026-05-21 ($1,363,726)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
-   "source_hash": "cbe87ea1f0db9dd16417d7f39a7337fecdabcc830e4d3a788718649a1dca477b",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001374545-26-000008",
-   "available_as_of": "2026-07-16T01:21:30.781110-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 5667 shares @ $263.95 on 2026-05-21 ($1,495,785)",
-   "filing_date": "2026-05-26",
-   "protocol_id": null,
-   "source_hash": "d3739facf852a360826e24c065ed36d9e0f10853164a27ce841ca6345e4afcfe",
+   "source_hash": "f7cbdabfdbca58e7bf2a0c12b3c202fe712a2ad079adc0285ab7fefbb2c3d30a",
    "ticker": "AMZN"
   },
   {
@@ -573,10 +619,30 @@
    "accession_number": "0001374545-26-000008",
    "available_as_of": "2026-07-16T01:21:30.781110-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 5206 shares @ $261.95 on 2026-05-21 ($1,363,726)",
+   "excerpt": "Jassy Andrew R S 5667 shares @ $263.95 on 2026-05-21 ($1,495,785)",
    "filing_date": "2026-05-26",
    "protocol_id": null,
-   "source_hash": "f7cbdabfdbca58e7bf2a0c12b3c202fe712a2ad079adc0285ab7fefbb2c3d30a",
+   "source_hash": "d3739facf852a360826e24c065ed36d9e0f10853164a27ce841ca6345e4afcfe",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001374545-26-000008",
+   "available_as_of": "2026-07-16T01:21:30.781110-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Jassy Andrew R S 5227 shares @ $263.10 on 2026-05-21 ($1,375,238)",
+   "filing_date": "2026-05-26",
+   "protocol_id": null,
+   "source_hash": "cbe87ea1f0db9dd16417d7f39a7337fecdabcc830e4d3a788718649a1dca477b",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001374545-26-000008",
+   "available_as_of": "2026-07-16T01:21:30.781110-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Jassy Andrew R S 3600 shares @ $264.97 on 2026-05-21 ($953,908)",
+   "filing_date": "2026-05-26",
+   "protocol_id": null,
+   "source_hash": "2284fe4a91d634637f66f3b0bf18c4eb00595c6199a60a6a404880fec825b50e",
    "ticker": "AMZN"
   },
   {
@@ -653,20 +719,20 @@
    "accession_number": "0001936006-26-000014",
    "available_as_of": "2026-05-05T14:44:21-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 1000 shares @ $265.65 on 2026-05-01 ($265,650)",
+   "excerpt": "Herrington Douglas J S 27500 shares @ $275.00 on 2026-05-04 ($7,562,500)",
    "filing_date": "2026-05-05",
    "protocol_id": null,
-   "source_hash": "724ac591f1d305fdba7802690fc185b2c449b4f4b09013878c8e9dfb0d274617",
+   "source_hash": "961f1e37cc4282a96c929ab3c8db958a9e5c034a42fdd1f95193c1ee1e5b4a98",
    "ticker": "AMZN"
   },
   {
    "accession_number": "0001936006-26-000014",
    "available_as_of": "2026-05-05T14:44:21-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 27500 shares @ $275.00 on 2026-05-04 ($7,562,500)",
+   "excerpt": "Herrington Douglas J S 1000 shares @ $265.65 on 2026-05-01 ($265,650)",
    "filing_date": "2026-05-05",
    "protocol_id": null,
-   "source_hash": "961f1e37cc4282a96c929ab3c8db958a9e5c034a42fdd1f95193c1ee1e5b4a98",
+   "source_hash": "724ac591f1d305fdba7802690fc185b2c449b4f4b09013878c8e9dfb0d274617",
    "ticker": "AMZN"
   },
   {
@@ -753,10 +819,10 @@
    "accession_number": "0001374545-26-000002",
    "available_as_of": "2026-02-24T15:44:18-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 8290 shares @ $204.25 on 2026-02-23 ($1,693,217)",
+   "excerpt": "Jassy Andrew R S 4561 shares @ $206.01 on 2026-02-23 ($939,632)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "683a2adbf65c6ee894fd6245de7e15e6698940682dcc3e28c99423aa6f71b049",
+   "source_hash": "d4a58e3c0607979ed531784dd72231827b90c02e5cc8902c7b5fdcb6a1e90827",
    "ticker": "AMZN"
   },
   {
@@ -773,10 +839,10 @@
    "accession_number": "0001374545-26-000002",
    "available_as_of": "2026-02-24T15:44:18-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 4561 shares @ $206.01 on 2026-02-23 ($939,632)",
+   "excerpt": "Jassy Andrew R S 358 shares @ $207.96 on 2026-02-23 ($74,449)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "d4a58e3c0607979ed531784dd72231827b90c02e5cc8902c7b5fdcb6a1e90827",
+   "source_hash": "8c2659451c9b69c618ddb26a7201c23aba9ce099f5260b2facc8f7e1f686aa90",
    "ticker": "AMZN"
   },
   {
@@ -793,30 +859,10 @@
    "accession_number": "0001374545-26-000002",
    "available_as_of": "2026-02-24T15:44:18-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Jassy Andrew R S 358 shares @ $207.96 on 2026-02-23 ($74,449)",
+   "excerpt": "Jassy Andrew R S 8290 shares @ $204.25 on 2026-02-23 ($1,693,217)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "8c2659451c9b69c618ddb26a7201c23aba9ce099f5260b2facc8f7e1f686aa90",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0002024813-26-000002",
-   "available_as_of": "2026-02-24T15:37:55-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 1868 shares @ $207.06 on 2026-02-23 ($386,795)",
-   "filing_date": "2026-02-24",
-   "protocol_id": null,
-   "source_hash": "689280ca989363bc753ff4803ce6d67acb4c363de92e0bf84bc5dbec60a644b6",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0002024813-26-000002",
-   "available_as_of": "2026-02-24T15:37:55-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Garman Matthew S S 4202 shares @ $206.02 on 2026-02-23 ($865,683)",
-   "filing_date": "2026-02-24",
-   "protocol_id": null,
-   "source_hash": "08bf80fdf4cc58b9523cc1e927aa1efbf8b6482267c4352e30a9da075dbf2dc2",
+   "source_hash": "683a2adbf65c6ee894fd6245de7e15e6698940682dcc3e28c99423aa6f71b049",
    "ticker": "AMZN"
   },
   {
@@ -850,13 +896,23 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001557979-26-000002",
-   "available_as_of": "2026-02-24T15:31:38-07:00",
+   "accession_number": "0002024813-26-000002",
+   "available_as_of": "2026-02-24T15:37:55-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Zapolsky David S 662 shares @ $208.02 on 2026-02-23 ($137,710)",
+   "excerpt": "Garman Matthew S S 1868 shares @ $207.06 on 2026-02-23 ($386,795)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "dddce82d22819b933bcd4cc5cb25c6e350b605a9bf7d38826f84f622f1ca0a29",
+   "source_hash": "689280ca989363bc753ff4803ce6d67acb4c363de92e0bf84bc5dbec60a644b6",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0002024813-26-000002",
+   "available_as_of": "2026-02-24T15:37:55-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Garman Matthew S S 4202 shares @ $206.02 on 2026-02-23 ($865,683)",
+   "filing_date": "2026-02-24",
+   "protocol_id": null,
+   "source_hash": "08bf80fdf4cc58b9523cc1e927aa1efbf8b6482267c4352e30a9da075dbf2dc2",
    "ticker": "AMZN"
   },
   {
@@ -873,10 +929,30 @@
    "accession_number": "0001557979-26-000002",
    "available_as_of": "2026-02-24T15:31:38-07:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zapolsky David S 662 shares @ $208.02 on 2026-02-23 ($137,710)",
+   "filing_date": "2026-02-24",
+   "protocol_id": null,
+   "source_hash": "dddce82d22819b933bcd4cc5cb25c6e350b605a9bf7d38826f84f622f1ca0a29",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001557979-26-000002",
+   "available_as_of": "2026-02-24T15:31:38-07:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Zapolsky David S 1681 shares @ $206.06 on 2026-02-23 ($346,394)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
    "source_hash": "aed5c8ed491b7bb78b30844d81ff0920c0cc6a8f7b8f241a2748562f3935bd1e",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001557979-26-000002",
+   "available_as_of": "2026-02-24T15:31:38-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zapolsky David S 10649 shares @ $205.43 on 2026-02-24 ($2,187,624)",
+   "filing_date": "2026-02-24",
+   "protocol_id": null,
+   "source_hash": "9f7450c9610fe1cab7074523f76a18adf50bd7aeabdc3a74ee645acab3c8fa95",
    "ticker": "AMZN"
   },
   {
@@ -900,16 +976,6 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001557979-26-000002",
-   "available_as_of": "2026-02-24T15:31:38-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Zapolsky David S 10649 shares @ $205.43 on 2026-02-24 ($2,187,624)",
-   "filing_date": "2026-02-24",
-   "protocol_id": null,
-   "source_hash": "9f7450c9610fe1cab7074523f76a18adf50bd7aeabdc3a74ee645acab3c8fa95",
-   "ticker": "AMZN"
-  },
-  {
    "accession_number": "0001936006-26-000006",
    "available_as_of": "2026-02-24T15:18:54-07:00",
    "evidence_type": "INSIDER_SELL",
@@ -917,16 +983,6 @@
    "filing_date": "2026-02-24",
    "protocol_id": null,
    "source_hash": "f8e5811591208aefaa0d31070048c9bd178b848d59e3e006b94b45a75b4454aa",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001936006-26-000006",
-   "available_as_of": "2026-02-24T15:18:54-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 1000 shares @ $207.34 on 2026-02-23 ($207,343)",
-   "filing_date": "2026-02-24",
-   "protocol_id": null,
-   "source_hash": "0b0392fa5d2d9b629dcd40aabfae0f5feb5914605edc4f9fb58197399f77d58c",
    "ticker": "AMZN"
   },
   {
@@ -950,13 +1006,13 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001397333-26-000002",
-   "available_as_of": "2026-02-24T15:11:58-07:00",
+   "accession_number": "0001936006-26-000006",
+   "available_as_of": "2026-02-24T15:18:54-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Reynolds Shelley S 795 shares @ $204.60 on 2026-02-23 ($162,658)",
+   "excerpt": "Herrington Douglas J S 1000 shares @ $207.34 on 2026-02-23 ($207,343)",
    "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "1576a4276d82050f3325899dde95dbf47fc330ec25204eae2bfe25d3babd9afe",
+   "source_hash": "0b0392fa5d2d9b629dcd40aabfae0f5feb5914605edc4f9fb58197399f77d58c",
    "ticker": "AMZN"
   },
   {
@@ -980,23 +1036,13 @@
    "ticker": "AMZN"
   },
   {
-   "accession_number": "0001936006-26-000004",
-   "available_as_of": "2026-02-18T16:16:06-07:00",
+   "accession_number": "0001397333-26-000002",
+   "available_as_of": "2026-02-24T15:11:58-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 800 shares @ $196.75 on 2026-02-17 ($157,401)",
-   "filing_date": "2026-02-18",
+   "excerpt": "Reynolds Shelley S 795 shares @ $204.60 on 2026-02-23 ($162,658)",
+   "filing_date": "2026-02-24",
    "protocol_id": null,
-   "source_hash": "29511e6246e38440541af88ed9c65801fe4bfc6fa3579ddc8e5ee14a2ec13b05",
-   "ticker": "AMZN"
-  },
-  {
-   "accession_number": "0001936006-26-000004",
-   "available_as_of": "2026-02-18T16:16:06-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Herrington Douglas J S 732 shares @ $200.08 on 2026-02-17 ($146,459)",
-   "filing_date": "2026-02-18",
-   "protocol_id": null,
-   "source_hash": "88eb2f862c82c2b7c87c604a95f7afc261d1d9e4031fcc42137c6b0edaa3f15a",
+   "source_hash": "1576a4276d82050f3325899dde95dbf47fc330ec25204eae2bfe25d3babd9afe",
    "ticker": "AMZN"
   },
   {
@@ -1013,6 +1059,16 @@
    "accession_number": "0001936006-26-000004",
    "available_as_of": "2026-02-18T16:16:06-07:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Herrington Douglas J S 732 shares @ $200.08 on 2026-02-17 ($146,459)",
+   "filing_date": "2026-02-18",
+   "protocol_id": null,
+   "source_hash": "88eb2f862c82c2b7c87c604a95f7afc261d1d9e4031fcc42137c6b0edaa3f15a",
+   "ticker": "AMZN"
+  },
+  {
+   "accession_number": "0001936006-26-000004",
+   "available_as_of": "2026-02-18T16:16:06-07:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Herrington Douglas J S 2114 shares @ $198.12 on 2026-02-17 ($418,834)",
    "filing_date": "2026-02-18",
    "protocol_id": null,
@@ -1020,9 +1076,30 @@
    "ticker": "AMZN"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.140236-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-14T10:45:41-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-18T16:16:06-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 100,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for AMZN in the declared corpus",
+  "total_available": 101
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/AMZN.history.json",
  "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -1138,10 +1215,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -1249,7 +1322,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0055,
+ "score": -0.1419,
  "threshold_band": {
   "ceiling": 0.0,
   "floor": -0.2

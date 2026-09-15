@@ -1,20 +1,101 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 13 of 13 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.1405,
+  "c1": 0.2615,
   "c2": 0.0,
-  "c3": -0.6767205,
+  "c3": 0.6277762,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.09189605,
-  "c7": -0.028575582,
+  "c6": -0.06836481,
+  "c7": -0.0066252,
   "c8": 0.0,
   "c9": 0.23809524
  },
+ "corrections": [
+  {
+   "corrected_at": null,
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "correction_id": "exc-c973077e0fd2d12e",
+   "kind": "quality_flag",
+   "original": {
+    "accession_number": "0001551152-26-000026",
+    "excerpt_sha256": "b004c906b0e025057c8fca1a4bcf64c0528d451f1a366dad6a04f72c0aa5a0a7",
+    "source_hash": "c973077e0fd2d12ef05cd24a187e8d60e0bb4fccc965786f02dc1b0324b9f29b",
+    "ticker": "ABBV"
+   },
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "taxonomy_url"
+   ],
+   "source_location": {
+    "accession_number": "0001551152-26-000026",
+    "char_offset": 52,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000026/abbv-20260630.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CONFIRMED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001551152-26-000021",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "ticker": "ABBV"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "char_offset": 606,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001551152-26-000021",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "ticker": "ABBV"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "char_offset": 606,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 80,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 79,
   "events_90d": 8,
-  "recency_days": 10.7,
+  "metric_id": "ecs",
+  "recency_days": 11.8,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -113,16 +194,6 @@
    "accession_number": "0001951400-26-000006",
    "available_as_of": "2026-03-03T16:10:12-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Siatis Perry C S 5777 shares @ $233.51 on 2026-03-02 ($1,348,987)",
-   "filing_date": "2026-03-03",
-   "protocol_id": null,
-   "source_hash": "a7867d9fd5cd78724a78e56ad180c6e4ea1dc54084547a4c53affaf5b96121cc",
-   "ticker": "ABBV"
-  },
-  {
-   "accession_number": "0001951400-26-000006",
-   "available_as_of": "2026-03-03T16:10:12-07:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Siatis Perry C S 10291 shares @ $234.66 on 2026-03-02 ($2,414,886)",
    "filing_date": "2026-03-03",
    "protocol_id": null,
@@ -140,6 +211,16 @@
    "ticker": "ABBV"
   },
   {
+   "accession_number": "0001951400-26-000006",
+   "available_as_of": "2026-03-03T16:10:12-07:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Siatis Perry C S 5777 shares @ $233.51 on 2026-03-02 ($1,348,987)",
+   "filing_date": "2026-03-03",
+   "protocol_id": null,
+   "source_hash": "a7867d9fd5cd78724a78e56ad180c6e4ea1dc54084547a4c53affaf5b96121cc",
+   "ticker": "ABBV"
+  },
+  {
    "accession_number": "0001951400-26-000004",
    "available_as_of": "2026-02-27T15:00:05-07:00",
    "evidence_type": "INSIDER_SELL",
@@ -150,9 +231,30 @@
    "ticker": "ABBV"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WATCH",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.088476-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-03T02:47:46-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 13,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for ABBV in the declared corpus",
+  "total_available": 13
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/ABBV.history.json",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -268,10 +370,6 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -379,10 +477,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0447,
+ "score": 0.2789,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "ABBV",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

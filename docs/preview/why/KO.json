@@ -1,20 +1,76 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay KO --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 39 of 39 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay KO --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.1045,
+  "c1": 0.152,
   "c2": 0.0,
-  "c3": -0.19229461,
+  "c3": 0.57633233,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.41466972,
-  "c7": -0.045528095,
+  "c6": -0.3165767,
+  "c7": -0.039174557,
   "c8": 0.0,
-  "c9": -0.09090909
+  "c9": -0.04347826
  },
+ "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "862115ffac56c758d51f9d8bbc3f888416202d33459d07d92bbfcce8b332febe",
+   "correction_id": "exc-52b1ca5604d44091",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001628280-26-048466",
+    "excerpt_sha256": "d56f5fe8345c570edd19b39ed7846924ad5f88f7efbdac4c724d95bf8c94f77b",
+    "source_hash": "52b1ca5604d4409111fa9b991227ec8c6c8a62e943f94e2b29ae684dfad89263",
+    "ticker": "KO"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001628280-26-048466",
+    "char_offset": 1224,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/21344/000162828026048466/ko-20260716.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "862115ffac56c758d51f9d8bbc3f888416202d33459d07d92bbfcce8b332febe",
+   "correction_id": "exc-52b1ca5604d44091",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001628280-26-048466",
+    "excerpt_sha256": "d56f5fe8345c570edd19b39ed7846924ad5f88f7efbdac4c724d95bf8c94f77b",
+    "source_hash": "52b1ca5604d4409111fa9b991227ec8c6c8a62e943f94e2b29ae684dfad89263",
+    "ticker": "KO"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001628280-26-048466",
+    "char_offset": 1224,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/21344/000162828026048466/ko-20260716.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 75,
   "events_90d": 27,
-  "recency_days": 20.4,
+  "metric_id": "ecs",
+  "recency_days": 21.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -73,20 +129,20 @@
    "accession_number": "0000021344-26-000161",
    "available_as_of": "2026-08-07T13:25:48.800972-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ortega Luisa S 19772 shares @ $86.67 on 2026-08-06 ($1,713,681)",
+   "excerpt": "Ortega Luisa S 35983 shares @ $86.55 on 2026-08-06 ($3,114,214)",
    "filing_date": "2026-08-07",
    "protocol_id": null,
-   "source_hash": "4ae0d7c18ab157a23e90965f73e8003c080908db9c0cdcc73623ef3d36947c57",
+   "source_hash": "e46aadc53ea5a78c258dee4beff0f81a9ea670d6976cec0c408fa63a4f69a8d5",
    "ticker": "KO"
   },
   {
    "accession_number": "0000021344-26-000161",
    "available_as_of": "2026-08-07T13:25:48.800972-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Ortega Luisa S 35983 shares @ $86.55 on 2026-08-06 ($3,114,214)",
+   "excerpt": "Ortega Luisa S 19772 shares @ $86.67 on 2026-08-06 ($1,713,681)",
    "filing_date": "2026-08-07",
    "protocol_id": null,
-   "source_hash": "e46aadc53ea5a78c258dee4beff0f81a9ea670d6976cec0c408fa63a4f69a8d5",
+   "source_hash": "4ae0d7c18ab157a23e90965f73e8003c080908db9c0cdcc73623ef3d36947c57",
    "ticker": "KO"
   },
   {
@@ -103,16 +159,6 @@
    "accession_number": "0000021344-26-000156",
    "available_as_of": "2026-07-30T09:56:13.058962-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Quincey James S 145947 shares @ $90.09 on 2026-07-29 ($13,148,978)",
-   "filing_date": "2026-07-30",
-   "protocol_id": null,
-   "source_hash": "30f998d0639cb50cb468d8941e76bf0b3d7e6511321abf93d6100ee6ed4e62b0",
-   "ticker": "KO"
-  },
-  {
-   "accession_number": "0000021344-26-000156",
-   "available_as_of": "2026-07-30T09:56:13.058962-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Quincey James S 381140 shares @ $90.04 on 2026-07-28 ($34,319,637)",
    "filing_date": "2026-07-30",
    "protocol_id": null,
@@ -120,13 +166,13 @@
    "ticker": "KO"
   },
   {
-   "accession_number": "0000021344-26-000154",
-   "available_as_of": "2026-07-29T09:38:31.194869-06:00",
+   "accession_number": "0000021344-26-000156",
+   "available_as_of": "2026-07-30T09:56:13.058962-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Pietracci Bruno S 40334 shares @ $89.69 on 2026-07-28 ($3,617,411)",
-   "filing_date": "2026-07-29",
+   "excerpt": "Quincey James S 145947 shares @ $90.09 on 2026-07-29 ($13,148,978)",
+   "filing_date": "2026-07-30",
    "protocol_id": null,
-   "source_hash": "2b800a00b3ed05fd9cf75520e6409fefb3b85b8f18963e3ae2379812cd94d42c",
+   "source_hash": "30f998d0639cb50cb468d8941e76bf0b3d7e6511321abf93d6100ee6ed4e62b0",
    "ticker": "KO"
   },
   {
@@ -137,6 +183,16 @@
    "filing_date": "2026-07-29",
    "protocol_id": null,
    "source_hash": "7ae1d527e684410efee33a0f3e305bb812c55bc84911866219d290fb86bc82b8",
+   "ticker": "KO"
+  },
+  {
+   "accession_number": "0000021344-26-000154",
+   "available_as_of": "2026-07-29T09:38:31.194869-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Pietracci Bruno S 40334 shares @ $89.69 on 2026-07-28 ($3,617,411)",
+   "filing_date": "2026-07-29",
+   "protocol_id": null,
+   "source_hash": "2b800a00b3ed05fd9cf75520e6409fefb3b85b8f18963e3ae2379812cd94d42c",
    "ticker": "KO"
   },
   {
@@ -183,16 +239,6 @@
    "accession_number": "0000021344-26-000144",
    "available_as_of": "2026-07-16T01:25:02.810456-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Quincey James S 436296 shares @ $80.13 on 2026-06-05 ($34,959,133)",
-   "filing_date": "2026-06-08",
-   "protocol_id": null,
-   "source_hash": "9d4b18f6a1054dc264f21ca2b1d7fd1ad617ce9a931a88f50f31c1e3b988fe68",
-   "ticker": "KO"
-  },
-  {
-   "accession_number": "0000021344-26-000144",
-   "available_as_of": "2026-07-16T01:25:02.810456-06:00",
-   "evidence_type": "INSIDER_SELL",
    "excerpt": "Quincey James S 8000 shares @ $80.00 on 2026-06-04 ($640,019)",
    "filing_date": "2026-06-08",
    "protocol_id": null,
@@ -200,13 +246,13 @@
    "ticker": "KO"
   },
   {
-   "accession_number": "0000021344-26-000146",
-   "available_as_of": "2026-07-16T01:25:02.213401-06:00",
+   "accession_number": "0000021344-26-000144",
+   "available_as_of": "2026-07-16T01:25:02.810456-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "MANN JENNIFER K S 19180 shares @ $79.46 on 2026-06-05 ($1,524,035)",
-   "filing_date": "2026-06-09",
+   "excerpt": "Quincey James S 436296 shares @ $80.13 on 2026-06-05 ($34,959,133)",
+   "filing_date": "2026-06-08",
    "protocol_id": null,
-   "source_hash": "0ad31f7218dd52d33b703b48eb8b8b2e4ae8ca9e355144a4c5981fefc511f4e0",
+   "source_hash": "9d4b18f6a1054dc264f21ca2b1d7fd1ad617ce9a931a88f50f31c1e3b988fe68",
    "ticker": "KO"
   },
   {
@@ -220,13 +266,13 @@
    "ticker": "KO"
   },
   {
-   "accession_number": "0000021344-26-000148",
-   "available_as_of": "2026-07-16T01:25:01.604115-06:00",
+   "accession_number": "0000021344-26-000146",
+   "available_as_of": "2026-07-16T01:25:02.213401-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "MANN JENNIFER K S 48394 shares @ $79.46 on 2026-06-08 ($3,845,174)",
-   "filing_date": "2026-06-10",
+   "excerpt": "MANN JENNIFER K S 19180 shares @ $79.46 on 2026-06-05 ($1,524,035)",
+   "filing_date": "2026-06-09",
    "protocol_id": null,
-   "source_hash": "af8e712944a092e401f058e337e6c7d5d4b5dc388e884eb95a1a02b327f369c7",
+   "source_hash": "0ad31f7218dd52d33b703b48eb8b8b2e4ae8ca9e355144a4c5981fefc511f4e0",
    "ticker": "KO"
   },
   {
@@ -237,6 +283,26 @@
    "filing_date": "2026-06-10",
    "protocol_id": null,
    "source_hash": "e187e74e6810a81092af91efd6e8ae77e55edcc2d552538c2964d04a3219c9b8",
+   "ticker": "KO"
+  },
+  {
+   "accession_number": "0000021344-26-000148",
+   "available_as_of": "2026-07-16T01:25:01.604115-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "MANN JENNIFER K S 48394 shares @ $79.46 on 2026-06-08 ($3,845,174)",
+   "filing_date": "2026-06-10",
+   "protocol_id": null,
+   "source_hash": "af8e712944a092e401f058e337e6c7d5d4b5dc388e884eb95a1a02b327f369c7",
+   "ticker": "KO"
+  },
+  {
+   "accession_number": "0000021344-26-000150",
+   "available_as_of": "2026-07-16T01:25:01.015041-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "MANN JENNIFER K S 55154 shares @ $80.75 on 2026-06-09 ($4,453,570)",
+   "filing_date": "2026-06-11",
+   "protocol_id": null,
+   "source_hash": "f32f69dbdc2ecb4a9a4d1cc3f9c79d3c73a36853af22f3c2c6ced7be0c215b57",
    "ticker": "KO"
   },
   {
@@ -257,16 +323,6 @@
    "filing_date": "2026-06-11",
    "protocol_id": null,
    "source_hash": "55357d889a92337a694919fb68d369769dcc4253947f3c1a44aceda78b42e3b9",
-   "ticker": "KO"
-  },
-  {
-   "accession_number": "0000021344-26-000150",
-   "available_as_of": "2026-07-16T01:25:01.015041-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "MANN JENNIFER K S 55154 shares @ $80.75 on 2026-06-09 ($4,453,570)",
-   "filing_date": "2026-06-11",
-   "protocol_id": null,
-   "source_hash": "f32f69dbdc2ecb4a9a4d1cc3f9c79d3c73a36853af22f3c2c6ced7be0c215b57",
    "ticker": "KO"
   },
   {
@@ -410,9 +466,30 @@
    "ticker": "KO"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WEAKENING",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.422530-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-24T10:09:24.003782-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-27T10:00:14-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 39,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for KO in the declared corpus",
+  "total_available": 39
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/KO.history.json",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -528,10 +605,6 @@
   {
    "date": "2026-08-04",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -639,10 +712,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0004,
+ "score": 0.1474,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "KO",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

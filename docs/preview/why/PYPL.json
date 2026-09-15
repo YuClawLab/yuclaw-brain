@@ -1,20 +1,101 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PYPL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 27 of 27 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PYPL --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": -0.4475,
+  "c1": -0.4365,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.06972121,
-  "c7": 0.00094650115,
+  "c6": -0.05184027,
+  "c7": 0.12069594,
   "c8": 0.0,
   "c9": 0.6363636
  },
+ "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 5.02: Departure of Directors or Certain Officers; Election of Directors;",
+   "corrected_sha256": "463ead847c805a7f8f1ef752123b67143e4f4011ce8659e1b4dc2a6005bbb23f",
+   "correction_id": "exc-406638ea3689658d",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001633917-26-000076",
+    "excerpt_sha256": "25a5f7c60f91dbc913cb524750c434d85a44b72c92dc36dfe820c0a1d4565ea0",
+    "source_hash": "406638ea3689658d289275b3d3cfec48d19dc7021015949365f151b77666d12d",
+    "ticker": "PYPL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "operator_tail"
+   ],
+   "source_location": {
+    "accession_number": "0001633917-26-000076",
+    "char_offset": 503,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1633917/000163391726000076/0001633917-26-000076-index.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "On May 15, 2026, PayPal Holdings, Inc. (the \u201cCompany\u201d) issued and sold $2.0 billion aggregate principal a",
+   "corrected_sha256": "c00d198f102398d13ddd3332071aecaa66f5601c2f7d9a8b53f5d034cd3dc2ac",
+   "correction_id": "exc-cc91bbe291a24efd",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-226653",
+    "excerpt_sha256": "1cce5d7669c27de31fe3c2a4916d2600597f444215a4103fdaf0812e47eb930b",
+    "source_hash": "cc91bbe291a24efd24fbc9d10ad7c9d5352e9bfac808387dd388e4e644842811",
+    "ticker": "PYPL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-226653",
+    "char_offset": 2100,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1633917/000119312526226653/d930458d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "Item 5.02. Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrangements of Certain Officers.",
+   "corrected_sha256": "1d4f50666a5c064c4959ba062dda90cd6c5893fa56743cf242c2706b649e758c",
+   "correction_id": "exc-f0f2c453952c9ef1",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001193125-26-197533",
+    "excerpt_sha256": "e29293b59184096dfdfc91bb1a4c0e0ff6fc7d1512ef26531aa071288457207c",
+    "source_hash": "f0f2c453952c9ef12d0720c086a051840ba1430f0280b3ba727497977d4bc35f",
+    "ticker": "PYPL"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001193125-26-197533",
+    "char_offset": 2069,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1633917/000119312526197533/d128781d8k.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  }
+ ],
  "evidence_coverage": {
-  "ecs": 90,
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
+  "ecs": 89,
   "events_90d": 13,
-  "recency_days": 5.2,
+  "metric_id": "ecs",
+  "recency_days": 6.3,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -23,20 +104,20 @@
    "accession_number": "0001896086-26-000016",
    "available_as_of": "2026-09-08T15:49:20.420339-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kereere Suzan S 1284 shares @ $56.69 on 2026-09-03 ($72,790)",
+   "excerpt": "Kereere Suzan S 995 shares @ $55.79 on 2026-09-03 ($55,512)",
    "filing_date": "2026-09-08",
    "protocol_id": null,
-   "source_hash": "5558c790994066e1809abb82a89665dce52db44fb31ffc74fe78db4fe26cb9b6",
+   "source_hash": "6bfef7855ff5163b7d88ef372df7b03d9a6c8e48eca4d58014a33deb072cd038",
    "ticker": "PYPL"
   },
   {
    "accession_number": "0001896086-26-000016",
    "available_as_of": "2026-09-08T15:49:20.420339-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kereere Suzan S 995 shares @ $55.79 on 2026-09-03 ($55,512)",
+   "excerpt": "Kereere Suzan S 1284 shares @ $56.69 on 2026-09-03 ($72,790)",
    "filing_date": "2026-09-08",
    "protocol_id": null,
-   "source_hash": "6bfef7855ff5163b7d88ef372df7b03d9a6c8e48eca4d58014a33deb072cd038",
+   "source_hash": "5558c790994066e1809abb82a89665dce52db44fb31ffc74fe78db4fe26cb9b6",
    "ticker": "PYPL"
   },
   {
@@ -53,20 +134,20 @@
    "accession_number": "0002006416-26-000017",
    "available_as_of": "2026-09-08T15:43:31.400205-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Keller Frank S 2427 shares @ $54.68 on 2026-09-03 ($132,716)",
+   "excerpt": "Keller Frank S 1185 shares @ $56.71 on 2026-09-03 ($67,199)",
    "filing_date": "2026-09-08",
    "protocol_id": null,
-   "source_hash": "716841a54e99eb63feefdf230b23d6b5341bad558740dfc6ed8001b1c69c0b96",
+   "source_hash": "8126028362998fde25f3423a104890eed2bbdf101bee63fc6ed5d69d463e5bf6",
    "ticker": "PYPL"
   },
   {
    "accession_number": "0002006416-26-000017",
    "available_as_of": "2026-09-08T15:43:31.400205-06:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Keller Frank S 1185 shares @ $56.71 on 2026-09-03 ($67,199)",
+   "excerpt": "Keller Frank S 2427 shares @ $54.68 on 2026-09-03 ($132,716)",
    "filing_date": "2026-09-08",
    "protocol_id": null,
-   "source_hash": "8126028362998fde25f3423a104890eed2bbdf101bee63fc6ed5d69d463e5bf6",
+   "source_hash": "716841a54e99eb63feefdf230b23d6b5341bad558740dfc6ed8001b1c69c0b96",
    "ticker": "PYPL"
   },
   {
@@ -243,6 +324,16 @@
    "accession_number": "0001633917-26-000048",
    "available_as_of": "2026-03-04T15:58:18-07:00",
    "evidence_type": "INSIDER_SELL",
+   "excerpt": "Keller Frank S 8901 shares @ $45.19 on 2026-03-03 ($402,250)",
+   "filing_date": "2026-03-04",
+   "protocol_id": null,
+   "source_hash": "e6f5f4b5ff475dd754ff78c5b59348b6b604f442320fab963525b0b8ae46b8f6",
+   "ticker": "PYPL"
+  },
+  {
+   "accession_number": "0001633917-26-000048",
+   "available_as_of": "2026-03-04T15:58:18-07:00",
+   "evidence_type": "INSIDER_SELL",
    "excerpt": "Keller Frank S 1204 shares @ $46.82 on 2026-03-03 ($56,375)",
    "filing_date": "2026-03-04",
    "protocol_id": null,
@@ -260,13 +351,13 @@
    "ticker": "PYPL"
   },
   {
-   "accession_number": "0001633917-26-000048",
-   "available_as_of": "2026-03-04T15:58:18-07:00",
+   "accession_number": "0001633917-26-000032",
+   "available_as_of": "2026-02-19T14:55:02-07:00",
    "evidence_type": "INSIDER_SELL",
-   "excerpt": "Keller Frank S 8901 shares @ $45.19 on 2026-03-03 ($402,250)",
-   "filing_date": "2026-03-04",
+   "excerpt": "Kereere Suzan S 31413 shares @ $41.45 on 2026-02-18 ($1,302,069)",
+   "filing_date": "2026-02-19",
    "protocol_id": null,
-   "source_hash": "e6f5f4b5ff475dd754ff78c5b59348b6b604f442320fab963525b0b8ae46b8f6",
+   "source_hash": "e0064670ca57c7c121703937c928c141f39129b6796950b0a648b801050266d6",
    "ticker": "PYPL"
   },
   {
@@ -278,21 +369,32 @@
    "protocol_id": null,
    "source_hash": "cff67ae9bacb292eb64e5e6853eb16dd1ea52285bb1ffec3d0d7d1bc328fe811",
    "ticker": "PYPL"
-  },
-  {
-   "accession_number": "0001633917-26-000032",
-   "available_as_of": "2026-02-19T14:55:02-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Kereere Suzan S 31413 shares @ $41.45 on 2026-02-18 ($1,302,069)",
-   "filing_date": "2026-02-19",
-   "protocol_id": null,
-   "source_hash": "e0064670ca57c7c121703937c928c141f39129b6796950b0a648b801050266d6",
-   "ticker": "PYPL"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.637106-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-09-08T15:49:20.420339-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-19T14:55:02-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 27,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for PYPL in the declared corpus",
+  "total_available": 27
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/PYPL.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -408,10 +510,6 @@
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -519,7 +617,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.079,
+ "score": 0.0761,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

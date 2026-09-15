@@ -1,20 +1,25 @@
 {
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WFC --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 6 of 6 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay WFC --date D",
+ "build_id": "why-2026-09-15T042420",
  "components": {
-  "c1": 0.1625,
+  "c1": -0.0125,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.030604921,
+  "c7": 0.16785373,
   "c8": 0.0,
   "c9": 0.53333336
  },
+ "corrections": [],
  "evidence_coverage": {
+  "as_of": "2026-09-15T04:24:15.091899+00:00",
   "ecs": 51,
   "events_90d": 3,
-  "recency_days": 25.4,
+  "metric_id": "ecs",
+  "recency_days": 26.5,
+  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
   "substrate_active": 1,
   "type_diversity": 1
  },
@@ -80,9 +85,30 @@
    "ticker": "WFC"
   }
  ],
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "evidence_objects_collection": {
+  "build_id": "why-2026-09-15T042420",
+  "cap": 100,
+  "completeness": "PREVIEW",
+  "corpus_end": "2026-09-14T22:24:20.795518-06:00",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "newest_returned_available_as_of": "2026-08-19T10:08:07-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
+  "oldest_returned_available_as_of": "2026-02-20T14:51:52-07:00",
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "returned": 6,
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for WFC in the declared corpus",
+  "total_available": 6
+ },
+ "generated": "2026-09-15T04:24:20.068981+00:00",
+ "history_manifest_url": "/why/history_manifest.json",
+ "history_url": "/why/WFC.history.json",
  "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-11",
    "label": "NEUTRAL"
@@ -198,10 +224,6 @@
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -309,7 +331,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2993,
+ "score": 0.2703,
  "threshold_band": {
   "ceiling": 0.4,
   "floor": 0.2
