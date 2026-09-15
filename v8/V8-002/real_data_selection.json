@@ -1,0 +1,86 @@
+{
+ "record": "v8-real-data-selection",
+ "order": "V8-002 §7",
+ "recorded_utc": "2026-09-15T09:47:12+00:00",
+ "criteria_source": "v8/V8-001/real_data_selection_criteria.md (all six required; no crawler; one issuer, quarterly revenue guidance)",
+ "corpus": {
+  "path": "v3/evidence/corpus_snapshot.json.gz",
+  "generated": "2026-08-06T01:06:08.732897+00:00",
+  "issuers": 79,
+  "guidance_objects": 3,
+  "issuers_with_guidance": 3
+ },
+ "candidates": [
+  {
+   "ticker": "ARM",
+   "evidence_type": "GUIDANCE_RAISE",
+   "accession": "0001973239-26-000052",
+   "filing_date": "2026-03-24",
+   "available_as_of": "2026-03-24T15:11:56-06:00",
+   "source_hash": "e6a011052e818aeb684316164b8288600d743394f3b99d14099b0fea30fb3240",
+   "excerpt": "During the event, the Company’s Chief Financial Officer, Jason Child, reaffirmed the Company’s fourth quarter 2026 guidance, which was previously provided in the Company’s third quarter fiscal year 2026 earnings release issued on February 4, 2026, as well as provided certain long-range financial expectations.",
+   "criteria": {
+    "1_in_v7_corpus_with_guidance_object": true,
+    "2_numeric_range_currency_period_basis_in_text": false,
+    "3_comparable_outcome_inside_corpus_window": false,
+    "4_point_in_time_clean": true,
+    "5_no_custody_or_denylist_conflict": "NOT_EVALUATED (criterion 2 already fails)",
+    "6_one_issuer_one_claim_chain": "NOT_EVALUATED (criterion 2 already fails)"
+   },
+   "eligible": false,
+   "why_not": [
+    "the guidance passage states no numeric range with explicit currency, fiscal period and accounting basis in the filing text; it refers to guidance given elsewhere (a second, unsourced chain)",
+    "no later filing in the corpus states a comparable actual for the same period and basis"
+   ]
+  },
+  {
+   "ticker": "CVX",
+   "evidence_type": "GUIDANCE_RAISE",
+   "accession": "0000093410-26-000108",
+   "filing_date": "2026-04-09",
+   "available_as_of": "2026-04-09T05:00:12-06:00",
+   "source_hash": "b1bde05c7768a5963bfdb2e6c6c89774d870a53275696a56e26d59dea69645ca",
+   "excerpt": "On April 9, 2026 , Chevron Corporation (\"Chevron\" or the \"Company\") is providing guidance ",
+   "criteria": {
+    "1_in_v7_corpus_with_guidance_object": true,
+    "2_numeric_range_currency_period_basis_in_text": false,
+    "3_comparable_outcome_inside_corpus_window": false,
+    "4_point_in_time_clean": true,
+    "5_no_custody_or_denylist_conflict": "NOT_EVALUATED (criterion 2 already fails)",
+    "6_one_issuer_one_claim_chain": "NOT_EVALUATED (criterion 2 already fails)"
+   },
+   "eligible": false,
+   "why_not": [
+    "the guidance passage states no numeric range with explicit currency, fiscal period and accounting basis in the filing text; it refers to guidance given elsewhere (a second, unsourced chain)",
+    "no later filing in the corpus states a comparable actual for the same period and basis"
+   ]
+  },
+  {
+   "ticker": "PSX",
+   "evidence_type": "GUIDANCE_CUT",
+   "accession": "0001534701-26-000015",
+   "filing_date": "2026-04-06",
+   "available_as_of": "2026-04-06T14:15:26-06:00",
+   "source_hash": "d4c403e24fbc09896eb43bf180e731a0414ffb47bc1252e0358cca38aa91c4d2",
+   "excerpt": "On April 6, 2026, Phillips 66 (the “Company”) issued guidance providing preliminary first-quarter 2026 financial information.",
+   "criteria": {
+    "1_in_v7_corpus_with_guidance_object": true,
+    "2_numeric_range_currency_period_basis_in_text": false,
+    "3_comparable_outcome_inside_corpus_window": false,
+    "4_point_in_time_clean": true,
+    "5_no_custody_or_denylist_conflict": "NOT_EVALUATED (criterion 2 already fails)",
+    "6_one_issuer_one_claim_chain": "NOT_EVALUATED (criterion 2 already fails)"
+   },
+   "eligible": false,
+   "why_not": [
+    "the guidance passage states no numeric range with explicit currency, fiscal period and accounting basis in the filing text; it refers to guidance given elsewhere (a second, unsourced chain)",
+    "no later filing in the corpus states a comparable actual for the same period and basis"
+   ]
+  }
+ ],
+ "selected_issuer": null,
+ "result": "NO_ELIGIBLE_ISSUER",
+ "meaning": "every guidance object in the offline v7 corpus fails criterion 2 (no machine-readable numeric range with currency, fiscal period and basis in the sourced passage) and criterion 3 (no comparable outcome inside the corpus window); no issuer is selected, no crawler is activated, nothing is ingested. The workbench proceeds on the clearly fictional fixtures, labeled a demonstration, not a validated dataset product.",
+ "next_step": "an eligible issuer requires a NEW bounded ingestion of one issuer's guidance and outcome passages with rights recorded (DAT boundary: one bounded disclosure ingestion path) — proposed for V8-003, subject to owner approval",
+ "not_advice": "Research and education only. Not investment advice."
+}

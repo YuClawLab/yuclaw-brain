@@ -1,0 +1,535 @@
+{
+ "record": "seven-step-scorecard",
+ "order": "V8-002",
+ "recorded_utc": "2026-09-15T10:02:00+00:00",
+ "candidate": {
+  "commit": "a41dc39ec4f56b9e1c3f5550b798470d8301c990",
+  "tree": "b5f29aa86e44a1df17fe857f5f1785efd6ac3583",
+  "branch": "codex/v8-integration",
+  "dirty_entries": 1,
+  "note": "run on the committed implementation; the single dirty entry at run time was the untracked v8/V8-002/ record directory (this scorecard's own home) — no tracked file differed from the commit"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "127.0.0.1 (ephemeral port)",
+  "B_fresh_workspace": "127.0.0.1 (ephemeral port, separate workspace id)",
+  "bind": "loopback only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 3,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "no script executes anywhere (CSP default-src 'none'; no <script>)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "original passage registered with its availability timestamp",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a later source is not visible at an earlier cutoff",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "unknown availability is explicit and blocks registration (never guessed)",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "source content renders as inert text (script/markup escaped, never executed)",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "2aca7bd69547ec48d75501e345600d86e682155479a588fa291a6c16f1ecaeee",
+     "url": "http://127.0.0.1:40795/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "249e0aa3dd9d12f812a5dd84c94fc734696209275e8a3c9caeb18929ea98a00d",
+     "url": "http://127.0.0.1:40795/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "9a0f81c50c6dce71dc9ba16a96f212bfc46b90ff4a5449198fc538950ea30b1d",
+     "url": "http://127.0.0.1:40795/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 2,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "missing fiscal period, currency, basis and resolution rule block the freeze with every reason listed",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "fully specified claim saved and frozen as V1 with a digest",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a second freeze of the same claim is refused (a change is an amendment)",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "3a84980d23bed0abd2915f20d720d38c110435cb59f440c9bedbb7ad91c13b98",
+     "url": "http://127.0.0.1:40795/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "ddea3bd6c3eaddf73819537deaaf30c911f1c39cf53c14beea9c62501f69b17d",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "amendment creates a new version R1 and the original V1 stays",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "original and revised ranges side by side, COMPARABLE, direction LOWERED, midpoint delta -5000000",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "unresolved explanation and next-evidence fields shown as notes, not causal proof",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "an accounting-basis change yields INCOMPARABLE with the reason and no delta",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "e2a1889200e340621cffc4fa322e25e1d638ff5f9afe27c5726a129ca2423288",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "73c4f39c129417a81d5b3a8b5545e4faafe4c2259f4796ee18153c3cf2112d6b",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 3,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "112 recomputed against the original range: IN_RANGE, midpoint 115000000, delta -3000000, inputs and formula and source links shown",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "112 recomputed against the revised range separately: IN_RANGE, midpoint 110000000, delta 2000000",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "both IN_RANGE with the explicit no-inference statement",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a currency/unit (and basis) mismatch cannot produce a pass: unresolved with explicit reasons",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a full-year outcome against a quarterly claim (explicit quarter dates) is PERIOD_MISMATCH, never a pass",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "an outside-range outcome produces the distinct OUT_OF_RANGE result with signed distance",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "8289b057d3874e740488d84c8a2dcd476690fbbb54cf9ec450a21046a15b6d45",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "b81971a09148e81cc93749ddf07c7c5230ce846e7f946c8b3fc1b2cd784bfc13",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "a90c91404cf26b4e74acf71a7a121fee825fd721578b3bef60014537f7ca0ccd",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "e40754ade7a7e17c87a13b06ae976a156a2e6e70b4ea4f57fc70fe06fd754b8d",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "replay before the amendment: only V1 visible, result PENDING_OUTCOME, later events counted as hidden",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "replay after the amendment, before the actual: V1 and R1 visible, still PENDING_OUTCOME",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "replay after the actual disclosure: IN_RANGE; original V1 range 110000000–120000000 unchanged",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "three times shown apart on every event (source available / observed / recorded)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "before the first source was available nothing is shown as known (later information never backdated)",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "0b4f802367e23deba630de81da550907fba0cfe200b7e3a2ada877b2a5377200",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "34b502a45a3aa8f809279a4993e3f440752f0e7f93ee3026aea80b69549e6e07",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "71f2a5dd384dffaf82e06a7aa51e7bd289a02a45a08884305453660ea8dbafab",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 4,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "adjudication recorded with reviewer identity, rule, evidence, reason, conflicts and result",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a label that differs from the computed result without the disputed flag is refused",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a disputed label stays visible next to the computed result",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a missing outcome is unresolved (PENDING_OUTCOME), never scored",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a withdrawal is WITHDRAWN_BEFORE_OUTCOME, not automatically a miss",
+     "ok": true,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "7213bb0272dbfd25cfa2dad94d308bb5a40de92eec6812fc156380f77528dc19",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "3fda4401b759a71e6afd61afba5dafbcd340d4b82452815552a898b516e27c67",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "1e974f768bc9dd6303e96a3d88796e7b728234f498cb8f8abdbd1c73d065bafe",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 4,
+   "failed": [],
+   "assertions": [
+    {
+     "name": "export built from the UI with a canonical research digest",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "export downloaded through the browser; it is a complete zip (no .part left behind)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "packet carries schema, claim versions, source references/digests, events, method and results",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "publication eligibility shown as separate and NOT ELIGIBLE (not in the PERMITTED class)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "workspace B is fresh (no claims, separate workspace id)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "verified in the fresh workspace through the UI: SUCCESS, canonical hash checked AND calculations recomputed (IN_RANGE)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a changed payload fails verification with the first discrepancy named",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "an incomplete packet is not presented as complete",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "unsafe archive paths are refused",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "export terms forbid bundling source bytes where rights do not allow it (excerpt withheld, digest kept)",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "imported packets are recorded as verifications in B and never become claims",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "B still holds no claims after imports",
+     "ok": true,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "63d78c16668ddad6588accacef54804c5ea55486b2c316c011a11b16ee2b5d32",
+     "url": "http://127.0.0.1:40795/claim/ZZFX-FY2026-REV-GUIDE?built=exp-4dfc3e4e7f1dd85f#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "02412b7daa6381ccc0d6e051a17d71ac56a1cdf9cd34dad8406acef8c83e5e76",
+     "url": "http://127.0.0.1:42513/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "c0add23a98f0a40946c11a5b8f1d7435fb79159427472722c579c7712e621339",
+     "url": "http://127.0.0.1:42513/verify"
+    }
+   ]
+  }
+ ],
+ "negative_cases_required_by_scope_section_5": {
+  "1 Source": [
+   "a later source is not visible at an earlier cutoff",
+   "unknown availability is explicit and blocks registration (never guessed)",
+   "source content renders as inert text (script/markup escaped, never executed)"
+  ],
+  "2 Typed claim": [
+   "missing fiscal period, currency, basis and resolution rule block the freeze with every reason listed",
+   "a second freeze of the same claim is refused (a change is an amendment)"
+  ],
+  "3 Comparison": [
+   "an accounting-basis change yields INCOMPARABLE with the reason and no delta"
+  ],
+  "4 Calculation": [
+   "a currency/unit (and basis) mismatch cannot produce a pass: unresolved with explicit reasons",
+   "a full-year outcome against a quarterly claim (explicit quarter dates) is PERIOD_MISMATCH, never a pass",
+   "an outside-range outcome produces the distinct OUT_OF_RANGE result with signed distance"
+  ],
+  "5 History": [
+   "before the first source was available nothing is shown as known (later information never backdated)"
+  ],
+  "6 Adjudication": [
+   "a label that differs from the computed result without the disputed flag is refused",
+   "a disputed label stays visible next to the computed result",
+   "a missing outcome is unresolved (PENDING_OUTCOME), never scored",
+   "a withdrawal is WITHDRAWN_BEFORE_OUTCOME, not automatically a miss"
+  ],
+  "7 Reproducible export": [
+   "a changed payload fails verification with the first discrepancy named",
+   "an incomplete packet is not presented as complete",
+   "unsafe archive paths are refused",
+   "export terms forbid bundling source bytes where rights do not allow it (excerpt withheld, digest kept)"
+  ]
+ },
+ "evidence": {
+  "journey_log": "v8/V8-002/journey/journey_log.json",
+  "journey_log_sha256": "0f89e11c5ffba2608b94d435b35d1fdb9036a963b2637b2df72ad44f0f7cae23",
+  "screenshots": "private return directory internal/v8/v8_002_20260915T100045Z/journey/ (PNG files; sha256 per step above)",
+  "screenshot_count": 20,
+  "post_requests_observed": [
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE-NEG/amend",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE-NEG/outcome",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE/adjudicate",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE/adjudicate",
+    422
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE/amend",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE/export",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-REV-GUIDE/outcome",
+    303
+   ],
+   [
+    "A/claim/ZZFX-FY2026-RIGHTS-UNKNOWN/export",
+    303
+   ],
+   [
+    "A/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly/outcome",
+    303
+   ],
+   [
+    "A/claim/freeze",
+    303
+   ],
+   [
+    "A/claim/freeze",
+    422
+   ],
+   [
+    "A/fixtures/load",
+    303
+   ],
+   [
+    "A/source/register",
+    303
+   ],
+   [
+    "A/source/register",
+    422
+   ],
+   [
+    "B/verify",
+    200
+   ]
+  ]
+ },
+ "what_the_journey_did_through_the_browser": [
+  "registered exact passages with availability timestamps",
+  "saved and froze a fully specified claim (and was blocked on an incomplete one)",
+  "created a REVISED amendment with unresolved-explanation and next-evidence notes",
+  "recorded the disclosed outcome and read both calculations",
+  "replayed the claim at three cutoffs",
+  "recorded an adjudication and a disputed second one",
+  "built an export, downloaded it, uploaded it into a fresh workspace and verified it; then verified tampered, incomplete, unsafe and rights-withheld variants"
+ ],
+ "not_demonstrated_or_not_claimed": [
+  "real-issuer data (NO_ELIGIBLE_ISSUER; see real_data_selection.json)",
+  "human benefit (PENDING)",
+  "independent review (owner functional review only)",
+  "any optional module (COM/PRC/SHD/EVO absent, default-off)",
+  "publication (nothing publishable; PERMITTED class unchanged)",
+  "backup or restore (canceled; restore not demonstrated)"
+ ],
+ "fixture_data": "clearly fictional demonstration data; not a validated dataset product",
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "gate_b_checkpoint": "2026-09-19 evening Asia/Shanghai — rerun this journey on the release candidate; the score here is for candidate a41dc39ec4f5 only",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice."
+}
