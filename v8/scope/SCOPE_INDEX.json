@@ -1,0 +1,706 @@
+{
+ "record": "v8-scope-index",
+ "schema": "yuclaw-v8-scope-index/1",
+ "order": "V8-001 §1/§5 — recovery of the two missing-input deliverables (recovery handoff 2026-09-15)",
+ "recorded_utc": "2026-09-15T09:05:05+00:00",
+ "branch": {
+  "name": "codex/v8-integration",
+  "worktree": "integration worktree (sibling checkout of the main repository; absolute path withheld — box identifier)",
+  "base_tag": "v7.0.1",
+  "base_commit": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+  "v8_001_head_before_recovery": "9c1bdb0636effd076174375bea6f21f49cf60e0f"
+ },
+ "mission": "Make financial AI accountable to evidence.",
+ "vision": "Become the Science Trust Layer for Financial AI.",
+ "mission_vision_controls": {
+  "scope_json": {
+   "mission": "Make financial AI accountable to evidence.",
+   "vision": "Become the Science Trust Layer for Financial AI."
+  },
+  "backlog_json": {
+   "mission": "Make financial AI accountable to evidence.",
+   "vision": "Become the Science Trust Layer for Financial AI."
+  },
+  "readme_canonical_payload_sha256": "c3b3d26ca94fba1f9e4b447e14ffb024f6dd63a102203f27122d184d8d21d266",
+  "readme_canonical_payload_unchanged_by_recovery": true,
+  "wording_identical_across_sources": true,
+  "rule": "no change to wording or meaning without the owner's explicit permission specifically authorizing it (scope §0, AGENTS.md, brand README)"
+ },
+ "source_package": {
+  "archive": "YUCLAW-V8-001-recovery-inputs.zip",
+  "archive_sha256": "24f9ac73340b86ab2c8168b26138aa4aba30f4ade9715822187dc265fd0514b3",
+  "received_via": "Taildrop (owner ran the privileged receive; staging directory created by the executor)",
+  "staging_directory_private": "internal/v8/recovery_inputs_20260915T082854Z/ (git-ignored; this host only)",
+  "manifest": {
+   "format": "yuclaw-handoff/1",
+   "entries": 30,
+   "entries_verified_sha256_and_bytes": 30,
+   "unlisted_files_in_archive": 0,
+   "precedence": "YuClaw-v8-implementation-plan/V8_001_RECOVERY_HANDOFF.md",
+   "release_target": "2026-09-21"
+  },
+  "extraction_safety": "members inspected before extraction: no absolute paths, no parent-directory traversal, no symlinks; extracted only into the staging directory"
+ },
+ "tracked_scope_files": [
+  {
+   "tree_path": "v8/scope/CLAUDE_CODE_ORDER_V8_001.md",
+   "archive_path": "YuClaw-v8-implementation-plan/CLAUDE_CODE_ORDER_V8_001.md",
+   "sha256": "37b44f0b5be7187247a33156f3687b91cbe521371f6cf1c6acc30841307abc3d",
+   "bytes": 12555,
+   "matches_handoff_manifest": true,
+   "role": "original V8-001 order (historical input; identity verification only)"
+  },
+  {
+   "tree_path": "v8/scope/HANDOFF_MANIFEST.json",
+   "archive_path": "HANDOFF_MANIFEST.json",
+   "sha256": "16802967504f2c200122701768df5d01198c1b0c853cf2318dc0c9b8a89f1647",
+   "bytes": 6185,
+   "matches_handoff_manifest": "n/a (the manifest itself; sha256 recorded)",
+   "role": "handoff identity record (yuclaw-handoff/1)"
+  },
+  {
+   "tree_path": "v8/scope/RELEASE_SCHEDULE.md",
+   "archive_path": "YuClaw-v8-implementation-plan/RELEASE_SCHEDULE.md",
+   "sha256": "638a9e417f2a5a0f77e89e8e99cb050ca669950e1e48b8586fc802a605d0a50a",
+   "bytes": 5348,
+   "matches_handoff_manifest": true,
+   "role": "release schedule (planning)"
+  },
+  {
+   "tree_path": "v8/scope/V8_001_SCHEDULE_ADDENDUM.md",
+   "archive_path": "YuClaw-v8-implementation-plan/V8_001_SCHEDULE_ADDENDUM.md",
+   "sha256": "732992dc05f74f680b335535339af7b2445b85079ac8c9269679c3008c15616d",
+   "bytes": 3356,
+   "matches_handoff_manifest": true,
+   "role": "owner schedule update: release target Monday 2026-09-21 (supersedes 2026-09-22)"
+  },
+  {
+   "tree_path": "v8/scope/V8_0_0_SCOPE_FREEZE.md",
+   "archive_path": "YuClaw-v8-implementation-plan/V8_0_0_SCOPE_FREEZE.md",
+   "sha256": "5b63da0c8ab5e800d1e20f025b9f6ed58206c0e6c22742b056814acd052f0a13",
+   "bytes": 17062,
+   "matches_handoff_manifest": true,
+   "role": "8.0.0 scope and review decision (governing scope)"
+  },
+  {
+   "tree_path": "v8/scope/V8_AI_PROTECTION_AND_LAUNCH.md",
+   "archive_path": "YuClaw-v8-implementation-plan/V8_AI_PROTECTION_AND_LAUNCH.md",
+   "sha256": "c96345aea590340eafb170141e13e3ac0a4464481fd4934ab6c77c91c8b01c48",
+   "bytes": 19079,
+   "matches_handoff_manifest": true,
+   "role": "AI-protection and launch review (planning)"
+  },
+  {
+   "tree_path": "v8/scope/V8_FEATURES_AND_TODO.md",
+   "archive_path": "YuClaw-v8-implementation-plan/V8_FEATURES_AND_TODO.md",
+   "sha256": "f2899cc19d4ca4cb1541d8b113b5d233e69f1b8f47a94d68412b8527abff3cb9",
+   "bytes": 73362,
+   "matches_handoff_manifest": true,
+   "role": "213-task roadmap (human document; sha256 referenced by v8-backlog.json)"
+  },
+  {
+   "tree_path": "v8/scope/backup-cancellation-review.json",
+   "archive_path": "YuClaw-v8-implementation-plan/backup-cancellation-review.json",
+   "sha256": "f347ec054df254af044fbfb9c8cc8e849bb80f42de4f7da37228801d1307de61",
+   "bytes": 826,
+   "matches_handoff_manifest": true,
+   "role": "reviewer record of the owner's backup cancellation (local observations; remote UNVERIFIED)"
+  },
+  {
+   "tree_path": "v8/scope/plan-validation.json",
+   "archive_path": "YuClaw-v8-implementation-plan/plan-validation.json",
+   "sha256": "477ae43368dd5b5e3a927aca58f4d21037a4463f0448f4a248a4c3e651aa1b60",
+   "bytes": 1553,
+   "matches_handoff_manifest": true,
+   "role": "reviewer consistency record for the plan, brand hashes and frozen v7 baseline"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/github_release.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/github_release.json",
+   "sha256": "938293df7f38d7100757fee2f91c510a378f48af85438021ae1bea8d35a4dbba",
+   "bytes": 13250,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/github_tag.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/github_tag.json",
+   "sha256": "6b1c9f7074890a1cb4f63493e665471bdb8113167109e7c3ca419d20e65f6585",
+   "bytes": 339,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/peeled-tags.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/peeled-tags.json",
+   "sha256": "a871c36347b6ea6083983bc473d0626c5f7b9b7e3fa676b463b0c6853685c9df",
+   "bytes": 1257,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/publisher-reproduction.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/publisher-reproduction.json",
+   "sha256": "7f94c0c4708490d71c75a2f0d3265bc7e085a8a1079179ec48f0275ec5bb43a3",
+   "bytes": 695,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/release_git_commit.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/release_git_commit.json",
+   "sha256": "30fc58b56fbaabfd777103edbcc7cc6e03610ac7e84af3f76f058096c8a7b936",
+   "bytes": 1511,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/released_deploy_verify.py",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/released_deploy_verify.py",
+   "sha256": "93c33fcbdbbde35b59978c255f34a6d354bb497dc185806ec8aed8eb73783535",
+   "bytes": 10128,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/target_manifest.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/target_manifest.json",
+   "sha256": "f830a0b3de4469523220b312e16bf611fdf68763e7b8689894c38b92c643bbb6",
+   "bytes": 730,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7-baseline-review-2026-09-15/verification.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7-baseline-review-2026-09-15/verification.json",
+   "sha256": "c9ee59cdb43a85bb4bfece53693fa07289c30e5ea314e0f45a02250c42700d33",
+   "bytes": 4735,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7.0.1-baseline-review-2026-09-15/pypi.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7.0.1-baseline-review-2026-09-15/pypi.json",
+   "sha256": "dd75b0f33f08f7bdd2d5e83b446aaa53e7e052021733e5c3fe808d3f07237be8",
+   "bytes": 30385,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7.0.1-baseline-review-2026-09-15/release.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7.0.1-baseline-review-2026-09-15/release.json",
+   "sha256": "274117f957716275bac70c9d5605949db663f2794a42cb1f215d3356a15ecb6e",
+   "bytes": 13283,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7.0.1-baseline-review-2026-09-15/tag.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7.0.1-baseline-review-2026-09-15/tag.json",
+   "sha256": "db7452c1a9ed3f90c4c278fbf96da85ee1a1bd5c455a59903c6136d773ec30a3",
+   "bytes": 339,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v7.0.1-baseline-review-2026-09-15/verification.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v7.0.1-baseline-review-2026-09-15/verification.json",
+   "sha256": "3badcb823872600b33c939d99af7f82631981cef49cf4fe010ec134fd3b88eb3",
+   "bytes": 8422,
+   "matches_handoff_manifest": true,
+   "role": "independent v7 / v7.0.1 baseline review evidence (GitHub / PyPI metadata captured 2026-09-15)"
+  },
+  {
+   "tree_path": "v8/scope/v8-backlog.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v8-backlog.json",
+   "sha256": "734a341fa6148058c3df2bdadc0771ef88053c059659859c0a8590319037966d",
+   "bytes": 72867,
+   "matches_handoff_manifest": true,
+   "role": "213-task / 20-workstream roadmap (machine)"
+  },
+  {
+   "tree_path": "v8/scope/v8.0.0-scope.json",
+   "archive_path": "YuClaw-v8-implementation-plan/v8.0.0-scope.json",
+   "sha256": "eddca394b428e280af912a84e59144c0f9372d4582bc2f836bdffb43b0b347b1",
+   "bytes": 5166,
+   "matches_handoff_manifest": true,
+   "role": "machine-readable scope index (schema 1.0)"
+  }
+ ],
+ "not_tracked_kept_private": [
+  {
+   "archive_path": "YuClaw-v8-implementation-plan/V8_001_RECOVERY_HANDOFF.md",
+   "sha256": "77c8a159721f0d815d0241ba0d7c6816f40584125076730ee497f8c43cfce95e",
+   "reason": "names this host, its user and absolute paths; tools/check_leak_sweep.py reports 6 box-identifier hits; it governs precedence for this recovery and is kept verbatim in the private staging directory"
+  },
+  {
+   "archive_path": "yuclaw-brain/AGENTS.md",
+   "sha256": "d37e1aae4acd03a30530ce5dd9eccea034bc2ca853fb68642c1ee452a3e488ba",
+   "reason": "reference repository instructions shipped for comparison; the handoff forbids overwriting the executor's repository instructions with it; its rules (English-only authored content, mission/vision lock, backup cancellation, YUCLAW spelling) are already honoured on this branch"
+  },
+  {
+   "archive_path": "READ_FIRST.txt",
+   "sha256": "0745c2f2c19d1137b9e2adf115b5d377fb1830d932c466830e621a917b800027",
+   "reason": "archive navigation note only"
+  }
+ ],
+ "precedence": [
+  "V8_001_RECOVERY_HANDOFF.md (private staging; supersedes the original order's initial-start wording and its v7.0.0-workspace requirement)",
+  "v8/scope/V8_001_SCHEDULE_ADDENDUM.md",
+  "v8/scope/V8_0_0_SCOPE_FREEZE.md",
+  "v8/scope/v8.0.0-scope.json",
+  "v8/scope/CLAUDE_CODE_ORDER_V8_001.md (historical)"
+ ],
+ "baseline_reconciliation": {
+  "scope_inherited_release": {
+   "version": "7.0.0",
+   "tag": "v7.0.0",
+   "commit": "6a619b74c46ee6601434e73d25963b5e2e61d59d",
+   "observed_main_commit": "c2401102579a0e2baea8b664ddbb4cda611db750",
+   "verification": "v7-baseline-review-2026-09-15/verification.json"
+  },
+  "integration_baseline_actual": {
+   "version": "7.0.1",
+   "tag": "v7.0.1",
+   "commit": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+   "tree": "310c40235f6b140941dfca90b4421a20acead9b3",
+   "independent_check": "v8/scope/v7.0.1-baseline-review-2026-09-15/verification.json"
+  },
+  "rule_applied": "recovery handoff: use the released 7.0.1 patch as the integration baseline while preserving v7.0.0 provenance and all published evidence; do not reset the existing worktree; historical release evidence is not rewritten",
+  "v7_0_0_provenance_preserved": {
+   "tag_object": "f22ced5f9f47fc9c64daa1e7487e3f751d4dfd5e",
+   "peeled_commit": "6a619b74c46ee6601434e73d25963b5e2e61d59d",
+   "wheel_sha256": "6cd1164c7ffa744f6f1b876205144ea1bc52ed7b480223cc2bc93b356abe69aa",
+   "sdist_sha256": "7399a1f1ed50d86b59d2301d3cbd1a5d188547a82b69809e787f2c426035116a",
+   "evidence": "v8/scope/v7-baseline-review-2026-09-15/"
+  },
+  "prior_releases_to_preserve_in_v8_publisher_tripwires": [
+   "6.0.x",
+   "7.0.0",
+   "7.0.1"
+  ],
+  "note": "scope JSON inherited_policy.prior_releases_preserved lists 6.0.x and 7.0.0; 7.0.1 was published after the scope was drafted and must be added to the v8 publisher's preservation tripwires (V8-002 step 6)"
+ },
+ "workstreams": {
+  "enabled_8_0_0": [
+   {
+    "id": "GOV",
+    "name": "Scope, baseline, and product decisions",
+    "priority": "P0",
+    "task_count": 8,
+    "scope_and_current_status": "Priority: P0. Current status: design and local preview exist; released-v7 integration is pending. Output: approved v8 scope and interface inventory."
+   },
+   {
+    "id": "DAT",
+    "name": "Evidence ingestion and shared research objects",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0. Current status: bundled evidence inspection and local schemas exist; the shared product pipeline is unfinished. Output: versioned evidence service."
+   },
+   {
+    "id": "CLM",
+    "name": "Thesis specification and claim graph",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0. Current status: proposed product capability. Output: editable, versioned thesis definitions."
+   },
+   {
+    "id": "CHK",
+    "name": "Financial consistency checks",
+    "priority": "P0",
+    "task_count": 10,
+    "scope_and_current_status": "Priority: P0 for a bounded rule set. Current status: proposed product capability. Output: reproducible calculations and explainable discrepancy reports."
+   },
+   {
+    "id": "TIM",
+    "name": "Research history and information cutoffs",
+    "priority": "P0",
+    "task_count": 10,
+    "scope_and_current_status": "Priority: P0. Current status: local dated inspector exists; product timeline and historical service are unfinished. Output: reproducible as-of investigations."
+   },
+   {
+    "id": "SET",
+    "name": "Management commitments and disclosed outcomes dataset",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0 with narrow coverage. Current status: proposed dataset, not an existing commercial data product. Output: reviewed longitudinal annotations and reproducible exports."
+   },
+   {
+    "id": "SCI",
+    "name": "Scientific evaluation and accountable improvement",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0 for any advertised scientific evaluation. Current status: local kernel implemented; product integration and independent scientific validation pending. Output: inspectable studies with defensible interpretations."
+   },
+   {
+    "id": "UX",
+    "name": "One customer workbench",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0 for core screens; P1 for optional module views. Current status: the six main capabilities do not yet form an integrated customer UI. Output: an accessible English-only research application."
+   },
+   {
+    "id": "INT",
+    "name": "API, storage, jobs, and operations",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0 core; P1 adapters for optional modules. Current status: local CLI and package behavior verified selectively; full authenticated application integration pending. Output: reliable product services."
+   },
+   {
+    "id": "REL",
+    "name": "Release, documentation, and commercial readiness",
+    "priority": "P0",
+    "task_count": 10,
+    "scope_and_current_status": "Priority: P0 for enabled release scope. Current status: local preview, no deployment or outreach. Output: a reviewable release package and a separate release decision."
+   }
+  ],
+  "minimal_shared_behavior": {
+   "RIV": "Original versus revised target comparison; explicit unresolved explanation notes only.",
+   "ACT": "Unresolved issue and next-evidence field only; no automated prioritization."
+  },
+  "experimental_default_off": [
+   {
+    "id": "COM",
+    "name": "Research Commons Guard: capacity and source integrity",
+    "priority": "P1",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P1 supporting feature; shared source lineage also supports core research. Current status: bounded local planner implemented. Output: a usable review queue that preserves provenance and human review capacity.",
+    "rule": "Only isolated verified audit/replay artifacts; omit if unsafe or unverified; no activation with Gate F pending.",
+    "default": "OFF",
+    "product_route_activation": "forbidden while Gate F pending"
+   },
+   {
+    "id": "PRC",
+    "name": "Independent Practice: protect the capacity to judge",
+    "priority": "P1",
+    "task_count": 10,
+    "scope_and_current_status": "Priority: P1, the third part of Research Commons. Current status: local attempt-before-comparison workflow implemented. Output: an optional research practice workflow with auditable attempts and later assessment.",
+    "rule": "Only isolated verified audit/replay artifacts; omit if unsafe or unverified; no activation with Gate F pending.",
+    "default": "OFF",
+    "product_route_activation": "forbidden while Gate F pending"
+   },
+   {
+    "id": "SHD",
+    "name": "Distillation Shield: a bounded evidence boundary",
+    "priority": "P1",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P1 as a supporting module; mandatory for any route advertised as Shield-backed. Current status: local byte-verification and bounded parsing implemented. Output: an enforced input boundary with clear trust ownership.",
+    "rule": "Only isolated verified audit/replay artifacts; omit if unsafe or unverified; no activation with Gate F pending.",
+    "default": "OFF",
+    "product_route_activation": "forbidden while Gate F pending"
+   },
+   {
+    "id": "EVO",
+    "name": "Evolution Evidence Audit: prepare for faster AI change",
+    "priority": "P1",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P1. Current status: local configuration and review audit implemented. Output: version-specific evidence applicability, review gaps, and relevant financial commitments.",
+    "rule": "Only isolated verified audit/replay artifacts; omit if unsafe or unverified; no activation with Gate F pending.",
+    "default": "OFF",
+    "product_route_activation": "forbidden while Gate F pending"
+   }
+  ],
+  "deferred_beyond_8_0_0": [
+   "CTL",
+   "RES",
+   "RND",
+   "full_RIV",
+   "full_ACT",
+   "VAL_real_user_pilot",
+   "multi_tenant_platform",
+   "managed_customer_accounts",
+   "billing"
+  ],
+  "deferred_workstream_definitions": [
+   {
+    "id": "CTL",
+    "name": "Human Control Exit Audit",
+    "priority": "P1",
+    "task_count": 9,
+    "scope_and_current_status": "Priority: P1 optional institutional module. Current status: read-only local audit implemented. Output: evidence about whether a defined human stop request was respected along declared action paths."
+   },
+   {
+    "id": "RES",
+    "name": "Human Option Reserve",
+    "priority": "P1",
+    "task_count": 10,
+    "scope_and_current_status": "Priority: P1 optional institutional module. Current status: bounded local optimizer implemented; human benefit not established. Output: an evidence-conditioned fallback plan for one human-operated critical service."
+   },
+   {
+    "id": "RND",
+    "name": "Scientific extensions after a reliable baseline",
+    "priority": "P2",
+    "task_count": 8,
+    "scope_and_current_status": "Priority: P2. Current status: research proposals, not implemented or promised. Output: experiments and decisions rather than speculative launch claims."
+   },
+   {
+    "id": "VAL",
+    "name": "Demonstrate customer value and human benefit",
+    "priority": "P0",
+    "task_count": 12,
+    "scope_and_current_status": "Priority: P0 for core claims; P1 for module-specific benefit claims. Current status: constructed engineering demonstrations exist; field effectiveness and customer demand are unestablished. Output: auditable evidence that can support or reject product claims."
+   },
+   {
+    "id": "RIV",
+    "name": "Competing explanations",
+    "priority": "P0",
+    "task_count": 9,
+    "scope_and_current_status": "Priority: P0 for a narrow, reviewed first implementation. Current status: proposed capability. Output: a comparison of plausible mechanisms and discriminating observations."
+   },
+   {
+    "id": "ACT",
+    "name": "Evidence selection and research action queue",
+    "priority": "P0",
+    "task_count": 9,
+    "scope_and_current_status": "Priority: P0 deterministic baseline; learning-based selection is P2. Current status: proposed capability. Output: an accountable next-action list."
+   }
+  ],
+  "canceled_by_owner": {
+   "backup_functionality": {
+    "status": "CANCELED_BY_OWNER",
+    "effective_date": "2026-09-15",
+    "create": false,
+    "schedule": false,
+    "restore": false,
+    "restore_drills": false,
+    "calgary_auto_resume": false,
+    "delete_existing_data": false,
+    "research_exports_preserved": true,
+    "release_evidence_preserved": true,
+    "remote_runtime_status": "UNVERIFIED_EXECUTOR_CHECK_REQUIRED",
+    "disclosure": "Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery."
+   }
+  },
+  "v7_feature_flag_registry": "none exists in v7 (v8/V8-001/adapter_map.md); no flag registry, product tab or runtime endpoint was added by this recovery"
+ },
+ "roadmap": {
+  "task_count": 213,
+  "workstream_count": 20,
+  "tasks_by_priority": {
+   "P0": 140,
+   "P1": 65,
+   "P2": 8
+  },
+  "machine": "v8/scope/v8-backlog.json",
+  "document": "v8/scope/V8_FEATURES_AND_TODO.md",
+  "document_sha256_declared_by_backlog": "f2899cc19d4ca4cb1541d8b113b5d233e69f1b8f47a94d68412b8527abff3cb9",
+  "document_sha256_actual": "f2899cc19d4ca4cb1541d8b113b5d233e69f1b8f47a94d68412b8527abff3cb9",
+  "validation_record": "v8/scope/plan-validation.json",
+  "intact": true
+ },
+ "acceptance_contract": {
+  "steps": [
+   "source",
+   "typed_claim",
+   "comparison",
+   "calculation",
+   "history",
+   "adjudication",
+   "reproducible_export"
+  ],
+  "required_fixture": "Clearly fictional original 110–120 million, revision 105–115 million, actual 112 million; explicit currency, fiscal period, basis and availability.",
+  "branch_fixture": "tests/fixtures/v8/commitments/ (7 fixtures + manifest.json; tests/test_v8_commitment_fixtures.py)",
+  "fixture_conformance_checks": {
+   "original_range_110_120_million": true,
+   "revised_range_105_115_million": true,
+   "comparable_actual_112_million": true,
+   "explicit_currency": true,
+   "explicit_fiscal_period": true,
+   "explicit_basis": true,
+   "availability_timestamps": true,
+   "clearly_fictional": true,
+   "amounts_as_integer_units_not_floats": true
+  },
+  "fixture_conforms": true,
+  "scorecard": "v8/V8-001/scorecard.json",
+  "journey_score": "0/7 NOT_DEMONSTRATED (unchanged by this recovery; tests are not journey evidence)",
+  "fixture_conformance_checks_note": "every flag is computed from the fixture file's fields at index time (claim.range, revisions[0].range, outcome.actual, outcome.comparable, currency/fiscal_period/basis on both sides, source.available_as_of, fictional markers); re-run the derivation to validate",
+  "fixture_sha256_at_index_time": "51d90b8d8b36d7d1ffc792f4888dfd1196c328efa65e866d335802d2958a29d0"
+ },
+ "gates": {
+  "scope_gates_A_to_G_as_delivered": {
+   "A": "Baseline verified; adapter inventory pending",
+   "B": "Seven-step browser journey not demonstrated",
+   "C": "Applicable evidence quality, rights, provenance and access checks pending",
+   "D": "Application/science checks pending; backup requirement removed; restore not demonstrated",
+   "E": "Real-user pilot deferred; benefit PENDING; inherited study gate applicability unresolved",
+   "F": "Pending; experimental modules disabled",
+   "G": "Pending; release authorization not granted"
+  },
+  "branch_evidence_pointers": {
+   "A": "adapter/interface inventory now exists: v8/V8-001/adapter_map.md + private v8-baseline.json (status in the scope JSON left as delivered; a reviewer, not this record, moves it)",
+   "B": "v8/V8-001/scorecard.json 0/7",
+   "C": "v8/V8-001/real_data_selection_criteria.md (criteria only; no issuer selected)",
+   "D": "tools/deploy_verify.py identity contract + tests/test_deploy_verify.py; download-verification journal evidence in the private return dir; release limitation v8/V8-001/release_limitation.txt",
+   "E": "PENDING; no pilot",
+   "F": "no experimental module packaged",
+   "G": "v8/V8-001/inherited_gates.json (20 inherited gates mapped; release_authorized false)"
+  },
+  "inherited_gate_15": "NOT_SATISFIED for v8 — the published v7 exception is v7-only (7.0.0 and 7.0.1); no v8 exception requested or granted",
+  "rule": "no inherited gate is marked green or waived by this index"
+ },
+ "brand": {
+  "public_authored_name": "YUCLAW",
+  "approved_logo_lettering_preserved": "YuClaw",
+  "approval": {
+   "status": "APPROVED_BY_USER",
+   "instruction": "Use the selected logo assets as delivered; no further design changes.",
+   "preserve_original_assets": true,
+   "publication_authorized": false,
+   "integration_scope": "Use in v8; keep v7 and live publication unchanged under the existing release hold."
+  },
+  "imported_assets": [
+   {
+    "tree_path": "brand/human-trace-v1/README.md",
+    "sha256": "c680d584e35100c37ef4f6f472333265966ef390bba9d27259dc75b25dd98a60",
+    "bytes": 2704,
+    "matches_handoff_manifest": true
+   },
+   {
+    "tree_path": "brand/human-trace-v1/asset-manifest.json",
+    "sha256": "6265dcf6ae204fbdd1fc61bd47f2e4cac30d61946bd62773c08a20b754fd88ff",
+    "bytes": 1267,
+    "matches_handoff_manifest": true
+   },
+   {
+    "tree_path": "brand/human-trace-v1/yuclaw-human-trace-dark.png",
+    "sha256": "d9eaf516190a2f10e917e81396f52d154aebd048d7cc288f20f74a5781fd5505",
+    "bytes": 395906,
+    "matches_handoff_manifest": true,
+    "matches_asset_manifest": true,
+    "matches_scope_json_approved_logo_sha256": true,
+    "size_px": [
+     1254,
+     1254
+    ],
+    "mode": "RGB"
+   },
+   {
+    "tree_path": "brand/human-trace-v1/yuclaw-human-trace-light.png",
+    "sha256": "d096948018d38de0a750a7ac381bb3622a46723cf6334527fe6c491dfdbe5be5",
+    "bytes": 628568,
+    "matches_handoff_manifest": true,
+    "matches_asset_manifest": true,
+    "matches_scope_json_approved_logo_sha256": true,
+    "size_px": [
+     1254,
+     1254
+    ],
+    "mode": "RGB"
+   },
+   {
+    "tree_path": "brand/human-trace-v1/yuclaw-human-trace-symbol-transparent.png",
+    "sha256": "5424667e701b1a9ac6797a7f651f775d45592a3a58e95863f621d48e72db4ffd",
+    "bytes": 175108,
+    "matches_handoff_manifest": true,
+    "matches_asset_manifest": true,
+    "matches_scope_json_approved_logo_sha256": true,
+    "size_px": [
+     1254,
+     1254
+    ],
+    "mode": "RGBA"
+   }
+  ],
+  "readme_picture_block": {
+   "file": "README.md",
+   "position": "after the disclaimer line, before the MISSION-VISION-CANONICAL block; the block and all text after it are byte-identical to before",
+   "markup": "<picture> with a prefers-color-scheme: dark source (dark master) and the light master as the default <img>, width 220 px (proportional display sizing only; bytes untouched)",
+   "alt_text": "YUCLAW logo: The Human Trace",
+   "asset_location_rationale": "top-level brand/ is outside docs/ (not deployed by the daily Pages chain) and outside the sdist include list (not shipped in the package)"
+  },
+  "website_and_publication": "unchanged; assets are local to the branch; the release hold stands"
+ },
+ "milestones": {
+  "scope_json": {
+   "timezone": "Asia/Shanghai",
+   "go_no_go": "2026-09-19 evening",
+   "build_target": "2026-09-20",
+   "release_readiness_target": "2026-09-21",
+   "dates_authorize_publication": false,
+   "integration_complete_target": "2026-09-18",
+   "artifact_freeze_target": "2026-09-20",
+   "release_target": "2026-09-21",
+   "promotion_timing": "After verified release, within the authorized concrete outreach scope"
+  },
+  "addendum_release_target": "2026-09-21 (Monday, Asia/Shanghai); community promotion follows the verified release",
+  "gate_b_go_no_go": "2026-09-19 evening Asia/Shanghai",
+  "artifact_freeze_target": "2026-09-20",
+  "superseded": "the 2026-09-22 conditional target recorded in v8/V8-001/scorecard.json (a dated V8-001 record, left as written) is superseded by the addendum",
+  "dates_authorize_publication": false
+ },
+ "backup_policy": {
+  "scope": "CANCELED_BY_OWNER",
+  "branch_records": [
+   "v8/V8-001/release_limitation.txt (verbatim disclosure)",
+   "private backup-cancellation.json (this host, user scope: no YUCLAW backup producer exists; root crontab and remote hosts UNVERIFIED)"
+  ],
+  "reviewer_record": "v8/scope/backup-cancellation-review.json"
+ },
+ "checks_on_delivered_originals": {
+  "leak_sweep": "tools/check_leak_sweep.py --only-extra: every tracked scope and brand file clean (0 witness hits, 0 box-identifier warnings); the private recovery note is the only file with hits and is not tracked",
+  "language_rail_gate_14_scope": "tools/yuclaw_release_state_v6.py feeds check_language.py --pages only docs/*.html, README.md, COMPARISON.md, docs/architecture.md and CHANGELOG.md; v8/scope/ and brand/ are outside that surface",
+  "language_rail_findings_recorded_not_reworded": [
+   {
+    "file": "v8/scope/V8_0_0_SCOPE_FREEZE.md",
+    "hits": [
+     "line 60 [validated]"
+    ]
+   },
+   {
+    "file": "v8/scope/V8_FEATURES_AND_TODO.md",
+    "hits": [
+     "line 364 [drift:proof]",
+     "line 368 [institutional]",
+     "line 374 [drift:proof]",
+     "line 381 [drift:validated]",
+     "line 381 [best]",
+     "line 566 [institutional]"
+    ]
+   },
+   {
+    "file": "v8/scope/V8_AI_PROTECTION_AND_LAUNCH.md",
+    "hits": [
+     "line 21 [institutional]",
+     "line 63 [drift:proof]",
+     "line 121 [institutional]",
+     "line 144 [drift:proof]"
+    ]
+   },
+   {
+    "file": "v8/scope/CLAUDE_CODE_ORDER_V8_001.md",
+    "hits": [
+     "line 52 [drift:proof]",
+     "line 54 [drift:proof]",
+     "line 58 [drift:proof]"
+    ]
+   }
+  ],
+  "rule": "delivered originals are preserved byte-exact for identity verification; they are planning inputs, not authored page copy; any public page derived from them must pass the rail on its own"
+ },
+ "findings_for_the_next_order": [
+  "README.md is also the PyPI long description (pyproject readme = README.md); a relative image path does not resolve on PyPI and readme_renderer drops the <picture>/<source> tags. Decide at the v8 release step: an absolute URL to the published asset (only after the assets are public) or a PyPI-specific long description. Nothing on the live site or PyPI changes now.",
+  "the scope JSON's inherited_release still names 7.0.0; the branch integrates from 7.0.1 per the recovery handoff (recorded above; the delivered JSON is not edited)",
+  "the private recovery note is the precedence document but cannot be tracked (host identifiers); reviewers use the staging copy and its sha256 above"
+ ],
+ "deliverable_status": {
+  "scope_index": "COMPLETE",
+  "approved_logo_import_and_readme_picture_block": "COMPLETE",
+  "journey_score": "0/7 (unchanged)",
+  "human_benefit": "PENDING",
+  "experimental_audits": "EXPERIMENTAL",
+  "release_authorized": false
+ },
+ "not_done_and_not_authorized": [
+  "V8-001 rerun",
+  "V8-002 implementation",
+  "push",
+  "tag",
+  "deploy",
+  "PyPI upload",
+  "website change",
+  "community publication",
+  "edit to any delivered original",
+  "edit to v7 release evidence"
+ ]
+}

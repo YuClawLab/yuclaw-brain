@@ -1,0 +1,1435 @@
+{
+  "schema_version": "1.0",
+  "title": "YuClaw v8 implementation backlog",
+  "planning_date": "2026-09-14",
+  "mission": "Make financial AI accountable to evidence.",
+  "vision": "Become the Science Trust Layer for Financial AI.",
+  "document": "V8_FEATURES_AND_TODO.md",
+  "document_sha256": "f2899cc19d4ca4cb1541d8b113b5d233e69f1b8f47a94d68412b8527abff3cb9",
+  "baseline": {
+    "local_preview": "8.0.0a6",
+    "selected_offline_tests_recorded_passed": 292,
+    "product_integrated": false,
+    "deployed": false
+  },
+  "constraints": {
+    "version_scope": "v8 only; no added v7 requirements",
+    "authored_language": "English",
+    "deployment": "Paused until separate explicit user authorization",
+    "outreach": "Paused; no automatic resume",
+    "external_tickets_created": false,
+    "owners_assigned": false,
+    "mission_vision_changes": "Prohibited without explicit user permission specifically authorizing the mission or vision change; applies to every version and all product/public materials.",
+    "backup_functionality": "CANCELED_BY_OWNER; no creation, schedule, restore, drill or automatic Calgary resumption; preserve existing data and evidence."
+  },
+  "task_count": 213,
+  "workstream_count": 20,
+  "workstreams": [
+    {
+      "id": "GOV",
+      "name": "Scope, baseline, and product decisions",
+      "priority": "P0",
+      "proposed_owner_role": "Product lead",
+      "depends_on_workstreams": [],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0. Current status: design and local preview exist; released-v7 integration is pending. Output: approved v8 scope and interface inventory.",
+      "acceptance": "the feature inventory identifies the actual inherited baseline; no v8 task is added to the v7 completion criteria; no preview is represented as production functionality.",
+      "tasks": [
+        {
+          "id": "GOV-01",
+          "status": "todo",
+          "description": "Inventory the released v7 features and interfaces before assigning duplicate work; record which capabilities v8 inherits, extends, or introduces."
+        },
+        {
+          "id": "GOV-02",
+          "status": "todo",
+          "description": "Create the v8 integration branch from the approved released baseline when available; preserve current preview artifacts for comparison and migration."
+        },
+        {
+          "id": "GOV-03",
+          "status": "todo",
+          "description": "Record one initial customer job, eligible company population, disclosure types, and coverage limits; make exclusions visible in the product."
+        },
+        {
+          "id": "GOV-04",
+          "status": "todo",
+          "description": "Freeze the canonical mission, vision, and English-only authoring policy in product requirements and automated checks."
+        },
+        {
+          "id": "GOV-05",
+          "status": "todo",
+          "description": "Define feature controls for Commons, Practice, Evolution, Control, and Reserve; document which roles can enable each module."
+        },
+        {
+          "id": "GOV-06",
+          "status": "todo",
+          "description": "Maintain a capability register separating implemented locally, integrated, independently evaluated, pilot-enabled, and publicly released states."
+        },
+        {
+          "id": "GOV-07",
+          "status": "todo",
+          "description": "Assign accountable owners and independent reviewers; document who can change evidence, freeze studies, adjudicate outcomes, and authorize releases."
+        },
+        {
+          "id": "GOV-08",
+          "status": "todo",
+          "description": "Record explicit launch and outreach holds; require a separate user readiness decision after v7 completion before any publication or promotion."
+        }
+      ]
+    },
+    {
+      "id": "DAT",
+      "name": "Evidence ingestion and shared research objects",
+      "priority": "P0",
+      "proposed_owner_role": "Data engineer",
+      "depends_on_workstreams": [
+        "GOV"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0. Current status: bundled evidence inspection and local schemas exist; the shared product pipeline is unfinished. Output: versioned evidence service.",
+      "acceptance": "an ingested source can be traced to its exact bytes and passage; a correction reaches dependent views as a new event; unauthorized users cannot retrieve its private content through UI, API, search, or export.",
+      "tasks": [
+        {
+          "id": "DAT-01",
+          "status": "todo",
+          "description": "Adopt stable issuer, filing, artifact, passage, claim, investigation, and dataset identifiers; preserve inherited v7 IDs through explicit adapters."
+        },
+        {
+          "id": "DAT-02",
+          "status": "todo",
+          "description": "Implement SourceArtifact and EvidenceSpan storage with immutable versions, digests, publisher attribution, and exact passage locations."
+        },
+        {
+          "id": "DAT-03",
+          "status": "todo",
+          "description": "Separate publication time, first observation, economic period, source revision, and processing time; store uncertainty instead of invented timestamps."
+        },
+        {
+          "id": "DAT-04",
+          "status": "todo",
+          "description": "Build ingestion for one approved initial disclosure corpus; retain original artifacts separately from parsed text and YuClaw-authored output."
+        },
+        {
+          "id": "DAT-05",
+          "status": "todo",
+          "description": "Record source entitlements and redistribution permissions; enforce tenant boundaries and prevent private research from entering shared datasets by default."
+        },
+        {
+          "id": "DAT-06",
+          "status": "todo",
+          "description": "Add extraction records for tables, passages, units, fiscal periods, and footnotes; attach uncertain extraction to a review queue."
+        },
+        {
+          "id": "DAT-07",
+          "status": "todo",
+          "description": "Represent primary, derived, and unknown source lineage; retain shared roots and explicit gaps rather than counting URLs as independent sources."
+        },
+        {
+          "id": "DAT-08",
+          "status": "todo",
+          "description": "Implement immutable correction and withdrawal events; find affected claims, calculations, reviews, and dataset snapshots without rewriting their history."
+        },
+        {
+          "id": "DAT-09",
+          "status": "todo",
+          "description": "Define authenticated roles and authorization checks for source ingestion, reviewer identity, study ownership, and evidence approval."
+        },
+        {
+          "id": "DAT-10",
+          "status": "todo",
+          "description": "Support idempotent ingestion and explicit failure states; replaying a job must not duplicate an artifact or silently drop failed records."
+        },
+        {
+          "id": "DAT-11",
+          "status": "todo",
+          "description": "Implement safe rendering of untrusted documents and passages; source text must never gain permission to invoke tools or alter privileged instructions."
+        },
+        {
+          "id": "DAT-12",
+          "status": "todo",
+          "description": "Publish a data dictionary and fixtures covering missing periods, conflicting currencies, corrected sources, shared roots, and inaccessible licensed content."
+        }
+      ]
+    },
+    {
+      "id": "CLM",
+      "name": "Thesis specification and claim graph",
+      "priority": "P0",
+      "proposed_owner_role": "Application engineer",
+      "depends_on_workstreams": [
+        "DAT"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0. Current status: proposed product capability. Output: editable, versioned thesis definitions.",
+      "acceptance": "\u201cgrowth is sustainable\u201d remains a draft until operationally defined; a later relaxed threshold cannot convert the original failed prediction into a success.",
+      "tasks": [
+        {
+          "id": "CLM-01",
+          "status": "todo",
+          "description": "Build thesis creation with issuer, information cutoff, research question, author, and initial scope; save drafts without falsely marking them reviewable."
+        },
+        {
+          "id": "CLM-02",
+          "status": "todo",
+          "description": "Extract candidate claims from supplied narratives and disclosures; show source-linked suggestions for human editing before acceptance."
+        },
+        {
+          "id": "CLM-03",
+          "status": "todo",
+          "description": "Require metric, unit, accounting basis, fiscal period, comparator, threshold or range, horizon, and resolution rule where applicable."
+        },
+        {
+          "id": "CLM-04",
+          "status": "todo",
+          "description": "Classify nodes as observed fact, calculation, assumption, prediction, or open question; keep uncertainty in those classifications visible."
+        },
+        {
+          "id": "CLM-05",
+          "status": "todo",
+          "description": "Provide typed dependency edges and explanations; reject graph cycles where the selected relationship requires an acyclic dependency."
+        },
+        {
+          "id": "CLM-06",
+          "status": "todo",
+          "description": "Detect unresolved scope, vague terms, and missing units or dates; prevent freezing an operationally undefined prediction."
+        },
+        {
+          "id": "CLM-07",
+          "status": "todo",
+          "description": "Support reviewer comments, proposed edits, accepted revisions, and explicit disagreement with author identity and time."
+        },
+        {
+          "id": "CLM-08",
+          "status": "todo",
+          "description": "Freeze a claim version with the exact source set and resolution rule; later edits create successor versions rather than changing past commitments."
+        },
+        {
+          "id": "CLM-09",
+          "status": "todo",
+          "description": "Link one broad thesis to several narrower measurable implications; explain that passing an implication does not prove the whole investment thesis."
+        },
+        {
+          "id": "CLM-10",
+          "status": "todo",
+          "description": "Attach conditions that would weaken or contradict each claim; allow an honest unresolved state when no discriminating observation exists."
+        },
+        {
+          "id": "CLM-11",
+          "status": "todo",
+          "description": "Implement draft, needs clarification, reviewable, frozen, awaiting outcome, adjudicated, and invalidated states with permitted transitions."
+        },
+        {
+          "id": "CLM-12",
+          "status": "todo",
+          "description": "Export the claim graph with schema/version information, evidence references, uncertainty, and revision history; support a round-trip validation check."
+        }
+      ]
+    },
+    {
+      "id": "RIV",
+      "name": "Competing explanations",
+      "priority": "P0",
+      "proposed_owner_role": "Research lead",
+      "depends_on_workstreams": [
+        "CLM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for a narrow, reviewed first implementation. Current status: proposed capability. Output: a comparison of plausible mechanisms and discriminating observations.",
+      "acceptance": "demand, delivery timing, and product mix explanations can be compared without claiming causal identification. An unsupported preference remains an assumption or unresolved judgment.",
+      "tasks": [
+        {
+          "id": "RIV-01",
+          "status": "todo",
+          "description": "Select an initial explanation domain with a financial reviewer; document the kinds of mechanism the first release can reasonably compare."
+        },
+        {
+          "id": "RIV-02",
+          "status": "todo",
+          "description": "Generate a small editable set of alternatives, each linked to the observation it explains and its economic assumptions."
+        },
+        {
+          "id": "RIV-03",
+          "status": "todo",
+          "description": "Require at least one observable implication for every retained alternative; distinguish unavailable data from an unfalsifiable formulation."
+        },
+        {
+          "id": "RIV-04",
+          "status": "todo",
+          "description": "Build a comparison matrix showing supporting observations, contradicting observations, shared predictions, and unresolved differences."
+        },
+        {
+          "id": "RIV-05",
+          "status": "todo",
+          "description": "Identify source and model overlap; repeated agent agreement from one filing must not raise an independent-evidence count."
+        },
+        {
+          "id": "RIV-06",
+          "status": "todo",
+          "description": "Retain minority views, reviewer objections, and rejected alternatives with reasons; provide a visible route to reopen them with new evidence."
+        },
+        {
+          "id": "RIV-07",
+          "status": "todo",
+          "description": "Mark alternatives as observationally indistinguishable when available evidence cannot separate them; avoid forced winners or fabricated probabilities."
+        },
+        {
+          "id": "RIV-08",
+          "status": "todo",
+          "description": "Freeze the comparison used in a prospective study; alternatives invented after the outcome belong to a new exploratory version."
+        },
+        {
+          "id": "RIV-09",
+          "status": "todo",
+          "description": "Evaluate against ordinary retrieval and retrieval plus skeptical review at matched source access, task difficulty, and total research cost."
+        }
+      ]
+    },
+    {
+      "id": "CHK",
+      "name": "Financial consistency checks",
+      "priority": "P0",
+      "proposed_owner_role": "Financial-data lead",
+      "depends_on_workstreams": [
+        "DAT",
+        "CLM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for a bounded rule set. Current status: proposed product capability. Output: reproducible calculations and explainable discrepancy reports.",
+      "acceptance": "a quarter-versus-YTD comparison is blocked or explicitly reconciled; missing counterparty coverage is not called a contradiction; another reviewer can reproduce each result from its cited inputs.",
+      "tasks": [
+        {
+          "id": "CHK-01",
+          "status": "todo",
+          "description": "Define typed quantities with exact decimal or suitable bounded arithmetic; document rounding and missing-value behavior for every rule."
+        },
+        {
+          "id": "CHK-02",
+          "status": "todo",
+          "description": "Check currency, scale, and conversion basis before comparison; record exchange-rate source and date when an authorized conversion is used."
+        },
+        {
+          "id": "CHK-03",
+          "status": "todo",
+          "description": "Resolve fiscal calendars and distinguish quarter, year-to-date, full year, and trailing periods before performing arithmetic."
+        },
+        {
+          "id": "CHK-04",
+          "status": "todo",
+          "description": "Check denominators, percentages, percentage-point changes, and per-share bases; preserve the exact inputs and calculation."
+        },
+        {
+          "id": "CHK-05",
+          "status": "todo",
+          "description": "Implement a small approved catalogue of accounting identities and reconciliation rules with materiality and rounding tolerances."
+        },
+        {
+          "id": "CHK-06",
+          "status": "todo",
+          "description": "Detect metric redefinitions, segment changes, gross/net presentation changes, and accounting-basis differences that break comparability."
+        },
+        {
+          "id": "CHK-07",
+          "status": "todo",
+          "description": "Require explicit assumptions for cross-company relationships; do not treat supplier revenue and customer capital expenditure as an accounting equality."
+        },
+        {
+          "id": "CHK-08",
+          "status": "todo",
+          "description": "Produce a discrepancy card with rule version, source passages, formula, observed difference, tolerance, missing inputs, and reviewer disposition."
+        },
+        {
+          "id": "CHK-09",
+          "status": "todo",
+          "description": "Recompute affected results after source corrections while retaining the earlier result and its original inputs."
+        },
+        {
+          "id": "CHK-10",
+          "status": "todo",
+          "description": "Build a reviewed challenge corpus of common financial interpretation errors; report rule-level precision, recall, and unresolved cases."
+        }
+      ]
+    },
+    {
+      "id": "ACT",
+      "name": "Evidence selection and research action queue",
+      "priority": "P0",
+      "proposed_owner_role": "Product/research lead",
+      "depends_on_workstreams": [
+        "RIV",
+        "CHK"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 deterministic baseline; learning-based selection is P2. Current status: proposed capability. Output: an accountable next-action list.",
+      "acceptance": "a future disclosure generates a visible waiting state; an action identifies a specific question and source; an unanswered hard case does not count as a saved successful investigation.",
+      "tasks": [
+        {
+          "id": "ACT-01",
+          "status": "todo",
+          "description": "Convert unresolved claims and rival predictions into candidate actions: inspect a disclosure, obtain a permitted field, request review, or wait."
+        },
+        {
+          "id": "ACT-02",
+          "status": "todo",
+          "description": "Show which uncertainty each action addresses and which alternatives it could distinguish; avoid generic \u201cresearch more\u201d recommendations."
+        },
+        {
+          "id": "ACT-03",
+          "status": "todo",
+          "description": "Estimate acquisition cost, review time, availability, and required permissions; separate estimates from subsequently observed costs."
+        },
+        {
+          "id": "ACT-04",
+          "status": "todo",
+          "description": "Implement a transparent configurable ranking baseline with visible reasons; avoid presenting an uncalibrated score as a probability of truth."
+        },
+        {
+          "id": "ACT-05",
+          "status": "todo",
+          "description": "Support assignment, due dates, waiting-on-disclosure, blocked-by-access, completed, and no-longer-relevant states with history."
+        },
+        {
+          "id": "ACT-06",
+          "status": "todo",
+          "description": "Capture action outcomes and reviewer-assessed usefulness, including actions that produced no information or misleading evidence."
+        },
+        {
+          "id": "ACT-07",
+          "status": "todo",
+          "description": "Allow explicit stopping or abstention with recorded missingness and reason; include these cases in evaluation denominators."
+        },
+        {
+          "id": "ACT-08",
+          "status": "todo",
+          "description": "Add user-requested alerts for newly available evidence and source changes, with deduplication and configurable delivery; do not create unsolicited outreach."
+        },
+        {
+          "id": "ACT-09",
+          "status": "todo",
+          "description": "Compare the baseline with chronological/manual queues using reliable resolution, coverage, total cost, and reviewer effort together."
+        }
+      ]
+    },
+    {
+      "id": "TIM",
+      "name": "Research history and information cutoffs",
+      "priority": "P0",
+      "proposed_owner_role": "Data engineer",
+      "depends_on_workstreams": [
+        "DAT"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0. Current status: local dated inspector exists; product timeline and historical service are unfinished. Output: reproducible as-of investigations.",
+      "acceptance": "a correction observed after the cutoff is absent from the earlier snapshot and visible later; the application explains the availability policy instead of claiming perfect historical knowledge.",
+      "tasks": [
+        {
+          "id": "TIM-01",
+          "status": "todo",
+          "description": "Implement historical queries over immutable source versions using the declared availability policy and selected cutoff."
+        },
+        {
+          "id": "TIM-02",
+          "status": "todo",
+          "description": "Display publication, first observation, economic period, revision, and processing times separately with timezone and uncertainty."
+        },
+        {
+          "id": "TIM-03",
+          "status": "todo",
+          "description": "Pin each investigation snapshot to exact source, claim, extraction, rule, model, and reviewer versions."
+        },
+        {
+          "id": "TIM-04",
+          "status": "todo",
+          "description": "Build a timeline of claim changes, source corrections, target amendments, reviews, and outcome transitions."
+        },
+        {
+          "id": "TIM-05",
+          "status": "todo",
+          "description": "Add side-by-side comparison of two cutoffs showing added, removed-by-policy, corrected, and still-unresolved evidence."
+        },
+        {
+          "id": "TIM-06",
+          "status": "todo",
+          "description": "Explain why a source was excluded from a historical view; distinguish later availability, missing date, and entitlement restrictions."
+        },
+        {
+          "id": "TIM-07",
+          "status": "todo",
+          "description": "Integrate separately retained checkpoints or a trusted timestamping service for selected journals; document what the anchor does and does not authenticate."
+        },
+        {
+          "id": "TIM-08",
+          "status": "todo",
+          "description": "Define correction behavior for unreliable timestamps without rewriting what the system previously recorded as known."
+        },
+        {
+          "id": "TIM-09",
+          "status": "todo",
+          "description": "Label historical model replay as potentially affected by information in model training; require future observations for prospective claims."
+        },
+        {
+          "id": "TIM-10",
+          "status": "todo",
+          "description": "Verify historical query and export against fixtures with delayed discovery, later corrections, backdated source metadata, and timezone boundaries."
+        }
+      ]
+    },
+    {
+      "id": "SET",
+      "name": "Management commitments and disclosed outcomes dataset",
+      "priority": "P0",
+      "proposed_owner_role": "Dataset lead",
+      "depends_on_workstreams": [
+        "CLM",
+        "CHK",
+        "TIM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 with narrow coverage. Current status: proposed dataset, not an existing commercial data product. Output: reviewed longitudinal annotations and reproducible exports.",
+      "acceptance": "a researcher can reproduce a row from its evidence and rules, distinguish original and revised targets, and recover the same snapshot. The product describes new annotations and measurements, not newly created market facts or guaranteed investment returns.",
+      "tasks": [
+        {
+          "id": "SET-01",
+          "status": "todo",
+          "description": "Freeze the initial universe, disclosure categories, time coverage, inclusion rules, and exclusion rules; publish known coverage gaps."
+        },
+        {
+          "id": "SET-02",
+          "status": "todo",
+          "description": "Extract explicit management commitments with exact passage, issuer, metric, accounting basis, unit, segment/geography, target range, and horizon."
+        },
+        {
+          "id": "SET-03",
+          "status": "todo",
+          "description": "Link commitment rows to immutable source versions, availability records, extraction versions, and reviewer records."
+        },
+        {
+          "id": "SET-04",
+          "status": "todo",
+          "description": "Model amendment, reaffirmation, withdrawal, maturity, and resolution as distinct events linked to the original commitment."
+        },
+        {
+          "id": "SET-05",
+          "status": "todo",
+          "description": "Match later disclosed outcomes using a written comparability rubric; route metric changes and ambiguous mappings to independent review."
+        },
+        {
+          "id": "SET-06",
+          "status": "todo",
+          "description": "Produce supported, contradicted, ambiguous, or unresolved labels with reasons; preserve disagreement and the adjudication trail."
+        },
+        {
+          "id": "SET-07",
+          "status": "todo",
+          "description": "Enforce that withdrawal is not automatically failure, missingness is not a negative outcome, and a redefined metric is not automatically comparable."
+        },
+        {
+          "id": "SET-08",
+          "status": "todo",
+          "description": "Compute clearly defined derived fields such as target revisions and deviation from a comparable original range; expose formulas and unavailable values."
+        },
+        {
+          "id": "SET-09",
+          "status": "todo",
+          "description": "Build versioned snapshots and stable row IDs; allow filtered CSV/JSON downloads and reproducible programmatic queries."
+        },
+        {
+          "id": "SET-10",
+          "status": "todo",
+          "description": "Publish a dataset card covering coverage, annotation rules, quality estimates, corrections, source restrictions, and prohibited interpretations."
+        },
+        {
+          "id": "SET-11",
+          "status": "todo",
+          "description": "Add correction reports, dispute submission, and affected-row lookup; keep old snapshots reproducible while displaying later corrections."
+        },
+        {
+          "id": "SET-12",
+          "status": "todo",
+          "description": "Validate researcher usefulness and source entitlements before commercial distribution; test whether teams repeatedly use the data for a specific analysis."
+        }
+      ]
+    },
+    {
+      "id": "SCI",
+      "name": "Scientific evaluation and accountable improvement",
+      "priority": "P0",
+      "proposed_owner_role": "Research lead",
+      "depends_on_workstreams": [
+        "CLM",
+        "TIM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for any advertised scientific evaluation. Current status: local kernel implemented; product integration and independent scientific validation pending. Output: inspectable studies with defensible interpretations.",
+      "acceptance": "an inconvenient pending outcome cannot disappear; changing a study name cannot erase past attempts; a successful computation or evidence threshold never automatically trades, deploys, or certifies truth.",
+      "tasks": [
+        {
+          "id": "SCI-01",
+          "status": "todo",
+          "description": "Integrate the existing study manifest into a guided workflow covering population, sampling unit, target, loss, effect margin, and model identities."
+        },
+        {
+          "id": "SCI-02",
+          "status": "todo",
+          "description": "Keep the current paired binary-probability evaluation within its supported scope; reject composite scores and undefined targets as probability inputs."
+        },
+        {
+          "id": "SCI-03",
+          "status": "todo",
+          "description": "Commit both predictions and evidence identities before eligible outcomes become available; preserve ordering and pending-outcome constraints."
+        },
+        {
+          "id": "SCI-04",
+          "status": "todo",
+          "description": "Authenticate adjudicators, document conflicts, and retain the outcome evidence; prevent the candidate system from unilaterally assigning its own success."
+        },
+        {
+          "id": "SCI-05",
+          "status": "todo",
+          "description": "Expose hypothesis-family membership, error allocation, minimum and maximum sample, stopping rules, invalidations, and inconclusive outcomes."
+        },
+        {
+          "id": "SCI-06",
+          "status": "todo",
+          "description": "Maintain a study-attempt registry so retries, renamed families, and unsuccessful experiments remain visible; define cross-study governance before broad adaptive use."
+        },
+        {
+          "id": "SCI-07",
+          "status": "todo",
+          "description": "Connect journal export, semantic replay, numerical replay, and independent checkpoints to the application and its review process."
+        },
+        {
+          "id": "SCI-08",
+          "status": "todo",
+          "description": "Display conditional statistical evidence separately from operational approval, causal benefit, calibration, and financial performance."
+        },
+        {
+          "id": "SCI-09",
+          "status": "todo",
+          "description": "Add only diagnostics with their assumptions attached; fixed-family multiple-testing adjustment, isotonic projection, and preference cycles are not truth certificates."
+        },
+        {
+          "id": "SCI-10",
+          "status": "todo",
+          "description": "Commission a qualified independent review of the statistical contract, sampling design, implementation, and interpretation before publishing guarantee claims."
+        },
+        {
+          "id": "SCI-11",
+          "status": "todo",
+          "description": "Run prospective comparisons with strong baselines and issuer/event clustering accounted for; predefine appropriate procedures for endpoints outside the current kernel."
+        },
+        {
+          "id": "SCI-12",
+          "status": "todo",
+          "description": "Evaluate improvement per total review effort, error, coverage, and cost; keep failures and distribution changes visible after an earlier favorable result."
+        }
+      ]
+    },
+    {
+      "id": "COM",
+      "name": "Research Commons Guard: capacity and source integrity",
+      "priority": "P1",
+      "proposed_owner_role": "Review-operations lead",
+      "depends_on_workstreams": [
+        "DAT",
+        "CLM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1 supporting feature; shared source lineage also supports core research. Current status: bounded local planner implemented. Output: a usable review queue that preserves provenance and human review capacity.",
+      "acceptance": "twenty copies of one claim do not create twenty independent supports or lower its recorded review cost; renaming a withdrawn artifact does not clean its lineage; protected practice time is not automatically borrowed by production work.",
+      "tasks": [
+        {
+          "id": "COM-01",
+          "status": "todo",
+          "description": "Connect incoming claim packets to shared evidence and claim objects; preserve exact source-root identities rather than inventing a second provenance system."
+        },
+        {
+          "id": "COM-02",
+          "status": "todo",
+          "description": "Persist duplicate groups across ingestion runs with idempotent membership updates; distinguish exact duplication from unverified semantic similarity."
+        },
+        {
+          "id": "COM-03",
+          "status": "todo",
+          "description": "Show shared primary roots and unknown ancestry; do not count many summaries of one source as independent corroboration."
+        },
+        {
+          "id": "COM-04",
+          "status": "todo",
+          "description": "Propagate declared disputes and withdrawals through aliases and dependencies; retain the original source and reasons for quarantine."
+        },
+        {
+          "id": "COM-05",
+          "status": "todo",
+          "description": "Add authenticated contributor identities and admission limits; document remaining collusion and identity-abuse limits."
+        },
+        {
+          "id": "COM-06",
+          "status": "todo",
+          "description": "Replace assumed review costs with estimated and observed minutes; include triage, quarantine investigation, corrections, and coordination."
+        },
+        {
+          "id": "COM-07",
+          "status": "todo",
+          "description": "Integrate contributor caps, review budgets, and a separately reserved practice allocation into a persistent daily or session queue."
+        },
+        {
+          "id": "COM-08",
+          "status": "todo",
+          "description": "Define queue rollover, cancellation, partial work, urgent review, and budget changes explicitly; log overrides rather than silently erasing backlog."
+        },
+        {
+          "id": "COM-09",
+          "status": "todo",
+          "description": "Preserve useful smaller tasks when one task exceeds available capacity; display both selected work and reasons for deferral."
+        },
+        {
+          "id": "COM-10",
+          "status": "todo",
+          "description": "Provide manual dispute resolution and appeals with reviewer identity; avoid treating an automated quarantine as a verdict of misconduct."
+        },
+        {
+          "id": "COM-11",
+          "status": "todo",
+          "description": "Record backlog age, repeated roots, unique claims, estimated versus actual effort, and review completion without equating document volume with productivity."
+        },
+        {
+          "id": "COM-12",
+          "status": "todo",
+          "description": "Compare the integrated queue with a conventional queue using actual review effort, error, coverage, and contributor participation."
+        }
+      ]
+    },
+    {
+      "id": "PRC",
+      "name": "Independent Practice: protect the capacity to judge",
+      "priority": "P1",
+      "proposed_owner_role": "Research-training lead",
+      "depends_on_workstreams": [
+        "COM"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1, the third part of Research Commons. Current status: local attempt-before-comparison workflow implemented. Output: an optional research practice workflow with auditable attempts and later assessment.",
+      "acceptance": "the workflow rejects an early comparison reveal, preserves the original attempt, and does not call answer agreement a learning gain. A claim of researcher development requires delayed independent assessment.",
+      "tasks": [
+        {
+          "id": "PRC-01",
+          "status": "todo",
+          "description": "Choose suitable, bounded financial-research tasks with a qualified reviewer; do not assume every withheld answer creates meaningful practice."
+        },
+        {
+          "id": "PRC-02",
+          "status": "todo",
+          "description": "Freeze the question, source scope, task identity, and comparison digest before a session opens."
+        },
+        {
+          "id": "PRC-03",
+          "status": "todo",
+          "description": "Build an evidence-reading and reasoning view that allows an unaided attempt before the normal comparison view becomes available."
+        },
+        {
+          "id": "PRC-04",
+          "status": "todo",
+          "description": "Require a judgment, supporting reasoning, relevant source references, and an explicit unresolved option; record assistance and prior exposure as declarations."
+        },
+        {
+          "id": "PRC-05",
+          "status": "todo",
+          "description": "Preserve the attempt without replacement; record later revisions as separate reflection rather than rewriting the original response."
+        },
+        {
+          "id": "PRC-06",
+          "status": "todo",
+          "description": "Separate question and comparison storage permissions where genuine confidentiality is required; do not describe the local CLI ordering check as access control."
+        },
+        {
+          "id": "PRC-07",
+          "status": "todo",
+          "description": "Reveal a clearly labeled comparison and support discussion; distinguish an unadjudicated model answer from an independently reviewed reference."
+        },
+        {
+          "id": "PRC-08",
+          "status": "todo",
+          "description": "Add optional reflection, reviewer feedback, and exportable records; protect participant privacy and avoid unsupported employee capability rankings."
+        },
+        {
+          "id": "PRC-09",
+          "status": "todo",
+          "description": "Design delayed, unaided assessment with consent, suitable tasks, and a comparator workflow; measure accuracy and reasoning transfer, not only assisted task scores."
+        },
+        {
+          "id": "PRC-10",
+          "status": "todo",
+          "description": "Retain journal replay and independently held checkpoints; document that records alone cannot prove human authorship, no outside assistance, or research originality."
+        }
+      ]
+    },
+    {
+      "id": "SHD",
+      "name": "Distillation Shield: a bounded evidence boundary",
+      "priority": "P1",
+      "proposed_owner_role": "Security engineer",
+      "depends_on_workstreams": [
+        "DAT",
+        "GOV"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1 as a supporting module; mandatory for any route advertised as Shield-backed. Current status: local byte-verification and bounded parsing implemented. Output: an enforced input boundary with clear trust ownership.",
+      "acceptance": "changed bytes and unsafe paths are rejected; instruction text cannot grant tool authority through the verifier; the UI says what was verified. `VERIFIED_BYTES_ONLY` never means \u201ctrue,\u201d \u201csafe against all AI,\u201d or \u201chuman benefit established.\u201d",
+      "tasks": [
+        {
+          "id": "SHD-01",
+          "status": "todo",
+          "description": "Document trusted approval roots, untrusted inputs, source owners, executable identity, and the exact outputs that cross the boundary."
+        },
+        {
+          "id": "SHD-02",
+          "status": "todo",
+          "description": "Provision approved pins through a separately controlled process; the submitting agent must not be able to approve its own evidence bundle."
+        },
+        {
+          "id": "SHD-03",
+          "status": "todo",
+          "description": "Add approval identity, expiry, rotation, revocation, and retrieval records without weakening exact-byte matching."
+        },
+        {
+          "id": "SHD-04",
+          "status": "todo",
+          "description": "Preserve strict JSON validation, duplicate-key rejection, numerical constraints, depth limits, and documented input and file budgets."
+        },
+        {
+          "id": "SHD-05",
+          "status": "todo",
+          "description": "Preserve safe relative-file access and rejection of escaping paths, symbolic links, inappropriate file types, and unstable reads."
+        },
+        {
+          "id": "SHD-06",
+          "status": "todo",
+          "description": "Keep evidence bodies inert during verification; expose only typed fields, fixed result codes, and permitted references to privileged callers."
+        },
+        {
+          "id": "SHD-07",
+          "status": "todo",
+          "description": "Place the verifier in an operating-system and service boundary with resource limits, least privilege, and controlled network and secret access."
+        },
+        {
+          "id": "SHD-08",
+          "status": "todo",
+          "description": "Wire production routes to fail closed on rejection; prohibit fallback to an unshielded evaluator under the same protected API promise."
+        },
+        {
+          "id": "SHD-09",
+          "status": "todo",
+          "description": "Protect approval and audit stores from tenant crossover and untrusted writes; record administrative changes and emergency revocations."
+        },
+        {
+          "id": "SHD-10",
+          "status": "todo",
+          "description": "Test parser exhaustion, tampering, stale approvals, unsafe files, malicious instruction text, and compromised approval inputs at the integrated boundary."
+        },
+        {
+          "id": "SHD-11",
+          "status": "todo",
+          "description": "Keep source authentication and factual adjudication as separate checks; a correctly approved false document must remain a documented possible failure."
+        },
+        {
+          "id": "SHD-12",
+          "status": "todo",
+          "description": "Obtain independent security review for the actual deployed architecture before making product security claims; publish the supported threat model and limits."
+        }
+      ]
+    },
+    {
+      "id": "EVO",
+      "name": "Evolution Evidence Audit: prepare for faster AI change",
+      "priority": "P1",
+      "proposed_owner_role": "Model-risk lead",
+      "depends_on_workstreams": [
+        "SHD",
+        "SCI"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1. Current status: local configuration and review audit implemented. Output: version-specific evidence applicability, review gaps, and relevant financial commitments.",
+      "acceptance": "a memory or tool-policy change invalidates the relevant evidence; an unrelated change can retain scoped evidence; a grader controlled by an ancestor improver creates a conflict; financial commitments are not labeled predicted losses.",
+      "tasks": [
+        {
+          "id": "EVO-01",
+          "status": "todo",
+          "description": "Connect the eight-part inventory: model, agent code, tool policy, memory, data, runtime, grader, and evaluation data."
+        },
+        {
+          "id": "EVO-02",
+          "status": "todo",
+          "description": "Measure actual runtime and deployment identities where available; mark mutable provider aliases and unavailable identities as unresolved rather than inventing hashes."
+        },
+        {
+          "id": "EVO-03",
+          "status": "todo",
+          "description": "Record version ancestry, dependency changes, and authority changes; validate supplied graph completeness against the institution's inventory."
+        },
+        {
+          "id": "EVO-04",
+          "status": "todo",
+          "description": "Reuse evaluation evidence only when its dependency scope, fingerprint, protocol, and validity period still apply; explain each reuse decision."
+        },
+        {
+          "id": "EVO-05",
+          "status": "todo",
+          "description": "Authenticate model improvers, reviewers, graders, test custodians, and release authorizers; check relevant conflicts through ancestry."
+        },
+        {
+          "id": "EVO-06",
+          "status": "todo",
+          "description": "Track protected-test access; revoking access does not erase previous exposure, and a new digest alone does not prove semantic test freshness."
+        },
+        {
+          "id": "EVO-07",
+          "status": "todo",
+          "description": "Keep matching failures open until an authorized resolution process addresses them; a later pass, expiry, or renamed protocol cannot silently erase failure."
+        },
+        {
+          "id": "EVO-08",
+          "status": "todo",
+          "description": "Show current unreviewed transitions, evidence age, and unresolved review gaps; distinguish retrospective review from evidence available at a historical release."
+        },
+        {
+          "id": "EVO-09",
+          "status": "todo",
+          "description": "Link supplied financial commitments to configuration versions and review gaps; group by currency and show unknown amounts separately."
+        },
+        {
+          "id": "EVO-10",
+          "status": "todo",
+          "description": "Add a separately trusted deployment controller only for institutions that authorize enforcement; the audited agent cannot alter the gate, its rules, or approvals."
+        },
+        {
+          "id": "EVO-11",
+          "status": "todo",
+          "description": "Provide change-diff views, targeted reevaluation requests, independent review exports, and explicit unknown-inventory findings."
+        },
+        {
+          "id": "EVO-12",
+          "status": "todo",
+          "description": "Evaluate missed material changes, unnecessary reevaluation, review delay, and identity failures using real controlled version changes and a strong baseline."
+        }
+      ]
+    },
+    {
+      "id": "CTL",
+      "name": "Human Control Exit Audit",
+      "priority": "P1",
+      "proposed_owner_role": "Institutional-risk lead",
+      "depends_on_workstreams": [
+        "DAT",
+        "GOV"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1 optional institutional module. Current status: read-only local audit implemented. Output: evidence about whether a defined human stop request was respected along declared action paths.",
+      "acceptance": "an unobserved downstream path appears as a gap; continuing activity is not hidden by a successful parent stop; the product never equates \u201cno logged activity\u201d with proof of shutdown.",
+      "tasks": [
+        {
+          "id": "CTL-01",
+          "status": "todo",
+          "description": "Select one financial-AI workflow and define the stop request, responsible people, affected capabilities, downstream paths, and service scope."
+        },
+        {
+          "id": "CTL-02",
+          "status": "todo",
+          "description": "Integrate authenticated stop-drill records with baseline, request time, deadline, observation window, clock bounds, and evidence ownership."
+        },
+        {
+          "id": "CTL-03",
+          "status": "todo",
+          "description": "Inventory reachable tools, delegated agents, scheduled jobs, credentials, and external commitments relevant to the declared stop scope."
+        },
+        {
+          "id": "CTL-04",
+          "status": "todo",
+          "description": "Distinguish observed activity after the deadline, no observed activity under sufficient coverage, and inadequate observation; preserve clock uncertainty."
+        },
+        {
+          "id": "CTL-05",
+          "status": "todo",
+          "description": "Track residual commitments and outstanding actions by currency and status; retain unknown amounts instead of treating them as zero."
+        },
+        {
+          "id": "CTL-06",
+          "status": "todo",
+          "description": "Display path-level findings, missing evidence, evidence age, and responsible follow-up roles; do not condense everything into an unsupported safety score."
+        },
+        {
+          "id": "CTL-07",
+          "status": "todo",
+          "description": "Run institution-authorized drills with an independent observer and retained artifacts; avoid treating a supplied success statement as authenticated evidence."
+        },
+        {
+          "id": "CTL-08",
+          "status": "todo",
+          "description": "Define how findings reach existing operational controls and responsible humans; this audit itself remains read-only unless a separate control integration is explicitly authorized."
+        },
+        {
+          "id": "CTL-09",
+          "status": "todo",
+          "description": "Compare findings against the institution's existing procedure and independent observations; measure missed activity, false alarms, review effort, and response delay."
+        }
+      ]
+    },
+    {
+      "id": "RES",
+      "name": "Human Option Reserve",
+      "priority": "P1",
+      "proposed_owner_role": "Continuity lead",
+      "depends_on_workstreams": [
+        "SHD",
+        "CTL"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P1 optional institutional module. Current status: bounded local optimizer implemented; human benefit not established. Output: an evidence-conditioned fallback plan for one human-operated critical service.",
+      "acceptance": "a cheaper route with an omitted critical dependency cannot be accepted as independently validated readiness; a best partial plan is not displayed as a complete supported plan. Budget shortfalls and missing evidence remain explicit.",
+      "tasks": [
+        {
+          "id": "RES-01",
+          "status": "todo",
+          "description": "Choose one institution-owned mission with measurable minimum capacity, duration, activation deadline, and responsible operator."
+        },
+        {
+          "id": "RES-02",
+          "status": "todo",
+          "description": "Define relevant disruption scenarios, including shared dependencies and failures of services that a purported human fallback still requires."
+        },
+        {
+          "id": "RES-03",
+          "status": "todo",
+          "description": "Inventory candidate routes, required projects, direct and transitive dependencies, maintenance obligations, and evidence owners."
+        },
+        {
+          "id": "RES-04",
+          "status": "todo",
+          "description": "Collect authenticated drills covering capacity, duration, activation, and freshness; preserve missing, stale, or contradicted evidence."
+        },
+        {
+          "id": "RES-05",
+          "status": "todo",
+          "description": "Record project costs, recurring commitments, available budget, and financing assumptions; a supplied budget is not proof of available funds."
+        },
+        {
+          "id": "RES-06",
+          "status": "todo",
+          "description": "Integrate the exact minimum-cost planner within its declared bounds; preserve the distinction between a complete plan, a funding shortfall, and no supported plan."
+        },
+        {
+          "id": "RES-07",
+          "status": "todo",
+          "description": "Show shared projects, scenario coverage, unsupported routes, sensitivity to missing dependencies, and diagnostic partial solutions."
+        },
+        {
+          "id": "RES-08",
+          "status": "todo",
+          "description": "Add maintenance and repeat-drill scheduling with user-configured alerts; invalidate readiness evidence when relevant dependencies or service requirements change."
+        },
+        {
+          "id": "RES-09",
+          "status": "todo",
+          "description": "Test against an ordinary checklist and spreadsheet with equal evidence and cost accounting; include planning, training, maintenance, and activation effort."
+        },
+        {
+          "id": "RES-10",
+          "status": "todo",
+          "description": "Measure real service completion, activation time, unserved demand, and cost in qualified drills before claiming benefit; use a design that does not withhold necessary service."
+        }
+      ]
+    },
+    {
+      "id": "UX",
+      "name": "One customer workbench",
+      "priority": "P0",
+      "proposed_owner_role": "Product designer",
+      "depends_on_workstreams": [
+        "CLM",
+        "TIM",
+        "SET",
+        "ACT"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for core screens; P1 for optional module views. Current status: the six main capabilities do not yet form an integrated customer UI. Output: an accessible English-only research application.",
+      "acceptance": "a user can complete the fictional commitment scenario through export without command-line assistance; every material conclusion can be traced to evidence, assumptions, or unresolved status.",
+      "tasks": [
+        {
+          "id": "UX-01",
+          "status": "todo",
+          "description": "Create the Thesis Workspace with editable claims, typed assumptions, original sources, rivals, calculations, and unresolved questions in one investigation; use the approved Human Trace logo assets unchanged."
+        },
+        {
+          "id": "UX-02",
+          "status": "todo",
+          "description": "Add company and cutoff selection with clear corpus coverage and freshness; never imply that a bundled snapshot is a live feed."
+        },
+        {
+          "id": "UX-03",
+          "status": "todo",
+          "description": "Implement a source drawer opening the exact passage, source version, availability, lineage, and correction status used in a claim."
+        },
+        {
+          "id": "UX-04",
+          "status": "todo",
+          "description": "Build the Evidence & Review Queue with purpose, assignment, cost, dependencies, waiting states, and review outcomes."
+        },
+        {
+          "id": "UX-05",
+          "status": "todo",
+          "description": "Build the Dataset Browser with filters for issuer, metric, period, event, comparability, adjudication, missingness, and snapshot."
+        },
+        {
+          "id": "UX-06",
+          "status": "todo",
+          "description": "Add a history view comparing claim and source versions, including the original frozen prediction beside the eventual outcome."
+        },
+        {
+          "id": "UX-07",
+          "status": "todo",
+          "description": "Provide an evaluation report with denominator, population, uncertainty, unresolved cases, baselines, study status, and replay download."
+        },
+        {
+          "id": "UX-08",
+          "status": "todo",
+          "description": "Integrate Commons controls into review work and Practice as an optional mode; avoid using contributor volume as evidence quality."
+        },
+        {
+          "id": "UX-09",
+          "status": "todo",
+          "description": "Add a Trust & Continuity area for enabled Evolution, Control, Shield, and Reserve functions with scope-specific language and responsible roles."
+        },
+        {
+          "id": "UX-10",
+          "status": "todo",
+          "description": "Provide useful loading, empty, stale, failed-ingestion, permission-denied, disputed, invalidated, and inconclusive states."
+        },
+        {
+          "id": "UX-11",
+          "status": "todo",
+          "description": "Verify keyboard navigation, readable tables, focus behavior, screen-reader labels, responsive layouts, and accessible status distinctions."
+        },
+        {
+          "id": "UX-12",
+          "status": "todo",
+          "description": "Complete usability sessions on the end-to-end journey; test comprehension of uncertainty, corrections, frozen definitions, and the limits of verification badges."
+        }
+      ]
+    },
+    {
+      "id": "INT",
+      "name": "API, storage, jobs, and operations",
+      "priority": "P0",
+      "proposed_owner_role": "Platform engineer",
+      "depends_on_workstreams": [
+        "DAT",
+        "GOV"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 core; P1 adapters for optional modules. Current status: local CLI and package behavior verified selectively; full authenticated application integration pending. Output: reliable product services.",
+      "acceptance": "unauthorized access is denied across all interfaces; retried jobs do not create duplicate outcomes; the integrated application passes its relevant database and API checks, not only the local science suite.",
+      "tasks": [
+        {
+          "id": "INT-01",
+          "status": "todo",
+          "description": "Define versioned API contracts for sources, investigations, claims, actions, timelines, adjudications, studies, dataset snapshots, and optional audits."
+        },
+        {
+          "id": "INT-02",
+          "status": "todo",
+          "description": "Implement object-level tenant authorization for reads, writes, search, jobs, exports, and audit references; test direct-ID access attempts."
+        },
+        {
+          "id": "INT-03",
+          "status": "todo",
+          "description": "Define storage ownership and migrations against the actual inherited database; preserve source, claim, and historical ledger identities."
+        },
+        {
+          "id": "INT-04",
+          "status": "todo",
+          "description": "Build durable ingestion, extraction, correction propagation, review, and export jobs with idempotency, bounded retries, and inspectable failures."
+        },
+        {
+          "id": "INT-05",
+          "status": "todo",
+          "description": "Resolve concurrent edits and adjudications through explicit version checks or transactions; prevent silent overwrites and duplicate outcome resolution."
+        },
+        {
+          "id": "INT-06",
+          "status": "todo",
+          "description": "Connect the existing scientific CLI modules through typed adapters; keep process success, audit findings, and scientific conclusion statuses distinct."
+        },
+        {
+          "id": "INT-07",
+          "status": "todo",
+          "description": "Expose narrowly scoped API or MCP tools for permitted retrieval and research actions; model-generated tool calls must obey the same authorization policy."
+        },
+        {
+          "id": "INT-08",
+          "status": "todo",
+          "description": "Record operational metrics for latency, job age, correction delay, model/data spend, failures, and source freshness without leaking private content."
+        },
+        {
+          "id": "INT-09",
+          "status": "todo",
+          "description": "Establish retention, authorized deletion, secret management, dependency updates, and incident procedures suited to the actual deployment. Backup creation, scheduling, restoration, and restore drills are canceled by the owner; preserve existing data and disclose that restoration is not demonstrated."
+        },
+        {
+          "id": "INT-10",
+          "status": "todo",
+          "description": "Set realistic load and cost targets from the intended pilot workload; test representative documents, concurrent reviews, and large allowed exports."
+        },
+        {
+          "id": "INT-11",
+          "status": "todo",
+          "description": "Run inherited application/database regressions and authenticated integration tests alongside the selected science tests; complete remote CI and package checks."
+        },
+        {
+          "id": "INT-12",
+          "status": "todo",
+          "description": "Rehearse safe application-code rollback and interrupted-write/export handling with compatible additive migrations and transactions; reject destructive or unsupported data transitions. Do not add backup restoration or imply lost-data recovery."
+        }
+      ]
+    },
+    {
+      "id": "VAL",
+      "name": "Demonstrate customer value and human benefit",
+      "priority": "P0",
+      "proposed_owner_role": "Independent evaluation lead",
+      "depends_on_workstreams": [
+        "SCI",
+        "UX",
+        "INT"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for core claims; P1 for module-specific benefit claims. Current status: constructed engineering demonstrations exist; field effectiveness and customer demand are unestablished. Output: auditable evidence that can support or reject product claims.",
+      "acceptance": "a measured product claim names its population, comparator, denominator, uncertainty, and evaluation version. A feature may pass software verification and still fail the customer or human-benefit gate.",
+      "tasks": [
+        {
+          "id": "VAL-01",
+          "status": "todo",
+          "description": "Prepare a concrete pilot protocol for one repeated financial-research task and three to five candidate teams; recruitment requires later explicit outreach authorization."
+        },
+        {
+          "id": "VAL-02",
+          "status": "todo",
+          "description": "Fix eligible tasks, exclusion rules, material-error rubric, outcome definitions, minimum useful effects, and analysis procedures before final evaluation."
+        },
+        {
+          "id": "VAL-03",
+          "status": "todo",
+          "description": "Compare the incumbent workflow, retrieval with citations, retrieval plus skeptical review, and YuClaw using matched permissible evidence and measured total resources."
+        },
+        {
+          "id": "VAL-04",
+          "status": "todo",
+          "description": "Estimate sample size from an excluded pilot; account for issuer/event dependence and avoid treating many claims from one disclosure as independent trials."
+        },
+        {
+          "id": "VAL-05",
+          "status": "todo",
+          "description": "Use independent adjudication and blinded comparison where feasible; retain disagreements, missing outcomes, integration failures, and abstentions."
+        },
+        {
+          "id": "VAL-06",
+          "status": "todo",
+          "description": "Measure extraction precision/recall, scope and unit errors, material errors, answer coverage, correction effort, elapsed time, and total cost."
+        },
+        {
+          "id": "VAL-07",
+          "status": "todo",
+          "description": "Test the proposed 30% median review-time reduction target only with predeclared quality and coverage floors; report uncertainty and failed targets."
+        },
+        {
+          "id": "VAL-08",
+          "status": "todo",
+          "description": "Measure repeat use, completed investigations, dataset reuse, paid-pilot conversion, and renewal separately; do not infer demand from compliments or demos."
+        },
+        {
+          "id": "VAL-09",
+          "status": "todo",
+          "description": "Evaluate Commons and Practice using actual review capacity and delayed unaided judgments; do not substitute queue compression for learning or time savings."
+        },
+        {
+          "id": "VAL-10",
+          "status": "todo",
+          "description": "Evaluate Evolution and Control against independently observed changes and drill outcomes; include missed events, false alarms, and review costs."
+        },
+        {
+          "id": "VAL-11",
+          "status": "todo",
+          "description": "Evaluate Reserve through qualified service drills and the full chain from finding to corrective action to service outcome; include opportunity costs and adverse effects."
+        },
+        {
+          "id": "VAL-12",
+          "status": "todo",
+          "description": "Publish an internal evidence table stating supported, unsupported, and contradicted claims; revise product scope when benefits disappear under fair comparison."
+        }
+      ]
+    },
+    {
+      "id": "REL",
+      "name": "Release, documentation, and commercial readiness",
+      "priority": "P0",
+      "proposed_owner_role": "Release lead",
+      "depends_on_workstreams": [
+        "VAL"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P0 for enabled release scope. Current status: local preview, no deployment or outreach. Output: a reviewable release package and a separate release decision.",
+      "acceptance": "the release package describes exactly what is enabled and supported. An unfinished optional module stays disabled; it does not block the core solely because it exists on this backlog. User authorization remains a distinct final release step.",
+      "tasks": [
+        {
+          "id": "REL-01",
+          "status": "todo",
+          "description": "Confirm v7 completion and the exact inherited baseline before final v8 integration; do not alter the agreed v7 feature set."
+        },
+        {
+          "id": "REL-02",
+          "status": "todo",
+          "description": "Freeze enabled v8 capabilities and clearly label unavailable or experimental modules; remove unsupported claims from all product surfaces."
+        },
+        {
+          "id": "REL-03",
+          "status": "todo",
+          "description": "Prepare English-only onboarding, task examples, API documentation, dataset cards, limitations, accessibility guidance, and operator runbooks; use the approved Human Trace identity without redesign."
+        },
+        {
+          "id": "REL-04",
+          "status": "todo",
+          "description": "Verify corpus/source permissions, customer isolation, export terms, retention configuration, and correction procedures for the actual release scope."
+        },
+        {
+          "id": "REL-05",
+          "status": "todo",
+          "description": "Complete relevant integration, security, statistical, performance, recovery, and usability reviews; retain unresolved findings with an explicit release disposition."
+        },
+        {
+          "id": "REL-06",
+          "status": "todo",
+          "description": "Package reproducible builds, migrations, rollback instructions, release notes, verification evidence, and a capability-status matrix."
+        },
+        {
+          "id": "REL-07",
+          "status": "todo",
+          "description": "Prepare a pricing hypothesis from observed costs and willingness to pay; offer a narrowly specified deliverable rather than promising alpha or universal AI protection."
+        },
+        {
+          "id": "REL-08",
+          "status": "todo",
+          "description": "Prepare private, reviewable launch materials and community-specific drafts; include only measured claims and verified capability descriptions."
+        },
+        {
+          "id": "REL-09",
+          "status": "todo",
+          "description": "Keep deployment and community posting disabled until the user explicitly authorizes the concrete v8 release and outreach scope; no automatic resume."
+        },
+        {
+          "id": "REL-10",
+          "status": "todo",
+          "description": "After separate launch authorization, monitor onboarding failures, quality, corrections, costs, and retention; use predefined rollback or feature-disable conditions."
+        }
+      ]
+    },
+    {
+      "id": "RND",
+      "name": "Scientific extensions after a reliable baseline",
+      "priority": "P2",
+      "proposed_owner_role": "Research lead",
+      "depends_on_workstreams": [
+        "SCI",
+        "ACT"
+      ],
+      "dependency_scope": "Integration prerequisites; not a prohibition on parallel design or isolated development. Optional-module evaluation has its own readiness gate.",
+      "scope_and_current_status": "Priority: P2. Current status: research proposals, not implemented or promised. Output: experiments and decisions rather than speculative launch claims.",
+      "acceptance": "each extension has a falsifiable hypothesis, a strong baseline, a fixed evaluation protocol, and a decision to keep, revise, or stop. It does not silently expand the advertised v8 scope.",
+      "tasks": [
+        {
+          "id": "RND-01",
+          "status": "todo",
+          "description": "Test whether learned evidence selection improves reliable resolution per total cost over the deterministic queue at fixed coverage and error targets."
+        },
+        {
+          "id": "RND-02",
+          "status": "todo",
+          "description": "Test dependence-aware source selection against repeated-agent and source-diverse baselines; measure added information rather than agreement counts."
+        },
+        {
+          "id": "RND-03",
+          "status": "todo",
+          "description": "Investigate stopping and abstention rules with explicit sampling and dependence assumptions; do not transplant unrelated theoretical guarantees."
+        },
+        {
+          "id": "RND-04",
+          "status": "todo",
+          "description": "Test whether financial contradictions predict future adjudicated errors beyond simple retrieval and rule-based baselines."
+        },
+        {
+          "id": "RND-05",
+          "status": "todo",
+          "description": "Explore extension of the statistical contract to required nonbinary outcomes and cross-study error governance with qualified methodological review."
+        },
+        {
+          "id": "RND-06",
+          "status": "todo",
+          "description": "Evaluate richer evolution ancestry or pooled fallback capacity only after a real user requirement and explicit semantics justify the additional complexity."
+        },
+        {
+          "id": "RND-07",
+          "status": "todo",
+          "description": "Assess privacy-preserving aggregate research only if a permitted cross-tenant use case exists; hashing is not differential privacy and private data is not shared by default."
+        },
+        {
+          "id": "RND-08",
+          "status": "todo",
+          "description": "Conduct a fresh primary-source prior-art review before any originality claim; publish reproducible comparisons and negative findings before asserting a breakthrough."
+        }
+      ]
+    }
+  ],
+  "approved_brand": {
+    "name": "The Human Trace",
+    "manifest": "../YuClaw-brand-assets/human-trace-v1/asset-manifest.json",
+    "status": "APPROVED_BY_USER",
+    "design_changes": "None; use the approved files as delivered."
+  },
+  "protection_and_outreach_review": "V8_AI_PROTECTION_AND_LAUNCH.md",
+  "release_schedule": "RELEASE_SCHEDULE.md",
+  "release_targets": [
+    {
+      "date": "2026-09-15",
+      "milestone": "V7.0.0 released",
+      "status": "independently_verified_github_pypi_live_website"
+    },
+    {
+      "date": "2026-09-19",
+      "milestone": "Evening seven-step browser journey go/no-go",
+      "status": "pending_demonstration"
+    },
+    {
+      "date": "2026-09-20",
+      "milestone": "Target final audit and artifact freeze",
+      "status": "conditional_target"
+    },
+    {
+      "date": "2026-09-21",
+      "milestone": "Owner-targeted v8 release; promotion follows verified release",
+      "status": "conditional_target_pending_gates_and_concrete_release_decision"
+    }
+  ],
+  "readme_branding": {
+    "status": "implemented_locally",
+    "path": "../yuclaw-brain/README.md",
+    "approved_assets_unchanged": true,
+    "pushed_to_github": false
+  },
+  "readiness_followup": {
+    "automation_id": "yuclaw-v8-release-readiness",
+    "date": "2026-09-21",
+    "scheduled_hour": 9,
+    "timezone_basis": "App scheduling timezone; user context is Asia/Shanghai",
+    "automatic_publication": false
+  },
+  "active_release_scope": "v8.0.0-scope.json",
+  "planning_update_date": "2026-09-15",
+  "schedule_addendum": "V8_001_SCHEDULE_ADDENDUM.md"
+}
