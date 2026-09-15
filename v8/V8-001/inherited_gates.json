@@ -1,0 +1,310 @@
+{
+ "record": "inherited-gate-mapping",
+ "order": "V8-001 \u00a76",
+ "recorded_utc": "2026-09-15T07:02:22+00:00",
+ "baseline": {
+  "tag": "v7.0.1",
+  "sha": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+  "tree": "310c40235f6b140941dfca90b4421a20acead9b3"
+ },
+ "release_authorization_mechanism": {
+  "preserved": true,
+  "publisher": "internal/release_v7_0_1/publish_v701.py (A-6: owner sentence bound to sha+tree, policy record hash, publisher identity; one build, same bytes; inverted tripwires protect 6.0.x/7.0.0/7.0.1)",
+  "release_authorized_set_by_this_order": false,
+  "note": "the v8 publisher must be a reviewed copy that keeps AUTH_TEMPLATE actor/type checks, one-build/same-bytes discipline, precondition() before every network write, and adds a tripwire row for 7.0.1 preservation"
+ },
+ "gates": [
+  {
+   "gate": 1,
+   "requirement": "P0 registrations valid",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) registry: bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 addendum file sha256 == registered method_hash"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 2,
+   "requirement": "chain verifies",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) Registry.verify_chain on load"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 3,
+   "requirement": "zero unexplained ledger breaks",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_evidence_changes.py",
+    "(computed) docs/ledger session-block continuity"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 4,
+   "requirement": "point-in-time guard",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_evidence_changes.py",
+    "check_u350_isolation.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 5,
+   "requirement": "no v1 historical silent rewrite",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) restage trees before/after + chain/evidence_geometry/phase-6 identity vs the base main commit"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 6,
+   "requirement": "dependency calculations reproducible",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) structural first-read reproduced byte-identically from frozen inputs (NO-WRITE replay)"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 7,
+   "requirement": "truncation ledger reconciles",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_truncation_ledger.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 8,
+   "requirement": "hypothesis/discovery lineage reconciles",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_discovery_ledger.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 9,
+   "requirement": "sequential methods pass registered fixtures",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_anytime_record.py",
+    "yuclaw_anytime_record.py --selftest"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 10,
+   "requirement": "research-state derivation reproducible",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_research_state.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 11,
+   "requirement": "machine JSON agrees with human page",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_science_trust.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 12,
+   "requirement": "source citations resolve",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_site_walk.py",
+    "check_index_completeness.py",
+    "check_copy_integrity.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 13,
+   "requirement": "negative/inconclusive findings preserved",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) discovery-ledger status counts: negative/inconclusive findings preserved"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 14,
+   "requirement": "language rails pass",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_language.py --pages",
+    "check_no_forms.py",
+    "check_header_layout.py",
+    "check_weekly_note.py",
+    "check_leak_sweep.py"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 15,
+   "requirement": "user comprehension test passes",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_consumer_posture.py (scaffold: five personas; GREEN gives at most MANUAL_REVIEW)",
+    "(manual) full-form human comprehension study \u2014 does not exist; not authorized or scheduled"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "MANUAL_REVIEW",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "NOT_SATISFIED \u2014 requirement inherited unchanged; the published v7 Gate #15 exception is v7-only (7.0.0 and 7.0.1 policy records); no v8 exception exists; no human study authorized or scheduled; pilot deferral does not remove the requirement. A new exception request, if any, is a concrete pre-release decision with completed evidence."
+  },
+  {
+   "gate": 16,
+   "requirement": "stranger-machine reproduction passes",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "(computed) stranger-machine reproduction: fresh clone / lowest supported Python reproduces the published identity"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 17,
+   "requirement": "G1 copy-consistency (canonical blocks byte-identical)",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_copy_consistency.py",
+    "yuclaw_replication_sentence.py --check"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 18,
+   "requirement": "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_release_manifest.py --only g2",
+    "cli_transcript.py --check"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 19,
+   "requirement": "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_release_manifest.py --only g3"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  },
+  {
+   "gate": 20,
+   "requirement": "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+   "v8_applicability": "APPLIES (all-required)",
+   "checks": [
+    "check_release_manifest.py --only g4"
+   ],
+   "evidence_at_baseline": {
+    "release": "7.0.1",
+    "result": "GREEN",
+    "manifest": "internal/release_state_manifest_v7.0.1.json (generated 2026-09-15T06:13Z in production at 696d871e)"
+   },
+   "v8_status": "INHERITED_GREEN_AT_BASELINE \u2014 must be re-run on the v8 candidate by the same generator; no gate is bypassed or replaced"
+  }
+ ]
+}
