@@ -1,0 +1,111 @@
+{
+ "schema": "WhyHistory.v1",
+ "ticker": "PEP",
+ "build_id": "why-2026-09-15T040657",
+ "generated": "2026-09-15T04:06:57.506457+00:00",
+ "collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for PEP in the declared corpus",
+  "returned": 6,
+  "total_available": 6,
+  "cap": null,
+  "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
+  "oldest_returned_available_as_of": "2026-03-03T14:20:32-07:00",
+  "newest_returned_available_as_of": "2026-07-29T14:05:13.338011-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "COMPLETE",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:58.025190-06:00",
+  "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
+ },
+ "evidence_objects": [
+  {
+   "ticker": "PEP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-03-03",
+   "accession_number": "0001630253-26-000001",
+   "excerpt": "Laguarta Ramon S 27945 shares @ $167.39 on 2026-03-02 ($4,677,610)",
+   "source_hash": "c434f999308f1b20e3dacbe62f47a1ab89940e02240b5b377c871e8955c3e5d6",
+   "available_as_of": "2026-03-03T14:20:32-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-03-06",
+   "accession_number": "0001792421-26-000003",
+   "excerpt": "Willemsen Eugene S 2702 shares @ $164.44 on 2026-03-04 ($444,323)",
+   "source_hash": "3821970e8e2d00cce59388a53a6cf7e42780d7038ffefdbdea482e6655bc4ffe",
+   "available_as_of": "2026-03-06T14:08:27-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-03-06",
+   "accession_number": "0001792421-26-000003",
+   "excerpt": "Willemsen Eugene S 3798 shares @ $164.46 on 2026-03-04 ($624,600)",
+   "source_hash": "58f0131183989ffc038ae110b3e1eac34af7486f6bd10c5166091ba7c5dee847",
+   "available_as_of": "2026-03-06T14:08:27-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-07-08",
+   "accession_number": "0000077476-26-000035",
+   "excerpt": "0000077476 pep:ZeroPointSevenFivePercentNotesDue2027Member 2025-12-28 2026-06-13",
+   "source_hash": "8dd01139a50e73aa87f2e1c78f80d24187d6e1c2cd27113490876f5f53ac3592",
+   "available_as_of": "2026-07-08T11:52:18-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-07-08",
+   "accession_number": "0000077476-26-000037",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 &#160; FORM 8-K CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+   "available_as_of": "2026-07-08T11:55:54-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-07-29",
+   "accession_number": "0001846812-26-000003",
+   "excerpt": "Flavell David S 2900 shares @ $139.54 on 2026-07-27 ($404,674)",
+   "source_hash": "f417c89f171edaf8f5ca89d9ff426e58ccfb4664a09d891b2fd71176c5192a39",
+   "available_as_of": "2026-07-29T14:05:13.338011-06:00",
+   "protocol_id": null
+  }
+ ],
+ "corrections": [
+  {
+   "original": {
+    "ticker": "PEP",
+    "accession_number": "0000077476-26-000037",
+    "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+    "excerpt_sha256": "654caf0368307d21f34d0498c078786f41964dbbfa95d9fabccd71bc3c91e0ee"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-a9213d76bff37071",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 9, 2026 PepsiCo, Inc.",
+   "corrected_sha256": "3304778ac8c6a551810b384c4de0ca1f3307946e079df45837e6c11b1e5b78d7",
+   "source_location": {
+    "accession_number": "0000077476-26-000037",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/77476/000007747626000037/pep-20260709.htm",
+    "char_offset": 1390,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  }
+ ],
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}

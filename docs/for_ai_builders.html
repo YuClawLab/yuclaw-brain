@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>YUCLAW for AI builders — the open evidence layer for financial AI</title>
-<meta name="description" content="Ground Truth JSON API, Evidence Passport claim-checker, MCP tools, EvidenceBench. Agents citing YUCLAW inherit accession-verified, point-in-time, hash-anchored evidence. Research only — not investment advice.">
+<meta name="description" content="Evidence Objects JSON API, Evidence Passport claim-checker, MCP tools, EvidenceBench. Agents citing YUCLAW inherit accession-verified, point-in-time, hash-anchored evidence. Research only — not investment advice.">
 <style>
  *{margin:0;padding:0;box-sizing:border-box}
  body{background:#0B0E14;font-family:Inter,system-ui,sans-serif;color:#E2E8F0;line-height:1.6}
@@ -70,7 +70,7 @@ five mechanical statuses. Below is a real passport generated at this page's buil
   &quot;accession&quot;: &quot;0001199039-26-000014&quot;,
   &quot;date_range&quot;: null
  },
- &quot;generated&quot;: &quot;2026-09-14T01:38:07.361721+00:00&quot;,
+ &quot;generated&quot;: &quot;2026-09-15T04:06:59.107662+00:00&quot;,
  &quot;status&quot;: &quot;SOURCE_MATCHED&quot;,
  &quot;matched_evidence&quot;: [
   {
@@ -128,9 +128,17 @@ five mechanical statuses. Below is a real passport generated at this page's buil
 <table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody><tr><td class='mono st'>SOURCE_MATCHED</td><td>every structured element of the claim matched at least one EvidenceObject — the excerpts and hashes are in the passport</td></tr><tr><td class='mono st'>PARTIAL_MATCH</td><td>at least one EvidenceObject matched some elements of the claim; the matched objects and the misses are both listed explicitly — a passport with zero matched objects is never PARTIAL_MATCH</td></tr><tr><td class='mono st'>UNSUPPORTED</td><td>no EvidenceObject matched — not found in YUCLAW's corpus, never a truth verdict; a cited accession that is not in the corpus lands here</td></tr><tr><td class='mono st'>NOT_IN_COVERAGE</td><td>the ticker is outside the 79-name scoring universe; the corpus cannot speak to it</td></tr><tr><td class='mono st'>NOT_PARSEABLE</td><td>the conservative text parser could not confidently structure the claim — the false-denial guard: an unparsed claim is never called unsupported</td></tr></tbody></table>
 </div>
 
-<div class="card"><h2>The as-of recipe (point-in-time reconstruction)</h2>
-<p style="font-size:13.5px">To reconstruct name X as of date D from <code>why/X.json</code>: evidence =
-objects with <code>available_as_of ≤ D</code>; the classification at D = the <code>label_history</code>
+<div class="card"><h2>The as-of recipe (point-in-time reconstruction) — complete source required</h2>
+<p style="font-size:13.5px"><strong><code>why/X.json</code> carries a PREVIEW</strong> (the newest 100 objects; see its
+<code>evidence_objects_collection</code>: scope, returned, total_available, cap, ordering with tie-breaker, oldest returned availability,
+build_id, completeness). A preview can omit relevant older objects for <em>any</em> D, so an as-of answer from it is
+<code>INCOMPLETE</code> unless <code>returned == total_available</code>. Reconstruct from the complete per-ticker file
+<code>why/X.history.json</code> (schema <code>WhyHistory.v1</code>, same <code>build_id</code>; verify its sha256 in
+<code>why/history_manifest.json</code> — a mixed-build or missing file is incomplete): evidence as of D =
+objects with <code>available_as_of ≤ D</code> (the recorded availability, never <code>filing_date</code> or a generated timestamp).
+Status vocabulary: <code>COMPLETE</code> · <code>COMPLETE_EMPTY</code> · <code>INCOMPLETE</code> · <code>OUT_OF_RANGE</code>
+(D outside the declared corpus_start/corpus_end). Completeness is for the declared corpus and build — not a claim to hold every SEC filing ever made.
+The classification at D = the <code>label_history</code>
 entry for the last date ≤ D. Older dates beyond the ribbon: <code>yuclaw replay X --date D</code>.
 Worked example in <a href="llms.txt" style="color:#00E676">llms.txt</a>.</p>
 </div>
@@ -175,6 +183,6 @@ twice-run identity). Only a true cold start (no previous-day set at all) publish
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-11 (last completed U.S. trading day) · regenerated daily after market close</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-14 01:38 UTC · daily evidence block root e0026e804d91 (block 2026-09-11)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-14 (last completed U.S. trading day); generated at 2026-09-15 04:06 UTC.</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-15 04:06 UTC · daily evidence block root d3fb98ff2448 (block 2026-09-14)</footer>
 </div></body></html>

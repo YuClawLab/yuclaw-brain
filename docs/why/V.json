@@ -1,29 +1,32 @@
 {
  "ticker": "V",
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "WEAKENING",
- "score": -0.003,
+ "generated": "2026-09-15T04:06:57.506457+00:00",
+ "label": "WATCH",
+ "score": 0.0001,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.105,
+  "c1": 0.2205,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.46211717,
-  "c7": -0.027787216,
+  "c6": -0.4185002,
+  "c7": -0.027607393,
   "c8": 0.0,
   "c9": -0.5
  },
  "evidence_coverage": {
-  "ecs": 85,
+  "ecs": 84,
   "events_90d": 15,
-  "recency_days": 3.2,
+  "recency_days": 4.3,
+  "substrate_active": 1,
   "type_diversity": 2,
-  "substrate_active": 1
+  "as_of": "2026-09-15T04:05:09.809247+00:00",
+  "source_sha256": "6967d0c5b900716d6d1cc71fe9e2b3f6ec8c32055ce01dbbd11674f1821f8df3",
+  "metric_id": "ecs"
  },
  "evidence_objects": [
   {
@@ -81,8 +84,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-07-31",
    "accession_number": "0001403161-26-000107",
-   "excerpt": "MAHON TULLIER KELLY S 37281 shares @ $365.05 on 2026-07-30 ($13,609,399)",
-   "source_hash": "180cd8b51654b225f266f19b700b2748306d1b80af3f60fe84b214dcffbd4b20",
+   "excerpt": "MAHON TULLIER KELLY S 19991 shares @ $364.81 on 2026-07-30 ($7,292,941)",
+   "source_hash": "5361b26115bd9d9ae7b94d8e4892c91c9fffaa5e04bc646ac98ce0d5b86c826d",
    "available_as_of": "2026-07-31T14:16:01.779454-06:00",
    "protocol_id": null
   },
@@ -91,8 +94,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-07-31",
    "accession_number": "0001403161-26-000107",
-   "excerpt": "MAHON TULLIER KELLY S 19991 shares @ $364.81 on 2026-07-30 ($7,292,941)",
-   "source_hash": "5361b26115bd9d9ae7b94d8e4892c91c9fffaa5e04bc646ac98ce0d5b86c826d",
+   "excerpt": "MAHON TULLIER KELLY S 37281 shares @ $365.05 on 2026-07-30 ($13,609,399)",
+   "source_hash": "180cd8b51654b225f266f19b700b2748306d1b80af3f60fe84b214dcffbd4b20",
    "available_as_of": "2026-07-31T14:16:01.779454-06:00",
    "protocol_id": null
   },
@@ -131,8 +134,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-07-02",
    "accession_number": "0001403161-26-000089",
-   "excerpt": "MCINERNEY RYAN S 1638 shares @ $344.55 on 2026-07-01 ($564,365)",
-   "source_hash": "3b0288168776ec9c97bf1c4c4f8e7d50cfaa14242f968fd610fbfef1af035be2",
+   "excerpt": "MCINERNEY RYAN S 8852 shares @ $343.88 on 2026-07-01 ($3,044,069)",
+   "source_hash": "b2b41a7f2787caf002c176e0fbe0d8b4176c8a4b66846eac1530d61a2cce57d6",
    "available_as_of": "2026-07-16T01:28:32.445213-06:00",
    "protocol_id": null
   },
@@ -141,8 +144,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-07-02",
    "accession_number": "0001403161-26-000089",
-   "excerpt": "MCINERNEY RYAN S 8852 shares @ $343.88 on 2026-07-01 ($3,044,069)",
-   "source_hash": "b2b41a7f2787caf002c176e0fbe0d8b4176c8a4b66846eac1530d61a2cce57d6",
+   "excerpt": "MCINERNEY RYAN S 1638 shares @ $344.55 on 2026-07-01 ($564,365)",
+   "source_hash": "3b0288168776ec9c97bf1c4c4f8e7d50cfaa14242f968fd610fbfef1af035be2",
    "available_as_of": "2026-07-16T01:28:32.445213-06:00",
    "protocol_id": null
   },
@@ -217,7 +220,131 @@
    "protocol_id": null
   }
  ],
+ "evidence_objects_collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for V in the declared corpus",
+  "returned": 19,
+  "total_available": 19,
+  "cap": 100,
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
+  "newest_returned_available_as_of": "2026-09-10T14:07:12.341986-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "PREVIEW",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:58.193709-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
+ },
+ "history_url": "/why/V.history.json",
+ "history_manifest_url": "/why/history_manifest.json",
+ "build_id": "why-2026-09-15T040657",
+ "corrections": [
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000104",
+    "source_hash": "41e5c0b2a15dc04ee3571205f85e6f557b6a193d76118d61177753cb460b4438",
+    "excerpt_sha256": "0cf20bf2296ac68c47c0b9202090197f9ee9ca3e796c781f0a184af37c11afd7"
+   },
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-41e5c0b2a15dc04e",
+   "kind": "quality_flag",
+   "status": "CONFIRMED",
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "source_location": {
+    "accession_number": "0001403161-26-000104",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000104/v-20260630.htm",
+    "char_offset": 581,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": null
+  },
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000103",
+    "source_hash": "3aa13b24d203223d69275004042e748e3ad159e64303aa0b8f2a4f2d14860bda",
+    "excerpt_sha256": "b254b2bf94298c806755ba9da4984743a353ba0042fa6a080b53cd752678900c"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-3aa13b24d203223d",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 28, 2026 VISA INC.",
+   "corrected_sha256": "7fc9eac7a952f92c740aca1e3ac8ad52b049289f2c491999888a6e3752ce7dec",
+   "source_location": {
+    "accession_number": "0001403161-26-000103",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000103/v-20260728.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000086",
+    "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+    "excerpt_sha256": "8e10f7016a9f1d3cf63cd689e31e50be3cb07ecc11387c30f08dce4159080f3e"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-687c528c8e739755",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 24, 2026 VISA INC.",
+   "corrected_sha256": "a778b7162c4f7e50d4ec0829600298b8a9a996e19cb67d29a8d47a179c64b21b",
+   "source_location": {
+    "accession_number": "0001403161-26-000086",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000086/v-20260624.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000086",
+    "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+    "excerpt_sha256": "8e10f7016a9f1d3cf63cd689e31e50be3cb07ecc11387c30f08dce4159080f3e"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-687c528c8e739755",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 24, 2026 VISA INC.",
+   "corrected_sha256": "a778b7162c4f7e50d4ec0829600298b8a9a996e19cb67d29a8d47a179c64b21b",
+   "source_location": {
+    "accession_number": "0001403161-26-000086",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000086/v-20260624.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  }
+ ],
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
@@ -333,13 +460,9 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 19 of 19 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

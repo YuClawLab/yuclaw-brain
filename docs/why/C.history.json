@@ -1,0 +1,111 @@
+{
+ "schema": "WhyHistory.v1",
+ "ticker": "C",
+ "build_id": "why-2026-09-15T040657",
+ "generated": "2026-09-15T04:06:57.506457+00:00",
+ "collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for C in the declared corpus",
+  "returned": 6,
+  "total_available": 6,
+  "cap": null,
+  "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
+  "oldest_returned_available_as_of": "2026-02-24T14:09:46-07:00",
+  "newest_returned_available_as_of": "2026-08-06T11:14:34-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "COMPLETE",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:57.641243-06:00",
+  "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
+ },
+ "evidence_objects": [
+  {
+   "ticker": "C",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-02-24",
+   "accession_number": "0001193125-26-066983",
+   "excerpt": "Mason Mark S 2000 shares @ $114.96 on 2026-02-20 ($229,917)",
+   "source_hash": "333b5c6d9ebad9c03368c44dfef5b33bdac2a443806d00d01f89d0487b8e725f",
+   "available_as_of": "2026-02-24T14:09:46-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "C",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-02-24",
+   "accession_number": "0001193125-26-066983",
+   "excerpt": "Mason Mark S 1627 shares @ $114.40 on 2026-02-20 ($186,128)",
+   "source_hash": "fffab8fd34cbd533f702d6584b1d46d95fdf823c8fbd2bb78afdb9ab9e468c56",
+   "available_as_of": "2026-02-24T14:09:46-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "C",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-04-17",
+   "accession_number": "0001193125-26-161475",
+   "excerpt": "Giles Nicole S 12732 shares @ $131.80 on 2026-04-15 ($1,678,078)",
+   "source_hash": "a9c9e0dc2710210d1eae4a51ce0ab345d95d1a023de19f0e8432373f6d139304",
+   "available_as_of": "2026-04-17T14:01:18-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "C",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-04-17",
+   "accession_number": "0001193125-26-161478",
+   "excerpt": "Skyler Edward S 25000 shares @ $131.41 on 2026-04-15 ($3,285,350)",
+   "source_hash": "379d047e12dc3ab4648ad9ae5dd06baf4e917975383ba9acce019a71a9f376dd",
+   "available_as_of": "2026-04-17T14:01:52-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "C",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-05-12",
+   "accession_number": "0001193125-26-219409",
+   "excerpt": "DUGAN JOHN CUNNINGHAM S 2117 shares @ $125.30 on 2026-05-08 ($265,260)",
+   "source_hash": "979533cf4dc9309a64b557148548d011f5fa31aea7d5befccb6548ed973ab1fe",
+   "available_as_of": "2026-05-12T14:08:19-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "C",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-06",
+   "accession_number": "0000831001-26-000045",
+   "excerpt": "http://fasb.org/us-gaap/2026#LongTermDebt http://fasb.org/us-gaap/2026#PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
+   "source_hash": "e5cef6f850c90673215098c94fa57484494880db253577a5cc56af3210d36496",
+   "available_as_of": "2026-08-06T11:14:34-06:00",
+   "protocol_id": null
+  }
+ ],
+ "corrections": [
+  {
+   "original": {
+    "ticker": "C",
+    "accession_number": "0000831001-26-000045",
+    "source_hash": "e5cef6f850c90673215098c94fa57484494880db253577a5cc56af3210d36496",
+    "excerpt_sha256": "987d3f9789d9630b95d5f8ffc9b8723dfb91abf247d5d03072478112786a2522"
+   },
+   "rule_ids": [
+    "taxonomy_url"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-e5cef6f850c90673",
+   "kind": "quality_flag",
+   "status": "CONFIRMED",
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "source_location": {
+    "accession_number": "0000831001-26-000045",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/831001/000083100126000045/c-20260630.htm",
+    "char_offset": 113,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": null
+  }
+ ],
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}

@@ -60,10 +60,10 @@
 <div class="card">
   <h1 style="font-size:24px;color:#FFF">Why AMD</h1>
   <p style="margin:10px 0 6px"><span class="biglabel"
-    style="background:#A0AEC026;color:#A0AEC0;border:1px solid #A0AEC080">WATCH</span>
-    <span class="mono" style="font-size:20px;margin-left:12px;color:#FFF">+0.1173</span></p>
-  <p class="muted">score +0.1173 sits in the WATCH band [+0.00, +0.20) of the published threshold table ·
-    snapshot 2026-09-11 17:00 UTC · point-in-time, never edited</p>
+    style="background:#FF336626;color:#FF3366;border:1px solid #FF336680">WEAKENING</span>
+    <span class="mono" style="font-size:20px;margin-left:12px;color:#FFF">-0.1195</span></p>
+  <p class="muted">score -0.1195 sits in the WEAKENING band [-0.20, +0.00) of the published threshold table ·
+    snapshot 2026-09-14 17:00 UTC · point-in-time, never edited</p>
 </div>
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Signal labels are research classifications, not buy/sell recommendations.
@@ -74,9 +74,9 @@ Investment implication: none established — no buy, sell, or alpha conclusion i
         <div class="crow">
           <div class="cname">C1 Price momentum
             <span class="cw">w=0.12</span></div>
-          <div class="cbarwrap"><div class="cbar" style="width:44%;
+          <div class="cbarwrap"><div class="cbar" style="width:11%;
             background:#00E676"></div></div>
-          <div class="cval">+0.441</div>
+          <div class="cval">+0.108</div>
           
         </div>
         <div class="crow">
@@ -90,9 +90,9 @@ Investment implication: none established — no buy, sell, or alpha conclusion i
         <div class="crow">
           <div class="cname">C3 Sector velocity
             <span class="cw">w=0.12</span></div>
-          <div class="cbarwrap"><div class="cbar" style="width:74%;
-            background:#00E676"></div></div>
-          <div class="cval">+0.744</div>
+          <div class="cbarwrap"><div class="cbar" style="width:53%;
+            background:#FF3366"></div></div>
+          <div class="cval">-0.529</div>
           
         </div>
         <div class="crow">
@@ -116,15 +116,15 @@ Investment implication: none established — no buy, sell, or alpha conclusion i
             <span class="cw">w=0.18</span></div>
           <div class="cbarwrap"><div class="cbar" style="width:47%;
             background:#FF3366"></div></div>
-          <div class="cval">-0.472</div>
+          <div class="cval">-0.470</div>
           
         </div>
         <div class="crow">
           <div class="cname">C7 Peer correlation
             <span class="cw">w=0.10</span></div>
-          <div class="cbarwrap"><div class="cbar" style="width:5%;
-            background:#00E676"></div></div>
-          <div class="cval">+0.051</div>
+          <div class="cbarwrap"><div class="cbar" style="width:9%;
+            background:#FF3366"></div></div>
+          <div class="cval">-0.093</div>
           
         </div>
         <div class="crow">
@@ -147,11 +147,12 @@ Investment implication: none established — no buy, sell, or alpha conclusion i
 the current snapshot's stored values. C6 event impact carries the highest single weight by design —
 evidence is meant to correct price-only signals, not echo them.</p></div>
 
+<div class="card"><h2>Excerpt corrections and quality flags</h2><p class="muted" style="font-size:12.5px">Original excerpts and their hashes are never edited; a corrected display excerpt is a separate annotation with its own digest and date. Detector hits stay SUSPECTED until verified against the primary document.</p><ul style="font-size:13px;line-height:1.7"><li><span class="k">CORRECTED display excerpt</span> (2026-09-15T04:05:28.838883+00:00; rules entity_inside) — original retained (hash a9e4c3584a5e…): <em class="excerpt-quote">On August 17, 2026 (the “Closing Date”), Advanced Micro Devices, Inc.</em> <span class="muted">(corrected-text digest 4cff7a434d8a…; verified against primary document (EDGAR))</span></li><li><span class="k">CORRECTED display excerpt</span> (2026-09-15T04:05:28.838883+00:00; rules entity_inside) — original retained (hash da5ffb3da4f3…): <em class="excerpt-quote">On May 14, 2026 (the “Closing Date”), Advanced Micro Devices, Inc. (the “Company”) entered into a Credit Agreement with the lenders named therein, JPMorgan Chase Bank, N.A., as administrative agent, and the other parties from time to time party thereto (the “Credit Agreement”).</em> <span class="muted">(corrected-text digest af5fae2f319b…; verified against primary document (EDGAR))</span></li></ul></div>
 <div class="card"><h2>Evidence coverage — the four terms</h2>
 <div class="terms">
-  <div class="term"><div class="v">89</div><div class="k">ECS (0–100)</div></div>
-  <div class="term"><div class="v">90</div><div class="k">accepted events, 90d</div></div>
-  <div class="term"><div class="v">17.2</div><div class="k">days since latest event</div></div>
+  <div class="term"><div class="v" data-ecs="100">100</div><div class="k">ECS (0–100)</div></div>
+  <div class="term"><div class="v">112</div><div class="k">accepted events, 90d</div></div>
+  <div class="term"><div class="v">0.3</div><div class="k">days since latest event</div></div>
   <div class="term"><div class="v">4</div><div class="k">distinct event types</div></div>
   <div class="term"><div class="v">1</div><div class="k">substrate active (0/1)</div></div>
 </div>
@@ -161,42 +162,42 @@ under this classification — coverage, not prediction.</p></div>
 <div class="card"><h2>Latest accepted events</h2>
         <div class="ev">
           <div class="evhead"><span class="evtype">INSIDER_SELL</span>
-            <span class="evmeta">magnitude 0.08 · direction -1 ·
-            4-parsed · 17.2 days ago</span></div>
-          <div class="evex">Hu Jean X. S 800 shares @ $471.14 on 2026-08-25 ($376,912)</div>
-          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000145238526000008/wk-form4_1787864688.xml">source filing ↗</a>
+            <span class="evmeta">magnitude 0.21 · direction -1 ·
+            4-parsed · 0.3 days ago</span></div>
+          <div class="evex">Su Lisa T S 2100 shares @ $510.74 on 2026-09-10 ($1,072,554)</div>
+          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000000248826000178/wk-form4_1789417189.xml">source filing ↗</a>
         </div>
         <div class="ev">
           <div class="evhead"><span class="evtype">INSIDER_SELL</span>
-            <span class="evmeta">magnitude 0.22 · direction -1 ·
-            4-parsed · 17.2 days ago</span></div>
-          <div class="evex">Hu Jean X. S 2327 shares @ $473.43 on 2026-08-25 ($1,101,672)</div>
-          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000145238526000008/wk-form4_1787864688.xml">source filing ↗</a>
+            <span class="evmeta">magnitude 0.05 · direction -1 ·
+            4-parsed · 0.3 days ago</span></div>
+          <div class="evex">Su Lisa T S 500 shares @ $510.94 on 2026-09-10 ($255,470)</div>
+          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000000248826000178/wk-form4_1789417189.xml">source filing ↗</a>
+        </div>
+        <div class="ev">
+          <div class="evhead"><span class="evtype">INSIDER_SELL</span>
+            <span class="evmeta">magnitude 0.81 · direction -1 ·
+            4-parsed · 0.3 days ago</span></div>
+          <div class="evex">Su Lisa T S 7962 shares @ $508.78 on 2026-09-10 ($4,050,906)</div>
+          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000000248826000178/wk-form4_1789417189.xml">source filing ↗</a>
         </div>
         <div class="ev">
           <div class="evhead"><span class="evtype">INSIDER_SELL</span>
             <span class="evmeta">magnitude 0.36 · direction -1 ·
-            4-parsed · 17.2 days ago</span></div>
-          <div class="evex">Hu Jean X. S 3831 shares @ $474.43 on 2026-08-25 ($1,817,541)</div>
-          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000145238526000008/wk-form4_1787864688.xml">source filing ↗</a>
+            4-parsed · 0.3 days ago</span></div>
+          <div class="evex">Su Lisa T S 3500 shares @ $509.74 on 2026-09-10 ($1,784,090)</div>
+          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000000248826000178/wk-form4_1789417189.xml">source filing ↗</a>
         </div>
         <div class="ev">
           <div class="evhead"><span class="evtype">INSIDER_SELL</span>
-            <span class="evmeta">magnitude 0.14 · direction -1 ·
-            4-parsed · 17.2 days ago</span></div>
-          <div class="evex">Hu Jean X. S 1429 shares @ $475.70 on 2026-08-25 ($679,775)</div>
-          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000145238526000008/wk-form4_1787864688.xml">source filing ↗</a>
-        </div>
-        <div class="ev">
-          <div class="evhead"><span class="evtype">INSIDER_SELL</span>
-            <span class="evmeta">magnitude 0.24 · direction -1 ·
-            4-parsed · 17.2 days ago</span></div>
-          <div class="evex">Hu Jean X. S 2513 shares @ $472.39 on 2026-08-25 ($1,187,116)</div>
-          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000145238526000008/wk-form4_1787864688.xml">source filing ↗</a>
+            <span class="evmeta">magnitude 0.21 · direction -1 ·
+            4-parsed · 0.3 days ago</span></div>
+          <div class="evex">Su Lisa T S 2106 shares @ $508.90 on 2026-09-10 ($1,071,743)</div>
+          <a class="evlink" href="https://www.sec.gov/Archives/edgar/data/2488/000000248826000178/wk-form4_1789417189.xml">source filing ↗</a>
         </div></div>
 
 <div class="card"><h2>Label history (last 30 snapshot days)</h2>
-<div><span class='rb' title='2026-08-03 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-04 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-05 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-06 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-07 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-10 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-11 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-12 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-13 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-14 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-17 NEUTRAL' style='background:#A0AEC0'></span><span class='rb' title='2026-08-18 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-19 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-20 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-21 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-24 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-25 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-26 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-27 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-28 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-31 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-01 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-02 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-03 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-04 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-07 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-08 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-09 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-10 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-11 WATCH' style='background:#A0AEC0'></span></div>
+<div><span class='rb' title='2026-08-04 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-05 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-06 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-07 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-10 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-11 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-12 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-13 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-14 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-17 NEUTRAL' style='background:#A0AEC0'></span><span class='rb' title='2026-08-18 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-19 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-20 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-21 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-24 NEGATIVE_EVENT' style='background:#FF3366'></span><span class='rb' title='2026-08-25 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-26 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-08-27 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-28 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-08-31 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-01 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-02 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-03 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-04 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-07 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-08 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-09 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-10 WEAKENING' style='background:#FF3366'></span><span class='rb' title='2026-09-11 WATCH' style='background:#A0AEC0'></span><span class='rb' title='2026-09-14 WEAKENING' style='background:#FF3366'></span></div>
 <p class="muted" style="margin-top:6px">Point-in-time record, oldest → newest; colors follow the label
 legend on the home page. Never edited after the fact.</p></div>
 
@@ -206,6 +207,6 @@ legend on the home page. Never edited after the fact.</p></div>
 Investment implication: none established — no buy, sell, or alpha conclusion is supported by this page. Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="explorer.html" style="color:#A0AEC0">Universe Explorer</a></p>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-11 (last completed U.S. trading day) · regenerated daily after market close</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-14 01:37 UTC · daily evidence block root e0026e804d91 (block 2026-09-11)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-14 (last completed U.S. trading day); generated at 2026-09-15 04:13 UTC.</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-15 04:13 UTC · daily evidence block root d3fb98ff2448 (block 2026-09-14)</footer>
 </div></body></html>

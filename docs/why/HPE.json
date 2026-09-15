@@ -1,29 +1,32 @@
 {
  "ticker": "HPE",
- "generated": "2026-09-14T01:38:06.548076+00:00",
- "label": "BULLISH",
- "score": 0.4204,
+ "generated": "2026-09-15T04:06:57.506457+00:00",
+ "label": "WEAKENING",
+ "score": -0.0163,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.709,
+  "c1": -0.2875,
   "c2": 0.0,
-  "c3": 0.7440066,
+  "c3": -0.5291444,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.075085476,
+  "c7": 0.07428334,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
   "ecs": 66,
   "events_90d": 5,
-  "recency_days": 40.4,
+  "recency_days": 41.5,
+  "substrate_active": 1,
   "type_diversity": 3,
-  "substrate_active": 1
+  "as_of": "2026-09-15T04:05:09.809247+00:00",
+  "source_sha256": "6967d0c5b900716d6d1cc71fe9e2b3f6ec8c32055ce01dbbd11674f1821f8df3",
+  "metric_id": "ecs"
  },
  "evidence_objects": [
   {
@@ -211,8 +214,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-03-27",
    "accession_number": "0001812556-26-000002",
-   "excerpt": "MacDonald Neil B S 7139 shares @ $26.00 on 2026-03-25 ($185,614)",
-   "source_hash": "3981da947cebf7127ab8dd5a7709ea47cb66b2b8d6dd5c55db05362648a36996",
+   "excerpt": "MacDonald Neil B S 105513 shares @ $25.03 on 2026-03-25 ($2,640,990)",
+   "source_hash": "5ff59a178d50583d5cac4f54d0677b596a041285a3469aafb1f09c0f9b6bf4b3",
    "available_as_of": "2026-03-27T17:06:56-06:00",
    "protocol_id": null
   },
@@ -221,8 +224,8 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-03-27",
    "accession_number": "0001812556-26-000002",
-   "excerpt": "MacDonald Neil B S 105513 shares @ $25.03 on 2026-03-25 ($2,640,990)",
-   "source_hash": "5ff59a178d50583d5cac4f54d0677b596a041285a3469aafb1f09c0f9b6bf4b3",
+   "excerpt": "MacDonald Neil B S 7139 shares @ $26.00 on 2026-03-25 ($185,614)",
+   "source_hash": "3981da947cebf7127ab8dd5a7709ea47cb66b2b8d6dd5c55db05362648a36996",
    "available_as_of": "2026-03-27T17:06:56-06:00",
    "protocol_id": null
   },
@@ -247,7 +250,81 @@
    "protocol_id": null
   }
  ],
+ "evidence_objects_collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for HPE in the declared corpus",
+  "returned": 22,
+  "total_available": 22,
+  "cap": 100,
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
+  "newest_returned_available_as_of": "2026-08-04T10:15:38-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "PREVIEW",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:57.792639-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
+ },
+ "history_url": "/why/HPE.history.json",
+ "history_manifest_url": "/why/history_manifest.json",
+ "build_id": "why-2026-09-15T040657",
+ "corrections": [
+  {
+   "original": {
+    "ticker": "HPE",
+    "accession_number": "0001645590-26-000074",
+    "source_hash": "642f70af55955866dfbf6faeb62c2744b2ff99fab3d1c189b8599c0194d260a5",
+    "excerpt_sha256": "436e1626172b4530a74db2daf8eb20b214a0e541b67726db46250d45ebb16371"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-642f70af55955866",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "Item 7.01 Regulation FD Disclosure. The information reported in this Item 7.01 shall not be deemed \u201cfiled\u201d for purposes of Section 18 of the Securities Exchange Act of 1934 and shall not be deemed incorporated by reference into any filing under the Securities Act of 1933, as amended.",
+   "corrected_sha256": "5bcd79c9e3aad2fa045fd8f29083a2af5f9a1bc385e38d7cebd17db1d3b768b1",
+   "source_location": {
+    "accession_number": "0001645590-26-000074",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1645590/000164559026000074/hpe-20260804.htm",
+    "char_offset": 2177,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
+  {
+   "original": {
+    "ticker": "HPE",
+    "accession_number": "0001645590-26-000072",
+    "source_hash": "a82baf6a369cc37b79c8231dd5197046e801fa32d58f1a73d5ccb898e2be7950",
+    "excerpt_sha256": "00318d5b2b60882decf26df111c2c0483af54a8e566306c0fdc16c2b3d371e7f"
+   },
+   "rule_ids": [
+    "entity_fragment_end"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-a82baf6a369cc37b",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "Effective as of July 24, 2026, the Board of Directors (the \u201cBoard\u201d) of Hewlett Packard Enterprise Company (the \u201cCompany\u201d) has appointed David I.",
+   "corrected_sha256": "7f9c10df85beb5b4df23c8b2aa91614c73537259e5e312dc40ed4d3ef7db5cc0",
+   "source_location": {
+    "accession_number": "0001645590-26-000072",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1645590/000164559026000072/hpe-20260724.htm",
+    "char_offset": 2333,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  }
+ ],
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-11",
    "label": "BULLISH"
@@ -363,13 +440,9 @@
   {
    "date": "2026-08-04",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay HPE --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 22 of 22 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay HPE --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

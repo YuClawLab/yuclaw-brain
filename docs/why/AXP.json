@@ -1,29 +1,32 @@
 {
  "ticker": "AXP",
- "generated": "2026-09-14T01:38:06.548076+00:00",
+ "generated": "2026-09-15T04:06:57.506457+00:00",
  "label": "WATCH",
- "score": 0.1983,
+ "score": 0.1908,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.2365,
+  "c1": -0.237,
   "c2": 0.0,
-  "c3": 0.18158817,
+  "c3": -0.008739137,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.06018159,
-  "c7": 0.018306127,
+  "c6": -0.04473892,
+  "c7": 0.14302114,
   "c8": 0.0,
   "c9": 0.4
  },
  "evidence_coverage": {
   "ecs": 73,
   "events_90d": 9,
-  "recency_days": 25.2,
+  "recency_days": 26.3,
+  "substrate_active": 1,
   "type_diversity": 2,
-  "substrate_active": 1
+  "as_of": "2026-09-15T04:05:09.809247+00:00",
+  "source_sha256": "6967d0c5b900716d6d1cc71fe9e2b3f6ec8c32055ce01dbbd11674f1821f8df3",
+  "metric_id": "ecs"
  },
  "evidence_objects": [
   {
@@ -151,6 +154,16 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-02-20",
    "accession_number": "0000004962-26-000104",
+   "excerpt": "Joabar Raymond S 4977 shares @ $341.14 on 2026-02-19 ($1,697,854)",
+   "source_hash": "d290a554a19e504837e996a5acd5167db4d0aad66d6eb418a5af1314c6157755",
+   "available_as_of": "2026-02-20T14:05:01-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "AXP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-02-20",
+   "accession_number": "0000004962-26-000104",
    "excerpt": "Joabar Raymond S 2835 shares @ $338.98 on 2026-02-19 ($961,008)",
    "source_hash": "b9b71c2d3982efae6e2ebdfe489d35839a361343b9e061bffe7fd3c30094a7e8",
    "available_as_of": "2026-02-20T14:05:01-07:00",
@@ -171,23 +184,36 @@
    "evidence_type": "INSIDER_SELL",
    "filing_date": "2026-02-20",
    "accession_number": "0000004962-26-000104",
-   "excerpt": "Joabar Raymond S 4977 shares @ $341.14 on 2026-02-19 ($1,697,854)",
-   "source_hash": "d290a554a19e504837e996a5acd5167db4d0aad66d6eb418a5af1314c6157755",
-   "available_as_of": "2026-02-20T14:05:01-07:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "AXP",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-20",
-   "accession_number": "0000004962-26-000104",
    "excerpt": "Joabar Raymond S 2840 shares @ $340.03 on 2026-02-19 ($965,685)",
    "source_hash": "121648baf6f82af65b7f9c54d6e84c8002794dd86a29303ad495f3a9bb371cba",
    "available_as_of": "2026-02-20T14:05:01-07:00",
    "protocol_id": null
   }
  ],
+ "evidence_objects_collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for AXP in the declared corpus",
+  "returned": 16,
+  "total_available": 16,
+  "cap": 100,
+  "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
+  "oldest_returned_available_as_of": "2026-02-20T14:05:01-07:00",
+  "newest_returned_available_as_of": "2026-08-19T14:08:23.130963-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "PREVIEW",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:57.602947-06:00",
+  "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
+ },
+ "history_url": "/why/AXP.history.json",
+ "history_manifest_url": "/why/history_manifest.json",
+ "build_id": "why-2026-09-15T040657",
+ "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-11",
    "label": "WATCH"
@@ -303,13 +329,9 @@
   {
    "date": "2026-08-04",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-03",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence as of D = objects with available_as_of <= D; classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 16 of 16 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

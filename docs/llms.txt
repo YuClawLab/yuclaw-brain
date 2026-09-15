@@ -31,6 +31,10 @@
   - /replay/lab_replay_bundle.json · static · application/json
   - /methodology/backfill.md · static · text/markdown
   - /receipts/scoreboard.json · static · application/json
+  - /why/{TICKER}.history.json · templated · application/json
+  - /why/history_manifest.json · static · application/json
+  - /coverage.json · static · application/json
+  - /evidence/excerpt_corrections.json · static · application/json
 
 ## What you are reading
 
@@ -56,7 +60,7 @@
                               event CSVs, engine run JSONs, metadata,
                               citation snippets
 - /capabilities.json         — ONE-URL discovery of the whole agent surface
-- /why/{TICKER}.json         — Ground Truth anatomy + EvidenceObjects +
+- /why/{TICKER}.json         — classification anatomy + EvidenceObjects (PREVIEW) +
                               label history (79 names, schema-checked)
 - /evidence/verify.json      — offline snapshot-integrity recipe
 - /ledger/{YYYY-MM-DD}.json  — per-day ledger roots
@@ -64,10 +68,16 @@
   format: JSONL, one item per line {item_id, template T1|T2|T3, question,
   key}; /evidencebench/meta.json has the item-set hash + scoring rule
 - AS-OF RECIPE (worked example): to reconstruct NVDA as of 2026-07-15,
-  fetch /why/NVDA.json; evidence = evidence_objects with
-  available_as_of <= 2026-07-15; classification = the label_history entry
-  for the last date <= 2026-07-15. Older than the ribbon:
-  `yuclaw replay NVDA --date 2026-07-15`.
+  fetch /why/NVDA.history.json (COMPLETE per-ticker history, schema
+  WhyHistory.v1; check its sha256 + build_id in /why/history_manifest.json —
+  a missing or mixed-build file is INCOMPLETE); evidence = evidence_objects
+  with available_as_of <= 2026-07-15 (recorded availability, never
+  filing_date). /why/NVDA.json holds only a PREVIEW (newest 100; see
+  evidence_objects_collection): an as-of answer from the preview alone is
+  INCOMPLETE unless returned == total_available. Statuses: COMPLETE,
+  COMPLETE_EMPTY, INCOMPLETE, OUT_OF_RANGE (outside corpus_start/corpus_end).
+  Classification = the label_history entry for the last date <= 2026-07-15.
+  Older than the ribbon: `yuclaw replay NVDA --date 2026-07-15`.
 - CLAIM CHECK: `yuclaw check-claim --ticker NVDA --type INSIDER_SELL
   --date-range 2026-07-01..2026-07-31` → passport JSON; UNSUPPORTED means
   not found in YUCLAW's corpus — never a truth verdict.

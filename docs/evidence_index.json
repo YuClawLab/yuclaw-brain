@@ -1,6 +1,6 @@
 {
  "what": "YUCLAW evidence index \u2014 machine-readable map of the open evidence layer. Research and education only; nothing here is investment advice; classifications are not recommendations.",
- "generated_utc": "2026-09-14 01:38 UTC",
+ "generated_utc": "2026-09-15 04:12 UTC",
  "version": "v7.0.0",
  "base_url": "https://yuclaw.ca",
  "llms_txt": "https://yuclaw.ca/llms.txt",
@@ -144,6 +144,34 @@
    "kind": "static",
    "content_type": "application/json",
    "what": "derived evidence scoreboard (v7): receipts, challenges, dispositions with counting definitions; zero/pending are real states; no trust score"
+  },
+  {
+   "key": "why_history_json",
+   "url": "https://yuclaw.ca/why/{TICKER}.history.json",
+   "kind": "templated",
+   "content_type": "application/json",
+   "what": "COMPLETE per-name evidence history bound to one build (WhyHistory.v1); the preview in /why/{TICKER}.json declares itself a PREVIEW"
+  },
+  {
+   "key": "why_history_manifest",
+   "url": "https://yuclaw.ca/why/history_manifest.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "what": "build id + sha256/count of every history file (a mixed-build result is incomplete)"
+  },
+  {
+   "key": "coverage_json",
+   "url": "https://yuclaw.ca/coverage.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "what": "the ONE shared Evidence Coverage artifact every surface renders from"
+  },
+  {
+   "key": "excerpt_corrections",
+   "url": "https://yuclaw.ca/evidence/excerpt_corrections.json",
+   "kind": "static",
+   "content_type": "application/json",
+   "what": "separate correction/flag annotations for explanatory excerpts; originals retained"
   }
  ],
  "locked_vocabulary": [
@@ -161,12 +189,12 @@
   {
    "url": "https://yuclaw.ca/explorer.html",
    "what": "Universe Explorer \u2014 the full 79-name table, client-side filter/sort",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/sectors.html",
    "what": "Sector overview \u2014 descriptive medians of current classifications (display, not inference)",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/tour.html",
@@ -176,7 +204,7 @@
   {
    "url": "https://yuclaw.ca/for_ai_builders.html",
    "what": "For AI builders \u2014 the agent surface: why-JSON API, Evidence Passport, MCP v2, EvidenceBench",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/evidencebench.html",
@@ -191,7 +219,7 @@
   {
    "url": "https://yuclaw.ca/why/AAPL.html",
    "what": "Why AAPL \u2014 per-name classification anatomy (worked example of the why/{TICKER}.html family, 79 pages, one pinned template)",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/methodology.html",
@@ -201,12 +229,12 @@
   {
    "url": "https://yuclaw.ca/index.html",
    "what": "landing \u2014 current signals (locked vocabulary)",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/validation_lab.html",
    "what": "Validation Lab \u2014 cohorts, rigor, clustered inference, baselines",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/validation.html",
@@ -231,27 +259,27 @@
   {
    "url": "https://yuclaw.ca/todays_evidence.html",
    "what": "Today's Evidence Changes",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/replication.html",
    "what": "Replication \u2014 how to reproduce, honestly-empty log",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-04"
   },
   {
    "url": "https://yuclaw.ca/evidence_scoreboard.html",
    "what": "Evidence Scoreboard \u2014 receipts, challenges and dispositions with counting definitions; zero/pending are real states (v7)",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-15"
   },
   {
    "url": "https://yuclaw.ca/lane.html",
    "what": "YUCLAW's Lane \u2014 scope statement",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   },
   {
    "url": "https://yuclaw.ca/trace_su.html",
    "what": "Suncor evidence trace (worked example)",
-   "data_through": "2026-09-11"
+   "data_through": "2026-09-14"
   }
  ],
  "packets": {

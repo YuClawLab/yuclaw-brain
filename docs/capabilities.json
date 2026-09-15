@@ -2,7 +2,7 @@
  "name": "YUCLAW Evidence API",
  "former_name": "YUCLAW Ground Truth API",
  "version": "v7.0.0",
- "generated": "2026-09-14T01:38:07.215165+00:00",
+ "generated": "2026-09-15T04:06:58.332420+00:00",
  "base_url": "https://yuclaw.ca",
  "positioning": "The open evidence layer for financial AI.",
  "endpoints": {
@@ -23,7 +23,11 @@
   "packet_zip": "https://yuclaw.ca/packets/{zip}",
   "replay_bundle": "https://yuclaw.ca/replay/lab_replay_bundle.json",
   "methodology_md": "https://yuclaw.ca/methodology/backfill.md",
-  "receipts_scoreboard": "https://yuclaw.ca/receipts/scoreboard.json"
+  "receipts_scoreboard": "https://yuclaw.ca/receipts/scoreboard.json",
+  "why_history_json": "https://yuclaw.ca/why/{TICKER}.history.json",
+  "why_history_manifest": "https://yuclaw.ca/why/history_manifest.json",
+  "coverage_json": "https://yuclaw.ca/coverage.json",
+  "excerpt_corrections": "https://yuclaw.ca/evidence/excerpt_corrections.json"
  },
  "endpoint_kinds": {
   "discovery": "static",
@@ -43,7 +47,11 @@
   "packet_zip": "templated",
   "replay_bundle": "static",
   "methodology_md": "static",
-  "receipts_scoreboard": "static"
+  "receipts_scoreboard": "static",
+  "why_history_json": "templated",
+  "why_history_manifest": "static",
+  "coverage_json": "static",
+  "excerpt_corrections": "static"
  },
  "wildcard_discovery": {
   "ledger_day": "GET /evidence/verify.json and read days[].date; the latest date is the representative",

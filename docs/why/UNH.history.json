@@ -1,0 +1,101 @@
+{
+ "schema": "WhyHistory.v1",
+ "ticker": "UNH",
+ "build_id": "why-2026-09-15T040657",
+ "generated": "2026-09-15T04:06:57.506457+00:00",
+ "collection": {
+  "schema": "evidence-collection/1",
+  "scope": "accepted evidence objects for UNH in the declared corpus",
+  "returned": 5,
+  "total_available": 5,
+  "cap": null,
+  "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
+  "oldest_returned_available_as_of": "2026-04-27T14:50:58-06:00",
+  "newest_returned_available_as_of": "2026-08-25T14:42:23.376493-06:00",
+  "build_id": "why-2026-09-15T040657",
+  "completeness": "COMPLETE",
+  "corpus_start": "2026-01-02T12:32:35-07:00",
+  "corpus_end": "2026-09-14T22:06:58.175740-06:00",
+  "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
+ },
+ "evidence_objects": [
+  {
+   "ticker": "UNH",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-04-27",
+   "accession_number": "0000731766-26-000123",
+   "excerpt": "Conway Patrick Hugh S 800 shares @ $355.00 on 2026-04-23 ($284,000)",
+   "source_hash": "0e79dbabfbc7ade766d8fe8d6e9db91a736be7c2191cabc5a43897b05412fc21",
+   "available_as_of": "2026-04-27T14:50:58-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "UNH",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-06-05",
+   "accession_number": "0000731766-26-000138",
+   "excerpt": "Current Report Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of report (Date of earliest event reported): June 1, 2026",
+   "source_hash": "1ce3344162ec7ff1c497277e171e194b33466820dcb266a4e2a6e4cce4cdcdea",
+   "available_as_of": "2026-06-05T14:17:52-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "UNH",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-07",
+   "accession_number": "0000731766-26-000196",
+   "excerpt": "Conway Patrick Hugh S 500 shares @ $410.00 on 2026-08-05 ($205,000)",
+   "source_hash": "f5fd77b266578b8da28bce50702057414ed81cfcecb1d1b47dbb2f1da50460a2",
+   "available_as_of": "2026-08-07T14:18:17.508190-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "UNH",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-08-10",
+   "accession_number": "0000731766-26-000197",
+   "excerpt": "0000731766 us-gaap:RetainedEarningsMember 2026-04-01 2026-06-30 0000731766 us-gaap:NoncontrollingInterestMember 2026-04-01 2026-06-30",
+   "source_hash": "dcc89b7195e146c767ef09cc841e1fd902ac9ad52f59427335415e8d4d1d573b",
+   "available_as_of": "2026-08-10T10:07:52-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "UNH",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-08-25",
+   "accession_number": "0000731766-26-000201",
+   "excerpt": "Conway Patrick Hugh S 1169 shares @ $390.00 on 2026-08-21 ($455,910)",
+   "source_hash": "aab6403ba66d28e7499b270547f14fab7490c5554fcbb5319eee8e405cb7785f",
+   "available_as_of": "2026-08-25T14:42:23.376493-06:00",
+   "protocol_id": null
+  }
+ ],
+ "corrections": [
+  {
+   "original": {
+    "ticker": "UNH",
+    "accession_number": "0000731766-26-000197",
+    "source_hash": "dcc89b7195e146c767ef09cc841e1fd902ac9ad52f59427335415e8d4d1d573b",
+    "excerpt_sha256": "5816b2066c96fb41597a94e09762b5e745ad69a9c87e607494ae395ed954e50a"
+   },
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-dcc89b7195e146c7",
+   "kind": "quality_flag",
+   "status": "CONFIRMED",
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "source_location": {
+    "accession_number": "0000731766-26-000197",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/731766/000073176626000197/unh-20260630.htm",
+    "char_offset": 1169,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": null
+  }
+ ],
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+}
