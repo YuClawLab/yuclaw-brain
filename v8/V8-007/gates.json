@@ -1,0 +1,211 @@
+{
+ "record": "v8-gates/1",
+ "order": "V8-007 §2/§3",
+ "recorded_utc": "2026-09-16T06:34:19Z",
+ "candidate": {
+  "proposed_candidate_commit": "479a5aef6feb8150802b78653b042cd58d140da5",
+  "proposed_candidate_tree": "027c43ead25342366c9d8f59384c6d116f392994",
+  "generator_ran_on": {
+   "commit": "30a5cf4eb1aa69a80dbe3db57eea2686be44511c",
+   "tree": "780dea90f98e616fd9f6bb7ae78f071460bd1de1",
+   "meaning": "the proposed candidate plus the staging-only weekly-note render commit (models the freeze-day tree)"
+  },
+  "pyproject_version": "8.0.0",
+  "base_main_sha": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+  "branch_head_underneath": "ab2c5c88d8169c0456080fe36ddac47a3ab8f2be",
+  "note": "private staging worktree; not on the branch; not authorized"
+ },
+ "generator": "tools/yuclaw_release_state_v6.py --evidence <record>/gates/evidence_v8_candidate_coherent.json (no --release-policy: none recorded); log <record>/gates/generator_run_coherent.log; manifest <record>/gates/release_state_manifest_v8.0.0_coherent.json",
+ "manifest_sha256": "4e4e4fa94dd1abfd2611ea0c7f04ee4ba54314cb09a62437a4e56c38173731f5",
+ "evidence_input_sha256": "331c015afd3fb8eeea45645b2980248d1d4d50b2a0a7f13d42262ab6600bd1b3",
+ "gate_counts": {
+  "GREEN": 19,
+  "MANUAL_REVIEW": 1
+ },
+ "release_authorized": false,
+ "publishing_permitted": false,
+ "tripwire_pre_publish": {
+  "git_tags_this_version": [],
+  "origin_tags_this_version": [],
+  "github_latest_release": "v7.0.1",
+  "pypi_published": "7.0.1",
+  "live_capabilities_version": "v7.0.1",
+  "origin_main_pyproject_version": "7.0.1",
+  "live_pages_linking_preview": 0,
+  "measured_utc": "2026-09-16T04:54:53Z",
+  "prior_tag_v7.0.1_target": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+  "note": "read-only observations this order (tripwire_observations.json)",
+  "candidate_pyproject_version": "8.0.0",
+  "status": "GREEN",
+  "meaning": "nothing v6 is published yet: no tag, no release, PyPI == live badge == origin/main pyproject at the published version, no live link into docs/preview"
+ },
+ "gate_table": [
+  {
+   "gate": 1,
+   "name": "P0 registrations valid",
+   "result": "GREEN",
+   "evidence": "bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 file sha256 == line-81 method_hash"
+  },
+  {
+   "gate": 2,
+   "name": "chain verifies",
+   "result": "GREEN",
+   "evidence": "Registry.verify_chain on load: 82 lines, tip ac51ddfe97eb709a"
+  },
+  {
+   "gate": 3,
+   "name": "zero unexplained ledger breaks",
+   "result": "GREEN",
+   "evidence": "docs/ledger 84 blocks 2026-05-20..2026-09-14; sessions without a block: 0; evidence-changes gate rc=0"
+  },
+  {
+   "gate": 4,
+   "name": "point-in-time guard",
+   "result": "GREEN",
+   "evidence": "as_of endpoint hash + twice-run identity (evidence-changes gate); u350 isolation proven by attempted writes"
+  },
+  {
+   "gate": 5,
+   "name": "no v1 historical silent rewrite",
+   "result": "GREEN",
+   "evidence": "chain file byte-identical to base 696d871e: True; v1 evidence_geometry.json identical to base: True (last changed 0f10c2ec 2026-07-31); Phase-6 canonical artifact identical to base: True; 02A restage left live/registry/output trees byte-identical: True; chain append-only"
+  },
+  {
+   "gate": 6,
+   "name": "dependency calculations reproducible",
+   "result": "GREEN",
+   "evidence": "the registered structural first-read computation reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)"
+  },
+  {
+   "gate": 7,
+   "name": "truncation ledger reconciles",
+   "result": "GREEN",
+   "evidence": "[truncation-gate] OK — 13 ledger entries (schema + anchors verified), detector clean over v3/tools (allowlist v1, 10 constants)"
+  },
+  {
+   "gate": 8,
+   "name": "hypothesis/discovery lineage reconciles",
+   "result": "GREEN",
+   "evidence": "[discovery-gate] OK — 37 hypotheses <-> 37 protocol lines (bijection both directions), 33 families locked, artifact byte-identical to chain-derived rebuild; status_counts={'ACCRUING': 18, 'INCONCLUSIVE': 1, 'OPEN': 7, 'REGISTERED': 7, 'SUPE"
+  },
+  {
+   "gate": 9,
+   "name": "sequential methods pass registered fixtures",
+   "result": "GREEN",
+   "evidence": "anytime gate + registered fixtures selftest"
+  },
+  {
+   "gate": 10,
+   "name": "research-state derivation reproducible",
+   "result": "GREEN",
+   "evidence": "[research-state-gate] OK — 132 names render registered artifacts only; byte-identical rebuild; platform C6 verdict verbatim"
+  },
+  {
+   "gate": 11,
+   "name": "machine JSON agrees with human page",
+   "result": "GREEN",
+   "evidence": "[science-trust-gate] OK — 132 cards: machine JSON == human card == fresh derivation (field-for-field); research states verified against research_state.json directly; sequential panel verified against the canonical Anytime artifact independe"
+  },
+  {
+   "gate": 12,
+   "name": "source citations resolve",
+   "result": "GREEN",
+   "evidence": "site-walk: all links + anchors resolve; index completeness; copy integrity"
+  },
+  {
+   "gate": 13,
+   "name": "negative/inconclusive findings preserved",
+   "result": "GREEN",
+   "evidence": "discovery status_counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4; questions insider-directional RETIRED, reversal-coherence OPEN, reversal-structure-dominance OPEN; reversal first read INSUFFICIENT preserved"
+  },
+  {
+   "gate": 14,
+   "name": "language rails pass",
+   "result": "GREEN",
+   "evidence": "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"
+  },
+  {
+   "gate": 15,
+   "name": "user comprehension test passes",
+   "result": "MANUAL_REVIEW",
+   "evidence": "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+  },
+  {
+   "gate": 16,
+   "name": "stranger-machine reproduction passes",
+   "result": "GREEN",
+   "evidence": "External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0 — registered sentence \"stranger-machine reproduction passes\" (requires reproduction on an external (stranger) MACHINE; it does not require an unaffiliated operator — affiliation is disclosed, never implied away); public log entries: 1, external-machine REPRODUCED: 1, failed: 0"
+  },
+  {
+   "gate": 17,
+   "name": "G1 copy-consistency (canonical blocks byte-identical)",
+   "result": "GREEN",
+   "evidence": "[copy-consistency] OK — 8 target blocks byte-identical to their canonical sources (MISSION-VISION: sha256 c3b3d26ca94f, LOOKAHEAD: sha256 34ff23ecbef0, REPLICATION-SENTENCE: sha256 f940a6f509ab)"
+  },
+  {
+   "gate": 18,
+   "name": "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages"
+  },
+  {
+   "gate": 19,
+   "name": "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G3 base https://yuclaw.ca (77 URLs, zero github.io)"
+  },
+  {
+   "gate": 20,
+   "name": "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G4 22 endpoints declared on 3 surfaces, 31 representatives local-resolved and schema-valid"
+  }
+ ],
+ "evidence_inputs": {
+  "gate6": {
+   "kind": "carried unchanged from V8-006 (fresh bound replay, three runs exit 0, output 0b2ac8a5…, pinned calendar c51d05fa…); no replay repeat",
+   "supersedes": "v8/V8-003/gates.json gate 6 statement (v8/V8-006/gate6_correction.json)",
+   "A1_2_note": "proposed, NOT applied (A1_2_calendar_note_PROPOSED.md)"
+  },
+  "restage": {
+   "kind": "carried unchanged (measured at 2cc7a7b9; the coherent candidate's packaged and preview content equals the V8-006 staged tree)",
+   "preview_files_changed": 0
+  },
+  "lookahead_reconciliation": "carried from 7.0.1 (canonical source unchanged since the base)",
+  "tripwire": {
+   "kind": "read-only observations carried from V8-006 (measured 2026-09-16T04:54:53Z)",
+   "status": "GREEN"
+  },
+  "rehearsal": {
+   "kind": "V8-006 re-run of the V8-003 rehearsal test, labelled (rehearsal commit 9923712e; wheel byte-identical to the staged wheel); the historical V8-003 rehearsal is a different artifact (provenance.json)"
+  },
+  "weekly_note": "rendered by the real generator in staging and reconciled (weekly_note_reconciliation.json)"
+ },
+ "notes_composed_by_the_generator": {
+  "public": {
+   "path": "internal/v8/v8_007_20260916T062115Z/gates/release_notes_v8.0.0_PUBLIC_generator_coherent.md",
+   "sha256": "a8d5df0f3203f9d1d8feab933f758af71f3f4e5ee73cdf6112c24f0e1d4fb22a"
+  },
+  "internal": {
+   "path": "internal/v8/v8_007_20260916T062115Z/gates/release_notes_v8.0.0_INTERNAL_generator_coherent.md",
+   "sha256": "265d9e83e9fbd7b9d1a8434264184dca9004faeab50819baeef69ca56364e82b"
+  },
+  "policy_correspondence": [
+   "not a 7.x release"
+  ]
+ },
+ "unmet_or_manual": [
+  "gate 15 MANUAL_REVIEW / NOT SATISFIED — consumer-posture scaffold GREEN (five personas); no human comprehension study; no 8.0.0 exception; the 7.0.1 exception is not inherited (D2_gate15_decision_package.md)"
+ ],
+ "technical_blockers": [
+  {
+   "id": "TB-1 notes composition is 7.x-only",
+   "where": "tools/yuclaw_release_state_v6.py — the Tier-2 public notes are composed from the release policy by v3/release/notes_v7.compose and checked by notes_v7.check_correspondence only when VERSION starts with '7.'; for 8.0.0 the generator writes the v6-style block (no 8.0.0 feature account, no activation lines, no release-policy disclosure) and records policy_correspondence = ['not a 7.x release']",
+   "consequence": "internal/release_v8_0_0/publish_v800.py cmd_authorize stops when the manifest's notes.policy_correspondence is non-empty ('public notes do not correspond to the policy record'), so authorization of 8.0.0 is refused by the tooling as it stands even with D1/D2 recorded and 0 RED",
+   "observed": "this order's generator run on the coherent staging: notes.policy_correspondence = ['not a 7.x release']; the V8-006 staged run had the same value (not called out then)",
+   "smallest_reviewed_change": "an 8.x composition path with the 8.0.0 feature account (the reviewed Tier-2 draft v8/V8-006/release_notes_8.0.0_DRAFT.md carries it), the activation status lines and the policy disclosure, and the same correspondence check — release tooling only, no packaged code; to be proposed as a reviewed change, not applied by this order",
+   "status": "OPEN — release tooling; not a candidate-code defect"
+  }
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

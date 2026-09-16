@@ -1,0 +1,157 @@
+{
+ "record": "v8-artifact-provenance/1",
+ "order": "V8-007 §1",
+ "recorded_utc": "2026-09-16T06:30:21Z",
+ "question": "V8-006 README §2 stated that the staged 8.0.0 wheel is byte-identical to 'the publisher rehearsal's independently bumped build' (memory/report: 'the V8-003 rehearsal wheel'). Which rehearsal, and is the staged artifact set stale or wrong?",
+ "resolution": "AMBIGUOUS WORDING, CORRECT BYTES. The comparison object was the V8-006 RE-RUN of the rehearsal test that V8-003 introduced, not the historical V8-003 rehearsal artifact. The staged pair is fully accounted for against its declared source tree and is reproduced byte-for-byte from the coherent candidate (V8-007 §2). Nothing is relabelled: the historical V8-003 rehearsal pair keeps its own identity; the V8-006 staged commit and pair are SUPERSEDED (not deleted) by the coherent candidate because their source commit lacks the V8-006 tool corrections and tracks a stray symlink.",
+ "rehearsals": {
+  "V8-003_historical": {
+   "record": "internal/v8/v8_003_20260915T102712Z/publisher/rehearsal_result.json",
+   "record_sha256": "7d7e7ee3b7ef29604f13f35eed1796f9aa2322d23cd50552a6aef2347cb62e6c",
+   "log": "internal/v8/v8_003_20260915T102712Z/publisher/rehearsal_run.log",
+   "log_sha256": "ccd6954283b86c5ecdb78ac79b188b6dd73844b43cbecb6daa0d995f65753d42",
+   "invocation": "tests/test_publish_v800_rehearsal.py (publisher identity 4466c4746206a1da…): disposable clone of the real candidate, rehearsal-only bump commit by rehearsal_bump_v800.py (98 pages / 98 badges), real build with SOURCE_DATE_EPOCH=1580601600, fake PyPI/GitHub/Pages destinations",
+   "utc": "2026-09-16T02:23:32Z",
+   "real_candidate": "9efdd52d88a3585e3ec16e59b1d9844d298bff2c",
+   "rehearsal_commit": "9509480ef4d0f288292b4cc09c4664572672698c",
+   "rehearsal_tree": "fa0a20e9460fac709c28202327b08bc4767fd165",
+   "wheel": {
+    "sha256": "ad07972ece8dac517cd39af3225baa61d56bfea294af8c598ad223b1fcc9a323",
+    "size": 795262
+   },
+   "sdist": {
+    "sha256": "0e0fa3fe2b787dbcc890ab498f8a52a886ed0d63d51e0756bbc9e468b9cf642d",
+    "size": 4945800
+   },
+   "content": "pre-research-notes, pre-dataset, pre-SCI code (V8-003 candidate); retained as the V8-003 record; NOT comparable to the 8.0.0 candidate",
+   "retained_artifacts": false
+  },
+  "V8-006_rerun": {
+   "record": "internal/release_v8_0_0/rehearsal_result.json (copy: internal/v8/v8_006_20260916T045031Z/publisher/rehearsal_result.json)",
+   "record_sha256": "e76182822afc6919212baf6d3889f27db10399ceae350f7014c2df4eeaed1a6e",
+   "log": "internal/release_v8_0_0/rehearsal_run_v8_006.log",
+   "log_sha256": "ebf0bbe50038b496c54f358e32cb2cf6e4f59c3b0669ca2210c07fc8acfee5eb",
+   "invocation": "the same rehearsal test re-run after the publisher gained the adopt stage (publisher identity 78cc839c52d50295…); disposable clone of the real candidate, rehearsal-only bump commit (98 pages / 98 badges), real build with SOURCE_DATE_EPOCH=1580601600, fake destinations; verification from the built artifacts: wheel and sdist install, version, abuse matrix, check-claim smoke, D3 matrix, exact transcript, v7 journeys, v8 workbench journeys 7/7 (Playwright 1.62.0) and export verification",
+   "utc": "2026-09-16T04:59:18Z",
+   "real_candidate": "2cc7a7b9743e502ba0ea545811a68dbe6005afaa",
+   "rehearsal_commit": "9923712ebd033638f6705266847461525f5e3ed1",
+   "rehearsal_tree": "1abc5d5ee1b0a128722a6fb001f602561187b80f",
+   "wheel": {
+    "sha256": "aa988727055aa81f6fabc267c7acaf9f55cd73d0c0b5585d0ebd4c8ffae30b5c",
+    "size": 849964
+   },
+   "sdist": {
+    "sha256": "32d553736ec13b6d32f6caa36c010618389dc682f10ef3c3bb72273f4b3253a8",
+    "size": 4992065
+   },
+   "content": "V8-005 implementation d70edd02 packaged code with an 8.0.0 rehearsal bump; this is the build the V8-006 README compared against",
+   "retained_artifacts": false
+  }
+ },
+ "staged_sets": {
+  "V8-006_staged (SUPERSEDED, retained)": {
+   "identity": "internal/v8/v8_006_20260916T045031Z/staging_build/dist/artifact_identity.json",
+   "identity_sha256": "a22291e0c1d8d81265f174c6a12cee727d7c070b14ada9b5762a18573cb32e27",
+   "commit": "ca50b42efd83bebed1a37fdd3a95b3443f0c5924",
+   "tree": "587fbb2a41c1a41a7e494f8b8994cc3a603e3404",
+   "base": "2cc7a7b9743e502ba0ea545811a68dbe6005afaa",
+   "build_utc": "2026-09-16T05:04:07+00:00",
+   "build_config": "python3 -m build --sdist --wheel, SOURCE_DATE_EPOCH=1580601600, hatchling 1.32.0, build 1.4.2, Python 3.12.3, no PYTHONPATH",
+   "wheel": {
+    "sha256": "aa988727055aa81f6fabc267c7acaf9f55cd73d0c0b5585d0ebd4c8ffae30b5c",
+    "size": 849964
+   },
+   "sdist": {
+    "sha256": "bc974991c5e12433bfd36bb2a38e4fcb2f147b04d92965729f34534196e5f9e9",
+    "size": 4992067
+   },
+   "why_superseded": [
+    "source commit ca50b42e is based on 2cc7a7b9 and lacks the V8-006 corrections to tools/yuclaw_v8_clean_install.py and tests/test_v8_workbench_packaging.py (ab2c5c88) — none of them are packaged, so the artifact bytes are unaffected",
+    "ca50b42e tracks a stray absolute-path symlink output/output -> the branch checkout's output directory, swept up by the bump's `git add -A` (not packaged: 0 output/ members in either artifact); a candidate must not carry it"
+   ]
+  },
+  "V8-007_coherent (CURRENT proposed candidate set)": {
+   "identity": "internal/v8/v8_007_20260916T062115Z/staging_build/dist/artifact_identity.json",
+   "identity_sha256": "108aae4d6d8e4cc10bd6d8c2ea6d073d436f321afadddbdcbbc77c30d3f61f38",
+   "commit": "479a5aef6feb8150802b78653b042cd58d140da5",
+   "tree": "027c43ead25342366c9d8f59384c6d116f392994",
+   "base": "ab2c5c88d8169c0456080fe36ddac47a3ab8f2be",
+   "build_utc": "2026-09-16T06:22:18+00:00",
+   "build_config": "tools/yuclaw_v8_clean_install.py build() at ab2c5c88: detached worktree of the commit, python3 -m build --sdist --wheel, SOURCE_DATE_EPOCH=1580601600, hatchling 1.32.0, build 1.4.2, Python 3.12.3, no PYTHONPATH",
+   "wheel": {
+    "sha256": "aa988727055aa81f6fabc267c7acaf9f55cd73d0c0b5585d0ebd4c8ffae30b5c",
+    "size": 849964
+   },
+   "sdist": {
+    "sha256": "bc974991c5e12433bfd36bb2a38e4fcb2f147b04d92965729f34534196e5f9e9",
+    "size": 4992067
+   },
+   "twine_check": "PASSED (twine 7.0.0, --strict; the PATH twine 6.2.0 rejects Metadata-Version 2.5 and is not the release tool)",
+   "label": "PRELIMINARY development build — not the final set; the final set is built or adopted by the publisher from the authorized commit"
+  }
+ },
+ "member_accounting_of_the_staged_pair": {
+  "method": "every wheel member (except the generated dist-info) and every sdist member (except the generated PKG-INFO) compared byte-for-byte with `git show <commit>:<path>` of the declared source commit; wheel members under yuclaw_py/ map to sdk/yuclaw_py/",
+  "wheel": {
+   "members": 261,
+   "identical_to_tree": 255,
+   "differ": 0,
+   "not_in_tree": 0,
+   "generated_dist_info": 6,
+   "metadata_version_line": "Version: 8.0.0",
+   "metadata_version_spec": "Metadata-Version 2.5",
+   "entry_points": "[console_scripts] yuclaw = v4.cli:main",
+   "packaged_v8": "v8/__init__.py + v8/workbench/{__init__,__main__,calc,cli,dataset,export,ingest,journey,money,schema,server,store}.py + v8/workbench/sci/{__init__,adapter,contracts,evidence,statistics,store}.py + resources (CommitmentClaim.v1.json, README, 8 fixtures + manifest, 7 sci resources)",
+   "no_order_records": true,
+   "no_tests": true
+  },
+  "sdist": {
+   "members": 1176,
+   "identical_to_tree": 1175,
+   "differ": 0,
+   "not_in_tree": 0,
+   "generated": [
+    "PKG-INFO"
+   ],
+   "top_level": {
+    "docs": 899,
+    "v3": 180,
+    "v8": 37,
+    "v4": 31,
+    "schemas": 9,
+    "sdk": 6,
+    "tools": 3,
+    "yuclaw": 2,
+    "brand": 1,
+    "files": [
+     "README_PYPI.md",
+     "README.md",
+     "pyproject.toml",
+     "PKG-INFO",
+     "NOTICE",
+     "LICENSE",
+     ".gitignore",
+     "DISCLAIMER.md"
+    ]
+   },
+   "tools_shipped": [
+    "tools/__init__.py",
+    "tools/check_language.py",
+    "tools/yuclaw_client_intake.py"
+   ],
+   "no_order_records": true,
+   "no_tests": true,
+   "no_internal": true,
+   "ships_generated_pages": "docs/*.html incl. docs/weekly_note.html and docs/preview/capabilities.vnext.json (tree bytes)"
+  },
+  "result": "both staged sets (ca50b42e and 479a5aef) reproduce the SAME wheel and sdist bytes: the trees differ only in unpackaged paths (tools/, tests/, v8/V8-006/ records, the stray output/output symlink)",
+  "wheel_vs_V8-005_development_wheel": "all 255 non-metadata members byte-identical to the 7.0.1-labelled V8-005 development wheel (32dc64eb…, 849,966 B): the packaged code is d70edd02's; the version bump changes only dist-info metadata (Version, long description from README_PYPI.md)"
+ },
+ "installed_demonstrations_binding": {
+  "wheel aa988727…": "installed and demonstrated in the V8-006 rehearsal re-run (7/7 v8 workbench journeys + export verification on wheel and sdist installs, abuse matrix, exact transcript, v7 journeys) — bound to rehearsal commit 9923712e (candidate 2cc7a7b9 content); this order adds a focused installation from the coherent set (version 8.0.0, imports, kernel identity 5b3e0d221c2200b2…, 7 sci resources, console script, `status`)",
+  "sdist bc974991…": "no journey run on these exact sdist bytes (the rehearsal re-run's sdist 32d55373… differs only by the regenerated preview surfaces, which the workbench never reads); this order adds the focused installation (same checks as the wheel)",
+  "7.0.1-labelled development artifacts": "V8-003 (9efdd52d), V8-004 (91d9a211), V8-005 (d70edd02 / 32dc64eb… + ad1204ed…) installed demonstrations stay bound to their original artifacts and records; none is relabelled"
+ },
+ "correction_to_V8-006": "v8/V8-006/README.md §2 'Reproducibility check against the publisher rehearsal's independently bumped build … wheel byte-identical' refers to the V8-006 re-run (9923712e), not to the V8-003 rehearsal (9509480e); the V8-006 evidence input labelled the V8-003 rehearsal correctly as historical. A dated correction line is appended to the V8-006 README; the original sentence stays.",
+ "not_advice": "Research and education only. Not investment advice."
+}

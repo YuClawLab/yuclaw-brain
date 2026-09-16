@@ -1,0 +1,110 @@
+{
+ "record": "v8-weekly-note-reconciliation/1",
+ "order": "V8-007 §3",
+ "recorded_utc": "2026-09-16T06:34:19Z",
+ "dependency_determination": {
+  "renderer": "tools/yuclaw_weekly_note.py — _REPO = Path(__file__).resolve().parents[1]; OUT = _REPO/docs/weekly_note.html; inputs: _REPO/docs/evidence_changes/*.json, _REPO/registry/protocols.jsonl, the evidence store (psycopg2, DSN from v3.lab.cohort_engine; the window count query EVENTS_COUNT_SQL); language rail at build time; self-check against the registry",
+  "checker": "tools/check_weekly_note.py — same _REPO rule; NOTE = _REPO/docs/weekly_note.html; recount LIVE from the evidence store (session set read-only) and the checkout's registry under the note's own window (contract v3, as_of = generation time, never a filter)",
+  "production_checkout_dependency": "NONE in the tools: every path is relative to the checkout that contains the tool, so a staging worktree renders and checks its own docs/weekly_note.html. The only shared input is the live evidence store (read-only SELECT). No hardcoded production path exists, so no path change was made.",
+  "what_remains_a_production_step": "the note that ships and is deployed must be rendered at the freeze in the checkout that is frozen (7.0.1 pattern): its as_of is the generation time and the recount is live, so a note rendered earlier in staging is superseded by the freeze-day render and by any later evidence-store change (LIVE_RECHECK semantics: an input change between render and check legitimately fails strict equality)",
+  "staging_inputs_may_lag_production": "docs/evidence_changes/ and registry/ in the staging tree are the branch's committed copies (base main 696d871e + v8 commits); the production checkout's copies are refreshed by the nightly chain. The staged note therefore reports the branch's archive (47 filings) while its event counts come from the live store; the checker compares the note only with the live store and the same checkout's registry, so the check is self-consistent."
+ },
+ "runs": {
+  "A_checker_on_the_committed_note": {
+   "note_sha256": "4a2623e422c42604acce96d828c3488a3aa4d7ab5d06805f74e9a6f4639c65c6",
+   "command": "python3 tools/check_weekly_note.py --require-contract v3 (in the staging worktree)",
+   "exit_code": 1,
+   "output": "[note-gate] FAIL — note disagrees with the chain:\n  · events: note 245+8=253 vs store 327+11=338"
+  },
+  "B_real_renderer_in_staging": {
+   "command": "python3 tools/yuclaw_weekly_note.py (in the staging worktree; writes only <staging>/docs/weekly_note.html)",
+   "started_utc": "2026-09-16T06:22:25Z",
+   "exit_code": 0,
+   "output": "[weekly-note] wrote /home/zhangd2/yuclaw/internal/v8/v8_007_20260916T062115Z/staging_8.0.0/docs/weekly_note.html (2026-09-10 -> 2026-09-16; as_of 2026-09-16T06:22:25.969342Z; 47 filings, 0 runs; self-check OK)",
+   "rendered_note_sha256": "ecd05882bcf26f9b2f2a840038c7d134eed1a2dea38b057fe04309294d85395c",
+   "rendered_note_metadata": [
+    "<meta name=\"yuclaw-note-contract\" content=\"v3\">",
+    "<meta name=\"yuclaw-note-window\" content=\"2026-09-10/2026-09-16\">",
+    "<meta name=\"yuclaw-note-as-of\" content=\"2026-09-16T06:22:25.969342Z\">",
+    "<meta name=\"yuclaw-note-as-of-meaning\" content=\"generated-at\">"
+   ],
+   "rendered_note_facts": {
+    "window": [
+     "2026-09-10",
+     "2026-09-16"
+    ],
+    "events_total_canon_tier": [
+     "269",
+     "264",
+     "5"
+    ],
+    "filings": "47",
+    "as_of": "2026-09-16T06:22:25.969342Z"
+   },
+   "badge": "v8.0.0 (the staging tree's shared header)",
+   "private_copy": "internal/v8/v8_007_20260916T062115Z/weekly_note/weekly_note.rendered.html"
+  },
+  "C_checker_on_the_rendered_note": {
+   "command": "python3 tools/check_weekly_note.py --require-contract v3",
+   "exit_code": 0,
+   "output": "[note-gate] reconciled: 269 events (264/5), 0 protocols, 0 runs, 0 supersessions for 2026-09-10..2026-09-16 (contract v3, generated at 2026-09-16T06:22:25.969342Z; live recheck)"
+  },
+  "D_gate14_components_on_the_staged_tree_with_the_rendered_note": {
+   "check_language": {
+    "exit_code": 0,
+    "last_line": "OK   CHANGELOG.md"
+   },
+   "check_no_forms": {
+    "exit_code": 0,
+    "last_line": "[no-form-gate] OK — 323 html files: zero form/upload/payment elements anywhere in docs/"
+   },
+   "check_header_layout": {
+    "exit_code": 0,
+    "last_line": "[header-layout] OK — 98 pages: zero stamps in any header, exactly one stamp per page, badge v8.0.0 == package version"
+   },
+   "check_leak_sweep": {
+    "exit_code": 0,
+    "last_line": "[leak-sweep] OK — 1650 tracked surfaces (+0 extra) clean of 14 witness terms (private list); box-identifier WARNINGS (not blocking): 93 in 39 files"
+   },
+   "check_weekly_note": {
+    "exit_code": 0,
+    "last_line": "[note-gate] reconciled: 269 events (264/5), 0 protocols, 0 runs, 0 supersessions for 2026-09-10..2026-09-16 (contract v3, generated at 2026-09-16T06:22:25.969342Z; live recheck)"
+   }
+  },
+  "E_release_state_generator": {
+   "candidate": "30a5cf4e (= 479a5aef + the staging-only render commit)",
+   "gate_14": "GREEN — language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation",
+   "gate_counts": {
+    "GREEN": 19,
+    "MANUAL_REVIEW": 1
+   },
+   "see": "gates.json"
+  }
+ },
+ "production_state": {
+  "production_note": "/home/…/yuclaw/docs/weekly_note.html untouched — sha256 9576196c4561226d8aff40756f2f6e596b6e05cf5599326bedab05cb48b7b391 before and after",
+  "production_note_facts": {
+   "window": [
+    "2026-09-09",
+    "2026-09-15"
+   ],
+   "events_total_canon_tier": [
+    "337",
+    "326",
+    "11"
+   ],
+   "filings": "108",
+   "as_of": "2026-09-15T23:02:22.171803Z"
+  },
+  "refresh_chain": "not run",
+  "evidence_store": "read-only SELECT only (the checker sets the session read-only; the renderer runs the same count query and writes nothing)",
+  "branch_checkout": "docs/weekly_note.html on codex/v8-integration unchanged (407dbf30…)"
+ },
+ "leak_sweep_private_input": "internal/witness_denylist.txt provided to the staging worktree as a gitignored symlink to the private list (the V8-006 staging pattern); without it the sweep fails closed (RED: private denylist missing)",
+ "no_forced_green": "every result above is the real tool's exit code on the real inputs; nothing was edited to pass. The staged GREEN is a point-in-time result (generated at 2026-09-16T06:22:25.969342Z) and will be superseded by the freeze-day render.",
+ "policy_dependent_fields": {
+  "weekly_note": "none — the note carries counts, window and generation time only",
+  "where_policy_fields_live": "the Tier-2 release notes: allocation decision / document_id / sha256 prefix; Gate #15 route with the verbatim exception text (route B) or the accepted gate input, proposed result and coverage (route A); the activation lines (activations_active / activation_records). They are composed by v3/release/notes_v7.compose and checked by check_correspondence — for 7.x versions only (see gates.json technical_blockers)"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

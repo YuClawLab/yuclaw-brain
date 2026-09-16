@@ -1,0 +1,60 @@
+{
+ "document_id": "V8-ALLOC-2026-09-16-P2",
+ "supersedes_proposal": "V8-ALLOC-2026-09-16-P1 (v8/V8-006/D1_allocation_8.0.0_PROPOSED.json; never recorded)",
+ "version": "8.0.0",
+ "decision": "PROPOSED — the owner replaces this value with D1-ACCEPT (or D1-AMEND: <note>) to record acceptance; nothing is accepted until then",
+ "prepared_utc": "2026-09-16",
+ "candidate_this_allocation_refers_to": {
+  "content": "the coherent 8.0.0 candidate: branch HEAD ab2c5c88 (implementation d70edd02 + V8-006 release-tool corrections) + the version-surface patch (patch-id 27267a974a724a04805516ca3d9a401b709ae745, 108 files)",
+  "staged_identity": "commit 479a5aef6feb8150802b78653b042cd58d140da5 / tree 027c43ead25342366c9d8f59384c6d116f392994 (private staging; not designated)",
+  "preliminary_artifacts": {
+   "wheel_sha256": "aa988727055aa81f6fabc267c7acaf9f55cd73d0c0b5585d0ebd4c8ffae30b5c",
+   "sdist_sha256": "bc974991c5e12433bfd36bb2a38e4fcb2f147b04d92965729f34534196e5f9e9",
+   "meaning": "reproducibility evidence only; the final set is built or adopted from the authorized commit"
+  }
+ },
+ "governing_rules": {
+  "recording": "internal/release_v8_0_0/publish_v800.py cmd_policy: the allocation file must carry decision D1-ACCEPT or D1-AMEND*, a unique document_id and version 8.0.0; every activation must be INACTIVE unless an activation record is attached; the policy stage records the document by id + sha256 + size and the authorization later binds that policy record's hash",
+  "validation": "publish_v800.py policy_valid: allocation.accepted must be true with document_id and a 64-hex sha256 for version 8.0.0; otherwise every publishing stage stops before any write",
+  "coupling_with_D2": "cmd_policy records D1 and the Gate #15 route in ONE policy record (`policy <allocation file> <A|B> [<exception file> | <gate input file>]`); an accepted allocation cannot be recorded without a route, and route B is closed until the owner's 8.0.0 wording is bound into the publisher"
+ },
+ "what_D1_ACCEPT_permits": [
+  "records that the owner accepts the 8.0.0 allocation scope and every activation status below",
+  "satisfies the allocation half of policy_valid once recorded by the policy stage"
+ ],
+ "what_D1_ACCEPT_does_not_permit": [
+  "it selects no Gate #15 route (D2)",
+  "it designates and freezes no candidate (the designation order and the freeze are separate acts)",
+  "it authorizes no publication: release_authorized stays false until the owner's authorization sentence binds the frozen sha and tree and every precondition holds",
+  "it activates nothing: every activation stays INACTIVE"
+ ],
+ "activations": {
+  "real receipt program": "INACTIVE (no reviewer appointed, no registration record adopted)",
+  "nightly status delivery": "INACTIVE (adapter and preview only)",
+  "note-snapshot coordinator": "INACTIVE",
+  "sentinel policy": "INACTIVE",
+  "Phase-C prospective protocol": "INACTIVE (draft, unregistered)",
+  "Phase 6 / A2 designation of S": "INACTIVE",
+  "ETF class addendum": "INACTIVE",
+  "U-ladder promotion / window": "INACTIVE",
+  "Gate #15 human study": "INACTIVE (kit ships; no study run)",
+  "COM / PRC / SHD / EVO optional modules": "INACTIVE (absent from the distribution; experimental, default-off)",
+  "commitments in the receipts PERMITTED class": "INACTIVE (not added; publication eligibility stays NOT ELIGIBLE)"
+ },
+ "allocation_scope": "8.0.0 ships the enabled 8.0.0 scope only: seven-step workbench, research notes, dataset coverage and snapshot export, scientific report/replay with the adapted kernel, offline export verification; deferred workstreams (CTL, RES, full RIV/ACT, RND, accounts, billing, pilot) stay outside; backups stay canceled; no human benefit is claimed (PENDING)",
+ "evidence": [
+  "v8/V8-002/scorecard.json (a41dc39e 7/7)",
+  "v8/V8-003/scorecard_mchp.json + packaging.json (real-source retrospective replay; NOT ELIGIBLE)",
+  "v8/V8-004/scorecard_*.json + packaging.json (research notes, dataset)",
+  "v8/V8-005/scorecard_*.json + packaging.json (d70edd02: 7/7 + notes, dataset, SCI DEMONSTRATED from the checkout and both installed artifacts)",
+  "v8/V8-006/gate6_correction.json, restage_measurement.json, tripwire_observations.json, gates.json (staged 18/1/1)",
+  "v8/V8-007/provenance.json, coherent_candidate.json, weekly_note_reconciliation.json, gates.json (coherent staging 19 GREEN / 1 MANUAL_REVIEW; wheel bytes demonstrated 7/7 in the V8-006 rehearsal re-run)"
+ ],
+ "remaining_obligations": [
+  "owner designates the candidate by ordering the version patch applied to the branch (v8/V8-007/designation_procedure.md), then the freeze-day renders and the freeze",
+  "owner records D1 together with D2 by running the policy stage with this document edited to D1-ACCEPT (route A or B); route B first needs the owner's 8.0.0 wording bound into the publisher",
+  "release tooling: the 8.x notes composition path (v8/V8-007/gates.json TB-1) must exist before authorization can pass",
+  "final artifact set built or adopted by the publisher from the authorized commit and verified; the preliminary pair above is not it"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}
