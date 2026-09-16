@@ -272,12 +272,37 @@ Gate #16: {g16['result']} — {g16['disclosure']}.
 {public}"""
 
 
+NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1)
+
+
+def notes_composer(version: str):
+    """The policy-bound Tier-2 composer for this version, or None when no composition path is supported.
+    7.x: v3/release/notes_v7 (unchanged). 8.0.0 exactly: tools/yuclaw_release_notes_v8 (release tooling; not packaged).
+    Any other version has no composer: the notes stay the derived v6-style block and never correspond to a policy."""
+    import importlib
+    for key, module in NOTES_COMPOSERS.items():
+        if (key.endswith(".") and version.startswith(key)) or version == key:
+            sys.path.insert(0, str(_REPO))
+            return importlib.import_module(module)
+    return None
+
+
+def compose_public_notes(version: str, public: str, *, policy: dict | None, board: dict | None, patch_changes: str | None = None) -> tuple[str, list[str]]:
+    """(Tier-2 text, correspondence problems). An empty problem list means the notes correspond to the RECORDED policy;
+    it never means a gate is satisfied or that publication is authorized (the publisher checks those separately)."""
+    composer = notes_composer(version)
+    if composer is None:
+        return public, [f"no supported notes composition path for version {version} (supported: 7.x, {', '.join(k for k in NOTES_COMPOSERS if not k.endswith('.'))})"]
+    public = composer.compose(public, version=version, policy=policy, board=board, patch_changes=patch_changes)
+    return public, list(composer.check_correspondence(public, policy))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
     ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
-    ap.add_argument("--release-policy", help="private release-policy record (allocation + Gate #15 route); the 7.x public notes are composed from it and bound to it")
+    ap.add_argument("--release-policy", help="private release-policy record (allocation + Gate #15 route); the 7.x and 8.0.0 public notes are composed from it and bound to it")
     a = ap.parse_args()
     ev = json.loads(Path(a.evidence).read_text())
     now = datetime.now(timezone.utc).isoformat()
@@ -464,13 +489,7 @@ Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — wit
     release_policy = json.loads(Path(a.release_policy).read_text()) if a.release_policy else None
     board_path = _REPO / "docs" / "receipts" / "scoreboard.json"
     public_board = json.loads(board_path.read_text()) if board_path.exists() else None
-    if VERSION.startswith("7."):
-        sys.path.insert(0, str(_REPO))
-        from v3.release import notes_v7
-        public = notes_v7.compose(public, version=VERSION, policy=release_policy, board=public_board, patch_changes=patch_changes)
-        corr = notes_v7.check_correspondence(public, release_policy)
-    else:
-        corr = ["not a 7.x release"]
+    public, corr = compose_public_notes(VERSION, public, policy=release_policy, board=public_board, patch_changes=patch_changes)
     for banned in ("docs/", "registry/", "output/", "tools/", "check_", ".py", "seed", "bootstrap", "CI [", "{'", "generated"):
         assert banned not in public, f"Tier-2 rule violation: {banned!r} present"
     assert "independently replicated" not in public.lower()
