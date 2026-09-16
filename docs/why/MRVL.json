@@ -1,34 +1,44 @@
 {
  "ticker": "MRVL",
- "generated": "2026-09-15T23:02:06.998288+00:00",
+ "generated": "2026-09-16T23:01:53.534602+00:00",
  "label": "WATCH",
- "score": 0.0897,
+ "score": 0.0537,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.011,
+  "c1": 0.173,
   "c2": 0.0,
-  "c3": 0.11222601,
+  "c3": 0.46641466,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.08425879,
-  "c7": 0.18190244,
+  "c6": -0.36566654,
+  "c7": -0.042252652,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 91,
-  "events_90d": 15,
-  "recency_days": 13.1,
+  "ecs": 99,
+  "events_90d": 16,
+  "recency_days": 0.9,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-09-15T23:01:59.951568+00:00",
-  "source_sha256": "79ffde29073f04e304062b9f9798dad3e211b0f736a78e41f95fd3e4e7651684",
+  "as_of": "2026-09-16T23:01:46.718621+00:00",
+  "source_sha256": "4befe63dec2e768d08a074472b275739f525514c38ca6c57763ce3229de18d9f",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-15",
+   "accession_number": "0001628280-26-062124",
+   "excerpt": "MURPHY MATTHEW J S 7500 shares @ $223.39 on 2026-09-15 ($1,675,425)",
+   "source_hash": "9b510d2071ad2fab2d19daa0935fec91316e019273d8c0fbc17500bacd2f537a",
+   "available_as_of": "2026-09-15T19:43:01.100266-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "INSIDER_SELL",
@@ -353,21 +363,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRVL in the declared corpus",
-  "returned": 32,
-  "total_available": 32,
+  "returned": 33,
+  "total_available": 33,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
-  "newest_returned_available_as_of": "2026-09-02T14:24:53.602195-06:00",
-  "build_id": "why-2026-09-15T230206",
+  "newest_returned_available_as_of": "2026-09-15T19:43:01.100266-06:00",
+  "build_id": "why-2026-09-16T230153",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-15T17:02:07.478226-06:00",
+  "corpus_end": "2026-09-16T17:01:53.991346-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-15T230206",
+ "build_id": "why-2026-09-16T230153",
  "corrections": [
   {
    "original": {
@@ -471,6 +481,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-16",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-15",
    "label": "WATCH"
@@ -586,13 +600,9 @@
   {
    "date": "2026-08-06",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 32 of 32 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 33 of 33 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
