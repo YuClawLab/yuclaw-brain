@@ -104,7 +104,9 @@ any real-source ingestion, any independent review.
 - **Publisher** not drafted (moved to V8-003 by the order): preservation tripwires for 6.0.x, 7.0.0 and 7.0.1, operation
   identifiers on the download-verification journal, and the **PyPI README/logo rendering defect** (README is the PyPI long
   description; the relative `brand/…` image path and the `<picture>` element do not render there) are carried forward.
-- **Review**: the adjudications in the evidence are the owner's functional review, not independent review.
+- **Review attribution (corrected by V8-003 §3)**: the adjudications in the journey evidence were recorded by the automated
+  journey runner as simulated test actions. They are neither owner review nor independent review, whatever identity the
+  reviewer field carried at the time; the evidence itself (7/7 on `a41dc39e`) is unchanged.
 - The Gate B go/no-go on 2026-09-19 (evening, Asia/Shanghai) must rerun the journey on the designated release candidate; this
   score binds candidate `a41dc39e` only.
 
