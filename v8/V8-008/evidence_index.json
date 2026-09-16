@@ -1,0 +1,183 @@
+{
+ "record": "v8-evidence-index/1",
+ "order": "V8-008",
+ "recorded_utc": "2026-09-16T07:17:07Z",
+ "repair_commit": "10d480cdd097ea3a1c508459a9bdc40b9aaf820c",
+ "implementation_candidate": "d70edd02062cc178790f4e5933e7ff50fa70d815",
+ "proposed_candidate_staged": "3d43089ea31e886a7bcb6033da929477d6b79782 (private staging; not designated)",
+ "private_record": {
+  "name": "v8_008_20260916T070425Z",
+  "location": "internal/v8/ (private, never published; home paths omitted)",
+  "files": 26,
+  "note": "the staging worktree (registered git worktree at 3d43089e + the staging-only render commit 25783e87) is excluded from the inventory"
+ },
+ "private_publisher_changes": {
+  "internal/release_v8_0_0/test_publish_v800.py": "one test added (authorize gating on correspondence and PROPOSED allocation)",
+  "internal/release_v8_0_0/test_publish_v800_rehearsal.py": "Tier-2 fixture composed with the 8.0.0 composer (compiled; not re-run)"
+ },
+ "tracked_evidence": {
+  "v8/V8-008/D1_allocation_8.0.0_PROPOSED.json": {
+   "sha256": "3054a97d72bafb92d329ec6335c0bf5acda3f6ed48b350e3a0035b36c71d8614",
+   "bytes": 6423
+  },
+  "v8/V8-008/D2_gate15_decision_package.md": {
+   "sha256": "56335a429073971eede35265a8bdf11297e995cc7d28c087c3cd63ac7eed9412",
+   "bytes": 5430
+  },
+  "v8/V8-008/README.md": {
+   "sha256": "c2ec3d19b8c454deb80db7307c97050121529989026db611b1f99f7d4bc03597",
+   "bytes": 14519
+  },
+  "v8/V8-008/candidate_bump_8.0.0.py": {
+   "sha256": "ff783c4586eda6c4b43015ef74e96397917da38bfca75e3126f82c85312d92dc",
+   "bytes": 7505
+  },
+  "v8/V8-008/designation_proposal.md": {
+   "sha256": "0c8aaf43a9638a10b2b3917bf7ecb565344dddf63662b9400fcbf58ce4386be4",
+   "bytes": 5634
+  },
+  "v8/V8-008/gates.json": {
+   "sha256": "5c06175e232996f251a87ac44051fdbc39eb66d84e054b042d58d5facec5335c",
+   "bytes": 9371
+  },
+  "v8/V8-008/owner_ui_checklist.md": {
+   "sha256": "a7cb41443fac05990ecb4d170a5b0a687ce96f4716961165c7081a7b676f86d8",
+   "bytes": 4309
+  },
+  "v8/V8-008/revised_candidate.json": {
+   "sha256": "bdb5ce6421b9c90b170860f1fb36a00e665f176c8fd23d51e5a63c5ed98ffa8d",
+   "bytes": 3689
+  },
+  "v8/V8-008/roadmap_reconciliation.json": {
+   "sha256": "ab5d95dc7e1d6c5f66f5ff8284b6f6163ee45f64931aa2c747ac7405ffd335bd",
+   "bytes": 128625
+  },
+  "v8/V8-008/roadmap_reconciliation.md": {
+   "sha256": "77e1dce83e4f5fcf936587c40c92cc24dea9075dcb00a65490f0fb09f89a1cc0",
+   "bytes": 77688
+  },
+  "v8/V8-008/tb1_repair.json": {
+   "sha256": "b8d2f2b90cac80a08a40ec91fd1cbcb63312aa4360b9858b833ba37dba30f4ef",
+   "bytes": 6022
+  },
+  "tools/yuclaw_release_notes_v8.py (repair commit 10d480cd)": {
+   "sha256": "b3d4a8f460c761483df08969a5900a65fa654a6d52fd52d1280474fe7dc80cfb",
+   "bytes": 15491
+  },
+  "tools/yuclaw_release_state_v6.py (repair commit 10d480cd)": {
+   "sha256": "fa3220afba0a47f4fa997f30f9e2a3733953fd8757423f4d0fc6f6311103ed6f",
+   "bytes": 43521
+  },
+  "tests/test_release_notes_v8.py (repair commit 10d480cd)": {
+   "sha256": "8d1022440804272d91ed2cefad19daa08de72d5aa46f22116b8a5b235ead609b",
+   "bytes": 12967
+  }
+ },
+ "private_evidence": {
+  "bump_run.log": {
+   "sha256": "12ba4e6c938b2049aad15acbcb0686126d1be7d92074e3aacb9019bc51612a24",
+   "bytes": 612
+  },
+  "candidate_8.0.0_version_surfaces.patch": {
+   "sha256": "7a008d387b309c28c68a2d7d76ebfac48ce7ffc8321645c02c017b7da2326013",
+   "bytes": 78834
+  },
+  "gates/evidence_v8_candidate_revised.json": {
+   "sha256": "1ede6a842346f6d928812c2f8a76af8d89e2cc0e779ca16684a87bf63de5d219",
+   "bytes": 7361
+  },
+  "gates/evidence_v8_candidate_revised_run2.json": {
+   "sha256": "dc89308a43b09216d0450435cb176c109845a5f6884b6c1b4309ad4073fcb00e",
+   "bytes": 7434
+  },
+  "gates/generator_run1_as_staged.log": {
+   "sha256": "fa86e857d54e6a2ac8b1184cdb8d0509adacba47dd2813eb664cd4a2128bdf6f",
+   "bytes": 1986
+  },
+  "gates/generator_run2_with_render.log": {
+   "sha256": "0717dad3ab76cf7f0694c2725ddc3aa7efbb564f16bf3123e1e2e62e01bad723",
+   "bytes": 1853
+  },
+  "gates/release_notes_v8.0.0_INTERNAL_run1.md": {
+   "sha256": "9d890e5cb792bbc52a9dab37f353008595101edf2361357eb840e7bed372eb49",
+   "bytes": 16564
+  },
+  "gates/release_notes_v8.0.0_INTERNAL_run2.md": {
+   "sha256": "db94952f4246b3515e97c3e4bb1e601cc3e88bb0e6e96ebff0223d3479043706",
+   "bytes": 16637
+  },
+  "gates/release_notes_v8.0.0_PUBLIC_run1.md": {
+   "sha256": "1931fa6aa9917e133e80362f98e69e7e050338e1d03e4a3413e916f06f9fc785",
+   "bytes": 9199
+  },
+  "gates/release_notes_v8.0.0_PUBLIC_run2.md": {
+   "sha256": "1931fa6aa9917e133e80362f98e69e7e050338e1d03e4a3413e916f06f9fc785",
+   "bytes": 9199
+  },
+  "gates/release_state_manifest_v8.0.0_run1_as_staged.json": {
+   "sha256": "f8d6b68555e6e94fcfe4997f4c4bc2a0c5c3f60a92a73a83c1d460cfdba09ab0",
+   "bytes": 24878
+  },
+  "gates/release_state_manifest_v8.0.0_run2_with_render.json": {
+   "sha256": "ede1e0574c6c945c74287a0aa7e60ab846579efa104f7b21124a0b09aaaed5f4",
+   "bytes": 25029
+  },
+  "staged_commit.txt": {
+   "sha256": "c85310a86424969bf8e47c62da2840ff7c949d7be983686ed041611c570e95dd",
+   "bytes": 94
+  },
+  "staging_build/build_record.json": {
+   "sha256": "8c0154219fc6f0eff39fb677217881175c2d638192961bd4a1be118153c4ef0d",
+   "bytes": 2531
+  },
+  "staging_build/dist/artifact_identity.json": {
+   "sha256": "1174a51be36a56561b5f2164cbf423904b091a88a1a62cf3ade92f70d8e1aa90",
+   "bytes": 708
+  },
+  "staging_build/dist/yuclaw-8.0.0-py3-none-any.whl": {
+   "sha256": "aa988727055aa81f6fabc267c7acaf9f55cd73d0c0b5585d0ebd4c8ffae30b5c",
+   "bytes": 849964
+  },
+  "staging_build/dist/yuclaw-8.0.0.tar.gz": {
+   "sha256": "bc974991c5e12433bfd36bb2a38e4fcb2f147b04d92965729f34534196e5f9e9",
+   "bytes": 4992067
+  },
+  "staging_build/twine_check.log": {
+   "sha256": "778d5d9a75b5f73df99efa997c63a23d03ad1c2ff77b8a2b8d9f73147e900f56",
+   "bytes": 114
+  },
+  "tb1_repair.diff": {
+   "sha256": "8449e3de53d99538e048008eee6c4301c69116d3de8f12ccec9773243970c901",
+   "bytes": 35074
+  },
+  "tb1_repair.stat": {
+   "sha256": "d046c993157a4e51bbffe6b736e5e0e17e1c14cd31263049f01a5c44000e6386",
+   "bytes": 258
+  },
+  "weekly_note/check_after_render.log": {
+   "sha256": "1f06c014e4480ba7ae8e66bc358eb9017ca8a0d5462344a31e03e45e01b24a17",
+   "bytes": 189
+  },
+  "weekly_note/render.log": {
+   "sha256": "4d13644ebc78058910a911bcf2a743d4e651d17eb0411f162bf87cd29e7adbf2",
+   "bytes": 222
+  },
+  "weekly_note/render_commit.txt": {
+   "sha256": "ca8abd3e91f9454b06ef72ae36b80805839aeefcd98fbeb29ad380cad7f7ddad",
+   "bytes": 55
+  },
+  "weekly_note/render_utc.txt": {
+   "sha256": "9072d774e9507ec9b9c80bfd54f12f791d04e073dee5c2499b4cf21202af6055",
+   "bytes": 21
+  },
+  "weekly_note/rendered_note.sha256": {
+   "sha256": "0567997e8cf012ffad348ad18e201edd2c4cd55e66ec8c09083c24b0e4f3c155",
+   "bytes": 88
+  },
+  "weekly_note/weekly_note.rendered.html": {
+   "sha256": "4eac016db0ca0cfc957832d304931d1e5c555b9d27cb2d471b8e1009aa1eeec2",
+   "bytes": 8581
+  }
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

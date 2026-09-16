@@ -1,0 +1,2564 @@
+{
+ "record": "v8-roadmap-reconciliation/1",
+ "order": "V8-008 §4",
+ "recorded_utc": "2026-09-16T07:10:23Z",
+ "source": {
+  "file": "v8/scope/v8-backlog.json",
+  "task_count": 213,
+  "workstreams": 20,
+  "planning_date": "2026-09-14",
+  "document": "V8_FEATURES_AND_TODO.md",
+  "all_213_ids_preserved": true,
+  "historical_status_all": "todo"
+ },
+ "status_vocabulary": {
+  "COMPLETE": "all material requirements satisfied by applicable evidence (a narrow substitute never completes a broader task)",
+  "PARTIAL": "implemented portion identified; every material outstanding requirement listed",
+  "UNBUILT": "absent from the integrated release (local preview identified separately)",
+  "UNVERIFIED": "insufficient evidence to decide",
+  "CANCELED": "only an entire task explicitly canceled by the owner (none: the backup cancellation is a sub-requirement of INT-09/INT-12)"
+ },
+ "basis_legend": {
+  "CI": "current code inspection",
+  "AB": "automated behavioral evidence (browser journeys, tests, gate runs)",
+  "HR": "human review (none performed)",
+  "PS": "prospective study (none run)",
+  "PR": "public release (none)",
+  "PU": "paid-user validation (none)"
+ },
+ "scope_legend": {
+  "enabled": "inside the 8.0.0 deliverable boundary",
+  "enabled (minimal shared behaviour)": "RIV/ACT minimal behaviour only",
+  "enabled workstream; this requirement deferred beyond 8.0.0": "workstream enabled but this requirement is deferred (authentication, multi-tenancy, metrics, load)",
+  "experimental (default-off; absent)": "COM/PRC/SHD/EVO",
+  "deferred": "CTL/RES/RND, full RIV/ACT, VAL pilot, accounts, billing"
+ },
+ "totals_full_roadmap": {
+  "denominator": 213,
+  "COMPLETE": 30,
+  "PARTIAL": 57,
+  "UNBUILT": 125,
+  "UNVERIFIED": 1,
+  "CANCELED": 0
+ },
+ "totals_selected_first_release_deliverables": {
+  "denominator": 86,
+  "definition": "tasks whose current scope is enabled or enabled-minimal (requirements deferred inside enabled workstreams excluded)",
+  "COMPLETE": 30,
+  "PARTIAL": 55,
+  "UNBUILT": 0,
+  "UNVERIFIED": 1,
+  "CANCELED": 0
+ },
+ "effort_weighting": "NOT AVAILABLE — the backlog carries no workload estimates; the counts above are task counts with their denominators, not effort percentages",
+ "distinctions": "Statuses rest on code inspection and automated behavioral evidence only unless the basis column says otherwise. No human review, prospective study, public release or paid-user validation has occurred; none substitutes for another. Implemented ≠ independently evaluated ≠ pilot-enabled ≠ publicly released.",
+ "rows": [
+  {
+   "task_id": "GOV-01",
+   "original_description": "Inventory the released v7 features and interfaces before assigning duplicate work; record which capabilities v8 inherits, extends, or introduces.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/V8-001/adapter_map.md, inherited_gates.json, real_data_selection_criteria.md",
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)"
+   ],
+   "remaining_acceptance_criteria": "none for 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "GOV-02",
+   "original_description": "Create the v8 integration branch from the approved released baseline when available; preserve current preview artifacts for comparison and migration.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "codex/v8-integration from v7.0.1 base 696d871e",
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)",
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "GOV-03",
+   "original_description": "Record one initial customer job, eligible company population, disclosure types, and coverage limits; make exclusions visible in the product.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)",
+    "v8/V8-001/adapter_map.md, inherited_gates.json, real_data_selection_criteria.md",
+    "v8/V8-003/ (Microchip retrospective replay; NOT_ELIGIBLE_UNDER_V8_001_CRITERIA; real_data_selection.json)",
+    "v8/workbench/dataset.py KNOWN_OMISSIONS"
+   ],
+   "remaining_acceptance_criteria": "eligible population is empty (NO_ELIGIBLE_ISSUER); an in-product corpus coverage/exclusion surface beyond per-row eligibility notes",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "GOV-04",
+   "original_description": "Freeze the canonical mission, vision, and English-only authoring policy in product requirements and automated checks.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "tools/check_copy_consistency (gate 17), tools/check_language.py (gate 14)",
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "AB"
+  },
+  {
+   "task_id": "GOV-05",
+   "original_description": "Define feature controls for Commons, Practice, Evolution, Control, and Reserve; document which roles can enable each module.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)"
+   ],
+   "remaining_acceptance_criteria": "modules are absent, so no feature controls or role definitions exist; only the disabled/experimental status is documented",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "GOV-06",
+   "original_description": "Maintain a capability register separating implemented locally, integrated, independently evaluated, pilot-enabled, and publicly released states.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/V8-005/README.md matrix; v8/V8-008/roadmap_reconciliation.json (this register)"
+   ],
+   "remaining_acceptance_criteria": "a maintained register with the five states as an ongoing artifact, not an order record",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "GOV-07",
+   "original_description": "Assign accountable owners and independent reviewers; document who can change evidence, freeze studies, adjudicate outcomes, and authorize releases.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "internal/release_v8_0_0/publish_v800.py + tests (private); v8/V8-006/, v8/V8-007/ decision packages"
+   ],
+   "remaining_acceptance_criteria": "release authorization role documented (owner, publisher rules); no accountable owners or independent reviewers assigned for evidence changes, study freezes or adjudication (owners_assigned=false)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "GOV-08",
+   "original_description": "Record explicit launch and outreach holds; require a separate user readiness decision after v7 completion before any publication or promotion.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)",
+    "internal/release_v8_0_0/publish_v800.py + tests (private); v8/V8-006/, v8/V8-007/ decision packages"
+   ],
+   "remaining_acceptance_criteria": "none (holds recorded; release_authorized=false; readiness decision separate)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "DAT-01",
+   "original_description": "Adopt stable issuer, filing, artifact, passage, claim, investigation, and dataset identifiers; preserve inherited v7 IDs through explicit adapters.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/workbench/ (store.py, schema.py, calc.py, money.py, dataset.py, export.py, server.py, ingest.py, sci/) identifiers: source ids, claim ids + versions, export ids, dataset row ids; EDGAR accession in ingest"
+   ],
+   "remaining_acceptance_criteria": "explicit adapters preserving inherited v7 identifiers",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "DAT-02",
+   "original_description": "Implement SourceArtifact and EvidenceSpan storage with immutable versions, digests, publisher attribution, and exact passage locations.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/workbench/ (store.py, schema.py, calc.py, money.py, dataset.py, export.py, server.py, ingest.py, sci/)",
+    "tests/test_v8_*.py (268 passed on d70edd02: boundaries, store, export, notes, dataset, sci, packaging)",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none within the bounded ingestion path (passage-level; no span index beyond passage)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-03",
+   "original_description": "Separate publication time, first observation, economic period, source revision, and processing time; store uncertainty instead of invented timestamps.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "three time axes source_available_as_of / observed_at / recorded_at; fiscal period; unknown availability explicit",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-04",
+   "original_description": "Build ingestion for one approved initial disclosure corpus; retain original artifacts separately from parsed text and YuClaw-authored output.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/workbench/ingest.py",
+    "v8/V8-003/ (Microchip retrospective replay; NOT_ELIGIBLE_UNDER_V8_001_CRITERIA; real_data_selection.json)"
+   ],
+   "remaining_acceptance_criteria": "no eligible corpus ingested (selected issuer NOT ELIGIBLE); ingestion exercised retrospectively on one issuer only",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-05",
+   "original_description": "Record source entitlements and redistribution permissions; enforce tenant boundaries and prevent private research from entering shared datasets by default.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "rights on sources; excerpt bytes only under permitting rights (export LIMITS)",
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)"
+   ],
+   "remaining_acceptance_criteria": "tenant boundaries and shared-dataset separation (multi-tenant platform deferred)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-06",
+   "original_description": "Add extraction records for tables, passages, units, fiscal periods, and footnotes; attach uncertain extraction to a review queue.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "passage registration; typed claim entry (manual)"
+   ],
+   "remaining_acceptance_criteria": "table/unit/footnote extraction records and an uncertain-extraction review queue",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "DAT-07",
+   "original_description": "Represent primary, derived, and unknown source lineage; retain shared roots and explicit gaps rather than counting URLs as independent sources.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "dataset row source versions and lineage"
+   ],
+   "remaining_acceptance_criteria": "primary/derived/unknown lineage classes and shared-root detection (COM absent)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "DAT-08",
+   "original_description": "Implement immutable correction and withdrawal events; find affected claims, calculations, reviews, and dataset snapshots without rewriting their history.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "SOURCE_CORRECTED, CLAIM_WITHDRAWN events; dataset snapshot diff; fixture 007",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-09",
+   "original_description": "Define authenticated roles and authorization checks for source ingestion, reviewer identity, study ownership, and evidence approval.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "loopback single workspace; actor labels are attribution only"
+   ],
+   "remaining_acceptance_criteria": "authenticated roles and authorization checks (network exposure requires an authenticated deployment design)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "DAT-10",
+   "original_description": "Support idempotent ingestion and explicit failure states; replaying a job must not duplicate an artifact or silently drop failed records.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "op_id idempotency (E_OP_CONFLICT), explicit refusals, torn-tail recovery",
+    "tests/test_v8_*.py (268 passed on d70edd02: boundaries, store, export, notes, dataset, sci, packaging)"
+   ],
+   "remaining_acceptance_criteria": "ingestion-job replay semantics (artifact de-duplication on replay) not specifically evidenced",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-11",
+   "original_description": "Implement safe rendering of untrusted documents and passages; source text must never gain permission to invoke tools or alter privileged instructions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "CSP default-src 'none', escaped plain HTML, no scripts, bounded JSON never executed; tests/test_v8_workbench_boundaries.py"
+   ],
+   "remaining_acceptance_criteria": "none within scope",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "DAT-12",
+   "original_description": "Publish a data dictionary and fixtures covering missing periods, conflicting currencies, corrected sources, shared roots, and inaccessible licensed content.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/workbench/resources/fixtures 001-008 + README; schemas/CommitmentClaim.v1.json; dataset METHOD/KNOWN_OMISSIONS"
+   ],
+   "remaining_acceptance_criteria": "fixtures for shared roots and inaccessible licensed content; a published data dictionary",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-01",
+   "original_description": "Build thesis creation with issuer, information cutoff, research question, author, and initial scope; save drafts without falsely marking them reviewable.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "claim create/save/freeze; claim page"
+   ],
+   "remaining_acceptance_criteria": "thesis-level object (question, author, scope) and a draft state that is explicitly not reviewable",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-02",
+   "original_description": "Extract candidate claims from supplied narratives and disclosures; show source-linked suggestions for human editing before acceptance.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "source-linked candidate-claim extraction",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-03",
+   "original_description": "Require metric, unit, accounting basis, fiscal period, comparator, threshold or range, horizon, and resolution rule where applicable.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/workbench/schema.py mandatory fields; blocking with every reason",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-04",
+   "original_description": "Classify nodes as observed fact, calculation, assumption, prediction, or open question; keep uncertainty in those classifications visible.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "claim-graph node classification (no graph in 8.0.0)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-05",
+   "original_description": "Provide typed dependency edges and explanations; reject graph cycles where the selected relationship requires an acyclic dependency.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "typed dependency edges and cycle rejection",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-06",
+   "original_description": "Detect unresolved scope, vague terms, and missing units or dates; prevent freezing an operationally undefined prediction.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "missing/incompatible fields block a freeze"
+   ],
+   "remaining_acceptance_criteria": "vague-term and unresolved-scope detection",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-07",
+   "original_description": "Support reviewer comments, proposed edits, accepted revisions, and explicit disagreement with author identity and time.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "research notes (linked corrections), adjudication with conflicts, actor labels + local action time"
+   ],
+   "remaining_acceptance_criteria": "proposed-edit / accepted-revision workflow; authenticated author identity",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-08",
+   "original_description": "Freeze a claim version with the exact source set and resolution rule; later edits create successor versions rather than changing past commitments.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "CLAIM_FROZEN / CLAIM_REVISED successor versions; digests",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-09",
+   "original_description": "Link one broad thesis to several narrower measurable implications; explain that passing an implication does not prove the whole investment thesis.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "thesis-to-implication links",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-10",
+   "original_description": "Attach conditions that would weaken or contradict each claim; allow an honest unresolved state when no discriminating observation exists.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "unresolved explanation + next-evidence notes"
+   ],
+   "remaining_acceptance_criteria": "conditions that weaken/contradict each claim as structured fields",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CLM-11",
+   "original_description": "Implement draft, needs clarification, reviewable, frozen, awaiting outcome, adjudicated, and invalidated states with permitted transitions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "saved / frozen / revised / withdrawn / outcome recorded / adjudicated states"
+   ],
+   "remaining_acceptance_criteria": "needs-clarification, reviewable and invalidated states with permitted transitions",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CLM-12",
+   "original_description": "Export the claim graph with schema/version information, evidence references, uncertainty, and revision history; support a round-trip validation check.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "yuclaw-commitment-export/1 with schema, versions, events, sources; verifier round-trip"
+   ],
+   "remaining_acceptance_criteria": "graph export (no graph); uncertainty fields",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "RIV-01",
+   "original_description": "Select an initial explanation domain with a financial reviewer; document the kinds of mechanism the first release can reasonably compare.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-02",
+   "original_description": "Generate a small editable set of alternatives, each linked to the observation it explains and its economic assumptions.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-03",
+   "original_description": "Require at least one observable implication for every retained alternative; distinguish unavailable data from an unfalsifiable formulation.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-04",
+   "original_description": "Build a comparison matrix showing supporting observations, contradicting observations, shared predictions, and unresolved differences.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled (minimal shared behaviour)",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "calc.compare_versions: original vs revised side by side, INCOMPARABLE with reasons",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "mechanism comparison matrix (supporting/contradicting observations per alternative)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "RIV-05",
+   "original_description": "Identify source and model overlap; repeated agent agreement from one filing must not raise an independent-evidence count.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-06",
+   "original_description": "Retain minority views, reviewer objections, and rejected alternatives with reasons; provide a visible route to reopen them with new evidence.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred (adjudication conflicts are retained for outcomes, not rival explanations)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-07",
+   "original_description": "Mark alternatives as observationally indistinguishable when available evidence cannot separate them; avoid forced winners or fabricated probabilities.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-08",
+   "original_description": "Freeze the comparison used in a prospective study; alternatives invented after the outcome belong to a new exploratory version.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full RIV deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RIV-09",
+   "original_description": "Evaluate against ordinary retrieval and retrieval plus skeptical review at matched source access, task difficulty, and total research cost.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "evaluation study deferred",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "CHK-01",
+   "original_description": "Define typed quantities with exact decimal or suitable bounded arithmetic; document rounding and missing-value behavior for every rule.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/workbench/money.py exact decimals; calc.py",
+    "tests/test_v8_*.py (268 passed on d70edd02: boundaries, store, export, notes, dataset, sci, packaging)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-02",
+   "original_description": "Check currency, scale, and conversion basis before comparison; record exchange-rate source and date when an authorized conversion is used.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "currency/scale mismatch blocks (fixture 005)"
+   ],
+   "remaining_acceptance_criteria": "authorized conversion path with exchange-rate source and date",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-03",
+   "original_description": "Resolve fiscal calendars and distinguish quarter, year-to-date, full year, and trailing periods before performing arithmetic.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "explicit fiscal period dates; INCOMPATIBLE_BASIS/INCOMPARABLE on period mismatch (fixture 004/008)"
+   ],
+   "remaining_acceptance_criteria": "fiscal-calendar resolution and quarter/YTD/FY/trailing distinctions as first-class rules",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-04",
+   "original_description": "Check denominators, percentages, percentage-point changes, and per-share bases; preserve the exact inputs and calculation.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "midpoint, delta, signed distance with inputs"
+   ],
+   "remaining_acceptance_criteria": "percentage, percentage-point and per-share bases",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-05",
+   "original_description": "Implement a small approved catalogue of accounting identities and reconciliation rules with materiality and rounding tolerances.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "catalogue of accounting identities with tolerances (bounded rule set only)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CHK-06",
+   "original_description": "Detect metric redefinitions, segment changes, gross/net presentation changes, and accounting-basis differences that break comparability.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "metric/basis change → INCOMPARABLE"
+   ],
+   "remaining_acceptance_criteria": "segment and gross/net presentation changes",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-07",
+   "original_description": "Require explicit assumptions for cross-company relationships; do not treat supplier revenue and customer capital expenditure as an accounting equality.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "cross-company relationships (single issuer scope)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CHK-08",
+   "original_description": "Produce a discrepancy card with rule version, source passages, formula, observed difference, tolerance, missing inputs, and reviewer disposition.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "calculation section: inputs, formula, source links, result; adjudication disposition"
+   ],
+   "remaining_acceptance_criteria": "rule version, tolerance and missing-input fields on one discrepancy card",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-09",
+   "original_description": "Recompute affected results after source corrections while retaining the earlier result and its original inputs.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "as-of replay retains earlier results; corrected-source fixture 007",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "CHK-10",
+   "original_description": "Build a reviewed challenge corpus of common financial interpretation errors; report rule-level precision, recall, and unresolved cases.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "reviewed challenge corpus with precision/recall",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-01",
+   "original_description": "Convert unresolved claims and rival predictions into candidate actions: inspect a disclosure, obtain a permitted field, request review, or wait.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled (minimal shared behaviour)",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "next-evidence field in research notes"
+   ],
+   "remaining_acceptance_criteria": "action objects (inspect/obtain/request/wait)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "ACT-02",
+   "original_description": "Show which uncertainty each action addresses and which alternatives it could distinguish; avoid generic “research more” recommendations.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-03",
+   "original_description": "Estimate acquisition cost, review time, availability, and required permissions; separate estimates from subsequently observed costs.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-04",
+   "original_description": "Implement a transparent configurable ranking baseline with visible reasons; avoid presenting an uncalibrated score as a probability of truth.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-05",
+   "original_description": "Support assignment, due dates, waiting-on-disclosure, blocked-by-access, completed, and no-longer-relevant states with history.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-06",
+   "original_description": "Capture action outcomes and reviewer-assessed usefulness, including actions that produced no information or misleading evidence.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-07",
+   "original_description": "Allow explicit stopping or abstention with recorded missingness and reason; include these cases in evaluation denominators.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-08",
+   "original_description": "Add user-requested alerts for newly available evidence and source changes, with deduplication and configurable delivery; do not create unsolicited outreach.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "ACT-09",
+   "original_description": "Compare the baseline with chronological/manual queues using reliable resolution, coverage, total cost, and reviewer effort together.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "full ACT deferred",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "TIM-01",
+   "original_description": "Implement historical queries over immutable source versions using the declared availability policy and selected cutoff.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "store.visible as-of views cut by availability",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-02",
+   "original_description": "Display publication, first observation, economic period, revision, and processing times separately with timezone and uncertainty.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "three times shown separately (UTC); fiscal period; unknown availability explicit"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-03",
+   "original_description": "Pin each investigation snapshot to exact source, claim, extraction, rule, model, and reviewer versions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "export pins source digests, claim versions, method, kernel identity"
+   ],
+   "remaining_acceptance_criteria": "extraction/model versions not applicable; reviewer versions are attribution only",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-04",
+   "original_description": "Build a timeline of claim changes, source corrections, target amendments, reviews, and outcome transitions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "history step 5; journal",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-05",
+   "original_description": "Add side-by-side comparison of two cutoffs showing added, removed-by-policy, corrected, and still-unresolved evidence.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "as-of view at any cutoff; dataset snapshot diff"
+   ],
+   "remaining_acceptance_criteria": "two-cutoff side-by-side view",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-06",
+   "original_description": "Explain why a source was excluded from a historical view; distinguish later availability, missing date, and entitlement restrictions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "later availability and unknown availability explicit"
+   ],
+   "remaining_acceptance_criteria": "entitlement-restriction exclusions",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-07",
+   "original_description": "Integrate separately retained checkpoints or a trusted timestamping service for selected journals; document what the anchor does and does not authenticate.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "notes state hashes are not an externally authenticated timestamp"
+   ],
+   "remaining_acceptance_criteria": "independently retained checkpoints or trusted timestamping",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "TIM-08",
+   "original_description": "Define correction behavior for unreliable timestamps without rewriting what the system previously recorded as known.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "SOURCE_CORRECTED events; notes; observed vs recorded time kept"
+   ],
+   "remaining_acceptance_criteria": "a written policy for unreliable timestamps",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "TIM-09",
+   "original_description": "Label historical model replay as potentially affected by information in model training; require future observations for prospective claims.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "RETROSPECTIVE_REPLAY / PROSPECTIVE_CLAIMED_NOT_VERIFIED statuses; Microchip retrospective label",
+    "v8/V8-003/ (Microchip retrospective replay; NOT_ELIGIBLE_UNDER_V8_001_CRITERIA; real_data_selection.json)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "TIM-10",
+   "original_description": "Verify historical query and export against fixtures with delayed discovery, later corrections, backdated source metadata, and timezone boundaries.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "fixtures 003/007; as-of assertions",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "fixtures for backdated source metadata and timezone boundaries",
+   "verification_basis": "AB"
+  },
+  {
+   "task_id": "SET-01",
+   "original_description": "Freeze the initial universe, disclosure categories, time coverage, inclusion rules, and exclusion rules; publish known coverage gaps.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json)",
+    "v8/V8-001/adapter_map.md, inherited_gates.json, real_data_selection_criteria.md",
+    "dataset KNOWN_OMISSIONS"
+   ],
+   "remaining_acceptance_criteria": "universe is empty (no eligible issuer); coverage statement per release",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SET-02",
+   "original_description": "Extract explicit management commitments with exact passage, issuer, metric, accounting basis, unit, segment/geography, target range, and horizon.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "typed claim fields incl. passage, issuer, metric, basis, unit, range, period"
+   ],
+   "remaining_acceptance_criteria": "segment/geography field; extraction is manual",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-03",
+   "original_description": "Link commitment rows to immutable source versions, availability records, extraction versions, and reviewer records.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "dataset row provenance: source versions, lineage, reviewer labels",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none (extraction versions not applicable)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-04",
+   "original_description": "Model amendment, reaffirmation, withdrawal, maturity, and resolution as distinct events linked to the original commitment.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "amendment, withdrawal, outcome events"
+   ],
+   "remaining_acceptance_criteria": "reaffirmation and maturity as distinct events",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SET-05",
+   "original_description": "Match later disclosed outcomes using a written comparability rubric; route metric changes and ambiguous mappings to independent review.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "comparability rules (INCOMPATIBLE_BASIS etc.)"
+   ],
+   "remaining_acceptance_criteria": "routing to independent review (adjudication is local, attribution only)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-06",
+   "original_description": "Produce supported, contradicted, ambiguous, or unresolved labels with reasons; preserve disagreement and the adjudication trail.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "IN_RANGE / OUT_OF_RANGE / INCOMPARABLE / unresolved with reasons; conflicts retained",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none (vocabulary differs from supported/contradicted/ambiguous)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-07",
+   "original_description": "Enforce that withdrawal is not automatically failure, missingness is not a negative outcome, and a redefined metric is not automatically comparable.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "fixtures 002 (missing outcome), 003 (withdrawal), 004 (incompatible basis)",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "AB"
+  },
+  {
+   "task_id": "SET-08",
+   "original_description": "Compute clearly defined derived fields such as target revisions and deviation from a comparable original range; expose formulas and unavailable values.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "comparison deltas, midpoint, signed distance; dataset derived fields"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-09",
+   "original_description": "Build versioned snapshots and stable row IDs; allow filtered CSV/JSON downloads and reproducible programmatic queries.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "snapshot digest, /dataset.json, dataset export zip"
+   ],
+   "remaining_acceptance_criteria": "filters, CSV download, programmatic query interface",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-10",
+   "original_description": "Publish a dataset card covering coverage, annotation rules, quality estimates, corrections, source restrictions, and prohibited interpretations.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "dataset METHOD / KNOWN_OMISSIONS; export LIMITS wording"
+   ],
+   "remaining_acceptance_criteria": "a full dataset card (quality estimates, prohibited interpretations)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SET-11",
+   "original_description": "Add correction reports, dispute submission, and affected-row lookup; keep old snapshots reproducible while displaying later corrections.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "corrections as events; snapshot diffs; old snapshots verifiable"
+   ],
+   "remaining_acceptance_criteria": "dispute submission and affected-row lookup UI",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SET-12",
+   "original_description": "Validate researcher usefulness and source entitlements before commercial distribution; test whether teams repeatedly use the data for a specific analysis.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "researcher usefulness validation (real-user pilot deferred)",
+   "verification_basis": "PU"
+  },
+  {
+   "task_id": "SCI-01",
+   "original_description": "Integrate the existing study manifest into a guided workflow covering population, sampling unit, target, loss, effect margin, and model identities.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "template_manifest.json packaged; replay reads manifests",
+    "v8/V8-004/ (research notes, dataset); v8/V8-005/adaptation.json (SCI kernel)"
+   ],
+   "remaining_acceptance_criteria": "guided study-authoring workflow",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-02",
+   "original_description": "Keep the current paired binary-probability evaluation within its supported scope; reject composite scores and undefined targets as probability inputs.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "adapter refusals UNSUPPORTED_METRIC, MONETARY_OR_OUT_OF_RANGE_PROBABILITY, CHANGED_TARGET",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-03",
+   "original_description": "Commit both predictions and evidence identities before eligible outcomes become available; preserve ordering and pending-outcome constraints.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "TIMING_RULE, AWAITING_OUTCOME; PROSPECTIVE_CLAIMED_NOT_VERIFIED"
+   ],
+   "remaining_acceptance_criteria": "independently anchored commitment time for real prospective use",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-04",
+   "original_description": "Authenticate adjudicators, document conflicts, and retain the outcome evidence; prevent the candidate system from unilaterally assigning its own success.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "conflicts documented; outcome evidence retained; UNSUPPORTED_ADJUDICATION_CLAIM refusal"
+   ],
+   "remaining_acceptance_criteria": "authenticated adjudicators (attribution only)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-05",
+   "original_description": "Expose hypothesis-family membership, error allocation, minimum and maximum sample, stopping rules, invalidations, and inconclusive outcomes.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "report fields: family, alpha allocation, thresholds, statuses INVALIDATED / BUDGET_EXHAUSTED_INCONCLUSIVE / ACCUMULATING",
+    "v8/V8-004/ (research notes, dataset); v8/V8-005/adaptation.json (SCI kernel)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-06",
+   "original_description": "Maintain a study-attempt registry so retries, renamed families, and unsuccessful experiments remain visible; define cross-study governance before broad adaptive use.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "every replay persisted as SCI_REPLAY_RECORDED"
+   ],
+   "remaining_acceptance_criteria": "renamed-family detection; cross-study governance",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SCI-07",
+   "original_description": "Connect journal export, semantic replay, numerical replay, and independent checkpoints to the application and its review process.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "replay + export verification recompute (recompute-sci)"
+   ],
+   "remaining_acceptance_criteria": "independent checkpoints",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-08",
+   "original_description": "Display conditional statistical evidence separately from operational approval, causal benefit, calibration, and financial performance.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "CONDITIONAL_EVIDENCE wording; 'grants no action' statement"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "SCI-09",
+   "original_description": "Add only diagnostics with their assumptions attached; fixed-family multiple-testing adjustment, isotonic projection, and preference cycles are not truth certificates.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "method text attached to the report; no extra diagnostics added"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SCI-10",
+   "original_description": "Commission a qualified independent review of the statistical contract, sampling design, implementation, and interpretation before publishing guarantee claims.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "independent statistical review not commissioned",
+   "verification_basis": "HR"
+  },
+  {
+   "task_id": "SCI-11",
+   "original_description": "Run prospective comparisons with strong baselines and issuer/event clustering accounted for; predefine appropriate procedures for endpoints outside the current kernel.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "prospective comparisons with baselines",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "SCI-12",
+   "original_description": "Evaluate improvement per total review effort, error, coverage, and cost; keep failures and distribution changes visible after an earlier favorable result.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "effort/error/coverage/cost evaluation",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "COM-01",
+   "original_description": "Connect incoming claim packets to shared evidence and claim objects; preserve exact source-root identities rather than inventing a second provenance system.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-02",
+   "original_description": "Persist duplicate groups across ingestion runs with idempotent membership updates; distinguish exact duplication from unverified semantic similarity.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-03",
+   "original_description": "Show shared primary roots and unknown ancestry; do not count many summaries of one source as independent corroboration.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-04",
+   "original_description": "Propagate declared disputes and withdrawals through aliases and dependencies; retain the original source and reasons for quarantine.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-05",
+   "original_description": "Add authenticated contributor identities and admission limits; document remaining collusion and identity-abuse limits.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-06",
+   "original_description": "Replace assumed review costs with estimated and observed minutes; include triage, quarantine investigation, corrections, and coordination.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-07",
+   "original_description": "Integrate contributor caps, review budgets, and a separately reserved practice allocation into a persistent daily or session queue.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-08",
+   "original_description": "Define queue rollover, cancellation, partial work, urgent review, and budget changes explicitly; log overrides rather than silently erasing backlog.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-09",
+   "original_description": "Preserve useful smaller tasks when one task exceeds available capacity; display both selected work and reasons for deferral.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-10",
+   "original_description": "Provide manual dispute resolution and appeals with reviewer identity; avoid treating an automated quarantine as a verdict of misconduct.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-11",
+   "original_description": "Record backlog age, repeated roots, unique claims, estimated versus actual effort, and review completion without equating document volume with productivity.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "COM-12",
+   "original_description": "Compare the integrated queue with a conventional queue using actual review effort, error, coverage, and contributor participation.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local planner in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-01",
+   "original_description": "Choose suitable, bounded financial-research tasks with a qualified reviewer; do not assume every withheld answer creates meaningful practice.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-02",
+   "original_description": "Freeze the question, source scope, task identity, and comparison digest before a session opens.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-03",
+   "original_description": "Build an evidence-reading and reasoning view that allows an unaided attempt before the normal comparison view becomes available.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-04",
+   "original_description": "Require a judgment, supporting reasoning, relevant source references, and an explicit unresolved option; record assistance and prior exposure as declarations.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-05",
+   "original_description": "Preserve the attempt without replacement; record later revisions as separate reflection rather than rewriting the original response.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-06",
+   "original_description": "Separate question and comparison storage permissions where genuine confidentiality is required; do not describe the local CLI ordering check as access control.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-07",
+   "original_description": "Reveal a clearly labeled comparison and support discussion; distinguish an unadjudicated model answer from an independently reviewed reference.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-08",
+   "original_description": "Add optional reflection, reviewer feedback, and exportable records; protect participant privacy and avoid unsupported employee capability rankings.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-09",
+   "original_description": "Design delayed, unaided assessment with consent, suitable tasks, and a comparator workflow; measure accuracy and reasoning transfer, not only assisted task scores.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "PRC-10",
+   "original_description": "Retain journal replay and independently held checkpoints; document that records alone cannot prove human authorship, no outside assistance, or research originality.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — attempt-before-comparison workflow in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-01",
+   "original_description": "Document trusted approval roots, untrusted inputs, source owners, executable identity, and the exact outputs that cross the boundary.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-02",
+   "original_description": "Provision approved pins through a separately controlled process; the submitting agent must not be able to approve its own evidence bundle.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-03",
+   "original_description": "Add approval identity, expiry, rotation, revocation, and retrieval records without weakening exact-byte matching.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-04",
+   "original_description": "Preserve strict JSON validation, duplicate-key rejection, numerical constraints, depth limits, and documented input and file budgets.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-05",
+   "original_description": "Preserve safe relative-file access and rejection of escaping paths, symbolic links, inappropriate file types, and unstable reads.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-06",
+   "original_description": "Keep evidence bodies inert during verification; expose only typed fields, fixed result codes, and permitted references to privileged callers.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-07",
+   "original_description": "Place the verifier in an operating-system and service boundary with resource limits, least privilege, and controlled network and secret access.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-08",
+   "original_description": "Wire production routes to fail closed on rejection; prohibit fallback to an unshielded evaluator under the same protected API promise.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-09",
+   "original_description": "Protect approval and audit stores from tenant crossover and untrusted writes; record administrative changes and emergency revocations.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-10",
+   "original_description": "Test parser exhaustion, tampering, stale approvals, unsafe files, malicious instruction text, and compromised approval inputs at the integrated boundary.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-11",
+   "original_description": "Keep source authentication and factual adjudication as separate checks; a correctly approved false document must remain a documented possible failure.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "SHD-12",
+   "original_description": "Obtain independent security review for the actual deployed architecture before making product security claims; publish the supported threat model and limits.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — byte-verification and bounded parsing in the preview; the core's ordinary security (bounded JSON, traversal refusal, CSP) is not the Shield module"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-01",
+   "original_description": "Connect the eight-part inventory: model, agent code, tool policy, memory, data, runtime, grader, and evaluation data.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-02",
+   "original_description": "Measure actual runtime and deployment identities where available; mark mutable provider aliases and unavailable identities as unresolved rather than inventing hashes.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-03",
+   "original_description": "Record version ancestry, dependency changes, and authority changes; validate supplied graph completeness against the institution's inventory.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-04",
+   "original_description": "Reuse evaluation evidence only when its dependency scope, fingerprint, protocol, and validity period still apply; explain each reuse decision.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-05",
+   "original_description": "Authenticate model improvers, reviewers, graders, test custodians, and release authorizers; check relevant conflicts through ancestry.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-06",
+   "original_description": "Track protected-test access; revoking access does not erase previous exposure, and a new digest alone does not prove semantic test freshness.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-07",
+   "original_description": "Keep matching failures open until an authorized resolution process addresses them; a later pass, expiry, or renamed protocol cannot silently erase failure.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-08",
+   "original_description": "Show current unreviewed transitions, evidence age, and unresolved review gaps; distinguish retrospective review from evidence available at a historical release.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-09",
+   "original_description": "Link supplied financial commitments to configuration versions and review gaps; group by currency and show unknown amounts separately.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-10",
+   "original_description": "Add a separately trusted deployment controller only for institutions that authorize enforcement; the audited agent cannot alter the gate, its rules, or approvals.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-11",
+   "original_description": "Provide change-diff views, targeted reevaluation requests, independent review exports, and explicit unknown-inventory findings.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "EVO-12",
+   "original_description": "Evaluate missed material changes, unnecessary reevaluation, review delay, and identity failures using real controlled version changes and a strong baseline.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — configuration/review audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "module absent from the integrated release; Gate F pending",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-01",
+   "original_description": "Select one financial-AI workflow and define the stop request, responsible people, affected capabilities, downstream paths, and service scope.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-02",
+   "original_description": "Integrate authenticated stop-drill records with baseline, request time, deadline, observation window, clock bounds, and evidence ownership.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-03",
+   "original_description": "Inventory reachable tools, delegated agents, scheduled jobs, credentials, and external commitments relevant to the declared stop scope.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-04",
+   "original_description": "Distinguish observed activity after the deadline, no observed activity under sufficient coverage, and inadequate observation; preserve clock uncertainty.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-05",
+   "original_description": "Track residual commitments and outstanding actions by currency and status; retain unknown amounts instead of treating them as zero.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-06",
+   "original_description": "Display path-level findings, missing evidence, evidence age, and responsible follow-up roles; do not condense everything into an unsupported safety score.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-07",
+   "original_description": "Run institution-authorized drills with an independent observer and retained artifacts; avoid treating a supplied success statement as authenticated evidence.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-08",
+   "original_description": "Define how findings reach existing operational controls and responsible humans; this audit itself remains read-only unless a separate control integration is explicitly authorized.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "CTL-09",
+   "original_description": "Compare findings against the institution's existing procedure and independent observations; measure missed activity, false alarms, review effort, and response delay.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — read-only local audit in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-01",
+   "original_description": "Choose one institution-owned mission with measurable minimum capacity, duration, activation deadline, and responsible operator.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-02",
+   "original_description": "Define relevant disruption scenarios, including shared dependencies and failures of services that a purported human fallback still requires.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-03",
+   "original_description": "Inventory candidate routes, required projects, direct and transitive dependencies, maintenance obligations, and evidence owners.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-04",
+   "original_description": "Collect authenticated drills covering capacity, duration, activation, and freshness; preserve missing, stale, or contradicted evidence.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-05",
+   "original_description": "Record project costs, recurring commitments, available budget, and financing assumptions; a supplied budget is not proof of available funds.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-06",
+   "original_description": "Integrate the exact minimum-cost planner within its declared bounds; preserve the distinction between a complete plan, a funding shortfall, and no supported plan.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-07",
+   "original_description": "Show shared projects, scenario coverage, unsupported routes, sensitivity to missing dependencies, and diagnostic partial solutions.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-08",
+   "original_description": "Add maintenance and repeat-drill scheduling with user-configured alerts; invalidate readiness evidence when relevant dependencies or service requirements change.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-09",
+   "original_description": "Test against an ordinary checklist and spreadsheet with equal evidence and cost accounting; include planning, training, maintenance, and activation effort.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "RES-10",
+   "original_description": "Measure real service completion, activation time, unserved demand, and cost in qualified drills before claiming benefit; use a design that does not withhold necessary service.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "8.0.0a6 local preview (older baseline c34e19bf; preserved, not integrated; see v8/scope/SCOPE_INDEX.json) — bounded local optimizer in the preview"
+   ],
+   "remaining_acceptance_criteria": "deferred beyond 8.0.0",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "UX-01",
+   "original_description": "Create the Thesis Workspace with editable claims, typed assumptions, original sources, rivals, calculations, and unresolved questions in one investigation; use the approved Human Trace logo assets unchanged.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "Workspace with claims, sources, calculations, unresolved notes; approved logo bytes unchanged",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "typed assumptions and rivals (deferred RIV)",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-02",
+   "original_description": "Add company and cutoff selection with clear corpus coverage and freshness; never imply that a bundled snapshot is a live feed.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "as-of cutoff selection; per-claim issuer"
+   ],
+   "remaining_acceptance_criteria": "corpus coverage/freshness surface; explicit 'not a live feed' wording",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-03",
+   "original_description": "Implement a source drawer opening the exact passage, source version, availability, lineage, and correction status used in a claim.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "source page: passage, version, availability, corrections; claim links",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-04",
+   "original_description": "Build the Evidence & Review Queue with purpose, assignment, cost, dependencies, waiting states, and review outcomes.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "Evidence & Review Queue (ACT deferred)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "UX-05",
+   "original_description": "Build the Dataset Browser with filters for issuer, metric, period, event, comparability, adjudication, missingness, and snapshot.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "Dataset coverage view + /dataset.json"
+   ],
+   "remaining_acceptance_criteria": "filters by issuer/metric/period/event/comparability/adjudication/missingness/snapshot",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-06",
+   "original_description": "Add a history view comparing claim and source versions, including the original frozen prediction beside the eventual outcome.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "history + comparison + calculation pages",
+    "v8/V8-005/scorecard_fixtures.json + scorecard_mchp.json (7/7 + notes, dataset, SCI DEMONSTRATED on d70edd02; checkout + installed wheel/sdist)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-07",
+   "original_description": "Provide an evaluation report with denominator, population, uncertainty, unresolved cases, baselines, study status, and replay download.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "Scientific report page: n, status, thresholds, refusals; export with SCI records"
+   ],
+   "remaining_acceptance_criteria": "population/baseline/uncertainty presentation beyond the kernel report",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-08",
+   "original_description": "Integrate Commons controls into review work and Practice as an optional mode; avoid using contributor volume as evidence quality.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "Commons/Practice absent",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "UX-09",
+   "original_description": "Add a Trust & Continuity area for enabled Evolution, Control, Shield, and Reserve functions with scope-specific language and responsible roles.",
+   "historical_planning_status": "todo",
+   "current_scope": "experimental (default-off; absent)",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "Trust & Continuity area (modules absent)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "UX-10",
+   "original_description": "Provide useful loading, empty, stale, failed-ingestion, permission-denied, disputed, invalidated, and inconclusive states.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "empty states; integrity refusals; disputed labels; INVALIDATED/inconclusive SCI statuses"
+   ],
+   "remaining_acceptance_criteria": "stale, failed-ingestion and permission-denied states as explicit UI states",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "UX-11",
+   "original_description": "Verify keyboard navigation, readable tables, focus behavior, screen-reader labels, responsive layouts, and accessible status distinctions.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "UNVERIFIED",
+   "implementation_or_evidence_references": [
+    "plain HTML forms with labels (not audited)"
+   ],
+   "remaining_acceptance_criteria": "keyboard, screen-reader, focus and responsive verification not performed",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "UX-12",
+   "original_description": "Complete usability sessions on the end-to-end journey; test comprehension of uncertainty, corrections, frozen definitions, and the limits of verification badges.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "usability sessions with comprehension tests (Gate #15 MANUAL_REVIEW)",
+   "verification_basis": "HR"
+  },
+  {
+   "task_id": "INT-01",
+   "original_description": "Define versioned API contracts for sources, investigations, claims, actions, timelines, adjudications, studies, dataset snapshots, and optional audits.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "CommitmentClaim.v1; yuclaw-commitment-export/1; yuclaw-commitment-dataset/1; HTTP form routes"
+   ],
+   "remaining_acceptance_criteria": "versioned API contracts for actions, studies, audits",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-02",
+   "original_description": "Implement object-level tenant authorization for reads, writes, search, jobs, exports, and audit references; test direct-ID access attempts.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "object-level tenant authorization (multi-tenant deferred)",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-03",
+   "original_description": "Define storage ownership and migrations against the actual inherited database; preserve source, claim, and historical ledger identities.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "workspace journal with additive event kinds; inherited v7 database untouched"
+   ],
+   "remaining_acceptance_criteria": "storage ownership/migration plan against the inherited database",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-04",
+   "original_description": "Build durable ingestion, extraction, correction propagation, review, and export jobs with idempotency, bounded retries, and inspectable failures.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "op_id idempotency; torn-tail recovery; bounded ingestion"
+   ],
+   "remaining_acceptance_criteria": "durable job system with bounded retries and inspectable failures",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "INT-05",
+   "original_description": "Resolve concurrent edits and adjudications through explicit version checks or transactions; prevent silent overwrites and duplicate outcome resolution.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "re-entrant lock; E_OP_CONFLICT; concurrency test in tests/test_v8_workbench_boundaries.py"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "INT-06",
+   "original_description": "Connect the existing scientific CLI modules through typed adapters; keep process success, audit findings, and scientific conclusion statuses distinct.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/workbench/sci/adapter.py; distinct statuses",
+    "v8/V8-004/ (research notes, dataset); v8/V8-005/adaptation.json (SCI kernel)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "INT-07",
+   "original_description": "Expose narrowly scoped API or MCP tools for permitted retrieval and research actions; model-generated tool calls must obey the same authorization policy.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "inherited v7 REST/MCP remain for v7 evidence"
+   ],
+   "remaining_acceptance_criteria": "workbench API/MCP tools under the same authorization policy",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-08",
+   "original_description": "Record operational metrics for latency, job age, correction delay, model/data spend, failures, and source freshness without leaking private content.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "operational metrics",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-09",
+   "original_description": "Establish retention, authorized deletion, secret management, dependency updates, and incident procedures suited to the actual deployment. Backup creation, scheduling, restoration, and restore drills are canceled by the owner; preserve existing data and disclose that restoration is not demonstrated.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled; backup sub-requirement CANCELED by owner",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "backup disclosure verbatim in notes; v8/scope/backup-cancellation-review.json"
+   ],
+   "remaining_acceptance_criteria": "retention, authorized deletion, secret management, dependency updates, incident procedures for the actual deployment",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-10",
+   "original_description": "Set realistic load and cost targets from the intended pilot workload; test representative documents, concurrent reviews, and large allowed exports.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled workstream; this requirement deferred beyond 8.0.0",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "load and cost targets/tests",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "INT-11",
+   "original_description": "Run inherited application/database regressions and authenticated integration tests alongside the selected science tests; complete remote CI and package checks.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "full local suite 268 passed; packaging tests; gate runs",
+    "v8/V8-003/gates.json, v8/V8-006/gates.json, v8/V8-007/gates.json (release-state generator runs)"
+   ],
+   "remaining_acceptance_criteria": "remote CI and authenticated integration tests (nothing pushed)",
+   "verification_basis": "AB"
+  },
+  {
+   "task_id": "INT-12",
+   "original_description": "Rehearse safe application-code rollback and interrupted-write/export handling with compatible additive migrations and transactions; reject destructive or unsupported data transitions. Do not add backup restoration or imply lost-data recovery.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "interrupted-write handling (torn tail) tested; additive event kinds"
+   ],
+   "remaining_acceptance_criteria": "application-code rollback rehearsal",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "VAL-01",
+   "original_description": "Prepare a concrete pilot protocol for one repeated financial-research task and three to five candidate teams; recruitment requires later explicit outreach authorization.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-02",
+   "original_description": "Fix eligible tasks, exclusion rules, material-error rubric, outcome definitions, minimum useful effects, and analysis procedures before final evaluation.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-03",
+   "original_description": "Compare the incumbent workflow, retrieval with citations, retrieval plus skeptical review, and YuClaw using matched permissible evidence and measured total resources.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-04",
+   "original_description": "Estimate sample size from an excluded pilot; account for issuer/event dependence and avoid treating many claims from one disclosure as independent trials.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-05",
+   "original_description": "Use independent adjudication and blinded comparison where feasible; retain disagreements, missing outcomes, integration failures, and abstentions.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "HR"
+  },
+  {
+   "task_id": "VAL-06",
+   "original_description": "Measure extraction precision/recall, scope and unit errors, material errors, answer coverage, correction effort, elapsed time, and total cost.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-07",
+   "original_description": "Test the proposed 30% median review-time reduction target only with predeclared quality and coverage floors; report uncertainty and failed targets.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PU"
+  },
+  {
+   "task_id": "VAL-08",
+   "original_description": "Measure repeat use, completed investigations, dataset reuse, paid-pilot conversion, and renewal separately; do not infer demand from compliments or demos.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PU"
+  },
+  {
+   "task_id": "VAL-09",
+   "original_description": "Evaluate Commons and Practice using actual review capacity and delayed unaided judgments; do not substitute queue compression for learning or time savings.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-10",
+   "original_description": "Evaluate Evolution and Control against independently observed changes and drill outcomes; include missed events, false alarms, and review costs.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-11",
+   "original_description": "Evaluate Reserve through qualified service drills and the full chain from finding to corrective action to service outcome; include opportunity costs and adverse effects.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "VAL-12",
+   "original_description": "Publish an internal evidence table stating supported, unsupported, and contradicted claims; revise product scope when benefits disappear under fair comparison.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [
+    "human benefit PENDING (every v8 record)"
+   ],
+   "remaining_acceptance_criteria": "real-user pilot deferred; no protocol, participants or outcomes",
+   "verification_basis": "HR"
+  },
+  {
+   "task_id": "REL-01",
+   "original_description": "Confirm v7 completion and the exact inherited baseline before final v8 integration; do not alter the agreed v7 feature set.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "v8/scope/ (V8_0_0_SCOPE_FREEZE.md, v8.0.0-scope.json, SCOPE_INDEX.json) (v7.0.1 baseline 696d871e verified)",
+    "v8/V8-001/adapter_map.md, inherited_gates.json, real_data_selection_criteria.md"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "REL-02",
+   "original_description": "Freeze enabled v8 capabilities and clearly label unavailable or experimental modules; remove unsupported claims from all product surfaces.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "scope frozen; tools/yuclaw_release_notes_v8.py binds the enabled account and absent modules (V8-008)",
+    "v8/V8-003/gates.json, v8/V8-006/gates.json, v8/V8-007/gates.json (release-state generator runs)"
+   ],
+   "remaining_acceptance_criteria": "freeze-day surface review at the frozen commit",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "REL-03",
+   "original_description": "Prepare English-only onboarding, task examples, API documentation, dataset cards, limitations, accessibility guidance, and operator runbooks; use the approved Human Trace identity without redesign.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/V8-006/START.md; v8/V8-008/owner_ui_checklist.md; resources README; export LIMITS"
+   ],
+   "remaining_acceptance_criteria": "API documentation, dataset card, accessibility guidance, operator runbooks",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "REL-04",
+   "original_description": "Verify corpus/source permissions, customer isolation, export terms, retention configuration, and correction procedures for the actual release scope.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "rights and export terms enforced; loopback isolation"
+   ],
+   "remaining_acceptance_criteria": "retention configuration and correction procedures for the release scope",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "REL-05",
+   "original_description": "Complete relevant integration, security, statistical, performance, recovery, and usability reviews; retain unresolved findings with an explicit release disposition.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "boundary tests; static gates; py3.10 compile; leak sweep"
+   ],
+   "remaining_acceptance_criteria": "independent security and statistical reviews; performance and usability reviews; dispositions",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "REL-06",
+   "original_description": "Package reproducible builds, migrations, rollback instructions, release notes, verification evidence, and a capability-status matrix.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "PARTIAL",
+   "implementation_or_evidence_references": [
+    "v8/V8-005/packaging.json; v8/V8-007/coherent_candidate.json (reproducible pair aa988727…/bc974991…)",
+    "notes composition (V8-008); capability matrix (this record)"
+   ],
+   "remaining_acceptance_criteria": "rollback instructions; final artifact set from the frozen commit",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "REL-07",
+   "original_description": "Prepare a pricing hypothesis from observed costs and willingness to pay; offer a narrowly specified deliverable rather than promising alpha or universal AI protection.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "pricing hypothesis",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "REL-08",
+   "original_description": "Prepare private, reviewable launch materials and community-specific drafts; include only measured claims and verified capability descriptions.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "launch materials paused pending a concrete release decision",
+   "verification_basis": "CI"
+  },
+  {
+   "task_id": "REL-09",
+   "original_description": "Keep deployment and community posting disabled until the user explicitly authorizes the concrete v8 release and outreach scope; no automatic resume.",
+   "historical_planning_status": "todo",
+   "current_scope": "enabled",
+   "status": "COMPLETE",
+   "implementation_or_evidence_references": [
+    "internal/release_v8_0_0/publish_v800.py + tests (private); v8/V8-006/, v8/V8-007/ decision packages (release_authorized=false; publisher refuses every network stage)"
+   ],
+   "remaining_acceptance_criteria": "none",
+   "verification_basis": "CI+AB"
+  },
+  {
+   "task_id": "REL-10",
+   "original_description": "After separate launch authorization, monitor onboarding failures, quality, corrections, costs, and retention; use predefined rollback or feature-disable conditions.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "post-launch monitoring (no launch)",
+   "verification_basis": "PR"
+  },
+  {
+   "task_id": "RND-01",
+   "original_description": "Test whether learned evidence selection improves reliable resolution per total cost over the deterministic queue at fixed coverage and error targets.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-02",
+   "original_description": "Test dependence-aware source selection against repeated-agent and source-diverse baselines; measure added information rather than agreement counts.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-03",
+   "original_description": "Investigate stopping and abstention rules with explicit sampling and dependence assumptions; do not transplant unrelated theoretical guarantees.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-04",
+   "original_description": "Test whether financial contradictions predict future adjudicated errors beyond simple retrieval and rule-based baselines.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-05",
+   "original_description": "Explore extension of the statistical contract to required nonbinary outcomes and cross-study error governance with qualified methodological review.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-06",
+   "original_description": "Evaluate richer evolution ancestry or pooled fallback capacity only after a real user requirement and explicit semantics justify the additional complexity.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-07",
+   "original_description": "Assess privacy-preserving aggregate research only if a permitted cross-tenant use case exists; hashing is not differential privacy and private data is not shared by default.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  },
+  {
+   "task_id": "RND-08",
+   "original_description": "Conduct a fresh primary-source prior-art review before any originality claim; publish reproducible comparisons and negative findings before asserting a breakthrough.",
+   "historical_planning_status": "todo",
+   "current_scope": "deferred",
+   "status": "UNBUILT",
+   "implementation_or_evidence_references": [],
+   "remaining_acceptance_criteria": "P2 research extension; not started",
+   "verification_basis": "PS"
+  }
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

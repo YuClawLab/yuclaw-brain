@@ -1,0 +1,75 @@
+{
+ "record": "v8-tb1-repair/1",
+ "order": "V8-008 §1–§2",
+ "recorded_utc": "2026-09-16T07:15:21Z",
+ "commit": "10d480cdd097ea3a1c508459a9bdc40b9aaf820c",
+ "tree": "13d91550321b144b85690e3371d53a6394f018c3",
+ "parent": "7ade9c784ccd9125fd45da4159997d94c2bc2378",
+ "defect": {
+  "id": "TB-1",
+  "where": "tools/yuclaw_release_state_v6.py composed policy-bound Tier-2 notes only when VERSION.startswith('7.'); otherwise corr = ['not a 7.x release']",
+  "effect": "for 8.0.0 the manifest carried notes.policy_correspondence = ['not a 7.x release'] (V8-006 and V8-007 staged runs) and publish_v800.cmd_authorize stops on any non-empty value",
+  "found": "V8-007 (gates.json TB-1)"
+ },
+ "repair": {
+  "files": {
+   "tools/yuclaw_release_notes_v8.py": "NEW — the 8.0.0 composer: feature account from the workbench's step inventory (v8.workbench.server.STEPS), the machine-readable scope (v8/scope/v8.0.0-scope.json: enabled workstreams, minimal RIV/ACT, experimental default-off, deferred, backup disclosure verbatim) and the recorded V8-005 scorecards; policy disclosure, activation lines and evidence totals through the unchanged 7.x helpers; check_correspondence = the 7.x rules + 8.0.0 checks (enabled accounts present/unaltered, no scope expansion, backup disclosure verbatim, retrospective/NOT ELIGIBLE real-data statement, simulated-review attribution, human benefit PENDING, absent experimental modules, contradictory route records, banned claim words)",
+   "tools/yuclaw_release_state_v6.py": "notes_composer(version) + compose_public_notes(): 7.x → v3/release/notes_v7 (unchanged); exactly 8.0.0 → the new composer; any other version → no composition path (never corresponds); --release-policy help text",
+   "tests/test_release_notes_v8.py": "NEW — 10 tests on fixed synthetic inputs"
+  },
+  "not_packaged": "tools/ is outside the wheel (packages v3/v4/v8 + force-included tools/__init__.py and check_language.py only) and the sdist (three explicit tools files); the rebuilt pair from the revised staged commit is byte-identical to the V8-007 pair",
+  "diff_stat": [
+   "tests/test_release_notes_v8.py   | 171 ++++++++++++++++++++++++++++++++++++",
+   " tools/yuclaw_release_notes_v8.py | 181 +++++++++++++++++++++++++++++++++++++++",
+   " tools/yuclaw_release_state_v6.py |  35 ++++++--",
+   " 3 files changed, 379 insertions(+), 8 deletions(-)"
+  ],
+  "diff_file": "internal/v8/v8_008_…/tb1_repair.diff",
+  "diff_sha256": "8449e3de53d99538e048008eee6c4301c69116d3de8f12ccec9773243970c901",
+  "not_done_on_purpose": [
+   "no drop of the policy check",
+   "no acceptance of every future version (8.0.0 exactly; 7.x unchanged)",
+   "no hardcoded empty problem list",
+   "no treatment of a PROPOSED policy as accepted",
+   "no change to any gate, to Gate #15's status, to the 7.0.1 exception (not inherited) or to release_authorized"
+  ]
+ },
+ "distinctions": {
+  "version_support": "notes_composer() — 7.x and 8.0.0 only",
+  "correspondence": "check_correspondence() — text vs the RECORDED policy; empty list = correspond; a draft or PROPOSED policy never corresponds",
+  "gate_satisfaction": "the generator's gate table (unchanged); Gate #15 MANUAL_REVIEW on every v8 run",
+  "publication_authorization": "publish_v800.cmd_authorize — the owner's sentence; refused with any RED, an invalid policy or non-empty correspondence"
+ },
+ "verification": {
+  "tests/test_release_notes_v8.py": "10 passed (7.x preserved through the generator dispatch; 8.0.0 reaches the v8 composer, not the sentinel; missing / PROPOSED / mismatched / contradictory D1-D2 inputs never correspond; unknown versions 8.0.1, 8.1.0, 9.0.0, 6.0.1, 8.0.0rc1 unsupported; a valid SYNTHETIC route-A and route-B fixture corresponds while seven kinds of inconsistent notes fail; Tier-2 banned tokens absent; the real tree's matrix is enabled ×10, minimal RIV/ACT, experimental ×4, demonstrated)",
+  "tests/test_v5_closure.py": "5 passed (7.x composer regression, unchanged file)",
+  "internal/release_v8_0_0/test_publish_v800.py": "15 passed (14 existing + test_authorize_refuses_notes_that_do_not_correspond_and_a_proposed_allocation: the old sentinel, a missing record, a mismatch and an unsupported-version message all stop authorize; a PROPOSED allocation fails policy_valid; only an accepted record with [] passes — in a disposable repo with a labelled rehearsal wording)",
+  "internal/release_v8_0_0/test_download_proof_journal_v800.py": "7 passed",
+  "generator_end_to_end": {
+   "V8-007 coherent staging (before)": [
+    "not a 7.x release"
+   ],
+   "V8-008 run 1 as staged (after)": [
+    "no release-policy record"
+   ],
+   "V8-008 run 2 with render (after)": [
+    "no release-policy record"
+   ],
+   "composed_8_0_0_sections_present": [
+    "#### New in 8.0.0 — the source-to-export commitment workbench",
+    "Journey evidence (…7/7 + notes/dataset/SCI DEMONSTRATED)",
+    "Release policy: NOT RECORDED — … pending",
+    "backup disclosure verbatim",
+    "Microchip replayed RETROSPECTIVELY … NOT ELIGIBLE",
+    "simulated-review attribution",
+    "Human benefit: PENDING",
+    "COM / PRC / SHD / EVO ABSENT"
+   ],
+   "public_notes_sha256_run2": "1931fa6aa9917e133e80362f98e69e7e050338e1d03e4a3413e916f06f9fc785"
+  },
+  "rehearsal_fixture": "internal/release_v8_0_0/test_publish_v800_rehearsal.py now composes its Tier-2 fixture with the 8.0.0 composer (it used notes_v7 with version='8.0.0', i.e. the 7.0.0 feature text); compiled, NOT re-run this order (the rehearsal repeats the runtime journeys; the V8-006 rehearsal record stands under its own identity)",
+  "not_run": "full application suite and browser journeys (release-tool-only change; no packaged module changed)"
+ },
+ "status": "TB-1 FIXED as release tooling. The release remains blocked by owner decisions (designation, D1, D2/Gate #15, authorization) and by the freeze-day weekly-note render; the composed notes state 'Release policy: NOT RECORDED' until D1 + D2 exist.",
+ "not_advice": "Research and education only. Not investment advice."
+}

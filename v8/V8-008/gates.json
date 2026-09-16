@@ -1,0 +1,206 @@
+{
+ "record": "v8-gates/1",
+ "order": "V8-008 §3",
+ "recorded_utc": "2026-09-16T07:15:21Z",
+ "candidate": {
+  "proposed_candidate_commit": "3d43089ea31e886a7bcb6033da929477d6b79782",
+  "proposed_candidate_tree": "c5bd485b39ae4e8493ea14bb225101d308c54427",
+  "base": "10d480cdd097ea3a1c508459a9bdc40b9aaf820c (branch HEAD with the TB-1 repair)",
+  "version_patch_id": "27267a974a724a04805516ca3d9a401b709ae745 (108 files; explicit path staging; no symlinks)",
+  "pyproject_version": "8.0.0",
+  "note": "private staging worktree; not on the branch; not designated; not authorized"
+ },
+ "generator": "tools/yuclaw_release_state_v6.py --evidence <record>/gates/evidence_v8_candidate_revised*.json (no --release-policy: none recorded); TB-1 repair active (8.0.0 composer)",
+ "runs": {
+  "run1_as_staged": {
+   "ran_on": {
+    "commit": "3d43089ea31e886a7bcb6033da929477d6b79782",
+    "tree": "c5bd485b39ae4e8493ea14bb225101d308c54427"
+   },
+   "gate_counts": {
+    "GREEN": 18,
+    "RED": 1,
+    "MANUAL_REVIEW": 1
+   },
+   "non_green": [
+    {
+     "gate": 14,
+     "result": "RED",
+     "evidence": "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"
+    },
+    {
+     "gate": 15,
+     "result": "MANUAL_REVIEW",
+     "evidence": "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+    }
+   ],
+   "policy_correspondence": [
+    "no release-policy record"
+   ],
+   "tripwire_pre": "GREEN",
+   "release_authorized": false,
+   "manifest_sha256": "f8d6b68555e6e94fcfe4997f4c4bc2a0c5c3f60a92a73a83c1d460cfdba09ab0",
+   "meaning": "the exact status of the proposed candidate as staged: gate 14 RED because the committed weekly note is stale (freeze-day render pending); everything else GREEN except Gate #15"
+  },
+  "run2_with_staging_render": {
+   "ran_on": {
+    "commit": "25783e87c54f8234c6b865359beee6c3d987dc78",
+    "tree": "a7c262c71038468c5815d6bd6e5329251b8cfd56",
+    "note": "= 3d43089e + staging-only render commit 25783e87 (docs/weekly_note.html rendered by the real generator at 2026-09-16T07:10:38Z; reconciled 269 events; not proposed for designation)"
+   },
+   "gate_counts": {
+    "GREEN": 19,
+    "MANUAL_REVIEW": 1
+   },
+   "non_green": [
+    {
+     "gate": 15,
+     "result": "MANUAL_REVIEW",
+     "evidence": "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+    }
+   ],
+   "policy_correspondence": [
+    "no release-policy record"
+   ],
+   "tripwire_pre": "GREEN",
+   "release_authorized": false,
+   "manifest_sha256": "ede1e0574c6c945c74287a0aa7e60ab846579efa104f7b21124a0b09aaaed5f4",
+   "meaning": "models the freeze-day tree; point-in-time (LIVE_RECHECK); the production note is untouched (sha 9576196c…)"
+  }
+ },
+ "gate_table_run2": [
+  {
+   "gate": 1,
+   "name": "P0 registrations valid",
+   "result": "GREEN",
+   "evidence": "bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 file sha256 == line-81 method_hash"
+  },
+  {
+   "gate": 2,
+   "name": "chain verifies",
+   "result": "GREEN",
+   "evidence": "Registry.verify_chain on load: 82 lines, tip ac51ddfe97eb709a"
+  },
+  {
+   "gate": 3,
+   "name": "zero unexplained ledger breaks",
+   "result": "GREEN",
+   "evidence": "docs/ledger 84 blocks 2026-05-20..2026-09-14; sessions without a block: 0; evidence-changes gate rc=0"
+  },
+  {
+   "gate": 4,
+   "name": "point-in-time guard",
+   "result": "GREEN",
+   "evidence": "as_of endpoint hash + twice-run identity (evidence-changes gate); u350 isolation proven by attempted writes"
+  },
+  {
+   "gate": 5,
+   "name": "no v1 historical silent rewrite",
+   "result": "GREEN",
+   "evidence": "chain file byte-identical to base 696d871e: True; v1 evidence_geometry.json identical to base: True (last changed 0f10c2ec 2026-07-31); Phase-6 canonical artifact identical to base: True; 02A restage left live/registry/output trees byte-identical: True; chain append-only"
+  },
+  {
+   "gate": 6,
+   "name": "dependency calculations reproducible",
+   "result": "GREEN",
+   "evidence": "the registered structural first-read computation reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)"
+  },
+  {
+   "gate": 7,
+   "name": "truncation ledger reconciles",
+   "result": "GREEN",
+   "evidence": "[truncation-gate] OK — 13 ledger entries (schema + anchors verified), detector clean over v3/tools (allowlist v1, 10 constants)"
+  },
+  {
+   "gate": 8,
+   "name": "hypothesis/discovery lineage reconciles",
+   "result": "GREEN",
+   "evidence": "[discovery-gate] OK — 37 hypotheses <-> 37 protocol lines (bijection both directions), 33 families locked, artifact byte-identical to chain-derived rebuild; status_counts={'ACCRUING': 18, 'INCONCLUSIVE': 1, 'OPEN': 7, 'REGISTERED': 7, 'SUPE"
+  },
+  {
+   "gate": 9,
+   "name": "sequential methods pass registered fixtures",
+   "result": "GREEN",
+   "evidence": "anytime gate + registered fixtures selftest"
+  },
+  {
+   "gate": 10,
+   "name": "research-state derivation reproducible",
+   "result": "GREEN",
+   "evidence": "[research-state-gate] OK — 132 names render registered artifacts only; byte-identical rebuild; platform C6 verdict verbatim"
+  },
+  {
+   "gate": 11,
+   "name": "machine JSON agrees with human page",
+   "result": "GREEN",
+   "evidence": "[science-trust-gate] OK — 132 cards: machine JSON == human card == fresh derivation (field-for-field); research states verified against research_state.json directly; sequential panel verified against the canonical Anytime artifact independe"
+  },
+  {
+   "gate": 12,
+   "name": "source citations resolve",
+   "result": "GREEN",
+   "evidence": "site-walk: all links + anchors resolve; index completeness; copy integrity"
+  },
+  {
+   "gate": 13,
+   "name": "negative/inconclusive findings preserved",
+   "result": "GREEN",
+   "evidence": "discovery status_counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4; questions insider-directional RETIRED, reversal-coherence OPEN, reversal-structure-dominance OPEN; reversal first read INSUFFICIENT preserved"
+  },
+  {
+   "gate": 14,
+   "name": "language rails pass",
+   "result": "GREEN",
+   "evidence": "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"
+  },
+  {
+   "gate": 15,
+   "name": "user comprehension test passes",
+   "result": "MANUAL_REVIEW",
+   "evidence": "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+  },
+  {
+   "gate": 16,
+   "name": "stranger-machine reproduction passes",
+   "result": "GREEN",
+   "evidence": "External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0 — registered sentence \"stranger-machine reproduction passes\" (requires reproduction on an external (stranger) MACHINE; it does not require an unaffiliated operator — affiliation is disclosed, never implied away); public log entries: 1, external-machine REPRODUCED: 1, failed: 0"
+  },
+  {
+   "gate": 17,
+   "name": "G1 copy-consistency (canonical blocks byte-identical)",
+   "result": "GREEN",
+   "evidence": "[copy-consistency] OK — 8 target blocks byte-identical to their canonical sources (MISSION-VISION: sha256 c3b3d26ca94f, LOOKAHEAD: sha256 34ff23ecbef0, REPLICATION-SENTENCE: sha256 f940a6f509ab)"
+  },
+  {
+   "gate": 18,
+   "name": "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages"
+  },
+  {
+   "gate": 19,
+   "name": "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G3 base https://yuclaw.ca (77 URLs, zero github.io)"
+  },
+  {
+   "gate": 20,
+   "name": "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G4 22 endpoints declared on 3 surfaces, 31 representatives local-resolved and schema-valid"
+  }
+ ],
+ "evidence_reuse_with_applicability": {
+  "gate6": "V8-006 fresh bound replay carried (pinned calendar; no repeat) — applicable: the replay inputs, tool and calendar are unchanged by the repair",
+  "restage": "V8-006 measurement carried — applicable: packaged and preview content equals the V8-006/V8-007 staged trees (pair bytes identical)",
+  "tripwire": "V8-006 read-only observations carried (2026-09-16T04:54:53Z) — applicable: no tag, upload or push happened since",
+  "rehearsal": "V8-006 re-run record carried, labelled — applicable to the wheel bytes (identical); its Tier-2 fixture used the 7.x composer (now corrected in the fixture; not re-run)",
+  "V8-007 gate results": "NOT transferred: the tree changed; both runs above are fresh"
+ },
+ "unmet_or_manual": [
+  "gate 14 RED as staged (weekly note stale until the freeze-day render in the frozen checkout)",
+  "gate 15 MANUAL_REVIEW / NOT SATISFIED (D2_gate15_decision_package.md)",
+  "notes.policy_correspondence = ['no release-policy record'] until D1 + D2 are recorded"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}
