@@ -421,7 +421,8 @@ class Handler(BaseHTTPRequestHandler):
         #     times beside it are those of the claim action that cites it — kept apart, never merged)
         src_seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in ws.events() if e["kind"] == "SOURCE_REGISTERED"}
         def times_with_source(t: dict, s: dict) -> str:
-            return f'{self._times(t)}<br><span class="muted">source observed {esc(src_seen.get(f"{s["accession"]}:{s["source_hash"][:16]}") or "—")}</span>'
+            sid = s["accession"] + ":" + s["source_hash"][:16]
+            return f'{self._times(t)}<br><span class="muted">source observed {esc(src_seen.get(sid) or "—")}</span>'
         src_rows = ""
         for v in st["versions"]:
             s = v["claim"]["source"]

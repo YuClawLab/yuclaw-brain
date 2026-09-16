@@ -193,7 +193,9 @@ def main(argv=None) -> int:
     (out / "packaging.json").write_text(json.dumps(rec, indent=1, ensure_ascii=False) + "\n")
     print(f"[clean-install] {rec['result']} — commit {commit[:12]} wheel {art['wheel']['sha256'][:12]}… sdist {art['sdist']['sha256'][:12]}… → {out / 'packaging.json'}")
     for what, v in rec["installs"].items():
-        print(f"  {what}: ok={v.get('ok')} journeys={{{', '.join(f'{m}: {j.get('score')}' for m, j in v.get('journeys', {}).items())}}}" + (f" STOP {v['stop'][:200]}" if v.get("stop") else ""))
+        scores = ", ".join(f"{m}: {j.get('score')}" for m, j in v.get("journeys", {}).items())
+        stop_note = (" STOP " + v["stop"][:200]) if v.get("stop") else ""
+        print(f"  {what}: ok={v.get('ok')} journeys={{{scores}}}{stop_note}")
     return 0 if ok else 1
 
 
