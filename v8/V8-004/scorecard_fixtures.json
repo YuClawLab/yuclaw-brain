@@ -1,0 +1,297 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-004 §7 (feature demonstrations) — fixtures journey with the research-notes, dataset and SCI feature demonstrations",
+ "mode": "fixtures",
+ "recorded_utc": "2026-09-16T03:46:32+00:00",
+ "candidate": {
+  "commit": "91d9a2110526b8cb368dcd180942a18f3c7df2a9",
+  "tree": "e5460cdfee5cca3d8ef759aa0dbaa37fc1dc0196",
+  "branch": "codex/v8-integration",
+  "dirty_entries_at_run": 1,
+  "dirty_entries_note": "the only untracked entry during the run was the v8/V8-004/ record directory being assembled",
+  "runtime": "checkout; the same journeys also ran from the installed wheel and sdist (packaging.json)"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:39811",
+  "B_fresh_workspace": "http://127.0.0.1:40675",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "2c6a670a633113b621388966966c63c49dde26c718707e3373b4deb7bfb278d5",
+     "url": "http://127.0.0.1:39811/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "4cc1834551516fb0ac094ce78ec66796165fb71dc37d3c5bf48915a086a35ccf",
+     "url": "http://127.0.0.1:39811/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "a20ae5bf6693e67fff074b543cbdaa56152870ae0715e9da0a0f7745584eaf1e",
+     "url": "http://127.0.0.1:39811/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "d3d31fca35aadfada15035f3662f9867068ae8f974243d0f31633538f18959c2",
+     "url": "http://127.0.0.1:39811/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "b55281be567370a2a5a9ef4986991ca5c01eebd5bdc57772ff616db25a391e5b",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "3e4ed9d5dd9c8e67cc0ee09e157d7d00d2daece896bbf3933cbe61cb2331ca50",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "f3e9b0474c317c08e7ca72561cf4122732783798b6e7b67f1ad6fcddae242214",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "dd7fd8c88006d93b60c6b12bae00d53b30515022dd291bf9f55741a49feb5ca2",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "e89a0644ccf807325ad56d9432cb294881972c428a70ba2a727c80bec6ccebfb",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "1d6f6fdfd8a1e82d0f0866496d6159f743818781d9471f154a5e9bb60cd9be11",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "2441226df6b453dcd54ce1414cc99c0793661ff6c88b550e4ea5d61320ec83fa",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "fa09a6032b23f88c8efcf5a586e8cdb797776b31818e91b54004159419a7cadf",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "08c4c35099bf3a628d706b8606bce957d1687331d13025c0f3a2777573d6b43f",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "9fa55bb469c71bef8d4d62c9842bd7632e4a7a888907b2c94e5d79a2766fae25",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "e546bf4357e3add7457897e5a10117e98a51b16e0d8c235ff6a887ea9157ba10",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "5fde83a44876dd97868b48bc8f074821489b7ed746f4b215101cc0b98dc0001d",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "d1a05458be62ea8a4a7a5945e6466afa19ce74f8c6929ba39f42128bf4b4c966",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "9fc0d271f12110314356f591eeb68889f7a6437f05a0d0166e6f0e06c5299578",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE?built=exp-553a749baa73ef2d#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "f62dc3f3a91336147e7cc4b90f8eb67013b9cf4faa69dec887aa24d34ca522b4",
+     "url": "http://127.0.0.1:40675/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "3483fb5d7e1778d1fc110fdb3d6498cce7479cda5becb9256fd207421d9ddd44",
+     "url": "http://127.0.0.1:40675/verify"
+    }
+   ]
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 7,
+   "negative_assertions": 8,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "21_research_notes_note_recorded.png",
+     "sha256": "da6fb05a991ef1e7a14de2471b6a165f4e6d946e703a1c4f06a15eeb45868687",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "22_research_notes_note_corrected.png",
+     "sha256": "283afc4c4dd014547a31bcae15b5315fefb1f8ecc35211df19e09ddada62bca4",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "23_research_notes_note_timing_as_of.png",
+     "sha256": "e5f80db1d56581934eb1c77b838017ae81d5c7544b36d57e617ee4ceca702fc1",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "24_research_notes_note_incomparable.png",
+     "sha256": "122ab7ad6771a9719e5dfd7b05f4f106c82be77ea682375a02b55d360516217b",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE-NEG#notes"
+    },
+    {
+     "file": "25_research_notes_note_withdrawn_and_pending.png",
+     "sha256": "dd3d9ebaf288aecd816581b3104d4603cc3d075ab6bdc729a8d48547ebf34493",
+     "url": "http://127.0.0.1:39811/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome#notes"
+    },
+    {
+     "file": "26_research_notes_notes_verified_fresh.png",
+     "sha256": "bc935a0c9c113bc8a3353f6cf3e76544f40bfd6eb7f5863b94fbf3771dba208a",
+     "url": "http://127.0.0.1:40675/verify"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 6,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "27_dataset_dataset_empty.png",
+     "sha256": "5150455b2cd22e1ec7de0de638d4c2b6d3e677b86dfa7238fbb3e38e53809a68",
+     "url": "http://127.0.0.1:40675/dataset"
+    },
+    {
+     "file": "28_dataset_dataset_rows.png",
+     "sha256": "a5accfca33175c64dc49c17124b0249fc805c3155a4cc76c6f5834787181fc1d",
+     "url": "http://127.0.0.1:39811/dataset"
+    },
+    {
+     "file": "29_dataset_dataset_verified_fresh.png",
+     "sha256": "f09b328ef44cdfc060327098e5962ac4ca413301206a04da7b8fc605b26298d7",
+     "url": "http://127.0.0.1:40675/verify"
+    },
+    {
+     "file": "30_dataset_dataset_change_identified.png",
+     "sha256": "47254663657ddaac7ddd6b69f4ae051cb4ec443f8672809ecda3ad23965f6cb1",
+     "url": "http://127.0.0.1:39811/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "supported scientific-kernel report/replay (V8-004 §5)",
+   "status": "BLOCKED",
+   "blocked": {
+    "status": "BLOCKED",
+    "missing_inputs": [
+     "reference bundle with INPUTS.md and MANIFEST.json",
+     "reference/v4/science/{__init__,contracts,statistics,store,evidence}.py from the preview base c34e19bf (uncommitted preview work; not in git)"
+    ]
+   },
+   "positive_assertions": 0,
+   "negative_assertions": 1,
+   "failed": []
+  }
+ },
+ "post_statuses": {
+  "303": 30,
+  "422": 5,
+  "200": 7
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-004/journey_fixtures/journey_log.json (paths scrubbed)",
+  "journey_log_sha256_private": "98d9ba181cfa1fa223dc8a24b47cdb0687ab5e8264bd46a97d064b8401d6e95a"
+ },
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice."
+}

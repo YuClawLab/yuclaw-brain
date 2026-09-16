@@ -1,0 +1,38 @@
+{
+ "record": "v8-sci-status",
+ "order": "V8-004 §5",
+ "recorded_utc": "2026-09-16T03:31:40+00:00",
+ "status": "BLOCKED",
+ "reason": "the supported scientific-kernel reference bundle is not present on this host: no INPUTS.md, no MANIFEST.json, none of the five selected reference files",
+ "required_inputs": {
+  "bundle": [
+   "INPUTS.md",
+   "MANIFEST.json with file digests"
+  ],
+  "files": [
+   "reference/v4/science/__init__.py",
+   "reference/v4/science/contracts.py",
+   "reference/v4/science/statistics.py",
+   "reference/v4/science/store.py",
+   "reference/v4/science/evidence.py"
+  ],
+  "provenance": "earlier working preview on base c34e19bffb1a9f8851bf03ac1e64b68be3bcb710 (uncommitted preview work; requires review; not an approved release artifact and not independent scientific validation)"
+ },
+ "searched": [
+  "internal/v8/ (all order records and the recovery inputs staging area)",
+  "the v8 worktree and the production checkout (no reference/ or v4/science tree)",
+  "home directory to depth 4 for INPUTS.md or reference/v4/science",
+  "the local git object store: preview base c34e19bffb1a9f8851bf03ac1e64b68be3bcb710 is a known commit but carries no v4/science tree (the preview modules are uncommitted work outside git)"
+ ],
+ "what_was_not_done": [
+  "no placeholder tab, disabled button or static explanation was added to the workbench navigation",
+  "no kernel was invented; no statistical method was written",
+  "the calendar/2028/release-replay finding was not reopened (separate release queue)"
+ ],
+ "ready_when_available": [
+  "read INPUTS.md; verify MANIFEST.json and every file digest; preserve the originals in the private record; record which source versions were adapted",
+  "adapt only the selected modules to the integration branch (no wholesale copy of the old repository, pyproject, public docs or the reference CLI, which imports optional/deferred modules unconditionally)",
+  "bounded browser report/replay backed by the actual kernel: paired binary-probability/Brier-improvement contract, kernel identity and limitations; schema-validated size-bounded input through the protected local interface; actual recomputation; explicit eligibility reasons; evidence linkage to known claim/version/source objects; honest replay/exploratory status; export + fresh-verifier recomputation; browser demonstration of one supported fictional example and one refused example"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}
