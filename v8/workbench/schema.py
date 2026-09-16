@@ -21,7 +21,7 @@ KIND = "commitment"
 PERIOD_TYPES = ("FY", "H", "Q", "M")
 PERIOD_DAYS = {"FY": (360, 372), "H": (175, 190), "Q": (80, 95), "M": (27, 32)}
 SOURCE_KINDS = ("filing", "press_release", "transcript", "other")
-RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING", "UNKNOWN")
+RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING", "COMPANY_PRESS_RELEASE", "UNKNOWN")   # only the first two bundle excerpt bytes into exports
 RESOLUTION_RULES = {
     "RANGE_CONTAINS_ACTUAL": "resolved IN_RANGE when low <= actual <= high for an outcome with the same metric, currency, unit, basis and fiscal period; otherwise OUT_OF_RANGE; any mismatch or missing outcome is unresolved",
 }
@@ -35,6 +35,7 @@ _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _TICKER = re.compile(r"^[A-Z][A-Z0-9.-]{0,9}$")
 _CIK = re.compile(r"^[0-9]{10}$")
 _ACCESSION = re.compile(r"^[0-9]{10}-[0-9]{2}-[0-9]{6}$")
+_PUBLISHER_ID = re.compile(r"^[A-Z]{2,12}:[A-Za-z0-9._-]{1,64}(:[A-Za-z0-9._-]{1,64})?$")   # non-filing sources: e.g. IR:ir.example.com:1315
 _TS = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?Z$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 _PRINTABLE = re.compile(r"^[^\x00-\x08\x0b\x0c\x0e-\x1f]*$")
@@ -107,8 +108,11 @@ def check_source(raw, field="source") -> tuple[dict | None, list[str]]:
         reasons.append(f"{field}.kind: one of {list(SOURCE_KINDS)} required")
     _text(raw["form"], f"{field}.form", 64, reasons)
     acc = raw["accession"]
-    if not isinstance(acc, str) or not _ACCESSION.match(acc):
-        reasons.append(f"{field}.accession: EDGAR accession NNNNNNNNNN-NN-NNNNNN required (got {acc!r})")
+    if raw["kind"] == "filing":
+        if not isinstance(acc, str) or not _ACCESSION.match(acc):
+            reasons.append(f"{field}.accession: EDGAR accession NNNNNNNNNN-NN-NNNNNN required for a filing (got {acc!r})")
+    elif not isinstance(acc, str) or not (_ACCESSION.match(acc) or _PUBLISHER_ID.match(acc)):
+        reasons.append(f"{field}.accession: an EDGAR accession or a publisher identifier PREFIX:publisher:id is required (got {acc!r})")
     if raw["url"] is not None and (not isinstance(raw["url"], str) or not raw["url"].startswith(("https://", "http://")) or len(raw["url"]) > 500):
         reasons.append(f"{field}.url: null or an http(s) URL up to 500 characters")
     filed = _date(raw["filed_at"], f"{field}.filed_at", reasons)
@@ -132,6 +136,8 @@ def check_source(raw, field="source") -> tuple[dict | None, list[str]]:
         reasons.append(f"{field}.rights: a fictional source is rights=FICTIONAL")
     elif raw["fictional"] is False and raw["rights"] == "FICTIONAL":
         reasons.append(f"{field}.rights: FICTIONAL rights require fictional=true")
+    elif raw["rights"] == "SEC_PUBLIC_FILING" and raw["kind"] != "filing":
+        reasons.append(f"{field}.rights: SEC_PUBLIC_FILING applies to kind=filing only")
     if reasons:
         return None, reasons
     return {k: raw[k] for k in REQUIRED_SOURCE}, []

@@ -1,0 +1,1 @@
+Packaged runtime resources of the v8 workbench: a byte-identical copy of `schemas/CommitmentClaim.v1.json` (shipped with the export) and of the clearly fictional commitment fixtures in `tests/fixtures/v8/commitments/` (the fixture loader). Identity is asserted by tests/test_v8_workbench_packaging.py.

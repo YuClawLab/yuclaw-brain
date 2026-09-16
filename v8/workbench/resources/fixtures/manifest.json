@@ -1,0 +1,73 @@
+{
+ "schema": "yuclaw-commitment-fixture-manifest/1",
+ "order": "V8-001 §5",
+ "fictional": true,
+ "purpose": "source-to-export workbench acceptance fixtures: one commitment claim with a revision and a comparable outcome, plus the six failure/edge variants. Fixture validation is separate from real-data quality and from human benefit (both PENDING).",
+ "files": [
+  {
+   "path": "tests/fixtures/v8/commitments/001_base.json",
+   "fixture_id": "FIX-COMMIT-001-base",
+   "variant": "base",
+   "sha256": "51d90b8d8b36d7d1ffc792f4888dfd1196c328efa65e866d335802d2958a29d0",
+   "bytes": 2795,
+   "expected_adjudication": "IN_RANGE"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/002_missing_outcome.json",
+   "fixture_id": "FIX-COMMIT-002-missing-outcome",
+   "variant": "missing_outcome",
+   "sha256": "c8bf7a72d25bddd6a4c3d53cc3cbb9378703162cb578f28ce3d6a5d2b5f20371",
+   "bytes": 2322,
+   "expected_adjudication": "PENDING_OUTCOME"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/003_withdrawal.json",
+   "fixture_id": "FIX-COMMIT-003-withdrawal",
+   "variant": "withdrawal",
+   "sha256": "4b44851c7e0d646a12e5c918cc54040f5925aae6abf04c2fa0bbbb3c2c8806b6",
+   "bytes": 3377,
+   "expected_adjudication": "WITHDRAWN_BEFORE_OUTCOME"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/004_incompatible_basis.json",
+   "fixture_id": "FIX-COMMIT-004-incompatible-basis",
+   "variant": "incompatible_basis",
+   "sha256": "a713ab5b20c72f6d41a3efb56f727dd0443737ddca7042eaed5a3acd785e9d71",
+   "bytes": 2861,
+   "expected_adjudication": "INCOMPATIBLE_BASIS"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/005_unit_mismatch.json",
+   "fixture_id": "FIX-COMMIT-005-unit-mismatch",
+   "variant": "unit_mismatch",
+   "sha256": "ece2098a9c8dc46eab507a8fe68bdfc21b5ca7d2d873c1d66d9804a309246d93",
+   "bytes": 2816,
+   "expected_adjudication": "UNIT_MISMATCH"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/006_out_of_range.json",
+   "fixture_id": "FIX-COMMIT-006-out-of-range",
+   "variant": "out_of_range_outcome",
+   "sha256": "755e6ae2a78efa7b453c9a028287d24ad7d53a0e590d090239ba5416491fd629",
+   "bytes": 2826,
+   "expected_adjudication": "OUT_OF_RANGE"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/007_corrected_source.json",
+   "fixture_id": "FIX-COMMIT-007-corrected-source",
+   "variant": "corrected_source",
+   "sha256": "b00b3cf2b86b10c5410c65d0860b9dc256212216b3da0f102bbbef85fa082f5c",
+   "bytes": 3747,
+   "expected_adjudication": "IN_RANGE"
+  },
+  {
+   "path": "tests/fixtures/v8/commitments/008_quarterly.json",
+   "fixture_id": "FIX-COMMIT-008-quarterly",
+   "variant": "quarterly",
+   "sha256": "20ed4136ed3fd9ce5c1a98dbfd8f0e401071cd02ae8f5b58061f95fdfd3e2bad",
+   "bytes": 3568,
+   "expected_adjudication": "IN_RANGE"
+  }
+ ],
+ "amended": "V8-002 §3 (2026-09-15): fixture 008 (separately identified quarterly commitment with explicit fiscal-quarter start/end dates and a documented period-mismatch case) added; fixtures 001–007 are byte-identical to V8-001"
+}

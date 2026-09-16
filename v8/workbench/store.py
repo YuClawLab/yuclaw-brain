@@ -7,7 +7,9 @@ Rules the store enforces, not merely documents:
   * a write is refused while a torn tail (bytes after the last newline) exists; `recover()` preserves the torn
     bytes in a side file, truncates ONLY those non-durable bytes, and records a RECOVERY event naming their digest;
   * every write carries a caller-chosen `op_id`; a retry with the same op_id and the same content returns the
-    existing event (no duplicate), a different content under the same op_id is a conflict (E_OP_CONFLICT);
+    existing event (no duplicate), a different content under the same op_id is a conflict (E_OP_CONFLICT); the
+    whole read-decide-append sequence of a write runs under one exclusive lock (threads and processes), so
+    concurrent retries of one operation and concurrent first writes serialize instead of interleaving;
   * three times are kept apart on every event: `source_available_as_of` (when the source became public),
     `observed_at` (when this workspace saw it) and `recorded_at` (local action time). As-of views are cut by
     source availability for source-bearing events, so later information is never shown as known earlier.
@@ -22,6 +24,7 @@ import json
 import os
 import re
 import secrets
+import threading
 from datetime import datetime, timezone
 
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
@@ -64,6 +67,7 @@ class Workspace:
         self.exports = self.root / "exports"
         self.imports = self.root / "imports"
         self.meta_path = self.root / "workspace.json"
+        self._rlock = threading.RLock(); self._depth = 0; self._fd = None
         for d in (self.exports, self.imports):
             d.mkdir(exist_ok=True)
             with contextlib.suppress(OSError):
@@ -79,13 +83,20 @@ class Workspace:
     # ------------------------------------------------------------------ primitives
     @contextlib.contextmanager
     def _locked(self):
-        fd = os.open(self.lock_path, os.O_RDWR | os.O_CREAT, 0o600)
-        try:
-            fcntl.flock(fd, fcntl.LOCK_EX)
-            yield
-        finally:
-            fcntl.flock(fd, fcntl.LOCK_UN)
-            os.close(fd)
+        """Exclusive workspace lock: an in-process re-entrant lock (threads of one server) around the file lock
+        (other processes). Every write API holds it from its first read to the append, so a retry of the same
+        operation and a concurrent first write can never interleave between "read the state" and "append"."""
+        with self._rlock:
+            if self._depth == 0:
+                self._fd = os.open(self.lock_path, os.O_RDWR | os.O_CREAT, 0o600)
+                fcntl.flock(self._fd, fcntl.LOCK_EX)
+            self._depth += 1
+            try:
+                yield
+            finally:
+                self._depth -= 1
+                if self._depth == 0:
+                    fcntl.flock(self._fd, fcntl.LOCK_UN); os.close(self._fd); self._fd = None
 
     def _raw(self) -> bytes:
         return self.log.read_bytes() if self.log.exists() else b""
@@ -253,91 +264,100 @@ class Workspace:
         return next((e for e in self.load()["events"] if e["op_id"] == op_id), None)
 
     def register_source(self, raw_source: dict, *, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
-        src, reasons = schema.check_source(raw_source)
-        if reasons:
-            raise ContractError("source cannot be registered: " + "; ".join(reasons))
-        sid = f"{src['accession']}:{src['source_hash'][:16]}"
-        return self.append("SOURCE_REGISTERED", None, {"source_id": sid, "source": src}, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
+        with self._locked():
+            src, reasons = schema.check_source(raw_source)
+            if reasons:
+                raise ContractError("source cannot be registered: " + "; ".join(reasons))
+            sid = f"{src['accession']}:{src['source_hash'][:16]}"
+            return self.append("SOURCE_REGISTERED", None, {"source_id": sid, "source": src}, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
 
     def freeze_claim(self, raw_claim: dict, *, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
-        claim = schema.validate_claim(raw_claim)
-        prior = self._prior(op_id)
-        if self._state_for(claim["claim_id"], prior) is not None:
-            raise ContractError(f"claim_id {claim['claim_id']!r} is already frozen; a change is an amendment (REVISED / WITHDRAWN / CORRECTED_SOURCE), never a second freeze")
-        d = schema.claim_digest(claim)
-        return self.append("CLAIM_FROZEN", claim["claim_id"], {"version_id": "V1", "version": 1, "claim": claim, "claim_digest": d},
-                           op_id=op_id, observed_at=observed_at, source_available_as_of=claim["source"]["available_as_of"])
+        with self._locked():
+            claim = schema.validate_claim(raw_claim)
+            prior = self._prior(op_id)
+            if self._state_for(claim["claim_id"], prior) is not None:
+                raise ContractError(f"claim_id {claim['claim_id']!r} is already frozen; a change is an amendment (REVISED / WITHDRAWN / CORRECTED_SOURCE), never a second freeze")
+            d = schema.claim_digest(claim)
+            return self.append("CLAIM_FROZEN", claim["claim_id"], {"version_id": "V1", "version": 1, "claim": claim, "claim_digest": d},
+                               op_id=op_id, observed_at=observed_at, source_available_as_of=claim["source"]["available_as_of"])
 
     def amend_claim(self, claim_id: str, amend_type: str, *, changes: dict | None, reason: str, source: dict, notes: dict | None = None, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
-        st = self._state_for(claim_id, self._prior(op_id))
-        if st is None:
-            raise ContractError(f"claim {claim_id!r} is not frozen")
-        if st["withdrawn"] is not None:
-            raise ContractError(f"claim {claim_id!r} was withdrawn ({st['withdrawn']['revision_id']}); no further amendment is accepted")
-        src, reasons = schema.check_source(source)
-        if reasons:
-            raise ContractError("amendment source invalid: " + "; ".join(reasons))
-        cur = st["current"]["claim"]
-        if not reason or not isinstance(reason, str):
-            raise ContractError("reason: required for every amendment")
-        if amend_type == "WITHDRAWN":
-            return self.append("CLAIM_WITHDRAWN", claim_id, {"version_id": f"W{len(st['versions'])}", "supersedes": cur["_digest"], "reason": reason, "source": src},
-                               op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
-        if amend_type not in ("REVISED", "CORRECTED_SOURCE"):
-            raise ContractError("amendment type must be REVISED, WITHDRAWN or CORRECTED_SOURCE")
-        allowed = {"range", "basis", "unit", "currency", "statement", "fiscal_period", "scale_as_stated", "metric"}
-        changes = changes or {}
-        bad = set(changes) - allowed
-        if bad:
-            raise ContractError(f"amendment may change only {sorted(allowed)}; got {sorted(bad)}")
-        new = {k: v for k, v in cur.items() if not k.startswith("_")}
-        new.update(changes); new["source"] = src; new["stated_at"] = src["filed_at"]
-        claim = schema.validate_claim(new)
-        d = schema.claim_digest(claim)
-        if d == cur["_digest"]:
-            raise ContractError("amendment changes nothing (identical content); record a reason-only note instead")
-        n = sum(1 for v in st["versions"] if v["type"] == amend_type) + 1
-        vid = f"R{n}" if amend_type == "REVISED" else f"C{n}"
-        kind = "CLAIM_REVISED" if amend_type == "REVISED" else "SOURCE_CORRECTED"
-        nt = {"explanation_unresolved": (notes or {}).get("explanation_unresolved", ""), "next_evidence": (notes or {}).get("next_evidence", "")}
-        payload = {"version_id": vid, "version": len(st["versions"]) + 1, "type": amend_type, "claim": claim, "claim_digest": d, "supersedes": cur["_digest"], "reason": reason, "notes": nt}
-        if amend_type == "CORRECTED_SOURCE":
-            payload["supersedes_source"] = {"accession": cur["source"]["accession"], "source_hash": cur["source"]["source_hash"], "retained": True}
-        return self.append(kind, claim_id, payload, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
+        with self._locked():
+            st = self._state_for(claim_id, self._prior(op_id))
+            if st is None:
+                raise ContractError(f"claim {claim_id!r} is not frozen")
+            if st["withdrawn"] is not None:
+                raise ContractError(f"claim {claim_id!r} was withdrawn ({st['withdrawn']['revision_id']}); no further amendment is accepted")
+            src, reasons = schema.check_source(source)
+            if reasons:
+                raise ContractError("amendment source invalid: " + "; ".join(reasons))
+            cur = st["current"]["claim"]
+            if not reason or not isinstance(reason, str):
+                raise ContractError("reason: required for every amendment")
+            if amend_type == "WITHDRAWN":
+                return self.append("CLAIM_WITHDRAWN", claim_id, {"version_id": f"W{len(st['versions'])}", "supersedes": cur["_digest"], "reason": reason, "source": src},
+                                   op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
+            if amend_type not in ("REVISED", "CORRECTED_SOURCE"):
+                raise ContractError("amendment type must be REVISED, WITHDRAWN or CORRECTED_SOURCE")
+            allowed = {"range", "basis", "unit", "currency", "statement", "fiscal_period", "scale_as_stated", "metric"}
+            changes = changes or {}
+            bad = set(changes) - allowed
+            if bad:
+                raise ContractError(f"amendment may change only {sorted(allowed)}; got {sorted(bad)}")
+            new = {k: v for k, v in cur.items() if not k.startswith("_")}
+            new.update(changes); new["source"] = src; new["stated_at"] = src["filed_at"]
+            claim = schema.validate_claim(new)
+            d = schema.claim_digest(claim)
+            if d == cur["_digest"]:
+                raise ContractError("amendment changes nothing (identical content); record a reason-only note instead")
+            n = sum(1 for v in st["versions"] if v["type"] == amend_type) + 1
+            vid = f"R{n}" if amend_type == "REVISED" else f"C{n}"
+            kind = "CLAIM_REVISED" if amend_type == "REVISED" else "SOURCE_CORRECTED"
+            nt = {"explanation_unresolved": (notes or {}).get("explanation_unresolved", ""), "next_evidence": (notes or {}).get("next_evidence", ""),
+                  "source_discrepancy": (notes or {}).get("source_discrepancy", "")}      # verbatim, e.g. the amendment restates the prior range differently from the original source; never silently corrected
+            payload = {"version_id": vid, "version": len(st["versions"]) + 1, "type": amend_type, "claim": claim, "claim_digest": d, "supersedes": cur["_digest"], "reason": reason, "notes": nt}
+            if amend_type == "CORRECTED_SOURCE":
+                payload["supersedes_source"] = {"accession": cur["source"]["accession"], "source_hash": cur["source"]["source_hash"], "retained": True}
+            return self.append(kind, claim_id, payload, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
 
     def record_outcome(self, claim_id: str, raw_outcome: dict, *, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
-        st = self._state_for(claim_id, self._prior(op_id))
-        if st is None:
-            raise ContractError(f"claim {claim_id!r} is not frozen")
-        out = schema.validate_outcome(dict(raw_outcome, claim_id=claim_id))
-        payload = {"outcome": out, "outcome_digest": digest(out)}
-        if st["outcome"] is not None:
-            payload["supersedes"] = st["outcome"]["_digest"]
-        return self.append("OUTCOME_RECORDED", claim_id, payload, op_id=op_id, observed_at=observed_at, source_available_as_of=out["source"]["available_as_of"])
+        with self._locked():
+            st = self._state_for(claim_id, self._prior(op_id))
+            if st is None:
+                raise ContractError(f"claim {claim_id!r} is not frozen")
+            out = schema.validate_outcome(dict(raw_outcome, claim_id=claim_id))
+            payload = {"outcome": out, "outcome_digest": digest(out)}
+            if st["outcome"] is not None:
+                payload["supersedes"] = st["outcome"]["_digest"]
+            return self.append("OUTCOME_RECORDED", claim_id, payload, op_id=op_id, observed_at=observed_at, source_available_as_of=out["source"]["available_as_of"])
 
     def record_adjudication(self, claim_id: str, *, reviewer: str, rule: str, evidence: list[str], reason: str, conflicts: str, label: str, disputed: bool, op_id: str) -> tuple[dict, bool]:
-        st = self._state_for(claim_id, self._prior(op_id))
-        if st is None:
-            raise ContractError(f"claim {claim_id!r} is not frozen")
-        if not reviewer or not reason:
-            raise ContractError("reviewer identity and reason are required")
-        if label not in calc.RESULTS:
-            raise ContractError(f"label must be one of {list(calc.RESULTS)}")
-        known = {e["event_hash"] for e in st["events"]}
-        bad = [h for h in evidence if h not in known]
-        if bad:
-            raise ContractError(f"evidence must reference event hashes of this claim; unknown: {[b[:12] for b in bad]}")
-        computed = calc.adjudicate(st)
-        if label != computed["result"] and not disputed:
-            raise ContractError(f"the reviewer label {label} differs from the computed result {computed['result']}; record it as DISPUTED with the reason, it is never applied silently")
-        payload = {"reviewer": reviewer, "rule": rule, "evidence": evidence, "reason": reason, "conflicts": conflicts or "", "label": label, "disputed": bool(disputed),
-                   "computed_result": computed["result"], "computed": {"original": computed["original"]["result"], "revised": None if computed["revised"] is None else computed["revised"]["result"],
-                                                                        "comparison_permitted": computed["comparison_permitted"], "reasons": computed["reasons"]},
-                   "state_tip": st["events"][-1]["event_hash"]}
-        return self.append("ADJUDICATION_RECORDED", claim_id, payload, op_id=op_id)
+        with self._locked():
+            st = self._state_for(claim_id, self._prior(op_id))
+            if st is None:
+                raise ContractError(f"claim {claim_id!r} is not frozen")
+            if not reviewer or not reason:
+                raise ContractError("reviewer identity and reason are required")
+            if label not in calc.RESULTS:
+                raise ContractError(f"label must be one of {list(calc.RESULTS)}")
+            known = {e["event_hash"] for e in st["events"]}
+            bad = [h for h in evidence if h not in known]
+            if bad:
+                raise ContractError(f"evidence must reference event hashes of this claim; unknown: {[b[:12] for b in bad]}")
+            computed = calc.adjudicate(st)
+            if label != computed["result"] and not disputed:
+                raise ContractError(f"the reviewer label {label} differs from the computed result {computed['result']}; record it as DISPUTED with the reason, it is never applied silently")
+            payload = {"reviewer": reviewer, "rule": rule, "evidence": evidence, "reason": reason, "conflicts": conflicts or "", "label": label, "disputed": bool(disputed),
+                       "computed_result": computed["result"], "computed": {"original": computed["original"]["result"], "revised": None if computed["revised"] is None else computed["revised"]["result"],
+                                                                            "comparison_permitted": computed["comparison_permitted"], "reasons": computed["reasons"]},
+                       "state_tip": st["events"][-1]["event_hash"]}
+            return self.append("ADJUDICATION_RECORDED", claim_id, payload, op_id=op_id)
 
     def record_export(self, claim_id: str, *, export_id: str, canonical_digest: str, zip_sha256: str, zip_name: str, op_id: str) -> tuple[dict, bool]:
-        return self.append("EXPORT_BUILT", claim_id, {"export_id": export_id, "canonical_digest": canonical_digest, "zip_sha256": zip_sha256, "zip_name": zip_name}, op_id=op_id)
+        with self._locked():
+            return self.append("EXPORT_BUILT", claim_id, {"export_id": export_id, "canonical_digest": canonical_digest, "zip_sha256": zip_sha256, "zip_name": zip_name}, op_id=op_id)
 
     def record_verification(self, claim_id: str | None, *, packet_sha256: str, result: str, first_discrepancy: str | None, canonical_digest: str | None, op_id: str) -> tuple[dict, bool]:
-        return self.append("PACKET_VERIFIED", claim_id, {"packet_sha256": packet_sha256, "result": result, "first_discrepancy": first_discrepancy, "canonical_digest": canonical_digest}, op_id=op_id)
+        with self._locked():
+            return self.append("PACKET_VERIFIED", claim_id, {"packet_sha256": packet_sha256, "result": result, "first_discrepancy": first_discrepancy, "canonical_digest": canonical_digest}, op_id=op_id)
+

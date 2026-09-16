@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html
 import io
 import json
 import pathlib
@@ -29,6 +30,8 @@ if str(_REPO) not in sys.path:
 from v8.workbench import server as S  # noqa: E402
 
 STEP_TITLES = {1: "source", 2: "typed claim", 3: "comparison", 4: "calculation", 5: "history", 6: "adjudication", 7: "reproducible export"}
+RUNNER = "journey-runner (automated test action; not a human review)"
+ATTRIBUTION = "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries"
 
 
 def _git(*a):
@@ -39,10 +42,14 @@ def _git(*a):
 
 
 class Journey:
-    def __init__(self, out: pathlib.Path, headed: bool):
-        self.out = out; self.out.mkdir(parents=True, exist_ok=True); self.headed = headed
-        self.log = {"record": "v8-browser-journey", "recorded_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"), "candidate": {"commit": _git("rev-parse", "HEAD"), "tree": _git("rev-parse", "HEAD^{tree}"), "branch": _git("branch", "--show-current"), "dirty_entries": len(_git("status", "--porcelain").splitlines())},
-                    "browser": None, "steps": {n: {"step": t, "assertions": [], "screenshots": []} for n, t in STEP_TITLES.items()}, "responses": []}
+    def __init__(self, out: pathlib.Path, headed: bool, *, candidate: str | None = None, artifacts: dict | None = None, mode: str = "fixtures", sources: pathlib.Path | None = None):
+        self.out = out; self.out.mkdir(parents=True, exist_ok=True); self.headed = headed; self.mode = mode; self.sources = sources
+        git_head = _git("rev-parse", "HEAD")
+        self.log = {"record": "v8-browser-journey", "mode": mode, "recorded_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                    "candidate": {"commit": candidate or git_head or None, "commit_source": "argument" if candidate else ("git HEAD of the checkout" if git_head else "unknown"), "tree": _git("rev-parse", "HEAD^{tree}") or None,
+                                  "branch": _git("branch", "--show-current") or None, "dirty_entries": len(_git("status", "--porcelain").splitlines()) if git_head else None, "artifacts": artifacts or {},
+                                  "runtime": {"python": sys.version.split()[0], "workbench_module": str(pathlib.Path(S.__file__).resolve().parent)}},
+                    "review_attribution": ATTRIBUTION, "browser": None, "steps": {n: {"step": t, "assertions": [], "screenshots": []} for n, t in STEP_TITLES.items()}, "responses": []}
         self.shot_n = 0
 
     # -- helpers
@@ -99,6 +106,9 @@ class Journey:
 
     # -- the run
     def run(self) -> dict:
+        return self.run_mchp() if self.mode == "mchp" else self.run_fixtures()
+
+    def run_fixtures(self) -> dict:
         from playwright.sync_api import sync_playwright
         wsA, wsB = self.out / "workspace_A", self.out / "workspace_B"
         A = S.WorkbenchServer(wsA, 0, candidate_commit=self.log["candidate"]["commit"]); B = S.WorkbenchServer(wsB, 0, candidate_commit=self.log["candidate"]["commit"])
@@ -175,14 +185,14 @@ class Journey:
             page.goto(f"{a}/claim/ZZFX-FY2026-REV-GUIDE"); boxes = page.locator("input[name='evidence']"); n = boxes.count()
             for i in range(max(0, n - 2), n):
                 boxes.nth(i).check()
-            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": "owner (functional review, not independent)", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "the disclosed actual of 112 million lies inside both the original and the revised range", "conflicts": "none recorded", "label": "IN_RANGE"}, "Record adjudication")
+            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER, "rule": "RANGE_CONTAINS_ACTUAL", "reason": "the disclosed actual of 112 million lies inside both the original and the revised range", "conflicts": "none recorded", "label": "IN_RANGE"}, "Record adjudication")
             t = page.locator("#adjudication ~ table").first.inner_text()
-            self.check(6, "adjudication recorded with reviewer identity, rule, evidence, reason, conflicts and result", "owner (functional review" in t and "RANGE_CONTAINS_ACTUAL" in t and "IN_RANGE" in t and "none recorded" in t and "…" in t, t[:300]); self.shot(page, 6, "adjudicated")
+            self.check(6, "adjudication recorded with reviewer identity, rule, evidence, reason, conflicts and result", RUNNER in t and "RANGE_CONTAINS_ACTUAL" in t and "IN_RANGE" in t and "none recorded" in t and "…" in t, t[:300]); self.shot(page, 6, "adjudicated")
             boxes = page.locator("input[name='evidence']"); boxes.nth(boxes.count() - 1).check()
-            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": "second reviewer", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "x", "conflicts": "", "label": "OUT_OF_RANGE", "disputed": False}, "Record adjudication"); t = page.locator("body").inner_text()
+            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER + " #2", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "x", "conflicts": "", "label": "OUT_OF_RANGE", "disputed": False}, "Record adjudication"); t = page.locator("body").inner_text()
             self.check(6, "a label that differs from the computed result without the disputed flag is refused", "differs from the computed result" in t and "nothing was written" in t, t[:200], negative=True)
             page.goto(f"{a}/claim/ZZFX-FY2026-REV-GUIDE"); boxes = page.locator("input[name='evidence']"); boxes.nth(boxes.count() - 1).check()
-            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": "second reviewer", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "I read the revised range as superseding the original for scoring", "conflicts": "disagrees with the first reviewer", "label": "OUT_OF_RANGE", "disputed": True}, "Record adjudication")
+            self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER + " #2", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "simulated dissent: reads the revised range as superseding the original for scoring", "conflicts": "disagrees with the first (simulated) reviewer", "label": "OUT_OF_RANGE", "disputed": True}, "Record adjudication")
             t = page.locator("#adjudication ~ table").first.inner_text(); self.check(6, "a disputed label stays visible next to the computed result", "DISPUTED" in t and "OUT_OF_RANGE" in t and "IN_RANGE" in t, t[:300], negative=True); self.shot(page, 6, "disputed_visible")
             page.goto(a); self.submit(page, "form[action='/fixtures/load']", {"fixture": "002_missing_outcome"}, "Load fixture"); t = page.locator("body").inner_text(); csec = self.section(page, "calculation")
             self.check(6, "a missing outcome is unresolved (PENDING_OUTCOME), never scored", "Overall: PENDING_OUTCOME" in csec and self.no_pass(csec) and "no adjudication recorded; the claim stays unresolved" in t, csec[:200], negative=True)
@@ -252,6 +262,106 @@ class Journey:
         A.shutdown(); B.shutdown()
         return self.finish()
 
+    # ---------------------------------------------------------------- real-source retrospective replay (V8-003 §1)
+    def run_mchp(self) -> dict:
+        """The seven steps on ingested real sources (records written by v8.workbench.ingest). Every registration is done
+        through the UI by typing the ingested passage; the source hash the UI computes must equal the ingestion record's."""
+        from playwright.sync_api import sync_playwright
+        recs = {k: json.loads((self.sources / f"{k}.source.json").read_text()) for k in ("original", "revision", "actual")}
+        provs = {k: json.loads((self.sources / f"{k}.provenance.json").read_text()) for k in ("original", "revision", "actual")}
+        self.log["sources"] = {k: {"accession": recs[k]["accession"], "url": recs[k]["url"], "available_as_of": recs[k]["available_as_of"], "source_hash": recs[k]["source_hash"], "rights": recs[k]["rights"],
+                                   "original_bytes_sha256": provs[k]["original_bytes"]["sha256"], "retrieved_at": provs[k]["retrieved_at"]} for k in recs}
+        self.log["replay_label"] = "RETROSPECTIVE: sources observed on the ingestion date, after the outcome was public; as-of views are reconstructions from availability timestamps"
+        wsA, wsB = self.out / "workspace_A", self.out / "workspace_B"
+        A = S.WorkbenchServer(wsA, 0, candidate_commit=self.log["candidate"]["commit"]); B = S.WorkbenchServer(wsB, 0, candidate_commit=self.log["candidate"]["commit"])
+        S.Handler.log_message = lambda *a, **k: None
+        for s_ in (A, B):
+            threading.Thread(target=s_.serve_forever, daemon=True).start()
+        a, b = A.origin, B.origin
+        self.log["servers"] = {"A_research_workspace": a, "B_fresh_workspace": b, "bind": "127.0.0.1 only"}
+        CID = "MCHP-Q1FY2026-NETSALES-GUIDE"
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch(headless=not self.headed); ctx = browser.new_context(accept_downloads=True); page = ctx.new_page()
+            self.log["browser"] = {"engine": "chromium", "version": browser.version, "playwright": "python"}
+            page.on("response", lambda r: self.log["responses"].append({"method": r.request.method, "url": r.url.replace(a, "A").replace(b, "B"), "status": r.status}) if r.request.method == "POST" else None)
+            # ---- step 1: register the three ingested sources by typing their passages
+            for key in ("original", "revision", "actual"):
+                r = recs[key]; page.goto(f"{a}/source")
+                self.submit(page, "form[action='/source/register']", {"kind": r["kind"], "form": r["form"], "accession": r["accession"], "url": r["url"] or "", "filed_at": r["filed_at"], "available_as_of": r["available_as_of"], "observed_at": provs[key]["retrieved_at"], "excerpt": r["excerpt"], "rights": r["rights"], "fictional": False}, "Register source")
+                t = page.locator("body").inner_text(); ok = r["accession"] in t and r["source_hash"] in t and r["available_as_of"] in t
+                self.check(1, f"{key}: ingested passage registered through the UI; UI-computed digest equals the ingestion record's ({r['source_hash'][:12]}…)", ok, t[:200])
+            self.shot(page, 1, "mchp_sources")
+            page.goto(f"{a}/source?as_of=2025-05-01T00:00:00Z"); t = page.locator("body").inner_text()
+            self.check(1, "before the May 8, 2025 filing none of the sources is visible", "no sources registered" in t and "3 source(s) with a later availability are hidden" in t, t[:200], negative=True)
+            page.goto(f"{a}/source"); html_ = page.content(); raw_tags = sum((self.sources / f"{k}.original.htm").read_bytes().count(b"<") for k in recs if (self.sources / f"{k}.original.htm").exists())
+            self.check(1, "real passages render as inert text: the original documents carry markup, the registered passages are shown escaped inside <pre> and no script element exists", "<script" not in html_ and raw_tags > 0 and all(html.escape(recs[k]["excerpt"], quote=False) in html_ for k in recs), f"raw tags {raw_tags}", negative=True)
+            # ---- step 2: freeze the typed claim from the original filing
+            sid = self.source_id(page, a, recs["original"]["accession"])
+            claim = {"claim_id": CID, "issuer_name": "MICROCHIP TECHNOLOGY INC", "issuer_ticker": "MCHP", "issuer_cik": "0000827054", "metric": "net sales", "range_low": "1020000000", "range_high": "1070000000", "scale_as_stated": "billions", "currency": "USD", "unit": "USD", "basis": "GAAP", "resolution_rule": "RANGE_CONTAINS_ACTUAL", "fp_label": "Q1 FY2026", "fp_type": "Q", "fp_start": "2025-04-01", "fp_end": "2025-06-30", "statement": "Microchip expected consolidated net sales for the June 2025 quarter (fiscal Q1 2026, April 1 to June 30, 2025) to be between $1.020 billion and $1.070 billion (8-K EX-99.1 of May 8, 2025).", "source_id": sid, "fictional": False}
+            page.goto(f"{a}/claim/new"); self.submit(page, "form[action='/claim/freeze']", dict(claim, fp_start="", fp_end=""), "Save and freeze claim"); t = page.locator("body").inner_text()
+            self.check(2, "a claim without explicit quarter dates is blocked (period must be explicit)", "Blocked" in t and "fiscal_period" in t, t[:200], negative=True)
+            page.goto(f"{a}/claim/new"); self.submit(page, "form[action='/claim/freeze']", claim, "Save and freeze claim"); t = page.locator("body").inner_text()
+            self.check(2, "real claim frozen as V1: net sales, USD, GAAP, Q1 FY2026 2025-04-01..2025-06-30, 1020000000–1070000000, rule RANGE_CONTAINS_ACTUAL", f"/claim/{CID}" in page.url and "V1" in t and "2025-04-01..2025-06-30" in t and "1020000000 – 1070000000" in t, t[:200]); self.shot(page, 2, "mchp_claim_frozen")
+            # ---- step 3: the May 29 revision with the preserved discrepancy
+            sid2 = self.source_id(page, a, recs["revision"]["accession"]); page.goto(f"{a}/claim/{CID}")
+            self.submit(page, f"form[action='/claim/{CID}/amend']", {"amend_type": "REVISED", "range_low": "1045000000", "range_high": "1070000000", "basis": "GAAP", "currency": "USD", "unit": "USD", "metric": "net sales", "reason": "guidance updated by the company on May 29, 2025 (press release; no 8-K carried it)", "source_id": sid2, "explanation_unresolved": "no causal explanation is established by the sources", "next_evidence": "the Q1 FY2026 results (8-K EX-99.1 of 2025-08-07)", "source_discrepancy": "The May 29 press release states the May 8 guidance as $1.025 billion to $1.070 billion; the May 8 filing itself states $1.020 billion to $1.070 billion. Both are preserved as stated; no correction is applied to either source."}, "Record amendment")
+            sec = self.section(page, "comparison")
+            self.check(3, "original 1020000000–1070000000 and revised 1045000000–1070000000 side by side: COMPARABLE, low +25000000, high 0, direction RAISED", "COMPARABLE" in sec and "25000000" in sec and "RAISED" in sec, sec[:300])
+            self.check(3, "the source discrepancy (1.025 vs 1.020) is shown verbatim and marked preserved, not corrected", "Source discrepancy (preserved verbatim, not corrected)" in sec and "$1.025 billion" in sec and "$1.020 billion" in sec, sec[:300])
+            vsec = self.section(page, "claim"); self.check(3, "the original V1 range still reads 1020000000 (the amendment never rewrote it)", "1020000000 – 1070000000" in vsec and "1045000000 – 1070000000" in vsec, vsec[:200], negative=True); self.shot(page, 3, "mchp_comparison_discrepancy")
+            # ---- step 4: the actual
+            sid3 = self.source_id(page, a, recs["actual"]["accession"]); page.goto(f"{a}/claim/{CID}")
+            self.submit(page, f"form[action='/claim/{CID}/outcome']", {"actual": "1075500000", "currency": "USD", "unit": "USD", "basis": "GAAP", "metric": "net sales", "source_id": sid3, "comparable": True}, "Record outcome")
+            sec = self.section(page, "calculation")
+            self.check(4, "1075500000 against the original range: OUT_OF_RANGE, midpoint 1045000000, delta +30500000, distance outside +5500000", "Overall: OUT_OF_RANGE" in sec and "1045000000" in sec and "30500000" in sec and "5500000" in sec, sec[:300])
+            self.check(4, "1075500000 against the revised range separately: OUT_OF_RANGE, midpoint 1057500000, delta +18000000, same distance outside", "1057500000" in sec and "18000000" in sec and sec.count("— OUT_OF_RANGE") == 2, sec[:300])
+            self.check(4, "no inference statement shown; formula and source links present", "not evidence of improved accuracy" in sec and "contains = low <= actual <= high" in sec and recs["actual"]["accession"] in sec)
+            self.check(4, "an above-range actual is never presented as IN_RANGE", "— IN_RANGE" not in sec and "Overall: IN_RANGE" not in sec, negative=True); self.shot(page, 4, "mchp_calculation")
+            # ---- step 5: history, labeled retrospective
+            page.goto(f"{a}/claim/{CID}"); t = page.locator("body").inner_text(); self.check(5, "the claim page is labeled RETROSPECTIVE REPLAY (sources observed after the outcome was public)", "RETROSPECTIVE REPLAY" in t, t[:200])
+            page.goto(f"{a}/claim/{CID}?as_of=2025-05-20T00:00:00Z"); vsec = self.section(page, "claim"); t = page.locator("body").inner_text()
+            self.check(5, "as of 2025-05-20: only V1 (May 8 guidance) visible; PENDING_OUTCOME", "V1" in vsec and "R1" not in vsec and "PENDING_OUTCOME" in t, vsec[:200]); self.shot(page, 5, "mchp_asof_may20")
+            page.goto(f"{a}/claim/{CID}?as_of=2025-06-15T00:00:00Z"); vsec = self.section(page, "claim"); t = page.locator("body").inner_text()
+            self.check(5, "as of 2025-06-15: V1 and R1 visible; still PENDING_OUTCOME; the actual (August 7) hidden", "R1" in vsec and "PENDING_OUTCOME" in t and "1075500000" not in t, vsec[:200])
+            page.goto(f"{a}/claim/{CID}?as_of=2025-05-01T00:00:00Z"); t = page.locator("body").inner_text(); self.check(5, "as of 2025-05-01 nothing about the claim was available", "nothing about this claim was available yet" in t, t[:200], negative=True)
+            page.goto(f"{a}/claim/{CID}"); t = page.locator("body").inner_text(); self.check(5, "three times shown apart; observed dates are the ingestion date, availability dates are 2025", "source available as of" in t and "observed (workspace)" in t and provs["original"]["retrieved_at"][:10] in t and "2025-05-08T20:17:05Z" in t)
+            # ---- step 6: adjudication (simulated test action)
+            boxes = page.locator("input[name='evidence']"); n = boxes.count(); [boxes.nth(i).check() for i in range(max(0, n - 3), n)]
+            self.submit(page, f"form[action='/claim/{CID}/adjudicate']", {"reviewer": RUNNER, "rule": "RANGE_CONTAINS_ACTUAL", "reason": "the disclosed actual of $1.0755 billion exceeds the upper bound of both the original and the revised range by $5.5 million; both evaluations are OUT_OF_RANGE", "conflicts": "none recorded; the discrepancy about the prior lower bound does not affect the result", "label": "OUT_OF_RANGE"}, "Record adjudication")
+            t = self.section(page, "adjudication"); self.check(6, "adjudication recorded with the automated runner identity, rule, evidence, reason and result OUT_OF_RANGE", RUNNER in t and "OUT_OF_RANGE" in t and "5.5 million" in t, t[:300]); self.shot(page, 6, "mchp_adjudicated")
+            boxes = page.locator("input[name='evidence']"); boxes.nth(boxes.count() - 1).check()
+            self.submit(page, f"form[action='/claim/{CID}/adjudicate']", {"reviewer": RUNNER + " #2", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "x", "conflicts": "", "label": "IN_RANGE", "disputed": False}, "Record adjudication"); t = page.locator("body").inner_text()
+            self.check(6, "an IN_RANGE label without the disputed flag is refused for an above-range actual", "differs from the computed result" in t and "nothing was written" in t, t[:200], negative=True)
+            # ---- step 7: export, download, verify in a fresh workspace; rights
+            page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/export']", {}, "Build export"); t = page.locator("body").inner_text(); m = re.search(r"(exp-[0-9a-f]{16})\.zip", t)
+            self.check(7, "export built; publication NOT ELIGIBLE with reasons (PERMITTED class; press-release rights)", bool(m) and "NOT ELIGIBLE" in t and "PERMITTED class" in t, t[:200]); self.shot(page, 7, "mchp_export_built")
+            with page.expect_download() as dl:
+                page.locator(f"a[href='/exports/{m.group(1)}.zip']").click()
+            zpath = self.out / f"{m.group(1)}_mchp.zip"; dl.value.save_as(str(zpath)); zb = zpath.read_bytes()
+            with zipfile.ZipFile(zpath) as z:
+                can = json.loads(z.read("canonical.json")); ctext = z.read("canonical.json").decode()
+            srcs = {x["accession"]: x for x in can["sources"]}
+            self.check(7, "SEC filing excerpts are bundled (SEC_PUBLIC_FILING); the press-release excerpt is withheld (digest only)", srcs[recs["original"]["accession"]]["excerpt_included"] and srcs[recs["actual"]["accession"]]["excerpt_included"] and not srcs[recs["revision"]["accession"]]["excerpt_included"] and recs["revision"]["excerpt"] not in ctext and recs["revision"]["source_hash"] in ctext, negative=True)
+            self.check(7, "the discrepancy note travels in the export verbatim", "$1.025 billion" in ctext and "no correction is applied" in ctext)
+            page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zpath))
+            with page.expect_navigation():
+                page.get_by_role("button", name="Verify").click()
+            t = page.locator("body").inner_text(); self.check(7, "verified in the fresh workspace through the UI: SUCCESS; recomputed OUT_OF_RANGE / OUT_OF_RANGE; canonical digest checked; press-release claim digest not recomputable (excerpt withheld) is reported, not hidden", "Result: SUCCESS" in t and "Recomputed: OUT_OF_RANGE" in t and "excerpt withheld by rights" in t, t[:300]); self.shot(page, 7, "mchp_verified_fresh")
+            with zipfile.ZipFile(io.BytesIO(zb)) as z:
+                members = {i.filename: z.read(i) for i in z.infolist()}
+            members["canonical.json"] = members["canonical.json"].replace(b'"actual":1075500000', b'"actual":1065500000'); buf = io.BytesIO()
+            with zipfile.ZipFile(buf, "w") as z:
+                for k, v in members.items():
+                    z.writestr(k, v)
+            tam = self.out / "mchp_tampered.zip"; tam.write_bytes(buf.getvalue()); page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(tam))
+            with page.expect_navigation():
+                page.get_by_role("button", name="Verify").click()
+            t = page.locator("body").inner_text(); self.check(7, "an actual changed inside the packet (1.0755 → 1.0655 billion) fails verification", "Result: MISMATCH" in t and "byte mismatch at canonical.json" in t, t[:200], negative=True)
+            page.goto(f"{b}/"); self.check(7, "the fresh workspace holds no claims after the imports", "none yet" in page.locator("body").inner_text())
+            browser.close()
+        A.shutdown(); B.shutdown()
+        return self.finish()
+
     def finish(self) -> dict:
         steps = []
         for n, s in self.log["steps"].items():
@@ -268,11 +378,15 @@ class Journey:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0]); ap.add_argument("--out", required=True); ap.add_argument("--headed", action="store_true")
+    ap.add_argument("--mode", choices=("fixtures", "mchp"), default="fixtures"); ap.add_argument("--sources", help="mchp mode: directory of ingestion records (original/revision/actual .source.json + .provenance.json)")
+    ap.add_argument("--candidate", help="candidate commit the evidence binds to (required when the checkout is not a git repository, e.g. an installed package)")
+    ap.add_argument("--artifact", action="append", default=[], help="NAME=SHA256 of an installed artifact the evidence binds to (repeatable)")
     a = ap.parse_args(argv)
     import importlib.util
     if importlib.util.find_spec("playwright") is None:
         print("Playwright is not installed in this interpreter; see the module docstring. No journey was run; the score stays as recorded.", file=sys.stderr); return 3
-    log = Journey(pathlib.Path(a.out), a.headed).run()
+    arts = dict(x.split("=", 1) for x in a.artifact)
+    log = Journey(pathlib.Path(a.out), a.headed, candidate=a.candidate, artifacts=arts, mode=a.mode, sources=pathlib.Path(a.sources) if a.sources else None).run()
     return 0 if log["scorecard"]["score"] == "7/7" else 1
 
 

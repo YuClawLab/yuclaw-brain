@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "yuclaw"
 version = "7.0.1"
 description = "Evidence-first financial research — every signal traced to its SEC filings and verifiable against a public, git-anchored ledger. CLI + REST + MCP + LangChain/LlamaIndex. Research / education only — not investment advice."
-readme = "README.md"
+readme = "README_PYPI.md"      # generated from README.md by tools/yuclaw_readme_pypi.py (picture block removed; canonical blocks byte-identical)
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
 keywords = ["finance", "research", "quant", "sec-filings", "evidence", "ai", "agents", "mcp"]
@@ -53,7 +53,10 @@ Ledger = "https://github.com/YuClawLab/yuclaw-trust"
 # from sdk/ so `pip install yuclaw` is self-contained). The legacy v2.x `yuclaw/`
 # tree is intentionally NOT packaged.
 [tool.hatch.build.targets.wheel]
-packages = ["v3", "v4"]
+packages = ["v3", "v4", "v8"]
+# v8/: only the workbench package ships (v8/__init__.py + v8/workbench/ with its packaged resources);
+# the order records, scope package and journey evidence are repository documents, never runtime code.
+exclude = ["v8/V8-001", "v8/V8-002", "v8/V8-003", "v8/scope"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "sdk/yuclaw_py" = "yuclaw_py"
@@ -69,7 +72,7 @@ packages = ["v3", "v4"]
 # tools/: the three files the wheel force-includes must ship in the sdist too,
 # or a wheel built FROM the sdist (pip installing the sdist does this) fails on
 # the missing force-include (found by the 5.3.3 build).
-include = ["v3", "v4", "sdk/yuclaw_py", "README.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas",
+include = ["v3", "v4", "v8/__init__.py", "v8/workbench", "sdk/yuclaw_py", "README.md", "README_PYPI.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas",
            "tools/__init__.py", "tools/check_language.py", "tools/yuclaw_client_intake.py"]
 # Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.

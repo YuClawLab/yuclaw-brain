@@ -32,7 +32,7 @@ from v8.workbench import NOT_ADVICE, calc, export, money, schema
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
-FIXTURES_DIR = _REPO / "tests" / "fixtures" / "v8" / "commitments"
+FIXTURES_DIR = Path(__file__).resolve().parent / "resources" / "fixtures"      # packaged copies of tests/fixtures/v8/commitments (identity tested)
 FORM_LIMIT = 256 * 1024
 UPLOAD_LIMIT = export.MAX_ZIP_BYTES + 64 * 1024
 CSP = "default-src 'none'; img-src 'self'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"
@@ -151,7 +151,12 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(data)
 
     def _text(self, status: int, msg: str):
-        self._send(status, msg + "\n", "text/plain; charset=utf-8")
+        extra = None
+        if status >= 400:
+            # A refused request may leave an unread body on the socket; never let those bytes be parsed as the next
+            # request. The header tells the client, the flag makes the handler loop stop after this response.
+            self.close_connection = True; extra = {"Connection": "close"}
+        self._send(status, msg + "\n", "text/plain; charset=utf-8", extra)
 
     def _redirect(self, location: str):
         self._headers(HTTPStatus.SEE_OTHER, "text/plain; charset=utf-8", 0, {"Location": location})
@@ -208,6 +213,11 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if path == "/static/style.css":
                 return self._send(200, CSS, "text/css; charset=utf-8")
+            torn = self.server.ws.load()["torn_tail"]           # a chain failure raises here and is handled below
+            if torn:
+                # Reads are not served over a torn tail: the durable events are intact, but the workspace needs the
+                # operator's recovery decision first, so every page is the integrity page with the recovery form.
+                raise StoreIntegrityError("E_TORN_TAIL", f"{torn['bytes']} byte(s) after the last newline (sha256 {torn['sha256'][:16]}…); an interrupted append left a torn tail; run recovery before reading or writing (nothing durable is lost)")
             if path == "/":
                 return self._send(200, self.page_home(q), extra=extra)
             if path == "/source":
@@ -367,7 +377,7 @@ class Handler(BaseHTTPRequestHandler):
 {f'<div class="err">{esc(as_of_err)}</div>' if as_of_err else ''}{f'<div class="notice">As-of view at <b>{esc(cut)}</b>: {hidden} source(s) with a later availability are hidden.</div>' if cut else ''}
 <table><tr><th>source id</th><th>accession · form</th><th>filed</th><th>available as of (source)</th><th>observed (workspace)</th><th>recorded (local action)</th><th>rights</th><th>passage</th></tr>{rows or '<tr><td colspan="8" class="muted">no sources registered</td></tr>'}</table>
 <h2>Register a source</h2><form class="card" method="post" action="/source/register">{self._csrf_field()}
-<div class="row"><div><label>Kind</label>{kinds}</div><div><label>Form</label><input type="text" name="form" placeholder="8-K (fictional)"></div><div><label>Accession (NNNNNNNNNN-NN-NNNNNN)</label><input type="text" name="accession"></div><div><label>URL (optional)</label><input type="text" name="url"></div></div>
+<div class="row"><div><label>Kind</label>{kinds}</div><div><label>Form</label><input type="text" name="form" placeholder="8-K EX-99.1"></div><div><label>Accession (EDGAR) or publisher id (PREFIX:publisher:id) for a non-filing</label><input type="text" name="accession"></div><div><label>URL (optional)</label><input type="text" name="url"></div></div>
 <div class="row"><div><label>Filed at (date)</label><input type="date" name="filed_at"></div><div><label>Available as of (UTC, YYYY-MM-DDTHH:MM:SSZ)</label><input type="text" name="available_as_of"></div><div><label>Observed at (UTC, optional; default now)</label><input type="text" name="observed_at"></div><div><label>Rights</label>{rights}</div></div>
 <label>Exact passage (excerpt)</label><textarea name="excerpt" rows="3"></textarea>
 <label><input type="checkbox" name="fictional" value="1" checked> Fictional source (demonstration data)</label>
@@ -423,7 +433,7 @@ class Handler(BaseHTTPRequestHandler):
             cmp_html = '<p class="muted">No revision yet: nothing to compare.</p>'
         elif cmp["comparable"]:
             notes = revised[-1].get("notes") or {}
-            cmp_html = f'<table><tr><th></th><th>original ({esc(orig_eff["version_id"])})</th><th>revised ({esc(revised[-1]["version_id"])})</th><th>delta (revised − original)</th></tr><tr><td>low</td><td>{esc(cmp["a"]["range"]["low"])}</td><td>{esc(cmp["b"]["range"]["low"])}</td><td>{esc(cmp["low_delta"])}</td></tr><tr><td>high</td><td>{esc(cmp["a"]["range"]["high"])}</td><td>{esc(cmp["b"]["range"]["high"])}</td><td>{esc(cmp["high_delta"])}</td></tr><tr><td>midpoint delta</td><td colspan="3">{esc(cmp["midpoint_delta"])} {esc(cmp["unit"])}</td></tr><tr><td>width</td><td>{esc(cmp["width_a"])}</td><td>{esc(cmp["width_b"])}</td><td>{esc(cmp["width_delta"])}</td></tr><tr><td>overlap</td><td colspan="3">{esc(cmp["overlap"])}</td></tr><tr><td>direction</td><td colspan="3"><b>{esc(cmp["direction"])}</b> · metrics comparable: <span class="ok">COMPARABLE</span></td></tr></table><p><b>Unresolved explanation:</b> {esc(notes.get("explanation_unresolved") or "—")}<br><b>Next evidence:</b> {esc(notes.get("next_evidence") or "—")}<br><span class="muted">{esc(cmp["note"])}</span></p>'
+            cmp_html = f'<table><tr><th></th><th>original ({esc(orig_eff["version_id"])})</th><th>revised ({esc(revised[-1]["version_id"])})</th><th>delta (revised − original)</th></tr><tr><td>low</td><td>{esc(cmp["a"]["range"]["low"])}</td><td>{esc(cmp["b"]["range"]["low"])}</td><td>{esc(cmp["low_delta"])}</td></tr><tr><td>high</td><td>{esc(cmp["a"]["range"]["high"])}</td><td>{esc(cmp["b"]["range"]["high"])}</td><td>{esc(cmp["high_delta"])}</td></tr><tr><td>midpoint delta</td><td colspan="3">{esc(cmp["midpoint_delta"])} {esc(cmp["unit"])}</td></tr><tr><td>width</td><td>{esc(cmp["width_a"])}</td><td>{esc(cmp["width_b"])}</td><td>{esc(cmp["width_delta"])}</td></tr><tr><td>overlap</td><td colspan="3">{esc(cmp["overlap"])}</td></tr><tr><td>direction</td><td colspan="3"><b>{esc(cmp["direction"])}</b> · metrics comparable: <span class="ok">COMPARABLE</span></td></tr></table><p><b>Unresolved explanation:</b> {esc(notes.get("explanation_unresolved") or "—")}<br><b>Next evidence:</b> {esc(notes.get("next_evidence") or "—")}<br>{f"<b class=warn>Source discrepancy (preserved verbatim, not corrected):</b> {esc(notes.get('source_discrepancy'))}<br>" if notes.get("source_discrepancy") else ""}<span class="muted">{esc(cmp["note"])}</span></p>'
         else:
             cmp_html = f'<p class="bad">INCOMPARABLE</p><ul>{"".join(f"<li>{esc(r["reason"])}</li>" for r in cmp["reasons"])}</ul><p class="muted">A metric or accounting-basis change yields INCOMPARABLE; no delta is computed.</p>'
         # --- 4 calculation
@@ -448,7 +458,7 @@ class Handler(BaseHTTPRequestHandler):
         # --- amendments / outcome forms
         bases = self._sel("basis", schema.BASES, st["current"]["claim"]["basis"]); types = self._sel("amend_type", ("REVISED", "WITHDRAWN", "CORRECTED_SOURCE"), "REVISED", blank=False)
         cur = st["current"]["claim"]
-        amend_form = "" if full["withdrawn"] else f"""<form class="card" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field()}<h3>Create an amendment</h3><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{esc(cur["range"]["low"])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{esc(cur["range"]["high"])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement"><label>Reason (required)</label><input type="text" name="reason">{self._source_select()}<label>Unresolved explanation (a note, not causal proof)</label><input type="text" name="explanation_unresolved"><label>Next evidence needed</label><input type="text" name="next_evidence"><button type="submit">Record amendment</button></form>"""
+        amend_form = "" if full["withdrawn"] else f"""<form class="card" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field()}<h3>Create an amendment</h3><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{esc(cur["range"]["low"])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{esc(cur["range"]["high"])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement"><label>Reason (required)</label><input type="text" name="reason">{self._source_select()}<label>Unresolved explanation (a note, not causal proof)</label><input type="text" name="explanation_unresolved"><label>Next evidence needed</label><input type="text" name="next_evidence"><label>Source discrepancy (verbatim; e.g. the amendment restates the prior range differently from the original — preserved, never corrected)</label><input type="text" name="source_discrepancy"><button type="submit">Record amendment</button></form>"""
         out_form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/outcome">{self._csrf_field()}<h3>Record the disclosed outcome</h3><div class="row"><div><label>Actual (in units, exact)</label><input type="text" name="actual"></div><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Basis</label>{self._sel("basis", schema.BASES, cur["basis"])}</div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}{self._source_select()}<label><input type="checkbox" name="comparable" value="1" checked> Recorder declares the outcome comparable (the calculator re-checks every field regardless)</label><button type="submit">Record outcome</button></form>"""
         # --- 7 export
         exp_rows = "".join(f'<tr><td><a href="/exports/{esc(x["export_id"])}.zip">{esc(x["export_id"])}.zip</a></td><td><code>{esc(x["canonical_digest"])}</code></td><td><code>{esc(x["zip_sha256"][:16])}…</code></td><td>{esc(x["time"]["recorded_at"])}</td></tr>' for x in full["exports"])
@@ -458,7 +468,13 @@ class Handler(BaseHTTPRequestHandler):
         exp_html = f"""{exp_notice}<form class="card" method="post" action="/claim/{esc(cq)}/export">{self._csrf_field()}<p>Builds a rights-permitted research export: schema, claim versions, source references and digests, events, method and results. The canonical research digest excludes the export id and time; verify it in a fresh workspace through the UI or with <code>python3 -m v8.workbench verify-export</code>.</p><button type="submit">Build export</button></form>
 <table><tr><th>download</th><th>canonical research digest</th><th>zip sha256</th><th>built (local action)</th></tr>{exp_rows or '<tr><td colspan="4" class="muted">no export yet</td></tr>'}</table>
 <h3>Public publication eligibility (separate from local export)</h3><p class="bad">NOT ELIGIBLE</p><ul>{"".join(f"<li>{esc(r)}</li>" for r in pe["reasons"])}</ul><p class="muted">{esc(pe["meaning"])}</p>"""
-        body = f"""<p class="muted">{esc(cur["issuer"]["name"])} ({esc(cur["issuer"]["ticker"])}, CIK {esc(cur["issuer"]["cik"])}) · {esc(cur["metric"])} · {"FICTIONAL demonstration data" if cur["fictional"] else "real-source data"}{" · <b class=warn>WITHDRAWN</b>" if full["withdrawn"] else ""}</p>
+        retro = ""
+        if full["outcome"] is not None:
+            latest_avail = max(schema.parse_ts(e["time"]["source_available_as_of"]) for e in full["events"] if e["time"].get("source_available_as_of"))
+            observed = [schema.parse_ts(e["time"]["observed_at"]) for e in full["events"] if e["time"].get("source_available_as_of")]
+            if observed and min(observed) > latest_avail:
+                retro = f'<div class="notice"><b>RETROSPECTIVE REPLAY.</b> Every source was first observed by this workspace on {esc(min(observed).strftime("%Y-%m-%d"))}, after the latest source became public ({esc(latest_avail.strftime("%Y-%m-%d"))}). The as-of views below are reconstructions from source availability timestamps, not contemporaneous records.</div>'
+        body = f"""{retro}<p class="muted">{esc(cur["issuer"]["name"])} ({esc(cur["issuer"]["ticker"])}, CIK {esc(cur["issuer"]["cik"])}) · {esc(cur["metric"])} · {"FICTIONAL demonstration data" if cur["fictional"] else "real-source data"}{" · <b class=warn>WITHDRAWN</b>" if full["withdrawn"] else ""}</p>
 <h2 id="source">1 Source</h2><table><tr><th>version</th><th>accession · form</th><th>filed</th><th>available as of</th><th>times</th><th>passage</th></tr>{src_rows}</table>
 <h2 id="claim">2 Typed claim — versions</h2><table><tr><th>version</th><th>range</th><th>currency / unit</th><th>basis</th><th>fiscal period</th><th>rule</th><th>stated</th><th>digest</th><th>reason</th></tr>{ver_rows}</table>{amend_form}
 <h2 id="comparison">3 Comparison — original vs revised</h2>{cmp_html}
@@ -509,7 +525,7 @@ class Handler(BaseHTTPRequestHandler):
                        "unit": form.get("unit", "").strip(), "metric": form.get("metric", ""), "fiscal_period": self._period_from(form)}
             if form.get("statement"):
                 changes["statement"] = form["statement"]
-        self.server.ws.amend_claim(cid, t, changes=changes, reason=form.get("reason", ""), source=src, notes={"explanation_unresolved": form.get("explanation_unresolved", ""), "next_evidence": form.get("next_evidence", "")}, op_id=op_id)
+        self.server.ws.amend_claim(cid, t, changes=changes, reason=form.get("reason", ""), source=src, notes={"explanation_unresolved": form.get("explanation_unresolved", ""), "next_evidence": form.get("next_evidence", ""), "source_discrepancy": form.get("source_discrepancy", "")}, op_id=op_id)
         return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}#comparison")
 
     def post_outcome(self, cid, form, op_id):

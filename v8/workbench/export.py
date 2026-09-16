@@ -41,7 +41,7 @@ MAX_ZIP_BYTES = 32 << 20
 MAX_MEMBER_BYTES = 16 << 20
 MAX_MEMBERS = 16
 MAX_RATIO = 200
-BUNDLE_RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING")
+BUNDLE_RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING")      # COMPANY_PRESS_RELEASE and UNKNOWN: digest only
 RESEARCH_EVENTS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED", "ADJUDICATION_RECORDED")
 _EXPORT_ID = re.compile(r"^exp-[0-9a-f]{16}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -66,7 +66,7 @@ def _source_ref(src: dict) -> dict:
     if src["rights"] in BUNDLE_RIGHTS:
         ref["excerpt"] = src["excerpt"]; ref["excerpt_included"] = True
     else:
-        ref["excerpt_included"] = False; ref["excerpt_withheld_reason"] = "rights UNKNOWN: excerpt bytes are not bundled; the digest still binds them"
+        ref["excerpt_included"] = False; ref["excerpt_withheld_reason"] = f"rights {src['rights']}: excerpt bytes are not bundled (redistribution rights not established); the digest still binds them"
     return ref
 
 
@@ -155,7 +155,7 @@ def build_export(ws: Workspace, claim_id: str, *, export_id: str | None = None, 
     if not _EXPORT_ID.match(eid):
         raise ContractError("export_id must look like exp-<16 hex>")
     built = format_ts(built_at or datetime.now(timezone.utc))
-    schema_bytes = (_REPO / "schemas" / "CommitmentClaim.v1.json").read_bytes()
+    schema_bytes = (Path(__file__).resolve().parent / "resources" / "CommitmentClaim.v1.json").read_bytes()   # packaged copy (identical to schemas/; tested)
     man = {"format": FORMAT, "export_id": eid, "built_at": built, "claim_id": claim_id, "canonical_digest": cdig,
            "candidate": {"commit": candidate_commit or os.environ.get("YUCLAW_CANDIDATE_COMMIT"), "workbench": "v8.workbench/1"},
            "digest_rule": "canonical_digest = sha256(canonical.json bytes) where canonical.json is canonical JSON (sorted keys, no whitespace, ASCII); export_id and built_at are excluded",
