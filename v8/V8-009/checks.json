@@ -1,0 +1,75 @@
+{
+ "record": "v8-gate15-removal-checks/1",
+ "order": "V8-009 (owner decision 2026-09-16)",
+ "recorded_utc": "2026-09-16T08:13:57Z",
+ "change_commit": "e84e6730dff1df8fca50606ec730ef8f7078e378",
+ "change_tree": "12dd57eca35975ad3a128b3992e47d5c387fc2c4",
+ "parent": "c3416a776441db3bb307f98dc4f5367c09deb027",
+ "decision_record": {
+  "path": "v8/policy/gate15_release_requirement.json",
+  "sha256": "45d23007e958ac968d6d2f5939a69b27b706766ded6b01a4915696b4bb6054fd",
+  "status": "REMOVED_BY_OWNER",
+  "applies_to": "8.x only; 7.x rules and historical results unchanged"
+ },
+ "changed": {
+  "tools/yuclaw_release_state_v6.py": "gate15_requirement()/gate15_result(): v8 + record -> REMOVED_BY_OWNER (RED if the retained consumer-posture check fails); 7.x/no record -> MANUAL_REVIEW/RED unchanged; record claiming PASSED refused; vocabulary + manifest gate15_requirement + remaining_blockers + public/internal wording version-gated",
+  "tools/yuclaw_release_notes_v8.py": "v8 activation lines; removed-requirement disclosure bound to the record sha256; correspondence accepts Gate #15 = NOT_REQUIRED only (routes A/B, exception statements not applicable to v8); notes calling the gate passed never correspond",
+  "internal/release_v8_0_0/publish_v800.py (private)": "gate15_decision(); policy stage 'policy <allocation file>' records D1 with Gate #15 NOT_REQUIRED bound to the record (route arguments other than NOT_REQUIRED refused); policy_valid accepts only manifest REMOVED_BY_OWNER + NOT_REQUIRED + matching record sha (RED blocks; MANUAL_REVIEW = stale manifest; GREEN never accepted); identity now a71782d8cd2d828c...",
+  "tests": "tests/test_release_state_gate15.py (new, 3); tests/test_release_notes_v8.py (updated, 10); internal test_publish_v800.py (rewritten policy tests, 15); rehearsal fixture updated (compiled, not re-run)",
+  "v8/V8-008 decision documents": "D1 revision 3 (policy stage records D1 alone); superseding banners on D2 and the designation proposal (historical text retained)"
+ },
+ "unchanged": [
+  "allocation acceptance D1 (document id + sha256)",
+  "artifact identity, one final set, prior-release tripwires, adoption path",
+  "publication authorization sentence and every precondition (0 RED, valid policy, corresponding notes, clean worktree)",
+  "7.x composer and rules (v3/release/notes_v7.py untouched)",
+  "mission, vision, approved logo bytes, English-only product content, backup cancellation, human benefit PENDING",
+  "no packaged code (tools/ and v8/policy are outside the wheel and sdist)"
+ ],
+ "checks": {
+  "tests/test_release_state_gate15.py": "3 passed",
+  "tests/test_release_notes_v8.py": "10 passed",
+  "tests/test_v5_closure.py (7.x composer)": "5 passed",
+  "tests/test_gate15_study.py (study tooling, unchanged)": "4 passed",
+  "internal test_publish_v800.py": "15 passed",
+  "internal test_download_proof_journal_v800.py": "7 passed",
+  "pyflakes + python3.10 py_compile": "clean for the changed tools and tests",
+  "generator_check_run": {
+   "staging": "check-only worktree at e84e6730 + the version-surface patch (patch-id 27267a974a72, explicit staging) = 8081536206ff5e00299e6836d49c08b03c199c30",
+   "not_a_candidate": true,
+   "gate_counts": {
+    "GREEN": 18,
+    "RED": 1,
+    "REMOVED_BY_OWNER": 1
+   },
+   "gate_15": {
+    "result": "REMOVED_BY_OWNER",
+    "evidence": "requirement removed by the owner on 2026-09-16 for v8 releases (decision record sha256 45d23007e958ac96…); consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING"
+   },
+   "gate15_requirement": {
+    "status": "REMOVED_BY_OWNER",
+    "decision_utc": "2026-09-16",
+    "record": "v8/policy/gate15_release_requirement.json",
+    "record_sha256": "45d23007e958ac968d6d2f5939a69b27b706766ded6b01a4915696b4bb6054fd",
+    "meaning": "not a pass; no study run; human benefit PENDING"
+   },
+   "remaining_blockers": [
+    "gate #14 language rails pass — RED"
+   ],
+   "policy_correspondence": [
+    "no release-policy record"
+   ],
+   "release_authorized": false,
+   "gate_14": "RED as staged (committed weekly note stale; freeze-day render pending; unrelated to this change)",
+   "public_notes_never_say_passed": true,
+   "manifest_sha256": "e7cc6363d4a5012d43ea648d2d4a04d5f22a7f1288ff9462cd30018e309cee2e"
+  }
+ },
+ "not_run": [
+  "browser journeys and the full application suite (release-tool change only)",
+  "the publisher rehearsal (fixture updated; repeats runtime journeys)",
+  "a new proposed candidate staging (paused until after 2026-09-18 18:00 Asia/Shanghai)"
+ ],
+ "historical_results_preserved": "V8-003/V8-006/V8-007/V8-008 gate tables keep MANUAL_REVIEW as recorded; the 7.0.1 route-B exception stays a 7.0.1 fact",
+ "not_advice": "Research and education only. Not investment advice."
+}
