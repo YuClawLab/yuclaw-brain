@@ -1,0 +1,198 @@
+{
+ "record": "seven-step-scorecard",
+ "order": "V8-003 §1 (real-source retrospective replay)",
+ "mode": "mchp",
+ "recorded_utc": "2026-09-16T02:24:16+00:00",
+ "candidate": {
+  "commit": "9efdd52d88a3585e3ec16e59b1d9844d298bff2c",
+  "tree": "92fe238d09c8c11bfef8aaec66c16141a82cb174",
+  "branch": "codex/v8-integration",
+  "dirty_entries_at_run": 1,
+  "dirty_entries_note": "the only untracked entry during the run was the v8/V8-003/ record directory being assembled; no tracked file differed from the commit",
+  "runtime": "checkout (python -m v8.workbench.journey from the worktree); the same journeys ran from the INSTALLED wheel and sdist — see packaging.json"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:45119",
+  "B_fresh_workspace": "http://127.0.0.1:42005",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_mchp_sources.png",
+     "sha256": "a82e686074f15a647ed73f219f330ab90ec045845eb07ef63c8aca53675e8a3f",
+     "url": "http://127.0.0.1:45119/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "02_step2_mchp_claim_frozen.png",
+     "sha256": "1f00ada34a43a9406558bb0f3c4ae51a04f29a50cf6032b725d2d6d1759071dd",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "03_step3_mchp_comparison_discrepancy.png",
+     "sha256": "aa2fe8f460280855e3d9887fe1098820b4a0a59ca184d8e3dab5ffabae7632b4",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step4_mchp_calculation.png",
+     "sha256": "c814a545088a11b293e7ab9bd8afe84e257f34514ada1a9801adccf9e095a448",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE#calculation"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "05_step5_mchp_asof_may20.png",
+     "sha256": "10d6483e243e2596954dd77653b4737945a7ad8618ebe396ed9074cb7954fa92",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE?as_of=2025-05-20T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step6_mchp_adjudicated.png",
+     "sha256": "f174334d20068650fbc673c62fc522f16b0fa2aa067b95f7cf08c2749e2eb2d9",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE#adjudication"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "07_step7_mchp_export_built.png",
+     "sha256": "e5582d9a03d8fd7539f9418775c6b219a3f4a156b5d8c50a0482f2aa80f5fb3d",
+     "url": "http://127.0.0.1:45119/claim/MCHP-Q1FY2026-NETSALES-GUIDE?built=exp-b118e0e38b742bba#export"
+    },
+    {
+     "file": "08_step7_mchp_verified_fresh.png",
+     "sha256": "c499a286d2e2efe7a1b3de8a4606852fb10298c677843a81eca1e83fab678f6a",
+     "url": "http://127.0.0.1:42005/verify"
+    }
+   ]
+  }
+ ],
+ "post_statuses": {
+  "303": 8,
+  "422": 2,
+  "200": 2
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-003/journey_mchp/journey_log.json (paths scrubbed; the unscrubbed log, screenshots, workspaces and downloaded exports are in the private V8-003 record)",
+  "journey_log_sha256_private": "2fe76f42898a939f191495be669081466a9f74e349fcbd343966423559e37b94"
+ },
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice.",
+ "sources": {
+  "original": {
+   "accession": "0000827054-25-000061",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000061/exhibit991q4fy25.htm",
+   "available_as_of": "2025-05-08T20:17:05Z",
+   "source_hash": "d7e97b2b48c5403830d6f236d2c8f0f51aa57503296c733425de2635ccb3ec17",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "2721209b4a130b169bdff0c150bd06e6ece4dce4dcc900f1580b3423a2c4522c",
+   "retrieved_at": "2026-09-15T10:27:12Z"
+  },
+  "revision": {
+   "accession": "IR:ir.microchip.com:1315",
+   "url": "https://ir.microchip.com/news-events/press-releases/detail/1315/microchip-technology-raises-financial-guidance-for-sales-and-eps-for-first-quarter-of-fiscal-year-2026",
+   "available_as_of": "2025-05-30T03:59:59Z",
+   "source_hash": "a584cfdd883abee660dad362ca1731f55311a465d9bb0cd9e3ce51b902730bf3",
+   "rights": "COMPANY_PRESS_RELEASE",
+   "original_bytes_sha256": "6d7e3abc46fa141c60a8ae520be215cb242c777de76abe5223937d98bd0d3fed",
+   "retrieved_at": "2026-09-15T10:28:25Z"
+  },
+  "actual": {
+   "accession": "0000827054-25-000132",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000132/exhibit991q1fy26.htm",
+   "available_as_of": "2025-08-07T20:20:13Z",
+   "source_hash": "55b697c56b1c9536b54296f0462cdfad0469f8d67119c594712c289b6c8958e2",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "d29d76af9a0a8cd73ee47992599759f961b98aa16c58d1c385b5244b9ec56fbc",
+   "retrieved_at": "2026-09-15T10:29:11Z"
+  }
+ },
+ "replay_label": "RETROSPECTIVE: sources observed on the ingestion date, after the outcome was public; as-of views are reconstructions from availability timestamps",
+ "limitations": [
+  "RETROSPECTIVE: every source was first observed by the workspace on 2026-09-15, after the outcome was public (2025-08-07); the as-of views are reconstructions from sourced availability timestamps, not contemporaneous records",
+  "NOT ELIGIBLE under the V8-001 selection criteria (criterion 1: Microchip is not in the v7 evidence corpus; criterion 3 as written) — see real_data_selection.json; this scorecard demonstrates accepted real-source BEHAVIOUR of the workbench, not real-data quality and not a validated dataset",
+  "the revision source is a company press release (rights COMPANY_PRESS_RELEASE): its passage is registered and digested but never bundled into an export; the 1.025-vs-1.020 discrepancy between the sources is preserved verbatim as a note, not corrected",
+  "adjudications were recorded by the automated journey runner as simulated test actions; no human review occurred",
+  "publication eligibility: NOT ELIGIBLE (commitments are not in the receipts PERMITTED class; adding them is an owner decision)"
+ ],
+ "what_the_journey_did_through_the_browser": [
+  "registered the three ingested passages by typing them (UI digest == ingestion digest)",
+  "froze the typed claim (net sales, USD, GAAP, Q1 FY2026 2025-04-01..2025-06-30, 1,020,000,000–1,070,000,000)",
+  "recorded the May 29 revision with the preserved discrepancy note; comparison RAISED, low +25,000,000",
+  "recorded the actual 1,075,500,000: OUT_OF_RANGE against both ranges, distance outside +5,500,000",
+  "replayed as of 2025-05-01 / 2025-05-20 / 2025-06-15 with the RETROSPECTIVE REPLAY label",
+  "recorded a simulated adjudication and refused an undisputed contrary label",
+  "built the export, downloaded it, verified it in a fresh workspace (SUCCESS; recomputed OUT_OF_RANGE), refused a tampered copy"
+ ]
+}

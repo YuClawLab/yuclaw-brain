@@ -1,0 +1,247 @@
+{
+ "record": "seven-step-scorecard",
+ "order": "V8-003 §4/§6 (fixtures journey re-run on the V8-003 candidate; the V8-002 7/7 evidence for a41dc39e stays as recorded)",
+ "mode": "fixtures",
+ "recorded_utc": "2026-09-16T02:24:16+00:00",
+ "candidate": {
+  "commit": "9efdd52d88a3585e3ec16e59b1d9844d298bff2c",
+  "tree": "92fe238d09c8c11bfef8aaec66c16141a82cb174",
+  "branch": "codex/v8-integration",
+  "dirty_entries_at_run": 1,
+  "dirty_entries_note": "the only untracked entry during the run was the v8/V8-003/ record directory being assembled; no tracked file differed from the commit",
+  "runtime": "checkout (python -m v8.workbench.journey from the worktree); the same journeys ran from the INSTALLED wheel and sdist — see packaging.json"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:42343",
+  "B_fresh_workspace": "http://127.0.0.1:41179",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "7669d65c0d82f4a5a0574a756e49ac9051c5ad75efb6eca25bd460456f5e502b",
+     "url": "http://127.0.0.1:42343/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "cc6e8c44167e8a4f42b062ef4929bf2217851d6b38d6894761b276a83e1be8e9",
+     "url": "http://127.0.0.1:42343/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "a5276a09c928c7dc6c959c82734cb14fd4a311b2b55b5b1bb2b15e290b49347e",
+     "url": "http://127.0.0.1:42343/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "62b18cb99226e62401ffa0d7c4be7273ae4553c8e9150032b33684185fed36c2",
+     "url": "http://127.0.0.1:42343/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "a4495fd8bfc7e721a640fd8898df3792211b6529805aa1d2c3e9581e9df1fb64",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "0f3512373117dd2a4b61fa876fd552c3383c834bb0479a53521d01868544b720",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "69bcdba191097a64505b7f6052ca64592a53d5442af6db33ecac123d75d19a80",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "82f9809da793687de1f31bce76a3905c5f5d338dfc5512d9e30dc61eb30deb2f",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "063da60097461a271fc54a56632405699f6198ba0dedf9ac2681f6e6b3c08652",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "fe41d862c2a829fc60d0040f24d1bd9405698dba9e8c9ba12c411c2fbb6113c9",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "a38cc7e310bf9dd040edc9535361320c90dd8b3a7e772383263eb225bc72c7b5",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "0728a8e31751cbf9fb1a9dab62b98ad6ae5e2a0232156a52c1fd7dc3746af7b2",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "ad6d778d635041cb5978135664fa3e40dd1c1954c4fa80ea5c5a6ee70ac238ab",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "2419d00b6e71e4bc86075ec3bdfc9db024e5686e702195cfec026a8e8da78e63",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "53de0b69c3cbbf54d694cb72c1d001994f69881c7926d858305c0ce6159751fe",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "387197f6ffbf9baef0ad1680a878551663478f36a1bf97d8824b0201a1ff9c25",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "f5f55dea57750ce129360c5efb3bfde0e99f4113dc59e971af78689aa2e096d3",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "3d7454442a7aff363281ff8b686f7686ee7613d23f0e2d3a407e1fd2223115e5",
+     "url": "http://127.0.0.1:42343/claim/ZZFX-FY2026-REV-GUIDE?built=exp-ae795af59a0f7bef#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "d70445682ac4f7e31749aec4a16a1a6bf0e70de80e0c8a1946dd616eb59b2674",
+     "url": "http://127.0.0.1:41179/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "f0a186a8521ba51c7ecc5e0af5c80e5a5979db4650fcad1add6399c3d79beaa0",
+     "url": "http://127.0.0.1:41179/verify"
+    }
+   ]
+  }
+ ],
+ "post_statuses": {
+  "303": 21,
+  "422": 4,
+  "200": 4
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-003/journey_fixtures/journey_log.json (paths scrubbed; the unscrubbed log, screenshots, workspaces and downloaded exports are in the private V8-003 record)",
+  "journey_log_sha256_private": "bb54228ebac4963956f8e4f998f80674cc86afb8c25770f84fbda23496207a90"
+ },
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice.",
+ "fixture_data": "clearly fictional demonstration data; not a validated dataset product",
+ "negative_cases_required_by_scope_section_5": {
+  "1 Source": [
+   "a later source is not visible at an earlier cutoff",
+   "unknown availability is explicit and blocks registration (never guessed)",
+   "source content renders as inert text (script/markup escaped, never executed)"
+  ],
+  "2 Typed claim": [
+   "missing fiscal period, currency, basis and resolution rule block the freeze with every reason listed",
+   "a second freeze of the same claim is refused (a change is an amendment)"
+  ],
+  "3 Comparison": [
+   "an accounting-basis change yields INCOMPARABLE with the reason and no delta"
+  ],
+  "4 Calculation": [
+   "a currency/unit (and basis) mismatch cannot produce a pass: unresolved with explicit reasons",
+   "a full-year outcome against a quarterly claim (explicit quarter dates) is PERIOD_MISMATCH, never a pass",
+   "an outside-range outcome produces the distinct OUT_OF_RANGE result with signed distance"
+  ],
+  "5 History": [
+   "before the first source was available nothing is shown as known (later information never backdated)"
+  ],
+  "6 Adjudication": [
+   "a label that differs from the computed result without the disputed flag is refused",
+   "a disputed label stays visible next to the computed result",
+   "a missing outcome is unresolved (PENDING_OUTCOME), never scored",
+   "a withdrawal is WITHDRAWN_BEFORE_OUTCOME, not automatically a miss"
+  ],
+  "7 Reproducible export": [
+   "a changed payload fails verification with the first discrepancy named",
+   "an incomplete packet is not presented as complete",
+   "unsafe archive paths are refused",
+   "export terms forbid bundling source bytes where rights do not allow it (excerpt withheld, digest kept)"
+  ]
+ }
+}

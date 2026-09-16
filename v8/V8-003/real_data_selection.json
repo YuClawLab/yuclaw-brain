@@ -1,0 +1,113 @@
+{
+ "record": "v8-real-data-selection",
+ "order": "V8-003 §1 (owner-designated investigation of one issuer through the bounded ingestion path)",
+ "recorded_utc": "2026-09-16T01:41:44+00:00",
+ "criteria_source": "v8/V8-001/real_data_selection_criteria.md (all six required; the criteria are applied as written, not loosened)",
+ "issuer": {
+  "name": "MICROCHIP TECHNOLOGY INC",
+  "ticker": "MCHP",
+  "cik": "0000827054",
+  "fiscal_year_end": "0331",
+  "commitment": "consolidated net sales, June 2025 quarter = Q1 FY2026 (2025-04-01..2025-06-30), USD, GAAP (net sales carry no non-GAAP adjustment in the outlook table)"
+ },
+ "ingestion": {
+  "tool": "python3 -m v8.workbench.ingest (v8/workbench/ingest.py; command-line only, never imported by the server)",
+  "allow_list": [
+   "www.sec.gov",
+   "data.sec.gov",
+   "ir.microchip.com"
+  ],
+  "records": "v8/V8-003/sources/*.source.json + *.provenance.json (original bytes and the press-release passage text stay in the private ingestion record; digests here)"
+ },
+ "sources": {
+  "original": {
+   "kind": "filing",
+   "form": "8-K EX-99.1",
+   "accession": "0000827054-25-000061",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000061/exhibit991q4fy25.htm",
+   "filed_at": "2025-05-08",
+   "available_as_of": "2025-05-08T20:17:05Z",
+   "availability_basis": "EDGAR acceptance time (SEC submissions feed)",
+   "observed_at": "2026-09-15T10:27:12Z",
+   "rights": "SEC_PUBLIC_FILING",
+   "source_hash": "d7e97b2b48c5403830d6f236d2c8f0f51aa57503296c733425de2635ccb3ec17",
+   "original_bytes_sha256": "2721209b4a130b169bdff0c150bd06e6ece4dce4dcc900f1580b3423a2c4522c",
+   "original_bytes": 404671
+  },
+  "revision": {
+   "kind": "press_release",
+   "form": "press release (GLOBE NEWSWIRE via ir.microchip.com)",
+   "accession": "IR:ir.microchip.com:1315",
+   "url": "https://ir.microchip.com/news-events/press-releases/detail/1315/microchip-technology-raises-financial-guidance-for-sales-and-eps-for-first-quarter-of-fiscal-year-2026",
+   "filed_at": "2025-05-29",
+   "available_as_of": "2025-05-30T03:59:59Z",
+   "availability_basis": "publisher dateline 'May 29, 2025 (GLOBE NEWSWIRE)' and page meta published_time=2025-05-29; no clock time stated by the source; end of that day America/New_York (EDT) applied so the replay never shows it earlier than it was; no 8-K carried this release (EDGAR submissions feed checked: 8-Ks on 2025-05-02, 05-08, 08-07, 08-20 only)",
+   "observed_at": "2026-09-15T10:28:25Z",
+   "rights": "COMPANY_PRESS_RELEASE",
+   "source_hash": "a584cfdd883abee660dad362ca1731f55311a465d9bb0cd9e3ce51b902730bf3",
+   "original_bytes_sha256": "6d7e3abc46fa141c60a8ae520be215cb242c777de76abe5223937d98bd0d3fed",
+   "original_bytes": 34718
+  },
+  "actual": {
+   "kind": "filing",
+   "form": "8-K EX-99.1",
+   "accession": "0000827054-25-000132",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000132/exhibit991q1fy26.htm",
+   "filed_at": "2025-08-07",
+   "available_as_of": "2025-08-07T20:20:13Z",
+   "availability_basis": "EDGAR acceptance time (SEC submissions feed)",
+   "observed_at": "2026-09-15T10:29:11Z",
+   "rights": "SEC_PUBLIC_FILING",
+   "source_hash": "55b697c56b1c9536b54296f0462cdfad0469f8d67119c594712c289b6c8958e2",
+   "original_bytes_sha256": "d29d76af9a0a8cd73ee47992599759f961b98aa16c58d1c385b5244b9ec56fbc",
+   "original_bytes": 280779
+  }
+ },
+ "source_lead_check": {
+  "original": "USD 1.020–1.070 billion — matches the passage ('between $1.020 billion and $1.070 billion' in the outlook table; the narrative sentence writes $1.02/$1.07)",
+  "revised": "USD 1.045–1.070 billion — matches the passage",
+  "actual": "USD 1.0755 billion — matches the passage",
+  "discrepancy": "the May 29, 2025 press release restates the May 8 guidance as $1.025–$1.070 billion; the May 8 filing states $1.020–$1.070 billion. Both are preserved as stated (source_discrepancy note on revision R1; both passages registered verbatim); neither source is rewritten and no correction is invented"
+ },
+ "criteria": {
+  "1_in_v7_corpus_with_guidance_object": {
+   "result": false,
+   "evidence": "v3/evidence/corpus_snapshot.json.gz (generated 2026-08-06T01:06:08Z) contains no name MCHP / CIK 827054; the sources were ingested for this order, not taken from the corpus"
+  },
+  "2_numeric_range_currency_period_basis_in_text": {
+   "result": true,
+   "evidence": "the May 8, 2025 8-K EX-99.1 states 'between $1.020 billion and $1.070 billion' for 'Net Sales' in the Fiscal Year 2026 outlook table and 'in the June 2025 quarter' in the narrative; currency USD explicit; period explicit; basis: the outlook table names GAAP and Non-GAAP columns and lists Net Sales as a single unadjusted line (GAAP); the typed claim records basis GAAP"
+  },
+  "3_comparable_outcome_inside_corpus_window": {
+   "result": false,
+   "evidence": "a comparable actual exists in the ingested sources (8-K EX-99.1 of 2025-08-07: 'Net sales for the first quarter of fiscal 2026 were $1.0755 billion'), but not inside the v7 corpus window — the issuer is not in the corpus (criterion 1)"
+  },
+  "4_point_in_time_clean": {
+   "result": "RETROSPECTIVE",
+   "evidence": "availability comes from EDGAR acceptance times (05-08 20:17:05Z, 08-07 20:20:13Z) and, for the press release, the publisher dateline taken at end of day America/New_York (2025-05-30T03:59:59Z; no clock time stated; nothing is shown earlier than it was); every source was first observed by this workspace on 2026-09-15, after the outcome was public, so the replay is a reconstruction labeled RETROSPECTIVE REPLAY in the workbench, not a contemporaneous record"
+  },
+  "5_no_custody_or_denylist_conflict": {
+   "result": true,
+   "evidence": "MCHP is not in the Canada Resources evidence-only tier; tools/check_leak_sweep.py run over the tracked records (see the V8-003 checks table)"
+  },
+  "6_one_issuer_one_claim_chain": {
+   "result": true,
+   "evidence": "one claim (MCHP-Q1FY2026-NETSALES-GUIDE), one revision (R1), one outcome"
+  }
+ },
+ "exclusions_checked": {
+  "restatement_inside_window": "none found in the three sources",
+  "non_usd_reporting": "USD",
+  "growth_percentage_only": "no — absolute range stated"
+ },
+ "eligible": false,
+ "result": "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA",
+ "why_not": [
+  "criterion 1 fails: the issuer is not in the v7 evidence corpus (the criteria require an already-corpus issuer; nothing was added to the corpus)",
+  "criterion 3 fails as written: the comparable outcome is an ingested source, not a corpus filing",
+  "criterion 4: the replay is retrospective (observed 2026-09-15); availability timestamps are sourced, but the observation is not contemporaneous"
+ ],
+ "what_was_demonstrated": "accepted real-source behaviour of the workbench on these three ingested sources — registration by typed passage with digest agreement, typed claim, comparison with the preserved discrepancy, exact calculation (OUT_OF_RANGE both ways), retrospective-labeled as-of history, simulated adjudication, rights-filtered export verified in a fresh workspace — recorded in v8/V8-003/scorecard_mchp.json. This is a behaviour demonstration on real sources, not a validated dataset and not a real-data quality claim; fixture validation, real-data quality and human benefit remain three separate questions",
+ "selected_issuer": null,
+ "not_advice": "Research and education only. Not investment advice."
+}
