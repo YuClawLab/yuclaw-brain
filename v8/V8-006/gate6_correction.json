@@ -1,0 +1,86 @@
+{
+ "record": "v8-gate6-correction",
+ "order": "V8-006 §3",
+ "recorded_utc": "2026-09-16T04:51:32+00:00",
+ "supersedes": {
+  "record": "v8/V8-003/gates.json gate 6 and the V8-003 generator manifest (candidate 9efdd52d)",
+  "defect": "the generator's fixed gate-6 wording ('reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)') described the CARRIED 7.0.1 replay hashes as fresh; no replay had run in that session (the attempt was refused: calendar file hash mismatch). The original record is preserved unchanged; this record supersedes its gate-6 evidence statement."
+ },
+ "fresh_replay": {
+  "kind": "isolated NO-WRITE replay with the manifest-pinned historical calendar taken from trusted repository history",
+  "worktree": "disposable detached worktree at commit 2cc7a7b9743e502ba0ea545811a68dbe6005afaa (private record; removed after use)",
+  "code": {
+   "tool": "tools/yuclaw_layered_dependency.py",
+   "tool_sha256": "994c27a003d9d4fd8e579bf5e5aeb8a95ccae7de2cd3f0ea8cab9e4ba745f6e8",
+   "method_hash": "fc2779b55aee5f67",
+   "protocol_id": "bace258b0bbb"
+  },
+  "inputs": {
+   "frozen_inputs_sha256": "5a7a505814e61c32d16e17d77de612a19b6892da400eeb0a5a24f52c4abfefe5",
+   "manifest_inputs_sha256": "5a7a505814e61c32d16e17d77de612a19b6892da400eeb0a5a24f52c4abfefe5",
+   "manifest_sha256": "213d38dcda34dc7b2845e6f8b500e892c6a45954477765d3fe1539d941587cbd",
+   "calendar_file": "v3/u350/market_calendar.py",
+   "calendar_sha256_used": "c51d05fa334899d679aec61541339814bf0753e66fb71207d9371abc63ebe469",
+   "calendar_pinned_by_manifest": "c51d05fa334899d679aec61541339814bf0753e66fb71207d9371abc63ebe469",
+   "calendar_source": "git show e988084b:v3/u350/market_calendar.py (commit e988084b, 2026-08-28, the version registered by ORDER 2026-08-28C FIX 3)",
+   "membership_file": "v3/lab/etf_evidence.py",
+   "membership_sha256": "13d23fdd81171dc90186d447670850e8fa9de515db65d648e5a6f4ec1d97a453",
+   "membership_pinned_by_manifest": "13d23fdd81171dc90186d447670850e8fa9de515db65d648e5a6f4ec1d97a453",
+   "database": "blocked (PGHOST=/nonexistent); the replay is a pure function of the tracked frozen inputs"
+  },
+  "dependencies": {
+   "python": "3.12.3",
+   "third_party_imports": "none (stdlib only: hashlib, json, datetime, os, re, subprocess, sys, pathlib)"
+  },
+  "runs": [
+   {
+    "invocation": "PGHOST=/nonexistent python3 tools/yuclaw_layered_dependency.py --replay --out-dir <record>/gate6/replay_pinned_1",
+    "exit_code": 0,
+    "output_sha256": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+    "output_files": [
+     "layered_dependency_first_read.json",
+     "layered_dependency_first_read.meta.json"
+    ]
+   },
+   {
+    "invocation": "PGHOST=/nonexistent python3 tools/yuclaw_layered_dependency.py --replay --out-dir <record>/gate6/replay_pinned_2",
+    "exit_code": 0,
+    "output_sha256": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+    "output_files": [
+     "layered_dependency_first_read.json",
+     "layered_dependency_first_read.meta.json"
+    ]
+   },
+   {
+    "invocation": "PGHOST=/nonexistent python3 tools/yuclaw_layered_dependency.py --replay --out-dir <record>/gate6/replay_pinned_3",
+    "exit_code": 0,
+    "output_sha256": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+    "output_files": [
+     "layered_dependency_first_read.json",
+     "layered_dependency_first_read.meta.json"
+    ]
+   }
+  ],
+  "canonical_artifact_sha256": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+  "result": "REPRODUCED"
+ },
+ "current_tree_replay": {
+  "invocation": "PGHOST=/nonexistent python3 tools/yuclaw_layered_dependency.py --replay --out-dir <record>/gate6/replay_current_calendar (current v3/u350/market_calendar.py, sha256 de5d304f680584cff48747f1cd1169d071b5e4cacd4aecca99950a5fbd2b5722)",
+  "exit_code": 1,
+  "refusal": "RuntimeError: replay: calendar file hash mismatch",
+  "meaning": "the guard works as registered: the manifest pins the calendar identity c51d05fa…; the tracked calendar changed at 49495fd1 (2026-09-14: 2028 holidays, early closes, CALENDAR_RANGE to 2028-12-31), so no tree since then replays without the pinned version"
+ },
+ "nothing_altered": [
+  "historical manifest and its hashes",
+  "current production calendar",
+  "canonical research artifacts (output/oie/*)",
+  "registry/protocols.jsonl"
+ ],
+ "protocol_question": {
+  "status": "AMENDMENT NEEDED ONLY IF a fresh replay must run from the CURRENT tree without the pinned historical calendar; the replay under the manifest-pinned inputs reproduces today",
+  "concrete_comparison": "v3/u350/market_calendar.py e988084b (c51d05fa…) → 49495fd1 (de5d304f…): HOLIDAYS gains nine 2028 dates; EARLY_CLOSES, EARLY_CLOSE, CALENDAR_SOURCES, is_early_close(), close_time() added; CALENDAR_RANGE end 2027-12-31 → 2028-12-31; is_session() unchanged for 2026–2027 sessions",
+  "proposed_text_for_review": "Addendum A1.2 note (proposed, NOT applied): 'The first read's calendar identity remains the registered 2026-08-28C table (sha256 c51d05fa334899d6…). A NO-WRITE replay of the first read is performed against that pinned calendar taken from repository history (commit e988084b); the current calendar (extended to 2028 on 2026-09-14) is a later registration for later sessions and does not re-pin the first read. Replays that use any other calendar remain refused.' — the owner decides whether to record this as an addendum line; nothing here changes the guard.",
+  "not_done": "no calendar investigation beyond this finding; no guard bypass; no re-hash"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

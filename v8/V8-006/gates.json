@@ -1,0 +1,302 @@
+{
+ "record": "v8-release-gates-run",
+ "order": "V8-006 §5",
+ "recorded_utc": "2026-09-16T05:06:52+00:00",
+ "candidate": {
+  "staged_commit": "ca50b42efd83bebed1a37fdd3a95b3443f0c5924",
+  "staged_tree": "587fbb2a41c1a41a7e494f8b8994cc3a603e3404",
+  "pyproject_version": "8.0.0",
+  "base_main_sha": "696d871ebc032f8bc125dda5184e02678e8d0e5c",
+  "branch_head_underneath": "2cc7a7b9743e502ba0ea545811a68dbe6005afaa",
+  "note": "the staged commit carries the prepared version surfaces in a private staging worktree; it is not on the branch"
+ },
+ "generator": "tools/yuclaw_release_state_v6.py --evidence <record>/gates/evidence_v8_candidate_staged.json (no --release-policy: none recorded)",
+ "gate_counts": {
+  "GREEN": 18,
+  "RED": 1,
+  "MANUAL_REVIEW": 1
+ },
+ "tripwire_pre_publish": "GREEN",
+ "gate_table": [
+  {
+   "gate": 1,
+   "requirement": "P0 registrations valid",
+   "result": "GREEN",
+   "evidence": "bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 file sha256 == line-81 method_hash"
+  },
+  {
+   "gate": 2,
+   "requirement": "chain verifies",
+   "result": "GREEN",
+   "evidence": "Registry.verify_chain on load: 82 lines, tip ac51ddfe97eb709a"
+  },
+  {
+   "gate": 3,
+   "requirement": "zero unexplained ledger breaks",
+   "result": "GREEN",
+   "evidence": "docs/ledger 84 blocks 2026-05-20..2026-09-14; sessions without a block: 0; evidence-changes gate rc=0"
+  },
+  {
+   "gate": 4,
+   "requirement": "point-in-time guard",
+   "result": "GREEN",
+   "evidence": "as_of endpoint hash + twice-run identity (evidence-changes gate); u350 isolation proven by attempted writes"
+  },
+  {
+   "gate": 5,
+   "requirement": "no v1 historical silent rewrite",
+   "result": "GREEN",
+   "evidence": "chain file byte-identical to base 696d871e: True; v1 evidence_geometry.json identical to base: True (last changed 0f10c2ec 2026-07-31); Phase-6 canonical artifact identical to base: True; 02A restage left live/registry/output trees byte-identical: True; chain append-only"
+  },
+  {
+   "gate": 6,
+   "requirement": "dependency calculations reproducible",
+   "result": "GREEN",
+   "evidence": "the registered structural first-read computation reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)"
+  },
+  {
+   "gate": 7,
+   "requirement": "truncation ledger reconciles",
+   "result": "GREEN",
+   "evidence": "[truncation-gate] OK — 13 ledger entries (schema + anchors verified), detector clean over v3/tools (allowlist v1, 10 constants)"
+  },
+  {
+   "gate": 8,
+   "requirement": "hypothesis/discovery lineage reconciles",
+   "result": "GREEN",
+   "evidence": "[discovery-gate] OK — 37 hypotheses <-> 37 protocol lines (bijection both directions), 33 families locked, artifact byte-identical to chain-derived rebuild; status_counts={'ACCRUING': 18, 'INCONCLUSIVE': 1, 'OPEN': 7, 'REGISTERED': 7, 'SUPE"
+  },
+  {
+   "gate": 9,
+   "requirement": "sequential methods pass registered fixtures",
+   "result": "GREEN",
+   "evidence": "anytime gate + registered fixtures selftest"
+  },
+  {
+   "gate": 10,
+   "requirement": "research-state derivation reproducible",
+   "result": "GREEN",
+   "evidence": "[research-state-gate] OK — 132 names render registered artifacts only; byte-identical rebuild; platform C6 verdict verbatim"
+  },
+  {
+   "gate": 11,
+   "requirement": "machine JSON agrees with human page",
+   "result": "GREEN",
+   "evidence": "[science-trust-gate] OK — 132 cards: machine JSON == human card == fresh derivation (field-for-field); research states verified against research_state.json directly; sequential panel verified against the canonical Anytime artifact independe"
+  },
+  {
+   "gate": 12,
+   "requirement": "source citations resolve",
+   "result": "GREEN",
+   "evidence": "site-walk: all links + anchors resolve; index completeness; copy integrity"
+  },
+  {
+   "gate": 13,
+   "requirement": "negative/inconclusive findings preserved",
+   "result": "GREEN",
+   "evidence": "discovery status_counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4; questions insider-directional RETIRED, reversal-coherence OPEN, reversal-structure-dominance OPEN; reversal first read INSUFFICIENT preserved"
+  },
+  {
+   "gate": 14,
+   "requirement": "language rails pass",
+   "result": "RED",
+   "evidence": "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"
+  },
+  {
+   "gate": 15,
+   "requirement": "user comprehension test passes",
+   "result": "MANUAL_REVIEW",
+   "evidence": "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+  },
+  {
+   "gate": 16,
+   "requirement": "stranger-machine reproduction passes",
+   "result": "GREEN",
+   "evidence": "External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0 — registered sentence \"stranger-machine reproduction passes\" (requires reproduction on an external (stranger) MACHINE; it does not require an unaffiliated operator — affiliation is disclosed, never implied away); public log entries: 1, external-machine REPRODUCED: 1, failed: 0"
+  },
+  {
+   "gate": 17,
+   "requirement": "G1 copy-consistency (canonical blocks byte-identical)",
+   "result": "GREEN",
+   "evidence": "[copy-consistency] OK — 8 target blocks byte-identical to their canonical sources (MISSION-VISION: sha256 c3b3d26ca94f, LOOKAHEAD: sha256 34ff23ecbef0, REPLICATION-SENTENCE: sha256 f940a6f509ab)"
+  },
+  {
+   "gate": 18,
+   "requirement": "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages"
+  },
+  {
+   "gate": 19,
+   "requirement": "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G3 base https://yuclaw.ca (77 URLs, zero github.io)"
+  },
+  {
+   "gate": 20,
+   "requirement": "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G4 22 endpoints declared on 3 surfaces, 31 representatives local-resolved and schema-valid"
+  }
+ ],
+ "checks": {
+  "check_language.py --pages": {
+   "rc": 0,
+   "last": "OK   CHANGELOG.md"
+  },
+  "check_copy_integrity.py": {
+   "rc": 0,
+   "last": "OK   docs/xlk_evidence.html"
+  },
+  "check_weekly_note.py": {
+   "rc": 1,
+   "last": "  · events: note 245+8=253 vs store 327+11=338"
+  },
+  "check_universe_integrity.py": {
+   "rc": 0,
+   "last": "[universe-gate] OK — thresholds match the live scorer; 79/79 scoring names fresh within 5 trading days"
+  },
+  "check_u350_isolation.py": {
+   "rc": 0,
+   "last": "[u350-isolation] OK — both write refusals proven by attempt, own-schema write works, no shadow ticker in the canonical record, scoring universe = 79"
+  },
+  "check_schemas.py": {
+   "rc": 0,
+   "last": "[schema-gate] OK — snapshot, 25 events, 37 protocols, 32 robustness cells validate against the frozen v1 schemas; memo schema fresh; vocabulary separation clean over 5376 labeled fields"
+  },
+  "check_no_forms.py": {
+   "rc": 0,
+   "last": "[no-form-gate] OK — 323 html files: zero form/upload/payment elements anywhere in docs/"
+  },
+  "check_index_completeness.py": {
+   "rc": 0,
+   "last": "[index-completeness] OK — 12 nav-linked pages all present in evidence_index.json and llms.txt"
+  },
+  "check_evidence_changes.py": {
+   "rc": 0,
+   "last": "[evidence-changes-gate] OK — 30 daily files (17 legacy < 2026-08-29, 13 current), endpoint as_of=2026-09-15 files=189 hash verified, JSON<->HTML equal, zero accession strings in HTML, twice-run identity OK (vs 2026-09-15, 1d)"
+  },
+  "check_site_walk.py": {
+   "rc": 0,
+   "last": "[site-walk] OK — 21 pages: reachable≤3 clicks, shared header, freshness/static marker, all links+anchors resolve, disclaimer present, zero placeholder markers, vlab forward-n consistent"
+  },
+  "check_header_layout.py": {
+   "rc": 0,
+   "last": "[header-layout] OK — 98 pages: zero stamps in any header, exactly one stamp per page, badge v8.0.0 == package version"
+  },
+  "check_consumer_posture.py": {
+   "rc": 0,
+   "last": "[consumer-posture] OK — six personas green (deterministic, local; P6 renders in a headless browser)"
+  },
+  "check_truncation_ledger.py": {
+   "rc": 0,
+   "last": "[truncation-gate] OK — 13 ledger entries (schema + anchors verified), detector clean over v3/tools (allowlist v1, 10 constants)"
+  },
+  "check_discovery_ledger.py": {
+   "rc": 0,
+   "last": "[discovery-gate] OK — 37 hypotheses <-> 37 protocol lines (bijection both directions), 33 families locked, artifact byte-identical to chain-derived rebuild; status_counts={'ACCRUING': 18, 'INCONCLUSIVE': 1, 'OPEN': 7, 'REGISTERED': 7, 'SUPE"
+  },
+  "check_anytime_record.py": {
+   "rc": 0,
+   "last": "[anytime-gate] OK — 3 enrollments (honest-empty is green), every enrollment prospective and schema-complete, artifact byte-identical to chain-derived rebuild"
+  },
+  "yuclaw_anytime_record.py --selftest": {
+   "rc": 0,
+   "last": "[anytime-record] selftest OK (synthetic only): high-signal e=22.9 > 20.0, null e=0.98 < 5.0, state machine + prospective refusal verified"
+  },
+  "check_completeness_profile.py": {
+   "rc": 0,
+   "last": "[completeness-gate] OK — 132 names, 924 states re-derived from printed inputs, zero lineage violations; UNKNOWN legal where derived"
+  },
+  "check_research_state.py": {
+   "rc": 0,
+   "last": "[research-state-gate] OK — 132 names render registered artifacts only; byte-identical rebuild; platform C6 verdict verbatim"
+  },
+  "check_science_trust.py": {
+   "rc": 0,
+   "last": "[science-trust-gate] OK — 132 cards: machine JSON == human card == fresh derivation (field-for-field); research states verified against research_state.json directly; sequential panel verified against the canonical Anytime artifact independe"
+  },
+  "check_dual_copy.py": {
+   "rc": 0,
+   "last": "OK   narrative.py: copies byte-consistent after documented normalization"
+  },
+  "yuclaw_replication_sentence.py --check": {
+   "rc": 0,
+   "last": "[replication-sentence] OK — Designed for reproduction from published artifacts. One affiliated external-machine reproduction recorded; unaffiliated replications: 0."
+  },
+  "check_copy_consistency.py": {
+   "rc": 0,
+   "last": "[copy-consistency] OK — 8 target blocks byte-identical to their canonical sources (MISSION-VISION: sha256 c3b3d26ca94f, LOOKAHEAD: sha256 34ff23ecbef0, REPLICATION-SENTENCE: sha256 f940a6f509ab)"
+  },
+  "check_release_manifest.py --only g2": {
+   "rc": 0,
+   "last": "[release-manifest] OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages"
+  },
+  "check_release_manifest.py --only g3": {
+   "rc": 0,
+   "last": "[release-manifest] OK — G3 base https://yuclaw.ca (77 URLs, zero github.io)"
+  },
+  "check_release_manifest.py --only g4": {
+   "rc": 0,
+   "last": "[release-manifest] OK — G4 22 endpoints declared on 3 surfaces, 31 representatives local-resolved and schema-valid"
+  },
+  "cli_transcript.py --check": {
+   "rc": 0,
+   "last": "[cli-transcript] OK — README transcript recorded at yuclaw 8.0.0"
+  },
+  "check_leak_sweep.py": {
+   "rc": 0,
+   "last": "[leak-sweep] OK — 1639 tracked surfaces (+0 extra) clean of 14 witness terms (private list); box-identifier WARNINGS (not blocking): 93 in 39 files"
+  }
+ },
+ "extra_checks": {
+  "pytest tests": 0,
+  "abuse_matrix.py (on-box)": 0,
+  "cli_acceptance_matrix.py (on-box, D3)": 0
+ },
+ "evidence_inputs": {
+  "gate6": {
+   "kind": "fresh bound replay (this order)",
+   "result": "REPRODUCED",
+   "runs_exit_codes": [
+    0,
+    0,
+    0
+   ],
+   "output_sha256": "0b2ac8a5967b13aa30841ab5f7508192f3abc9db420bdcd68389f8ffa9cac925",
+   "calendar_used": "c51d05fa334899d679aec61541339814bf0753e66fb71207d9371abc63ebe469",
+   "supersedes": "v8/V8-003/gates.json gate 6 statement"
+  },
+  "restage": {
+   "kind": "measured (this order)",
+   "candidate": "2cc7a7b9743e502ba0ea545811a68dbe6005afaa",
+   "anchor_chain_tip": "ac51ddfe97eb709a368f15f2aa6af9ab759ea4d319f48f45eeb121736d82d0c3",
+   "preview_files_changed": 0,
+   "live_identical": true,
+   "registry_identical": true,
+   "output_identical": true
+  },
+  "tripwire": {
+   "kind": "read-only observations (this order)",
+   "git_tags_this_version": [],
+   "origin_tags_this_version": [],
+   "github_latest_release": "v7.0.1",
+   "pypi_published": "7.0.1",
+   "live_capabilities_version": "v7.0.1",
+   "origin_main_pyproject_version": "7.0.1",
+   "live_pages_linking_preview": 0,
+   "measured_utc": "2026-09-16T04:54:53Z"
+  },
+  "lookahead_reconciliation": "carried from 7.0.1 (canonical source unchanged since the base)",
+  "rehearsal": "V8-003 rehearsal result, labelled (not the staged candidate)"
+ },
+ "unmet_or_manual": [
+  "gate 14 RED: weekly-note reconciliation (production render at the freeze); language rail, leak sweep, no-forms, header layout pass",
+  "gate 15 MANUAL_REVIEW / NOT SATISFIED; no 8.0.0 exception; 7.0.1 exception not inherited (D2 package)",
+  "release policy not recorded (D1 allocation, D2 route)",
+  "the staged version-surface commit is not applied to the branch (owner's candidate designation)"
+ ],
+ "human_benefit": "PENDING",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice."
+}

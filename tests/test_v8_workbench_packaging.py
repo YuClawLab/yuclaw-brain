@@ -55,6 +55,25 @@ class TestPackaging(unittest.TestCase):
         self.assertFalse(ci.long_description_ok(base.replace("text/markdown", "text/x-rst"))["ok"])
         self.assertFalse(ci.long_description_ok(base.replace("<!-- MISSION-VISION-CANONICAL:BEGIN -->", ""))["ok"])
 
+    def test_adopt_refuses_mismatched_identity_or_bytes(self):
+        """--artifacts adopts a pair only when its identity record names the requested commit and tree and every byte matches."""
+        import json, subprocess, sys, tempfile
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="wb-adopt-")); art = tmp / "art"; art.mkdir(); out = tmp / "out"
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=R, capture_output=True, text=True).stdout.strip(); tree = subprocess.run(["git", "rev-parse", "HEAD^{tree}"], cwd=R, capture_output=True, text=True).stdout.strip()
+        w, s = b"WHEEL-BYTES", b"SDIST-BYTES"; (art / "yuclaw-7.0.1-py3-none-any.whl").write_bytes(w); (art / "yuclaw-7.0.1.tar.gz").write_bytes(s)
+        rec = {"record": "yuclaw-artifact-identity/1", "label": "PRELIMINARY development build", "version": "7.0.1", "commit": head, "tree": tree, "wheel": {"name": "yuclaw-7.0.1-py3-none-any.whl", "sha256": hashlib.sha256(w).hexdigest(), "size": len(w)}, "sdist": {"name": "yuclaw-7.0.1.tar.gz", "sha256": hashlib.sha256(s).hexdigest(), "size": len(s)}, "build_utc": "x", "source_date_epoch": "1580601600", "build_tools": {}}
+        def attempt(record):
+            (art / "artifact_identity.json").write_text(json.dumps(record)); import shutil; shutil.rmtree(out, ignore_errors=True)
+            return subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, sys.argv[1]); import yuclaw_v8_clean_install as ci; from pathlib import Path; ci.adopt(sys.argv[2], Path(sys.argv[3]), Path(sys.argv[4]))", str(R / "tools"), head, str(art), str(out)], capture_output=True, text=True)
+        self.assertIn("binds commit", attempt(dict(rec, commit="0" * 40)).stderr)                      # wrong commit → STOP
+        self.assertIn("binds commit", attempt(dict(rec, tree="0" * 40)).stderr)                        # wrong tree → STOP
+        bad = json.loads(json.dumps(rec)); bad["wheel"]["sha256"] = "f" * 64; self.assertIn("bytes differ", attempt(bad).stderr)   # wrong bytes → STOP
+        bad = json.loads(json.dumps(rec)); bad["sdist"]["size"] = 1; self.assertIn("bytes differ", attempt(bad).stderr)
+        self.assertIn("unknown artifact identity", attempt(dict(rec, record="other/1")).stderr)
+        (art / "artifact_identity.json").unlink(); import shutil; shutil.rmtree(out, ignore_errors=True)            # no identity record → STOP
+        r = subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, sys.argv[1]); import yuclaw_v8_clean_install as ci; from pathlib import Path; ci.adopt(sys.argv[2], Path(sys.argv[3]), Path(sys.argv[4]))", str(R / "tools"), head, str(art), str(out)], capture_output=True, text=True)
+        self.assertIn("missing", r.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

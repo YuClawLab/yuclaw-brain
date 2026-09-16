@@ -7,7 +7,12 @@ retrospective replay) plus offline export verification through the installed com
 commit, the tree and the artifact digests, never to the checkout.
 
   python3 tools/yuclaw_v8_clean_install.py --commit <sha> --out <dir> [--sources <ingest records dir>] [--twine <exe>]
-                                           [--playwright-spec "playwright==1.62.0"]
+                                           [--playwright-spec "playwright==1.62.0"] [--artifacts <dir with an identity record>]
+
+With --artifacts the tool does NOT build: it adopts an already-built wheel/sdist pair whose `artifact_identity.json`
+(version, commit, tree, file names, sha256, sizes) it verifies byte-for-byte against the files and against the requested
+commit and its tree before installing and demonstrating from them. Without --artifacts the build is a PRELIMINARY
+development build; the identity record it writes lets a later run (or the publisher) adopt exactly those bytes.
 
 Playwright is installed into the disposable environments as a TEST-TIME tool (dependencies are read from PyPI; pin the
 version that matches the cached browsers with --playwright-spec); Chromium comes from the Playwright browser cache. Nothing is uploaded, tagged or pushed. Exit 0 only when every
@@ -109,9 +114,66 @@ def build(commit: str, out: Path) -> dict:
                  "fixtures": all(sha(f) == sha(src / "v8" / "workbench" / "resources" / "fixtures" / f.name) for f in (src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}
         art["source_resource_identity"] = ident
         art["source_hashes"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json"), "fixtures": {f.name: sha(f) for f in sorted((src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}}
+        write_identity(dist, art, label="PRELIMINARY development build")
         return art
     finally:
         run(["git", "worktree", "remove", "--force", src], cwd=_REPO, check=False)
+
+
+def write_identity(dist: Path, art: dict, *, label: str) -> Path:
+    """The artifact identity record next to the pair: what any later consumer (this tool with --artifacts, the publisher's
+    adopt stage) verifies before trusting the bytes."""
+    rec = {"record": "yuclaw-artifact-identity/1", "label": label, "version": art["version"], "commit": art["commit"], "tree": art["tree"],
+           "wheel": {"name": art["wheel"]["name"], "sha256": art["wheel"]["sha256"], "size": art["wheel"]["size"]}, "sdist": {"name": art["sdist"]["name"], "sha256": art["sdist"]["sha256"], "size": art["sdist"]["size"]},
+           "build_utc": art["build_utc"], "source_date_epoch": art["source_date_epoch"], "build_tools": art["build_tools"]}
+    p = dist / "artifact_identity.json"; p.write_text(json.dumps(rec, indent=1, sort_keys=True) + "\n"); return p
+
+
+def adopt(commit: str, artifacts_dir: Path, out: Path) -> dict:
+    """Adopt an already-built pair: the identity record must name this commit and its tree, and every file must match the
+    recorded name, sha256 and size. Mismatched identity or bytes → STOP (nothing is installed from them)."""
+    idp = artifacts_dir / "artifact_identity.json"
+    if not idp.is_file():
+        raise SystemExit(f"STOP: {idp} missing — an adopted pair needs its identity record")
+    rec = json.loads(idp.read_text())
+    if rec.get("record") != "yuclaw-artifact-identity/1":
+        raise SystemExit("STOP: unknown artifact identity record format")
+    tree = run(["git", "rev-parse", f"{commit}^{{tree}}"], cwd=_REPO).stdout.strip()
+    if rec.get("commit") != commit or rec.get("tree") != tree:
+        raise SystemExit(f"STOP: identity record binds commit {str(rec.get('commit'))[:12]}/tree {str(rec.get('tree'))[:12]}, not the requested {commit[:12]}/{tree[:12]}")
+    dist = out / "dist"; dist.mkdir(parents=True, exist_ok=True)
+    art = {"commit": commit, "tree": tree, "version": rec["version"], "build_utc": rec.get("build_utc"), "source_date_epoch": rec.get("source_date_epoch"), "build_tools": rec.get("build_tools"), "adopted_from": str(artifacts_dir), "adopted_identity_label": rec.get("label")}
+    blobs = {}
+    for kind in ("wheel", "sdist"):                                                             # verify EVERY file before copying or opening anything
+        want = rec[kind]; p = artifacts_dir / want["name"]
+        if not p.is_file():
+            raise SystemExit(f"STOP: adopted {kind} {want['name']} missing")
+        data = p.read_bytes(); h = hashlib.sha256(data).hexdigest()
+        if h != want["sha256"] or len(data) != want["size"]:
+            raise SystemExit(f"STOP: adopted {kind} bytes differ from the identity record (sha256 {h[:12]}… / {len(data)} B vs {want['sha256'][:12]}… / {want['size']} B)")
+        blobs[kind] = (data, h)
+    for kind in ("wheel", "sdist"):
+        want = rec[kind]; data, h = blobs[kind]
+        (dist / want["name"]).write_bytes(data)
+        if kind == "wheel":
+            with zipfile.ZipFile(dist / want["name"]) as z:
+                names = z.namelist(); meta = z.read(f"yuclaw-{rec['version']}.dist-info/METADATA").decode("utf-8")
+            art["wheel"] = {"name": want["name"], "sha256": h, "size": len(data), "inspection": inspect_members("wheel", names), "long_description": long_description_ok(meta)}
+        else:
+            with tarfile.open(dist / want["name"]) as t:
+                names = [n.split("/", 1)[1] for n in t.getnames() if "/" in n]; pkg = t.extractfile(f"yuclaw-{rec['version']}/PKG-INFO").read().decode("utf-8")
+            art["sdist"] = {"name": want["name"], "sha256": h, "size": len(data), "inspection": inspect_members("sdist", names), "long_description": long_description_ok(pkg)}
+    src = out / "src-identity"
+    run(["git", "worktree", "add", "--detach", src, commit], cwd=_REPO)
+    try:
+        art["source_resource_identity"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json") == sha(src / "v8" / "workbench" / "resources" / "CommitmentClaim.v1.json"),
+                                          "fixtures": all(sha(f) == sha(src / "v8" / "workbench" / "resources" / "fixtures" / f.name) for f in (src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}
+        art["source_hashes"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json"), "fixtures": {f.name: sha(f) for f in sorted((src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}}
+
+    finally:
+        run(["git", "worktree", "remove", "--force", src], cwd=_REPO, check=False)
+    write_identity(dist, art, label=f"ADOPTED (from {rec.get('label', 'unlabelled')}; bytes verified against the identity record)")
+    return art
 
 
 # ------------------------------------------------------------------ install + demonstrate
@@ -168,11 +230,12 @@ def main(argv=None) -> int:
     ap.add_argument("--commit", required=True); ap.add_argument("--out", required=True); ap.add_argument("--sources", help="ingestion records for the real-source replay (mchp mode)")
     ap.add_argument("--twine", help="twine executable for `twine check` over the built artifacts (default: the first on PATH)")
     ap.add_argument("--playwright-spec", default="playwright", help="pip requirement for the test-time browser driver (pin it to the version whose browsers are cached)")
+    ap.add_argument("--artifacts", help="adopt an already-built wheel/sdist pair from this directory (needs its artifact_identity.json); no build")
     a = ap.parse_args(argv)
     out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     commit = run(["git", "rev-parse", "--verify", a.commit + "^{commit}"], cwd=_REPO).stdout.strip()
     rec = {"record": "v8-clean-install/1", "recorded_utc": now(), "commit": commit, "python": sys.version.split()[0], "not_advice": "Research and education only. Not investment advice."}
-    art = build(commit, out); rec["build"] = art
+    art = adopt(commit, Path(a.artifacts).resolve(), out) if a.artifacts else build(commit, out); rec["build"] = art; rec["mode"] = "ADOPTED_PAIR" if a.artifacts else "PRELIMINARY_BUILD"
     twine = a.twine or shutil.which("twine")
     if twine:
         r = run([twine, "check", "--strict", out / "dist" / art["wheel"]["name"], out / "dist" / art["sdist"]["name"]], check=False, timeout=600)
