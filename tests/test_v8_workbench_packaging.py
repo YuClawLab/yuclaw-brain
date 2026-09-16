@@ -22,6 +22,8 @@ class TestPackaging(unittest.TestCase):
         self.assertIn('"v8"', wheel); self.assertIn("v8/V8-001", wheel); self.assertIn("v8/scope", wheel)
         sdist = re.search(r"\[tool\.hatch\.build\.targets\.sdist\]\n(.*?)(\n\[|\Z)", t, re.S).group(1)
         self.assertIn("v8/workbench", sdist); self.assertIn("v8/__init__.py", sdist); self.assertIn("README_PYPI.md", sdist)
+        for rec in ("v8/V8-001", "v8/V8-002", "v8/V8-003", "v8/scope"):                       # the sdist builder picks up record READMEs unless excluded (found by the V8-003 clean-install run)
+            self.assertIn(f'"{rec}"', sdist.split("exclude")[-1], rec)
         self.assertIn('readme = "README_PYPI.md"', t)
 
     def test_member_inspection_rules(self):

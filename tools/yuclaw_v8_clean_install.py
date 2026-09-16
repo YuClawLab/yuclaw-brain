@@ -7,9 +7,10 @@ retrospective replay) plus offline export verification through the installed com
 commit, the tree and the artifact digests, never to the checkout.
 
   python3 tools/yuclaw_v8_clean_install.py --commit <sha> --out <dir> [--sources <ingest records dir>] [--twine <exe>]
+                                           [--playwright-spec "playwright==1.62.0"]
 
-Playwright is installed into the disposable environments as a TEST-TIME tool (dependencies are read from PyPI);
-Chromium comes from the Playwright browser cache. Nothing is uploaded, tagged or pushed. Exit 0 only when every
+Playwright is installed into the disposable environments as a TEST-TIME tool (dependencies are read from PyPI; pin the
+version that matches the cached browsers with --playwright-spec); Chromium comes from the Playwright browser cache. Nothing is uploaded, tagged or pushed. Exit 0 only when every
 check passed; the record (`packaging.json`) is written either way. Research and education only. Not investment advice.
 """
 from __future__ import annotations
@@ -121,7 +122,7 @@ def _venv(out: Path, name: str) -> Path:
     return v
 
 
-def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sources: Path | None, browsers_path: str | None) -> dict:
+def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sources: Path | None, browsers_path: str | None, playwright_spec: str = "playwright") -> dict:
     v = _venv(out, f"venv-{what}"); py = v / "bin" / "python"
     home = out / f"home-{what}"; home.mkdir(exist_ok=True); cwd = out / f"run-{what}"; cwd.mkdir(exist_ok=True)
     env = {"PATH": f"{v / 'bin'}:/usr/bin:/bin", "HOME": str(home), "LANG": "C.UTF-8"}          # no PYTHONPATH, no checkout on any path
@@ -129,7 +130,8 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
         env["PLAYWRIGHT_BROWSERS_PATH"] = browsers_path
     res: dict = {"artifact": artifact.name, "artifact_sha256": art[what]["sha256"], "checks": {}}
     run([py, "-m", "pip", "install", "-q", artifact], env=dict(env, PATH=env["PATH"]), timeout=1800)             # non-editable install of the file; dependencies from PyPI
-    run([py, "-m", "pip", "install", "-q", "playwright"], env=env, timeout=1800)                                     # test-time tool only
+    run([py, "-m", "pip", "install", "-q", playwright_spec], env=env, timeout=1800)                                 # test-time tool only
+    res["test_time_tools"] = {"playwright_spec": playwright_spec, "playwright_version": run([py, "-c", "import importlib.metadata as m; print(m.version('playwright'))"], env=env).stdout.strip()}
     probe = run([py, "-c", "import importlib.metadata as m, v8.workbench as w, v8.workbench.server, v8.workbench.export, v8.workbench.journey, v8.workbench.ingest, json, sys, os;"
                             "print(json.dumps({'version': m.version('yuclaw'), 'module': os.path.dirname(w.__file__), 'pythonpath': os.environ.get('PYTHONPATH'), 'sys_path_has_cwd_repo': any(p.endswith('/v8') for p in sys.path)}))"], cwd=cwd, env=env)
     info = json.loads(probe.stdout); res["installed"] = info
@@ -165,6 +167,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--commit", required=True); ap.add_argument("--out", required=True); ap.add_argument("--sources", help="ingestion records for the real-source replay (mchp mode)")
     ap.add_argument("--twine", help="twine executable for `twine check` over the built artifacts (default: the first on PATH)")
+    ap.add_argument("--playwright-spec", default="playwright", help="pip requirement for the test-time browser driver (pin it to the version whose browsers are cached)")
     a = ap.parse_args(argv)
     out = Path(a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     commit = run(["git", "rev-parse", "--verify", a.commit + "^{commit}"], cwd=_REPO).stdout.strip()
@@ -181,7 +184,7 @@ def main(argv=None) -> int:
     rec["installs"] = {}
     for what in ("wheel", "sdist"):
         try:
-            rec["installs"][what] = install_and_demonstrate(what, art, out / "dist" / art[what]["name"], out, sources, browsers)
+            rec["installs"][what] = install_and_demonstrate(what, art, out / "dist" / art[what]["name"], out, sources, browsers, a.playwright_spec)
         except SystemExit as exc:
             rec["installs"][what] = {"ok": False, "stop": str(exc)[:1200]}
     ok = (art["wheel"]["inspection"]["ok"] and art["sdist"]["inspection"]["ok"] and art["wheel"]["long_description"]["ok"] and art["sdist"]["long_description"]["ok"] and all(art["source_resource_identity"].values())

@@ -76,4 +76,6 @@ include = ["v3", "v4", "v8/__init__.py", "v8/workbench", "sdk/yuclaw_py", "READM
            "tools/__init__.py", "tools/check_language.py", "tools/yuclaw_client_intake.py"]
 # Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
-exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc"]
+# v8 order records, scope package and journey evidence are repository documents, never
+# distribution content (the sdist builder would otherwise pick up their README files).
+exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc", "v8/V8-001", "v8/V8-002", "v8/V8-003", "v8/scope"]

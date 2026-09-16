@@ -417,15 +417,19 @@ class Handler(BaseHTTPRequestHandler):
         revised = [v for v in st["versions"] if v["type"] == "REVISED"]
         cmp = calc.compare_versions(orig_eff["claim"], revised[-1]["claim"]) if revised else None
         cq = urllib.parse.quote(cid, safe="")
-        # --- 1 source
+        # --- 1 source (the registration's observation time is the workspace's first sight of the passage; the event
+        #     times beside it are those of the claim action that cites it — kept apart, never merged)
+        src_seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in ws.events() if e["kind"] == "SOURCE_REGISTERED"}
+        def times_with_source(t: dict, s: dict) -> str:
+            return f'{self._times(t)}<br><span class="muted">source observed {esc(src_seen.get(f"{s["accession"]}:{s["source_hash"][:16]}") or "—")}</span>'
         src_rows = ""
         for v in st["versions"]:
             s = v["claim"]["source"]
-            src_rows += f'<tr><td>{esc(v["version_id"])} {esc(v["type"])}</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{self._times(v["time"])}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])} · rights {esc(s["rights"])}</span></td></tr>'
+            src_rows += f'<tr><td>{esc(v["version_id"])} {esc(v["type"])}</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(v["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])} · rights {esc(s["rights"])}</span></td></tr>'
         if st["withdrawn"]:
-            s = st["withdrawn"]["source"]; src_rows += f'<tr><td>{esc(st["withdrawn"]["revision_id"])} WITHDRAWN</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{self._times(st["withdrawn"]["time"])}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre></td></tr>'
+            s = st["withdrawn"]["source"]; src_rows += f'<tr><td>{esc(st["withdrawn"]["revision_id"])} WITHDRAWN</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(st["withdrawn"]["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre></td></tr>'
         if st["outcome"]:
-            s = st["outcome"]["source"]; src_rows += f'<tr><td>OUTCOME</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{self._times(st["outcome"]["_time"])}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])}</span></td></tr>'
+            s = st["outcome"]["source"]; src_rows += f'<tr><td>OUTCOME</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(st["outcome"]["_time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])}</span></td></tr>'
         # --- 2 versions
         ver_rows = "".join(f'<tr><td><b>{esc(v["version_id"])}</b><br>{esc(v["type"])}</td><td>{esc(v["claim"]["range"]["low"])} – {esc(v["claim"]["range"]["high"])} {esc(v["claim"]["unit"])}<br><span class="muted">({esc(money.as_stated(money.parse_amount(v["claim"]["range"]["low"]), v["claim"]["scale_as_stated"]))} – {esc(money.as_stated(money.parse_amount(v["claim"]["range"]["high"]), v["claim"]["scale_as_stated"]))})</span></td><td>{esc(v["claim"]["currency"])} / {esc(v["claim"]["unit"])}</td><td>{esc(v["claim"]["basis"])}</td><td>{esc(v["claim"]["fiscal_period"]["label"])} ({esc(v["claim"]["fiscal_period"]["type"])} {esc(v["claim"]["fiscal_period"]["start"])}..{esc(v["claim"]["fiscal_period"]["end"])})</td><td>{esc(v["claim"]["resolution_rule"])}</td><td>{esc(v["claim"]["stated_at"])}</td><td><code>{esc(v["claim"]["_digest"][:16])}…</code>{"<br><span class=muted>supersedes " + esc(v.get("supersedes", "")[:16]) + "…</span>" if v.get("supersedes") else ""}</td><td>{esc(v.get("reason") or "")}</td></tr>' for v in st["versions"])
         # --- 3 comparison
