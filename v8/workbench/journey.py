@@ -30,6 +30,7 @@ if str(_REPO) not in sys.path:
 from v8.workbench import server as S  # noqa: E402
 
 STEP_TITLES = {1: "source", 2: "typed claim", 3: "comparison", 4: "calculation", 5: "history", 6: "adjudication", 7: "reproducible export"}
+FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "supported scientific-kernel report/replay (V8-004 §5)"}
 RUNNER = "journey-runner (automated test action; not a human review)"
 ATTRIBUTION = "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries"
 
@@ -49,18 +50,21 @@ class Journey:
                     "candidate": {"commit": candidate or git_head or None, "commit_source": "argument" if candidate else ("git HEAD of the checkout" if git_head else "unknown"), "tree": _git("rev-parse", "HEAD^{tree}") or None,
                                   "branch": _git("branch", "--show-current") or None, "dirty_entries": len(_git("status", "--porcelain").splitlines()) if git_head else None, "artifacts": artifacts or {},
                                   "runtime": {"python": sys.version.split()[0], "workbench_module": str(pathlib.Path(S.__file__).resolve().parent)}},
-                    "review_attribution": ATTRIBUTION, "browser": None, "steps": {n: {"step": t, "assertions": [], "screenshots": []} for n, t in STEP_TITLES.items()}, "responses": []}
+                    "review_attribution": ATTRIBUTION, "browser": None, "steps": {n: {"step": t, "assertions": [], "screenshots": []} for n, t in STEP_TITLES.items()}, "responses": [],
+                    "features": {k: {"feature": t, "assertions": [], "screenshots": []} for k, t in FEATURE_TITLES.items()}}
         self.shot_n = 0
 
     # -- helpers
-    def check(self, step: int, name: str, ok: bool, observed=None, expected=None, negative=False):
-        self.log["steps"][step]["assertions"].append({"name": name, "ok": bool(ok), "observed": None if observed is None else str(observed)[:300], "expected": None if expected is None else str(expected)[:300], "negative_case": negative})
-        print(f"  [{'OK ' if ok else 'BAD'}] step {step} {'(neg) ' if negative else ''}{name}" + ("" if ok else f"  observed={str(observed)[:120]!r}"))
+    def check(self, step, name: str, ok: bool, observed=None, expected=None, negative=False):
+        slot = self.log["steps"][step] if isinstance(step, int) else self.log["features"][step]
+        slot["assertions"].append({"name": name, "ok": bool(ok), "observed": None if observed is None else str(observed)[:300], "expected": None if expected is None else str(expected)[:300], "negative_case": negative})
+        print(f"  [{'OK ' if ok else 'BAD'}] {'step ' + str(step) if isinstance(step, int) else step} {'(neg) ' if negative else ''}{name}" + ("" if ok else f"  observed={str(observed)[:120]!r}"))
         return ok
 
-    def shot(self, page, step: int, name: str):
-        self.shot_n += 1; p = self.out / f"{self.shot_n:02d}_step{step}_{name}.png"; page.screenshot(path=str(p), full_page=True)
-        self.log["steps"][step]["screenshots"].append({"file": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "url": page.url})
+    def shot(self, page, step, name: str):
+        self.shot_n += 1; tag = f"step{step}" if isinstance(step, int) else step; p = self.out / f"{self.shot_n:02d}_{tag}_{name}.png"; page.screenshot(path=str(p), full_page=True)
+        slot = self.log["steps"][step] if isinstance(step, int) else self.log["features"][step]
+        slot["screenshots"].append({"file": p.name, "sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "url": page.url})
 
     @staticmethod
     def fill(page, fields: dict):
@@ -258,9 +262,103 @@ class Journey:
             self.check(7, "export terms forbid bundling source bytes where rights do not allow it (excerpt withheld, digest kept)", "a passage whose rights are not established" not in c2 and '"excerpt_included":false' in c2 and "excerpt_withheld_reason" in c2, negative=True)
             page.goto(f"{b}/journal"); tj = page.locator("body").inner_text(); self.check(7, "imported packets are recorded as verifications in B and never become claims", tj.count("PACKET_VERIFIED") >= 3)
             page.goto(f"{b}/"); self.check(7, "B still holds no claims after imports", "none yet" in page.locator("body").inner_text())
+            self.demo_features(page, a, b, A, B, wsA)
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()
+
+    # ---------------------------------------------------------------- V8-004: research notes + dataset coverage, through the browser
+    def demo_features(self, page, a: str, b: str, A, B, wsA):
+        F = "research_notes"; CID = "ZZFX-FY2026-REV-GUIDE"; NEG = "ZZFX-FY2026-REV-GUIDE-NEG"
+        digests_before = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]; events_before = len(A.ws.load()["events"])
+        # ---- a note on the frozen claim, from the claim page; the claim's versions and digests are untouched
+        page.goto(f"{a}/claim/{CID}")
+        self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "unresolved_question", "actor": RUNNER, "unresolved_question": "why was the low end lowered while the high end also moved?", "next_evidence": "the full-year filing", "reason": "the revision is explained by the runner as a simulated test note", "version_ref": "R1", "simulated": True}, "Record research note")
+        t = page.locator("body").inner_text(); nsec = self.section(page, "notes")
+        self.check(F, "a research note is recorded from the claim page as a separate action (N1, version R1, actor label, local action time)", "N1" in nsec and "R1" in nsec and RUNNER in nsec and "simulated test action" in nsec and "the full-year filing" in nsec, nsec[:200])
+        after = A.ws.claim_state(CID); self.check(F, "adding a note changes no claim field or frozen digest and adds no version", [v["claim"]["_digest"] for v in after["versions"]] == digests_before and len(after["versions"]) == 2 and after["current"]["claim"]["range"] == {"low": 105000000, "high": 115000000}, negative=True)
+        csec = self.section(page, "comparison"); self.check(F, "the note is shown beside the comparison (COMPARABLE) with its version link", "Research notes on this comparison" in csec and "N1" in csec and "R1" in csec, csec[:200]); self.shot(page, F, "note_recorded")
+        # ---- browser resubmit of the same form (same operation identifier) lands once
+        page.go_back(); page.go_back()
+        with page.expect_navigation():
+            page.locator(f"form[action='/claim/{CID}/note']").first.get_by_role("button", name="Record research note").click()
+        self.check(F, "resubmitting the same note form (same operation identifier) creates no second note event", len([e for e in A.ws.events(CID) if e["kind"] == "RESEARCH_NOTE_RECORDED"]) == 1 and len(A.ws.load()["events"]) == events_before + 1, negative=True)
+        # ---- correction: a new linked note; the earlier text is retained
+        page.goto(f"{a}/claim/{CID}")
+        self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "unresolved_question", "actor": RUNNER, "unresolved_question": "corrected: why was the whole range lowered?", "next_evidence": "the full-year filing", "reason": "wording corrected", "version_ref": "R1", "supersedes_note": "N1", "simulated": True}, "Record research note")
+        nsec = self.section(page, "notes"); self.check(F, "a correction is a new note N2 linked to N1; N1's text stays visible and is marked corrected", "N2" in nsec and "corrects N1" in nsec and "corrected by N2" in nsec and "why was the low end lowered" in nsec and "corrected: why was the whole range lowered?" in nsec, nsec[:300]); self.shot(page, F, "note_corrected")
+        # ---- honest timing: at an earlier cutoff the notes are not contemporaneous; they are listed separately with their action times
+        page.goto(f"{a}/claim/{CID}?as_of=2026-06-01T00:00:00Z"); t = page.locator("body").inner_text(); nsec = self.section(page, "notes"); csec = self.section(page, "comparison")
+        self.check(F, "at an earlier research cutoff today's notes do not appear as contemporaneous; they are listed under 'Later annotations' with their actual action times", "Later annotations" in nsec and "NOT contemporaneous" in nsec and "Research notes on this comparison: none recorded" in csec, nsec[:200], negative=True); self.shot(page, F, "note_timing_as_of")
+        # ---- INCOMPARABLE comparison: the amendment's own notes and research notes are visible
+        page.goto(f"{a}/claim/{NEG}"); csec = self.section(page, "comparison")
+        self.check(F, "in the INCOMPARABLE branch the amendment's explanation/next-evidence notes are visible with their version link (previously hidden)", "INCOMPARABLE" in csec and "Amendment notes on R1" in csec and "Unresolved explanation" in csec, csec[:200])
+        self.submit(page, f"form[action='/claim/{NEG}/note']", {"category": "explanation", "actor": RUNNER, "unresolved_question": "the basis switch is not explained by the sources", "next_evidence": "a reconciliation table", "reason": "note on an incomparable pair", "simulated": True}, "Record research note")
+        csec = self.section(page, "comparison"); self.check(F, "a research note is shown beside an INCOMPARABLE comparison and the comparison stays INCOMPARABLE", "INCOMPARABLE" in csec and "the basis switch is not explained" in csec, csec[:200], negative=True); self.shot(page, F, "note_incomparable")
+        # ---- withdrawn claim and missing outcome: notes visible, nothing reopened or resolved
+        wid = next(c for c in A.ws.status()["claims"] if c.endswith("003_withdrawal")); page.goto(f"{a}/claim/{wid}")
+        self.submit(page, f"form[action='/claim/{wid}/note']", {"category": "explanation", "actor": RUNNER, "unresolved_question": "why the commitment was withdrawn is not stated", "reason": "note on a withdrawn claim", "simulated": True}, "Record research note")
+        calc_sec = self.section(page, "calculation"); self.check(F, "a note on a withdrawn claim is shown and the result stays WITHDRAWN_BEFORE_OUTCOME (nothing reopened)", "Overall: WITHDRAWN_BEFORE_OUTCOME" in calc_sec and "why the commitment was withdrawn" in calc_sec and self.no_pass(calc_sec), calc_sec[:200], negative=True)
+        mid = next(c for c in A.ws.status()["claims"] if c.endswith("002_missing_outcome")); page.goto(f"{a}/claim/{mid}")
+        self.submit(page, f"form[action='/claim/{mid}/note']", {"category": "next_evidence", "actor": RUNNER, "next_evidence": "the annual report, when filed", "reason": "outcome missing", "simulated": True}, "Record research note")
+        calc_sec = self.section(page, "calculation"); self.check(F, "a note on a claim without an outcome is shown beside PENDING_OUTCOME and resolves nothing", "Overall: PENDING_OUTCOME" in calc_sec and "the annual report, when filed" in calc_sec and self.no_pass(calc_sec), calc_sec[:200], negative=True); self.shot(page, F, "note_withdrawn_and_pending")
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "general", "actor": RUNNER, "unresolved_question": "", "reason": "", "simulated": True}, "Record research note"); t = page.locator("body").inner_text()
+        self.check(F, "a note without a reason is refused (nothing written)", "Blocked" in t and "reason" in t and "nothing was written" in t, t[:200], negative=True)
+        page.goto(f"{a}/notes"); t = page.locator("body").inner_text(); self.check(F, "the Research notes index lists notes across claims with actor kind and action time", t.count("simulated test action") >= 4 and CID in t and NEG in t, t[:200])
+        # ---- export retention: the claim export carries the notes and their correction history; the fresh verifier re-derives them
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/export']", {}, "Build export"); t = page.locator("body").inner_text(); m = re.search(r"(exp-[0-9a-f]{16})\.zip", t)
+        with page.expect_download() as dl:
+            page.locator(f"a[href='/exports/{m.group(1)}.zip']").click()
+        zn = self.out / f"{m.group(1)}_with_notes.zip"; dl.value.save_as(str(zn))
+        with zipfile.ZipFile(zn) as z:
+            can = json.loads(z.read("canonical.json"))
+        self.check(F, "the export carries the notes and their correction history (N1 corrected by N2) and the dataset row", [n["note_id"] for n in can["research_notes"]] == ["N1", "N2"] and can["research_notes"][0]["superseded_by"] == "N2" and can["dataset_row"]["research_notes"]["count"] == 2)
+        page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zn))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text(); self.check(F, "the fresh workspace re-derives the notes and the dataset row from the packed events (recompute-notes, recompute-dataset-row) and verifies SUCCESS", "Result: SUCCESS" in t and "recompute-notes" in t and "recompute-dataset-row" in t, t[:300]); self.shot(page, F, "notes_verified_fresh")
+        page.goto(f"{a}/claim/{CID}"); t = page.locator("body").inner_text(); self.check(F, "publication eligibility stays NOT ELIGIBLE after notes are added", "NOT ELIGIBLE" in t, negative=True)
+        # ================= dataset coverage
+        F = "dataset"
+        page.goto(f"{b}/dataset"); t = page.locator("body").inner_text()
+        self.check(F, "an empty workspace shows honest empty coverage (no rows, zero counts, nothing sampled)", "Coverage is empty" in t and "no rows" in t and "ZZFX" not in t, t[:200], negative=True); self.shot(page, F, "dataset_empty")
+        page.goto(f"{a}/dataset"); t = page.locator("body").inner_text(); n_claims = len(A.ws.status()["claims"])
+        self.check(F, f"the dataset view lists one row per frozen claim ({n_claims}) with identifiers, targets, outcome, computed result, reviewer labels and disagreement, notes, availability/observation and gaps", t.count("ZZFX-FY2026") >= n_claims and "LOWERED" in t and "disagreement: 1" in t and "WITHDRAWN" in t and "PENDING_OUTCOME" in t and "INCOMPARABLE" in t and "observed" in t, t[:300])
+        self.check(F, "fictional rows are labelled FICTIONAL, eligibility is NOT_RECORDED for every row and no issuer or result is hardcoded", t.count("FICTIONAL") >= n_claims and "NOT_RECORDED" in t and "Fictional Example Corp" in t)
+        self.check(F, "the snapshot identity, schema/method versions, coverage gaps and known omissions are displayed", "snapshot digest" in t and "yuclaw-commitment-dataset/1" in t and "Coverage gaps and known omissions" in t and "Known omissions" in t); self.shot(page, F, "dataset_rows")
+        page.goto(f"{a}/dataset.json"); raw = page.locator("body").inner_text(); js = json.loads(raw)
+        self.check(F, "/dataset.json carries the same rows machine-readably with the snapshot digest outside any timestamp", js["snapshot"]["counts"]["claims"] == n_claims and len(js["snapshot_digest"]) == 64 and "derived_at" not in json.dumps(js["snapshot"]))
+        page.goto(f"{a}/dataset"); self.submit(page, "form[action='/dataset/export']", {}, "Build dataset snapshot export"); t = page.locator("body").inner_text(); m = re.search(r"(exp-[0-9a-f]{16})\.zip", t)
+        self.check(F, "a dataset snapshot export is built from the page and listed as retained with its digest", bool(m) and "retained" in t, t[:200])
+        with page.expect_download() as dl:
+            page.locator(f"a[href='/exports/{m.group(1)}.zip']").click()
+        zd = self.out / f"{m.group(1)}_dataset.zip"; dl.value.save_as(str(zd))
+        page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zd))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text(); self.check(F, "the fresh workspace re-derives every row from the embedded claim content and reproduces the snapshot identity (SUCCESS)", "Result: SUCCESS" in t and "recompute-rows" in t and "snapshot-digest" in t, t[:300]); self.shot(page, F, "dataset_verified_fresh")
+        with zipfile.ZipFile(zd) as z:
+            members = {i.filename: z.read(i) for i in z.infolist()}
+        dj = json.loads(members["dataset.json"]); dj["snapshot"]["rows"][0]["computed"]["result"] = "OUT_OF_RANGE" if dj["snapshot"]["rows"][0]["computed"]["result"] != "OUT_OF_RANGE" else "IN_RANGE"
+        from v3.receipts.contracts import canonical_json
+        cb = canonical_json(dj); man = json.loads(members["EXPORT_MANIFEST.json"]); man["canonical_digest"] = hashlib.sha256(cb).hexdigest(); man["files"][0].update(sha256=man["canonical_digest"], size_bytes=len(cb))
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            for k, v in dict(members, **{"dataset.json": cb, "EXPORT_MANIFEST.json": json.dumps(man).encode()}).items():
+                z.writestr(k, v)
+        zt = self.out / "dataset_forged_row.zip"; zt.write_bytes(buf.getvalue()); page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zt))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text(); self.check(F, "a forged row inside a dataset snapshot fails verification (rows do not reproduce)", "Result: MISMATCH" in t and "do not reproduce" in t, t[:200], negative=True)
+        # a corrected record: a new note changes the snapshot; the earlier exported snapshot is retained and the change is identified
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "general", "actor": RUNNER, "unresolved_question": "post-snapshot note", "reason": "to change the record after a snapshot", "simulated": True}, "Record research note")
+        page.goto(f"{a}/dataset"); t = page.locator("body").inner_text()
+        self.check(F, "after a record changes, the earlier snapshot stays retained and the view identifies what changed (claim, field)", "Compared with the last exported snapshot" in t and f"{CID}: research_notes" in t, t[:300], negative=True); self.shot(page, F, "dataset_change_identified")
+        page.goto(f"{b}/"); self.check(F, "the fresh workspace holds no claims after importing a dataset snapshot", "none yet" in page.locator("body").inner_text(), negative=True)
+        # ================= SCI: not demonstrated — recorded as BLOCKED with the missing inputs; no placeholder in the navigation
+        page.goto(f"{a}/"); nav = page.locator("nav").inner_text()
+        self.check("sci", "no scientific-report tab or placeholder exists in the navigation while the kernel's reference inputs are missing (BLOCKED, not faked)", "scientific" not in nav.lower() and "SCI" not in nav, nav[:200], negative=True)
+        self.log["features"]["sci"]["blocked"] = {"status": "BLOCKED", "missing_inputs": ["reference bundle with INPUTS.md and MANIFEST.json", "reference/v4/science/{__init__,contracts,statistics,store,evidence}.py from the preview base c34e19bf (uncommitted preview work; not in git)"]}
 
     # ---------------------------------------------------------------- real-source retrospective replay (V8-003 §1)
     def run_mchp(self) -> dict:
@@ -359,6 +457,15 @@ class Journey:
                 page.get_by_role("button", name="Verify").click()
             t = page.locator("body").inner_text(); self.check(7, "an actual changed inside the packet (1.0755 → 1.0655 billion) fails verification", "Result: MISMATCH" in t and "byte mismatch at canonical.json" in t, t[:200], negative=True)
             page.goto(f"{b}/"); self.check(7, "the fresh workspace holds no claims after the imports", "none yet" in page.locator("body").inner_text())
+            # ---- V8-004: eligibility recorded as an attribution-labelled note (from the selection record), then the dataset row
+            F = "research_notes"; page.goto(f"{a}/claim/{CID}")
+            self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "eligibility", "actor": RUNNER, "unresolved_question": "", "next_evidence": "", "reason": "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA — criterion 1: not in the v7 evidence corpus; criterion 3 as written; retrospective observation (v8/V8-003/real_data_selection.json)", "simulated": True}, "Record research note")
+            nsec = self.section(page, "notes"); self.check(F, "the eligibility status is recorded as an attribution-labelled note (simulated test action), citing the selection record", "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA" in nsec and "simulated test action" in nsec, nsec[:200])
+            self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "unresolved_question", "actor": RUNNER, "unresolved_question": "the May 29 release restates the May 8 lower bound as 1.025 where the filing says 1.020; both preserved, neither corrected", "next_evidence": "a later filing restating the guidance history", "reason": "discrepancy note", "version_ref": "R1", "simulated": True}, "Record research note")
+            csec = self.section(page, "comparison"); self.check(F, "the discrepancy is carried both as the amendment's preserved source_discrepancy note and as a research note beside the comparison", "Source discrepancy (preserved verbatim, not corrected)" in csec and "$1.025 billion" in csec and "restates the May 8 lower bound as 1.025" in csec, csec[:300]); self.shot(page, F, "mchp_notes")
+            F = "dataset"; page.goto(f"{a}/dataset"); t = page.locator("body").inner_text()
+            self.check(F, "the dataset row for the real-source claim is labelled real source, RETROSPECTIVE and NOT_ELIGIBLE_UNDER_V8_001_CRITERIA (from the recorded note), with the withheld press-release excerpt and OUT_OF_RANGE", "real source" in t and "RETROSPECTIVE" in t and "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA" in t and "OUT_OF_RANGE" in t and recs["revision"]["accession"] in t, t[:300]); self.shot(page, F, "mchp_dataset_row")
+            self.check(F, "the row is not marked IN_RANGE and no prospective status is claimed", "not retrospective" not in t and "IN_RANGE" not in t.replace("OUT_OF_RANGE", ""), negative=True)
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()
@@ -370,10 +477,20 @@ class Journey:
             ok = bool(pos) and bool(neg) and all(x["ok"] for x in s["assertions"])
             steps.append({"n": n, "step": s["step"], "status": "DEMONSTRATED" if ok else "NOT_DEMONSTRATED", "positive_assertions": len(pos), "negative_assertions": len(neg), "failed": [x["name"] for x in s["assertions"] if not x["ok"]], "screenshots": s["screenshots"]})
         score = sum(1 for s in steps if s["status"] == "DEMONSTRATED")
+        feats = {}
+        for k, f in self.log["features"].items():
+            if f.get("blocked"):
+                feats[k] = {"feature": f["feature"], "status": "BLOCKED", "blocked": f["blocked"], "positive_assertions": len([x for x in f["assertions"] if not x["negative_case"]]), "negative_assertions": len([x for x in f["assertions"] if x["negative_case"]]), "failed": [x["name"] for x in f["assertions"] if not x["ok"]]}
+            else:
+                pos = [x for x in f["assertions"] if not x["negative_case"]]; neg = [x for x in f["assertions"] if x["negative_case"]]
+                ok = bool(pos) and bool(neg) and all(x["ok"] for x in f["assertions"])
+                feats[k] = {"feature": f["feature"], "status": "DEMONSTRATED" if ok else ("NOT_DEMONSTRATED" if f["assertions"] else "NOT_RUN"), "positive_assertions": len(pos), "negative_assertions": len(neg), "failed": [x["name"] for x in f["assertions"] if not x["ok"]], "screenshots": f["screenshots"]}
         self.log["scorecard"] = {"score": f"{score}/7", "steps": steps, "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+                                 "features": feats, "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
                                  "human_benefit": "PENDING", "experimental_audits": "EXPERIMENTAL", "fixture_data": "clearly fictional demonstration data; not a validated dataset product"}
         (self.out / "journey_log.json").write_text(json.dumps(self.log, indent=1, ensure_ascii=False) + "\n")
-        print(f"\njourney score {self.log['scorecard']['score']} on candidate {self.log['candidate']['commit'][:12]} (dirty entries: {self.log['candidate']['dirty_entries']}) → {self.out / 'journey_log.json'}")
+        feats = self.log["scorecard"]["features"]
+        print(f"\njourney score {self.log['scorecard']['score']} on candidate {self.log['candidate']['commit'][:12]} (dirty entries: {self.log['candidate']['dirty_entries']}); features: " + ", ".join(f"{k} {v['status']}" for k, v in feats.items()) + f" → {self.out / 'journey_log.json'}")
         return self.log
 
 
@@ -388,7 +505,8 @@ def main(argv=None) -> int:
         print("Playwright is not installed in this interpreter; see the module docstring. No journey was run; the score stays as recorded.", file=sys.stderr); return 3
     arts = dict(x.split("=", 1) for x in a.artifact)
     log = Journey(pathlib.Path(a.out), a.headed, candidate=a.candidate, artifacts=arts, mode=a.mode, sources=pathlib.Path(a.sources) if a.sources else None).run()
-    return 0 if log["scorecard"]["score"] == "7/7" else 1
+    feats = log["scorecard"]["features"]
+    return 0 if log["scorecard"]["score"] == "7/7" and all(v["status"] in ("DEMONSTRATED", "BLOCKED", "NOT_RUN") for v in feats.values()) else 1
 
 
 if __name__ == "__main__":

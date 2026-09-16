@@ -26,6 +26,17 @@ class TestPackaging(unittest.TestCase):
             self.assertIn(f'"{rec}"', sdist.split("exclude")[-1], rec)
         self.assertIn('readme = "README_PYPI.md"', t)
 
+    def test_packaged_modules_compile_on_minimum_python(self):
+        """requires-python >= 3.10: every packaged v8 module must compile on a real 3.10 interpreter when one is installed
+        (tools/check_py_minimum.py is a static proxy and missed nested same-quote f-strings twice during V8-003/V8-004)."""
+        import shutil, subprocess
+        py = shutil.which("python3.10")
+        if not py:
+            self.skipTest("no python3.10 interpreter on this host")
+        files = sorted(str(p) for p in (R / "v8" / "workbench").glob("*.py"))
+        r = subprocess.run([py, "-m", "py_compile", *files], capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr[-1500:])
+
     def test_member_inspection_rules(self):
         good = list(ci.REQUIRED_WHEEL) + ["v3/__init__.py", "v8/workbench/resources/README.md"]
         self.assertTrue(ci.inspect_members("wheel", good)["ok"])

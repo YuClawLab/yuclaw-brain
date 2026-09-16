@@ -28,7 +28,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from v3.receipts.contracts import ContractError
-from v8.workbench import NOT_ADVICE, calc, export, money, schema
+from v8.workbench import NOT_ADVICE, calc, dataset, export, money, schema
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -241,6 +241,13 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.page_verify(q, None), extra=extra)
             if path == "/journal":
                 return self._send(200, self.page_journal(q), extra=extra)
+            if path == "/notes":
+                return self._send(200, self.page_notes(q), extra=extra)
+            if path == "/dataset":
+                return self._send(200, self.page_dataset(q), extra=extra)
+            if path == "/dataset.json":
+                snap = dataset.build_snapshot(self.server.ws)
+                return self._send(200, json.dumps({"snapshot": snap, "snapshot_digest": dataset.snapshot_digest(snap), "derived_at": _now(), "note": "derived_at is outside the snapshot identity"}, indent=1, sort_keys=True, ensure_ascii=True), "application/json; charset=utf-8", extra)
             return self._text(404, "not found")
         except StoreIntegrityError as exc:
             return self._send(200, self.page_integrity(exc), extra=extra)
@@ -266,7 +273,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.post_source(form, op_id)
             if path == "/claim/freeze":
                 return self.post_freeze(form, op_id)
-            m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|export)$", path)
+            m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|export|note)$", path)
             if m:
                 cid = urllib.parse.unquote(m.group(1))
                 if not _CLAIM_ID.match(cid):
@@ -274,6 +281,9 @@ class Handler(BaseHTTPRequestHandler):
                 return getattr(self, "post_" + m.group(2))(cid, form, op_id)
             if path == "/fixtures/load":
                 return self.post_fixture(form, op_id)
+            if path == "/dataset/export":
+                r = export.build_dataset_export(self.server.ws, candidate_commit=self.server.candidate_commit, op_id=op_id)
+                return self._redirect(f"/dataset?built={r['export_id']}")
             if path == "/recover":
                 r = self.server.ws.recover()
                 return self._redirect("/?recovered=" + ("1" if r["recovered"] else "0"))
@@ -295,7 +305,7 @@ class Handler(BaseHTTPRequestHandler):
         cand = self.server.candidate_commit or "not recorded"
         return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a></nav>
+<nav><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a></nav>
 <div class="steps">{steps}</div>
 <h1>{esc(title)}</h1>
 {body}
@@ -343,7 +353,109 @@ class Handler(BaseHTTPRequestHandler):
     def _times(self, t: dict) -> str:
         return f'<span class="muted">source available {esc(t.get("source_available_as_of") or "—")} · observed {esc(t.get("observed_at"))} · recorded {esc(t.get("recorded_at"))}</span>'
 
+    def _version_notes_html(self, v: dict) -> str:
+        n = v.get("notes") or {}
+        if not any(n.get(k) for k in ("explanation_unresolved", "next_evidence", "source_discrepancy")):
+            return ""
+        return (f'<p><span class="muted">Amendment notes on <b>{esc(v["version_id"])}</b> (digest <code>{esc(v["claim"]["_digest"][:12])}…</code>, recorded {esc(v["time"]["recorded_at"])}):</span><br>'
+                f'<b>Unresolved explanation:</b> {esc(n.get("explanation_unresolved") or "—")}<br><b>Next evidence:</b> {esc(n.get("next_evidence") or "—")}'
+                + (f'<br><b class="warn">Source discrepancy (preserved verbatim, not corrected):</b> {esc(n.get("source_discrepancy"))}' if n.get("source_discrepancy") else "") + '<br><span class="muted">explanatory notes are not causal proof</span></p>')
+
+    @staticmethod
+    def _note_row(n: dict) -> str:
+        kind = '<span class="warn">simulated test action</span>' if n["actor_kind"] == "simulated_test_action" else '<span class="muted">attribution label</span>'
+        sup = (f'<br><span class="muted">corrects {esc(n["supersedes_note"])}</span>' if n.get("supersedes_note") else "") + (f'<br><span class="muted">corrected by {esc(n["superseded_by"])} (this text is retained)</span>' if n.get("superseded_by") else "")
+        return (f'<tr><td><b>{esc(n["note_id"])}</b>{sup}</td><td>{esc(n["category"])}</td><td>{esc(n["actor"])}<br>{kind}</td><td>{esc(n["version_ref"])} <code>{esc(n["version_digest"][:12])}…</code></td>'
+                f'<td>{esc(n["unresolved_question"] or "—")}</td><td>{esc(n["next_evidence"] or "—")}</td><td>{esc(n["reason"])}</td><td>{"".join(f"<code>{esc(h[:12])}…</code> " for h in n["evidence"]) or "—"}</td><td>{esc(n["time"]["recorded_at"])}</td></tr>')
+
+    _NOTE_HEAD = '<table><tr><th>note</th><th>category</th><th>actor</th><th>version</th><th>unresolved question / explanation</th><th>next evidence</th><th>reason</th><th>evidence</th><th>recorded (local action)</th></tr>'
+
+    def _notes_block(self, st: dict, full: dict, cut: str | None, where: str, categories: tuple | None, title: str) -> str:
+        """Relevant current notes for a section (comparison, calculation). In an as-of view only notes recorded at or before
+        the cutoff are shown here; later ones are listed separately with their actual action times."""
+        cur = [n for n in st.get("research_notes_current", []) if categories is None or n["category"] in categories]
+        if not cur:
+            return f'<p class="muted">{esc(title)}: none recorded. Notes are written under "Research notes" below; they explain, they never change the claim or its result.</p>'
+        return f'<h3>{esc(title)}</h3>{self._NOTE_HEAD}{"".join(self._note_row(n) for n in cur)}</table>'
+
+    def _notes_section(self, cid: str, cq: str, st: dict, full: dict, cut: str | None) -> str:
+        notes = st.get("research_notes", []); rows = "".join(self._note_row(n) for n in notes)
+        later = ""
+        if cut:
+            hidden = [n for n in full.get("research_notes", []) if n["event_hash"] not in {x["event_hash"] for x in notes}]
+            if hidden:
+                later = f'<div class="notice"><b>Later annotations — recorded after this cutoff ({esc(cut)}); NOT contemporaneous with the as-of view above.</b> Each carries its actual local action time.</div>{self._NOTE_HEAD}{"".join(self._note_row(n) for n in hidden)}</table>'
+        vopts = "".join(f'<option value="{esc(v["version_id"])}"{" selected" if v is full["current"] else ""}>{esc(v["version_id"])} · {esc(v["type"])} · {esc(v["claim"]["_digest"][:12])}…</option>' for v in full["versions"])
+        copts = "".join(f'<option value="{esc(c)}">{esc(c)}</option>' for c in schema.NOTE_CATEGORIES)
+        sopts = "".join(f'<option value="{esc(n["note_id"])}">{esc(n["note_id"])} · {esc(n["category"])} · {esc(n["reason"][:40])}</option>' for n in full.get("research_notes_current", []))
+        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
+        form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/note">{self._csrf_field()}<h3>Record a research note</h3>
+<p class="muted">A note is a separate research action: it records an unresolved question or explanation, the next evidence needed and why. It changes nothing about the claim — range, metric, currency, basis, fiscal period, sources and frozen digests stay exactly as they are — and it never resolves an outcome or reopens a withdrawn commitment. A correction is a new note that names the note it corrects; the earlier text is retained.</p>
+<div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity, not proof of independent review)</label><input type="text" name="actor"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
+<label>Unresolved question or explanation</label><textarea name="unresolved_question" rows="2"></textarea>
+<label>Next evidence needed</label><input type="text" name="next_evidence">
+<label>Reason for the note (required)</label><input type="text" name="reason">
+<label>Evidence (events this note refers to)</label>{ev_opts}
+<label><input type="checkbox" name="simulated" value="1"> This is a simulated test action (automated), not a human's note</label>
+<button type="submit">Record research note</button></form>"""
+        table = f'{self._NOTE_HEAD}{rows}</table>' if rows else '<p class="muted">No research notes on this claim yet.</p>'
+        return f'<p class="muted">{esc(len(notes))} note(s), {esc(len([n for n in notes if n.get("supersedes_note")]))} correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.</p>{table}{later}{form}'
+
     # ------------------------------------------------------------------ pages
+    def page_notes(self, q) -> str:
+        ws = self.server.ws; st = ws.status(); rows = ""
+        for cid in st["claims"]:
+            s = ws.claim_state(cid)
+            for n in (s or {}).get("research_notes", []):
+                rows += self._note_row(n).replace("<tr><td>", f'<tr><td><a href="/claim/{esc(urllib.parse.quote(cid, safe=""))}#notes">{esc(cid)}</a><br>', 1)
+        body = f"""<p>Every research note in this workspace, across claims: unresolved questions, explanations, next evidence and their corrections. A note is authored text with an actor label; it changes no claim and grants no publication eligibility. Record a note on a claim's page.</p>
+<table><tr><th>claim · note</th><th>category</th><th>actor</th><th>version</th><th>unresolved question / explanation</th><th>next evidence</th><th>reason</th><th>evidence</th><th>recorded (local action)</th></tr>{rows or '<tr><td colspan="9" class="muted">no research notes in this workspace</td></tr>'}</table>"""
+        return self.page("Research notes", body)
+
+    def page_dataset(self, q) -> str:
+        ws = self.server.ws; snap = dataset.build_snapshot(ws); dig = dataset.snapshot_digest(snap); c = snap["counts"]
+        prev = export.previous_snapshots(ws); last = next((p for p in reversed(prev) if p["retained"]), None)
+        diff = dataset.diff_snapshots(last["snapshot"] if last else None, snap)
+        built = q.get("built"); notice = f'<div class="notice">Dataset snapshot export <b>{esc(built)}</b> built. Download it below and verify it in a fresh workspace.</div>' if built and _EXPORT_ID.match(built) else ""
+        rows = ""
+        for r in snap["rows"]:
+            cq = urllib.parse.quote(r["claim_id"], safe=""); s = r["status"]; rv = r["reviewer"]; ot = r["original_target"]
+            targets = esc(ot["range"]["low"]) + " – " + esc(ot["range"]["high"]) + " " + esc(ot["unit"]) + " · " + esc(ot["basis"]) + "<br>"
+            targets += "".join("<span class=muted>" + esc(x["version_id"]) + ": " + esc(x["range"]["low"]) + " – " + esc(x["range"]["high"]) + "</span><br>" for x in r["revisions"])
+            targets += "".join("<span class=muted>" + esc(x["version_id"]) + ": source corrected</span><br>" for x in r["source_corrections"])
+            if r["withdrawal"]:
+                targets += "<b class=warn>WITHDRAWN</b> (" + esc(r["withdrawal"]["revision_id"]) + ")"
+            elig = esc(s["eligibility"][:80]) + ((" (" + esc(s["eligibility_note"]) + ")") if s["eligibility_note"] else "")
+            status = ("FICTIONAL" if s["fictional"] else "real source") + "<br>" + ("<span class=warn>RETROSPECTIVE</span>" if s["retrospective"] else "not retrospective") + '<br><span class="muted">eligibility: ' + elig + "</span>"
+            outcome = (esc(r["outcome"]["actual"]) + " " + esc(r["outcome"]["unit"])) if r["outcome"] else "<span class=muted>none</span>"
+            comp = r["computed"]; direction = (" " + esc(comp["comparison_direction"])) if comp["comparison_direction"] else ""
+            computed = "<b>" + esc(comp["result"]) + '</b><br><span class="muted">original ' + esc(comp["original"]) + " · revised " + esc(comp["revised"] or "—") + " · comparison " + esc(comp["comparison"] or "—") + direction + "</span>"
+            labels = "<br>".join(esc(l["label"]) + " (" + esc(l["reviewer"][:40]) + "; " + esc(l["attribution"].split(" (")[0]) + ")" for l in rv["labels"]) or "<span class=muted>none</span>"
+            labels += ("<br><span class=warn>disagreement: " + esc(len(rv["disagreement"])) + "</span>") if rv["disagreement"] else "<br><span class=muted>no disagreement recorded</span>"
+            avail = "<br>".join(esc(x["available_as_of"]) + " <span class=muted>(" + esc(x["availability_precision"].split(" (")[0]) + "; observed " + esc(x["observed_at"] or "—") + ")</span>" for x in r["sources"])
+            withheld = "<br>".join(esc(x) for x in r["rights"]["withheld_excerpts"]) or "<span class=muted>none withheld</span>"
+            cells = ['<a href="/claim/' + esc(cq) + '">' + esc(r["claim_id"]) + '</a><br><span class="muted">' + esc(r["identifiers"]["current_version"]) + " of " + esc(", ".join(r["identifiers"]["versions"])) + "</span>",
+                     esc(r["issuer"]["name"]) + " (" + esc(r["issuer"]["ticker"]) + ')<br><span class="muted">CIK ' + esc(r["issuer"]["cik"]) + "</span>",
+                     esc(r["metric"]) + "<br>" + esc(r["fiscal_period"]["label"]) + " (" + esc(r["fiscal_period"]["start"]) + ".." + esc(r["fiscal_period"]["end"]) + ")",
+                     status, targets, outcome, computed, labels, "<br>".join(esc(x) for x in r["unresolved_reasons"]) or "—",
+                     esc(r["research_notes"]["count"]) + " (" + esc(r["research_notes"]["corrections"]) + " corrections)", avail, withheld,
+                     "<br>".join(esc(g) for g in r["coverage_gaps"]) or "—", "<code>" + esc(r["row_digest"][:12]) + "…</code>"]
+            rows += "<tr>" + "".join("<td>" + c + "</td>" for c in cells) + "</tr>"
+        prev_rows = "".join(f'<tr><td><a href="/exports/{esc(p["export_id"])}.zip">{esc(p["export_id"])}.zip</a></td><td><code>{esc(p["snapshot_digest"])}</code></td><td>{esc(p["rows"])}</td><td>{esc(p["recorded_at"])}</td><td>{"retained" if p["retained"] else "snapshot file missing"}</td></tr>' for p in prev)
+        changed = "".join(f'<li>{esc(k)}: {esc(", ".join(v))}</li>' for k, v in diff["changed"].items())
+        diff_html = (f'<p>Compared with the last exported snapshot <code>{esc(diff["previous"][:16])}…</code>: added {esc(", ".join(diff["added"]) or "none")}; removed {esc(", ".join(diff["removed"]) or "none")}; changed fields per claim: <ul>{changed or "<li>none</li>"}</ul></p>' if diff["previous"] else '<p class="muted">No earlier exported snapshot to compare with.</p>')
+        empty = '<div class="notice"><b>Coverage is empty.</b> This workspace holds no frozen claims, so there are no issuers, rows, outcomes or results to show. Nothing is assumed or sampled.</div>' if snap["empty"] else ""
+        body = f"""{notice}<p>A narrow commitments-and-outcomes dataset derived from this workspace's stored records: one row per frozen claim with its identifiers, source versions and lineage, targets and revisions, corrections and withdrawals, disclosed outcome, computed result, reviewer labels and disagreement, unresolved reasons, availability and observation times, rights restrictions, research notes and coverage gaps. Fixture rows are a demonstration; a real-source row is retrospective unless shown otherwise; eligibility is whatever note the workspace holds, never a criteria run. Not a validated dataset product.</p>
+{empty}<h2>Snapshot identity</h2><table><tr><th>snapshot digest</th><th>rows</th><th>issuers</th><th>with outcome</th><th>adjudicated</th><th>withdrawn</th><th>incomparable</th><th>fictional / real source</th><th>retrospective</th><th>eligibility recorded</th><th>notes</th><th>withheld excerpts</th></tr>
+<tr><td><code>{esc(dig)}</code></td><td>{esc(c["claims"])}</td><td>{esc(c["issuers"])}</td><td>{esc(c["with_outcome"])}</td><td>{esc(c["adjudicated"])}</td><td>{esc(c["withdrawn"])}</td><td>{esc(c["incomparable"])}</td><td>{esc(c["fictional"])} / {esc(c["real_source"])}</td><td>{esc(c["retrospective"])}</td><td>{esc(c["eligibility_recorded"])}</td><td>{esc(c["research_notes"])}</td><td>{esc(c["withheld_excerpts"])}</td></tr></table>
+<p class="muted">schema {esc(snap["method"]["dataset_schema"])} · claim schema {esc(snap["method"]["claim_schema"])} · calculator {esc(snap["method"]["calculator"])} · workbench {esc(snap["method"]["workbench"])} · the digest covers the rows, counts, gaps and method only (no generation time) · machine-readable: <a href="/dataset.json">/dataset.json</a></p>
+<h2>Rows ({esc(len(snap["rows"]))})</h2><table><tr><th>claim · versions</th><th>issuer</th><th>metric · fiscal period</th><th>status</th><th>original target · revisions · corrections</th><th>outcome</th><th>computed</th><th>reviewer labels · disagreement</th><th>unresolved reasons</th><th>notes</th><th>source availability (precision; observed)</th><th>withheld excerpts</th><th>coverage gaps</th><th>row digest</th></tr>{rows or '<tr><td colspan="14" class="muted">no rows</td></tr>'}</table>
+<h2>Coverage gaps and known omissions</h2><ul>{"".join(f"<li>{esc(g)}</li>" for g in snap["coverage_gaps"]) or "<li>no gaps derived (an empty workspace has nothing to cover)</li>"}</ul><p class="muted">Known omissions:</p><ul>{"".join(f"<li>{esc(o)}</li>" for o in snap["known_omissions"])}</ul>
+<h2>Calculation rule and supported comparison limits</h2><p>{esc(snap["method"]["comparison_limits"])}</p><p class="muted">{esc(calc.FORMULA)}</p><p class="muted">{esc(calc.NO_INFERENCE)}</p>
+<h2>Reproducible snapshots</h2><form class="card" method="post" action="/dataset/export">{self._csrf_field()}<p>Builds a verifiable snapshot zip (every row with the claim content it was derived from). Verify it in a fresh workspace: the verifier re-derives every row and the snapshot identity. Earlier snapshots are retained; the comparison below identifies what changed.</p><button type="submit">Build dataset snapshot export</button></form>
+<table><tr><th>download</th><th>snapshot digest</th><th>rows</th><th>built (local action)</th><th>retained</th></tr>{prev_rows or '<tr><td colspan="5" class="muted">no snapshot exported yet</td></tr>'}</table>{diff_html}"""
+        return self.page("Dataset coverage", body)
+
     def page_home(self, q) -> str:
         ws = self.server.ws; st = ws.status()
         rows = ""
@@ -355,6 +467,7 @@ class Handler(BaseHTTPRequestHandler):
         fxo = "".join(f'<option value="{esc(f)}">{esc(f)}</option>' for f in fx)
         notice = '<div class="notice">Recovery completed; the torn bytes are preserved in a side file and a RECOVERY event was recorded.</div>' if q.get("recovered") == "1" else ""
         body = f"""{notice}<p>Trace one financial commitment from an exact source through revision, numerical checks, outcome review and an export another researcher can verify. Start at <a href="/source">step 1</a>, or verify a packet from another workspace under <a href="/verify">Verify an export</a>.</p>
+<p class="muted">Also: <a href="/notes">research notes</a> (unresolved questions, explanations, next evidence — separate from amendments) and the <a href="/dataset">dataset coverage view</a> derived from this workspace's records.</p>
 <h2>Claims in this workspace</h2><table><tr><th>claim</th><th>versions</th><th>withdrawn</th><th>outcome</th><th>computed result</th><th>adjudications</th><th>exports</th></tr>{rows or '<tr><td colspan="7" class="muted">none yet</td></tr>'}</table>
 <h2>Load a fictional fixture (demonstration data)</h2><form class="card" method="post" action="/fixtures/load">{self._csrf_field()}<label>Fixture</label><select name="fixture">{fxo}</select><p class="muted">Loads the fixture's sources, claim, revisions and outcome as events with fixture-derived operation identifiers (idempotent). Fixture data is a demonstration, never a validated dataset product.</p><button type="submit">Load fixture</button></form>
 <h2>Workspace</h2><pre class="excerpt">{jesc(st)}</pre>"""
@@ -437,10 +550,14 @@ class Handler(BaseHTTPRequestHandler):
         if cmp is None:
             cmp_html = '<p class="muted">No revision yet: nothing to compare.</p>'
         elif cmp["comparable"]:
-            notes = revised[-1].get("notes") or {}
-            cmp_html = f'<table><tr><th></th><th>original ({esc(orig_eff["version_id"])})</th><th>revised ({esc(revised[-1]["version_id"])})</th><th>delta (revised − original)</th></tr><tr><td>low</td><td>{esc(cmp["a"]["range"]["low"])}</td><td>{esc(cmp["b"]["range"]["low"])}</td><td>{esc(cmp["low_delta"])}</td></tr><tr><td>high</td><td>{esc(cmp["a"]["range"]["high"])}</td><td>{esc(cmp["b"]["range"]["high"])}</td><td>{esc(cmp["high_delta"])}</td></tr><tr><td>midpoint delta</td><td colspan="3">{esc(cmp["midpoint_delta"])} {esc(cmp["unit"])}</td></tr><tr><td>width</td><td>{esc(cmp["width_a"])}</td><td>{esc(cmp["width_b"])}</td><td>{esc(cmp["width_delta"])}</td></tr><tr><td>overlap</td><td colspan="3">{esc(cmp["overlap"])}</td></tr><tr><td>direction</td><td colspan="3"><b>{esc(cmp["direction"])}</b> · metrics comparable: <span class="ok">COMPARABLE</span></td></tr></table><p><b>Unresolved explanation:</b> {esc(notes.get("explanation_unresolved") or "—")}<br><b>Next evidence:</b> {esc(notes.get("next_evidence") or "—")}<br>{f"<b class=warn>Source discrepancy (preserved verbatim, not corrected):</b> {esc(notes.get('source_discrepancy'))}<br>" if notes.get("source_discrepancy") else ""}<span class="muted">{esc(cmp["note"])}</span></p>'
+            cmp_html = f'<table><tr><th></th><th>original ({esc(orig_eff["version_id"])})</th><th>revised ({esc(revised[-1]["version_id"])})</th><th>delta (revised − original)</th></tr><tr><td>low</td><td>{esc(cmp["a"]["range"]["low"])}</td><td>{esc(cmp["b"]["range"]["low"])}</td><td>{esc(cmp["low_delta"])}</td></tr><tr><td>high</td><td>{esc(cmp["a"]["range"]["high"])}</td><td>{esc(cmp["b"]["range"]["high"])}</td><td>{esc(cmp["high_delta"])}</td></tr><tr><td>midpoint delta</td><td colspan="3">{esc(cmp["midpoint_delta"])} {esc(cmp["unit"])}</td></tr><tr><td>width</td><td>{esc(cmp["width_a"])}</td><td>{esc(cmp["width_b"])}</td><td>{esc(cmp["width_delta"])}</td></tr><tr><td>overlap</td><td colspan="3">{esc(cmp["overlap"])}</td></tr><tr><td>direction</td><td colspan="3"><b>{esc(cmp["direction"])}</b> · metrics comparable: <span class="ok">COMPARABLE</span></td></tr></table><p class="muted">{esc(cmp["note"])}</p>'
         else:
-            cmp_html = f'<p class="bad">INCOMPARABLE</p><ul>{"".join(f"<li>{esc(r["reason"])}</li>" for r in cmp["reasons"])}</ul><p class="muted">A metric or accounting-basis change yields INCOMPARABLE; no delta is computed.</p>'
+            reasons_li = "".join("<li>" + esc(r["reason"]) + "</li>" for r in cmp["reasons"])
+            cmp_html = f'<p class="bad">INCOMPARABLE</p><ul>{reasons_li}</ul><p class="muted">A metric or accounting-basis change yields INCOMPARABLE; no delta is computed.</p>'
+        if cmp is not None:
+            # the amendment's own notes (explanation / next evidence / preserved source discrepancy) are shown in BOTH branches, linked to their version
+            cmp_html += "".join(self._version_notes_html(v) for v in revised)
+        cmp_html += self._notes_block(st, full, cut, "comparison", ("unresolved_question", "explanation", "next_evidence"), "Research notes on this comparison")
         # --- 4 calculation
         def ev_html(e, title):
             if e is None:
@@ -448,13 +565,18 @@ class Handler(BaseHTTPRequestHandler):
             cls = "ok" if e["result"] == "IN_RANGE" else "bad" if e["result"] == "OUT_OF_RANGE" else "warn"
             rs = "".join(f'<li>{esc(r["code"])}: {esc(r["reason"])}</li>' for r in e["reasons"])
             return f'<div class="card"><h3>{esc(title)} — <span class="{cls}">{esc(e["result"])}</span></h3><table><tr><th>inputs</th><td>low {esc(e["inputs"]["low"])} · high {esc(e["inputs"]["high"])} · actual {esc(e["inputs"]["actual"])} · {esc(e["inputs"]["currency"])}/{esc(e["inputs"]["unit"])} · {esc(e["inputs"]["basis"])} · {esc(e["inputs"]["fiscal_period"]["label"])} · {esc(e["inputs"]["metric"])}</td></tr><tr><th>formula</th><td>{esc(e["formula"])}</td></tr><tr><th>midpoint</th><td>{esc(e.get("midpoint"))}</td></tr><tr><th>delta vs midpoint</th><td>{esc(e.get("delta_vs_midpoint"))}</td></tr><tr><th>distance outside</th><td>{esc(e.get("distance_outside"))}</td></tr><tr><th>source links</th><td>claim {esc(e["source_links"]["claim_source"])} · outcome {esc(e["source_links"]["outcome_source"])}</td></tr>{f"<tr><th>reasons</th><td><ul>{rs}</ul></td></tr>" if rs else ""}</table></div>'
-        calc_html = f'<p>Overall: <b class="{"ok" if res["result"] == "IN_RANGE" else "bad" if res["result"] == "OUT_OF_RANGE" else "warn"}">{esc(res["result"])}</b> · comparison permitted: {esc(res["comparison_permitted"])} · rule {esc(res["rule"])}</p>{"".join(f"<div class=err>{esc(r["code"])}: {esc(r["reason"])}</div>" for r in res["reasons"])}{ev_html(res["original"], "Original range" + (" (corrected source)" if res["uses_corrected_range"] else ""))}{ev_html(res["revised"], "Revised range")}<p class="notice">{esc(res["no_inference"])}</p>'
+        err_divs = "".join("<div class=err>" + esc(r["code"]) + ": " + esc(r["reason"]) + "</div>" for r in res["reasons"])
+        calc_html = f'<p>Overall: <b class="{"ok" if res["result"] == "IN_RANGE" else "bad" if res["result"] == "OUT_OF_RANGE" else "warn"}">{esc(res["result"])}</b> · comparison permitted: {esc(res["comparison_permitted"])} · rule {esc(res["rule"])}</p>{err_divs}{ev_html(res["original"], "Original range" + (" (corrected source)" if res["uses_corrected_range"] else ""))}{ev_html(res["revised"], "Revised range")}<p class="notice">{esc(res["no_inference"])}</p>'
+        if res["result"] in ("PENDING_OUTCOME", "WITHDRAWN_BEFORE_OUTCOME"):
+            calc_html += self._notes_block(st, full, cut, "calculation", None, "Research notes (the outcome is missing or the commitment was withdrawn: a note explains, it never resolves or reopens)")
         # --- 5 history
         hidden = len(full["events"]) - len(st["events"])
         hist_rows = "".join(f'<tr><td>{esc(e["seq"])}</td><td>{esc(e["kind"])}</td><td>{esc(e["payload"].get("version_id") or e["payload"].get("export_id") or e["payload"].get("label") or "")}</td><td><b>{esc(e["time"]["source_available_as_of"] or "—")}</b></td><td>{esc(e["time"]["observed_at"])}</td><td>{esc(e["time"]["recorded_at"])}</td><td><code>{esc(e["event_hash"][:16])}…</code></td><td><code>{esc(e["op_id"])}</code></td></tr>' for e in st["events"])
         hist_html = f"""<form class="card" method="get" action="/claim/{esc(cq)}"><label>Replay as of a cutoff (UTC). Events whose source became available later are hidden; later information never rewrites the original claim or an earlier as-of result.</label><input type="text" name="as_of" value="{esc(as_of_raw)}" placeholder="2026-03-01T00:00:00Z"><button type="submit">Replay</button> <a href="/claim/{esc(cq)}">current view</a></form>
 {f'<div class="err">{esc(as_of_err)}</div>' if as_of_err else ''}{f'<div class="notice">As-of view at <b>{esc(cut)}</b>: {hidden} later event(s) hidden. Result at this cutoff: <b>{esc(res["result"])}</b>; versions visible: {esc(", ".join(v["version_id"] for v in st["versions"]))}.</div>' if cut else ''}
 <table><tr><th>seq</th><th>event</th><th>ref</th><th>source available as of</th><th>observed (workspace)</th><th>recorded (local action)</th><th>event hash</th><th>operation id</th></tr>{hist_rows}</table>"""
+        # --- 5b research notes (separate action; never an amendment)
+        notes_html = self._notes_section(cid, cq, st, full, cut)
         # --- 6 adjudication
         adj_rows = "".join(f'<tr><td>{esc(a["reviewer"])}</td><td>{esc(a["rule"])}</td><td><b>{esc(a["label"])}</b>{" <span class=warn>DISPUTED</span>" if a["disputed"] else ""}</td><td>{esc(a["computed_result"])}</td><td>{esc(a["reason"])}</td><td>{esc(a["conflicts"] or "—")}</td><td>{"".join(f"<code>{esc(h[:12])}…</code> " for h in a["evidence"])}</td><td>{esc(a["time"]["recorded_at"])}</td></tr>' for a in st["adjudications"])
         ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] != "ADJUDICATION_RECORDED")
@@ -485,6 +607,7 @@ class Handler(BaseHTTPRequestHandler):
 <h2 id="comparison">3 Comparison — original vs revised</h2>{cmp_html}
 <h2 id="calculation">4 Calculation</h2>{calc_html}{out_form if not full["withdrawn"] else ""}
 <h2 id="history">5 History — as-of replay</h2>{hist_html}
+<h2 id="notes">Research notes — unresolved evidence (separate from amendments)</h2>{notes_html}
 <h2 id="adjudication">6 Adjudication</h2><table><tr><th>reviewer</th><th>rule</th><th>label</th><th>computed</th><th>reason</th><th>conflicts</th><th>evidence</th><th>recorded</th></tr>{adj_rows or '<tr><td colspan="8" class="muted">no adjudication recorded; the claim stays unresolved</td></tr>'}</table>{adj_form}
 <h2 id="export">7 Reproducible export</h2>{exp_html}"""
         return self.page(cid, body, claim_id=cid)
@@ -494,7 +617,9 @@ class Handler(BaseHTTPRequestHandler):
         if result is not None:
             cls = "ok" if result["result"] == "SUCCESS" else "bad"
             checks = "".join(f'<tr><td>{esc(c.get("check"))}</td><td>{esc(c.get("path") or c.get("version") or c.get("seq") or "")}</td><td class="{"ok" if c.get("ok") else ("muted" if c.get("ok") is None else "bad")}">{esc({True: "ok", False: "FAIL", None: "n/a"}[c.get("ok")])}</td><td>{esc(c.get("note") or c.get("observed") or c.get("missing") or "")}</td></tr>' for c in result["checks"])
-            res_html = f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2><p>{esc(result.get("first_discrepancy") or result.get("meaning") or "")}</p><p>zip sha256 <code>{esc(result["zip_sha256"])}</code> · canonical digest <code>{esc(result["canonical_digest"])}</code> · claim {esc(result["claim_id"])}</p>{f"<p>Recomputed: <b>{esc(result["recompute"]["result"])}</b> · original {esc(result["recompute"]["original"])} · revised {esc(result["recompute"]["revised"])} · Δ original midpoint {esc(result["recompute"]["delta_vs_original_midpoint"])} · Δ revised midpoint {esc(result["recompute"]["delta_vs_revised_midpoint"])} · comparison {esc(result["recompute"]["comparison"])}</p>" if result.get("recompute") else ""}<table><tr><th>check</th><th>item</th><th>ok</th><th>detail</th></tr>{checks}</table>'
+            rc = result.get("recompute") or {}
+            recomp = ("<p>Recomputed: <b>" + esc(rc["result"]) + "</b> · original " + esc(rc.get("original")) + " · revised " + esc(rc.get("revised")) + " · Δ original midpoint " + esc(rc.get("delta_vs_original_midpoint")) + " · Δ revised midpoint " + esc(rc.get("delta_vs_revised_midpoint")) + " · comparison " + esc(rc.get("comparison")) + (" · rows " + esc(rc.get("rows")) + " · snapshot " + esc(str(rc.get("snapshot_digest", ""))[:16]) + "…" if rc.get("result") == "DATASET" else "") + "</p>") if rc else ""
+            res_html = f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2><p>{esc(result.get("first_discrepancy") or result.get("meaning") or "")}</p><p>zip sha256 <code>{esc(result["zip_sha256"])}</code> · canonical digest <code>{esc(result["canonical_digest"])}</code> · claim {esc(result["claim_id"])}</p>{recomp}<table><tr><th>check</th><th>item</th><th>ok</th><th>detail</th></tr>{checks}</table>'
         body = f"""<p>Upload an export zip produced by another workspace. The archive is read in memory within fixed bounds (no extraction), unsafe member names and symlinks are refused, every digest and length is checked, the canonical content is re-serialized, claim digests and event hashes are re-derived, and the calculations are recomputed from the packed versions and outcome. Imported content is data: it is never executed, fetched or merged into this workspace's claims.</p>
 <form class="card" method="post" action="/verify" enctype="multipart/form-data">{self._csrf_field()}<label>Export zip</label><input type="file" name="packet"><button type="submit">Verify</button></form>{res_html}"""
         return self.page("Verify an export — fresh workspace", body)
@@ -546,6 +671,13 @@ class Handler(BaseHTTPRequestHandler):
         self.server.ws.record_adjudication(cid, reviewer=form.get("reviewer", "").strip(), rule=form.get("rule", ""), evidence=ev, reason=form.get("reason", ""), conflicts=form.get("conflicts", ""),
                                            label=form.get("label", ""), disputed=form.get("disputed") == "1", op_id=op_id)
         return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}#adjudication")
+
+    def post_note(self, cid, form, op_id):
+        body = self._last_body_qs
+        raw = {"category": form.get("category", ""), "actor": form.get("actor", "").strip(), "reason": form.get("reason", ""), "unresolved_question": form.get("unresolved_question", ""), "next_evidence": form.get("next_evidence", ""),
+               "version_ref": form.get("version_ref") or None, "evidence": [v for v in body.get("evidence", []) if re.match(r"^[0-9a-f]{64}$", v)], "supersedes_note": form.get("supersedes_note") or None, "simulated": form.get("simulated") == "1"}
+        self.server.ws.record_note(cid, raw, op_id=op_id)
+        return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}#notes")
 
     def post_export(self, cid, form, op_id):
         r = export.build_export(self.server.ws, cid, candidate_commit=self.server.candidate_commit, op_id=op_id)

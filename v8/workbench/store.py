@@ -35,7 +35,11 @@ FORMAT = "yuclaw-commitment-workspace/1"
 LOG = "commitments.jsonl"
 GENESIS = "0" * 64
 KINDS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED",
-         "ADJUDICATION_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY")
+         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY")
+# RESEARCH_NOTE_RECORDED (V8-004 §3): authored text about a frozen claim. Never a version, never an amendment: the claim's
+# range, metric, currency, basis, period, sources and digests are untouched. A correction is a NEW note event that names the
+# note it supersedes; the earlier text stays in its own event. Notes carry no source availability, so an as-of view cuts them
+# by their local action time: a note written today never appears as contemporaneous at an earlier research cutoff.
 _OP = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 MAX_LINE = 1 << 20
@@ -232,11 +236,13 @@ class Workspace:
         return self._derive(claim_id, [e for e in self.load()["events"] if e["claim_id"] == claim_id and e["seq"] < prior["seq"]], None)
 
     def _derive(self, claim_id: str, evs: list[dict], as_of: str | None) -> dict | None:
-        versions, withdrawn, outcome, adjs, exports, verifs, sources = [], None, None, [], [], [], []
+        versions, withdrawn, outcome, adjs, exports, verifs, sources, notes = [], None, None, [], [], [], [], []
         for e in evs:
             p = e["payload"]; k = e["kind"]
             if k == "SOURCE_REGISTERED":
                 sources.append(dict(p, event_hash=e["event_hash"], time=e["time"]))
+            elif k == "RESEARCH_NOTE_RECORDED":
+                notes.append(dict(p, event_hash=e["event_hash"], time=e["time"], superseded_by=None))
             elif k == "CLAIM_FROZEN":
                 versions.append({"version_id": p["version_id"], "type": "FROZEN", "claim": dict(p["claim"], _digest=p["claim_digest"]), "event_hash": e["event_hash"], "time": e["time"], "reason": None, "notes": None})
             elif k in ("CLAIM_REVISED", "SOURCE_CORRECTED"):
@@ -254,8 +260,13 @@ class Workspace:
                 verifs.append(dict(p, event_hash=e["event_hash"], time=e["time"]))
         if not versions:
             return None
+        by_id = {n["note_id"]: n for n in notes}
+        for n in notes:                                                   # correction chain: the superseded note keeps its text and learns its successor
+            if n.get("supersedes_note") and n["supersedes_note"] in by_id:
+                by_id[n["supersedes_note"]]["superseded_by"] = n["note_id"]
         return {"claim_id": claim_id, "as_of": as_of, "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": adjs,
-                "exports": exports, "verifications": verifs, "sources": sources, "events": evs, "current": versions[-1]}
+                "exports": exports, "verifications": verifs, "sources": sources, "events": evs, "current": versions[-1],
+                "research_notes": notes, "research_notes_current": [n for n in notes if n["superseded_by"] is None]}
 
     # ------------------------------------------------------------------ write API (the seven steps)
     def _prior(self, op_id: str) -> dict | None:
@@ -353,9 +364,46 @@ class Workspace:
                        "state_tip": st["events"][-1]["event_hash"]}
             return self.append("ADJUDICATION_RECORDED", claim_id, payload, op_id=op_id)
 
-    def record_export(self, claim_id: str, *, export_id: str, canonical_digest: str, zip_sha256: str, zip_name: str, op_id: str) -> tuple[dict, bool]:
+    def record_note(self, claim_id: str, raw_note: dict, *, op_id: str) -> tuple[dict, bool]:
+        """A research note on an existing frozen claim (V8-004 §3). Allowed on withdrawn claims and on claims without an
+        outcome — it reopens nothing and resolves nothing. The note's identifier is derived from the state the operation
+        is computed against, so a retry with the same op_id reproduces the same payload (one durable event) and different
+        content under the same op_id is a conflict."""
         with self._locked():
-            return self.append("EXPORT_BUILT", claim_id, {"export_id": export_id, "canonical_digest": canonical_digest, "zip_sha256": zip_sha256, "zip_name": zip_name}, op_id=op_id)
+            st = self._state_for(claim_id, self._prior(op_id))
+            if st is None:
+                raise ContractError(f"claim {claim_id!r} is not frozen; a note needs an existing frozen claim")
+            note, reasons = schema.check_note(raw_note)
+            if reasons:
+                raise ContractError("note cannot be recorded: " + "; ".join(reasons))
+            versions = {v["version_id"]: v for v in st["versions"]}
+            if note["version_ref"] is not None and note["version_ref"] not in versions:
+                raise ContractError(f"note.version_ref: {note['version_ref']!r} is not a version of this claim ({sorted(versions)})")
+            vref = note["version_ref"] or st["current"]["version_id"]
+            known = {e["event_hash"] for e in st["events"]}
+            bad = [h for h in note["evidence"] if h not in known]
+            if bad:
+                raise ContractError(f"note.evidence must reference event hashes of this claim; unknown: {[b[:12] for b in bad]}")
+            sup_event = None
+            if note["supersedes_note"] is not None:
+                prev = next((n for n in st["research_notes"] if n["note_id"] == note["supersedes_note"]), None)
+                if prev is None:
+                    raise ContractError(f"note.supersedes_note: {note['supersedes_note']!r} is not a note of this claim")
+                if prev["superseded_by"] is not None:
+                    raise ContractError(f"note {note['supersedes_note']} was already corrected by {prev['superseded_by']}; correct the latest version of the note")
+                sup_event = prev["event_hash"]
+            payload = {"note_id": f"N{len(st['research_notes']) + 1}", "category": note["category"], "actor": note["actor"],
+                       "actor_kind": "simulated_test_action" if note["simulated"] else "attribution_label",
+                       "attribution": "an actor label is attribution, not authenticated identity and not proof of independent human review",
+                       "unresolved_question": note["unresolved_question"], "next_evidence": note["next_evidence"], "reason": note["reason"],
+                       "version_ref": vref, "version_digest": versions[vref]["claim"]["_digest"], "evidence": note["evidence"],
+                       "supersedes_note": note["supersedes_note"], "supersedes_event": sup_event, "state_tip": st["events"][-1]["event_hash"],
+                       "changes_claim": False}
+            return self.append("RESEARCH_NOTE_RECORDED", claim_id, payload, op_id=op_id, actor="researcher")
+
+    def record_export(self, claim_id: str | None, *, export_id: str, canonical_digest: str, zip_sha256: str, zip_name: str, op_id: str, extra: dict | None = None) -> tuple[dict, bool]:
+        with self._locked():
+            return self.append("EXPORT_BUILT", claim_id, {"export_id": export_id, "canonical_digest": canonical_digest, "zip_sha256": zip_sha256, "zip_name": zip_name, **(extra or {})}, op_id=op_id)
 
     def record_verification(self, claim_id: str | None, *, packet_sha256: str, result: str, first_discrepancy: str | None, canonical_digest: str | None, op_id: str) -> tuple[dict, bool]:
         with self._locked():

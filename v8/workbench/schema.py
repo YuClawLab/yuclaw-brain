@@ -22,6 +22,8 @@ PERIOD_TYPES = ("FY", "H", "Q", "M")
 PERIOD_DAYS = {"FY": (360, 372), "H": (175, 190), "Q": (80, 95), "M": (27, 32)}
 SOURCE_KINDS = ("filing", "press_release", "transcript", "other")
 RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING", "COMPANY_PRESS_RELEASE", "UNKNOWN")   # only the first two bundle excerpt bytes into exports
+NOTE_CATEGORIES = ("unresolved_question", "explanation", "next_evidence", "eligibility", "general")
+NOTE_TEXT_MAX = 2000
 RESOLUTION_RULES = {
     "RANGE_CONTAINS_ACTUAL": "resolved IN_RANGE when low <= actual <= high for an outcome with the same metric, currency, unit, basis and fiscal period; otherwise OUT_OF_RANGE; any mismatch or missing outcome is unresolved",
 }
@@ -326,3 +328,41 @@ def from_fixture(fx: dict) -> dict:
                                 "currency": o["currency"], "basis": o["basis"], "fiscal_period": _period_from_fixture(o["fiscal_period"], claim["fiscal_period"]),
                                 "comparable": bool(o["comparable"]), "source": _source_from_fixture(o["source"]), "fictional": bool(o["source"].get("fictional", fx.get("fictional")))})
     return {"claim": claim, "revisions": revs, "outcome": out}
+
+
+# ---------------------------------------------------------------- research notes (V8-004 §3): a separate action, never an amendment
+_VERSION_REF = re.compile(r"^(V1|R[0-9]{1,3}|C[0-9]{1,3})$")
+_NOTE_ID = re.compile(r"^N[0-9]{1,5}$")
+
+
+def check_note(raw: dict, field: str = "note") -> tuple[dict | None, list[str]]:
+    """A research note carries authored text about an existing frozen claim: an unresolved question or explanation, the
+    next evidence needed, the reason for the note and an actor LABEL (attribution, not authenticated identity and not
+    proof of human review). It changes nothing about the claim; every field is printable, bounded text."""
+    reasons: list[str] = []
+    if not isinstance(raw, dict):
+        return None, [f"{field}: object required"]
+    cat = raw.get("category")
+    if cat not in NOTE_CATEGORIES:
+        reasons.append(f"{field}.category: one of {list(NOTE_CATEGORIES)} required (got {cat!r})")
+    actor = _text(raw.get("actor"), f"{field}.actor", 120, reasons)
+    reason = _text(raw.get("reason"), f"{field}.reason", NOTE_TEXT_MAX, reasons)
+    q = _text(raw.get("unresolved_question", ""), f"{field}.unresolved_question", NOTE_TEXT_MAX, reasons, required=False) or ""
+    nxt = _text(raw.get("next_evidence", ""), f"{field}.next_evidence", NOTE_TEXT_MAX, reasons, required=False) or ""
+    if not q.strip() and not nxt.strip() and cat in ("unresolved_question", "explanation", "next_evidence"):
+        reasons.append(f"{field}: an unresolved question/explanation or the next evidence needed is required for this category")
+    vref = raw.get("version_ref")
+    if vref not in (None, "") and not (isinstance(vref, str) and _VERSION_REF.match(vref)):
+        reasons.append(f"{field}.version_ref: a version identifier (V1, R<n>, C<n>) or empty")
+    ev = raw.get("evidence") or []
+    if not isinstance(ev, list) or any(not isinstance(h, str) or not _HEX64.match(h) for h in ev):
+        reasons.append(f"{field}.evidence: a list of event hashes")
+    sup = raw.get("supersedes_note")
+    if sup not in (None, "") and not (isinstance(sup, str) and _NOTE_ID.match(sup)):
+        reasons.append(f"{field}.supersedes_note: a note identifier (N<n>) or empty")
+    if raw.get("simulated") not in (True, False, None):
+        reasons.append(f"{field}.simulated: boolean")
+    if reasons:
+        return None, reasons
+    return {"category": cat, "actor": actor.strip(), "reason": reason.strip(), "unresolved_question": q.strip(), "next_evidence": nxt.strip(),
+            "version_ref": vref or None, "evidence": list(ev), "supersedes_note": sup or None, "simulated": bool(raw.get("simulated"))}, []

@@ -28,21 +28,25 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
-from v8.workbench import NOT_ADVICE, calc, schema
+from v8.workbench import NOT_ADVICE, calc, dataset, schema
 from v8.workbench.store import Workspace, _line_hash
 
 FORMAT = "yuclaw-commitment-export/1"
+DATASET_FORMAT = "yuclaw-commitment-dataset/1"
+DATASET_MEMBER = "dataset.json"
+SUPPORTED_FORMATS = (FORMAT, DATASET_FORMAT)                # anything else is refused as UNSUPPORTED, never reinterpreted
 MANIFEST = "EXPORT_MANIFEST.json"
 CANONICAL = "canonical.json"
 INSTRUCTIONS = "VERIFY.md"
 SCHEMA_COPY = "schemas/CommitmentClaim.v1.json"
 REQUIRED_MEMBERS = (MANIFEST, CANONICAL, INSTRUCTIONS, SCHEMA_COPY)
+DATASET_REQUIRED_MEMBERS = (MANIFEST, "dataset.json", INSTRUCTIONS, SCHEMA_COPY)
 MAX_ZIP_BYTES = 32 << 20
 MAX_MEMBER_BYTES = 16 << 20
 MAX_MEMBERS = 16
 MAX_RATIO = 200
 BUNDLE_RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING")      # COMPANY_PRESS_RELEASE and UNKNOWN: digest only
-RESEARCH_EVENTS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED", "ADJUDICATION_RECORDED")
+RESEARCH_EVENTS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED", "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED")
 _EXPORT_ID = re.compile(r"^exp-[0-9a-f]{16}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 _REPO = Path(__file__).resolve().parents[2]
@@ -53,6 +57,8 @@ LIMITS = [
     "The claim statement is the researcher's authored restatement; verbatim quotations belong in the excerpt, where the rights rule is enforced.",
     "An export is not a backup, a disaster-recovery copy or a publication. Backup creation and restoration are not provided in 8.0.0.",
     "Fictional fixture data is a demonstration, never a validated dataset product.",
+    "Research notes are authored text with an actor LABEL: attribution, not authenticated identity and not proof of independent human review; a note changes no claim field and grants no publication eligibility.",
+    "A dataset row is derived from stored records; eligibility is a recorded note, not a criteria run; retrospective rows are reconstructions, not prospective evidence.",
     NOT_ADVICE,
 ]
 
@@ -77,7 +83,24 @@ def _redact_claim(claim: dict) -> dict:
     return c
 
 
-def build_canonical(state: dict) -> dict:
+def _note_ref(n: dict) -> dict:
+    keys = ("note_id", "category", "actor", "actor_kind", "attribution", "unresolved_question", "next_evidence", "reason", "version_ref", "version_digest", "evidence", "supersedes_note", "supersedes_event", "state_tip", "changes_claim")
+    return {**{k: n.get(k) for k in keys}, "superseded_by": n.get("superseded_by"), "event_hash": n["event_hash"], "time": n["time"]}
+
+
+def source_events_for(state: dict, source_events: list[dict] | None) -> list[dict]:
+    """The SOURCE_REGISTERED events of the sources this claim cites (they carry when the workspace first observed each passage)."""
+    if not source_events:
+        return []
+    hashes = {v["claim"]["source"]["source_hash"] for v in state["versions"]}
+    if state.get("outcome"):
+        hashes.add(state["outcome"]["source"]["source_hash"])
+    if state.get("withdrawn"):
+        hashes.add(state["withdrawn"]["source"]["source_hash"])
+    return [dict(e) for e in source_events if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source"]["source_hash"] in hashes]
+
+
+def build_canonical(state: dict, source_events: list[dict] | None = None) -> dict:
     """The research content of one claim (JSON-safe, rights-filtered). Deterministic for a given state."""
     versions = []
     for v in state["versions"]:
@@ -99,7 +122,9 @@ def build_canonical(state: dict) -> dict:
         srcs.append(_source_ref(state["withdrawn"]["source"]))
     # research events only: export/verification events are operation metadata and stay outside the canonical content,
     # so two exports of the same research state reproduce the same canonical digest
-    events = [dict(e) for e in state["events"] if e["kind"] in RESEARCH_EVENTS]
+    src_evs = source_events_for(state, source_events)
+    events = sorted([dict(e) for e in state["events"] if e["kind"] in RESEARCH_EVENTS] + src_evs, key=lambda e: e["seq"])
+    seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in src_evs}
     results = calc.adjudicate(state)
     orig_eff = next((v for v in reversed(state["versions"]) if v["type"] == "CORRECTED_SOURCE"), state["versions"][0])
     revised = [v for v in state["versions"] if v["type"] == "REVISED"]
@@ -108,7 +133,9 @@ def build_canonical(state: dict) -> dict:
            "adjudications": [{k: v for k, v in a.items()} for a in state["adjudications"]], "sources": srcs, "events": events,
            "method": {"calculator": calc.CALCULATOR, "rule": results["rule"], "rule_text": results["rule_text"], "formula": calc.FORMULA, "no_inference": calc.NO_INFERENCE,
                       "time_semantics": "source_available_as_of = public availability of the source; observed_at = when this workspace saw it; recorded_at = local action time; as-of views cut by source availability"},
-           "results": results, "comparison": comparison, "limitations": LIMITS, "not_advice": NOT_ADVICE}
+           "results": results, "comparison": comparison,
+           "research_notes": [_note_ref(n) for n in state.get("research_notes", [])],
+           "dataset_row": dataset.build_row(state, seen), "limitations": LIMITS, "not_advice": NOT_ADVICE}
     # events carry the same excerpts as versions/outcome; withhold them under the same rights rule
     withheld = {s["source_hash"] for s in srcs if not s["excerpt_included"]}
     if withheld:
@@ -148,9 +175,10 @@ def build_export(ws: Workspace, claim_id: str, *, export_id: str | None = None, 
     state = ws.claim_state(claim_id)
     if state is None:
         raise ContractError(f"claim {claim_id!r} is not frozen")
-    can = build_canonical(state)
+    can = build_canonical(state, ws.events())
     can_bytes = canonical_json(can)
     cdig = _sha(can_bytes)
+    snap = dataset.build_snapshot(ws)
     eid = export_id or f"exp-{secrets.token_hex(8)}"
     if not _EXPORT_ID.match(eid):
         raise ContractError("export_id must look like exp-<16 hex>")
@@ -159,6 +187,7 @@ def build_export(ws: Workspace, claim_id: str, *, export_id: str | None = None, 
     man = {"format": FORMAT, "export_id": eid, "built_at": built, "claim_id": claim_id, "canonical_digest": cdig,
            "candidate": {"commit": candidate_commit or os.environ.get("YUCLAW_CANDIDATE_COMMIT"), "workbench": "v8.workbench/1"},
            "digest_rule": "canonical_digest = sha256(canonical.json bytes) where canonical.json is canonical JSON (sorted keys, no whitespace, ASCII); export_id and built_at are excluded",
+           "dataset_snapshot": {"schema": dataset.DATASET_SCHEMA, "digest": dataset.snapshot_digest(snap), "rows": len(snap["rows"]), "note": "identity of the whole workspace's dataset snapshot at export time (outside the canonical digest; other claims' content is not in this export)"},
            "files": [{"path": CANONICAL, "sha256": cdig, "size_bytes": len(can_bytes)}, {"path": SCHEMA_COPY, "sha256": _sha(schema_bytes), "size_bytes": len(schema_bytes)}],
            "verify": "python3 -m v8.workbench verify-export <zip>", "limitations": LIMITS, "not_advice": NOT_ADVICE}
     man_bytes = (json.dumps(man, indent=1, sort_keys=True, ensure_ascii=True) + "\n").encode("ascii")
@@ -181,6 +210,59 @@ def build_export(ws: Workspace, claim_id: str, *, export_id: str | None = None, 
     zs = _sha(zb)
     ev, dup = ws.record_export(claim_id, export_id=eid, canonical_digest=cdig, zip_sha256=zs, zip_name=zpath.name, op_id=op_id or f"export:{eid}")
     return {"export_id": eid, "canonical_digest": cdig, "zip_path": str(zpath), "zip_name": zpath.name, "zip_sha256": zs, "zip_bytes": len(zb), "manifest": man, "event": ev, "duplicate": dup}
+
+
+def build_dataset_export(ws: Workspace, *, export_id: str | None = None, built_at: datetime | None = None, candidate_commit: str | None = None, op_id: str | None = None) -> dict:
+    """The workspace's dataset snapshot as a verifiable zip: `dataset.json` = {schema, snapshot, claims: {claim_id: canonical}}.
+    The verifier re-derives every row from the embedded claim content and recomputes the snapshot identity."""
+    events = ws.events(); snap = dataset.build_snapshot(ws)
+    claims = {}
+    for cid in sorted(ws.claim_ids(events)):
+        st = ws.claim_state(cid)
+        if st is not None:
+            claims[cid] = build_canonical(st, events)
+    can = {"schema": DATASET_FORMAT, "snapshot": snap, "snapshot_digest": dataset.snapshot_digest(snap), "claims": claims, "limitations": LIMITS, "not_advice": NOT_ADVICE}
+    can_bytes = canonical_json(can); cdig = _sha(can_bytes)
+    eid = export_id or f"exp-{secrets.token_hex(8)}"
+    if not _EXPORT_ID.match(eid):
+        raise ContractError("export_id must look like exp-<16 hex>")
+    built = format_ts(built_at or datetime.now(timezone.utc))
+    schema_bytes = (Path(__file__).resolve().parent / "resources" / "CommitmentClaim.v1.json").read_bytes()
+    man = {"format": DATASET_FORMAT, "export_id": eid, "built_at": built, "claim_id": None, "scope": "dataset", "canonical_digest": cdig, "snapshot_digest": can["snapshot_digest"], "rows": len(snap["rows"]),
+           "candidate": {"commit": candidate_commit or os.environ.get("YUCLAW_CANDIDATE_COMMIT"), "workbench": "v8.workbench/1"},
+           "digest_rule": "canonical_digest = sha256(dataset.json bytes) (canonical JSON); snapshot_digest = sha256(canonical JSON of the snapshot object alone); export_id and built_at are excluded from both",
+           "files": [{"path": DATASET_MEMBER, "sha256": cdig, "size_bytes": len(can_bytes)}, {"path": SCHEMA_COPY, "sha256": _sha(schema_bytes), "size_bytes": len(schema_bytes)}],
+           "verify": "python3 -m v8.workbench verify-export <zip>", "limitations": LIMITS, "not_advice": NOT_ADVICE}
+    man_bytes = (json.dumps(man, indent=1, sort_keys=True, ensure_ascii=True) + "\n").encode("ascii")
+    ins = instructions({**man, "claim_id": f"dataset snapshot ({len(snap['rows'])} row(s))"}).encode("utf-8")
+    out_dir = ws.exports / eid; out_dir.mkdir(parents=True, exist_ok=True); zpath = ws.exports / f"{eid}.zip"
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        for name, data in ((MANIFEST, man_bytes), (DATASET_MEMBER, can_bytes), (INSTRUCTIONS, ins), (SCHEMA_COPY, schema_bytes)):
+            zi = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0)); zi.compress_type = zipfile.ZIP_DEFLATED; zi.external_attr = (0o100600 << 16)
+            z.writestr(zi, data); (out_dir / name).parent.mkdir(parents=True, exist_ok=True); (out_dir / name).write_bytes(data)
+    zb = buf.getvalue(); tmp = zpath.with_suffix(".zip.part"); tmp.write_bytes(zb); os.chmod(tmp, 0o600)
+    with open(tmp, "rb") as fh:
+        os.fsync(fh.fileno())
+    os.replace(tmp, zpath); zs = _sha(zb)
+    ev, dup = ws.record_export(None, export_id=eid, canonical_digest=cdig, zip_sha256=zs, zip_name=zpath.name, op_id=op_id or f"export:{eid}", extra={"scope": "dataset", "snapshot_digest": can["snapshot_digest"], "rows": len(snap["rows"])})
+    return {"export_id": eid, "canonical_digest": cdig, "snapshot_digest": can["snapshot_digest"], "zip_path": str(zpath), "zip_name": zpath.name, "zip_sha256": zs, "zip_bytes": len(zb), "manifest": man, "event": ev, "duplicate": dup}
+
+
+def previous_snapshots(ws: Workspace) -> list[dict]:
+    """Earlier dataset snapshots this workspace exported (retained under exports/<id>/dataset.json); newest last."""
+    out = []
+    for e in ws.events():
+        if e["kind"] == "EXPORT_BUILT" and e["payload"].get("scope") == "dataset":
+            p = ws.exports / e["payload"]["export_id"] / DATASET_MEMBER
+            snap = None
+            if p.is_file():
+                try:
+                    snap = json.loads(p.read_bytes())["snapshot"]
+                except (ValueError, KeyError, OSError):
+                    snap = None
+            out.append({"export_id": e["payload"]["export_id"], "snapshot_digest": e["payload"].get("snapshot_digest"), "rows": e["payload"].get("rows"), "recorded_at": e["time"]["recorded_at"], "snapshot": snap, "retained": snap is not None})
+    return out
 
 
 # ---------------------------------------------------------------- verification
@@ -231,14 +313,19 @@ def read_zip_safely(zip_path) -> tuple[dict[str, bytes] | None, str | None, str 
 
 
 def _state_from_canonical(can: dict) -> dict:
-    versions = [{"version_id": v["version_id"], "type": v["type"], "claim": dict(v["claim"], _digest=v["claim_digest"]), "event_hash": v["event_hash"], "time": v["time"]} for v in can["versions"]]
+    """The claim state as the verifier sees it: rebuilt from the packed content only (the same shape the store derives)."""
+    versions = [{"version_id": v["version_id"], "type": v["type"], "claim": dict(v["claim"], _digest=v["claim_digest"]), "event_hash": v["event_hash"], "time": v["time"],
+                 "reason": v.get("reason"), "notes": v.get("notes"), "supersedes": v.get("supersedes")} for v in can["versions"]]
     withdrawn = None
     if can.get("withdrawn"):
-        w = can["withdrawn"]; withdrawn = {"revision_id": w["revision_id"], "source": w["source"], "reason": w["reason"]}
+        w = can["withdrawn"]; withdrawn = {"revision_id": w["revision_id"], "source": w["source"], "reason": w["reason"], "supersedes": w.get("supersedes"), "event_hash": w.get("event_hash"), "time": w.get("time")}
     outcome = None
     if can.get("outcome"):
-        outcome = dict(can["outcome"]["outcome"], _digest=can["outcome"]["outcome_digest"])
-    return {"claim_id": can["claim_id"], "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": can.get("adjudications", []), "events": can.get("events", [])}
+        outcome = dict(can["outcome"]["outcome"], _digest=can["outcome"]["outcome_digest"], _event_hash=can["outcome"].get("event_hash"), _time=can["outcome"].get("time"))
+    notes = [dict(n) for n in can.get("research_notes", [])]
+    events = [e for e in can.get("events", []) if e.get("kind") != "SOURCE_REGISTERED"]           # claim-scoped events, as the store derives them
+    return {"claim_id": can["claim_id"], "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": can.get("adjudications", []), "events": events,
+            "current": versions[-1], "research_notes": notes, "research_notes_current": [n for n in notes if n.get("superseded_by") is None]}
 
 
 def verify_export(zip_path) -> dict:
@@ -250,17 +337,25 @@ def verify_export(zip_path) -> dict:
     if err:
         return unsupported(f"refused: {err}", zs)
     checks.append({"check": "archive-safety", "ok": True, "note": f"{len(members)} members within bounds; no traversal, symlink or oversized member"})
-    missing = [m for m in REQUIRED_MEMBERS if m not in members]
-    if missing:
-        checks.append({"check": "required-members", "ok": False, "missing": missing})
-        return {"result": "MISMATCH", "first_discrepancy": f"incomplete packet: missing {missing}", "checks": checks, "zip_sha256": zs, "canonical_digest": None, "claim_id": None, "recompute": None}
-    checks.append({"check": "required-members", "ok": True})
+    if MANIFEST not in members:
+        checks.append({"check": "required-members", "ok": False, "missing": [MANIFEST]})
+        return {"result": "MISMATCH", "first_discrepancy": f"incomplete packet: missing [{MANIFEST!r}]", "checks": checks, "zip_sha256": zs, "canonical_digest": None, "claim_id": None, "recompute": None}
     try:
         man = json.loads(members[MANIFEST].decode("utf-8"))
     except (ValueError, UnicodeDecodeError):
         return unsupported("manifest is not JSON", zs)
-    if not isinstance(man, dict) or man.get("format") != FORMAT or not isinstance(man.get("files"), list) or not _HEX64.match(str(man.get("canonical_digest", ""))):
-        return unsupported("manifest invalid (format, files or canonical_digest)", zs)
+    if not isinstance(man, dict) or not isinstance(man.get("files"), list) or not _HEX64.match(str(man.get("canonical_digest", ""))):
+        return unsupported("manifest invalid (files or canonical_digest)", zs)
+    if man.get("format") not in SUPPORTED_FORMATS:
+        return unsupported(f"unsupported export format {man.get('format')!r}: this verifier supports {list(SUPPORTED_FORMATS)} and never reinterprets another schema", zs)
+    required = DATASET_REQUIRED_MEMBERS if man["format"] == DATASET_FORMAT else REQUIRED_MEMBERS          # the member set is fixed per format
+    missing = [m for m in required if m not in members]
+    if missing:
+        checks.append({"check": "required-members", "ok": False, "missing": missing})
+        return {"result": "MISMATCH", "first_discrepancy": f"incomplete packet: missing {missing}", "checks": checks, "zip_sha256": zs, "canonical_digest": None, "claim_id": None, "recompute": None}
+    checks.append({"check": "required-members", "ok": True})
+    if man["format"] == DATASET_FORMAT:
+        return _verify_dataset_export(members, man, zs, checks)
     cdig, cid = man["canonical_digest"], man.get("claim_id")
     first = None
     for f in man["files"]:
@@ -288,6 +383,18 @@ def verify_export(zip_path) -> dict:
     checks.append({"check": "canonical-form", "ok": True})
     if not isinstance(can, dict) or can.get("schema") != FORMAT or can.get("claim_id") != cid or not can.get("versions"):
         return unsupported("canonical content invalid (schema, claim_id or versions)", zs, cdig, cid)
+    first, rec = _verify_claim_canonical(can, checks)
+    if first:
+        return {"result": "MISMATCH", "first_discrepancy": first, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec}
+    return {"result": "SUCCESS", "first_discrepancy": None, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec,
+            "meaning": "exact bytes verified and the supported calculations reproduced from the packed claim versions and outcome; not a research interpretation, not proof of source authenticity, not a publication"}
+
+
+def _verify_claim_canonical(can: dict, checks: list) -> tuple[str | None, dict | None]:
+    """Content checks of one claim's canonical object: claim digests, outcome digest, event hashes, adjudication evidence,
+    research notes re-derived from the events, recomputed results/comparison and the recomputed dataset row.
+    Returns (first_discrepancy, recompute)."""
+    first = None
     # claim digests (recomputable only when the excerpt is present), event hashes, outcome digest
     for v in can["versions"]:
         c = v["claim"]
@@ -324,8 +431,26 @@ def verify_export(zip_path) -> dict:
         unknown = [h for h in a.get("evidence", []) if h not in hashes]
         if unknown:
             first = first or f"adjudication evidence references unknown event {unknown[0][:12]}"; checks.append({"check": "adjudication-evidence", "ok": False})
+    # research notes: re-derived from the packed note events (chain, links, text) and compared with the packed block
+    if "research_notes" in can:
+        derived = []
+        for ev in can.get("events", []):
+            if ev.get("kind") == "RESEARCH_NOTE_RECORDED":
+                derived.append({**ev["payload"], "superseded_by": None, "event_hash": ev["event_hash"], "time": ev["time"]})
+        by_id = {n["note_id"]: n for n in derived}
+        for n in derived:
+            if n.get("supersedes_note") in by_id:
+                by_id[n["supersedes_note"]]["superseded_by"] = n["note_id"]
+        packed = can["research_notes"]; vdig = {v["version_id"]: v["claim_digest"] for v in can["versions"]}
+        same = json.loads(canonical_json([_note_ref(n) for n in derived])) == packed
+        links_ok = all(vdig.get(n.get("version_ref")) == n.get("version_digest") and all(h in hashes for h in n.get("evidence", [])) and (n.get("supersedes_note") is None or n["supersedes_note"] in by_id) for n in packed)
+        checks.append({"check": "recompute-notes", "ok": same and links_ok, "note": f"{len(packed)} note(s), {len([n for n in packed if n.get('supersedes_note')])} correction(s)"})
+        if not (same and links_ok):
+            first = first or "research notes block differs from the notes re-derived from the packed events (or a note link is unknown)"
+    else:
+        checks.append({"check": "recompute-notes", "ok": None, "note": "not present in this export (written before research notes existed); nothing reinterpreted"})
     if first:
-        return {"result": "MISMATCH", "first_discrepancy": first, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": None}
+        return first, None
     # recompute the supported calculations from the packed versions and outcome
     try:
         st = _state_from_canonical(can)
@@ -334,7 +459,7 @@ def verify_export(zip_path) -> dict:
         revised = [v for v in st["versions"] if v["type"] == "REVISED"]
         recomparison = calc.compare_versions(orig_eff["claim"], revised[-1]["claim"]) if revised else None
     except Exception as exc:                                # a malformed packet must not produce a traceback
-        return unsupported(f"recompute raised {exc.__class__.__name__}: {exc}", zs, cdig, cid)
+        return f"recompute raised {exc.__class__.__name__}: {exc}", None
     same_results = json.loads(canonical_json(recomputed)) == can["results"]
     same_comparison = json.loads(canonical_json(recomparison)) == can.get("comparison")
     checks.append({"check": "recompute-results", "ok": same_results, "observed": recomputed["result"], "packed": can["results"].get("result")})
@@ -342,11 +467,75 @@ def verify_export(zip_path) -> dict:
     rec = {"result": recomputed["result"], "original": recomputed["original"]["result"], "revised": None if recomputed["revised"] is None else recomputed["revised"]["result"],
            "delta_vs_original_midpoint": recomputed.get("delta_vs_original_midpoint"), "delta_vs_revised_midpoint": recomputed.get("delta_vs_revised_midpoint"), "comparison": None if recomparison is None else recomparison["result"]}
     if not same_results:
-        return {"result": "MISMATCH", "first_discrepancy": f"recomputed result {recomputed['result']} differs from the packed results block", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec}
+        return f"recomputed result {recomputed['result']} differs from the packed results block", rec
     if not same_comparison:
-        return {"result": "MISMATCH", "first_discrepancy": "recomputed comparison differs from the packed comparison block", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec}
-    return {"result": "SUCCESS", "first_discrepancy": None, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec,
-            "meaning": "exact bytes verified and the supported calculations reproduced from the packed claim versions and outcome; not a research interpretation, not proof of source authenticity, not a publication"}
+        return "recomputed comparison differs from the packed comparison block", rec
+    if "dataset_row" in can:
+        try:
+            st2 = _state_from_canonical(can)
+            seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in can.get("events", []) if e.get("kind") == "SOURCE_REGISTERED"}
+            row = dataset.build_row(st2, seen)
+        except Exception as exc:
+            return f"dataset row recompute raised {exc.__class__.__name__}: {exc}", rec
+        same_row = json.loads(canonical_json(row)) == can["dataset_row"]
+        checks.append({"check": "recompute-dataset-row", "ok": same_row, "observed": row["row_digest"][:16], "packed": str(can["dataset_row"].get("row_digest", ""))[:16]})
+        rec["dataset_row_digest"] = row["row_digest"]
+        if not same_row:
+            return "recomputed dataset row differs from the packed dataset_row block", rec
+    else:
+        checks.append({"check": "recompute-dataset-row", "ok": None, "note": "not present in this export (written before dataset rows existed)"})
+    return None, rec
+
+
+def _verify_dataset_export(members: dict, man: dict, zs: str, checks: list) -> dict:
+    """A dataset-snapshot export: bytes, canonical form, every embedded claim's content checks, every row re-derived from its
+    claim content, counts/gaps and the snapshot identity recomputed."""
+    cdig = man["canonical_digest"]; first = None
+    for f in man["files"]:
+        if not isinstance(f, dict) or set(f) != {"path", "sha256", "size_bytes"} or f["path"] not in members:
+            first = first or f"manifest lists {f.get('path') if isinstance(f, dict) else f!r} which the archive lacks"; checks.append({"check": "sha256+length", "path": (f.get("path") if isinstance(f, dict) else None), "ok": False}); continue
+        data = members[f["path"]]; ok = (_sha(data) == f["sha256"] and len(data) == f["size_bytes"])
+        checks.append({"check": "sha256+length", "path": f["path"], "ok": ok, "observed": {"sha256": _sha(data), "size_bytes": len(data)}})
+        if not ok:
+            first = first or f"byte mismatch at {f['path']}"
+    if DATASET_MEMBER not in members:
+        return {"result": "MISMATCH", "first_discrepancy": f"incomplete packet: missing {DATASET_MEMBER}", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    raw = members[DATASET_MEMBER]
+    if _sha(raw) != cdig:
+        first = first or "canonical digest mismatch (dataset.json)"; checks.append({"check": "canonical-digest", "ok": False})
+    else:
+        checks.append({"check": "canonical-digest", "ok": True})
+    if first:
+        return {"result": "MISMATCH", "first_discrepancy": first, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    try:
+        can = json.loads(raw.decode("ascii"))
+    except (ValueError, UnicodeDecodeError):
+        return {"result": "UNSUPPORTED", "first_discrepancy": "dataset.json is not ASCII JSON", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    if canonical_json(can) != raw or not isinstance(can, dict) or can.get("schema") != DATASET_FORMAT or not isinstance(can.get("snapshot"), dict) or not isinstance(can.get("claims"), dict):
+        return {"result": "MISMATCH", "first_discrepancy": "dataset.json is not canonical or not a dataset snapshot", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    checks.append({"check": "canonical-form", "ok": True})
+    snap = can["snapshot"]; rows_re = []
+    for cid, cc in sorted(can["claims"].items()):
+        if not isinstance(cc, dict) or cc.get("schema") != FORMAT or cc.get("claim_id") != cid or not cc.get("versions"):
+            return {"result": "MISMATCH", "first_discrepancy": f"embedded claim {cid} invalid", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+        sub: list = []
+        f1, rec = _verify_claim_canonical(cc, sub)
+        checks.append({"check": "claim-content", "claim": cid, "ok": f1 is None, "note": f1 or f"{len(sub)} checks passed; recomputed {rec['result'] if rec else '—'}"})
+        if f1:
+            return {"result": "MISMATCH", "first_discrepancy": f"claim {cid}: {f1}", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+        rows_re.append(cc["dataset_row"] if "dataset_row" in cc else None)
+    if any(r is None for r in rows_re):
+        return {"result": "UNSUPPORTED", "first_discrepancy": "an embedded claim carries no dataset row; nothing reinterpreted", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    resnap = dataset.finish_snapshot(rows_re, snap.get("workspace_id"))
+    same_rows = json.loads(canonical_json(resnap["rows"])) == snap.get("rows"); same_counts = resnap["counts"] == snap.get("counts") and resnap["coverage_gaps"] == snap.get("coverage_gaps")
+    same_digest = dataset.snapshot_digest(snap) == can.get("snapshot_digest") == man.get("snapshot_digest")
+    checks.append({"check": "recompute-rows", "ok": same_rows, "note": f"{len(rows_re)} row(s) re-derived from the embedded claim content"})
+    checks.append({"check": "recompute-counts-and-gaps", "ok": same_counts}); checks.append({"check": "snapshot-digest", "ok": same_digest, "observed": dataset.snapshot_digest(snap)[:16]})
+    rec = {"result": "DATASET", "rows": len(rows_re), "snapshot_digest": dataset.snapshot_digest(snap), "empty": not rows_re}
+    if not (same_rows and same_counts and same_digest):
+        return {"result": "MISMATCH", "first_discrepancy": "dataset rows, counts/gaps or snapshot digest do not reproduce from the embedded claim content", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": rec}
+    return {"result": "SUCCESS", "first_discrepancy": None, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": rec,
+            "meaning": "exact bytes verified; every row re-derived from the embedded claim content, counts, gaps and the snapshot identity reproduced; a snapshot is a derivation of stored records, not a validated dataset product"}
 
 
 def publication_eligibility(can: dict) -> dict:
