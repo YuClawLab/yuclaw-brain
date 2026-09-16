@@ -1,0 +1,25 @@
+{
+ "record": "yuclaw-v8-release-requirement-decision/1",
+ "gate": 15,
+ "gate_name": "user comprehension test passes",
+ "status": "REMOVED_BY_OWNER",
+ "decision_utc": "2026-09-16",
+ "decided_by": "owner",
+ "decision_text": "Owner decision: remove Gate 15's human-comprehension study as a mandatory YUCLAW v8 release requirement. Do not require a study, route A/B selection, or a separate exception statement.",
+ "applies_to": {"product": "YUCLAW", "versions": "8.x (v8 releases)", "not_applied_to": "7.x and earlier: their historical Gate #15 results, the 7.0.1 route-B exception and the 7.x notes rules stay exactly as recorded"},
+ "meaning": [
+  "the human-comprehension study is not a required input to a v8 release; no route A/B selection and no separate exception statement are required or recorded",
+  "this is NOT a pass: no study was run, none is claimed, and the gate is never reported as PASSED, GREEN or 'study complete' for a v8 release",
+  "human benefit stays PENDING; every adjudication and note in the v8 evidence remains an automated simulated test action"
+ ],
+ "retained_technical_check": "tools/check_consumer_posture.py (five deterministic stranger personas) keeps running as an automated check: if it fails, gate 15 is RED and blocks; if it passes, gate 15 reports REMOVED_BY_OWNER (never GREEN)",
+ "unchanged_requirements": [
+  "allocation acceptance D1 recorded by document id + sha256 (publisher policy stage)",
+  "artifact identity, one final artifact set, prior-release preservation and tripwires",
+  "0 RED gates and notes that correspond to the recorded policy",
+  "the owner's publication-authorization sentence binding the frozen source sha and tree (release_authorized stays false until then)"
+ ],
+ "historical_results_preserved": "V8-003 (9efdd52d), V8-006 (ca50b42e), V8-007 (479a5aef/30a5cf4e) and V8-008 (3d43089e/25783e87) gate tables keep MANUAL_REVIEW as recorded; nothing is rewritten",
+ "recorded_by": "V8-009 (2026-09-16) from the owner's order text above",
+ "not_advice": "Research and education only. Not investment advice."
+}

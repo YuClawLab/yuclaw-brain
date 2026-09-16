@@ -6,14 +6,16 @@ Inputs, all explicit and checked (nothing free-typed decides what "ships"):
   * the machine-readable release scope  — v8/scope/v8.0.0-scope.json (enabled workstreams, minimal RIV/ACT
     behaviour, experimental default-off modules, deferred work, the owner's backup policy and its exact disclosure);
   * the recorded journey evidence       — the V8-005 scorecards (7/7 + research notes, dataset, SCI DEMONSTRATED);
-  * the release policy record           — allocation (D1) and Gate #15 route (D2) as RECORDED by the publisher's
-    policy stage; a missing record is stated as NOT RECORDED and never passes correspondence.
+  * the release policy record           — allocation (D1) as RECORDED by the publisher's policy stage, with Gate #15
+    NOT_REQUIRED bound to the owner's recorded v8 decision (v8/policy/gate15_release_requirement.json: the human-
+    comprehension study is not a required input to a v8 release — REMOVED_BY_OWNER, never PASSED); a missing record
+    is stated as NOT RECORDED and never passes correspondence.
 Version support is narrow: only 8.0.0 (SUPPORTED_VERSIONS). The 7.x composer (v3/release/notes_v7.py) is unchanged
 and stays the composer for 7.x. Unknown versions have no composer and never correspond.
 
 Distinctions kept apart on purpose: (1) version SUPPORT (this module knows 8.0.0), (2) CORRESPONDENCE between the
 notes text and the policy record (check_correspondence; empty list = correspond), (3) SATISFACTION of release gates
-(the generator's gate table; Gate #15 keeps its actual status; nothing here changes a gate), (4) publication
+(the generator's gate table; Gate #15 reports REMOVED_BY_OWNER for v8, never PASSED; nothing here changes a gate), (4) publication
 AUTHORIZATION (the owner's sentence, accepted by the publisher only with 0 RED + a valid policy + corresponding notes).
 A composable 8.0.0 note with a PROPOSED or absent policy is a draft: it says so and it does not correspond.
 """
@@ -26,6 +28,62 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[1]
 SUPPORTED_VERSIONS = ("8.0.0",)
 SCOPE_PATH = _REPO / "v8" / "scope" / "v8.0.0-scope.json"
+GATE15_DECISION = _REPO / "v8" / "policy" / "gate15_release_requirement.json"
+def _activations():
+    """Every proposed activation, as in 7.x (names unchanged: the correspondence check keys on them); only the Gate #15
+    line's meaning differs for v8: the study is not a required input (owner decision), which is not a pass."""
+    import sys
+    if str(_REPO) not in sys.path:
+        sys.path.insert(0, str(_REPO))
+    from v3.release import notes_v7
+    return tuple((name, "kit ships; no study run; requirement removed by the owner for v8 releases — not a pass; human benefit PENDING" if name == "Gate #15 human study" else meaning)
+                 for name, meaning in notes_v7.ACTIVATIONS)
+
+
+def gate15_decision(path: Path | None = None) -> dict | None:
+    """The owner's recorded v8 decision (with its sha256) or None; a record with any status other than REMOVED_BY_OWNER is refused."""
+    import hashlib
+    path = GATE15_DECISION if path is None else path
+    if not path.exists():
+        return None
+    d = json.loads(path.read_text())
+    if d.get("record") != "yuclaw-v8-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner" or d.get("status") != "REMOVED_BY_OWNER":
+        raise ValueError("gate 15 decision record is not the owner's REMOVED_BY_OWNER decision for v8")
+    return {**d, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+def activation_status(policy: dict | None) -> str:
+    active = set((policy or {}).get("activations_active") or [])
+    out = []
+    for name, meaning in _activations():
+        out.append(f"- {name}: {'ACTIVE — ' + str((policy or {}).get('activation_records', {}).get(name, 'record in the private release-policy file')) if name in active else 'INACTIVE — ' + meaning}")
+    out.append("- Phase-5 contribution anatomy: a READER of registered protocol lines and registered results; it is not a registered result and registers nothing")
+    return "\n".join(out)
+
+
+def gate15_line(policy: dict | None, decision: dict | None) -> str:
+    """The Gate #15 disclosure for a v8 release: the requirement is removed by the owner (bound by record hash when a
+    policy is recorded); the study was never run; the gate is never reported as passed."""
+    d = decision or {}
+    ref = (policy or {}).get("gate15", {}).get("decision_record_sha256") or d.get("sha256") or ""
+    return (f"- Gate #15 (user comprehension test passes): requirement REMOVED BY OWNER for v8 releases on {d.get('decision_utc', 'date not recorded')} "
+            f"(decision record sha256 {ref[:16]}…); no human comprehension study was run and none is claimed — not a pass; "
+            "the automated consumer-posture scaffold check is retained; human benefit PENDING")
+
+
+def policy_disclosure(policy: dict | None, decision: dict | None) -> str:
+    if not policy:
+        return ("- Release policy: NOT RECORDED — owner decision D1 (allocation) is pending; these notes are a draft and are not publishable until the policy record exists\n"
+                + gate15_line(None, decision))
+    al = policy.get("allocation", {})
+    doc = al.get("document_id", "unknown"); dsha = al.get("sha256", "")
+    lines = [f"- Allocation: decision {al.get('decision', 'unknown')} on allocation document `{doc}` (sha256 {dsha[:16]}…)"]
+    g = policy.get("gate15", {})
+    if g.get("route") == "NOT_REQUIRED":
+        lines.append(gate15_line(policy, decision))
+    else:
+        lines.append(f"- Gate #15: route {g.get('route')!r} is not applicable to a v8 release (the requirement was removed by the owner; NOT_REQUIRED expected)")
+    return "\n".join(lines)
 SCORECARDS = (_REPO / "v8" / "V8-005" / "scorecard_fixtures.json", _REPO / "v8" / "V8-005" / "scorecard_mchp.json")
 EXPECTED_STEPS = ("source", "claim", "comparison", "calculation", "history", "adjudication", "export")
 EXPECTED_FEATURES = ("research_notes", "dataset", "sci")
@@ -118,8 +176,8 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
     import sys
     if str(_REPO) not in sys.path:
         sys.path.insert(0, str(_REPO))
-    from v3.release import notes_v7                          # shared, unchanged helpers: evidence totals, activation lines, policy disclosure wording
-    m = matrix or capability_matrix()
+    from v3.release import notes_v7                          # shared, unchanged helper: evidence totals
+    m = matrix or capability_matrix(); dec = gate15_decision()
     if m["version"] != version:
         raise ValueError(f"scope release {m['version']} != version {version}")
     head, rest = v6_style_public.split("#### Shipped objects", 1)
@@ -128,34 +186,56 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
     parts = [head.rstrip("\n"), "",
              f"#### New in {version} — the source-to-export commitment workbench (local, loopback only)", "", feature_account(m), "",
              "#### Evidence totals (public scoreboard at composition)", "", notes_v7.evidence_totals(board), "",
-             "#### Activation status (every proposed activation)", "", notes_v7.activation_status(policy), "",
-             "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", notes_v7.policy_disclosure(policy), "",
+             "#### Activation status (every proposed activation)", "", activation_status(policy), "",
+             "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", policy_disclosure(policy, dec), "",
              "#### Continuing objects (unchanged from 7.0.1) — name · receipt · status", "", objects, "",
              "#### Not in this release", "", not_in_this_release(m, tail), ""]
     return "\n".join(parts)
 
 
-def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = None) -> list[str]:
-    """Problems that make the notes unpublishable (empty list = correspond). The policy half reuses the 7.x rules
-    unchanged (allocation id + sha prefix + decision; route B verbatim text and NOT SATISFIED; route A gate input;
-    every activation line; the Phase-5 reader statement; banned phrase). The 8.0.0 half checks the capability
-    account against the actual matrix: every enabled workstream present, the backup disclosure verbatim, the
-    retrospective/ineligible corpus statement, the simulated-review statement and PENDING benefit, the absent
-    experimental modules, and no scope expansion."""
-    import sys
-    if str(_REPO) not in sys.path:
-        sys.path.insert(0, str(_REPO))
-    from v3.release import notes_v7
-    problems = list(notes_v7.check_correspondence(notes, policy))
-    if policy and str(policy.get("version")) != SUPPORTED_VERSIONS[0]:
+def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = None, decision: dict | None = None) -> list[str]:
+    """Problems that make the notes unpublishable (empty list = correspond). Policy half for v8: allocation id + sha
+    prefix + decision, accepted allocation, every activation line, the Phase-5 reader statement, banned phrase, and
+    Gate #15 = NOT_REQUIRED bound to the owner's recorded decision (record hash must match the tree; the disclosure
+    line must be present; the notes must never call the gate passed). Routes A/B do not apply to a v8 release. The
+    8.0.0 half checks the capability account against the actual matrix: every enabled workstream present, the backup
+    disclosure verbatim, the retrospective/ineligible corpus statement, the simulated-review statement and PENDING
+    benefit, the absent experimental modules, and no scope expansion."""
+    problems = []
+    if not policy:
+        return ["no release-policy record"]
+    al = policy.get("allocation", {}); g = policy.get("gate15", {})
+    if not al.get("document_id") or f"`{al['document_id']}`" not in notes:
+        problems.append("allocation document id absent from the notes")
+    if not al.get("sha256") or f"sha256 {al['sha256'][:16]}…" not in notes:
+        problems.append("allocation document sha256 prefix absent from the notes")
+    if f"decision {al.get('decision')}" not in notes:
+        problems.append("allocation decision absent from the notes")
+    if str(policy.get("version")) != SUPPORTED_VERSIONS[0]:
         problems.append(f"policy record is for version {policy.get('version')!r}, not {SUPPORTED_VERSIONS[0]}")
-    if policy and policy.get("allocation", {}).get("accepted") is not True:
+    if al.get("accepted") is not True:
         problems.append("allocation is not recorded as accepted (a PROPOSED allocation document is not a decision)")
-    g15 = (policy or {}).get("gate15", {})
-    if policy and g15.get("route") == "A" and not (g15.get("gate_input") == "CANDIDATE_GATE_INPUT" and g15.get("gate_15_proposed") == "GREEN"):
-        problems.append("route A: policy record lacks an accepted gate input (CANDIDATE_GATE_INPUT proposing GREEN); the 7.x text check alone would accept 'None'")
-    if policy and g15.get("route") == "B" and not str(g15.get("exception_text") or "").strip():
-        problems.append("route B: policy record carries no exception text")
+    dec = decision if decision is not None else gate15_decision()
+    if g.get("route") != "NOT_REQUIRED":
+        problems.append(f"Gate #15 route {g.get('route')!r} is not applicable to a v8 release: the owner removed the requirement (NOT_REQUIRED expected; no study, route A/B or exception statement)")
+    else:
+        if dec is None:
+            problems.append("Gate #15 recorded as NOT_REQUIRED but the owner's decision record is absent from the tree")
+        elif g.get("status") != "REMOVED_BY_OWNER" or g.get("decision_record_sha256") != dec["sha256"]:
+            problems.append("Gate #15 NOT_REQUIRED is not bound to the owner's decision record in the tree (status or record sha256 mismatch)")
+        elif gate15_line(policy, dec) not in notes:
+            problems.append("Gate #15 removed-requirement disclosure missing or altered")
+    if re.search(r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|satisfied)\b", notes):
+        problems.append("Gate #15 is described as passed or complete — it never is (requirement removed, study not run)")
+    active = set(policy.get("activations_active") or [])
+    for name, _ in _activations():
+        want = f"- {name}: {'ACTIVE' if name in active else 'INACTIVE'}"
+        if want not in notes:
+            problems.append(f"activation line missing or wrong for {name!r}")
+    if "Phase-5 contribution anatomy: a READER of registered protocol lines" not in notes:
+        problems.append("Phase-5 reader statement missing")
+    if re.search(r"independently replicated", notes, re.I):
+        problems.append("banned phrase")
     m = matrix or capability_matrix()
     for ws in list(m["enabled"]) + list(m["minimal"]):
         line = FEATURE_LINES[ws].format(steps=" → ".join(m["steps"]))

@@ -1,5 +1,8 @@
 # Candidate-designation proposal for 8.0.0 — revised on the corrected integration state (V8-008; nothing applied)
 
+> **Note (V8-009, 2026-09-16):** the Gate #15 route decision named in Step 2 no longer exists — the owner removed the requirement; the policy stage records D1 alone (`policy <allocation file>`) with Gate #15 NOT_REQUIRED. This proposal's source state predates the V8-009 change; a re-staged proposal on the new HEAD is prepared after the pause (after 2026-09-18 18:00 Asia/Shanghai).
+
+
 Research and education only. Not investment advice. This is a proposal for the owner's designation order. It is not a freeze and not a publication authorization; `release_authorized` stays false through designation and freeze. The staging-only weekly-note render commits (`30a5cf4e` in V8-007, `25783e87` in V8-008) are historical staging evidence, never candidates.
 
 ## The corrected source state and the exact change it would apply

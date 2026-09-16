@@ -1,4 +1,4 @@
-"""V8-008 TB-1: the 8.0.0 Tier-2 notes composition path. Fixed inputs only; every policy record here is a SYNTHETIC TEST
+"""V8-008 TB-1 + V8-009 (Gate #15 requirement removed by the owner): the 8.0.0 Tier-2 notes composition path. Fixed inputs only; every policy record here is a SYNTHETIC TEST
 FIXTURE (never an owner decision). Checks: 7.x behaviour preserved; 8.0.0 reaches its own composer instead of the
 7.x-only sentinel; missing / proposed / mismatched / contradictory D1-D2 inputs never correspond; unknown versions stay
 unsupported; a valid synthetic 8.0.0 policy passes only the correspondence checks while inconsistent notes fail."""
@@ -42,17 +42,20 @@ def scorecard(label, ok=True):
     st = "DEMONSTRATED" if ok else "NOT_DEMONSTRATED"
     return {"mode": label, "score": "7/7" if ok else "6/7", "candidate": {"commit": "d" * 40}, "features": {k: {"status": st} for k in ("research_notes", "dataset", "sci")}}
 MATRIX = n8.capability_matrix(scope=SCOPE, steps=list(server.STEPS), scorecards=[scorecard("fixtures"), scorecard("mchp")])
-SYN_EXC = "SYNTHETIC TEST FIXTURE WORDING (not the owner's, never a decision): exception for Gate #15 for 8.0.0 only; the requirement is NOT SATISFIED; the gate remains MANUAL_REVIEW. Date 2026-09-16."
 BOARD = json.loads((REPO / "docs" / "receipts" / "scoreboard.json").read_text())
+DECISION = n8.gate15_decision()                                                                        # the owner's tracked v8 decision (REMOVED_BY_OWNER)
 
 
-def synthetic_policy(route="B", version="8.0.0", accepted=True):
+def synthetic_policy(route="NOT_REQUIRED", version="8.0.0", accepted=True, record_sha=None):
+    """A SYNTHETIC policy record (never an owner decision). NOT_REQUIRED is the only v8 route: Gate #15 bound to the owner's decision record."""
     p = {"version": version, "allocation": {"accepted": accepted, "decision": "D1-ACCEPT" if accepted else "PROPOSED — synthetic fixture", "document_id": "SYNTHETIC-TEST-FIXTURE-NOT-A-DECISION", "sha256": "ab" * 32},
          "gate15": {"route": route}, "activations_active": []}
-    if route == "B":
-        p["gate15"].update(exception_text=SYN_EXC)
+    if route == "NOT_REQUIRED":
+        p["gate15"].update(status="REMOVED_BY_OWNER", decision_record_sha256=record_sha or DECISION["sha256"], decision_utc=DECISION["decision_utc"])
+    elif route == "B":
+        p["gate15"].update(exception_text="SYNTHETIC EXCEPTION WORDING (never the owner's)")
     elif route == "A":
-        p["gate15"].update(gate_input="CANDIDATE_GATE_INPUT", gate_15_proposed="GREEN", coverage={"materials_manifest_sha256": "c" * 64, "wheel_sha256": "d" * 64})
+        p["gate15"].update(gate_input="CANDIDATE_GATE_INPUT", gate_15_proposed="GREEN", coverage={})
     return p
 
 
@@ -90,44 +93,50 @@ class Dispatch(unittest.TestCase):
 class PolicyInputs(unittest.TestCase):
     def test_missing_policy_is_a_visible_draft_and_never_corresponds(self):
         text = compose8(None)
-        self.assertIn("Release policy: NOT RECORDED", text); self.assertIn("D1 (allocation) and D2 (Gate #15 route) are pending", text)
+        self.assertIn("Release policy: NOT RECORDED", text); self.assertIn("owner decision D1 (allocation) is pending", text); self.assertIn("requirement REMOVED BY OWNER", text)
         self.assertEqual(n8.check_correspondence(text, None, MATRIX), ["no release-policy record"])
 
     def test_proposed_allocation_is_not_a_decision(self):
-        proposed = synthetic_policy(route=None, accepted=False); proposed["gate15"] = {"route": None}
+        proposed = synthetic_policy(accepted=False)
         text = compose8(proposed); problems = n8.check_correspondence(text, proposed, MATRIX)
         self.assertTrue(any("not recorded as accepted" in p for p in problems), problems)
-        self.assertTrue(any("no Gate #15 route" in p for p in problems), problems)
+        routeless = synthetic_policy(route=None)
+        self.assertTrue(any("not applicable to a v8 release" in p for p in n8.check_correspondence(compose8(routeless), routeless, MATRIX)))
 
     def test_mismatched_and_contradictory_records_fail(self):
-        good = synthetic_policy("B"); text = compose8(good); self.assertEqual(n8.check_correspondence(text, good, MATRIX), [])
+        good = synthetic_policy(); text = compose8(good); self.assertEqual(n8.check_correspondence(text, good, MATRIX), [])
         other_doc = copy.deepcopy(good); other_doc["allocation"]["document_id"] = "SYNTHETIC-OTHER-DOCUMENT"
         self.assertIn("allocation document id absent from the notes", n8.check_correspondence(text, other_doc, MATRIX))
-        other_text = copy.deepcopy(good); other_text["gate15"]["exception_text"] = SYN_EXC.replace("2026-09-16", "2026-09-17")
-        self.assertIn("route B: the owner's exception text is not quoted verbatim", n8.check_correspondence(text, other_text, MATRIX))
-        no_text = copy.deepcopy(good); del no_text["gate15"]["exception_text"]
-        self.assertTrue(any("not quoted verbatim" in p for p in n8.check_correspondence(compose8(no_text), no_text, MATRIX)))
-        route_a_no_input = synthetic_policy("A"); del route_a_no_input["gate15"]["gate_input"]
-        self.assertTrue(any("route A" in p for p in n8.check_correspondence(compose8(route_a_no_input), route_a_no_input, MATRIX)))
-        v7 = synthetic_policy("B", version="7.0.0")
+        for route in ("A", "B"):                                                                     # routes and exception statements do not exist for v8
+            pol = synthetic_policy(route)
+            self.assertTrue(any("not applicable to a v8 release" in p for p in n8.check_correspondence(compose8(pol), pol, MATRIX)), route)
+            self.assertIn("is not applicable to a v8 release", compose8(pol))
+        unbound = synthetic_policy(record_sha="0" * 64)                                             # NOT_REQUIRED not bound to the tree's record
+        self.assertTrue(any("not bound to the owner's decision record" in p for p in n8.check_correspondence(compose8(unbound), unbound, MATRIX)))
+        no_status = synthetic_policy(); del no_status["gate15"]["status"]
+        self.assertTrue(any("not bound" in p for p in n8.check_correspondence(compose8(no_status), no_status, MATRIX)))
+        v7 = synthetic_policy(version="7.0.0")
         self.assertTrue(any("not 8.0.0" in p for p in n8.check_correspondence(compose8(v7), v7, MATRIX)))
         active = copy.deepcopy(good); active["activations_active"] = ["sentinel policy"]
         self.assertTrue(any("sentinel policy" in p for p in n8.check_correspondence(text, active, MATRIX)))
 
     def test_valid_synthetic_policy_passes_only_correspondence(self):
-        for route in ("B", "A"):
-            pol = synthetic_policy(route); text = compose8(pol)
-            self.assertEqual(n8.check_correspondence(text, pol, MATRIX), [], route)
-            self.assertIn("SYNTHETIC-TEST-FIXTURE-NOT-A-DECISION", text)
-            if route == "B":
-                self.assertIn(f"  > {SYN_EXC}", text); self.assertIn("NOT SATISFIED", text)      # the gate is disclosed as unsatisfied, never as passed
-            for name, _ in notes_v7.ACTIVATIONS:
-                self.assertIn(f"- {name}: INACTIVE", text)
+        pol = synthetic_policy(); text = compose8(pol)
+        self.assertEqual(n8.check_correspondence(text, pol, MATRIX), [])
+        self.assertIn("SYNTHETIC-TEST-FIXTURE-NOT-A-DECISION", text)
+        self.assertIn("requirement REMOVED BY OWNER for v8 releases on 2026-09-16", text); self.assertIn(DECISION["sha256"][:16], text)
+        self.assertIn("no human comprehension study was run and none is claimed — not a pass", text)
+        self.assertNotRegex(text, r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|satisfied)\b")            # never reported as passed
+        self.assertIn("- Gate #15 human study: INACTIVE — kit ships; no study run; requirement removed by the owner for v8 releases — not a pass; human benefit PENDING", text)
+        for name, _ in notes_v7.ACTIVATIONS:
+            self.assertIn(f"- {name}: INACTIVE", text)
+        passed = text.replace("none is claimed — not a pass", "PASSED")
+        self.assertTrue(any("described as passed" in p or "disclosure missing or altered" in p for p in n8.check_correspondence(passed, pol, MATRIX)))
         # correspondence is a text-vs-record relation only: nothing here reads or changes a gate table or an authorization
         self.assertFalse(hasattr(n8, "release_authorized")); self.assertNotIn("release_authorized", text)
 
     def test_inconsistent_notes_fail_against_the_same_valid_record(self):
-        pol = synthetic_policy("B"); text = compose8(pol)
+        pol = synthetic_policy(); text = compose8(pol)
         cases = {
             "backup disclosure absent or not verbatim": text.replace("Restore not demonstrated.", "Restore demonstrated."),
             "real-data statement": text.replace("replayed RETROSPECTIVELY", "replayed prospectively"),
@@ -152,19 +161,19 @@ class PolicyInputs(unittest.TestCase):
         with self.assertRaises(ValueError):
             n8.capability_matrix(scope=wider, steps=list(server.STEPS), scorecards=[scorecard("fixtures")])
         weak = n8.capability_matrix(scope=SCOPE, steps=list(server.STEPS), scorecards=[scorecard("fixtures", ok=False)])
-        self.assertFalse(weak["demonstrated"]); pol = synthetic_policy("B"); text = compose8(pol, weak)
+        self.assertFalse(weak["demonstrated"]); pol = synthetic_policy(); text = compose8(pol, weak)
         self.assertIn("Journey evidence INCOMPLETE", text); self.assertEqual(n8.check_correspondence(text, pol, weak), [])
         self.assertTrue(any("journey evidence is not complete" in p for p in n8.check_correspondence(text.replace("Journey evidence INCOMPLETE", "Journey evidence"), pol, weak)))
 
     def test_tier2_rules_and_real_tree_matrix(self):
-        text = compose8(synthetic_policy("B"))
+        text = compose8(synthetic_policy())
         for banned in ("docs/", "registry/", "output/", "tools/", "check_", ".py", "seed", "bootstrap", "CI [", "{'", "generated"):
             self.assertNotIn(banned, text, banned)
         self.assertNotIn("independently replicated", text.lower())
         real = n8.capability_matrix()                                                                # the actual tree: scope file + shipped step inventory + recorded scorecards
         self.assertEqual(real["enabled"], SCOPE["enabled_workstreams"]); self.assertEqual(sorted(real["minimal"]), ["ACT", "RIV"])
         self.assertEqual(real["experimental"], ["COM", "PRC", "SHD", "EVO"]); self.assertTrue(real["demonstrated"], real["evidence"])
-        self.assertEqual(n8.check_correspondence(n8.compose(V6_STYLE.format(v="8.0.0"), version="8.0.0", policy=synthetic_policy("A"), board=BOARD), synthetic_policy("A")), [])
+        self.assertEqual(n8.check_correspondence(n8.compose(V6_STYLE.format(v="8.0.0"), version="8.0.0", policy=synthetic_policy(), board=BOARD), synthetic_policy()), [])
 
 
 if __name__ == "__main__":

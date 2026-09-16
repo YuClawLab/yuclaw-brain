@@ -1,5 +1,8 @@
 # D2 — Gate #15 decision package for 8.0.0 (V8-008, 2026-09-16; NO decision recorded; NO route selected)
 
+> **SUPERSEDED BY OWNER DECISION (2026-09-16, V8-009):** the owner removed the Gate #15 human-comprehension study as a mandatory v8 release requirement. No study, no route A/B selection and no exception statement are required; the publisher records Gate #15 as NOT_REQUIRED bound to `v8/policy/gate15_release_requirement.json` (status REMOVED_BY_OWNER — never PASSED; human benefit PENDING). The options below no longer apply to v8; the text is retained unchanged as the historical record.
+
+
 Supersedes the V8-007 package with the revised candidate and the TB-1 repair; the rules, options and status are otherwise unchanged. Research and education only. Not investment advice.
 
 ## Actual status

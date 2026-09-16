@@ -16,17 +16,17 @@
  "governing_rules": {
   "recording": "internal/release_v8_0_0/publish_v800.py cmd_policy: the allocation file must carry decision D1-ACCEPT or D1-AMEND*, a unique document_id and version 8.0.0; every activation must be INACTIVE unless an activation record is attached; the policy stage records the document by id + sha256 + size and the authorization later binds that policy record's hash",
   "validation": "publish_v800.py policy_valid: allocation.accepted must be true with document_id and a 64-hex sha256 for version 8.0.0; otherwise every publishing stage stops before any write",
-  "coupling_with_D2": "cmd_policy records D1 and the Gate #15 route in ONE policy record (`policy <allocation file> <A|B> [<exception file> | <gate input file>]`); an accepted allocation cannot be recorded without a route, and route B is closed until the owner's 8.0.0 wording is bound into the publisher"
+  "coupling_with_D2": "SUPERSEDED (owner decision 2026-09-16): cmd_policy records D1 alone — `policy <allocation file>` — and writes Gate #15 as NOT_REQUIRED / REMOVED_BY_OWNER bound to the tracked decision record's sha256; no route A/B selection and no exception statement are required or accepted; a study is not a required input (and none was run — this is not a pass)"
  },
  "what_D1_ACCEPT_permits": [
   "records that the owner accepts the 8.0.0 allocation scope and every activation status below",
   "satisfies the allocation half of policy_valid once recorded by the policy stage"
  ],
  "what_D1_ACCEPT_does_not_permit": [
-  "it selects no Gate #15 route (D2)",
   "it designates and freezes no candidate (the designation order and the freeze are separate acts)",
   "it authorizes no publication: release_authorized stays false until the owner's authorization sentence binds the frozen sha and tree and every precondition holds",
-  "it activates nothing: every activation stays INACTIVE"
+  "it activates nothing: every activation stays INACTIVE",
+  "it says nothing about Gate #15: the requirement is removed by the owner (NOT_REQUIRED), never passed; human benefit stays PENDING"
  ],
  "activations": {
   "real receipt program": "INACTIVE (no reviewer appointed, no registration record adopted)",
@@ -49,19 +49,20 @@
   "v8/V8-005/scorecard_*.json + packaging.json (d70edd02: 7/7 + notes, dataset, SCI DEMONSTRATED from the checkout and both installed artifacts)",
   "v8/V8-006/gate6_correction.json, restage_measurement.json, tripwire_observations.json, gates.json (staged 18/1/1)",
   "v8/V8-007/provenance.json, coherent_candidate.json, weekly_note_reconciliation.json, gates.json (coherent staging 19 GREEN / 1 MANUAL_REVIEW; wheel bytes demonstrated 7/7 in the V8-006 rehearsal re-run)",
-  "v8/V8-008/tb1_repair.json, gates.json (revised candidate 3d43089e: run 1 as staged 18 GREEN / 1 RED weekly note / 1 MANUAL_REVIEW; run 2 with a staging render 19 GREEN / 1 MANUAL_REVIEW; correspondence ['no release-policy record'] in both), roadmap_reconciliation.json"
+  "v8/V8-008/tb1_repair.json, gates.json (revised candidate 3d43089e: run 1 as staged 18 GREEN / 1 RED weekly note / 1 MANUAL_REVIEW; run 2 with a staging render 19 GREEN / 1 MANUAL_REVIEW; correspondence ['no release-policy record'] in both), roadmap_reconciliation.json",
+  "v8/policy/gate15_release_requirement.json (owner decision 2026-09-16: REMOVED_BY_OWNER); v8/V8-009/README.md"
  ],
  "remaining_obligations": [
-  "owner designates the candidate by ordering the version patch applied to the branch (v8/V8-008/designation_proposal.md), then the freeze-day renders and the freeze",
-  "owner records D1 together with D2 by running the policy stage with this document edited to D1-ACCEPT (route A or B); route B first needs the owner's 8.0.0 wording bound into the publisher",
-  "final artifact set built or adopted by the publisher from the authorized commit and verified; the preliminary pair above is not it"
+  "owner designates the candidate by ordering the version patch applied to the branch (a re-staged proposal on the post-V8-009 HEAD is needed; paused until after 2026-09-18 18:00 Asia/Shanghai), then the freeze-day renders and the freeze",
+  "owner records D1 by running the policy stage with this document edited to D1-ACCEPT (`policy <file>`; Gate #15 NOT_REQUIRED is recorded automatically)",
+  "final artifact set built or adopted by the publisher from the authorized commit and verified; the preliminary pair is not it"
  ],
  "not_advice": "Research and education only. Not investment advice.",
- "revision": "2 (V8-008, 2026-09-16) — supersedes revision 1 in v8/V8-007/; the document id is unchanged because nothing was recorded; the recorded sha256 will be that of the file the owner submits",
+ "revision": "3 (V8-009, 2026-09-16) — Gate #15 requirement removed by the owner: the policy stage now records D1 alone with Gate #15 = NOT_REQUIRED (bound to v8/policy/gate15_release_requirement.json); no route or exception file. Document id unchanged (nothing recorded yet)",
  "what_changes_on_acceptance": [
   "the owner edits `decision` to `D1-ACCEPT` (or `D1-AMEND: <note>`); every activation stays INACTIVE unless an activation record is attached",
-  "the publisher's policy stage records the file by document_id + sha256 + size together with the Gate #15 route (D2) in ONE policy record; the allocation half of policy_valid is then satisfied",
-  "the 8.0.0 notes composer discloses the allocation decision, document id and sha256 prefix verbatim; the notes then correspond to the record only if D2 is also recorded",
+  "the publisher's policy stage records the file by document_id + sha256 + size together with Gate #15 = NOT_REQUIRED (bound to the owner's decision record); policy_valid is then satisfied when the release-state manifest reports gate 15 REMOVED_BY_OWNER",
+  "the 8.0.0 notes composer discloses the allocation decision, document id and sha256 prefix verbatim and the removed Gate #15 requirement (not a pass); the notes then correspond to the record",
   "nothing else changes: no designation, no freeze, no authorization, no activation, no publication"
  ]
 }

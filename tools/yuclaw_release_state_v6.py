@@ -7,7 +7,7 @@ themselves (ORDER 2026-09-02A restart rules; ORDER 2026-09-03B step 6;
 ORDER 2026-09-05A P1.2, re-issued for 2026-09-04: two-tier notes, gate #16
 semantics check, documented infrastructure fact).
 
-Vocabulary (G2): GREEN | RED | MANUAL_REVIEW | PENDING_EXTERNAL |
+Vocabulary (G2): GREEN | RED | MANUAL_REVIEW | REMOVED_BY_OWNER (gate 15, v8 releases) | PENDING_EXTERNAL |
 DEFERRED-BLOCKING. Nothing here flips release_authorized (A-6: only the
 release-day order's Phase 2 may, and it does so outside the tree). Numbers
 are derived, never typed.
@@ -272,6 +272,36 @@ Gate #16: {g16['result']} — {g16['disclosure']}.
 {public}"""
 
 
+GATE15_DECISION = _REPO / "v8" / "policy" / "gate15_release_requirement.json"
+
+
+def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
+    """The owner's recorded decision on the Gate #15 requirement for v8 releases, or None when no such decision
+    applies (7.x and earlier keep their historical rules). A record that claims anything other than
+    REMOVED_BY_OWNER (for example PASSED) is refused loudly: the study was never run and is never reported as passed."""
+    path = GATE15_DECISION if path is None else path
+    if not version.startswith("8.") or not path.exists():
+        return None
+    d = json.loads(path.read_text())
+    if d.get("record") != "yuclaw-v8-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner":
+        raise ValueError("gate 15 decision record is not the owner's v8 requirement decision")
+    if d.get("status") != "REMOVED_BY_OWNER":
+        raise ValueError(f"gate 15 decision record status {d.get('status')!r} is not REMOVED_BY_OWNER (a study result is never recorded here)")
+    return {**d, "sha256": _sha_bytes(path.read_bytes())}
+
+
+def gate15_result(version: str, scaffold_ok: bool, decision: dict | None) -> tuple[str, str]:
+    """(result, evidence) for gate 15. The automated consumer-posture scaffold check is retained for every version:
+    RED when it fails. When it passes: 7.x (or no owner decision) -> MANUAL_REVIEW exactly as before; a v8 release
+    with the owner's recorded decision -> REMOVED_BY_OWNER (a non-required status; never GREEN or PASSED)."""
+    if not scaffold_ok:
+        return "RED", "consumer-posture scaffold FAILED (automated check retained); the human comprehension study does not exist"
+    if decision is None:
+        return "MANUAL_REVIEW", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+    return "REMOVED_BY_OWNER", (f"requirement removed by the owner on {decision['decision_utc']} for v8 releases (decision record sha256 {decision['sha256'][:16]}…); "
+                                "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING")
+
+
 NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1)
 
 
@@ -302,7 +332,7 @@ def main() -> int:
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
     ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
-    ap.add_argument("--release-policy", help="private release-policy record (allocation + Gate #15 route); the 7.x and 8.0.0 public notes are composed from it and bound to it")
+    ap.add_argument("--release-policy", help="private release-policy record (allocation; Gate #15 route for 7.x, NOT_REQUIRED for v8 releases per the owner's recorded decision); the 7.x and 8.0.0 public notes are composed from it and bound to it")
     a = ap.parse_args()
     ev = json.loads(Path(a.evidence).read_text())
     now = datetime.now(timezone.utc).isoformat()
@@ -376,6 +406,7 @@ def main() -> int:
     canada = _canada_fact()
 
     G = lambda c: "GREEN" if c else "RED"
+    g15_dec = gate15_requirement(VERSION)                  # the owner's recorded v8 decision (None for 7.x: rules unchanged)
     gates = {
         1: (G(p0_ok), "bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 file sha256 == line-81 method_hash"),
         2: (G(True), f"Registry.verify_chain on load: {len(lines)} lines, tip {tip[:16]}"),
@@ -392,7 +423,7 @@ def main() -> int:
         12: (G(ok("check_site_walk.py") and ok("check_index_completeness.py") and ok("check_copy_integrity.py")), "site-walk: all links + anchors resolve; index completeness; copy integrity"),
         13: (G(neg_preserved), f"discovery status_counts {_plain_counts(dl['status_counts'])}; questions {', '.join(f'{k} {v[chr(115)+chr(116)+chr(97)+chr(116)+chr(117)+chr(115)]}' for k, v in qs.items())}; reversal first read INSUFFICIENT preserved"),
         14: (G(ok("check_language.py --pages") and ok("check_no_forms.py") and ok("check_header_layout.py") and ok("check_weekly_note.py") and ok("check_leak_sweep.py")), "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"),
-        15: ("MANUAL_REVIEW" if ok("check_consumer_posture.py") else "RED", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"),
+        15: gate15_result(VERSION, ok("check_consumer_posture.py"), g15_dec),
         16: (g16["result"], f"{g16['disclosure']} — registered sentence \"{GATE16_SENTENCE}\" ({GATE16_READING}); public log entries: {g16['entries']}, external-machine REPRODUCED: {g16['external_machine_reproduced']}, failed: {g16['failed']}"),
         17: (G(ok("check_copy_consistency.py") and ok("yuclaw_replication_sentence.py --check")), checks["check_copy_consistency.py"]["last"]),
         18: (G(ok("check_release_manifest.py --only g2") and ok("cli_transcript.py --check")), checks["check_release_manifest.py --only g2"]["last"]),
@@ -446,6 +477,10 @@ def main() -> int:
     repl_line = (f"- Replication · public log {len(repl['replications'])} entry, bundle sha256 "
                  f"{repl_entry['bundle'].split('sha256 ')[1].split(' ')[0] if repl_entry else '—'} · "
                  f"{repl_entry['replication_result'] if repl_entry else 'PENDING_EXTERNAL'} — {g16['disclosure']}")
+    g15_public = ("user-comprehension study: not run — requirement removed by the owner for v8 releases (not a pass)" if g15_dec
+                  else "full-form user-comprehension study NOT YET")
+    g15_not_in_release = ("user-comprehension study: not run; requirement removed by the owner for v8 releases (not a pass; human benefit PENDING)" if g15_dec
+                          else "user-comprehension study NOT YET")
     public = f"""Research & education only. Not investment advice.
 
 ### YUCLAW {VERSION} — Evidence-First Financial AI · The Science Trust Layer for Financial AI
@@ -464,7 +499,7 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 - Public daily evidence ledger · {len(blocks)} daily blocks, latest {blocks[-1]} root {latest_blk['root_sha256'][:12]}… · append-only, replayable
 - {c6_public} · fourth read chain line {c6_idx} ({c6_run['line_hash'][:12]}…): DESCRIPTIVE
 - Cross-lens reversal coherence · chain line {rev_idx} ({rev_run['line_hash'][:12]}…) · {rev_public}
-- Consumer-posture gate · five deterministic stranger personas · {'GREEN' if ok('check_consumer_posture.py') else 'RED'} (scaffold); full-form user-comprehension study NOT YET
+- Consumer-posture gate · five deterministic stranger personas · {'GREEN' if ok('check_consumer_posture.py') else 'RED'} (scaffold); {g15_public}
 {repl_line}
 - yuclaw {VERSION} package · wheel + sdist sha256 attached to this release · CLI · REST · MCP · SDK
 
@@ -472,7 +507,7 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 - N_eff PENDING
 - Phase-5 contribution anatomy NOT YET
-- user-comprehension study NOT YET
+- {g15_not_in_release}
 - unaffiliated replications {g16['unaffiliated']}
 
 #### Made in Canada
@@ -583,8 +618,7 @@ Never rendered: "independently replicated".
   statistic designated); edge rules {p6['edge_rule_coverage']['absent']} ABSENT (no
   persisted store); structural_completeness = PARTIAL.
 - Phase-5 contribution anatomy: NOT YET (no registered method).
-- Gate #15 full-form user comprehension study: NOT YET (the deterministic
-  scaffold ships; the human study does not exist).
+- Gate #15 full-form user comprehension study: {'not run — requirement REMOVED_BY_OWNER for v8 releases (not a pass; the deterministic scaffold check is retained)' if g15_dec else 'NOT YET (the deterministic scaffold ships; the human study does not exist)'}.
 - Unaffiliated replications: {g16['unaffiliated']}.
 
 ## Tier 2 (public) — sha256 {public_sha}
@@ -624,7 +658,8 @@ Never rendered: "independently replicated".
         "gate16": g16,
         "infrastructure_fact": canada,
         "gate_table": table, "gate_counts": dict(counts),
-        "gate_vocabulary": ["GREEN", "RED", "MANUAL_REVIEW", "PENDING_EXTERNAL", "DEFERRED-BLOCKING"],
+        "gate_vocabulary": ["GREEN", "RED", "MANUAL_REVIEW", "REMOVED_BY_OWNER", "PENDING_EXTERNAL", "DEFERRED-BLOCKING"],
+        "gate15_requirement": ({"status": "REMOVED_BY_OWNER", "decision_utc": g15_dec["decision_utc"], "record": "v8/policy/gate15_release_requirement.json", "record_sha256": g15_dec["sha256"], "meaning": "not a pass; no study run; human benefit PENDING"} if g15_dec else None),
         "checks": checks, "extra_checks": extra,
         "restage": {"gate11_mutation_boundary": {"live_identical": live_same, "registry_identical": reg_same, "output_identical": out_same, "preview_files_changed": ev["restage"]["preview_files_changed"]}, **ev["restage"]},
         "trees_now": {f"{k}_tree_sha256_over_manifest": v[0] for k, v in trees.items()},
@@ -643,9 +678,9 @@ Never rendered: "independently replicated".
                             "allocation_document_id": release_policy.get("allocation", {}).get("document_id")} if release_policy else None),
         "lookahead_reconciliation": ev.get("lookahead_reconciliation"),
         "release_authorized": False, "publishing_permitted": False,
-        "remaining_blockers": [
+        "remaining_blockers": ([] if g15_dec else [
             "gate #15 full-form user comprehension study does not exist (deterministic scaffold only) — MANUAL_REVIEW",
-        ] + ([f"gate #{r['gate']} {r['name']} — {r['result']}" for r in table if r["result"] == "RED"]),
+        ]) + ([f"gate #{r['gate']} {r['name']} — {r['result']}" for r in table if r["result"] == "RED"]),
         "remaining_external_checks": ([
             "gate #16 stranger-machine replication run (public log honestly empty; nothing may pre-fill it) — PENDING_EXTERNAL"]
             if g16["result"] == "PENDING_EXTERNAL" else []) + [
