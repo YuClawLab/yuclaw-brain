@@ -1,0 +1,805 @@
+{
+ "record": "v8-evidence-index/1",
+ "order": "V8-005",
+ "recorded_utc": "2026-09-16T04:31:58+00:00",
+ "candidate_commit": "d70edd02062cc178790f4e5933e7ff50fa70d815",
+ "private_record": {
+  "name": "v8_005_20260916T041331Z",
+  "location": "internal/v8/ (private, never published; home paths omitted)",
+  "files": 190,
+  "note": "disposable virtual environments, run directories and browser workspaces are excluded from the inventory"
+ },
+ "tracked_evidence": {
+  "v8/V8-005/README.md": {
+   "sha256": "afe2152964bb5b507439a7c067507699a9d72817955566066a2b8169d24c162c",
+   "bytes": 17251
+  },
+  "v8/V8-005/adaptation.json": {
+   "sha256": "0954d30ca2f6d8fbf12849c60562d4399f846379aff409f6e9c3e01916f24a35",
+   "bytes": 5542
+  },
+  "v8/V8-005/journey_fixtures/journey_log.json": {
+   "sha256": "23f28124bdbbde445378e01bea7bd3afca04f23eb414f74064633e6347a8133e",
+   "bytes": 51996
+  },
+  "v8/V8-005/journey_mchp/journey_log.json": {
+   "sha256": "61958ef4e1d391efc84fc0716a5f085f9a5f5caea59b6d829de5dfb31b2d4088",
+   "bytes": 26906
+  },
+  "v8/V8-005/packaging.json": {
+   "sha256": "305d04bd2baddd891e80f314ee87643cf6307427a90764f850066b867decd881",
+   "bytes": 12107
+  },
+  "v8/V8-005/scorecard_fixtures.json": {
+   "sha256": "4a544e9e6f1c76c588b1dfeda1133c3bbdea739c4f7d5b4771ce96c8b5f412af",
+   "bytes": 11181
+  },
+  "v8/V8-005/scorecard_mchp.json": {
+   "sha256": "4ccd589b18e738c3ffae650a1d7d717b48b2893e3d7054c161f745b208838c8e",
+   "bytes": 8590
+  }
+ },
+ "private_record_files": {
+  "changed_files.txt": {
+   "sha256": "fe6ec08d3aaf14138eda302a0cc4330788c7fa87f3f126699253593926cc1cf5",
+   "bytes": 2281
+  },
+  "checks/clean_install_run.txt": {
+   "sha256": "0c9690292507da59b9d2c936ef66643e8fae77701c75815cd8fd34317b42d322",
+   "bytes": 290
+  },
+  "checks/journeys_checkout.txt": {
+   "sha256": "08f5e7f4c76ba6beb252df95c683711616e90c9a0c2fcf9c08ba19e80d899e1f",
+   "bytes": 14106
+  },
+  "checks/pytest_and_gates.txt": {
+   "sha256": "abd2d82f92e4a3fcc3d9eae2521283d9cfb3687ef148e6af50259dbbdf91bb03",
+   "bytes": 1290
+  },
+  "clean_install/dist/yuclaw-7.0.1-py3-none-any.whl": {
+   "sha256": "32dc64ebf06db454c8d3aa5c89fd66363e90b48fbcd5c61571c65d6a59b1a73f",
+   "bytes": 849966
+  },
+  "clean_install/dist/yuclaw-7.0.1.tar.gz": {
+   "sha256": "ad1204edb3ee834faee5f2480dc38ac35acee95847855177f4322fe59cf53356",
+   "bytes": 4992082
+  },
+  "clean_install/journey-sdist-fixtures/01_step1_source_registered.png": {
+   "sha256": "a967bd6f68f898d31ae4e83f8b205e7aea6e38f6ccdd8636d13a31fb26305daf",
+   "bytes": 163850
+  },
+  "clean_install/journey-sdist-fixtures/02_step1_asof_hidden.png": {
+   "sha256": "1cdc107a2c9c48e8ab93140f8c54af317bbff8bbbff31027cc1e1188b02b4111",
+   "bytes": 141347
+  },
+  "clean_install/journey-sdist-fixtures/03_step1_inert_passage.png": {
+   "sha256": "4524324cffab8f55b2e6b3023736cf96992b83cbdd172087249d75017c7ed20b",
+   "bytes": 199051
+  },
+  "clean_install/journey-sdist-fixtures/04_step2_freeze_blocked.png": {
+   "sha256": "88d28b5d2548c277720335eccb76a8aa5f1d8e031cf33062560af6f27f915938",
+   "bytes": 115345
+  },
+  "clean_install/journey-sdist-fixtures/05_step2_claim_frozen.png": {
+   "sha256": "ccf54f20e5b504f87a217860ce20dfb106f511d4d71c0c913a6a26636312f366",
+   "bytes": 633796
+  },
+  "clean_install/journey-sdist-fixtures/06_step3_comparison.png": {
+   "sha256": "4e0439955e56bc1b298506bea0e03f01361358ea9a6ebbdcf54cf7a2754c0076",
+   "bytes": 836753
+  },
+  "clean_install/journey-sdist-fixtures/07_step3_incomparable.png": {
+   "sha256": "3788a0eb6905ff5302837e41aefb7a8f6b399dd7db08a198e79ca0cb83f4a089",
+   "bytes": 823458
+  },
+  "clean_install/journey-sdist-fixtures/08_step4_calculation_both.png": {
+   "sha256": "769aa1bf10107644cc1189cb55e1f8f20dad803900c0784bb90e5741b63a71f6",
+   "bytes": 859006
+  },
+  "clean_install/journey-sdist-fixtures/09_step4_mismatch_no_pass.png": {
+   "sha256": "055127e1ce897edb23b8fc1521a6c5d91d6334163b0bc9586984bfd64c57da31",
+   "bytes": 889242
+  },
+  "clean_install/journey-sdist-fixtures/10_step4_period_mismatch.png": {
+   "sha256": "bd789a08e960b0f624418411cad8f96e8b61d957eb8794a37f6fbfe9b229bfb5",
+   "bytes": 893548
+  },
+  "clean_install/journey-sdist-fixtures/11_step4_out_of_range.png": {
+   "sha256": "5cab5aaa3ffb3fcf2e9c7973da639aff252db0638d871ca8f2ab2be5a463fd35",
+   "bytes": 837984
+  },
+  "clean_install/journey-sdist-fixtures/12_step5_asof_before_amendment.png": {
+   "sha256": "923ad4c9290d4d4cc464e6dad0db7edff6d5365c0fbdbf0ae24f313ad1588b12",
+   "bytes": 677059
+  },
+  "clean_install/journey-sdist-fixtures/13_step5_asof_after_amendment.png": {
+   "sha256": "c5d4ee5161aefde71199bdddf9a02b580ff17d3641710463c52d0fb9a82ba4e9",
+   "bytes": 853685
+  },
+  "clean_install/journey-sdist-fixtures/14_step5_asof_nothing_known.png": {
+   "sha256": "0b2353f5f105869cbb47cc6465b8aecfff61b07e73fe03cb423d6e845e5bdae3",
+   "bytes": 68213
+  },
+  "clean_install/journey-sdist-fixtures/15_step6_adjudicated.png": {
+   "sha256": "0c25874a8a5e110a932bc2de42e39c5e88f5851e3a2350876f7df6418c3c4e89",
+   "bytes": 898344
+  },
+  "clean_install/journey-sdist-fixtures/16_step6_disputed_visible.png": {
+   "sha256": "7ab1364e834e028cc2dafebe4066da69a2d811dababb94cfbd79c0d9d4882088",
+   "bytes": 948445
+  },
+  "clean_install/journey-sdist-fixtures/17_step6_withdrawal_not_a_miss.png": {
+   "sha256": "caa6153706aef3e50855887306873b55e6d147bfcfb0e535c270c59cf7a696ec",
+   "bytes": 852725
+  },
+  "clean_install/journey-sdist-fixtures/18_step7_export_built.png": {
+   "sha256": "d917b1f05d1f0f2ed123ac10eecb1b58d9deffa5a1684e3e288d2cc5689a40c2",
+   "bytes": 998764
+  },
+  "clean_install/journey-sdist-fixtures/19_step7_verified_fresh_workspace.png": {
+   "sha256": "208fe62e3101dfda7c804b54f30ebce7be94d8aecd3c5b4fc10c71b5046b3436",
+   "bytes": 236914
+  },
+  "clean_install/journey-sdist-fixtures/20_step7_tampered_rejected.png": {
+   "sha256": "1cdb0f5e37fbce58e74aa70ebf2c294aee6c0f65876aaa45cfa6a749de64bc7a",
+   "bytes": 162515
+  },
+  "clean_install/journey-sdist-fixtures/21_research_notes_note_recorded.png": {
+   "sha256": "22c4f3424e6fd7b919c0c1368910b61dfd2c1ae63a1700ae933286eb668f7bf4",
+   "bytes": 1074735
+  },
+  "clean_install/journey-sdist-fixtures/22_research_notes_note_corrected.png": {
+   "sha256": "b04c041cb7968beffb38c24b99b1ee378ead4ec9d8c4053b13a202908cbe5bdd",
+   "bytes": 1160607
+  },
+  "clean_install/journey-sdist-fixtures/23_research_notes_note_timing_as_of.png": {
+   "sha256": "3fe0d6bf5c79c4aee5d51d39430615ed6df66862ae3db7365f57bddd6dfd1869",
+   "bytes": 1004808
+  },
+  "clean_install/journey-sdist-fixtures/24_research_notes_note_incomparable.png": {
+   "sha256": "afdbc0b74af56afcba16910dd4f2f6ec8713e31e0e97a8fd5e7c36014540de30",
+   "bytes": 968133
+  },
+  "clean_install/journey-sdist-fixtures/25_research_notes_note_withdrawn_and_pending.png": {
+   "sha256": "4f9742273f5a987452ff61cb0ae58fcde6478186bf50fba48cfd2b2a0919fad3",
+   "bytes": 912507
+  },
+  "clean_install/journey-sdist-fixtures/26_research_notes_notes_verified_fresh.png": {
+   "sha256": "c9cbc3a1c15f65ba205d949f8b822b2adf13801c4a534286e9a06fb9dbce0043",
+   "bytes": 241535
+  },
+  "clean_install/journey-sdist-fixtures/27_dataset_dataset_empty.png": {
+   "sha256": "84bea47fea9b0629c50e2e12bfb37179e2e0ac11dd67819bac984ab57e611ae1",
+   "bytes": 352841
+  },
+  "clean_install/journey-sdist-fixtures/28_dataset_dataset_rows.png": {
+   "sha256": "4473367f4304e0a0eb91b755fbc453b66ab590e9b4feb7d5bc451e13bc0c449b",
+   "bytes": 919474
+  },
+  "clean_install/journey-sdist-fixtures/29_dataset_dataset_verified_fresh.png": {
+   "sha256": "04ac332b78f3865d0414923c555bcd71ca4f01a5eece0cfeae777610a1fe8bdd",
+   "bytes": 234193
+  },
+  "clean_install/journey-sdist-fixtures/30_dataset_dataset_change_identified.png": {
+   "sha256": "0e6962a9d122469bf3a55f6cd0b7b61758810f72eed27a383f2283d60df88cc5",
+   "bytes": 942202
+  },
+  "clean_install/journey-sdist-fixtures/31_sci_sci_supported_exploratory.png": {
+   "sha256": "2625e949361962a3dc609a9c5e64701a2b4995ced35f2d8737e6a3621dade992",
+   "bytes": 331875
+  },
+  "clean_install/journey-sdist-fixtures/32_sci_sci_refused_monetary.png": {
+   "sha256": "22e775dcd1974c154cf6185654e563c0647ab79d639f5a75dd2c70e76636594d",
+   "bytes": 221663
+  },
+  "clean_install/journey-sdist-fixtures/33_sci_sci_linked_pending.png": {
+   "sha256": "8147eeaded68ee7d20bab015cbce4242fe83917f19e81d3f7954a7e5e34917f8",
+   "bytes": 380925
+  },
+  "clean_install/journey-sdist-fixtures/34_sci_sci_verified_fresh.png": {
+   "sha256": "512d6af81d66bb1c9bcd6dab19fd4386d0326b01893bfd04f557d09047d57270",
+   "bytes": 252287
+  },
+  "clean_install/journey-sdist-fixtures/dataset_forged_row.zip": {
+   "sha256": "43f1c62d37bfc5638d59ec538b1973e3f5256b517dde3939b62d83bb399db6aa",
+   "bytes": 265224
+  },
+  "clean_install/journey-sdist-fixtures/exp-0f2fadfd3c860e60_with_sci.zip": {
+   "sha256": "96fb7861c56ef9836ec30bfb50c4eeb6486530af8132dcf8ce8a4a468044b5bc",
+   "bytes": 15781
+  },
+  "clean_install/journey-sdist-fixtures/exp-16ddcd680e7ff7ee.zip": {
+   "sha256": "195ad01b2a213910f2ca2ac3e4d7efa3772a03a08e70305416d2baf5cbd0b632",
+   "bytes": 10852
+  },
+  "clean_install/journey-sdist-fixtures/exp-4c69850b3c280332_rights_unknown.zip": {
+   "sha256": "c52607da620ef483415765730d32bb4e1e84ddcf8543ee4d370a4d8c5cf61f42",
+   "bytes": 8224
+  },
+  "clean_install/journey-sdist-fixtures/exp-d90af65397f71947_dataset.zip": {
+   "sha256": "17932e04a00703fa5ec1f2d237267f3750fc4e26a2f43c630fecf52e2a161e38",
+   "bytes": 29064
+  },
+  "clean_install/journey-sdist-fixtures/exp-e7dfe07b98e0d6eb_with_notes.zip": {
+   "sha256": "f418b8ee42753d31b2e6a16c4ac0e4ffd23aabb29bf0b02d0fa38318e72e828f",
+   "bytes": 11666
+  },
+  "clean_install/journey-sdist-fixtures/incomplete.zip": {
+   "sha256": "624e6a2afb3b77cfffd308330ca9fdc7dbec153fc1281b6b682846817b8c13dd",
+   "bytes": 42390
+  },
+  "clean_install/journey-sdist-fixtures/journey_log.json": {
+   "sha256": "b0d17298c462df009d331871e5c473c8781c2972b10a8611c99ace03613e7ca6",
+   "bytes": 52162
+  },
+  "clean_install/journey-sdist-fixtures/sci_tampered.zip": {
+   "sha256": "515e9756562e7932f6202bdae58c8c35051b2c856f276152cd6219623f75783c",
+   "bytes": 72165
+  },
+  "clean_install/journey-sdist-fixtures/tampered.zip": {
+   "sha256": "fccde61c0fd10066cebf03b0e9c43627872ce6a0c22311e3705b724915d4faf5",
+   "bytes": 45150
+  },
+  "clean_install/journey-sdist-fixtures/traversal.zip": {
+   "sha256": "41e23b09214735155ddfdc76d4242253ab017c11b918122b4f638721621e9fdb",
+   "bytes": 121
+  },
+  "clean_install/journey-sdist-mchp/01_step1_mchp_sources.png": {
+   "sha256": "62e412aa6300e9381f6340bba108b01573ba589701b6e9383f86ae0846bfaae8",
+   "bytes": 260759
+  },
+  "clean_install/journey-sdist-mchp/02_step2_mchp_claim_frozen.png": {
+   "sha256": "1837263f2039914d37f7e2c344179f2310b366dc8ad4487f8cc3d6a6955335f8",
+   "bytes": 637003
+  },
+  "clean_install/journey-sdist-mchp/03_step3_mchp_comparison_discrepancy.png": {
+   "sha256": "022f61f128acd4b76394e5a09efd3970b89fa02c078c18832cf54b6e24e67367",
+   "bytes": 899769
+  },
+  "clean_install/journey-sdist-mchp/04_step4_mchp_calculation.png": {
+   "sha256": "0bc098e6f726fad4e610238baf6c88af4ea60a0bfefde795c328525162763650",
+   "bytes": 962152
+  },
+  "clean_install/journey-sdist-mchp/05_step5_mchp_asof_may20.png": {
+   "sha256": "aa9b765ad37fd51dc833be75027b703664d94f27e2472ffd6ccbffd2a8fb627d",
+   "bytes": 707781
+  },
+  "clean_install/journey-sdist-mchp/06_step6_mchp_adjudicated.png": {
+   "sha256": "d36b035dc99174f48b798e3617b58d5cc3effa3b4a8dfb15eca4e212469bf69b",
+   "bytes": 1027451
+  },
+  "clean_install/journey-sdist-mchp/07_step7_mchp_export_built.png": {
+   "sha256": "2f9b278fc071dfb125782eac84aa58d9250b45b86131d2f94b0888b51173658d",
+   "bytes": 1075362
+  },
+  "clean_install/journey-sdist-mchp/08_step7_mchp_verified_fresh.png": {
+   "sha256": "fe50d6a107021489400d6e073f1ce5d3b98eb250313f731748fdd85f8e1915d1",
+   "bytes": 230584
+  },
+  "clean_install/journey-sdist-mchp/09_research_notes_mchp_notes.png": {
+   "sha256": "7d3e88d0a2357eb345ee2c8e695bf22fe89d43c515e13dbfbdf1bdbbf198c69d",
+   "bytes": 1214062
+  },
+  "clean_install/journey-sdist-mchp/10_dataset_mchp_dataset_row.png": {
+   "sha256": "64a4a455483ab5e24ec69238cfdcfcd1984dac5edc88ee3fba5270f03b2d8854",
+   "bytes": 444616
+  },
+  "clean_install/journey-sdist-mchp/11_sci_mchp_sci_retrospective_link.png": {
+   "sha256": "2b9c2b5f85b735ca48766b86762c87bbf66b9d2b60d7ec11e45479b97f654207",
+   "bytes": 388927
+  },
+  "clean_install/journey-sdist-mchp/exp-5b601e48c6669c1b_mchp.zip": {
+   "sha256": "398be073e227f92095566a86bf6a9c8dc3d8482e3dac2a0aafc372dd7e4a78f9",
+   "bytes": 10524
+  },
+  "clean_install/journey-sdist-mchp/journey_log.json": {
+   "sha256": "3943d00093d31943b0fb4b66caf25595c892907de1d405cfba9a6492d878175c",
+   "bytes": 27072
+  },
+  "clean_install/journey-sdist-mchp/mchp_tampered.zip": {
+   "sha256": "5afdd4147b4f6329565b0c0ff184a9d83a2f986e572228ecc213dfa5177d2b66",
+   "bytes": 42636
+  },
+  "clean_install/journey-wheel-fixtures/01_step1_source_registered.png": {
+   "sha256": "b7ada26c014fa398c5c871bc5b3785c1173351c5097b22e72567c0779d085170",
+   "bytes": 163367
+  },
+  "clean_install/journey-wheel-fixtures/02_step1_asof_hidden.png": {
+   "sha256": "3a926cd56550eb6638a27d04feb3dde72ad2f22e8ee09c95da1f72d5b82ef9b5",
+   "bytes": 141057
+  },
+  "clean_install/journey-wheel-fixtures/03_step1_inert_passage.png": {
+   "sha256": "35e6a77d57f5e748760828ae8490fef64561ed66a0f34d2d6b62455aa55a0735",
+   "bytes": 198271
+  },
+  "clean_install/journey-wheel-fixtures/04_step2_freeze_blocked.png": {
+   "sha256": "6ce05a1911c813a93608603cdab14ef532594171b530bab106018101032d0619",
+   "bytes": 115510
+  },
+  "clean_install/journey-wheel-fixtures/05_step2_claim_frozen.png": {
+   "sha256": "8fd98ca726d98ea047acbd0cce8f08ac0a1e24a3a3258842153143599601374d",
+   "bytes": 632878
+  },
+  "clean_install/journey-wheel-fixtures/06_step3_comparison.png": {
+   "sha256": "b6d23e8f9b0cc42c9659513be3ca9e657945e2026e5a9d285d040986d71aca52",
+   "bytes": 835520
+  },
+  "clean_install/journey-wheel-fixtures/07_step3_incomparable.png": {
+   "sha256": "beebef85b3a383d935f67c9056d9ba373afebde7e09a822f1937d49343cd427b",
+   "bytes": 823705
+  },
+  "clean_install/journey-wheel-fixtures/08_step4_calculation_both.png": {
+   "sha256": "b61cc8dd7bab96d21d76913fec4aeaf0e1d1c2c9ae7f1139775e0ad9186a5217",
+   "bytes": 857090
+  },
+  "clean_install/journey-wheel-fixtures/09_step4_mismatch_no_pass.png": {
+   "sha256": "b8d001e7e259eeb03cb59011aa12501305b4b41efaa31acb33d2e2a6638107e3",
+   "bytes": 889100
+  },
+  "clean_install/journey-wheel-fixtures/10_step4_period_mismatch.png": {
+   "sha256": "8e77d74a97c860cc37acf39cb03b3b4d531859436bff62c22766de33e92d4b55",
+   "bytes": 891751
+  },
+  "clean_install/journey-wheel-fixtures/11_step4_out_of_range.png": {
+   "sha256": "486eac996ea0a987ef2cadc5e363e569ff5ab112c173ce177472f9a9b3e4c36f",
+   "bytes": 836467
+  },
+  "clean_install/journey-wheel-fixtures/12_step5_asof_before_amendment.png": {
+   "sha256": "0f8b434f32cc63ea286c5218c599043678e0b9cdd5b366650f3063b10d5eec56",
+   "bytes": 676282
+  },
+  "clean_install/journey-wheel-fixtures/13_step5_asof_after_amendment.png": {
+   "sha256": "46cdcf4f8036599c75e340464d259316ac1b085db1ee8df953f884cb2f180ce0",
+   "bytes": 852299
+  },
+  "clean_install/journey-wheel-fixtures/14_step5_asof_nothing_known.png": {
+   "sha256": "36876562772a753a02fcd27c1b0269f29dbdfdef5a0e4eb3fe7fac05e4cab3ef",
+   "bytes": 68232
+  },
+  "clean_install/journey-wheel-fixtures/15_step6_adjudicated.png": {
+   "sha256": "1a072709e8f217371d69af89bbf6cfecfa1462e5be429bc1aced76ca4d4ce668",
+   "bytes": 897163
+  },
+  "clean_install/journey-wheel-fixtures/16_step6_disputed_visible.png": {
+   "sha256": "ff9ac2840b8e75e30bae01d2b885aebc6fba157fe80f37f5933a6c6e6bc59ae1",
+   "bytes": 947894
+  },
+  "clean_install/journey-wheel-fixtures/17_step6_withdrawal_not_a_miss.png": {
+   "sha256": "62a8bb6b39bbcb5b7b59e3d301a10ae6078cda863d90be2d48a7feb0230122cc",
+   "bytes": 851768
+  },
+  "clean_install/journey-wheel-fixtures/18_step7_export_built.png": {
+   "sha256": "4dea48d703ae6e925f8f42e90617d27d35ae20963658ce5e25fadc210bcbbcf9",
+   "bytes": 998160
+  },
+  "clean_install/journey-wheel-fixtures/19_step7_verified_fresh_workspace.png": {
+   "sha256": "6f1a8d14a05a70ebe5beb292446ec7561294b5cafcf0f1187ca9cd522d306190",
+   "bytes": 235512
+  },
+  "clean_install/journey-wheel-fixtures/20_step7_tampered_rejected.png": {
+   "sha256": "04c98d1bf961ebb39adb4a9a86e75741cb4600febf05b73a880ca6174fc25a0c",
+   "bytes": 162893
+  },
+  "clean_install/journey-wheel-fixtures/21_research_notes_note_recorded.png": {
+   "sha256": "74c3d786d572639831da793a2d6184353736a2ed08114761baf2a7d350c239e0",
+   "bytes": 1073909
+  },
+  "clean_install/journey-wheel-fixtures/22_research_notes_note_corrected.png": {
+   "sha256": "dd25089d8294a178c9d09fd4504ea58c6614935267887bc19df4c362b677f763",
+   "bytes": 1159418
+  },
+  "clean_install/journey-wheel-fixtures/23_research_notes_note_timing_as_of.png": {
+   "sha256": "f726c7422ee7a69c88d57da1529a6d43a3567705639936e75294b302412b7e0b",
+   "bytes": 1004250
+  },
+  "clean_install/journey-wheel-fixtures/24_research_notes_note_incomparable.png": {
+   "sha256": "30b9b4bcb31e5c9f247c7656c7151f3e1d726988297560cb9206b2d105e1e263",
+   "bytes": 966916
+  },
+  "clean_install/journey-wheel-fixtures/25_research_notes_note_withdrawn_and_pending.png": {
+   "sha256": "87a138673289e829ed58ffaaa5b18fd32ebb20b80168635b3bfe1eb9ff8e47f3",
+   "bytes": 912264
+  },
+  "clean_install/journey-wheel-fixtures/26_research_notes_notes_verified_fresh.png": {
+   "sha256": "358719e7c3cac43ebf84718334dedbe2b797c8f0868fca776cb75147a893bcef",
+   "bytes": 238811
+  },
+  "clean_install/journey-wheel-fixtures/27_dataset_dataset_empty.png": {
+   "sha256": "e74290042db77b4d8041344024aa78ec4cac43118eebe893c313ba432cbad7a3",
+   "bytes": 352874
+  },
+  "clean_install/journey-wheel-fixtures/28_dataset_dataset_rows.png": {
+   "sha256": "1d56120038ff5d7dfc77738cfcb616ed27b516e8a47be46663e9a8c39d45f52d",
+   "bytes": 918683
+  },
+  "clean_install/journey-wheel-fixtures/29_dataset_dataset_verified_fresh.png": {
+   "sha256": "00df0fc89ffb66ee132cd4b5bf734546941f4efb396ffb056c8aaabc955e3a63",
+   "bytes": 231577
+  },
+  "clean_install/journey-wheel-fixtures/30_dataset_dataset_change_identified.png": {
+   "sha256": "2f8bbe736fb8c05c3273176604653c81f8308a7b2264f5676958b428c31ff350",
+   "bytes": 943528
+  },
+  "clean_install/journey-wheel-fixtures/31_sci_sci_supported_exploratory.png": {
+   "sha256": "37021936fe603413ad041a007cb3b7ab3d47e3d92013ceb64fa563b12644b224",
+   "bytes": 332001
+  },
+  "clean_install/journey-wheel-fixtures/32_sci_sci_refused_monetary.png": {
+   "sha256": "ec754bb91eba8143a2f26be40b784a18aace1bf499e66380f747e646fb223f35",
+   "bytes": 221374
+  },
+  "clean_install/journey-wheel-fixtures/33_sci_sci_linked_pending.png": {
+   "sha256": "cc76ca2e5d03d2c0ca44e12f198e6ed72c54ffb1a05338e9ce62099cb71996e4",
+   "bytes": 380626
+  },
+  "clean_install/journey-wheel-fixtures/34_sci_sci_verified_fresh.png": {
+   "sha256": "2c11ea770c5cb5cf9db90b30785f229c3ebb98b31a66a99f5f4d76c391271841",
+   "bytes": 250589
+  },
+  "clean_install/journey-wheel-fixtures/dataset_forged_row.zip": {
+   "sha256": "896c86fc1bbbda10312cca2b65bbf3a01a0b87e03de387209e790040874f767a",
+   "bytes": 265224
+  },
+  "clean_install/journey-wheel-fixtures/exp-0831775cd489814c_with_notes.zip": {
+   "sha256": "0290308f3712997ffad53a504410f6a55fa45f0aa5572b3aa971f87ff3791f4a",
+   "bytes": 11669
+  },
+  "clean_install/journey-wheel-fixtures/exp-482340d0f1ec9859.zip": {
+   "sha256": "cbf0a30a69ba99c6eae0b4f4644c5aeebe9e647e36426956b5d15435655dff41",
+   "bytes": 10860
+  },
+  "clean_install/journey-wheel-fixtures/exp-6834bdda32f8ccae_with_sci.zip": {
+   "sha256": "c92481763bd4e3d8e046ef0797b582db7d7a179125c9f803dce617105e4f702a",
+   "bytes": 15771
+  },
+  "clean_install/journey-wheel-fixtures/exp-b67b5bdb11647cd3_rights_unknown.zip": {
+   "sha256": "ef690dfd0488cef041d346ce9050b38a92694d0d7e9f77117ecc0b86b4019f6b",
+   "bytes": 8221
+  },
+  "clean_install/journey-wheel-fixtures/exp-e484a9d83876b32f_dataset.zip": {
+   "sha256": "c10a9986ebd49abd2f9d66adf5a49268cdbe13df8ba57273c8c926e3d75d6a3d",
+   "bytes": 29095
+  },
+  "clean_install/journey-wheel-fixtures/incomplete.zip": {
+   "sha256": "d54c25f3dc8e7e7fc66bd2be64ffb74d630040c7fc8b92412ffd0918e569c35e",
+   "bytes": 42390
+  },
+  "clean_install/journey-wheel-fixtures/journey_log.json": {
+   "sha256": "1bbd72811a513363480986da3a5dc8e980f7013dc370a2889d236fe4a365f533",
+   "bytes": 52172
+  },
+  "clean_install/journey-wheel-fixtures/sci_tampered.zip": {
+   "sha256": "685787ba26bbe7660905ef48202edc342d35711ce6bc66c5ee4ddeb9a77eb341",
+   "bytes": 72165
+  },
+  "clean_install/journey-wheel-fixtures/tampered.zip": {
+   "sha256": "ca71626e37ba4b0c3c20925e0b3c6c4f4c57d98d9e5c482229eda9b44f00248c",
+   "bytes": 45150
+  },
+  "clean_install/journey-wheel-fixtures/traversal.zip": {
+   "sha256": "b6164acc9f23dfac38469132f24a057adceb71ec61426857ffbc5e6b0d915b02",
+   "bytes": 121
+  },
+  "clean_install/journey-wheel-mchp/01_step1_mchp_sources.png": {
+   "sha256": "e3143328fabd435c2a1e91d3216a3ff101b4dcd001c83531c7a35bf6554a8bca",
+   "bytes": 261224
+  },
+  "clean_install/journey-wheel-mchp/02_step2_mchp_claim_frozen.png": {
+   "sha256": "5f567c493eb1e3dfa1e737f6e9fcf2ff7cc55ed3de6ddd47ccf4e1238bbf9bc1",
+   "bytes": 635220
+  },
+  "clean_install/journey-wheel-mchp/03_step3_mchp_comparison_discrepancy.png": {
+   "sha256": "d8b19be09f9f52f4d4bcd0d21d8856fbe0059f5acf33f495d434a800de80e0ea",
+   "bytes": 898086
+  },
+  "clean_install/journey-wheel-mchp/04_step4_mchp_calculation.png": {
+   "sha256": "6053a859ec00a2d91a4b09eca48ff7f340b717c7c3e94b4de4d5608870d67ade",
+   "bytes": 959908
+  },
+  "clean_install/journey-wheel-mchp/05_step5_mchp_asof_may20.png": {
+   "sha256": "729259a7d8468ce3ca3ccc617b7775e9caf2452542134695a145c74416ca914c",
+   "bytes": 706331
+  },
+  "clean_install/journey-wheel-mchp/06_step6_mchp_adjudicated.png": {
+   "sha256": "26edab42ff827f204472bb782890f8993ff40db1eadb8af7b9363298824c9a67",
+   "bytes": 1024987
+  },
+  "clean_install/journey-wheel-mchp/07_step7_mchp_export_built.png": {
+   "sha256": "040b74a5425c15f0b526624d0acfd47bd6a7a10e1df4f49858774fc3a7689ca5",
+   "bytes": 1071359
+  },
+  "clean_install/journey-wheel-mchp/08_step7_mchp_verified_fresh.png": {
+   "sha256": "cecf9afc1ecae0c86c11d6c0a2dea488fa8836f2d6dec7bcec0cca226d645127",
+   "bytes": 229761
+  },
+  "clean_install/journey-wheel-mchp/09_research_notes_mchp_notes.png": {
+   "sha256": "9743654dbbf39c5f0c024485b62b2919297f6d82c2eb2ac9f47bbeea86b50ce5",
+   "bytes": 1209770
+  },
+  "clean_install/journey-wheel-mchp/10_dataset_mchp_dataset_row.png": {
+   "sha256": "fea6aee02a08791148b0c6164872ac277ad04d7b1802c4ee86a66b8a0a7ecd53",
+   "bytes": 445959
+  },
+  "clean_install/journey-wheel-mchp/11_sci_mchp_sci_retrospective_link.png": {
+   "sha256": "081c2003e4fd0fe4e3484a06f3402e6c15dde909c6cb0e5a3c4ce8985617e21d",
+   "bytes": 389034
+  },
+  "clean_install/journey-wheel-mchp/exp-918c5cd5aee8ffb6_mchp.zip": {
+   "sha256": "a9d724abada625beaa942646ca52ed320cfa001581994e540771463e5768258e",
+   "bytes": 10528
+  },
+  "clean_install/journey-wheel-mchp/journey_log.json": {
+   "sha256": "877b0e4f69691b498008f0456f3a0bf135726bdc1082ac9fefeba5d14ce53094",
+   "bytes": 27082
+  },
+  "clean_install/journey-wheel-mchp/mchp_tampered.zip": {
+   "sha256": "83aec93eb9960284c42b3dbff090861e658231861bfe7387fabe2b5a2bf6e2c5",
+   "bytes": 42636
+  },
+  "clean_install/packaging.json": {
+   "sha256": "58b3024adc4d861d60843b0e604a1ef983f623e3bd9104764770dc125a6ff496",
+   "bytes": 11810
+  },
+  "commits.txt": {
+   "sha256": "8e6abe20acb2d6f09343ccece95e63354f195ad5369654373db18cb03b2ee224",
+   "bytes": 1637
+  },
+  "input_verification.json": {
+   "sha256": "5534e1f22398b9367362d875f9e85384bc0a5e5fb19a3464555a60437b341d1c",
+   "bytes": 2759
+  },
+  "journey_fixtures/01_step1_source_registered.png": {
+   "sha256": "556e3c0b189619fd02fd7277759918e99ca410ded5a063e08ca1120e473987bf",
+   "bytes": 163847
+  },
+  "journey_fixtures/02_step1_asof_hidden.png": {
+   "sha256": "2dec3a926ca10148ead98efb2065cdee109771933c678eb1d35d62c32cf8f3ff",
+   "bytes": 141266
+  },
+  "journey_fixtures/03_step1_inert_passage.png": {
+   "sha256": "939ec6596f113c2d1c08c780e8e69f7726478efc1bc30ab353217a15137c4e96",
+   "bytes": 198620
+  },
+  "journey_fixtures/04_step2_freeze_blocked.png": {
+   "sha256": "84a6a8dd1155a4a0186cd459b5a9d2129d069b2df5d91b9da655a286653b8798",
+   "bytes": 115334
+  },
+  "journey_fixtures/05_step2_claim_frozen.png": {
+   "sha256": "190ac1445a2cf687bf288389b1a4908b178c74df1eeb7395ccc1ca10195a4898",
+   "bytes": 611703
+  },
+  "journey_fixtures/06_step3_comparison.png": {
+   "sha256": "460d719c9b209cc85619d116afc9ec8131c14f725760a2036375bef41dcaa450",
+   "bytes": 798124
+  },
+  "journey_fixtures/07_step3_incomparable.png": {
+   "sha256": "089206255d961bb352487f1177aa698546f67737d799bc143ec797f21ad62532",
+   "bytes": 789421
+  },
+  "journey_fixtures/08_step4_calculation_both.png": {
+   "sha256": "87c712d194da2d0d292f74921d6b993d4df25cdbd2d249a59fbbb1067aecfdf3",
+   "bytes": 823271
+  },
+  "journey_fixtures/09_step4_mismatch_no_pass.png": {
+   "sha256": "beecad5d1cb2312ddd47b4fafc55cf094a4867991a9b9cc8a5d8270cf01e654f",
+   "bytes": 853668
+  },
+  "journey_fixtures/10_step4_period_mismatch.png": {
+   "sha256": "f16e88a851b98e88c9a29917f1fd5f0c4c424f7505b47046989c299c65c3b6a5",
+   "bytes": 863165
+  },
+  "journey_fixtures/11_step4_out_of_range.png": {
+   "sha256": "71c609197ef447abf20d3bcb36f48b69cfebe4827ed432c1367e6e8547111a5f",
+   "bytes": 806979
+  },
+  "journey_fixtures/12_step5_asof_before_amendment.png": {
+   "sha256": "a64092321f51a6ec934a04ad34e4855bfe7e80902aca8aebad2058ee5de8cdf0",
+   "bytes": 642487
+  },
+  "journey_fixtures/13_step5_asof_after_amendment.png": {
+   "sha256": "77816c219730658d1276f81e55a9e3a3c204524696745bafaacb042dc245e21c",
+   "bytes": 818664
+  },
+  "journey_fixtures/14_step5_asof_nothing_known.png": {
+   "sha256": "96099830c300038ac18f438ca555cf523b819f44284527be2cc39e3b3306b546",
+   "bytes": 68283
+  },
+  "journey_fixtures/15_step6_adjudicated.png": {
+   "sha256": "10cd2a359f422d982e7a79c0004e3508193d6949b8a8d4e340c0ad66e2a2ca2c",
+   "bytes": 864040
+  },
+  "journey_fixtures/16_step6_disputed_visible.png": {
+   "sha256": "ddad80609ad3b2c999233e23edb1b2c9ae1d92a83130d7b00ad04621df1970fd",
+   "bytes": 913646
+  },
+  "journey_fixtures/17_step6_withdrawal_not_a_miss.png": {
+   "sha256": "e0de99105a6781b6b2ea937b1e102be209b3d2c51f78164dc40881a42bc501fa",
+   "bytes": 822618
+  },
+  "journey_fixtures/18_step7_export_built.png": {
+   "sha256": "eba71b29dbe2d63009a753d3f07a9d0b451ee62a8f19cd2f73987d48c10fe181",
+   "bytes": 963017
+  },
+  "journey_fixtures/19_step7_verified_fresh_workspace.png": {
+   "sha256": "d05f72c5fe5c22e15e079f16f621557cc93ed0dc57548b01ac561cc383620902",
+   "bytes": 235016
+  },
+  "journey_fixtures/20_step7_tampered_rejected.png": {
+   "sha256": "e6b66ee8c4c984ea22dbe9bea48b0cbd91e36bd49209955cae037d8e94c806ba",
+   "bytes": 163649
+  },
+  "journey_fixtures/21_research_notes_note_recorded.png": {
+   "sha256": "2d915a2011c8f3a2226f250bccdd1127c1e81d66cf5ebc8322a87a42b9630642",
+   "bytes": 1040057
+  },
+  "journey_fixtures/22_research_notes_note_corrected.png": {
+   "sha256": "eee3110ad67779a120d26a6cccb8326596df78d75a1c0d2f318702c0ca968cd7",
+   "bytes": 1125981
+  },
+  "journey_fixtures/23_research_notes_note_timing_as_of.png": {
+   "sha256": "e7cb696fff5fbbd922320c4041fdf8c6e59b70eec561f9b5d88eaf3e03d75d4a",
+   "bytes": 970799
+  },
+  "journey_fixtures/24_research_notes_note_incomparable.png": {
+   "sha256": "07523b5d30aa1521e4a011150ada6c9c2ed5853f7444dab164a22e5bdf48187a",
+   "bytes": 933353
+  },
+  "journey_fixtures/25_research_notes_note_withdrawn_and_pending.png": {
+   "sha256": "30c167cfd7c0bf3e0495bf8f6f0979933ddefb93073123432236f7838b416e7f",
+   "bytes": 883220
+  },
+  "journey_fixtures/26_research_notes_notes_verified_fresh.png": {
+   "sha256": "0ca1edd423de329155c0d92bcdebb5e13ec8b75a59822069c94428fd3104110a",
+   "bytes": 240070
+  },
+  "journey_fixtures/27_dataset_dataset_empty.png": {
+   "sha256": "ccc3e0817f185adc61b3296a073a8e1a6184aac28a7a4aafdaa0d36f17a1402c",
+   "bytes": 352785
+  },
+  "journey_fixtures/28_dataset_dataset_rows.png": {
+   "sha256": "1e9f8a8484020a481f6373a043e55d5b020e7ec6d71c4dba39ada0d4fa87ce7b",
+   "bytes": 919530
+  },
+  "journey_fixtures/29_dataset_dataset_verified_fresh.png": {
+   "sha256": "2c20a44c3cec1452832e84b9eeb3a8e03678ea1b0ef99e708f6e2f5e0ec59f35",
+   "bytes": 233017
+  },
+  "journey_fixtures/30_dataset_dataset_change_identified.png": {
+   "sha256": "22819ce6c5270924c8a7c2f6f1ee94fdfeb06002efcc870355ec662abec0692c",
+   "bytes": 942766
+  },
+  "journey_fixtures/31_sci_sci_supported_exploratory.png": {
+   "sha256": "114740b8cc96000f82bc6800ac297a395841922f7f32923e142e305ac04d0cc7",
+   "bytes": 332661
+  },
+  "journey_fixtures/32_sci_sci_refused_monetary.png": {
+   "sha256": "88f32dc9d8d01f30d9d0403000c8c1664cf91bca1f61564e59a5e213b02fe1d0",
+   "bytes": 221835
+  },
+  "journey_fixtures/33_sci_sci_linked_pending.png": {
+   "sha256": "c814e494cb47129f8a7c98cd0229e3fce017a87997bbac0617dbf63c244b656a",
+   "bytes": 381511
+  },
+  "journey_fixtures/34_sci_sci_verified_fresh.png": {
+   "sha256": "f280fd83455732479666d236e2c144cf10bdcf477b6a27c73eabba242df76f07",
+   "bytes": 250542
+  },
+  "journey_fixtures/dataset_forged_row.zip": {
+   "sha256": "6858931e3163867bd3d2ea0e1917d7278364d9398085c70b8129b360d5bd23e7",
+   "bytes": 265224
+  },
+  "journey_fixtures/exp-0837afb17002bc53_dataset.zip": {
+   "sha256": "91986e116d567906a60be714747b260494f043070e817afde66fe26458318dc7",
+   "bytes": 29136
+  },
+  "journey_fixtures/exp-5cdd8fc8cc0c2295.zip": {
+   "sha256": "c657e27c3e63a1ce3fc0fbea826bbcc45774f367467654ce86d05cfb0287851a",
+   "bytes": 10881
+  },
+  "journey_fixtures/exp-82ab1c3072317d0d_rights_unknown.zip": {
+   "sha256": "caf1fb17fd7405806020a8d6ddb34a9d1a97bf64f98033b030acb4aec9120e51",
+   "bytes": 8221
+  },
+  "journey_fixtures/exp-931b3a42aa4bfb40_with_notes.zip": {
+   "sha256": "d2b83330bc8c4a3e4582a73232d48fd0c29cd751a2b7ce357a51e3dc7cba9ab4",
+   "bytes": 11683
+  },
+  "journey_fixtures/exp-d318afe745e6a02f_with_sci.zip": {
+   "sha256": "1fc7a83382927c014d20f03cff1c0df5b028bd481fb86d8043eff65dfc8beec0",
+   "bytes": 15784
+  },
+  "journey_fixtures/incomplete.zip": {
+   "sha256": "6bac9e9cfda6968664f6803b5ef2fe891ac925fb5bf5d71c54d73a2ee3602132",
+   "bytes": 42390
+  },
+  "journey_fixtures/journey_log.json": {
+   "sha256": "d3d99aa8ffeb90f012f4701df9d04992af44325d0f92c0be3e5c4472d4ea662b",
+   "bytes": 52009
+  },
+  "journey_fixtures/sci_tampered.zip": {
+   "sha256": "c49110f98fa5de51ee1977aa8b3fdbf3d9c662b7bffa39cee099b63839be8a91",
+   "bytes": 72165
+  },
+  "journey_fixtures/tampered.zip": {
+   "sha256": "a4e57934a3d35f21e93bc1aee8466a69427af082f831d37aacd02ccf54a55309",
+   "bytes": 45150
+  },
+  "journey_fixtures/traversal.zip": {
+   "sha256": "b19e9bf9b0d6699cc738d66f48efab4b484abd7d5d27fe71f917dc829fb113af",
+   "bytes": 121
+  },
+  "journey_mchp/01_step1_mchp_sources.png": {
+   "sha256": "44914af23cdae790b012dfa28909c14c8ee638173b292334069b50d5b63eef25",
+   "bytes": 261004
+  },
+  "journey_mchp/02_step2_mchp_claim_frozen.png": {
+   "sha256": "2e5e597c7c64e3ed2e260b4d0761396e405f1e580b67ffdd215ee974f6a10e45",
+   "bytes": 613494
+  },
+  "journey_mchp/03_step3_mchp_comparison_discrepancy.png": {
+   "sha256": "5b00a099e90cf5085f1b21603d19f881d03ba33cae42932bd2fc79b2eecb6042",
+   "bytes": 860261
+  },
+  "journey_mchp/04_step4_mchp_calculation.png": {
+   "sha256": "850420d720e1f145fbbe0ed54d92ac342955632f47f3291c19a7e4d1d9a1abeb",
+   "bytes": 924312
+  },
+  "journey_mchp/05_step5_mchp_asof_may20.png": {
+   "sha256": "2c41c7b0eb91fdb9c90342cc57da452dba4998f4019109e2c36952daa72d49a7",
+   "bytes": 667218
+  },
+  "journey_mchp/06_step6_mchp_adjudicated.png": {
+   "sha256": "fd627e52faae5c02e68d516b52925631aeef0302a924ef5f676d9ee64ba14078",
+   "bytes": 985639
+  },
+  "journey_mchp/07_step7_mchp_export_built.png": {
+   "sha256": "a75a5fddf15acb859e3076895cecd22f685b5cbc04fa57b15efdaf37ca043c8a",
+   "bytes": 1033988
+  },
+  "journey_mchp/08_step7_mchp_verified_fresh.png": {
+   "sha256": "52600c4fd112bb4f185db3f0fc061340c1ffd7e7718af756dc0ea52f8361a389",
+   "bytes": 230826
+  },
+  "journey_mchp/09_research_notes_mchp_notes.png": {
+   "sha256": "539d2860a8336893988d901a8afeea7921d1bfabdbc65c6578a1ac55e8afc3e8",
+   "bytes": 1171000
+  },
+  "journey_mchp/10_dataset_mchp_dataset_row.png": {
+   "sha256": "6aab8735d1b7e9d5b22d6008e90513f1ceebb1c269935f45d4227fdb37bbbaea",
+   "bytes": 445329
+  },
+  "journey_mchp/11_sci_mchp_sci_retrospective_link.png": {
+   "sha256": "04c4213ca5e213ee52a04f734624fa4e4c72a9f9580ec1036ce8f48cb483dd53",
+   "bytes": 389059
+  },
+  "journey_mchp/exp-ad80add5c4f1cee4_mchp.zip": {
+   "sha256": "87dcc671bb1d745deec267a7426ecba1bf0bfc7b641fd4f58668b50c67d84cb1",
+   "bytes": 10526
+  },
+  "journey_mchp/journey_log.json": {
+   "sha256": "b78e3abe911756ac2954c1fe5a6210ee7b6035d8c52f4826db7f7b11a12ec768",
+   "bytes": 26919
+  },
+  "journey_mchp/mchp_tampered.zip": {
+   "sha256": "91d7062853e43b2f98131ed14943ee4ccfb445a9801b1e018c1570c64ad18d37",
+   "bytes": 42636
+  },
+  "make_evidence_index.py": {
+   "sha256": "8e74d6b7582615480b74b442207e8b4908ea6c29d4ce0b52a11b91045a8955c0",
+   "bytes": 1988
+  },
+  "make_v8_005_readme.py": {
+   "sha256": "c2b95741ef10cd7bdbf80df7be1658c426d6ad8b91899e21da1808c95e2a56cb",
+   "bytes": 16161
+  },
+  "make_v8_005_record.py": {
+   "sha256": "07ec4377ca9f5107f1ab9d1b7073c4c661526f3d0eb1f3a625698ce7f5d3e14f",
+   "bytes": 4344
+  },
+  "review.diff": {
+   "sha256": "3946e52b75188cd5413cfdb682c3c48dfc57970853636299f5e1d7803cb8cf73",
+   "bytes": 169347
+  }
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

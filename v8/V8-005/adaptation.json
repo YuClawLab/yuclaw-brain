@@ -1,0 +1,83 @@
+{
+ "record": "v8-sci-adaptation",
+ "order": "V8-005",
+ "recorded_utc": "2026-09-16T04:22:08+00:00",
+ "input_bundle": {
+  "name": "YUCLAW-V8-005-SCI-inputs.zip",
+  "sha256": "194143f33775ab8c547a0f03d8a5d2f9317c7c32612a455c7d400db9a3b31a77",
+  "manifest_schema": "yuclaw-sci-input-manifest/1",
+  "source_base_commit": "c34e19bffb1a9f8851bf03ac1e64b68be3bcb710",
+  "source_files_in_base_commit": false,
+  "verification": "archive sha256, every entry's relative path, byte count and sha256, exact membership — VERIFIED; originals preserved unmodified in the private input record"
+ },
+ "reference_versions_adapted": {
+  "v4/science/__init__.py": "46abfce46bd9b7b8d8fd0bd58eefd5533221ff5fccc61268deb7cfb5b05e7c48",
+  "v4/science/contracts.py": "884c118855189d3eac8fc69db8d8fe8c4bfb3979ce02320b3b82dc3044718dab",
+  "v4/science/statistics.py": "2de25c69a1da4e79ef68509a348e39ab5de165b202490a6a526549d4f228ef0c",
+  "v4/science/store.py": "7a02e27acf7eecec61f5997a98404fbde66f2a8210a89ae1c033306a96f336be",
+  "v4/science/evidence.py": "f66cc226ec1b56d77e35e2902c6974bb422600f103b4c89baa11464408a1b93c",
+  "tests/test_science_v8.py": "24ac02ab93de218e11c3ee87fa1db3e50a92f5d1ec40f753c65c74212569f8fd",
+  "docs/v8/examples/manifest.json": "4035c1d51573e00129352cfdc4633a05238261943ca1b552bb205568b08ed2c0",
+  "LICENSE": "cc84cde28fb312a19df2b655d96180ef5334dac01c3ac0efbdd7d8c9f7c0c010"
+ },
+ "adapted_modules": {
+  "v8/workbench/sci/__init__.py": "c2735044bd2c7c5945bcbfedd93dd8ba645b6314b865f0b52fff6de312ce76c8",
+  "v8/workbench/sci/contracts.py": "1d29b59ce6f41bfb93b703f0281ec40879b3bdcaf382ea37554658b6fe1bf9c2",
+  "v8/workbench/sci/statistics.py": "3125022328eeb7945fca7a21e9ab0c32b91cb4f3f69aa0a33b2630de5c0e2e5d",
+  "v8/workbench/sci/store.py": "f040dd0baf3d5c469a40ea3e4a893ccb51c9f9a6522040f0d75257db540770f8",
+  "v8/workbench/sci/evidence.py": "5bc41ecfb50fdd6abb498d573f8ae6ccf81ca6b1a7d821fd2374fcb607527ac7",
+  "v8/workbench/sci/adapter.py": "e9e65e570298e516b5815132432dcc66451d14b3cfe130a482a39366b71efbe5",
+  "v8/workbench/resources/sci/template_manifest.json": "4035c1d51573e00129352cfdc4633a05238261943ca1b552bb205568b08ed2c0"
+ },
+ "adaptation": [
+  {
+   "module": "sci/__init__.py",
+   "from": "v4/science/__init__.py",
+   "change": "same SCHEMA_VERSION; adds ADAPTED_FROM provenance and kernel_identity() (sha256 over the packaged contracts/statistics/store sources)"
+  },
+  {
+   "module": "sci/statistics.py",
+   "from": "v4/science/statistics.py",
+   "change": "finite, log_e_value, brier_improvement, by_adjust unchanged; isotonic_scores and preference_cycles (diagnostic helpers of the old CLI's diagnose command) not adapted — no product path uses them"
+  },
+  {
+   "module": "sci/contracts.py",
+   "from": "v4/science/contracts.py",
+   "change": "validation rules, reducer semantics and error messages unchanged"
+  },
+  {
+   "module": "sci/store.py",
+   "from": "v4/science/store.py",
+   "change": "replay() unchanged; certificate() renamed report() with the same content except the not-advice sentence names a report; the SQLite Journal class and its clock are NOT adapted (the workbench never opens caller-supplied database files; replays persist in the workspace journal); build_events() added as a pure in-memory builder applying the same reducer rules"
+  },
+  {
+   "module": "sci/evidence.py",
+   "from": "v4/science/evidence.py",
+   "change": "same availability/identity/duplicate rules over the workbench's source records (accession, source_hash, available_as_of) instead of the published EvidenceObject corpus by ticker"
+  },
+  {
+   "module": "sci/adapter.py",
+   "from": "new (workbench integration)",
+   "change": "bounded strict JSON parsing (size, events, depth, duplicate keys, non-finite numbers), envelope contract, kernel_run, specific ineligibility reasons mapped from kernel refusals plus pre-scan (monetary fields, adjudication claims), link verification against workspace objects, replay status, standing limits"
+  },
+  {
+   "module": "resources/sci/template_manifest.json",
+   "from": "docs/v8/examples/manifest.json",
+   "change": "byte-identical copy (exploratory synthetic template); the other example journals are fixtures generated from it by the workbench build"
+  },
+  {
+   "module": "tests/test_v8_sci.py",
+   "from": "tests/test_science_v8.py",
+   "change": "core cases adapted (numerics, contract rejections, ordering/pending/duplicates/clock, tampering/truncation/semantic replay, statuses/crossing/invalidation/budget/exploratory/minimum, evidence inspection); the old CLI, dispatcher, diagnose and SQLite cases are not adapted (missing inputs by design); an in-memory Journal stand-in replaces the database"
+  }
+ ],
+ "not_adapted_by_design": [
+  "v4/science/cli.py (old CLI; imports optional/deferred modules unconditionally)",
+  "SQLite journal persistence",
+  "diagnostic helpers isotonic_scores / preference_cycles",
+  "COM/PRC/SHD/EVO and deferred modules"
+ ],
+ "license": "Apache License 2.0 (reference/LICENSE retained in the private input record; the integration branch is Apache-2.0)",
+ "statistical_contract": "unchanged: paired_brier_improvement per unit; log e-value = log mixture over lambdas (1/16, 1/8, 1/4, 1/2, 1) of Hoeffding test supermartingales under a bounded conditional-mean null; threshold -log(alpha) with a frozen family allocation; statuses INVALIDATED / EXPLORATORY_ONLY / CONDITIONAL_EVIDENCE / BUDGET_EXHAUSTED_INCONCLUSIVE / AWAITING_OUTCOME / ACCUMULATING; no new statistical method",
+ "not_advice": "Research and education only. Not investment advice."
+}

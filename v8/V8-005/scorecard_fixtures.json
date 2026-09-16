@@ -1,0 +1,312 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-005 (scientific workbench) — fixtures journey with the research-notes, dataset and scientific-replay demonstrations",
+ "mode": "fixtures",
+ "recorded_utc": "2026-09-16T04:31:39+00:00",
+ "candidate": {
+  "commit": "d70edd02062cc178790f4e5933e7ff50fa70d815",
+  "tree": "c581fd5aa319f02b54c054babc366e4c5f57e8e3",
+  "branch": "codex/v8-integration",
+  "dirty_entries_at_run": 1,
+  "dirty_entries_note": "the only untracked entry during the run was the v8/V8-005/ record directory being assembled",
+  "runtime": "checkout; the same journeys also ran from the installed wheel and sdist (packaging.json)"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:41231",
+  "B_fresh_workspace": "http://127.0.0.1:33825",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "556e3c0b189619fd02fd7277759918e99ca410ded5a063e08ca1120e473987bf",
+     "url": "http://127.0.0.1:41231/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "2dec3a926ca10148ead98efb2065cdee109771933c678eb1d35d62c32cf8f3ff",
+     "url": "http://127.0.0.1:41231/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "939ec6596f113c2d1c08c780e8e69f7726478efc1bc30ab353217a15137c4e96",
+     "url": "http://127.0.0.1:41231/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "84a6a8dd1155a4a0186cd459b5a9d2129d069b2df5d91b9da655a286653b8798",
+     "url": "http://127.0.0.1:41231/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "190ac1445a2cf687bf288389b1a4908b178c74df1eeb7395ccc1ca10195a4898",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "460d719c9b209cc85619d116afc9ec8131c14f725760a2036375bef41dcaa450",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "089206255d961bb352487f1177aa698546f67737d799bc143ec797f21ad62532",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "87c712d194da2d0d292f74921d6b993d4df25cdbd2d249a59fbbb1067aecfdf3",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "beecad5d1cb2312ddd47b4fafc55cf094a4867991a9b9cc8a5d8270cf01e654f",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "f16e88a851b98e88c9a29917f1fd5f0c4c424f7505b47046989c299c65c3b6a5",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "71c609197ef447abf20d3bcb36f48b69cfebe4827ed432c1367e6e8547111a5f",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "a64092321f51a6ec934a04ad34e4855bfe7e80902aca8aebad2058ee5de8cdf0",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "77816c219730658d1276f81e55a9e3a3c204524696745bafaacb042dc245e21c",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "96099830c300038ac18f438ca555cf523b819f44284527be2cc39e3b3306b546",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "10cd2a359f422d982e7a79c0004e3508193d6949b8a8d4e340c0ad66e2a2ca2c",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "ddad80609ad3b2c999233e23edb1b2c9ae1d92a83130d7b00ad04621df1970fd",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "e0de99105a6781b6b2ea937b1e102be209b3d2c51f78164dc40881a42bc501fa",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "eba71b29dbe2d63009a753d3f07a9d0b451ee62a8f19cd2f73987d48c10fe181",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE?built=exp-5cdd8fc8cc0c2295#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "d05f72c5fe5c22e15e079f16f621557cc93ed0dc57548b01ac561cc383620902",
+     "url": "http://127.0.0.1:33825/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "e6b66ee8c4c984ea22dbe9bea48b0cbd91e36bd49209955cae037d8e94c806ba",
+     "url": "http://127.0.0.1:33825/verify"
+    }
+   ]
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 7,
+   "negative_assertions": 8,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "21_research_notes_note_recorded.png",
+     "sha256": "2d915a2011c8f3a2226f250bccdd1127c1e81d66cf5ebc8322a87a42b9630642",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "22_research_notes_note_corrected.png",
+     "sha256": "eee3110ad67779a120d26a6cccb8326596df78d75a1c0d2f318702c0ca968cd7",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "23_research_notes_note_timing_as_of.png",
+     "sha256": "e7cb696fff5fbbd922320c4041fdf8c6e59b70eec561f9b5d88eaf3e03d75d4a",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "24_research_notes_note_incomparable.png",
+     "sha256": "07523b5d30aa1521e4a011150ada6c9c2ed5853f7444dab164a22e5bdf48187a",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE-NEG#notes"
+    },
+    {
+     "file": "25_research_notes_note_withdrawn_and_pending.png",
+     "sha256": "30c167cfd7c0bf3e0495bf8f6f0979933ddefb93073123432236f7838b416e7f",
+     "url": "http://127.0.0.1:41231/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome#notes"
+    },
+    {
+     "file": "26_research_notes_notes_verified_fresh.png",
+     "sha256": "0ca1edd423de329155c0d92bcdebb5e13ec8b75a59822069c94428fd3104110a",
+     "url": "http://127.0.0.1:33825/verify"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 6,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "27_dataset_dataset_empty.png",
+     "sha256": "ccc3e0817f185adc61b3296a073a8e1a6184aac28a7a4aafdaa0d36f17a1402c",
+     "url": "http://127.0.0.1:33825/dataset"
+    },
+    {
+     "file": "28_dataset_dataset_rows.png",
+     "sha256": "1e9f8a8484020a481f6373a043e55d5b020e7ec6d71c4dba39ada0d4fa87ce7b",
+     "url": "http://127.0.0.1:41231/dataset"
+    },
+    {
+     "file": "29_dataset_dataset_verified_fresh.png",
+     "sha256": "2c20a44c3cec1452832e84b9eeb3a8e03678ea1b0ef99e708f6e2f5e0ec59f35",
+     "url": "http://127.0.0.1:33825/verify"
+    },
+    {
+     "file": "30_dataset_dataset_change_identified.png",
+     "sha256": "22819ce6c5270924c8a7c2f6f1ee94fdfeb06002efcc870355ec662abec0692c",
+     "url": "http://127.0.0.1:41231/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 6,
+   "negative_assertions": 6,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "31_sci_sci_supported_exploratory.png",
+     "sha256": "114740b8cc96000f82bc6800ac297a395841922f7f32923e142e305ac04d0cc7",
+     "url": "http://127.0.0.1:41231/sci/S1"
+    },
+    {
+     "file": "32_sci_sci_refused_monetary.png",
+     "sha256": "88f32dc9d8d01f30d9d0403000c8c1664cf91bca1f61564e59a5e213b02fe1d0",
+     "url": "http://127.0.0.1:41231/sci/S2"
+    },
+    {
+     "file": "33_sci_sci_linked_pending.png",
+     "sha256": "c814e494cb47129f8a7c98cd0229e3fce017a87997bbac0617dbf63c244b656a",
+     "url": "http://127.0.0.1:41231/sci/S4"
+    },
+    {
+     "file": "34_sci_sci_verified_fresh.png",
+     "sha256": "f280fd83455732479666d236e2c144cf10bdcf477b6a27c73eabba242df76f07",
+     "url": "http://127.0.0.1:33825/verify"
+    }
+   ]
+  }
+ },
+ "post_statuses": {
+  "303": 35,
+  "422": 6,
+  "200": 9
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-005/journey_fixtures/journey_log.json (paths scrubbed)",
+  "journey_log_sha256_private": "d3d99aa8ffeb90f012f4701df9d04992af44325d0f92c0be3e5c4472d4ea662b"
+ },
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice."
+}

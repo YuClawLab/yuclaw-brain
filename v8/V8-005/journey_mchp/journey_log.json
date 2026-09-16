@@ -1,0 +1,666 @@
+{
+ "record": "v8-browser-journey",
+ "mode": "mchp",
+ "recorded_utc": "2026-09-16T04:29:47+00:00",
+ "candidate": {
+  "commit": "d70edd02062cc178790f4e5933e7ff50fa70d815",
+  "commit_source": "git HEAD of the checkout",
+  "tree": "c581fd5aa319f02b54c054babc366e4c5f57e8e3",
+  "branch": "codex/v8-integration",
+  "dirty_entries": 1,
+  "artifacts": {},
+  "runtime": {
+   "python": "3.12.3",
+   "workbench_module": "<checkout>/v8/workbench"
+  }
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "steps": {
+  "1": {
+   "step": "source",
+   "assertions": [
+    {
+     "name": "original: ingested passage registered through the UI; UI-computed digest equals the ingestion record's (d7e97b2b48c5…)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "revision: ingested passage registered through the UI; UI-computed digest equals the ingestion record's (a584cfdd883a…)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "actual: ingested passage registered through the UI; UI-computed digest equals the ingestion record's (55b697c56b1c…)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "before the May 8, 2025 filing none of the sources is visible",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "real passages render as inert text: the original documents carry markup, the registered passages are shown escaped inside <pre> and no script element exists",
+     "ok": true,
+     "observed": "raw tags 16080",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "01_step1_mchp_sources.png",
+     "sha256": "44914af23cdae790b012dfa28909c14c8ee638173b292334069b50d5b63eef25",
+     "url": "http://127.0.0.1:45881/source"
+    }
+   ]
+  },
+  "2": {
+   "step": "typed claim",
+   "assertions": [
+    {
+     "name": "a claim without explicit quarter dates is blocked (period must be explicit)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "real claim frozen as V1: net sales, USD, GAAP, Q1 FY2026 2025-04-01..2025-06-30, 1020000000–1070000000, rule RANGE_CONTAINS_ACTUAL",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "02_step2_mchp_claim_frozen.png",
+     "sha256": "2e5e597c7c64e3ed2e260b4d0761396e405f1e580b67ffdd215ee974f6a10e45",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#claim"
+    }
+   ]
+  },
+  "3": {
+   "step": "comparison",
+   "assertions": [
+    {
+     "name": "original 1020000000–1070000000 and revised 1045000000–1070000000 side by side: COMPARABLE, low +25000000, high 0, direction RAISED",
+     "ok": true,
+     "observed": "\toriginal (V1)\trevised (R1)\tdelta (revised − original)\nlow\t1020000000\t1045000000\t25000000\nhigh\t1070000000\t1070000000\t0\nmidpoint delta\t12500000 USD\nwidth\t50000000\t25000000\t-25000000\noverlap\t{'low': 1045000000, 'high': 1070000000}\ndirection\tRAISED · metrics comparable: COMPARABLE\na structural comparis",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the source discrepancy (1.025 vs 1.020) is shown verbatim and marked preserved, not corrected",
+     "ok": true,
+     "observed": "\toriginal (V1)\trevised (R1)\tdelta (revised − original)\nlow\t1020000000\t1045000000\t25000000\nhigh\t1070000000\t1070000000\t0\nmidpoint delta\t12500000 USD\nwidth\t50000000\t25000000\t-25000000\noverlap\t{'low': 1045000000, 'high': 1070000000}\ndirection\tRAISED · metrics comparable: COMPARABLE\na structural comparis",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the original V1 range still reads 1020000000 (the amendment never rewrote it)",
+     "ok": true,
+     "observed": "version\trange\tcurrency / unit\tbasis\tfiscal period\trule\tstated\tdigest\treason\nV1\nFROZEN\t1020000000 – 1070000000 USD\n(1.02 billions – 1.07 billions)\tUSD / USD\tGAAP\tQ1 FY2026 (Q 2025-04-01..2025-06-30)\tRA",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "03_step3_mchp_comparison_discrepancy.png",
+     "sha256": "5b00a099e90cf5085f1b21603d19f881d03ba33cae42932bd2fc79b2eecb6042",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#comparison"
+    }
+   ]
+  },
+  "4": {
+   "step": "calculation",
+   "assertions": [
+    {
+     "name": "1075500000 against the original range: OUT_OF_RANGE, midpoint 1045000000, delta +30500000, distance outside +5500000",
+     "ok": true,
+     "observed": "Overall: OUT_OF_RANGE · comparison permitted: True · rule RANGE_CONTAINS_ACTUAL\nOriginal range — OUT_OF_RANGE\ninputs\tlow 1020000000 · high 1070000000 · actual 1075500000 · USD/USD · GAAP · Q1 FY2026 · net sales\nformula\tcontains = low <= actual <= high; midpoint = (low + high) / 2 (exact); delta_vs_m",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "1075500000 against the revised range separately: OUT_OF_RANGE, midpoint 1057500000, delta +18000000, same distance outside",
+     "ok": true,
+     "observed": "Overall: OUT_OF_RANGE · comparison permitted: True · rule RANGE_CONTAINS_ACTUAL\nOriginal range — OUT_OF_RANGE\ninputs\tlow 1020000000 · high 1070000000 · actual 1075500000 · USD/USD · GAAP · Q1 FY2026 · net sales\nformula\tcontains = low <= actual <= high; midpoint = (low + high) / 2 (exact); delta_vs_m",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "no inference statement shown; formula and source links present",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an above-range actual is never presented as IN_RANGE",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "04_step4_mchp_calculation.png",
+     "sha256": "850420d720e1f145fbbe0ed54d92ac342955632f47f3291c19a7e4d1d9a1abeb",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#calculation"
+    }
+   ]
+  },
+  "5": {
+   "step": "history",
+   "assertions": [
+    {
+     "name": "the claim page is labeled RETROSPECTIVE REPLAY (sources observed after the outcome was public)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "as of 2025-05-20: only V1 (May 8 guidance) visible; PENDING_OUTCOME",
+     "ok": true,
+     "observed": "version\trange\tcurrency / unit\tbasis\tfiscal period\trule\tstated\tdigest\treason\nV1\nFROZEN\t1020000000 – 1070000000 USD\n(1.02 billions – 1.07 billions)\tUSD / USD\tGAAP\tQ1 FY2026 (Q 2025-04-01..2025-06-30)\tRA",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "as of 2025-06-15: V1 and R1 visible; still PENDING_OUTCOME; the actual (August 7) hidden",
+     "ok": true,
+     "observed": "version\trange\tcurrency / unit\tbasis\tfiscal period\trule\tstated\tdigest\treason\nV1\nFROZEN\t1020000000 – 1070000000 USD\n(1.02 billions – 1.07 billions)\tUSD / USD\tGAAP\tQ1 FY2026 (Q 2025-04-01..2025-06-30)\tRA",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "as of 2025-05-01 nothing about the claim was available",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "three times shown apart: source availability (2025), the workspace's observation of each source (the ingestion retrieval time) and the local action time",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "05_step5_mchp_asof_may20.png",
+     "sha256": "2c41c7b0eb91fdb9c90342cc57da452dba4998f4019109e2c36952daa72d49a7",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE?as_of=2025-05-20T00:00:00Z"
+    }
+   ]
+  },
+  "6": {
+   "step": "adjudication",
+   "assertions": [
+    {
+     "name": "adjudication recorded with the automated runner identity, rule, evidence, reason and result OUT_OF_RANGE",
+     "ok": true,
+     "observed": "reviewer\trule\tlabel\tcomputed\treason\tconflicts\tevidence\trecorded\njourney-runner (automated test action; not a human review)\tRANGE_CONTAINS_ACTUAL\tOUT_OF_RANGE\tOUT_OF_RANGE\tthe disclosed actual of $1.0755 billion exceeds the upper bound of both the original and the revised range by $5.5 million; both ",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an IN_RANGE label without the disputed flag is refused for an above-range actual",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "06_step6_mchp_adjudicated.png",
+     "sha256": "fd627e52faae5c02e68d516b52925631aeef0302a924ef5f676d9ee64ba14078",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#adjudication"
+    }
+   ]
+  },
+  "7": {
+   "step": "reproducible export",
+   "assertions": [
+    {
+     "name": "export built; publication NOT ELIGIBLE with reasons (PERMITTED class; press-release rights)",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "SEC filing excerpts are bundled (SEC_PUBLIC_FILING); the press-release excerpt is withheld (digest only)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the discrepancy note travels in the export verbatim",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "verified in the fresh workspace through the UI: SUCCESS; recomputed OUT_OF_RANGE / OUT_OF_RANGE; canonical digest checked; press-release claim digest not recomputable (excerpt withheld) is reported, not hidden",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an export (fresh workspace)Journal\n1 Source\n2 Typed claim\n3 Comparison\n4 Calculation\n5 History\n6 Adjudica",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an actual changed inside the packet (1.0755 → 1.0655 billion) fails verification",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an ex",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the fresh workspace holds no claims after the imports",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "07_step7_mchp_export_built.png",
+     "sha256": "a75a5fddf15acb859e3076895cecd22f685b5cbc04fa57b15efdaf37ca043c8a",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE?built=exp-ad80add5c4f1cee4#export"
+    },
+    {
+     "file": "08_step7_mchp_verified_fresh.png",
+     "sha256": "52600c4fd112bb4f185db3f0fc061340c1ffd7e7718af756dc0ea52f8361a389",
+     "url": "http://127.0.0.1:40697/verify"
+    }
+   ]
+  }
+ },
+ "responses": [
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/amend",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/outcome",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/adjudicate",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/adjudicate",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/MCHP-Q1FY2026-NETSALES-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 303
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "assertions": [
+    {
+     "name": "the eligibility status is recorded as an attribution-labelled note (simulated test action), citing the selection record",
+     "ok": true,
+     "observed": "1 note(s), 0 correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.\nnote\tcategory\tactor\tversion\tunresolved question / explanation\tnex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the discrepancy is carried both as the amendment's preserved source_discrepancy note and as a research note beside the comparison",
+     "ok": true,
+     "observed": "\toriginal (V1)\trevised (R1)\tdelta (revised − original)\nlow\t1020000000\t1045000000\t25000000\nhigh\t1070000000\t1070000000\t0\nmidpoint delta\t12500000 USD\nwidth\t50000000\t25000000\t-25000000\noverlap\t{'low': 1045000000, 'high': 1070000000}\ndirection\tRAISED · metrics comparable: COMPARABLE\na structural comparis",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "at the 2025-06-15 research cutoff the notes written in 2026 are not contemporaneous; they are listed as later annotations with their action times, and the claim digests are unchanged by the notes",
+     "ok": true,
+     "observed": "0 note(s), 0 correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.\nNo research notes on this claim yet.\nLater annotations — recorded",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "09_research_notes_mchp_notes.png",
+     "sha256": "539d2860a8336893988d901a8afeea7921d1bfabdbc65c6578a1ac55e8afc3e8",
+     "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#notes"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "assertions": [
+    {
+     "name": "the dataset row for the real-source claim is labelled real source, RETROSPECTIVE and NOT_ELIGIBLE_UNDER_V8_001_CRITERIA (from the recorded note), with the withheld press-release excerpt and OUT_OF_RANGE",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an export (fresh workspace)Journal\n1 Source\n2 Typed claim\n3 Comparison\n4 Calculation\n5 History\n6 Adjudica",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the machine-readable row carries computed OUT_OF_RANGE (never IN_RANGE), retrospective true, the recorded eligibility, the withheld press-release excerpt and no prospective status",
+     "ok": true,
+     "observed": "{'comparison': 'COMPARABLE', 'comparison_direction': 'RAISED', 'comparison_permitted': True, 'original': 'OUT_OF_RANGE', 'result': 'OUT_OF_RANGE', 'revised': 'OUT_OF_RANGE'}",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "10_dataset_mchp_dataset_row.png",
+     "sha256": "6aab8735d1b7e9d5b22d6008e90513f1ceebb1c269935f45d4227fdb37bbbaea",
+     "url": "http://127.0.0.1:45881/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "assertions": [
+    {
+     "name": "a replay linked to the Microchip claim is RETROSPECTIVE_REPLAY with the warning that the record was observed after its outcome and cannot be prospective evidence; the link is VERIFIED_EXISTS and marked RETROSPECTIVE",
+     "ok": true,
+     "observed": "Research & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace1 Source2 Typed claimResearch notesDataset coverageScientific reportVerify an export (fresh workspace)Journal\n1 Source\n2 Typed claim\n3 Comparison\n4 Calculation\n5 History\n6 Adjudica",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the linked replay does not turn the commitment's OUT_OF_RANGE results into a study result and does not claim prospective status",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "11_sci_mchp_sci_retrospective_link.png",
+     "sha256": "04c4213ca5e213ee52a04f734624fa4e4c72a9f9580ec1036ce8f48cb483dd53",
+     "url": "http://127.0.0.1:45881/sci/S1"
+    }
+   ]
+  }
+ },
+ "sources": {
+  "original": {
+   "accession": "0000827054-25-000061",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000061/exhibit991q4fy25.htm",
+   "available_as_of": "2025-05-08T20:17:05Z",
+   "source_hash": "d7e97b2b48c5403830d6f236d2c8f0f51aa57503296c733425de2635ccb3ec17",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "2721209b4a130b169bdff0c150bd06e6ece4dce4dcc900f1580b3423a2c4522c",
+   "retrieved_at": "2026-09-15T10:27:12Z"
+  },
+  "revision": {
+   "accession": "IR:ir.microchip.com:1315",
+   "url": "https://ir.microchip.com/news-events/press-releases/detail/1315/microchip-technology-raises-financial-guidance-for-sales-and-eps-for-first-quarter-of-fiscal-year-2026",
+   "available_as_of": "2025-05-30T03:59:59Z",
+   "source_hash": "a584cfdd883abee660dad362ca1731f55311a465d9bb0cd9e3ce51b902730bf3",
+   "rights": "COMPANY_PRESS_RELEASE",
+   "original_bytes_sha256": "6d7e3abc46fa141c60a8ae520be215cb242c777de76abe5223937d98bd0d3fed",
+   "retrieved_at": "2026-09-15T10:28:25Z"
+  },
+  "actual": {
+   "accession": "0000827054-25-000132",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000132/exhibit991q1fy26.htm",
+   "available_as_of": "2025-08-07T20:20:13Z",
+   "source_hash": "55b697c56b1c9536b54296f0462cdfad0469f8d67119c594712c289b6c8958e2",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "d29d76af9a0a8cd73ee47992599759f961b98aa16c58d1c385b5244b9ec56fbc",
+   "retrieved_at": "2026-09-15T10:29:11Z"
+  }
+ },
+ "replay_label": "RETROSPECTIVE: sources observed on the ingestion date, after the outcome was public; as-of views are reconstructions from availability timestamps",
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:45881",
+  "B_fresh_workspace": "http://127.0.0.1:40697",
+  "bind": "127.0.0.1 only"
+ },
+ "scorecard": {
+  "score": "7/7",
+  "steps": [
+   {
+    "n": 1,
+    "step": "source",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 3,
+    "negative_assertions": 2,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "01_step1_mchp_sources.png",
+      "sha256": "44914af23cdae790b012dfa28909c14c8ee638173b292334069b50d5b63eef25",
+      "url": "http://127.0.0.1:45881/source"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "step": "typed claim",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "02_step2_mchp_claim_frozen.png",
+      "sha256": "2e5e597c7c64e3ed2e260b4d0761396e405f1e580b67ffdd215ee974f6a10e45",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#claim"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "step": "comparison",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 2,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "03_step3_mchp_comparison_discrepancy.png",
+      "sha256": "5b00a099e90cf5085f1b21603d19f881d03ba33cae42932bd2fc79b2eecb6042",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#comparison"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "step": "calculation",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 3,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "04_step4_mchp_calculation.png",
+      "sha256": "850420d720e1f145fbbe0ed54d92ac342955632f47f3291c19a7e4d1d9a1abeb",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#calculation"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "step": "history",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 4,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "05_step5_mchp_asof_may20.png",
+      "sha256": "2c41c7b0eb91fdb9c90342cc57da452dba4998f4019109e2c36952daa72d49a7",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE?as_of=2025-05-20T00:00:00Z"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "step": "adjudication",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "06_step6_mchp_adjudicated.png",
+      "sha256": "fd627e52faae5c02e68d516b52925631aeef0302a924ef5f676d9ee64ba14078",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#adjudication"
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "step": "reproducible export",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 4,
+    "negative_assertions": 2,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "07_step7_mchp_export_built.png",
+      "sha256": "a75a5fddf15acb859e3076895cecd22f685b5cbc04fa57b15efdaf37ca043c8a",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE?built=exp-ad80add5c4f1cee4#export"
+     },
+     {
+      "file": "08_step7_mchp_verified_fresh.png",
+      "sha256": "52600c4fd112bb4f185db3f0fc061340c1ffd7e7718af756dc0ea52f8361a389",
+      "url": "http://127.0.0.1:40697/verify"
+     }
+    ]
+   }
+  ],
+  "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+  "features": {
+   "research_notes": {
+    "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 2,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "09_research_notes_mchp_notes.png",
+      "sha256": "539d2860a8336893988d901a8afeea7921d1bfabdbc65c6578a1ac55e8afc3e8",
+      "url": "http://127.0.0.1:45881/claim/MCHP-Q1FY2026-NETSALES-GUIDE#notes"
+     }
+    ]
+   },
+   "dataset": {
+    "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "10_dataset_mchp_dataset_row.png",
+      "sha256": "6aab8735d1b7e9d5b22d6008e90513f1ceebb1c269935f45d4227fdb37bbbaea",
+      "url": "http://127.0.0.1:45881/dataset"
+     }
+    ]
+   },
+   "sci": {
+    "feature": "scientific report/replay through the adapted kernel (V8-005)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "11_sci_mchp_sci_retrospective_link.png",
+      "sha256": "04c4213ca5e213ee52a04f734624fa4e4c72a9f9580ec1036ce8f48cb483dd53",
+      "url": "http://127.0.0.1:45881/sci/S1"
+     }
+    ]
+   }
+  },
+  "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+  "human_benefit": "PENDING",
+  "experimental_audits": "EXPERIMENTAL",
+  "fixture_data": "clearly fictional demonstration data; not a validated dataset product"
+ }
+}
