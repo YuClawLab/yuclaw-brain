@@ -30,7 +30,7 @@ if str(_REPO) not in sys.path:
 from v8.workbench import server as S  # noqa: E402
 
 STEP_TITLES = {1: "source", 2: "typed claim", 3: "comparison", 4: "calculation", 5: "history", 6: "adjudication", 7: "reproducible export"}
-FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "supported scientific-kernel report/replay (V8-004 §5)"}
+FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "scientific report/replay through the adapted kernel (V8-005)"}
 RUNNER = "journey-runner (automated test action; not a human review)"
 ATTRIBUTION = "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries"
 
@@ -363,10 +363,48 @@ class Journey:
         page.goto(f"{a}/dataset"); t = page.locator("body").inner_text()
         self.check(F, "after a record changes, the earlier snapshot stays retained and the view identifies what changed (claim, field)", "Compared with the last exported snapshot" in t and f"{CID}: research_notes" in t, t[:300], negative=True); self.shot(page, F, "dataset_change_identified")
         page.goto(f"{b}/"); self.check(F, "the fresh workspace holds no claims after importing a dataset snapshot", "none yet" in page.locator("body").inner_text(), negative=True)
-        # ================= SCI: not demonstrated — recorded as BLOCKED with the missing inputs; no placeholder in the navigation
-        page.goto(f"{a}/"); nav = page.locator("nav").inner_text()
-        self.check("sci", "no scientific-report tab or placeholder exists in the navigation while the kernel's reference inputs are missing (BLOCKED, not faked)", "scientific" not in nav.lower() and "SCI" not in nav, nav[:200], negative=True)
-        self.log["features"]["sci"]["blocked"] = {"status": "BLOCKED", "missing_inputs": ["reference bundle with INPUTS.md and MANIFEST.json", "reference/v4/science/{__init__,contracts,statistics,store,evidence}.py from the preview base c34e19bf (uncommitted preview work; not in git)"]}
+        # ================= SCI: scientific report/replay through the adapted kernel (V8-005)
+        F = "sci"
+        page.goto(f"{a}/sci"); t = page.locator("body").inner_text()
+        self.check(F, "the Scientific report page is reachable from the navigation, states the supported contract, the kernel identity and the standing limits, and has no records yet", "Scientific report" in page.locator("nav").inner_text() and "paired binary-probability" in t and "kernel identity" in t and "no scientific record yet" in t and "not probabilities" in t, t[:200])
+        self.submit(page, "form[action='/sci/replay']", {"example": "example_exploratory_journal", "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+        self.check(F, "a supported fictional input (the bundle's exploratory template family, 61 events) is replayed through the kernel: EXPLORATORY_REPLAY, claim EXPLORATORY_ONLY, root recomputed and checkpoint matched, input identity, kernel identity and limitations shown", "/sci/S1" in page.url and "EXPLORATORY_REPLAY" in t and "EXPLORATORY_ONLY" in t and "checkpoint supplied and matched: True" in t and "input sha256" in t and "kernel identity" in t and "LOCAL_ONLY_EXTERNAL_TIMESTAMP_NOT_VERIFIED" in t and "simulated test action" in t, t[:300]); self.shot(page, F, "sci_supported_exploratory")
+        page.goto(f"{a}/sci"); self.submit(page, "form[action='/sci/replay']", {"example": "refused_monetary_probabilities", "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+        self.check(F, "a refused input (a revenue range 110–120 million supplied as probabilities) is INELIGIBLE with the specific reason, and no report is shown", "INELIGIBLE" in t and "MONETARY_OR_OUT_OF_RANGE_PROBABILITY" in t and "not probabilities" in t and "Report (recomputed" not in t, t[:300], negative=True); self.shot(page, F, "sci_refused_monetary")
+        page.goto(f"{a}/sci"); self.submit(page, "form[action='/sci/replay']", {"example": "refused_unsupported_metric", "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+        self.check(F, "an unsupported metric is refused with UNSUPPORTED_METRIC", "INELIGIBLE" in t and "UNSUPPORTED_METRIC" in t, t[:200], negative=True)
+        # a prospective-mode fixture linked to the frozen financial claim: links verified as bytes; nothing about the commitment becomes scientific evidence
+        page.goto(f"{a}/sci"); self.submit(page, "form[action='/sci/replay']", {"example": "example_prospective_pending_journal", "claim_id": CID, "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+        self.check(F, "a prospective-mode fixture with a pending unit reports AWAITING_OUTCOME under PROSPECTIVE_CLAIMED_NOT_VERIFIED; linked to the frozen claim, the link is VERIFIED_EXISTS and the page states that the commitment's IN_RANGE results are not units of the study", "AWAITING_OUTCOME" in t and "PROSPECTIVE_CLAIMED_NOT_VERIFIED" in t and "VERIFIED_EXISTS" in t and "not units of this study" in t and "cannot verify that predictions were committed before outcomes were known" in t, t[:300]); self.shot(page, F, "sci_linked_pending")
+        sid_linked = page.url.rsplit("/", 1)[1]
+        page.goto(f"{a}/claim/{CID}"); ssec = self.section(page, "sci"); self.check(F, "the claim page lists the linked scientific record with its status and input identity, and the claim's own result is unchanged", sid_linked in ssec and "SUPPORTED_REPLAY" in ssec and "never units of a study" in ssec or (sid_linked in ssec and "not units" in ssec), ssec[:200])
+        digests_now = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]; self.check(F, "recording scientific replays changes no claim field or digest", digests_now == digests_before, negative=True)
+        page.goto(f"{a}/sci"); self.submit(page, "form[action='/sci/replay']", {"input": '{"events": [{"x": 1}], "exec": "rm -rf"}', "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+        self.check(F, "an input with unsupported envelope fields is refused before any parsing of events (nothing written)", "Blocked" in t and "unsupported envelope fields" in t and "nothing was written" in t, t[:200], negative=True)
+        # export with the linked scientific record; the fresh workspace recomputes the report from the packed events; a semantic tamper fails
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/export']", {}, "Build export"); m = re.search(r"built=(exp-[0-9a-f]{16})", page.url)
+        with page.expect_download() as dl:
+            page.locator(f"a[href='/exports/{m.group(1)}.zip']").click()
+        zs_ = self.out / f"{m.group(1)}_with_sci.zip"; dl.value.save_as(str(zs_))
+        with zipfile.ZipFile(zs_) as z:
+            can = json.loads(z.read("canonical.json")); members = {i.filename: z.read(i) for i in z.infolist()}
+        self.check(F, "the claim export carries the linked scientific record (input, identity, report, kernel identity, limitations)", len(can["sci"]) == 1 and can["sci"][0]["sci_id"] == sid_linked and can["sci"][0]["report"]["claims"][0]["status"] == "AWAITING_OUTCOME" and "kernel_sha256" in can["sci"][0]["kernel"] and can["sci"][0]["standing"])
+        page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zs_))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text(); self.check(F, "the fresh workspace recomputes the scientific report from the packed events (recompute-sci) and verifies SUCCESS", "Result: SUCCESS" in t and "recompute-sci" in t and "report recomputed from the packed events" in t, t[:300]); self.shot(page, F, "sci_verified_fresh")
+        can2 = json.loads(members["canonical.json"]); can2["sci"][0]["input"]["events"][2]["payload"]["outcome"] = 0
+        from v3.receipts.contracts import canonical_json
+        cb = canonical_json(can2); man = json.loads(members["EXPORT_MANIFEST.json"]); man["canonical_digest"] = hashlib.sha256(cb).hexdigest(); man["files"][0].update(sha256=man["canonical_digest"], size_bytes=len(cb))
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            for k, v in dict(members, **{"canonical.json": cb, "EXPORT_MANIFEST.json": json.dumps(man).encode()}).items():
+                z.writestr(k, v)
+        zt = self.out / "sci_tampered.zip"; zt.write_bytes(buf.getvalue()); page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zt))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text(); self.check(F, "a semantically tampered scientific input (an outcome flipped inside the packet) fails verification", "Result: MISMATCH" in t and "scientific record" in t, t[:200], negative=True)
+        page.goto(f"{b}/sci"); self.check(F, "the fresh workspace holds no scientific records after verifying imports", "no scientific record yet" in page.locator("body").inner_text(), negative=True)
 
     # ---------------------------------------------------------------- real-source retrospective replay (V8-003 §1)
     def run_mchp(self) -> dict:
@@ -478,8 +516,10 @@ class Journey:
             digests = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]
             page.goto(f"{a}/claim/{CID}?as_of=2025-06-15T00:00:00Z"); nsec = self.section(page, "notes")
             self.check("research_notes", "at the 2025-06-15 research cutoff the notes written in 2026 are not contemporaneous; they are listed as later annotations with their action times, and the claim digests are unchanged by the notes", "Later annotations" in nsec and "NOT contemporaneous" in nsec and digests == [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]], nsec[:200], negative=True)
-            page.goto(f"{a}/"); nav = page.locator("nav").inner_text(); self.check("sci", "no scientific-report tab or placeholder exists while the kernel's reference inputs are missing (BLOCKED, not faked)", "scientific" not in nav.lower(), nav[:100], negative=True)
-            self.log["features"]["sci"]["blocked"] = {"status": "BLOCKED", "missing_inputs": ["reference bundle with INPUTS.md and MANIFEST.json", "reference/v4/science/{__init__,contracts,statistics,store,evidence}.py from the preview base c34e19bf (uncommitted preview work; not in git)"]}
+            # ---- V8-005: a scientific replay linked to the retrospective real-source claim is labelled RETROSPECTIVE_REPLAY, never prospective
+            page.goto(f"{a}/sci"); self.submit(page, "form[action='/sci/replay']", {"example": "example_exploratory_journal", "claim_id": CID, "actor": RUNNER, "simulated": True}, "Replay through the kernel and record"); t = page.locator("body").inner_text()
+            self.check("sci", "a replay linked to the Microchip claim is RETROSPECTIVE_REPLAY with the warning that the record was observed after its outcome and cannot be prospective evidence; the link is VERIFIED_EXISTS and marked RETROSPECTIVE", "RETROSPECTIVE_REPLAY" in t and "cannot be prospective evidence" in t and "VERIFIED_EXISTS" in t and "RETROSPECTIVE record" in t and "not units of this study" in t, t[:300]); self.shot(page, "sci", "mchp_sci_retrospective_link")
+            self.check("sci", "the linked replay does not turn the commitment's OUT_OF_RANGE results into a study result and does not claim prospective status", "PROSPECTIVE_CLAIMED_NOT_VERIFIED" not in t and "OUT_OF_RANGE" not in self.section(page, "Report") and "not prospective evidence" in t, negative=True)
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()

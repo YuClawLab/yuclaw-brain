@@ -29,6 +29,7 @@ from pathlib import Path
 
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
 from v8.workbench import NOT_ADVICE, calc, dataset, schema
+from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.store import Workspace, _line_hash
 
 FORMAT = "yuclaw-commitment-export/1"
@@ -46,7 +47,7 @@ MAX_MEMBER_BYTES = 16 << 20
 MAX_MEMBERS = 16
 MAX_RATIO = 200
 BUNDLE_RIGHTS = ("FICTIONAL", "SEC_PUBLIC_FILING")      # COMPANY_PRESS_RELEASE and UNKNOWN: digest only
-RESEARCH_EVENTS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED", "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED")
+RESEARCH_EVENTS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED", "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED")
 _EXPORT_ID = re.compile(r"^exp-[0-9a-f]{16}$")
 _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 _REPO = Path(__file__).resolve().parents[2]
@@ -56,8 +57,9 @@ LIMITS = [
     "Source digests bind bytes; they do not prove publisher authenticity.",
     "The claim statement is the researcher's authored restatement; verbatim quotations belong in the excerpt, where the rights rule is enforced.",
     "An export is not a backup, a disaster-recovery copy or a publication. Backup creation and restoration are not provided in 8.0.0.",
-    "Fictional fixture data is a demonstration, never a validated dataset product.",
-    "Research notes are authored text with an actor LABEL: attribution, not authenticated identity and not proof of independent human review; a note changes no claim field and grants no publication eligibility.",
+    "Fictional fixture data is a demonstration, never a dataset product whose quality has been established.",
+    "Research notes are authored text with an actor LABEL: attribution that establishes neither authenticated identity nor independent human review; a note changes no claim field and grants no publication eligibility.",
+    "Scientific records are replays of bounded journal inputs through the adapted kernel: the report is recomputed from the packed events; it establishes record consistency and the kernel's statistics under its stated assumptions, never source truth, independent review, authenticated timing or prospective commitment.",
     "A dataset row is derived from stored records; eligibility is a recorded note, not a criteria run; retrospective rows are reconstructions, not prospective evidence.",
     NOT_ADVICE,
 ]
@@ -86,6 +88,32 @@ def _redact_claim(claim: dict) -> dict:
 def _note_ref(n: dict) -> dict:
     keys = ("note_id", "category", "actor", "actor_kind", "attribution", "unresolved_question", "next_evidence", "reason", "version_ref", "version_digest", "evidence", "supersedes_note", "supersedes_event", "state_tip", "changes_claim")
     return {**{k: n.get(k) for k in keys}, "superseded_by": n.get("superseded_by"), "event_hash": n["event_hash"], "time": n["time"]}
+
+
+def _sci_ref(r: dict) -> dict:
+    keys = ("sci_id", "input", "input_sha256", "input_bytes", "status", "replay_status", "reasons", "report", "report_digest", "root_hash", "links", "warnings", "kernel", "standing", "actor", "actor_kind", "label", "state_tip", "changes_claim")
+    return {**{k: r.get(k) for k in keys}, "event_hash": r["event_hash"], "time": r["time"]}
+
+
+def verify_sci_records(records: list, checks: list) -> str | None:
+    """Recompute every packed scientific record through the kernel: report (or refusal) must reproduce from the packed
+    input; links are packed data and are NOT re-verified against the verifying workspace (they name another workspace's bytes)."""
+    first = None
+    for r in records:
+        try:
+            env = sci_adapter.parse_input(sci_adapter.canonical(r["input"]))
+            k = sci_adapter.kernel_run(env)
+            ident = sci_adapter.input_identity(env)
+        except Exception as exc:
+            checks.append({"check": "recompute-sci", "sci": r.get("sci_id"), "ok": False, "note": f"input could not be re-parsed ({exc.__class__.__name__})"}); first = first or f"scientific record {r.get('sci_id')}: packed input does not parse"; continue
+        same_status = k["status"] == r.get("status") and [x["code"] for x in k["reasons"]] == [x["code"] for x in (r.get("reasons") or [])]
+        same_report = json.loads(canonical_json(k["report"])) == r.get("report") and (k["report"] is None or hashlib.sha256(sci_adapter.canonical(k["report"]).encode()).hexdigest() == r.get("report_digest"))
+        same_input = ident["input_sha256"] == r.get("input_sha256")
+        ok = same_status and same_report and same_input
+        checks.append({"check": "recompute-sci", "sci": r.get("sci_id"), "ok": ok, "observed": k["status"], "packed": r.get("status"), "note": "report recomputed from the packed events" if k["report"] else "refusal reproduced with the same reason codes"})
+        if not ok:
+            first = first or f"scientific record {r.get('sci_id')}: recomputed {'report' if not same_report else ('status' if not same_status else 'input identity')} differs from the packed record"
+    return first
 
 
 def source_events_for(state: dict, source_events: list[dict] | None) -> list[dict]:
@@ -135,6 +163,7 @@ def build_canonical(state: dict, source_events: list[dict] | None = None) -> dic
                       "time_semantics": "source_available_as_of = public availability of the source; observed_at = when this workspace saw it; recorded_at = local action time; as-of views cut by source availability"},
            "results": results, "comparison": comparison,
            "research_notes": [_note_ref(n) for n in state.get("research_notes", [])],
+           "sci": [_sci_ref(r) for r in state.get("sci", [])],
            "dataset_row": dataset.build_row(state, seen), "limitations": LIMITS, "not_advice": NOT_ADVICE}
     # events carry the same excerpts as versions/outcome; withhold them under the same rights rule
     withheld = {s["source_hash"] for s in srcs if not s["excerpt_included"]}
@@ -221,7 +250,7 @@ def build_dataset_export(ws: Workspace, *, export_id: str | None = None, built_a
         st = ws.claim_state(cid)
         if st is not None:
             claims[cid] = build_canonical(st, events)
-    can = {"schema": DATASET_FORMAT, "snapshot": snap, "snapshot_digest": dataset.snapshot_digest(snap), "claims": claims, "limitations": LIMITS, "not_advice": NOT_ADVICE}
+    can = {"schema": DATASET_FORMAT, "snapshot": snap, "snapshot_digest": dataset.snapshot_digest(snap), "claims": claims, "sci": [_sci_ref(r) for r in ws.sci_records("*")], "limitations": LIMITS, "not_advice": NOT_ADVICE}
     can_bytes = canonical_json(can); cdig = _sha(can_bytes)
     eid = export_id or f"exp-{secrets.token_hex(8)}"
     if not _EXPORT_ID.match(eid):
@@ -325,7 +354,7 @@ def _state_from_canonical(can: dict) -> dict:
     notes = [dict(n) for n in can.get("research_notes", [])]
     events = [e for e in can.get("events", []) if e.get("kind") != "SOURCE_REGISTERED"]           # claim-scoped events, as the store derives them
     return {"claim_id": can["claim_id"], "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": can.get("adjudications", []), "events": events,
-            "current": versions[-1], "research_notes": notes, "research_notes_current": [n for n in notes if n.get("superseded_by") is None]}
+            "current": versions[-1], "research_notes": notes, "research_notes_current": [n for n in notes if n.get("superseded_by") is None], "sci": [dict(r) for r in can.get("sci", [])]}
 
 
 def verify_export(zip_path) -> dict:
@@ -387,7 +416,7 @@ def verify_export(zip_path) -> dict:
     if first:
         return {"result": "MISMATCH", "first_discrepancy": first, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec}
     return {"result": "SUCCESS", "first_discrepancy": None, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": cid, "recompute": rec,
-            "meaning": "exact bytes verified and the supported calculations reproduced from the packed claim versions and outcome; not a research interpretation, not proof of source authenticity, not a publication"}
+            "meaning": "exact bytes verified and the supported calculations reproduced from the packed claim versions and outcome; not a research interpretation, does not establish source authenticity, not a publication"}
 
 
 def _verify_claim_canonical(can: dict, checks: list) -> tuple[str | None, dict | None]:
@@ -470,6 +499,12 @@ def _verify_claim_canonical(can: dict, checks: list) -> tuple[str | None, dict |
         return f"recomputed result {recomputed['result']} differs from the packed results block", rec
     if not same_comparison:
         return "recomputed comparison differs from the packed comparison block", rec
+    if "sci" in can:
+        f_sci = verify_sci_records(can["sci"], checks)
+        if f_sci:
+            return f_sci, rec
+    else:
+        checks.append({"check": "recompute-sci", "ok": None, "note": "not present in this export (written before scientific records existed)"})
     if "dataset_row" in can:
         try:
             st2 = _state_from_canonical(can)
@@ -526,6 +561,10 @@ def _verify_dataset_export(members: dict, man: dict, zs: str, checks: list) -> d
         rows_re.append(cc["dataset_row"] if "dataset_row" in cc else None)
     if any(r is None for r in rows_re):
         return {"result": "UNSUPPORTED", "first_discrepancy": "an embedded claim carries no dataset row; nothing reinterpreted", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
+    if "sci" in can:
+        f_sci = verify_sci_records(can["sci"], checks)
+        if f_sci:
+            return {"result": "MISMATCH", "first_discrepancy": f_sci, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": None}
     resnap = dataset.finish_snapshot(rows_re, snap.get("workspace_id"))
     same_rows = json.loads(canonical_json(resnap["rows"])) == snap.get("rows"); same_counts = resnap["counts"] == snap.get("counts") and resnap["coverage_gaps"] == snap.get("coverage_gaps")
     same_digest = dataset.snapshot_digest(snap) == can.get("snapshot_digest") == man.get("snapshot_digest")
@@ -535,7 +574,7 @@ def _verify_dataset_export(members: dict, man: dict, zs: str, checks: list) -> d
     if not (same_rows and same_counts and same_digest):
         return {"result": "MISMATCH", "first_discrepancy": "dataset rows, counts/gaps or snapshot digest do not reproduce from the embedded claim content", "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": rec}
     return {"result": "SUCCESS", "first_discrepancy": None, "checks": checks, "zip_sha256": zs, "canonical_digest": cdig, "claim_id": None, "recompute": rec,
-            "meaning": "exact bytes verified; every row re-derived from the embedded claim content, counts, gaps and the snapshot identity reproduced; a snapshot is a derivation of stored records, not a validated dataset product"}
+            "meaning": "exact bytes verified; every row re-derived from the embedded claim content, counts, gaps and the snapshot identity reproduced; a snapshot is a derivation of stored records, not a dataset product whose quality has been established"}
 
 
 def publication_eligibility(can: dict) -> dict:

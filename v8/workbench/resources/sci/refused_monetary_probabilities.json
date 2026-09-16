@@ -1,0 +1,53 @@
+{
+ "label": "refused: a revenue range (110\u2013120 million) supplied where probabilities belong",
+ "events": [
+  {
+   "sequence": 1,
+   "kind": "register",
+   "payload": {
+    "claims": [
+     {
+      "alpha": 0.025,
+      "assumptions": [
+       "Synthetic data exercises software behavior only; never prospective scientific evidence."
+      ],
+      "baseline_hash": "2ef3c7b2e2af753e89156bc57386396b6c68944d24be2be44040e9f79849b0f7",
+      "candidate_hash": "ba4e586d9645eeb9e880309cb85bbedde21738fc2fc5efb76fc73e3d2dede376",
+      "claim_id": "source-fidelity",
+      "max_units": 30,
+      "metric": "paired_brier_improvement",
+      "min_units": 20,
+      "minimum_effect": 0.02,
+      "population": "Synthetic observations only",
+      "question": "Synthetic binary adjudication fixture; no empirical financial claim.",
+      "unit_definition": "One generated source-family question"
+     }
+    ],
+    "family_alpha": 0.05,
+    "family_id": "EXPLORATORY-TEMPLATE-REQUIRES-REVIEW",
+    "mode": "exploratory",
+    "schema": "yuclaw.science.v8.1"
+   },
+   "recorded_at": "2026-03-01T00:00:00+00:00",
+   "previous_hash": "db0c5347a51eecb0588a940592a9a6163eed6308649f33118b95c0c27e796bdb",
+   "event_hash": "58b6ef65ee2ef88972497e54f463eb1987160749a2616be33ed139824cc59ef0"
+  },
+  {
+   "sequence": 2,
+   "kind": "predict",
+   "payload": {
+    "claim_id": "source-fidelity",
+    "unit_id": "u-000",
+    "baseline_probability": 110000000,
+    "candidate_probability": 120000000,
+    "source_hashes": [
+     "6a08b7af0beebff99fbfff2e176c17f0aeb1709bdaed6085cdae404ad116b210"
+    ],
+    "outcome_not_before": "2026-12-31T00:00:00+00:00"
+   },
+   "recorded_at": "2026-03-01T00:01:00+00:00",
+   "previous_hash": "58b6ef65ee2ef88972497e54f463eb1987160749a2616be33ed139824cc59ef0",
+   "event_hash": "fac5d0aa0bcef5ce685597bb67a13e814fb279bda951edeb34810b72673e376f"
+  }
+ ]
+}

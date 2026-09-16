@@ -35,7 +35,10 @@ FORMAT = "yuclaw-commitment-workspace/1"
 LOG = "commitments.jsonl"
 GENESIS = "0" * 64
 KINDS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED",
-         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY")
+         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY")
+# SCI_REPLAY_RECORDED (V8-005): a bounded science-journal input replayed through the adapted kernel — the input (data, never
+# code), its identity, the recomputed report or the specific refusal, link verification and the replay status. Linked to a
+# financial claim when the input names one; otherwise workspace-level (claim_id None). Never changes any claim.
 # RESEARCH_NOTE_RECORDED (V8-004 §3): authored text about a frozen claim. Never a version, never an amendment: the claim's
 # range, metric, currency, basis, period, sources and digests are untouched. A correction is a NEW note event that names the
 # note it supersedes; the earlier text stays in its own event. Notes carry no source availability, so an as-of view cuts them
@@ -236,13 +239,15 @@ class Workspace:
         return self._derive(claim_id, [e for e in self.load()["events"] if e["claim_id"] == claim_id and e["seq"] < prior["seq"]], None)
 
     def _derive(self, claim_id: str, evs: list[dict], as_of: str | None) -> dict | None:
-        versions, withdrawn, outcome, adjs, exports, verifs, sources, notes = [], None, None, [], [], [], [], []
+        versions, withdrawn, outcome, adjs, exports, verifs, sources, notes, sci = [], None, None, [], [], [], [], [], []
         for e in evs:
             p = e["payload"]; k = e["kind"]
             if k == "SOURCE_REGISTERED":
                 sources.append(dict(p, event_hash=e["event_hash"], time=e["time"]))
             elif k == "RESEARCH_NOTE_RECORDED":
                 notes.append(dict(p, event_hash=e["event_hash"], time=e["time"], superseded_by=None))
+            elif k == "SCI_REPLAY_RECORDED":
+                sci.append(dict(p, event_hash=e["event_hash"], time=e["time"]))
             elif k == "CLAIM_FROZEN":
                 versions.append({"version_id": p["version_id"], "type": "FROZEN", "claim": dict(p["claim"], _digest=p["claim_digest"]), "event_hash": e["event_hash"], "time": e["time"], "reason": None, "notes": None})
             elif k in ("CLAIM_REVISED", "SOURCE_CORRECTED"):
@@ -266,7 +271,7 @@ class Workspace:
                 by_id[n["supersedes_note"]]["superseded_by"] = n["note_id"]
         return {"claim_id": claim_id, "as_of": as_of, "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": adjs,
                 "exports": exports, "verifications": verifs, "sources": sources, "events": evs, "current": versions[-1],
-                "research_notes": notes, "research_notes_current": [n for n in notes if n["superseded_by"] is None]}
+                "research_notes": notes, "research_notes_current": [n for n in notes if n["superseded_by"] is None], "sci": sci}
 
     # ------------------------------------------------------------------ write API (the seven steps)
     def _prior(self, op_id: str) -> dict | None:
@@ -394,12 +399,30 @@ class Workspace:
                 sup_event = prev["event_hash"]
             payload = {"note_id": f"N{len(st['research_notes']) + 1}", "category": note["category"], "actor": note["actor"],
                        "actor_kind": "simulated_test_action" if note["simulated"] else "attribution_label",
-                       "attribution": "an actor label is attribution, not authenticated identity and not proof of independent human review",
+                       "attribution": "an actor label is attribution; it is not authenticated identity and does not establish independent human review",
                        "unresolved_question": note["unresolved_question"], "next_evidence": note["next_evidence"], "reason": note["reason"],
                        "version_ref": vref, "version_digest": versions[vref]["claim"]["_digest"], "evidence": note["evidence"],
                        "supersedes_note": note["supersedes_note"], "supersedes_event": sup_event, "state_tip": st["events"][-1]["event_hash"],
                        "changes_claim": False}
             return self.append("RESEARCH_NOTE_RECORDED", claim_id, payload, op_id=op_id, actor="researcher")
+
+    def sci_records(self, claim_id: str | None = "*") -> list[dict]:
+        """Scientific replay records: all ("*"), workspace-level (None) or those linked to one claim."""
+        return [dict(e["payload"], event_hash=e["event_hash"], time=e["time"], claim_id=e["claim_id"]) for e in self.events() if e["kind"] == "SCI_REPLAY_RECORDED" and (claim_id == "*" or e["claim_id"] == claim_id)]
+
+    def record_sci(self, payload: dict, *, claim_id: str | None, op_id: str) -> tuple[dict, bool]:
+        """Record a scientific replay (V8-005). The identifier is derived from the state the operation is computed
+        against, so a retry with the same op_id reproduces the same payload (one durable event)."""
+        with self._locked():
+            prior = self._prior(op_id)
+            evs = self.load()["events"]
+            if prior is not None:
+                evs = [e for e in evs if e["seq"] < prior["seq"]]
+            if claim_id is not None and self._derive(claim_id, [e for e in evs if e["claim_id"] == claim_id], None) is None:
+                raise ContractError(f"claim {claim_id!r} is not frozen; a scientific record can link only to an existing frozen claim")
+            n = sum(1 for e in evs if e["kind"] == "SCI_REPLAY_RECORDED") + 1
+            body = dict(payload, sci_id=f"S{n}", state_tip=evs[-1]["event_hash"] if evs else GENESIS, changes_claim=False)
+            return self.append("SCI_REPLAY_RECORDED", claim_id, body, op_id=op_id, actor="researcher")
 
     def record_export(self, claim_id: str | None, *, export_id: str, canonical_digest: str, zip_sha256: str, zip_name: str, op_id: str, extra: dict | None = None) -> tuple[dict, bool]:
         with self._locked():

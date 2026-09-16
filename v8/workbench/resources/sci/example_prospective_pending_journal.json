@@ -1,0 +1,114 @@
+{
+ "label": "fictional prospective-mode fixture: two resolved units, one pending (AWAITING_OUTCOME); the mode is declared by the input and is not verified",
+ "events": [
+  {
+   "sequence": 1,
+   "kind": "register",
+   "payload": {
+    "claims": [
+     {
+      "alpha": 0.025,
+      "assumptions": [
+       "Synthetic data exercises software behavior only; never prospective scientific evidence."
+      ],
+      "baseline_hash": "2ef3c7b2e2af753e89156bc57386396b6c68944d24be2be44040e9f79849b0f7",
+      "candidate_hash": "ba4e586d9645eeb9e880309cb85bbedde21738fc2fc5efb76fc73e3d2dede376",
+      "claim_id": "source-fidelity",
+      "max_units": 5,
+      "metric": "paired_brier_improvement",
+      "min_units": 2,
+      "minimum_effect": 0.02,
+      "population": "Synthetic observations only",
+      "question": "Fictional fixture: does the candidate reduce blinded Brier loss on synthetic binary questions?",
+      "unit_definition": "One generated source-family question"
+     }
+    ],
+    "family_alpha": 0.05,
+    "family_id": "FICTIONAL-PROSPECTIVE-FIXTURE",
+    "mode": "prospective",
+    "schema": "yuclaw.science.v8.1"
+   },
+   "recorded_at": "2026-02-01T00:00:00+00:00",
+   "previous_hash": "db0c5347a51eecb0588a940592a9a6163eed6308649f33118b95c0c27e796bdb",
+   "event_hash": "a0f2a15023a89fb81ee509d8ff90003a515d7dee23295989883f816a2234f9c7"
+  },
+  {
+   "sequence": 2,
+   "kind": "predict",
+   "payload": {
+    "baseline_probability": 0.35,
+    "candidate_probability": 0.7,
+    "claim_id": "source-fidelity",
+    "outcome_not_before": "2026-02-01T00:01:30+00:00",
+    "source_hashes": [
+     "2617419a1da8395a8815b71184e1dd6d3031e964955f7de506dffd3d3ca3a7ee"
+    ],
+    "unit_id": "u-000"
+   },
+   "recorded_at": "2026-02-01T00:01:00+00:00",
+   "previous_hash": "a0f2a15023a89fb81ee509d8ff90003a515d7dee23295989883f816a2234f9c7",
+   "event_hash": "548ea6598492fac74f18b5f219363e22dd1fb213fa8c677dc6a61b85cb5d50eb"
+  },
+  {
+   "sequence": 3,
+   "kind": "resolve",
+   "payload": {
+    "adjudication_hash": "e53cfac159265e39cac2c325ff2a9b74e209d52cadc50f1f0017563e0e085727",
+    "claim_id": "source-fidelity",
+    "outcome": 1,
+    "unit_id": "u-000"
+   },
+   "recorded_at": "2026-02-01T00:02:00+00:00",
+   "previous_hash": "548ea6598492fac74f18b5f219363e22dd1fb213fa8c677dc6a61b85cb5d50eb",
+   "event_hash": "0a2ba3c599e6efc379ac9022d1d329a73eed825b1d11c10770dc22fd67c68622"
+  },
+  {
+   "sequence": 4,
+   "kind": "predict",
+   "payload": {
+    "baseline_probability": 0.35,
+    "candidate_probability": 0.7,
+    "claim_id": "source-fidelity",
+    "outcome_not_before": "2026-02-01T00:03:30+00:00",
+    "source_hashes": [
+     "450c810da093b53b1c7f2f444b3341da659d14f588835f749c8033bcfa17b1db"
+    ],
+    "unit_id": "u-001"
+   },
+   "recorded_at": "2026-02-01T00:03:00+00:00",
+   "previous_hash": "0a2ba3c599e6efc379ac9022d1d329a73eed825b1d11c10770dc22fd67c68622",
+   "event_hash": "596af6b0a63beb56cc45ae694c35eb4e92c17753595f2e375aafd0108cfdf1aa"
+  },
+  {
+   "sequence": 5,
+   "kind": "resolve",
+   "payload": {
+    "adjudication_hash": "e160301437656b73edcefa5f44bf04a4d08944addd0146924205a72f433007fe",
+    "claim_id": "source-fidelity",
+    "outcome": 1,
+    "unit_id": "u-001"
+   },
+   "recorded_at": "2026-02-01T00:04:00+00:00",
+   "previous_hash": "596af6b0a63beb56cc45ae694c35eb4e92c17753595f2e375aafd0108cfdf1aa",
+   "event_hash": "45a624984c026194a71ac05cccb576bbe94064ad0918f64f92166bbad9a75142"
+  },
+  {
+   "sequence": 6,
+   "kind": "predict",
+   "payload": {
+    "baseline_probability": 0.4,
+    "candidate_probability": 0.65,
+    "claim_id": "source-fidelity",
+    "outcome_not_before": "2026-02-01T00:05:30+00:00",
+    "source_hashes": [
+     "ce3b8a13bce1ad3e55d10728c511095f03f69391aea234cd856b2fa2d6e7fbb1"
+    ],
+    "unit_id": "u-002"
+   },
+   "recorded_at": "2026-02-01T00:05:00+00:00",
+   "previous_hash": "45a624984c026194a71ac05cccb576bbe94064ad0918f64f92166bbad9a75142",
+   "event_hash": "0d063e213ce7da10248a989c913cc895791966ddcd70158fcca340326f4b643b"
+  }
+ ],
+ "expected_root": "0d063e213ce7da10248a989c913cc895791966ddcd70158fcca340326f4b643b"
+}

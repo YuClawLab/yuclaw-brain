@@ -29,6 +29,7 @@ from pathlib import Path
 
 from v3.receipts.contracts import ContractError
 from v8.workbench import NOT_ADVICE, calc, dataset, export, money, schema
+from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -39,6 +40,9 @@ CSP = "default-src 'none'; img-src 'self'; style-src 'self'; form-action 'self';
 _CLAIM_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 _EXPORT_ID = re.compile(r"^exp-[0-9a-f]{16}$")
 _FIXTURE = re.compile(r"^00[1-9]_[a-z_]+$")
+_SCI_EXAMPLE = re.compile(r"^[a-z_]+$")
+_SCI_ID = re.compile(r"^S[0-9]{1,5}$")
+SCI_EXAMPLES_DIR = Path(__file__).resolve().parent / "resources" / "sci"
 _TS_INPUT = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?Z?$")
 STEPS = [("source", "1 Source"), ("claim", "2 Typed claim"), ("comparison", "3 Comparison"), ("calculation", "4 Calculation"), ("history", "5 History"), ("adjudication", "6 Adjudication"), ("export", "7 Reproducible export")]
 CSS = """
@@ -245,6 +249,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.page_notes(q), extra=extra)
             if path == "/dataset":
                 return self._send(200, self.page_dataset(q), extra=extra)
+            if path == "/sci":
+                return self._send(200, self.page_sci(q), extra=extra)
+            m = re.match(r"^/sci/(S[0-9]{1,5})$", path)
+            if m:
+                return self._send(200, self.page_sci_record(m.group(1)), extra=extra)
             if path == "/dataset.json":
                 snap = dataset.build_snapshot(self.server.ws)
                 return self._send(200, json.dumps({"snapshot": snap, "snapshot_digest": dataset.snapshot_digest(snap), "derived_at": _now(), "note": "derived_at is outside the snapshot identity"}, indent=1, sort_keys=True, ensure_ascii=True), "application/json; charset=utf-8", extra)
@@ -281,6 +290,8 @@ class Handler(BaseHTTPRequestHandler):
                 return getattr(self, "post_" + m.group(2))(cid, form, op_id)
             if path == "/fixtures/load":
                 return self.post_fixture(form, op_id)
+            if path == "/sci/replay":
+                return self.post_sci(form, op_id)
             if path == "/dataset/export":
                 r = export.build_dataset_export(self.server.ws, candidate_commit=self.server.candidate_commit, op_id=op_id)
                 return self._redirect(f"/dataset?built={r['export_id']}")
@@ -305,7 +316,7 @@ class Handler(BaseHTTPRequestHandler):
         cand = self.server.candidate_commit or "not recorded"
         return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a></nav>
+<nav><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a></nav>
 <div class="steps">{steps}</div>
 <h1>{esc(title)}</h1>
 {body}
@@ -391,7 +402,7 @@ class Handler(BaseHTTPRequestHandler):
         ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
         form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/note">{self._csrf_field()}<h3>Record a research note</h3>
 <p class="muted">A note is a separate research action: it records an unresolved question or explanation, the next evidence needed and why. It changes nothing about the claim — range, metric, currency, basis, fiscal period, sources and frozen digests stay exactly as they are — and it never resolves an outcome or reopens a withdrawn commitment. A correction is a new note that names the note it corrects; the earlier text is retained.</p>
-<div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity, not proof of independent review)</label><input type="text" name="actor"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
+<div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
 <label>Unresolved question or explanation</label><textarea name="unresolved_question" rows="2"></textarea>
 <label>Next evidence needed</label><input type="text" name="next_evidence">
 <label>Reason for the note (required)</label><input type="text" name="reason">
@@ -401,7 +412,65 @@ class Handler(BaseHTTPRequestHandler):
         table = f'{self._NOTE_HEAD}{rows}</table>' if rows else '<p class="muted">No research notes on this claim yet.</p>'
         return f'<p class="muted">{esc(len(notes))} note(s), {esc(len([n for n in notes if n.get("supersedes_note")]))} correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.</p>{table}{later}{form}'
 
+    def _sci_linked_html(self, full: dict) -> str:
+        recs = full.get("sci", [])
+        if not recs:
+            return '<p class="muted">No scientific record links to this claim. A replay is recorded under <a href="/sci">Scientific report</a>; linking it here names this claim\'s bytes, nothing more — the claim\'s IN_RANGE / OUT_OF_RANGE results are never units of a study.</p>'
+        rows = "".join(f'<tr><td><a href="/sci/{esc(r["sci_id"])}">{esc(r["sci_id"])}</a></td><td><b>{esc(r["status"])}</b><br><span class="muted">{esc(r["replay_status"])}</span></td><td>{esc((r.get("report") or {}).get("family_id") or "—")}</td><td><code>{esc(r["input_sha256"][:16])}…</code></td><td>{esc(r["actor"])}<br><span class="muted">{esc(r["actor_kind"].replace("_", " "))}</span></td><td>{esc(r["time"]["recorded_at"])}</td></tr>' for r in recs)
+        return f'<table><tr><th>record</th><th>status · replay status</th><th>family</th><th>input identity</th><th>actor</th><th>recorded (local action)</th></tr>{rows}</table><p class="muted">A link names this claim\'s bytes; it establishes no source authenticity, no prospective commitment and no scientific improvement about the commitment.</p>'
+
+    def _sci_examples(self) -> list[str]:
+        return sorted(p.stem for p in SCI_EXAMPLES_DIR.glob("*.json") if p.stem != "template_manifest") if SCI_EXAMPLES_DIR.is_dir() else []
+
     # ------------------------------------------------------------------ pages
+    def page_sci(self, q) -> str:
+        ws = self.server.ws; recs = ws.sci_records("*"); k = sci_adapter.kernel_identity()
+        rows = "".join(f'<tr><td><a href="/sci/{esc(r["sci_id"])}">{esc(r["sci_id"])}</a></td><td><b>{esc(r["status"])}</b><br><span class="muted">{esc(r["replay_status"])}</span></td><td>{esc((r.get("report") or {}).get("family_id") or "—")}<br><span class="muted">{esc((r.get("report") or {}).get("mode") or "")}</span></td><td>{esc("; ".join(c["status"] for c in (r.get("report") or {}).get("claims", [])) or "; ".join(x["code"] for x in r.get("reasons", [])))}</td><td>{esc(r["claim_id"] or "—")}</td><td><code>{esc(r["input_sha256"][:16])}…</code> · {esc(r["input_bytes"])} B</td><td>{esc(r["actor"])}<br><span class="muted">{esc(r["actor_kind"].replace("_", " "))}</span></td><td>{esc(r["time"]["recorded_at"])}</td></tr>' for r in recs)
+        ex = "".join(f'<option value="{esc(x)}">{esc(x)}</option>' for x in self._sci_examples())
+        claims = "".join(f'<option value="{esc(c)}">{esc(c)}</option>' for c in ws.status()["claims"])
+        body = f"""<p>Replay a science journal through the adapted kernel. Supported contract: paired binary-probability predictions scored by Brier improvement; sequential evidence as a fixed mixture of Hoeffding test supermartingales; a frozen family alpha; pending outcomes, invalidation and exploratory status kept as they are. A journal is data — a JSON event list in the kernel's event format (optionally wrapped with expected_root, links and declarations) of at most {esc(sci_adapter.MAX_INPUT_BYTES // 1024)} KB and {esc(sci_adapter.MAX_EVENTS)} events; nothing in it is executed, opened as a file or fetched. The workbench recomputes every hash and statistic itself; it never trusts a supplied report.</p>
+<p class="muted">Kernel {esc(k["schema"])} · kernel identity <code>{esc(k["kernel_sha256"][:16])}…</code> · {esc(k["method"])}</p>
+<div class="notice">Monetary amounts and ranges are not probabilities. A financial commitment's IN_RANGE / OUT_OF_RANGE results are not units of a study and yield no scientific improvement. A retrospective record (such as a real-source replay observed after its outcome) can be inspected under an explicit retrospective label; it is never prospective evidence. Imported timestamps and actor labels establish neither commitment-before-outcome nor verified identity.</div>
+<h2>Records in this workspace ({esc(len(recs))})</h2><table><tr><th>record</th><th>status · replay status</th><th>family · mode</th><th>claim statuses / refusal codes</th><th>linked claim</th><th>input identity</th><th>actor</th><th>recorded (local action)</th></tr>{rows or '<tr><td colspan="8" class="muted">no scientific record yet</td></tr>'}</table>
+<h2>Replay a journal</h2><form class="card" method="post" action="/sci/replay">{self._csrf_field()}
+<div class="row"><div><label>Packaged example (fictional fixtures; leave empty to paste your own)</label><select name="example"><option value="">— paste below —</option>{ex}</select></div><div><label>Link to a frozen claim (optional; names its bytes only)</label><select name="claim_id"><option value="">— none —</option>{claims}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor"></div><div><label>Label (optional)</label><input type="text" name="label"></div></div>
+<label>Journal input (JSON: an event list, or {{"events": [...], "expected_root": "…", "links": {{"claim_id": "…", "version_digest": "…", "source_hashes": ["…"]}}, "declared": {{"retrospective": true}}}})</label><textarea name="input" rows="8"></textarea>
+<label><input type="checkbox" name="simulated" value="1"> This is a simulated test action (automated), not a human's replay</label>
+<button type="submit">Replay through the kernel and record</button></form>
+<p class="muted">Every replay — supported, exploratory or refused with its specific reasons — is recorded as an append-only event with the input's identity, so it can be inspected, exported and recomputed in a fresh workspace.</p>"""
+        return self.page("Scientific report / replay", body)
+
+    def page_sci_record(self, sid: str) -> str:
+        r = next((x for x in self.server.ws.sci_records("*") if x["sci_id"] == sid), None)
+        if r is None:
+            return self.page("No such scientific record", '<div class="err">This record does not exist in this workspace.</div>')
+        rep = r.get("report") or {}; k = r["kernel"]
+        reasons = "".join(f'<li><b>{esc(x["code"])}</b>: {esc(x["reason"])}</li>' for x in r.get("reasons", []))
+        warnings = "".join(f'<li>{esc(w)}</li>' for w in r.get("warnings", []))
+        claims = "".join(f'<tr><td>{esc(c["claim_id"])}</td><td><b>{esc(c["status"])}</b></td><td>{esc(c["resolved_units"])} resolved · {esc(len(c["pending_units"]))} pending{(" (" + esc(", ".join(c["pending_units"][:5])) + ")") if c["pending_units"] else ""}</td><td>{esc(c["mean_brier_improvement"])}</td><td>{esc(round(c["current_log_e"], 6))} / max {esc(round(c["max_log_e"], 6))}</td><td>{esc(c["anytime_p_bound"])}</td><td>{esc(c["threshold_crossed"])}</td><td>{esc(c["invalidated_reason"] or "—")}</td><td>{esc(c["contract"]["alpha"])} of {esc(rep.get("family_alpha"))} · min {esc(c["contract"]["min_units"])} · max {esc(c["contract"]["max_units"])} · effect {esc(c["contract"]["minimum_effect"])}</td><td>{esc(c["permission"])}</td></tr>' for c in rep.get("claims", []))
+        L = r.get("links") or {}
+        link_rows = ""
+        if L.get("claim"):
+            link_rows += f'<tr><td>claim</td><td>{esc(L["claim"]["claim_id"])}</td><td><b>{esc(L["claim"]["result"])}</b>{(" · RETROSPECTIVE record" if L["claim"].get("retrospective") else "")}{(" · fictional" if L["claim"].get("fictional") else "")}</td></tr>'
+        if L.get("version"):
+            link_rows += f'<tr><td>version</td><td><code>{esc(L["version"]["version_digest"][:16])}…</code> {esc(L["version"].get("version_id") or "")}</td><td><b>{esc(L["version"]["result"])}</b>{(" — " + esc(L["version"].get("note"))) if L["version"].get("note") else ""}</td></tr>'
+        for sh in L.get("sources", []):
+            link_rows += f'<tr><td>source</td><td><code>{esc(sh["source_hash"][:16])}…</code></td><td><b>{esc(sh["result"])}</b></td></tr>'
+        link_notes = "".join(f'<li>{esc(n)}</li>' for n in L.get("notes", []))
+        standing = "".join(f'<li>{esc(x)}</li>' for x in r.get("standing", []))
+        lim = "".join(f'<li>{esc(x)}</li>' for x in rep.get("limitations", []))
+        cls = "ok" if r["status"] != "INELIGIBLE" else "bad"
+        body = f"""<p><b>{esc(r["sci_id"])}</b> · status <b class="{cls}">{esc(r["status"])}</b> · replay status <b class="warn">{esc(r["replay_status"])}</b> · recorded {esc(r["time"]["recorded_at"])} by {esc(r["actor"])} ({esc(r["actor_kind"].replace("_", " "))}){(" · label: " + esc(r.get("label"))) if r.get("label") else ""}{(" · linked claim <a href=/claim/" + esc(urllib.parse.quote(r["claim_id"], safe="")) + ">" + esc(r["claim_id"]) + "</a>") if r.get("claim_id") else ""}</p>
+<h2>Input identity</h2><p>input sha256 <code>{esc(r["input_sha256"])}</code> · {esc(r["input_bytes"])} bytes · {esc(len(r["input"]["events"]))} event(s) · expected root {esc(r["input"].get("expected_root") or "none supplied")} · recomputed root {esc(r.get("root_hash") or "—")}</p>
+<h2>Kernel and method</h2><p>{esc(k["schema"])} · kernel identity <code>{esc(k["kernel_sha256"])}</code></p><p class="muted">{esc(k["method"])}</p><p class="muted">Supported metric: paired_brier_improvement only. Modules: {esc(", ".join(f"{m} {h[:12]}…" for m, h in k["modules"].items()))}</p>
+{"<h2>Why this input is not eligible</h2><ul>" + reasons + "</ul>" if reasons else ""}
+{("<h2>Report (recomputed by the kernel)</h2><p>family <b>" + esc(rep.get("family_id")) + "</b> · mode <b>" + esc(rep.get("mode")) + "</b> · registered " + esc(rep.get("registered_at")) + " · family alpha " + esc(rep.get("family_alpha")) + " · events " + esc(rep.get("event_count")) + " · root <code>" + esc((rep.get("root_hash") or "")[:16]) + "…</code> · checkpoint supplied and matched: " + esc(rep.get("checkpoint_matches")) + " · anchor " + esc(rep.get("anchor_status")) + "</p><table><tr><th>claim</th><th>status</th><th>units</th><th>mean Brier improvement</th><th>log e-value current / max</th><th>anytime p bound</th><th>threshold crossed</th><th>invalidated</th><th>allocation</th><th>permission</th></tr>" + claims + "</table><p class=muted>" + esc(rep.get("scope")) + "</p>") if rep else ""}
+{"<h2>Warnings</h2><ul>" + warnings + "</ul>" if warnings else ""}
+<h2>Links to financial objects</h2>{("<table><tr><th>object</th><th>identity</th><th>result</th></tr>" + link_rows + "</table>") if link_rows else '<p class="muted">no links declared</p>'}<ul>{link_notes}</ul>
+<h2>What this establishes and what it does not</h2><ul>{standing}</ul>{"<p class=muted>Kernel limitations:</p><ul>" + lim + "</ul>" if lim else ""}
+<p class="muted">{esc(rep.get("not_advice") or NOT_ADVICE)}</p>"""
+        return self.page(f"Scientific record {sid}", body)
+
     def page_notes(self, q) -> str:
         ws = self.server.ws; st = ws.status(); rows = ""
         for cid in st["claims"]:
@@ -585,7 +654,7 @@ class Handler(BaseHTTPRequestHandler):
         # --- amendments / outcome forms
         bases = self._sel("basis", schema.BASES, st["current"]["claim"]["basis"]); types = self._sel("amend_type", ("REVISED", "WITHDRAWN", "CORRECTED_SOURCE"), "REVISED", blank=False)
         cur = st["current"]["claim"]
-        amend_form = "" if full["withdrawn"] else f"""<form class="card" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field()}<h3>Create an amendment</h3><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{esc(cur["range"]["low"])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{esc(cur["range"]["high"])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement"><label>Reason (required)</label><input type="text" name="reason">{self._source_select()}<label>Unresolved explanation (a note, not causal proof)</label><input type="text" name="explanation_unresolved"><label>Next evidence needed</label><input type="text" name="next_evidence"><label>Source discrepancy (verbatim; e.g. the amendment restates the prior range differently from the original — preserved, never corrected)</label><input type="text" name="source_discrepancy"><button type="submit">Record amendment</button></form>"""
+        amend_form = "" if full["withdrawn"] else f"""<form class="card" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field()}<h3>Create an amendment</h3><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{esc(cur["range"]["low"])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{esc(cur["range"]["high"])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement"><label>Reason (required)</label><input type="text" name="reason">{self._source_select()}<label>Unresolved explanation (a note, not causal evidence)</label><input type="text" name="explanation_unresolved"><label>Next evidence needed</label><input type="text" name="next_evidence"><label>Source discrepancy (verbatim; e.g. the amendment restates the prior range differently from the original — preserved, never corrected)</label><input type="text" name="source_discrepancy"><button type="submit">Record amendment</button></form>"""
         out_form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/outcome">{self._csrf_field()}<h3>Record the disclosed outcome</h3><div class="row"><div><label>Actual (in units, exact)</label><input type="text" name="actual"></div><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Basis</label>{self._sel("basis", schema.BASES, cur["basis"])}</div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}{self._source_select()}<label><input type="checkbox" name="comparable" value="1" checked> Recorder declares the outcome comparable (the calculator re-checks every field regardless)</label><button type="submit">Record outcome</button></form>"""
         # --- 7 export
         exp_rows = "".join(f'<tr><td><a href="/exports/{esc(x["export_id"])}.zip">{esc(x["export_id"])}.zip</a></td><td><code>{esc(x["canonical_digest"])}</code></td><td><code>{esc(x["zip_sha256"][:16])}…</code></td><td>{esc(x["time"]["recorded_at"])}</td></tr>' for x in full["exports"])
@@ -608,6 +677,7 @@ class Handler(BaseHTTPRequestHandler):
 <h2 id="calculation">4 Calculation</h2>{calc_html}{out_form if not full["withdrawn"] else ""}
 <h2 id="history">5 History — as-of replay</h2>{hist_html}
 <h2 id="notes">Research notes — unresolved evidence (separate from amendments)</h2>{notes_html}
+<h2 id="sci">Scientific records linked to this claim</h2>{self._sci_linked_html(full)}
 <h2 id="adjudication">6 Adjudication</h2><table><tr><th>reviewer</th><th>rule</th><th>label</th><th>computed</th><th>reason</th><th>conflicts</th><th>evidence</th><th>recorded</th></tr>{adj_rows or '<tr><td colspan="8" class="muted">no adjudication recorded; the claim stays unresolved</td></tr>'}</table>{adj_form}
 <h2 id="export">7 Reproducible export</h2>{exp_html}"""
         return self.page(cid, body, claim_id=cid)
@@ -678,6 +748,35 @@ class Handler(BaseHTTPRequestHandler):
                "version_ref": form.get("version_ref") or None, "evidence": [v for v in body.get("evidence", []) if re.match(r"^[0-9a-f]{64}$", v)], "supersedes_note": form.get("supersedes_note") or None, "simulated": form.get("simulated") == "1"}
         self.server.ws.record_note(cid, raw, op_id=op_id)
         return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}#notes")
+
+    def post_sci(self, form, op_id):
+        ex = form.get("example", ""); raw = form.get("input", "")
+        if ex:
+            if not _SCI_EXAMPLE.match(ex) or not (SCI_EXAMPLES_DIR / f"{ex}.json").is_file() or ex == "template_manifest":
+                raise ContractError("example: unknown packaged example")
+            raw = (SCI_EXAMPLES_DIR / f"{ex}.json").read_text(encoding="utf-8")
+        actor = form.get("actor", "").strip()
+        if not actor:
+            raise ContractError("actor: an attribution label is required (it is not authenticated identity)")
+        try:
+            env = sci_adapter.parse_input(raw)
+        except sci_adapter.InputError as exc:
+            raise ContractError(f"scientific input refused: {exc}") from None
+        cid = form.get("claim_id") or None
+        if cid and not _CLAIM_ID.match(cid):
+            raise ContractError("claim_id: invalid")
+        if cid and env.get("links") is None:
+            env["links"] = {"claim_id": cid}
+        elif cid and "claim_id" not in env["links"]:
+            env["links"]["claim_id"] = cid
+        link_cid = (env.get("links") or {}).get("claim_id") or None
+        res = sci_adapter.classify(env, self.server.ws); ident = sci_adapter.input_identity(env)
+        lab = form.get("label", "").strip()[:200] or env.get("label")
+        payload = {"input": env, **ident, "status": res["status"], "replay_status": res["replay_status"], "reasons": res["reasons"], "report": res["report"], "report_digest": res["report_digest"], "root_hash": res["root_hash"],
+                   "links": res["links"], "warnings": res["warnings"], "kernel": res["kernel"], "standing": res["standing"], "actor": actor, "actor_kind": "simulated_test_action" if form.get("simulated") == "1" else "attribution_label", "label": lab}
+        link_target = link_cid if (res["links"].get("claim") or {}).get("result") == "VERIFIED_EXISTS" else None
+        ev, _ = self.server.ws.record_sci(payload, claim_id=link_target, op_id=op_id)
+        return self._redirect(f"/sci/{ev['payload']['sci_id']}")
 
     def post_export(self, cid, form, op_id):
         r = export.build_export(self.server.ws, cid, candidate_commit=self.server.candidate_commit, op_id=op_id)

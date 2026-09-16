@@ -26,7 +26,7 @@ KNOWN_OMISSIONS = [
     "source availability precision is second-level for EDGAR acceptance timestamps and as entered by the registrar otherwise; the workbench does not verify a publisher's clock",
     "reviewer labels are attribution, not authenticated identity or independent review; automated actions are identified as simulated tests",
     "excerpt bytes are withheld wherever rights do not allow redistribution; digests remain",
-    "no market prices, returns, forecasts or financial performance are recorded; no validated commercial dataset, prospective evidence or user benefit is claimed",
+    "no market prices, returns, forecasts or financial performance are recorded; no commercial dataset of established quality, prospective evidence or user benefit is claimed",
     "backup creation and restoration are not provided in 8.0.0; a snapshot is not a backup",
 ]
 RUNNER_MARK = "automated test action"
