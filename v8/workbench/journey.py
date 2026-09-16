@@ -270,7 +270,7 @@ class Journey:
     # ---------------------------------------------------------------- V8-004: research notes + dataset coverage, through the browser
     def demo_features(self, page, a: str, b: str, A, B, wsA):
         F = "research_notes"; CID = "ZZFX-FY2026-REV-GUIDE"; NEG = "ZZFX-FY2026-REV-GUIDE-NEG"
-        digests_before = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]; events_before = len(A.ws.load()["events"])
+        digests_before = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]
         # ---- a note on the frozen claim, from the claim page; the claim's versions and digests are untouched
         page.goto(f"{a}/claim/{CID}")
         self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "unresolved_question", "actor": RUNNER, "unresolved_question": "why was the low end lowered while the high end also moved?", "next_evidence": "the full-year filing", "reason": "the revision is explained by the runner as a simulated test note", "version_ref": "R1", "simulated": True}, "Record research note")
@@ -278,15 +278,21 @@ class Journey:
         self.check(F, "a research note is recorded from the claim page as a separate action (N1, version R1, actor label, local action time)", "N1" in nsec and "R1" in nsec and RUNNER in nsec and "simulated test action" in nsec and "the full-year filing" in nsec, nsec[:200])
         after = A.ws.claim_state(CID); self.check(F, "adding a note changes no claim field or frozen digest and adds no version", [v["claim"]["_digest"] for v in after["versions"]] == digests_before and len(after["versions"]) == 2 and after["current"]["claim"]["range"] == {"low": 105000000, "high": 115000000}, negative=True)
         csec = self.section(page, "comparison"); self.check(F, "the note is shown beside the comparison (COMPARABLE) with its version link", "Research notes on this comparison" in csec and "N1" in csec and "R1" in csec, csec[:200]); self.shot(page, F, "note_recorded")
-        # ---- browser resubmit of the same form (same operation identifier) lands once
-        page.go_back(); page.go_back()
+        # ---- the same rendered form submitted twice (identical operation identifier) lands once: first sent through the browser
+        #      context's request (the same session and fields), then the same form clicked in the page
+        page.goto(f"{a}/claim/{CID}"); form = page.locator(f"form[action='/claim/{CID}/note']").first
+        for k, v in {"category": "general", "actor": RUNNER, "unresolved_question": "retry demonstration", "next_evidence": "", "reason": "the same form sent twice must land once", "simulated": True}.items():
+            el = form.locator(f"[name='{k}']").first; tag = el.evaluate("e => e.tagName.toLowerCase()"); typ = el.evaluate("e => e.type || ''")
+            el.select_option(v) if tag == "select" else (el.set_checked(bool(v)) if typ == "checkbox" else el.fill(v))
+        data = form.evaluate("f => Object.fromEntries(new FormData(f).entries())"); n_notes = len([e for e in A.ws.events(CID) if e["kind"] == "RESEARCH_NOTE_RECORDED"]); n_events = len(A.ws.load()["events"])
+        r1 = page.request.post(f"{a}/claim/{CID}/note", form=data, headers={"Origin": a, "Sec-Fetch-Site": "same-origin"}, max_redirects=0)
         with page.expect_navigation():
-            page.locator(f"form[action='/claim/{CID}/note']").first.get_by_role("button", name="Record research note").click()
-        self.check(F, "resubmitting the same note form (same operation identifier) creates no second note event", len([e for e in A.ws.events(CID) if e["kind"] == "RESEARCH_NOTE_RECORDED"]) == 1 and len(A.ws.load()["events"]) == events_before + 1, negative=True)
+            form.get_by_role("button", name="Record research note").click()
+        self.check(F, "the same note form submitted twice with its identical operation identifier creates exactly one durable note event (retry safety through the browser session)", r1.status == 303 and len([e for e in A.ws.events(CID) if e["kind"] == "RESEARCH_NOTE_RECORDED"]) == n_notes + 1 and len(A.ws.load()["events"]) == n_events + 1 and "op_id" in data, (r1.status, len(A.ws.load()["events"]) - n_events), negative=True)
         # ---- correction: a new linked note; the earlier text is retained
         page.goto(f"{a}/claim/{CID}")
         self.submit(page, f"form[action='/claim/{CID}/note']", {"category": "unresolved_question", "actor": RUNNER, "unresolved_question": "corrected: why was the whole range lowered?", "next_evidence": "the full-year filing", "reason": "wording corrected", "version_ref": "R1", "supersedes_note": "N1", "simulated": True}, "Record research note")
-        nsec = self.section(page, "notes"); self.check(F, "a correction is a new note N2 linked to N1; N1's text stays visible and is marked corrected", "N2" in nsec and "corrects N1" in nsec and "corrected by N2" in nsec and "why was the low end lowered" in nsec and "corrected: why was the whole range lowered?" in nsec, nsec[:300]); self.shot(page, F, "note_corrected")
+        nsec = self.section(page, "notes"); self.check(F, "a correction is a new note N3 linked to N1; N1's text stays visible and is marked corrected", "N3" in nsec and "corrects N1" in nsec and "corrected by N3" in nsec and "why was the low end lowered" in nsec and "corrected: why was the whole range lowered?" in nsec, nsec[:300]); self.shot(page, F, "note_corrected")
         # ---- honest timing: at an earlier cutoff the notes are not contemporaneous; they are listed separately with their action times
         page.goto(f"{a}/claim/{CID}?as_of=2026-06-01T00:00:00Z"); t = page.locator("body").inner_text(); nsec = self.section(page, "notes"); csec = self.section(page, "comparison")
         self.check(F, "at an earlier research cutoff today's notes do not appear as contemporaneous; they are listed under 'Later annotations' with their actual action times", "Later annotations" in nsec and "NOT contemporaneous" in nsec and "Research notes on this comparison: none recorded" in csec, nsec[:200], negative=True); self.shot(page, F, "note_timing_as_of")
@@ -312,7 +318,7 @@ class Journey:
         zn = self.out / f"{m.group(1)}_with_notes.zip"; dl.value.save_as(str(zn))
         with zipfile.ZipFile(zn) as z:
             can = json.loads(z.read("canonical.json"))
-        self.check(F, "the export carries the notes and their correction history (N1 corrected by N2) and the dataset row", [n["note_id"] for n in can["research_notes"]] == ["N1", "N2"] and can["research_notes"][0]["superseded_by"] == "N2" and can["dataset_row"]["research_notes"]["count"] == 2)
+        self.check(F, "the export carries the notes and their correction history (N1 corrected by N3) and the dataset row", [n["note_id"] for n in can["research_notes"]] == ["N1", "N2", "N3"] and can["research_notes"][0]["superseded_by"] == "N3" and can["dataset_row"]["research_notes"]["count"] == 3)
         page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zn))
         with page.expect_navigation():
             page.get_by_role("button", name="Verify").click()
@@ -465,7 +471,13 @@ class Journey:
             csec = self.section(page, "comparison"); self.check(F, "the discrepancy is carried both as the amendment's preserved source_discrepancy note and as a research note beside the comparison", "Source discrepancy (preserved verbatim, not corrected)" in csec and "$1.025 billion" in csec and "restates the May 8 lower bound as 1.025" in csec, csec[:300]); self.shot(page, F, "mchp_notes")
             F = "dataset"; page.goto(f"{a}/dataset"); t = page.locator("body").inner_text()
             self.check(F, "the dataset row for the real-source claim is labelled real source, RETROSPECTIVE and NOT_ELIGIBLE_UNDER_V8_001_CRITERIA (from the recorded note), with the withheld press-release excerpt and OUT_OF_RANGE", "real source" in t and "RETROSPECTIVE" in t and "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA" in t and "OUT_OF_RANGE" in t and recs["revision"]["accession"] in t, t[:300]); self.shot(page, F, "mchp_dataset_row")
-            self.check(F, "the row is not marked IN_RANGE and no prospective status is claimed", "not retrospective" not in t and "IN_RANGE" not in t.replace("OUT_OF_RANGE", ""), negative=True)
+            page.goto(f"{a}/dataset.json"); js = json.loads(page.locator("body").inner_text()); row = next(r for r in js["snapshot"]["rows"] if r["claim_id"] == CID)
+            self.check(F, "the machine-readable row carries computed OUT_OF_RANGE (never IN_RANGE), retrospective true, the recorded eligibility, the withheld press-release excerpt and no prospective status", row["computed"]["result"] == "OUT_OF_RANGE" and row["computed"]["original"] == "OUT_OF_RANGE" and row["computed"]["revised"] == "OUT_OF_RANGE" and row["status"]["retrospective"] is True and row["status"]["eligibility"].startswith("NOT_ELIGIBLE_UNDER_V8_001_CRITERIA") and len(row["rights"]["withheld_excerpts"]) == 1 and not row["status"]["fictional"], row["computed"], negative=True)
+            digests = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]
+            page.goto(f"{a}/claim/{CID}?as_of=2025-06-15T00:00:00Z"); nsec = self.section(page, "notes")
+            self.check("research_notes", "at the 2025-06-15 research cutoff the notes written in 2026 are not contemporaneous; they are listed as later annotations with their action times, and the claim digests are unchanged by the notes", "Later annotations" in nsec and "NOT contemporaneous" in nsec and digests == [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]], nsec[:200], negative=True)
+            page.goto(f"{a}/"); nav = page.locator("nav").inner_text(); self.check("sci", "no scientific-report tab or placeholder exists while the kernel's reference inputs are missing (BLOCKED, not faked)", "scientific" not in nav.lower(), nav[:100], negative=True)
+            self.log["features"]["sci"]["blocked"] = {"status": "BLOCKED", "missing_inputs": ["reference bundle with INPUTS.md and MANIFEST.json", "reference/v4/science/{__init__,contracts,statistics,store,evidence}.py from the preview base c34e19bf (uncommitted preview work; not in git)"]}
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()
