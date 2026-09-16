@@ -55,8 +55,9 @@ Ledger = "https://github.com/YuClawLab/yuclaw-trust"
 [tool.hatch.build.targets.wheel]
 packages = ["v3", "v4", "v8"]
 # v8/: only the workbench package ships (v8/__init__.py + v8/workbench/ with its packaged resources);
-# the order records, scope package and journey evidence are repository documents, never runtime code.
-exclude = ["v8/V8-001", "v8/V8-002", "v8/V8-003", "v8/scope"]
+# the order records (v8/V8-*), scope package and journey evidence are repository documents, never runtime
+# code — a pattern, so a new order record can never ship by omission (V8-005 clean-install finding).
+exclude = ["v8/V8-*", "v8/scope"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "sdk/yuclaw_py" = "yuclaw_py"
@@ -78,4 +79,4 @@ include = ["v3", "v4", "v8/__init__.py", "v8/workbench", "sdk/yuclaw_py", "READM
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
 # v8 order records, scope package and journey evidence are repository documents, never
 # distribution content (the sdist builder would otherwise pick up their README files).
-exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc", "v8/V8-001", "v8/V8-002", "v8/V8-003", "v8/scope"]
+exclude = ["archive", "clawhub", "**/__pycache__", "**/*.pyc", "v8/V8-*", "v8/scope"]
