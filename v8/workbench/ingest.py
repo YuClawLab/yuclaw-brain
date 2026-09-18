@@ -14,6 +14,7 @@ import argparse
 import hashlib
 import html
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -25,7 +26,9 @@ from pathlib import Path
 ALLOW_HOSTS = ("www.sec.gov", "data.sec.gov", "ir.microchip.com")
 MAX_BYTES = 8 << 20
 TIMEOUT = 60
-USER_AGENT = "YUCLAW research workbench (vzhang2099@gmail.com)"      # SEC fair-access policy: identify the requester
+# SEC fair-access policy: identify the requester. An operator other than the maintainer sets SEC_USER_AGENT to their own
+# name and contact address (the same override the v3 EDGAR sources honour); the default identifies the maintainer.
+USER_AGENT = os.environ.get("SEC_USER_AGENT", "YUCLAW research workbench (vzhang2099@gmail.com)")
 _ACC = re.compile(r"^[0-9]{10}-[0-9]{2}-[0-9]{6}$")
 
 

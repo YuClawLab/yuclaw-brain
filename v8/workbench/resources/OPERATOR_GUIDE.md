@@ -69,7 +69,8 @@ disclosure from an allow-listed host and extract the exact passage:
         --accession <EDGAR accession> --cik <CIK> --pattern '<regex locating the passage>' \
         --rights SEC_PUBLIC_FILING --out ~/yuclaw-ingest --label original
 
-On success it writes `original.source.json` (paste its content into **1 Source → Register from an ingestion record**,
+Set `SEC_USER_AGENT="Your Name your.address@example.org"` first: the SEC asks every requester to identify themselves,
+and without it the tool identifies as the package maintainer. On success it writes `original.source.json` (paste its content into **1 Source → Register from an ingestion record**,
 with the `retrieved_at` of `original.provenance.json` as the observation time) and keeps the original bytes. On failure
 it prints `[ingest] REFUSED: <reason>`, exits 2 and writes no source record: correct what it names and run it again.
 

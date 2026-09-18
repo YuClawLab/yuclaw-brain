@@ -19,10 +19,10 @@ class TestPackaging(unittest.TestCase):
     def test_build_configuration_ships_the_workbench(self):
         t = (R / "pyproject.toml").read_text()
         wheel = re.search(r"\[tool\.hatch\.build\.targets\.wheel\]\n(.*?)\n\[", t, re.S).group(1)
-        self.assertIn('"v8"', wheel); self.assertIn('"v8/V8-*"', wheel); self.assertIn("v8/scope", wheel)      # a pattern: every order record directory, present or future
+        self.assertIn('"v8"', wheel); self.assertIn('"v8/V8-*"', wheel); self.assertIn("v8/scope", wheel); self.assertIn("v8/policy", wheel)      # a pattern: every order record directory, present or future
         sdist = re.search(r"\[tool\.hatch\.build\.targets\.sdist\]\n(.*?)(\n\[|\Z)", t, re.S).group(1)
         self.assertIn("v8/workbench", sdist); self.assertIn("v8/__init__.py", sdist); self.assertIn("README_PYPI.md", sdist)
-        for rec in ("v8/V8-*", "v8/scope"):                                                    # the sdist builder picks up record READMEs unless excluded (found by the V8-003 run; V8-004's record shipped until the pattern, found by the V8-005 run)
+        for rec in ("v8/V8-*", "v8/scope", "v8/policy"):                                                    # the sdist builder picks up record READMEs unless excluded (found by the V8-003 run; V8-004's record shipped until the pattern, found by the V8-005 run)
             self.assertIn(f'"{rec}"', sdist.split("exclude")[-1], rec)
         import fnmatch
         for path in ("v8/V8-001/README.md", "v8/V8-004/packaging.json", "v8/V8-005/README.md", "v8/V8-099/x.json"):
@@ -43,7 +43,7 @@ class TestPackaging(unittest.TestCase):
     def test_member_inspection_rules(self):
         good = list(ci.REQUIRED_WHEEL) + ["v3/__init__.py", "v8/workbench/resources/README.md"]
         self.assertTrue(ci.inspect_members("wheel", good)["ok"])
-        for bad in ("v8/V8-001/README.md", "v8/scope/SCOPE_INDEX.json", "internal/x.json", "tests/test_x.py", "v8/workbench/__pycache__/a.pyc"):
+        for bad in ("v8/V8-001/README.md", "v8/V8-010/README.md", "v8/policy/gate15_release_requirement.json", "v8/scope/SCOPE_INDEX.json", "internal/x.json", "tests/test_x.py", "v8/workbench/__pycache__/a.pyc"):
             r = ci.inspect_members("wheel", good + [bad]); self.assertFalse(r["ok"], bad)
         self.assertEqual(ci.inspect_members("wheel", good[1:])["missing_required"], [ci.REQUIRED_WHEEL[0]])
         self.assertFalse(ci.inspect_members("sdist", list(ci.REQUIRED_SDIST) + ["output/x"])["ok"])
