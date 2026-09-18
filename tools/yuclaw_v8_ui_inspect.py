@@ -146,7 +146,7 @@ def main(argv=None) -> int:
         for path, label in (("/", "workspace (three fixtures)"), ("/source", "step 1 source"), ("/source?as_of=2026-02-01T00:00:00Z", "step 1 source as-of view"), ("/claim/new", "step 2 typed claim form"),
                             (base_claim, "claim page (base fixture: steps 1-7)"), (base_claim + "?as_of=2026-03-01T00:00:00Z", "claim page as-of replay"), (pending, "claim page (missing outcome)"),
                             (incomparable, "claim page (incomparable basis)"), ("/notes", "research notes"), ("/dataset", "dataset coverage"), ("/sci", "scientific report"), ("/sci/S1", "scientific record"),
-                            ("/verify", "verify an export"), ("/journal", "journal"), ("/help", "operator guide (in-app)")):
+                            ("/verify", "verify an export"), ("/journal", "journal"), ("/help", "operator guide (in-app)"), ("/help/data", "data dictionary (in-app)")):
             r = page.goto(base + path)
             if r is not None and r.status == 404:
                 pages.append({"page": label, "path": path, "absent": True}); continue

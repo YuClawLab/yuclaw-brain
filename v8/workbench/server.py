@@ -45,6 +45,7 @@ _SCI_EXAMPLE = re.compile(r"^[a-z_]+$")
 _SCI_ID = re.compile(r"^S[0-9]{1,5}$")
 SCI_EXAMPLES_DIR = Path(__file__).resolve().parent / "resources" / "sci"
 GUIDE_PATH = Path(__file__).resolve().parent / "resources" / "OPERATOR_GUIDE.md"   # packaged; shown under /help and by `python -m v8.workbench guide`
+DICTIONARY_PATH = Path(__file__).resolve().parent / "resources" / "DATA_DICTIONARY.md"   # packaged; shown under /help/data
 _TS_INPUT = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?Z?$")
 STEPS = [("source", "1 Source"), ("claim", "2 Typed claim"), ("comparison", "3 Comparison"), ("calculation", "4 Calculation"), ("history", "5 History"), ("adjudication", "6 Adjudication"), ("export", "7 Reproducible export")]
 CSS = """
@@ -91,6 +92,10 @@ def _norm_ts(v: str | None, field: str = "timestamp") -> str | None:
         v = v[:-1]
     if len(v) == 16:
         v += ":00"
+    try:
+        schema.parse_ts(v + "Z")                                   # the pattern admits impossible dates (30 February); refuse them here, with the field named
+    except ContractError:
+        raise ContractError(f"{field}: {v + 'Z'!r} is not a real UTC date and time; use YYYY-MM-DDTHH:MM:SSZ") from None
     return v + "Z"
 
 
@@ -286,6 +291,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.page_journal(q), extra=extra)
             if path == "/help":
                 return self._send(200, self.page_help(q), extra=extra)
+            if path == "/help/data":
+                text = DICTIONARY_PATH.read_text(encoding="utf-8") if DICTIONARY_PATH.is_file() else "The packaged data dictionary is missing from this installation."
+                return self._send(200, self.page("Help — data dictionary and dataset card", f'<p class="muted">Shown as plain text exactly as packaged (<code>v8/workbench/resources/DATA_DICTIONARY.md</code>). <a href="/help">Back to Help</a>.</p><div class="guide">{esc(text)}</div>'), extra=extra)
             if path == "/notes":
                 return self._send(200, self.page_notes(q), extra=extra)
             if path == "/dataset":
@@ -740,7 +748,7 @@ class Handler(BaseHTTPRequestHandler):
                 return ""
             cls = "ok" if e["result"] == "IN_RANGE" else "bad" if e["result"] == "OUT_OF_RANGE" else "warn"
             rs = "".join(f'<li>{esc(r["code"])}: {esc(r["reason"])}</li>' for r in e["reasons"])
-            return f'<div class="card"><h3>{esc(title)} — <span class="{cls}">{esc(e["result"])}</span></h3><table><tr><th>inputs</th><td>low {esc(e["inputs"]["low"])} · high {esc(e["inputs"]["high"])} · actual {esc(e["inputs"]["actual"])} · {esc(e["inputs"]["currency"])}/{esc(e["inputs"]["unit"])} · {esc(e["inputs"]["basis"])} · {esc(e["inputs"]["fiscal_period"]["label"])} · {esc(e["inputs"]["metric"])}</td></tr><tr><th>formula</th><td>{esc(e["formula"])}</td></tr><tr><th>midpoint</th><td>{esc(e.get("midpoint"))}</td></tr><tr><th>delta vs midpoint</th><td>{esc(e.get("delta_vs_midpoint"))}</td></tr><tr><th>distance outside</th><td>{esc(e.get("distance_outside"))}</td></tr><tr><th>source links</th><td>claim {esc(e["source_links"]["claim_source"])} · outcome {esc(e["source_links"]["outcome_source"])}</td></tr>{f"<tr><th>reasons</th><td><ul>{rs}</ul></td></tr>" if rs else ""}</table></div>'
+            return f'<div class="card"><h3>{esc(title)} — <span class="{cls}">{esc(e["result"])}</span></h3><table><tr><th>inputs</th><td>low {esc(e["inputs"]["low"])} · high {esc(e["inputs"]["high"])} · actual {esc(e["inputs"]["actual"])} · {esc(e["inputs"]["currency"])}/{esc(e["inputs"]["unit"])} · {esc(e["inputs"]["basis"])} · {esc(e["inputs"]["fiscal_period"]["label"])} · {esc(e["inputs"]["metric"])}</td></tr><tr><th>formula</th><td>{esc(e["formula"])}</td></tr><tr><th>rule · tolerance</th><td>{esc(res["rule"])} · {esc(calc.CALCULATOR)} · tolerance: none (exact decimal arithmetic; both bounds inclusive)</td></tr><tr><th>missing inputs</th><td>{"a comparable disclosed outcome (none recorded)" if e["inputs"]["actual"] is None else "none"}</td></tr><tr><th>midpoint</th><td>{esc(e.get("midpoint"))}</td></tr><tr><th>delta vs midpoint</th><td>{esc(e.get("delta_vs_midpoint"))}</td></tr><tr><th>distance outside</th><td>{esc(e.get("distance_outside"))}</td></tr><tr><th>source links</th><td>claim {esc(e["source_links"]["claim_source"])} · outcome {esc(e["source_links"]["outcome_source"])}</td></tr>{f"<tr><th>reasons</th><td><ul>{rs}</ul></td></tr>" if rs else ""}</table></div>'
         err_divs = "".join("<div class=err>" + esc(r["code"]) + ": " + esc(r["reason"]) + "</div>" for r in res["reasons"])
         calc_html = f'<p>Overall: <b class="{"ok" if res["result"] == "IN_RANGE" else "bad" if res["result"] == "OUT_OF_RANGE" else "warn"}">{esc(res["result"])}</b> · comparison permitted: {esc(res["comparison_permitted"])} · rule {esc(res["rule"])}</p>{err_divs}{ev_html(res["original"], "Original range" + (" (corrected source)" if res["uses_corrected_range"] else ""))}{ev_html(res["revised"], "Revised range")}<p class="notice">{esc(res["no_inference"])}</p>'
         nxt = {"PENDING_OUTCOME": "the claim stays unresolved until a comparable disclosed outcome exists. When the outcome is public, register its passage (step 1) and record it with the form below; until then a research note can say what evidence is awaited. Nothing is estimated in the meantime.",
@@ -817,7 +825,8 @@ class Handler(BaseHTTPRequestHandler):
         ws = self.server.ws; claims = ws.status()["claims"]; o = self.server.origin
         links = [("/", "Workspace overview — claims, computed results, fictional fixtures"), ("/source", "1 Source — register a passage or an ingestion record; as-of view"), ("/claim/new", "2 Typed claim — save and freeze a commitment"),
                  ("/notes", "Research notes — every note across claims"), ("/dataset", "Dataset coverage — rows, snapshot identity, snapshot export"), ("/dataset.json", "Dataset snapshot, machine-readable"),
-                 ("/sci", "Scientific report / replay"), ("/verify", "Verify an export (use a fresh workspace)"), ("/journal", "Journal — the append-only event log")]
+                 ("/sci", "Scientific report / replay"), ("/verify", "Verify an export (use a fresh workspace)"), ("/journal", "Journal — the append-only event log"),
+                 ("/help/data", "Data dictionary and dataset card — every stored field, the three times, rights, prohibited interpretations")]
         idx = "".join(f'<li><a href="{esc(h)}">{esc(o + h)}</a> — {esc(t)}</li>' for h, t in links)
         per_claim = "".join(f'<li><a href="/claim/{esc(urllib.parse.quote(c, safe=""))}">{esc(c)}</a>: ' + " · ".join(f'<a href="/claim/{esc(urllib.parse.quote(c, safe=""))}#{esc(k)}">{esc(lbl)}</a>' for k, lbl in STEPS + [("notes", "Research notes")]) + "</li>" for c in claims)
         guide = GUIDE_PATH.read_text(encoding="utf-8") if GUIDE_PATH.is_file() else "The packaged operator guide is missing from this installation."

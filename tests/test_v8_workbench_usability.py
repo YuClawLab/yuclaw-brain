@@ -114,7 +114,7 @@ class TestUsability(unittest.TestCase):
 
     def test_05_every_page_has_labels_scoped_headers_regions_and_roles(self):
         c = self.c; cid = CLAIM["claim_id"]
-        for path in ("/", "/source", "/source?as_of=bad", "/claim/new", f"/claim/{cid}", f"/claim/{cid}?as_of=2026-03-01T00:00:00Z", "/notes", "/dataset", "/sci", "/verify", "/journal", "/help"):
+        for path in ("/", "/source", "/source?as_of=bad", "/claim/new", f"/claim/{cid}", f"/claim/{cid}?as_of=2026-03-01T00:00:00Z", "/notes", "/dataset", "/sci", "/verify", "/journal", "/help", "/help/data"):
             st, _, page = c.req("GET", path); self.assertEqual(st, 200, path); text = page.decode(); a = _Audit(); a.feed(text)
             self.assertEqual([x for x in a.controls if not (x[2] or x[1] in a.for_ids)], [], path)             # wrapped by its label, or label[for] names its id
             self.assertEqual(len(a.ids), len(set(a.ids)), path); self.assertEqual(a.th_unscoped, 0, path); self.assertEqual(a.regions, a.tables, path)
@@ -126,6 +126,8 @@ class TestUsability(unittest.TestCase):
         for key in ("source", "claim", "comparison", "calculation", "history", "adjudication", "export"):   # the seven steps link straight to their sections
             self.assertIn(f'href="/claim/{cid}#{key}"', text)
         self.assertIn("<b>Error.</b>", c.req("GET", "/source?as_of=bad")[2].decode())                       # an error is named in text, not by colour alone
+        self.assertIn("tolerance: none (exact decimal arithmetic; both bounds inclusive)", text); self.assertIn("a comparable disclosed outcome (none recorded)", text)   # CHK-08 card fields
+        st, _, page = c.req("GET", "/help/data"); self.assertEqual(st, 200); self.assertIn(b"Prohibited interpretations", page); self.assertIn(b"Quality estimates.** Not available", page)
 
     def test_06_rejected_upload_and_rejected_packet_name_the_next_action(self):
         c = self.c

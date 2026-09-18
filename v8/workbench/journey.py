@@ -30,7 +30,8 @@ if str(_REPO) not in sys.path:
 from v8.workbench import server as S  # noqa: E402
 
 STEP_TITLES = {1: "source", 2: "typed claim", 3: "comparison", 4: "calculation", 5: "history", 6: "adjudication", 7: "reproducible export"}
-FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "scientific report/replay through the adapted kernel (V8-005)"}
+FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "scientific report/replay through the adapted kernel (V8-005)",
+                  "usability": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)"}
 RUNNER = "journey-runner (automated test action; not a human review)"
 ATTRIBUTION = "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries"
 
@@ -150,7 +151,7 @@ class Journey:
             page.goto(f"{a}/source"); self.submit(page, "form[action='/source/register']", src("0000000000-26-000002", "2026-05-12", "2026-05-12T21:02:00Z", "now expects full-year 2026 revenue of $105 million to $115 million"), "Register source")
             sid2 = self.source_id(page, a, "0000000000-26-000002"); page.goto(f"{a}/claim/ZZFX-FY2026-REV-GUIDE")
             self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/amend']", {"amend_type": "REVISED", "range_low": "105000000", "range_high": "115000000", "basis": "GAAP", "currency": "USD", "unit": "USD", "metric": "revenue", "reason": "guidance revised with first-quarter results", "source_id": sid2, "explanation_unresolved": "no causal explanation established", "next_evidence": "the full-year filing"}, "Record amendment")
-            t = page.locator("#comparison ~ table").first.inner_text(); full = page.locator("body").inner_text()
+            t = page.locator("#comparison ~ .tw table").first.inner_text(); full = page.locator("body").inner_text()
             self.check(3, "amendment creates a new version R1 and the original V1 stays", "R1" in full and "V1" in full and "supersedes" in full)
             self.check(3, "original and revised ranges side by side, COMPARABLE, direction LOWERED, midpoint delta -5000000", "110000000" in t and "105000000" in t and "COMPARABLE" in t and "LOWERED" in t and "-5000000" in t, t[:300])
             self.check(3, "unresolved explanation and next-evidence fields shown as notes, not causal proof", "no causal explanation established" in full and "not causal proof" in full); self.shot(page, 3, "comparison")
@@ -190,14 +191,14 @@ class Journey:
             for i in range(max(0, n - 2), n):
                 boxes.nth(i).check()
             self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER, "rule": "RANGE_CONTAINS_ACTUAL", "reason": "the disclosed actual of 112 million lies inside both the original and the revised range", "conflicts": "none recorded", "label": "IN_RANGE"}, "Record adjudication")
-            t = page.locator("#adjudication ~ table").first.inner_text()
+            t = page.locator("#adjudication ~ .tw table").first.inner_text()
             self.check(6, "adjudication recorded with reviewer identity, rule, evidence, reason, conflicts and result", RUNNER in t and "RANGE_CONTAINS_ACTUAL" in t and "IN_RANGE" in t and "none recorded" in t and "…" in t, t[:300]); self.shot(page, 6, "adjudicated")
             boxes = page.locator("input[name='evidence']"); boxes.nth(boxes.count() - 1).check()
             self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER + " #2", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "x", "conflicts": "", "label": "OUT_OF_RANGE", "disputed": False}, "Record adjudication"); t = page.locator("body").inner_text()
             self.check(6, "a label that differs from the computed result without the disputed flag is refused", "differs from the computed result" in t and "nothing was written" in t, t[:200], negative=True)
             page.goto(f"{a}/claim/ZZFX-FY2026-REV-GUIDE"); boxes = page.locator("input[name='evidence']"); boxes.nth(boxes.count() - 1).check()
             self.submit(page, "form[action='/claim/ZZFX-FY2026-REV-GUIDE/adjudicate']", {"reviewer": RUNNER + " #2", "rule": "RANGE_CONTAINS_ACTUAL", "reason": "simulated dissent: reads the revised range as superseding the original for scoring", "conflicts": "disagrees with the first (simulated) reviewer", "label": "OUT_OF_RANGE", "disputed": True}, "Record adjudication")
-            t = page.locator("#adjudication ~ table").first.inner_text(); self.check(6, "a disputed label stays visible next to the computed result", "DISPUTED" in t and "OUT_OF_RANGE" in t and "IN_RANGE" in t, t[:300], negative=True); self.shot(page, 6, "disputed_visible")
+            t = page.locator("#adjudication ~ .tw table").first.inner_text(); self.check(6, "a disputed label stays visible next to the computed result", "DISPUTED" in t and "OUT_OF_RANGE" in t and "IN_RANGE" in t, t[:300], negative=True); self.shot(page, 6, "disputed_visible")
             page.goto(a); self.submit(page, "form[action='/fixtures/load']", {"fixture": "002_missing_outcome"}, "Load fixture"); t = page.locator("body").inner_text(); csec = self.section(page, "calculation")
             self.check(6, "a missing outcome is unresolved (PENDING_OUTCOME), never scored", "Overall: PENDING_OUTCOME" in csec and self.no_pass(csec) and "no adjudication recorded; the claim stays unresolved" in t, csec[:200], negative=True)
             page.goto(a); self.submit(page, "form[action='/fixtures/load']", {"fixture": "003_withdrawal"}, "Load fixture"); t = page.locator("body").inner_text()
@@ -263,9 +264,60 @@ class Journey:
             page.goto(f"{b}/journal"); tj = page.locator("body").inner_text(); self.check(7, "imported packets are recorded as verifications in B and never become claims", tj.count("PACKET_VERIFIED") >= 3)
             page.goto(f"{b}/"); self.check(7, "B still holds no claims after imports", "none yet" in page.locator("body").inner_text())
             self.demo_features(page, a, b, A, B, wsA)
+            self.demo_usability(page, a, b, A, B)
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()
+
+    # ---------------------------------------------------------------- V8-010 §3: operator usability, through the browser
+    def demo_usability(self, page, a: str, b: str, A, B):
+        """Automated browser observations only — not a human study, a screen-reader session or an accessibility certification."""
+        F = "usability"
+        # ---- a refused form comes back with what was typed, and the corrected resubmission is written once
+        n0 = len(A.ws.load()["events"]); page.goto(f"{a}/source")
+        entry = {"kind": "filing", "form": "8-K (fictional)", "accession": "0000000000-26-000031", "url": "", "filed_at": "2026-06-01", "available_as_of": "2026-06-31T12:00:00Z", "excerpt": "a fictional passage kept  exactly (two spaces)", "rights": "FICTIONAL", "fictional": True}
+        self.submit(page, "form[action='/source/register']", entry, "Register source"); t = page.locator("body").inner_text()
+        kept = page.input_value("form[action='/source/register'] textarea[name=excerpt]") == entry["excerpt"] and page.input_value("form[action='/source/register'] input[name=accession]") == entry["accession"] and page.input_value("form[action='/source/register'] input[name=available_as_of]") == entry["available_as_of"]
+        self.check(F, "an impossible availability date (31 June) is refused with the field named, nothing is written, and every entry is still in the form", "Blocked" in t and "nothing was written" in t and "not a real UTC date and time" in t and kept and len(A.ws.load()["events"]) == n0, t[:200], negative=True); self.shot(page, F, "refused_form_keeps_entries")
+        page.fill("form[action='/source/register'] input[name=available_as_of]", "2026-06-30T12:00:00Z")
+        with page.expect_navigation():
+            page.locator("form[action='/source/register']").get_by_role("button", name="Register source").click()
+        self.check(F, "correcting the one field in the returned form and submitting registers the source once", len(A.ws.load()["events"]) == n0 + 1 and entry["excerpt"] in page.locator("body").inner_text())
+        # ---- the record written by the ingestion tool is registered as pasted data; replaying it registers nothing new
+        ex = "Fictional Example Corp expects third-quarter revenue of $41 million to $43 million."
+        rec = {"kind": "press_release", "form": "press release (fictional)", "accession": "ZZFX:fictional-newsroom:2026-07-01", "url": None, "filed_at": "2026-07-01", "available_as_of": "2026-07-01T13:00:00Z", "excerpt": ex, "source_hash": hashlib.sha256(ex.encode()).hexdigest(), "fictional": True, "rights": "FICTIONAL"}
+        for _ in (1, 2):
+            page.goto(f"{a}/source"); self.submit(page, "form[action='/source/import']", {"record": json.dumps(rec), "record_observed_at": "2026-07-02T08:00:00Z"}, "Register ingested source")
+        regs = [e for e in A.ws.load()["events"] if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source"]["accession"] == rec["accession"]]
+        self.check(F, "an ingestion source record pasted into the import form is registered with the digest the tool computed and the retrieval time as observation; importing it again registers nothing new", len(regs) == 1 and regs[0]["payload"]["source"]["source_hash"] == rec["source_hash"] and regs[0]["time"]["observed_at"].startswith("2026-07-02T08:00:00"), len(regs))
+        page.goto(f"{a}/source"); self.submit(page, "form[action='/source/import']", {"record": json.dumps(dict(rec, excerpt=ex + " (edited after ingestion)"))}, "Register ingested source"); t = page.locator("body").inner_text()
+        self.check(F, "a record whose passage no longer matches its digest is refused and the pasted text stays in the form", "Blocked" in t and "source_hash" in t and "edited after ingestion" in page.input_value("textarea[name=record]"), t[:200], negative=True)
+        # ---- in-app help: every enabled function by address, the packaged guide, the data dictionary
+        page.goto(f"{a}/help"); t = page.locator("body").inner_text(); hrefs = page.eval_on_selector_all("main a[href]", "els => els.map(e => e.getAttribute('href'))")
+        self.check(F, "Help lists every enabled function with its address, per-claim links to steps 3–7, and shows the packaged operator guide (start/stop, fresh workspace, recovery, backup disclosure)",
+                   all(h in hrefs for h in ("/", "/source", "/claim/new", "/notes", "/dataset", "/sci", "/verify", "/journal", "/help/data", "/claim/ZZFX-FY2026-REV-GUIDE#comparison", "/claim/ZZFX-FY2026-REV-GUIDE#export")) and "An interrupted write" in t and "Restore not demonstrated" in t and "python -m v8.workbench serve --workspace" in t, len(hrefs)); self.shot(page, F, "help")
+        # ---- keyboard only: reach the fixture loader from the top of the page and load a fixture with Enter
+        page.goto(f"{b}/"); page.keyboard.press("Tab"); first = page.evaluate("document.activeElement.textContent")
+        for _ in range(40):
+            if page.evaluate("document.activeElement.getAttribute('name')") == "fixture":
+                break
+            page.keyboard.press("Tab")
+        ring = page.evaluate("getComputedStyle(document.activeElement).outlineStyle")
+        page.keyboard.press("Tab")
+        with page.expect_navigation():
+            page.keyboard.press("Enter")
+        self.check(F, "keyboard only: the first Tab stop is the skip link, the fixture loader is reached by Tab with a visible focus ring, and Enter on its button loads the fixture", "Skip to the page content" in (first or "") and ring not in ("none", "") and "/claim/" in page.url, f"{first!r} {ring} {page.url}")
+        # ---- an interrupted write: torn bytes after the last newline → integrity page → Run recovery → the workspace serves again
+        log_path = B.ws.log; durable = log_path.read_bytes(); n1 = len(B.ws.load()["events"])
+        with open(log_path, "ab") as fh:
+            fh.write(b'{"seq": 999, "kind": "CLAIM_FROZEN", "interrupted": tr')
+        page.goto(f"{b}/"); t = page.locator("body").inner_text()
+        self.check(F, "after an interrupted append every page is the integrity page: nothing is served or written over a torn tail", "E_TORN_TAIL" in t and "Run recovery" in t and "Claims in this workspace" not in t, t[:200], negative=True); self.shot(page, F, "torn_tail")
+        with page.expect_navigation():
+            page.get_by_role("button", name="Run recovery").click()
+        t = page.locator("body").inner_text(); evs = B.ws.load()["events"]; side = list(log_path.parent.glob(log_path.name + ".torn.*"))
+        self.check(F, "Run recovery in the browser preserves the torn bytes in a side file, changes no durable event, records a RECOVERY event and the workspace serves again",
+                   "Recovery completed" in t and evs[-1]["kind"] == "RECOVERY" and len(evs) == n1 + 1 and log_path.read_bytes().startswith(durable) and len(side) == 1 and side[0].read_bytes().endswith(b'"interrupted": tr'), t[:160]); self.shot(page, F, "recovered")
 
     # ---------------------------------------------------------------- V8-004: research notes + dataset coverage, through the browser
     def demo_features(self, page, a: str, b: str, A, B, wsA):
@@ -435,6 +487,10 @@ class Journey:
                 self.submit(page, "form[action='/source/register']", {"kind": r["kind"], "form": r["form"], "accession": r["accession"], "url": r["url"] or "", "filed_at": r["filed_at"], "available_as_of": r["available_as_of"], "observed_at": provs[key]["retrieved_at"], "excerpt": r["excerpt"], "rights": r["rights"], "fictional": False}, "Register source")
                 t = page.locator("body").inner_text(); ok = r["accession"] in t and r["source_hash"] in t and r["available_as_of"] in t
                 self.check(1, f"{key}: ingested passage registered through the UI; UI-computed digest equals the ingestion record's ({r['source_hash'][:12]}…)", ok, t[:200])
+            # replaying the ingestion record itself (pasted into the import form) must name the same source and register nothing new (DAT-10)
+            n_src = len([e for e in A.ws.load()["events"] if e["kind"] == "SOURCE_REGISTERED"])
+            page.goto(f"{a}/source"); self.submit(page, "form[action='/source/import']", {"record": (self.sources / "original.source.json").read_text(), "record_observed_at": provs["original"]["retrieved_at"]}, "Register ingested source")
+            self.check(1, "the ingestion record pasted into the import form resolves to the source already registered by typing: same identity, no second registration", page.url.endswith("/source") and len([e for e in A.ws.load()["events"] if e["kind"] == "SOURCE_REGISTERED"]) == n_src == 3, n_src)
             self.shot(page, 1, "mchp_sources")
             page.goto(f"{a}/source?as_of=2025-05-01T00:00:00Z"); t = page.locator("body").inner_text()
             self.check(1, "before the May 8, 2025 filing none of the sources is visible", "no sources registered" in t and "3 source(s) with a later availability are hidden" in t, t[:200], negative=True)

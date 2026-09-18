@@ -58,7 +58,10 @@ def parse_ts(v: str) -> _dt.datetime:
     if not isinstance(v, str) or not _TS.match(v):
         raise ContractError(f"timestamp {v!r} is not RFC3339 UTC (YYYY-MM-DDTHH:MM:SS[.ffffff]Z)")
     base, _, frac = v[:-1].partition(".")
-    dt = _dt.datetime.strptime(base, "%Y-%m-%dT%H:%M:%S")
+    try:
+        dt = _dt.datetime.strptime(base, "%Y-%m-%dT%H:%M:%S")
+    except ValueError:                                             # well-formed but impossible (30 February, hour 24): a refusal, never a crash
+        raise ContractError(f"timestamp {v!r} is not a real UTC date and time (YYYY-MM-DDTHH:MM:SS[.ffffff]Z)") from None
     return dt.replace(microsecond=int((frac + "000000")[:6]) if frac else 0, tzinfo=_dt.timezone.utc)
 
 

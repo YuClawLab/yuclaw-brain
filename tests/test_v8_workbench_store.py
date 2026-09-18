@@ -34,6 +34,30 @@ class TestStore(unittest.TestCase):
             self.ws.freeze_claim(other, op_id="op:freeze-0001")                      # same op id, different content
         self.assertEqual(cm.exception.code, "E_OP_CONFLICT")
 
+    def test_replayed_source_registration_never_duplicates_the_artifact(self):
+        """DAT-10 (V8-010): replaying an ingestion — the same passage under a new operation identifier — registers nothing new;
+        the first registration and the workspace's first observation stand; a differing record for the same identity is refused."""
+        src = self.rec["claim"]["source"]
+        ev, d = self.ws.register_source(src, op_id="ingest:run-0001", observed_at="2026-02-11T09:00:00Z")
+        ev2, d2 = self.ws.register_source(src, op_id="ingest:run-0002", observed_at="2026-03-01T09:00:00Z")            # the job is run again later
+        self.assertFalse(d); self.assertTrue(d2); self.assertEqual(ev2["event_hash"], ev["event_hash"]); self.assertEqual(ev2["time"]["observed_at"][:10], "2026-02-11")
+        self.assertEqual([e["kind"] for e in self.ws.load()["events"]], ["SOURCE_REGISTERED"])
+        with self.assertRaises(ContractError) as cm:
+            self.ws.register_source(dict(src, available_as_of="2026-02-12T00:00:00Z"), op_id="ingest:run-0003")
+        self.assertIn("already registered with different available_as_of", str(cm.exception)); self.assertIn("nothing was written", str(cm.exception)); self.assertEqual(len(self.ws.load()["events"]), 1)
+        # a failed record is not dropped silently: the refusal names every reason and nothing is appended
+        with self.assertRaises(ContractError) as cm:
+            self.ws.register_source(dict(src, excerpt=src["excerpt"] + " (edited)"), op_id="ingest:run-0004")
+        self.assertIn("source_hash", str(cm.exception)); self.assertEqual(len(self.ws.load()["events"]), 1)
+        # every packaged fixture cites the same first passage: loading them all registers each passage once
+        ids = []
+        for f in sorted(D.glob("00*_*.json")):
+            rec = schema.from_fixture(json.loads(f.read_text()))
+            for s_ in [rec["claim"]["source"]] + [r["source"] for r in rec["revisions"]] + ([rec["outcome"]["source"]] if rec["outcome"] else []):
+                self.ws.register_source(s_, op_id=f"fx:{f.stem}:src:{s_['accession']}:{s_['source_hash'][:8]}")
+        ids = [e["payload"]["source_id"] for e in self.ws.load()["events"] if e["kind"] == "SOURCE_REGISTERED"]
+        self.assertEqual(len(ids), len(set(ids))); self.assertGreater(len(ids), 5)
+
     def test_history_is_append_only_and_chain_checked(self):
         self._populate(); st = self.ws.claim_state(self.cid)
         self.assertEqual([v["version_id"] for v in st["versions"]], ["V1", "R1"]); self.assertEqual(st["versions"][0]["claim"]["range"]["low"], 110000000)

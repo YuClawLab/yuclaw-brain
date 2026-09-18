@@ -285,6 +285,16 @@ class Workspace:
             if reasons:
                 raise ContractError("source cannot be registered: " + "; ".join(reasons))
             sid = f"{src['accession']}:{src['source_hash'][:16]}"
+            if self._prior(op_id) is None:
+                # Replaying an ingestion or loading a second fixture that cites the same passage must not register the artifact
+                # twice (DAT-10): the first registration — and the workspace's first observation of the passage — stands.
+                first = next((e for e in self.load()["events"] if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source_id"] == sid), None)
+                if first is not None:
+                    if first["payload"]["source"] == src:
+                        return first, True
+                    differs = sorted(k for k in src if src[k] != first["payload"]["source"].get(k))
+                    raise ContractError(f"source cannot be registered: {sid} is already registered with different {', '.join(differs)} (recorded {first['time']['recorded_at']}); a registered source is never edited and the first registration stands — "
+                                        "check the values against the original document; nothing was written")
             return self.append("SOURCE_REGISTERED", None, {"source_id": sid, "source": src}, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
 
     def freeze_claim(self, raw_claim: dict, *, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
