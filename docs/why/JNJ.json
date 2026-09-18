@@ -1,31 +1,31 @@
 {
  "ticker": "JNJ",
- "generated": "2026-09-17T23:02:39.545795+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "label": "WATCH",
- "score": 0.0619,
+ "score": 0.0624,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.1495,
+  "c1": -0.0205,
   "c2": 0.0,
-  "c3": -0.19964088,
+  "c3": 0.08428776,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.40220615,
-  "c7": 0.065374725,
+  "c6": -0.36798468,
+  "c7": -0.016815016,
   "c8": 0.0,
-  "c9": -0.33333334
+  "c9": -0.36842105
  },
  "evidence_coverage": {
   "ecs": 78,
   "events_90d": 16,
-  "recency_days": 13.4,
+  "recency_days": 14.4,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-09-17T23:02:32.347341+00:00",
-  "source_sha256": "27ea9d9f0027eb7d1fd57ede630f8e40cf822b014f20d62df675f0f174fc3379",
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -349,15 +349,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T19:11:31-07:00",
   "newest_returned_available_as_of": "2026-09-04T07:10:18.206938-06:00",
-  "build_id": "why-2026-09-17T230239",
+  "build_id": "why-2026-09-18T230229",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-17T17:02:39.891844-06:00",
+  "corpus_end": "2026-09-18T17:02:29.882286-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/JNJ.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-17T230239",
+ "build_id": "why-2026-09-18T230229",
  "corrections": [
   {
    "original": {
@@ -386,6 +386,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-17",
    "label": "WATCH"
@@ -501,10 +505,6 @@
   {
    "date": "2026-08-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 31 of 31 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay JNJ --date D",

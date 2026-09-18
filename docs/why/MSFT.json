@@ -1,31 +1,31 @@
 {
  "ticker": "MSFT",
- "generated": "2026-09-17T23:02:39.545795+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "label": "WATCH",
- "score": 0.0693,
+ "score": 0.0943,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.181,
+  "c1": 0.126,
   "c2": 0.0,
-  "c3": 0.6929147,
+  "c3": 0.6783254,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": -0.025339384,
+  "c7": 0.25379553,
   "c8": 0.0,
-  "c9": -0.13043478
+  "c9": -0.16666667
  },
  "evidence_coverage": {
-  "ecs": 92,
+  "ecs": 91,
   "events_90d": 23,
-  "recency_days": 2.0,
+  "recency_days": 3.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-09-17T23:02:32.347341+00:00",
-  "source_sha256": "27ea9d9f0027eb7d1fd57ede630f8e40cf822b014f20d62df675f0f174fc3379",
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -309,17 +309,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "newest_returned_available_as_of": "2026-09-15T16:07:38.132528-06:00",
-  "build_id": "why-2026-09-17T230239",
+  "build_id": "why-2026-09-18T230229",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-17T17:02:40.054704-06:00",
+  "corpus_end": "2026-09-18T17:02:30.031215-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-17T230239",
+ "build_id": "why-2026-09-18T230229",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-17",
    "label": "WATCH"
@@ -435,10 +439,6 @@
   {
    "date": "2026-08-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 27 of 27 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MSFT --date D",
