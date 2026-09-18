@@ -148,7 +148,18 @@ class TestIngestBoundaries(unittest.TestCase):
         src = (pathlib.Path(__file__).resolve().parents[1] / "v8" / "workbench" / "server.py").read_text()
         for needle in ("urllib.request", "http.client", "socket.create_connection", "import requests", "urlopen("):
             self.assertNotIn(needle, src)
-        self.assertNotIn("ingest", src)                                                                  # the ingestion tool is never imported by the server
+        # the ingestion tool is never imported by the server (the page text may describe it; V8-010 registers the record it
+        # writes as pasted data): no import statement names it, and no dynamic import exists to reach it
+        import ast
+        names = set()
+        for node in ast.walk(ast.parse(src)):
+            if isinstance(node, ast.Import):
+                names.update(a.name for a in node.names)
+            elif isinstance(node, ast.ImportFrom):
+                names.update([node.module or ""] + [f"{node.module}.{a.name}" for a in node.names])
+        self.assertFalse([n for n in names if "ingest" in n], names)
+        for needle in ("importlib", "__import__", "v8.workbench.ingest import", "import ingest"):
+            self.assertNotIn(needle, src)
 
 
 class TestExportBoundaries(unittest.TestCase):

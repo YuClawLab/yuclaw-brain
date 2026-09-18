@@ -1,4 +1,4 @@
-"""python3 -m v8.workbench  — serve | verify-export | build-export | status | recover | selftest"""
+"""python3 -m v8.workbench  — serve | verify-export | build-export | status | recover | guide | selftest"""
 from __future__ import annotations
 
 import argparse
@@ -27,6 +27,7 @@ def main(argv=None) -> int:
     b = sub.add_parser("build-export", help="build an export for a claim"); b.add_argument("--workspace", required=True); b.add_argument("--claim", required=True)
     st = sub.add_parser("status", help="workspace status (integrity, claims)"); st.add_argument("--workspace", required=True)
     rc = sub.add_parser("recover", help="recover a torn tail (preserves the bytes; records a RECOVERY event)"); rc.add_argument("--workspace", required=True)
+    sub.add_parser("guide", help="print the packaged startup and operator guide")
     sub.add_parser("selftest", help="run the workbench unit tests")
     a = ap.parse_args(argv)
     if a.cmd == "serve":
@@ -43,6 +44,9 @@ def main(argv=None) -> int:
         print(json.dumps(store.Workspace(a.workspace, create=False).status(), indent=1)); return 0
     if a.cmd == "recover":
         print(json.dumps(store.Workspace(a.workspace, create=False).recover(), indent=1, default=str)); return 0
+    if a.cmd == "guide":
+        from v8.workbench.server import GUIDE_PATH
+        print(GUIDE_PATH.read_text(encoding="utf-8"), end=""); return 0
     if a.cmd == "selftest":
         return subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests/test_v8_workbench_calc.py", "tests/test_v8_workbench_store.py", "tests/test_v8_workbench_export.py", "tests/test_v8_workbench_server.py", "tests/test_v8_commitment_fixtures.py"], cwd=_REPO).returncode
     return 2

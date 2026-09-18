@@ -35,6 +35,7 @@ from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 _REPO = Path(__file__).resolve().parents[2]
 FIXTURES_DIR = Path(__file__).resolve().parent / "resources" / "fixtures"      # packaged copies of tests/fixtures/v8/commitments (identity tested)
 FORM_LIMIT = 256 * 1024
+IMPORT_LIMIT = 64 * 1024                                                       # one pasted ingestion source record (a passage, not a document)
 UPLOAD_LIMIT = export.MAX_ZIP_BYTES + 64 * 1024
 CSP = "default-src 'none'; img-src 'self'; style-src 'self'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"
 _CLAIM_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
@@ -43,6 +44,7 @@ _FIXTURE = re.compile(r"^00[1-9]_[a-z_]+$")
 _SCI_EXAMPLE = re.compile(r"^[a-z_]+$")
 _SCI_ID = re.compile(r"^S[0-9]{1,5}$")
 SCI_EXAMPLES_DIR = Path(__file__).resolve().parent / "resources" / "sci"
+GUIDE_PATH = Path(__file__).resolve().parent / "resources" / "OPERATOR_GUIDE.md"   # packaged; shown under /help and by `python -m v8.workbench guide`
 _TS_INPUT = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?Z?$")
 STEPS = [("source", "1 Source"), ("claim", "2 Typed claim"), ("comparison", "3 Comparison"), ("calculation", "4 Calculation"), ("history", "5 History"), ("adjudication", "6 Adjudication"), ("export", "7 Reproducible export")]
 CSS = """
@@ -56,6 +58,13 @@ form.card{border:1px solid #ccc;background:#fff;padding:.8rem;margin:.8rem 0} la
 .ok{color:#136f2e;font-weight:600} .bad{color:#a11;font-weight:600} .warn{color:#8a5a00;font-weight:600} .muted{color:#666;font-size:.85rem}
 .notice{border-left:4px solid #8a5a00;background:#fff8e6;padding:.5rem .8rem;margin:.6rem 0} .err{border-left:4px solid #a11;background:#fff0f0;padding:.5rem .8rem;margin:.6rem 0}
 footer{margin-top:3rem;font-size:.8rem;color:#555;border-top:1px solid #ddd;padding-top:.6rem}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.tw:focus-visible,input[type=date]:focus-within{outline:3px solid #0b57d0;outline-offset:2px}
+.skip{position:absolute;left:-999px;top:0;background:#fff;padding:.4rem .8rem;border:2px solid #0b57d0} .skip:focus{left:.5rem;top:.5rem;z-index:2}
+.tw{overflow-x:auto;margin:.4rem 0} nav{display:flex;flex-wrap:wrap;gap:.2rem .8rem} nav a{margin-right:0}
+ol.steps{list-style:none;padding:0} ol.steps li{border:1px solid #bbb;border-radius:4px;padding:.15rem .5rem;font-size:.85rem;background:#fff}
+fieldset{border:1px solid #ddd;margin:.5rem 0;padding:.3rem .6rem} legend{font-size:.85rem;padding:0 .3rem}
+code,pre.excerpt,p,li,h1{overflow-wrap:anywhere} input[type=file]{max-width:100%} th{white-space:nowrap} td{min-width:5rem} td pre.excerpt{min-width:16rem} td p,td li{overflow-wrap:break-word}
+.guide{white-space:pre-wrap;background:#fff;border:1px solid #ccd;padding:.8rem;font-size:.9rem;font-family:inherit}
 """
 
 
@@ -83,6 +92,34 @@ def _norm_ts(v: str | None, field: str = "timestamp") -> str | None:
     if len(v) == 16:
         v += ":00"
     return v + "Z"
+
+
+_LABEL_CONTROL = re.compile(r"<label>((?:(?!</?label\b).)*?)</label>(\s*)<(input|select|textarea)\b", re.S)
+_ROW_HEADER = re.compile(r"<th>((?:(?!</th>).)*?)</th>(?=<td)", re.S)
+_TH_TEXT = re.compile(r"<th[^>]*>([^<]{1,40})")
+
+
+def a11y(markup: str) -> str:
+    """Accessibility pass over server-built markup. Every dynamic value is escaped before it reaches here, so the literal
+    tags matched below can only be the server's own. Binds each <label> to the control that follows it (unique ids per
+    page), scopes header cells, puts every table in a named, keyboard-scrollable region (wide tables scroll inside the
+    region instead of pushing the page sideways) and gives error/notice blocks a role plus a text cue, so no status
+    depends on colour alone."""
+    n = [0]
+
+    def bind(m):
+        n[0] += 1
+        return f'<label for="f{n[0]}">{m.group(1)}</label>{m.group(2)}<{m.group(3)} id="f{n[0]}"'
+    markup = _LABEL_CONTROL.sub(bind, markup)
+    markup = _ROW_HEADER.sub(lambda m: f'<th scope="row">{m.group(1)}</th>', markup).replace("<th>", '<th scope="col">')
+    parts = markup.split("<table>")
+    for i in range(1, len(parts)):
+        heads = [h.strip() for h in _TH_TEXT.findall(parts[i].split("</table>", 1)[0]) if h.strip()][:3]
+        name = "Table: " + ", ".join(heads) + (" …" if heads else "")
+        parts[i] = f'<div class="tw" role="region" tabindex="0" aria-label="{name}"><table>' + parts[i].replace("</table>", "</table></div>", 1)
+    markup = "".join(parts)
+    markup = re.sub(r'<div class="?err"?>', '<div class="err" role="alert"><b>Error.</b> ', markup)
+    return re.sub(r'<(div|p) class="notice">', r'<\1 class="notice" role="status">', markup)
 
 
 class Multipart:
@@ -142,7 +179,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", ctype); self.send_header("Content-Length", str(length))
         self.send_header("Content-Security-Policy", CSP); self.send_header("X-Content-Type-Options", "nosniff")
-        self.send_header("X-Frame-Options", "DENY"); self.send_header("Referrer-Policy", "same-origin")   # no-referrer would make the browser send Origin: null on same-origin form posts (Fetch §4.1.1); self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Frame-Options", "DENY"); self.send_header("Referrer-Policy", "same-origin")   # no-referrer would make the browser send Origin: null on same-origin form posts (Fetch §4.1.1)
+        self.send_header("Cache-Control", "no-store")
         self.send_header("Cross-Origin-Opener-Policy", "same-origin"); self.send_header("Cross-Origin-Resource-Policy", "same-origin")
         for k, v in (extra or {}).items():
             self.send_header(k, v)
@@ -188,7 +226,7 @@ class Handler(BaseHTTPRequestHandler):
             return f"Sec-Fetch-Site {sfs!r} refused"
         sess, fresh = self._session()
         if fresh:
-            return "session cookie missing; open a page first"
+            return "session cookie missing; open the page in this browser first, then submit its form"
         self._sess = sess
         return None
 
@@ -212,6 +250,7 @@ class Handler(BaseHTTPRequestHandler):
         if not self._host_ok():
             return self._text(400, "refused: Host header is not this loopback origin")
         u = urllib.parse.urlsplit(self.path); path = u.path; q = {k: v[-1] for k, v in urllib.parse.parse_qs(u.query, keep_blank_values=True).items()}
+        self._pf_action = self._pf = self._pf_msg = None
         sess, fresh = self._session(); self._sess = sess
         extra = {"Set-Cookie": f"wb_session={sess}; Path=/; HttpOnly; SameSite=Strict"} if fresh else None
         try:
@@ -245,6 +284,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.page_verify(q, None), extra=extra)
             if path == "/journal":
                 return self._send(200, self.page_journal(q), extra=extra)
+            if path == "/help":
+                return self._send(200, self.page_help(q), extra=extra)
             if path == "/notes":
                 return self._send(200, self.page_notes(q), extra=extra)
             if path == "/dataset":
@@ -262,6 +303,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, self.page_integrity(exc), extra=extra)
 
     def do_POST(self):
+        self._pf_action = self._pf = self._pf_msg = None
         why = self._post_guard()
         if why:
             self._read_body(UPLOAD_LIMIT)
@@ -273,13 +315,15 @@ class Handler(BaseHTTPRequestHandler):
         if form is None:
             return self._text(413 if self.headers.get("Content-Length", "0").isdigit() and int(self.headers.get("Content-Length", "0")) > FORM_LIMIT else 400, "refused: form body missing, too large or not urlencoded")
         if not self._csrf_ok(form):
-            return self._text(403, "refused: CSRF token invalid; nothing was written")
+            return self._text(403, "refused: CSRF token invalid; nothing was written. Form tokens are issued per server start and browser session: reload the page you submitted from and submit again")
         op_id = form.get("op_id", "")
         if not re.match(r"^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$", op_id):
             return self._text(400, "refused: operation identifier missing")
         try:
             if path == "/source/register":
                 return self.post_source(form, op_id)
+            if path == "/source/import":
+                return self.post_import(form, op_id)
             if path == "/claim/freeze":
                 return self.post_freeze(form, op_id)
             m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|export|note)$", path)
@@ -302,30 +346,78 @@ class Handler(BaseHTTPRequestHandler):
         except StoreIntegrityError as exc:
             return self._send(200, self.page_integrity(exc))
         except ContractError as exc:
-            return self._send(422, self.page_error(str(exc), form))
+            return self._send(422, self._rerender(path, form, str(exc)))
 
     # ------------------------------------------------------------------ building blocks
-    def _csrf_field(self) -> str:
-        return f'<input type="hidden" name="csrf" value="{esc(self.server.csrf_for(self._sess))}"><input type="hidden" name="op_id" value="{esc(new_op_id("ui"))}">'
+    def _csrf_field(self, action: str | None = None) -> str:
+        # a refused form is re-rendered with the operation identifier it was submitted under (nothing was written under it)
+        op = self._pf.get("op_id") if action is not None and self._pf_action == action else None
+        return f'<input type="hidden" name="csrf" value="{esc(self.server.csrf_for(self._sess))}"><input type="hidden" name="op_id" value="{esc(op or new_op_id("ui"))}">'
+
+    def _rerender(self, path: str, form: dict, msg: str) -> str:
+        """A refused form comes back as the page it was submitted from: the refusal and its reasons first, then the same
+        form with everything the user entered still in its fields. Nothing was written."""
+        m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|note)$", path)
+        self._pf, self._pf_msg = form, msg
+        self._pf_action = m.group(2) if m else {"/source/register": "register", "/source/import": "import", "/claim/freeze": "freeze", "/sci/replay": "replay"}.get(path)
+        if m and self.server.ws.claim_state(urllib.parse.unquote(m.group(1))) is not None:
+            return self.page_claim(urllib.parse.unquote(m.group(1)), {})
+        if self._pf_action in ("register", "import"):
+            return self.page_source({})
+        if self._pf_action == "freeze":
+            return self.page_claim_new({})
+        if self._pf_action == "replay":
+            return self.page_sci({})
+        self._pf_action = self._pf = self._pf_msg = None
+        return self.page_error(msg, form)
+
+    def _cur(self, action: str, name: str, default=None):
+        """A field's current value: what the user entered when this form was just refused, else the default."""
+        return self._pf.get(name, "") if self._pf_action == action else default
+
+    def _val(self, action: str, name: str, default="") -> str:
+        return esc(self._cur(action, name, default))
+
+    def _checked(self, action: str, name: str, default: bool = False, value: str | None = None) -> str:
+        if self._pf_action != action:
+            on = default
+        elif value is None:
+            on = name in self._pf
+        else:
+            on = value in getattr(self, "_last_body_qs", {}).get(name, [])
+        return " checked" if on else ""
+
+    def _blocked(self) -> str:
+        """The refusal summary shown at the top of a re-rendered page."""
+        msg = self._pf_msg
+        reasons = [r.strip() for r in msg.split(":", 1)[-1].split(";")] if ";" in msg else [msg]
+        items = "".join(f"<li>{esc(r)}</li>" for r in reasons)
+        head = esc(msg.split(":", 1)[0]) if ";" in msg else "Refused"
+        return (f'<div class="err"><b>Blocked — nothing was written.</b> {head}<ul>{items}</ul><p>Everything you entered is still in <a href="#form-{esc(self._pf_action)}">the form below</a>. '
+                f'Correct the listed fields and submit again; the operation identifier is unchanged, so a corrected resubmission cannot duplicate anything.</p></div>')
 
     def page(self, title: str, body: str, *, claim_id: str | None = None) -> str:
         ws = self.server.ws; st = ws.status()
         integ = st["integrity"]
         cls = "ok" if integ == "OK" else "bad"
-        steps = "".join(f'<span>{esc(lbl)}</span>' for _, lbl in STEPS)
+        cq = urllib.parse.quote(claim_id, safe="") if claim_id else None
+        href = (lambda key: f"/claim/{cq}#{key}") if cq else {"source": "/source", "claim": "/claim/new"}.get
+        steps = "".join(f'<li><a href="{esc(href(key))}">{esc(lbl)}</a></li>' if href(key) else f"<li>{esc(lbl)}</li>" for key, lbl in STEPS)
+        hint = "" if cq else '<p class="muted">Steps 3–7 are sections of a claim\'s page: open a claim from the <a href="/">Workspace</a>.</p>'
         cand = self.server.candidate_commit or "not recorded"
-        return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
+        return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{"Blocked — " if self._pf_msg else ""}{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
+<a class="skip" href="#main">Skip to the page content</a>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a></nav>
-<div class="steps">{steps}</div>
-<h1>{esc(title)}</h1>
-{body}
+<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
+<ol class="steps" aria-label="The seven steps">{steps}</ol>{hint}
+<main id="main" tabindex="-1"><h1>{esc(title)}</h1>
+{a11y((self._blocked() if self._pf_msg else "") + body)}</main>
 <footer>Workspace <code>{esc(st['workspace_id'])}</code> · events {esc(st.get('events'))} · integrity <span class="{cls}">{esc(integ)}</span> · candidate commit <code>{esc(cand)}</code> · {esc(NOT_ADVICE)}</footer></body></html>"""
 
     def page_error(self, msg: str, form: dict | None = None) -> str:
         reasons = [r.strip() for r in msg.split(":", 1)[-1].split(";")] if ";" in msg else [msg]
         items = "".join(f"<li>{esc(r)}</li>" for r in reasons)
-        return self.page("Blocked — nothing was written", f'<div class="err"><p><b>{esc(msg.split(":", 1)[0] if ";" in msg else "Refused")}</b></p><ul>{items}</ul></div><p><a href="/">Back to the workspace</a> · use the browser Back button to correct the form (the operation identifier is reused, so a corrected resubmission cannot duplicate anything).</p>')
+        return self.page("Blocked — nothing was written", f'<div class="err"><p><b>{esc(msg.split(":", 1)[0] if ";" in msg else "Refused")}</b></p><ul>{items}</ul></div><p>Next: <a href="/">go back to the workspace</a> and repeat the action with a valid choice. Pages are not cached, so the browser Back button shows a fresh form.</p>')
 
     def page_integrity(self, exc: StoreIntegrityError) -> str:
         body = f'<div class="err"><p><b>{esc(exc.code)}</b>: {esc(str(exc))}</p></div>'
@@ -338,8 +430,9 @@ class Handler(BaseHTTPRequestHandler):
     def _sources(self):
         return [e["payload"] for e in self.server.ws.events() if e["kind"] == "SOURCE_REGISTERED"]
 
-    def _source_select(self, name="source_id") -> str:
-        opts = "".join(f'<option value="{esc(s["source_id"])}">{esc(s["source"]["accession"])} · {esc(s["source"]["form"])} · filed {esc(s["source"]["filed_at"])} · available {esc(s["source"]["available_as_of"])} · {esc(s["source"]["rights"])}</option>' for s in self._sources())
+    def _source_select(self, action: str, name="source_id") -> str:
+        cur = self._cur(action, name)
+        opts = "".join(f'<option value="{esc(s["source_id"])}"{" selected" if s["source_id"] == cur else ""}>{esc(s["source"]["accession"])} · {esc(s["source"]["form"])} · filed {esc(s["source"]["filed_at"])} · available {esc(s["source"]["available_as_of"])} · {esc(s["source"]["rights"])}</option>' for s in self._sources())
         return f'<label>Registered source (step 1)</label><select name="{name}" required><option value="">— choose a registered source —</option>{opts}</select>'
 
     def _source_by_id(self, sid: str) -> dict:
@@ -348,8 +441,8 @@ class Handler(BaseHTTPRequestHandler):
                 return s["source"]
         raise ContractError("source_id: choose a registered source first (step 1); an unregistered passage cannot back a claim")
 
-    def _period_fields(self, prefix="fp_", p: dict | None = None) -> str:
-        p = p or {}
+    def _period_fields(self, action: str, prefix="fp_", p: dict | None = None) -> str:
+        p = self._period_from(self._pf, prefix) if self._pf_action == action else (p or {})
         opts = "".join(f'<option value="{t}"{" selected" if p.get("type") == t else ""}>{t}</option>' for t in schema.PERIOD_TYPES)
         return f'<div class="row"><div><label>Fiscal period label</label><input type="text" name="{prefix}label" value="{esc(p.get("label", ""))}" placeholder="FY2026 or Q3 FY2026"></div><div><label>Period type</label><select name="{prefix}type"><option value="">—</option>{opts}</select></div><div><label>Period start</label><input type="date" name="{prefix}start" value="{esc(p.get("start", ""))}"></div><div><label>Period end</label><input type="date" name="{prefix}end" value="{esc(p.get("end", ""))}"></div></div>'
 
@@ -396,18 +489,20 @@ class Handler(BaseHTTPRequestHandler):
             hidden = [n for n in full.get("research_notes", []) if n["event_hash"] not in {x["event_hash"] for x in notes}]
             if hidden:
                 later = f'<div class="notice"><b>Later annotations — recorded after this cutoff ({esc(cut)}); NOT contemporaneous with the as-of view above.</b> Each carries its actual local action time.</div>{self._NOTE_HEAD}{"".join(self._note_row(n) for n in hidden)}</table>'
-        vopts = "".join(f'<option value="{esc(v["version_id"])}"{" selected" if v is full["current"] else ""}>{esc(v["version_id"])} · {esc(v["type"])} · {esc(v["claim"]["_digest"][:12])}…</option>' for v in full["versions"])
-        copts = "".join(f'<option value="{esc(c)}">{esc(c)}</option>' for c in schema.NOTE_CATEGORIES)
-        sopts = "".join(f'<option value="{esc(n["note_id"])}">{esc(n["note_id"])} · {esc(n["category"])} · {esc(n["reason"][:40])}</option>' for n in full.get("research_notes_current", []))
-        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
-        form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/note">{self._csrf_field()}<h3>Record a research note</h3>
+        A = "note"; V = lambda n, d="": self._val(A, n, d)
+        vcur = self._cur(A, "version_ref", full["current"]["version_id"])
+        vopts = "".join(f'<option value="{esc(v["version_id"])}"{" selected" if v["version_id"] == vcur else ""}>{esc(v["version_id"])} · {esc(v["type"])} · {esc(v["claim"]["_digest"][:12])}…</option>' for v in full["versions"])
+        copts = "".join(f'<option value="{esc(c)}"{" selected" if c == self._cur(A, "category") else ""}>{esc(c)}</option>' for c in schema.NOTE_CATEGORIES)
+        sopts = "".join(f'<option value="{esc(n["note_id"])}"{" selected" if n["note_id"] == self._cur(A, "supersedes_note") else ""}>{esc(n["note_id"])} · {esc(n["category"])} · {esc(n["reason"][:40])}</option>' for n in full.get("research_notes_current", []))
+        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
+        form = f"""<form class="card" id="form-note" method="post" action="/claim/{esc(cq)}/note">{self._csrf_field(A)}<h3>Record a research note</h3>
 <p class="muted">A note is a separate research action: it records an unresolved question or explanation, the next evidence needed and why. It changes nothing about the claim — range, metric, currency, basis, fiscal period, sources and frozen digests stay exactly as they are — and it never resolves an outcome or reopens a withdrawn commitment. A correction is a new note that names the note it corrects; the earlier text is retained.</p>
-<div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
-<label>Unresolved question or explanation</label><textarea name="unresolved_question" rows="2"></textarea>
-<label>Next evidence needed</label><input type="text" name="next_evidence">
-<label>Reason for the note (required)</label><input type="text" name="reason">
-<label>Evidence (events this note refers to)</label>{ev_opts}
-<label><input type="checkbox" name="simulated" value="1"> This is a simulated test action (automated), not a human's note</label>
+<div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor" value="{V('actor')}"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
+<label>Unresolved question or explanation</label><textarea name="unresolved_question" rows="2">{V('unresolved_question')}</textarea>
+<label>Next evidence needed</label><input type="text" name="next_evidence" value="{V('next_evidence')}">
+<label>Reason for the note (required)</label><input type="text" name="reason" value="{V('reason')}">
+<fieldset><legend>Evidence (events this note refers to)</legend>{ev_opts}</fieldset>
+<label><input type="checkbox" name="simulated" value="1"{self._checked(A, 'simulated')}> This is a simulated test action (automated), not a human's note</label>
 <button type="submit">Record research note</button></form>"""
         table = f'{self._NOTE_HEAD}{rows}</table>' if rows else '<p class="muted">No research notes on this claim yet.</p>'
         return f'<p class="muted">{esc(len(notes))} note(s), {esc(len([n for n in notes if n.get("supersedes_note")]))} correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.</p>{table}{later}{form}'
@@ -426,16 +521,17 @@ class Handler(BaseHTTPRequestHandler):
     def page_sci(self, q) -> str:
         ws = self.server.ws; recs = ws.sci_records("*"); k = sci_adapter.kernel_identity()
         rows = "".join(f'<tr><td><a href="/sci/{esc(r["sci_id"])}">{esc(r["sci_id"])}</a></td><td><b>{esc(r["status"])}</b><br><span class="muted">{esc(r["replay_status"])}</span></td><td>{esc((r.get("report") or {}).get("family_id") or "—")}<br><span class="muted">{esc((r.get("report") or {}).get("mode") or "")}</span></td><td>{esc("; ".join(c["status"] for c in (r.get("report") or {}).get("claims", [])) or "; ".join(x["code"] for x in r.get("reasons", [])))}</td><td>{esc(r["claim_id"] or "—")}</td><td><code>{esc(r["input_sha256"][:16])}…</code> · {esc(r["input_bytes"])} B</td><td>{esc(r["actor"])}<br><span class="muted">{esc(r["actor_kind"].replace("_", " "))}</span></td><td>{esc(r["time"]["recorded_at"])}</td></tr>' for r in recs)
-        ex = "".join(f'<option value="{esc(x)}">{esc(x)}</option>' for x in self._sci_examples())
-        claims = "".join(f'<option value="{esc(c)}">{esc(c)}</option>' for c in ws.status()["claims"])
+        A = "replay"; V = lambda n, d="": self._val(A, n, d)
+        ex = "".join(f'<option value="{esc(x)}"{" selected" if x == self._cur(A, "example") else ""}>{esc(x)}</option>' for x in self._sci_examples())
+        claims = "".join(f'<option value="{esc(c)}"{" selected" if c == self._cur(A, "claim_id") else ""}>{esc(c)}</option>' for c in ws.status()["claims"])
         body = f"""<p>Replay a science journal through the adapted kernel. Supported contract: paired binary-probability predictions scored by Brier improvement; sequential evidence as a fixed mixture of Hoeffding test supermartingales; a frozen family alpha; pending outcomes, invalidation and exploratory status kept as they are. A journal is data — a JSON event list in the kernel's event format (optionally wrapped with expected_root, links and declarations) of at most {esc(sci_adapter.MAX_INPUT_BYTES // 1024)} KB and {esc(sci_adapter.MAX_EVENTS)} events; nothing in it is executed, opened as a file or fetched. The workbench recomputes every hash and statistic itself; it never trusts a supplied report.</p>
 <p class="muted">Kernel {esc(k["schema"])} · kernel identity <code>{esc(k["kernel_sha256"][:16])}…</code> · {esc(k["method"])}</p>
 <div class="notice">Monetary amounts and ranges are not probabilities. A financial commitment's IN_RANGE / OUT_OF_RANGE results are not units of a study and yield no scientific improvement. A retrospective record (such as a real-source replay observed after its outcome) can be inspected under an explicit retrospective label; it is never prospective evidence. Imported timestamps and actor labels establish neither commitment-before-outcome nor verified identity.</div>
 <h2>Records in this workspace ({esc(len(recs))})</h2><table><tr><th>record</th><th>status · replay status</th><th>family · mode</th><th>claim statuses / refusal codes</th><th>linked claim</th><th>input identity</th><th>actor</th><th>recorded (local action)</th></tr>{rows or '<tr><td colspan="8" class="muted">no scientific record yet</td></tr>'}</table>
-<h2>Replay a journal</h2><form class="card" method="post" action="/sci/replay">{self._csrf_field()}
-<div class="row"><div><label>Packaged example (fictional fixtures; leave empty to paste your own)</label><select name="example"><option value="">— paste below —</option>{ex}</select></div><div><label>Link to a frozen claim (optional; names its bytes only)</label><select name="claim_id"><option value="">— none —</option>{claims}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor"></div><div><label>Label (optional)</label><input type="text" name="label"></div></div>
-<label>Journal input (JSON: an event list, or {{"events": [...], "expected_root": "…", "links": {{"claim_id": "…", "version_digest": "…", "source_hashes": ["…"]}}, "declared": {{"retrospective": true}}}})</label><textarea name="input" rows="8"></textarea>
-<label><input type="checkbox" name="simulated" value="1"> This is a simulated test action (automated), not a human's replay</label>
+<h2>Replay a journal</h2><form class="card" id="form-replay" method="post" action="/sci/replay">{self._csrf_field(A)}
+<div class="row"><div><label>Packaged example (fictional fixtures; leave empty to paste your own)</label><select name="example"><option value="">— paste below —</option>{ex}</select></div><div><label>Link to a frozen claim (optional; names its bytes only)</label><select name="claim_id"><option value="">— none —</option>{claims}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor" value="{V('actor')}"></div><div><label>Label (optional)</label><input type="text" name="label" value="{V('label')}"></div></div>
+<label>Journal input (JSON: an event list, or {{"events": [...], "expected_root": "…", "links": {{"claim_id": "…", "version_digest": "…", "source_hashes": ["…"]}}, "declared": {{"retrospective": true}}}})</label><textarea name="input" rows="8">{V('input')}</textarea>
+<label><input type="checkbox" name="simulated" value="1"{self._checked(A, 'simulated')}> This is a simulated test action (automated), not a human's replay</label>
 <button type="submit">Replay through the kernel and record</button></form>
 <p class="muted">Every replay — supported, exploratory or refused with its specific reasons — is recorded as an append-only event with the input's identity, so it can be inspected, exported and recomputed in a fresh workspace.</p>"""
         return self.page("Scientific report / replay", body)
@@ -535,7 +631,10 @@ class Handler(BaseHTTPRequestHandler):
         fx = sorted(p.stem for p in self.server.fixtures_dir.glob("00*_*.json")) if self.server.fixtures_dir.is_dir() else []
         fxo = "".join(f'<option value="{esc(f)}">{esc(f)}</option>' for f in fx)
         notice = '<div class="notice">Recovery completed; the torn bytes are preserved in a side file and a RECOVERY event was recorded.</div>' if q.get("recovered") == "1" else ""
-        body = f"""{notice}<p>Trace one financial commitment from an exact source through revision, numerical checks, outcome review and an export another researcher can verify. Start at <a href="/source">step 1</a>, or verify a packet from another workspace under <a href="/verify">Verify an export</a>.</p>
+        evs = ws.events(); last = evs[-1]["time"]["recorded_at"] if evs else None
+        fresh = f'The most recent record here was written {esc(last)}.' if last else "Nothing has been recorded here yet."
+        body = f"""{notice}<p>Trace one financial commitment from an exact source through revision, numerical checks, outcome review and an export another researcher can verify. Start at <a href="/source">step 1</a>, or verify a packet from another workspace under <a href="/verify">Verify an export</a>. New here? <a href="/help">Help</a> lists every function with its address.</p>
+<p class="muted">This workspace is a local snapshot: it holds only the sources, claims and outcomes registered in it, as of the times shown beside them. It is not a live feed — no filing, price or outcome arrives on its own. {fresh}</p>
 <p class="muted">Also: <a href="/notes">research notes</a> (unresolved questions, explanations, next evidence — separate from amendments) and the <a href="/dataset">dataset coverage view</a> derived from this workspace's records.</p>
 <h2>Claims in this workspace</h2><table><tr><th>claim</th><th>versions</th><th>withdrawn</th><th>outcome</th><th>computed result</th><th>adjudications</th><th>exports</th></tr>{rows or '<tr><td colspan="7" class="muted">none yet</td></tr>'}</table>
 <h2>Load a fictional fixture (demonstration data)</h2><form class="card" method="post" action="/fixtures/load">{self._csrf_field()}<label>Fixture</label><select name="fixture">{fxo}</select><p class="muted">Loads the fixture's sources, claim, revisions and outcome as events with fixture-derived operation identifiers (idempotent). Fixture data is a demonstration, never a validated dataset product.</p><button type="submit">Load fixture</button></form>
@@ -553,30 +652,38 @@ class Handler(BaseHTTPRequestHandler):
         evs = [e for e in self.server.ws.events(None, cut) if e["kind"] == "SOURCE_REGISTERED"]
         hidden = len([e for e in self.server.ws.events() if e["kind"] == "SOURCE_REGISTERED"]) - len(evs)
         rows = "".join(f'<tr><td><code>{esc(e["payload"]["source_id"])}</code></td><td>{esc(e["payload"]["source"]["accession"])}<br>{esc(e["payload"]["source"]["form"])}</td><td>{esc(e["payload"]["source"]["filed_at"])}</td><td><b>{esc(e["payload"]["source"]["available_as_of"])}</b></td><td>{esc(e["time"]["observed_at"])}</td><td>{esc(e["time"]["recorded_at"])}</td><td>{esc(e["payload"]["source"]["rights"])}{" · fictional" if e["payload"]["source"]["fictional"] else ""}</td><td><pre class="excerpt">{esc(e["payload"]["source"]["excerpt"])}</pre><span class="muted">sha256 {esc(e["payload"]["source"]["source_hash"])}</span></td></tr>' for e in evs)
-        kinds = self._sel("kind", schema.SOURCE_KINDS, "filing", blank=False); rights = self._sel("rights", schema.RIGHTS, "FICTIONAL", blank=False)
+        A = "register"; V = lambda n, d="": self._val(A, n, d)
+        kinds = self._sel("kind", schema.SOURCE_KINDS, self._cur(A, "kind", "filing"), blank=False); rights = self._sel("rights", schema.RIGHTS, self._cur(A, "rights", "FICTIONAL"), blank=False)
         body = f"""<p>Register the exact passage a claim, an amendment or an outcome comes from. The availability timestamp is when the source became public (EDGAR acceptance), never the time you entered it; the workbench records the observation and action times separately. Passages are stored and shown as inert text.</p>
 <form class="card" method="get" action="/source"><label>View the sources as they were available at a cutoff (UTC, e.g. 2026-03-01T00:00:00Z) — later sources are hidden, not backdated</label><input type="text" name="as_of" value="{esc(as_of)}"><button type="submit">Apply cutoff</button></form>
 {f'<div class="err">{esc(as_of_err)}</div>' if as_of_err else ''}{f'<div class="notice">As-of view at <b>{esc(cut)}</b>: {hidden} source(s) with a later availability are hidden.</div>' if cut else ''}
 <table><tr><th>source id</th><th>accession · form</th><th>filed</th><th>available as of (source)</th><th>observed (workspace)</th><th>recorded (local action)</th><th>rights</th><th>passage</th></tr>{rows or '<tr><td colspan="8" class="muted">no sources registered</td></tr>'}</table>
-<h2>Register a source</h2><form class="card" method="post" action="/source/register">{self._csrf_field()}
-<div class="row"><div><label>Kind</label>{kinds}</div><div><label>Form</label><input type="text" name="form" placeholder="8-K EX-99.1"></div><div><label>Accession (EDGAR) or publisher id (PREFIX:publisher:id) for a non-filing</label><input type="text" name="accession"></div><div><label>URL (optional)</label><input type="text" name="url"></div></div>
-<div class="row"><div><label>Filed at (date)</label><input type="date" name="filed_at"></div><div><label>Available as of (UTC, YYYY-MM-DDTHH:MM:SSZ)</label><input type="text" name="available_as_of"></div><div><label>Observed at (UTC, optional; default now)</label><input type="text" name="observed_at"></div><div><label>Rights</label>{rights}</div></div>
-<label>Exact passage (excerpt)</label><textarea name="excerpt" rows="3"></textarea>
-<label><input type="checkbox" name="fictional" value="1" checked> Fictional source (demonstration data)</label>
-<button type="submit">Register source</button></form>"""
+<h2>Register a source</h2><form class="card" id="form-register" method="post" action="/source/register">{self._csrf_field(A)}
+<div class="row"><div><label>Kind</label>{kinds}</div><div><label>Form</label><input type="text" name="form" value="{V('form')}" placeholder="8-K EX-99.1"></div><div><label>Accession (EDGAR) or publisher id (PREFIX:publisher:id) for a non-filing</label><input type="text" name="accession" value="{V('accession')}"></div><div><label>URL (optional)</label><input type="text" name="url" value="{V('url')}"></div></div>
+<div class="row"><div><label>Filed at (date)</label><input type="date" name="filed_at" value="{V('filed_at')}"></div><div><label>Available as of (UTC, YYYY-MM-DDTHH:MM:SSZ)</label><input type="text" name="available_as_of" value="{V('available_as_of')}"></div><div><label>Observed at (UTC, optional; default now)</label><input type="text" name="observed_at" value="{V('observed_at')}"></div><div><label>Rights</label>{rights}</div></div>
+<label>Exact passage (excerpt)</label><textarea name="excerpt" rows="3">{V('excerpt')}</textarea>
+<label><input type="checkbox" name="fictional" value="1"{self._checked(A, 'fictional', True)}> Fictional source (demonstration data)</label>
+<button type="submit">Register source</button></form>
+<h2>Register from an ingestion record</h2><form class="card" id="form-import" method="post" action="/source/import">{self._csrf_field('import')}
+<p>The bounded ingestion tool (<code>python -m v8.workbench.ingest</code>; one allow-listed URL per run) runs outside this server, which has no network access of its own. On success it writes <code>&lt;label&gt;.source.json</code> and <code>&lt;label&gt;.provenance.json</code>; on failure it prints <code>[ingest] REFUSED: reason</code>, exits 2 and writes no source record — fix the URL, accession or passage pattern it names and run it again. Paste the <code>.source.json</code> content here to register the passage byte for byte (at most {IMPORT_LIMIT // 1024} KB; the record is data — nothing in it is fetched or executed, and the passage digest is recomputed).</p>
+<label>Ingestion source record (JSON)</label><textarea name="record" rows="6">{self._val('import', 'record')}</textarea>
+<label>Observed at — the provenance record's retrieved_at (UTC, optional; default now)</label><input type="text" name="record_observed_at" value="{self._val('import', 'record_observed_at')}">
+<button type="submit">Register ingested source</button></form>"""
         return self.page("Step 1 — Source", body)
 
     def page_claim_new(self, q) -> str:
-        scales = self._sel("scale_as_stated", money.SCALES, "millions", blank=False); bases = self._sel("basis", schema.BASES); rules = self._sel("resolution_rule", list(schema.RESOLUTION_RULES))
-        body = f"""<p>Freeze a fully specified commitment. Every comparability field is mandatory; a missing fiscal period, currency, basis or resolution rule blocks the freeze and every reason is listed. An amendment later creates a new version; the frozen original is never rewritten.</p>
-<form class="card" method="post" action="/claim/freeze">{self._csrf_field()}
-<div class="row"><div><label>Claim id</label><input type="text" name="claim_id" placeholder="ZZFX-FY2026-REV-GUIDE"></div><div><label>Issuer name</label><input type="text" name="issuer_name"></div><div><label>Ticker</label><input type="text" name="issuer_ticker"></div><div><label>CIK (10 digits)</label><input type="text" name="issuer_cik"></div></div>
-<div class="row"><div><label>Metric</label><input type="text" name="metric" value="revenue"></div><div><label>Range low (in units, exact)</label><input type="text" name="range_low"></div><div><label>Range high (in units, exact)</label><input type="text" name="range_high"></div><div><label>Scale as stated in the source</label>{scales}</div></div>
-<div class="row"><div><label>Currency (ISO-4217)</label><input type="text" name="currency" value="USD"></div><div><label>Measurement unit (= currency for money)</label><input type="text" name="unit" value="USD"></div><div><label>Accounting basis</label>{bases}</div><div><label>Resolution rule</label>{rules}</div></div>
-{self._period_fields()}
-<label>Statement (as made)</label><textarea name="statement" rows="2"></textarea>
-{self._source_select()}
-<label><input type="checkbox" name="fictional" value="1" checked> Fictional claim (demonstration data)</label>
+        A = "freeze"; V = lambda n, d="": self._val(A, n, d)
+        scales = self._sel("scale_as_stated", money.SCALES, self._cur(A, "scale_as_stated", "millions"), blank=False); bases = self._sel("basis", schema.BASES, self._cur(A, "basis")); rules = self._sel("resolution_rule", list(schema.RESOLUTION_RULES), self._cur(A, "resolution_rule"))
+        no_source = "" if self._sources() else '<div class="notice"><b>No source is registered in this workspace yet.</b> A claim must cite the exact registered passage it comes from: <a href="/source">register the source first (step 1)</a>, or load a fictional fixture from the <a href="/">Workspace</a> page. A freeze without a source is refused and nothing is written.</div>'
+        body = f"""{no_source}<p>Freeze a fully specified commitment. Every comparability field is mandatory; a missing fiscal period, currency, basis or resolution rule blocks the freeze and every reason is listed. An amendment later creates a new version; the frozen original is never rewritten.</p>
+<form class="card" id="form-freeze" method="post" action="/claim/freeze">{self._csrf_field(A)}
+<div class="row"><div><label>Claim id</label><input type="text" name="claim_id" value="{V('claim_id')}" placeholder="ZZFX-FY2026-REV-GUIDE"></div><div><label>Issuer name</label><input type="text" name="issuer_name" value="{V('issuer_name')}"></div><div><label>Ticker</label><input type="text" name="issuer_ticker" value="{V('issuer_ticker')}"></div><div><label>CIK (10 digits)</label><input type="text" name="issuer_cik" value="{V('issuer_cik')}"></div></div>
+<div class="row"><div><label>Metric</label><input type="text" name="metric" value="{V('metric', 'revenue')}"></div><div><label>Range low (in units, exact)</label><input type="text" name="range_low" value="{V('range_low')}"></div><div><label>Range high (in units, exact)</label><input type="text" name="range_high" value="{V('range_high')}"></div><div><label>Scale as stated in the source</label>{scales}</div></div>
+<div class="row"><div><label>Currency (ISO-4217)</label><input type="text" name="currency" value="{V('currency', 'USD')}"></div><div><label>Measurement unit (= currency for money)</label><input type="text" name="unit" value="{V('unit', 'USD')}"></div><div><label>Accounting basis</label>{bases}</div><div><label>Resolution rule</label>{rules}</div></div>
+{self._period_fields(A)}
+<label>Statement (as made)</label><textarea name="statement" rows="2">{V('statement')}</textarea>
+{self._source_select(A)}
+<label><input type="checkbox" name="fictional" value="1"{self._checked(A, 'fictional', True)}> Fictional claim (demonstration data)</label>
 <button type="submit">Save and freeze claim</button></form>"""
         return self.page("Step 2 — Typed claim", body)
 
@@ -636,6 +743,12 @@ class Handler(BaseHTTPRequestHandler):
             return f'<div class="card"><h3>{esc(title)} — <span class="{cls}">{esc(e["result"])}</span></h3><table><tr><th>inputs</th><td>low {esc(e["inputs"]["low"])} · high {esc(e["inputs"]["high"])} · actual {esc(e["inputs"]["actual"])} · {esc(e["inputs"]["currency"])}/{esc(e["inputs"]["unit"])} · {esc(e["inputs"]["basis"])} · {esc(e["inputs"]["fiscal_period"]["label"])} · {esc(e["inputs"]["metric"])}</td></tr><tr><th>formula</th><td>{esc(e["formula"])}</td></tr><tr><th>midpoint</th><td>{esc(e.get("midpoint"))}</td></tr><tr><th>delta vs midpoint</th><td>{esc(e.get("delta_vs_midpoint"))}</td></tr><tr><th>distance outside</th><td>{esc(e.get("distance_outside"))}</td></tr><tr><th>source links</th><td>claim {esc(e["source_links"]["claim_source"])} · outcome {esc(e["source_links"]["outcome_source"])}</td></tr>{f"<tr><th>reasons</th><td><ul>{rs}</ul></td></tr>" if rs else ""}</table></div>'
         err_divs = "".join("<div class=err>" + esc(r["code"]) + ": " + esc(r["reason"]) + "</div>" for r in res["reasons"])
         calc_html = f'<p>Overall: <b class="{"ok" if res["result"] == "IN_RANGE" else "bad" if res["result"] == "OUT_OF_RANGE" else "warn"}">{esc(res["result"])}</b> · comparison permitted: {esc(res["comparison_permitted"])} · rule {esc(res["rule"])}</p>{err_divs}{ev_html(res["original"], "Original range" + (" (corrected source)" if res["uses_corrected_range"] else ""))}{ev_html(res["revised"], "Revised range")}<p class="notice">{esc(res["no_inference"])}</p>'
+        nxt = {"PENDING_OUTCOME": "the claim stays unresolved until a comparable disclosed outcome exists. When the outcome is public, register its passage (step 1) and record it with the form below; until then a research note can say what evidence is awaited. Nothing is estimated in the meantime.",
+               "WITHDRAWN_BEFORE_OUTCOME": "a withdrawn commitment takes no outcome and is not a miss. A research note can record what remains unexplained; the withdrawal itself is permanent history."}.get(res["result"])
+        if nxt is None and res["result"] in calc.UNRESOLVED:
+            nxt = "no pass or miss is computed while the inputs are incompatible (every mismatch is listed above). If the source itself was wrong, record a CORRECTED_SOURCE amendment citing the corrected passage; if the outcome was recorded on another basis, unit or period, record the comparable outcome. Earlier records are kept either way."
+        if nxt:
+            calc_html += f'<p><b>Unresolved — next:</b> {esc(nxt)}</p>'
         if res["result"] in ("PENDING_OUTCOME", "WITHDRAWN_BEFORE_OUTCOME"):
             calc_html += self._notes_block(st, full, cut, "calculation", None, "Research notes (the outcome is missing or the commitment was withdrawn: a note explains, it never resolves or reopens)")
         # --- 5 history
@@ -648,14 +761,17 @@ class Handler(BaseHTTPRequestHandler):
         notes_html = self._notes_section(cid, cq, st, full, cut)
         # --- 6 adjudication
         adj_rows = "".join(f'<tr><td>{esc(a["reviewer"])}</td><td>{esc(a["rule"])}</td><td><b>{esc(a["label"])}</b>{" <span class=warn>DISPUTED</span>" if a["disputed"] else ""}</td><td>{esc(a["computed_result"])}</td><td>{esc(a["reason"])}</td><td>{esc(a["conflicts"] or "—")}</td><td>{"".join(f"<code>{esc(h[:12])}…</code> " for h in a["evidence"])}</td><td>{esc(a["time"]["recorded_at"])}</td></tr>' for a in st["adjudications"])
-        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] != "ADJUDICATION_RECORDED")
-        labels = self._sel("label", calc.RESULTS, res["result"], blank=False)
-        adj_form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/adjudicate">{self._csrf_field()}<div class="row"><div><label>Reviewer identity</label><input type="text" name="reviewer"></div><div><label>Rule applied</label><input type="text" name="rule" value="{esc(res["rule"])}"></div><div><label>Label (computed: {esc(res["result"])})</label>{labels}</div></div><label>Evidence (events relied on)</label>{ev_opts}<label>Reason</label><textarea name="reason" rows="2"></textarea><label>Conflicts (who disagrees and why; kept visible)</label><input type="text" name="conflicts"><label><input type="checkbox" name="disputed" value="1"> Disputed — my label differs from the computed result and I explain why (a differing label without this flag is refused)</label><button type="submit">Record adjudication</button></form>"""
+        A = "adjudicate"; V = lambda n, d="": self._val(A, n, d)
+        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] != "ADJUDICATION_RECORDED")
+        labels = self._sel("label", calc.RESULTS, self._cur(A, "label", res["result"]), blank=False)
+        adj_form = f"""<form class="card" id="form-adjudicate" method="post" action="/claim/{esc(cq)}/adjudicate">{self._csrf_field(A)}<h3>Record an adjudication</h3><p class="muted">A review is an append-only record with the reviewer label you type (attribution, not authenticated identity). If your label differs from the computed result, tick Disputed and give the reason: both stay visible and the computed result is not changed. A correction is a further adjudication; earlier ones are retained.</p><div class="row"><div><label>Reviewer identity</label><input type="text" name="reviewer" value="{V('reviewer')}"></div><div><label>Rule applied</label><input type="text" name="rule" value="{V('rule', res['rule'])}"></div><div><label>Label (computed: {esc(res["result"])})</label>{labels}</div></div><fieldset><legend>Evidence (events relied on)</legend>{ev_opts}</fieldset><label>Reason</label><textarea name="reason" rows="2">{V('reason')}</textarea><label>Conflicts (who disagrees and why; kept visible)</label><input type="text" name="conflicts" value="{V('conflicts')}"><label><input type="checkbox" name="disputed" value="1"{self._checked(A, 'disputed')}> Disputed — my label differs from the computed result and I explain why (a differing label without this flag is refused)</label><button type="submit">Record adjudication</button></form>"""
         # --- amendments / outcome forms
-        bases = self._sel("basis", schema.BASES, st["current"]["claim"]["basis"]); types = self._sel("amend_type", ("REVISED", "WITHDRAWN", "CORRECTED_SOURCE"), "REVISED", blank=False)
         cur = st["current"]["claim"]
-        amend_form = "" if full["withdrawn"] else f"""<form class="card" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field()}<h3>Create an amendment</h3><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{esc(cur["range"]["low"])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{esc(cur["range"]["high"])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement"><label>Reason (required)</label><input type="text" name="reason">{self._source_select()}<label>Unresolved explanation (a note, not causal evidence)</label><input type="text" name="explanation_unresolved"><label>Next evidence needed</label><input type="text" name="next_evidence"><label>Source discrepancy (verbatim; e.g. the amendment restates the prior range differently from the original — preserved, never corrected)</label><input type="text" name="source_discrepancy"><button type="submit">Record amendment</button></form>"""
-        out_form = f"""<form class="card" method="post" action="/claim/{esc(cq)}/outcome">{self._csrf_field()}<h3>Record the disclosed outcome</h3><div class="row"><div><label>Actual (in units, exact)</label><input type="text" name="actual"></div><div><label>Currency</label><input type="text" name="currency" value="{esc(cur["currency"])}"></div><div><label>Unit</label><input type="text" name="unit" value="{esc(cur["unit"])}"></div><div><label>Basis</label>{self._sel("basis", schema.BASES, cur["basis"])}</div><div><label>Metric</label><input type="text" name="metric" value="{esc(cur["metric"])}"></div></div>{self._period_fields("fp_", cur["fiscal_period"])}{self._source_select()}<label><input type="checkbox" name="comparable" value="1" checked> Recorder declares the outcome comparable (the calculator re-checks every field regardless)</label><button type="submit">Record outcome</button></form>"""
+        A = "amend"; V = lambda n, d="": self._val(A, n, d)
+        bases = self._sel("basis", schema.BASES, self._cur(A, "basis", cur["basis"])); types = self._sel("amend_type", ("REVISED", "WITHDRAWN", "CORRECTED_SOURCE"), self._cur(A, "amend_type", "REVISED"), blank=False)
+        amend_form = "" if full["withdrawn"] else f"""<form class="card" id="form-amend" method="post" action="/claim/{esc(cq)}/amend">{self._csrf_field(A)}<h3>Create an amendment</h3><p class="muted">An amendment is a new version appended to the history; the frozen original and every earlier version stay exactly as they were, and a freeze cannot be undone.</p><div class="row"><div><label>Type</label>{types}</div><div><label>New range low</label><input type="text" name="range_low" value="{V('range_low', cur['range']['low'])}"></div><div><label>New range high</label><input type="text" name="range_high" value="{V('range_high', cur['range']['high'])}"></div><div><label>Basis</label>{bases}</div></div><div class="row"><div><label>Currency</label><input type="text" name="currency" value="{V('currency', cur['currency'])}"></div><div><label>Unit</label><input type="text" name="unit" value="{V('unit', cur['unit'])}"></div><div><label>Metric</label><input type="text" name="metric" value="{V('metric', cur['metric'])}"></div></div>{self._period_fields(A, "fp_", cur["fiscal_period"])}<label>Statement (optional; keeps the current one when empty)</label><input type="text" name="statement" value="{V('statement')}"><label>Reason (required)</label><input type="text" name="reason" value="{V('reason')}">{self._source_select(A)}<label>Unresolved explanation (a note, not causal evidence)</label><input type="text" name="explanation_unresolved" value="{V('explanation_unresolved')}"><label>Next evidence needed</label><input type="text" name="next_evidence" value="{V('next_evidence')}"><label>Source discrepancy (verbatim; e.g. the amendment restates the prior range differently from the original — preserved, never corrected)</label><input type="text" name="source_discrepancy" value="{V('source_discrepancy')}"><button type="submit">Record amendment</button></form>"""
+        A = "outcome"; V = lambda n, d="": self._val(A, n, d)
+        out_form = f"""<form class="card" id="form-outcome" method="post" action="/claim/{esc(cq)}/outcome">{self._csrf_field(A)}<h3>Record the disclosed outcome</h3><div class="row"><div><label>Actual (in units, exact)</label><input type="text" name="actual" value="{V('actual')}"></div><div><label>Currency</label><input type="text" name="currency" value="{V('currency', cur['currency'])}"></div><div><label>Unit</label><input type="text" name="unit" value="{V('unit', cur['unit'])}"></div><div><label>Basis</label>{self._sel("basis", schema.BASES, self._cur(A, "basis", cur["basis"]))}</div><div><label>Metric</label><input type="text" name="metric" value="{V('metric', cur['metric'])}"></div></div>{self._period_fields(A, "fp_", cur["fiscal_period"])}{self._source_select(A)}<label><input type="checkbox" name="comparable" value="1"{self._checked(A, 'comparable', True)}> Recorder declares the outcome comparable (the calculator re-checks every field regardless)</label><button type="submit">Record outcome</button></form>"""
         # --- 7 export
         exp_rows = "".join(f'<tr><td><a href="/exports/{esc(x["export_id"])}.zip">{esc(x["export_id"])}.zip</a></td><td><code>{esc(x["canonical_digest"])}</code></td><td><code>{esc(x["zip_sha256"][:16])}…</code></td><td>{esc(x["time"]["recorded_at"])}</td></tr>' for x in full["exports"])
         built = q.get("built")
@@ -682,17 +798,34 @@ class Handler(BaseHTTPRequestHandler):
 <h2 id="export">7 Reproducible export</h2>{exp_html}"""
         return self.page(cid, body, claim_id=cid)
 
-    def page_verify(self, q, result: dict | None) -> str:
-        res_html = ""
+    def page_verify(self, q, result: dict | None, problem: str | None = None) -> str:
+        res_html = f'<div class="err"><b>Nothing was verified.</b> {esc(problem)}</div>' if problem else ""
         if result is not None:
             cls = "ok" if result["result"] == "SUCCESS" else "bad"
             checks = "".join(f'<tr><td>{esc(c.get("check"))}</td><td>{esc(c.get("path") or c.get("version") or c.get("seq") or "")}</td><td class="{"ok" if c.get("ok") else ("muted" if c.get("ok") is None else "bad")}">{esc({True: "ok", False: "FAIL", None: "n/a"}[c.get("ok")])}</td><td>{esc(c.get("note") or c.get("observed") or c.get("missing") or "")}</td></tr>' for c in result["checks"])
             rc = result.get("recompute") or {}
             recomp = ("<p>Recomputed: <b>" + esc(rc["result"]) + "</b> · original " + esc(rc.get("original")) + " · revised " + esc(rc.get("revised")) + " · Δ original midpoint " + esc(rc.get("delta_vs_original_midpoint")) + " · Δ revised midpoint " + esc(rc.get("delta_vs_revised_midpoint")) + " · comparison " + esc(rc.get("comparison")) + (" · rows " + esc(rc.get("rows")) + " · snapshot " + esc(str(rc.get("snapshot_digest", ""))[:16]) + "…" if rc.get("result") == "DATASET" else "") + "</p>") if rc else ""
-            res_html = f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2><p>{esc(result.get("first_discrepancy") or result.get("meaning") or "")}</p><p>zip sha256 <code>{esc(result["zip_sha256"])}</code> · canonical digest <code>{esc(result["canonical_digest"])}</code> · claim {esc(result["claim_id"])}</p>{recomp}<table><tr><th>check</th><th>item</th><th>ok</th><th>detail</th></tr>{checks}</table>'
+            nxt = {"SUCCESS": "Nothing more is needed. The verification is recorded in this workspace's journal (PACKET_VERIFIED); the packet's content was not merged into this workspace.",
+                   "MISMATCH": "This packet is rejected: its bytes or its recomputed results differ from what it declares (the first discrepancy is named above). Do not rely on it. Ask the sender to build the export again and transfer the zip unchanged, then verify the new file here. A verifier never repairs a packet.",
+                   "UNSUPPORTED": "This workbench cannot interpret the file (the reason is named above); nothing was imported or reinterpreted. Check that it is an export zip built by a YUCLAW workbench and that this installation is not older than the one that built it."}.get(result["result"], "")
+            res_html = f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2><p>{esc(result.get("first_discrepancy") or result.get("meaning") or "")}</p><p><b>Next:</b> {esc(nxt)}</p><p>zip sha256 <code>{esc(result["zip_sha256"])}</code> · canonical digest <code>{esc(result["canonical_digest"])}</code> · claim {esc(result["claim_id"])}</p>{recomp}<table><tr><th>check</th><th>item</th><th>ok</th><th>detail</th></tr>{checks}</table>'
         body = f"""<p>Upload an export zip produced by another workspace. The archive is read in memory within fixed bounds (no extraction), unsafe member names and symlinks are refused, every digest and length is checked, the canonical content is re-serialized, claim digests and event hashes are re-derived, and the calculations are recomputed from the packed versions and outcome. Imported content is data: it is never executed, fetched or merged into this workspace's claims.</p>
 <form class="card" method="post" action="/verify" enctype="multipart/form-data">{self._csrf_field()}<label>Export zip</label><input type="file" name="packet"><button type="submit">Verify</button></form>{res_html}"""
         return self.page("Verify an export — fresh workspace", body)
+
+    def page_help(self, q) -> str:
+        ws = self.server.ws; claims = ws.status()["claims"]; o = self.server.origin
+        links = [("/", "Workspace overview — claims, computed results, fictional fixtures"), ("/source", "1 Source — register a passage or an ingestion record; as-of view"), ("/claim/new", "2 Typed claim — save and freeze a commitment"),
+                 ("/notes", "Research notes — every note across claims"), ("/dataset", "Dataset coverage — rows, snapshot identity, snapshot export"), ("/dataset.json", "Dataset snapshot, machine-readable"),
+                 ("/sci", "Scientific report / replay"), ("/verify", "Verify an export (use a fresh workspace)"), ("/journal", "Journal — the append-only event log")]
+        idx = "".join(f'<li><a href="{esc(h)}">{esc(o + h)}</a> — {esc(t)}</li>' for h, t in links)
+        per_claim = "".join(f'<li><a href="/claim/{esc(urllib.parse.quote(c, safe=""))}">{esc(c)}</a>: ' + " · ".join(f'<a href="/claim/{esc(urllib.parse.quote(c, safe=""))}#{esc(k)}">{esc(lbl)}</a>' for k, lbl in STEPS + [("notes", "Research notes")]) + "</li>" for c in claims)
+        guide = GUIDE_PATH.read_text(encoding="utf-8") if GUIDE_PATH.is_file() else "The packaged operator guide is missing from this installation."
+        body = f"""<p>Where every enabled function is in this running workbench ({esc(o)}), followed by the packaged startup and operator guide. This workspace is a local snapshot of what was registered here and when; it is not a live feed and nothing in it updates on its own.</p>
+<h2>Functions in this workspace</h2><ul>{idx}</ul>
+<h2>Steps 3–7 and research notes, per claim</h2>{("<ul>" + per_claim + "</ul>") if per_claim else '<p class="muted">No claim is frozen in this workspace yet. Load a fictional fixture on the <a href="/">Workspace</a> page or start at <a href="/source">step 1</a>; each claim page then carries steps 3–7.</p>'}
+<h2>Startup and operator guide</h2><p class="muted">Shown as plain text exactly as packaged (<code>v8/workbench/resources/OPERATOR_GUIDE.md</code>). The port numbers in it are examples; this server's address is {esc(o)}.</p><div class="guide">{esc(guide)}</div>"""
+        return self.page("Help — functions and operator guide", body)
 
     def page_journal(self, q) -> str:
         ws = self.server.ws
@@ -705,6 +838,27 @@ class Handler(BaseHTTPRequestHandler):
         raw = {"kind": form.get("kind", ""), "form": form.get("form", ""), "accession": form.get("accession", "").strip(), "url": form.get("url") or None, "filed_at": form.get("filed_at", ""),
                "available_as_of": _norm_ts(form.get("available_as_of"), "source.available_as_of") or "", "excerpt": ex, "source_hash": hashlib.sha256(ex.encode("utf-8")).hexdigest(), "fictional": form.get("fictional") == "1", "rights": form.get("rights", "")}
         self.server.ws.register_source(raw, op_id=op_id, observed_at=_norm_ts(form.get("observed_at"), "observed_at"))
+        return self._redirect("/source")
+
+    def post_import(self, form, op_id):
+        """Register the source record written by the bounded ingestion tool. The record is data: strict JSON of bounded
+        size, only the source fields, validated by the same contract as a typed registration (the passage digest must
+        equal sha256 of the excerpt). Nothing in it is opened, fetched or executed."""
+        text = form.get("record", "")
+        if not text.strip():
+            raise ContractError("ingestion record: paste the content of the <label>.source.json file the ingestion tool wrote (if the tool printed REFUSED, no record exists — fix what it names and run it again)")
+        if len(text.encode("utf-8")) > IMPORT_LIMIT:
+            raise ContractError(f"ingestion record: larger than {IMPORT_LIMIT} bytes; a source record holds one passage, not a document")
+        try:
+            raw = json.loads(text, object_pairs_hook=sci_adapter._reject_duplicates, parse_constant=sci_adapter._reject_constant)
+        except (ValueError, sci_adapter.InputError) as exc:
+            raise ContractError(f"ingestion record: not valid JSON ({exc}); paste the whole .source.json file unchanged") from None
+        if not isinstance(raw, dict):
+            raise ContractError("ingestion record: expected one JSON object (the .source.json file), not a list or a value")
+        extra = sorted(set(raw) - set(schema.REQUIRED_SOURCE))
+        if extra:
+            raise ContractError(f"ingestion record: unsupported field(s) {', '.join(extra[:8])}; paste the .source.json file, not the .provenance.json file")
+        self.server.ws.register_source(raw, op_id=op_id, observed_at=_norm_ts(form.get("record_observed_at"), "observed_at"))
         return self._redirect("/source")
 
     def post_freeze(self, form, op_id):
@@ -812,7 +966,8 @@ class Handler(BaseHTTPRequestHandler):
         ct = self.headers.get("Content-Type", "")
         body = self._read_body(UPLOAD_LIMIT)
         if body is None or not ct.startswith("multipart/form-data"):
-            return self._text(413, "refused: upload missing, too large or not multipart")
+            self.close_connection = True          # an oversized body was not read; never parse its bytes as the next request
+            return self._send(413, self.page_verify({}, None, f"The upload was missing or larger than {UPLOAD_LIMIT // (1024 * 1024)} MB, the most an export zip can be. Choose the export zip itself (exp-….zip as downloaded), not a folder or another archive, and submit again."), extra={"Connection": "close"})
         try:
             mp = Multipart(ct, body)
         except ContractError as exc:
@@ -821,7 +976,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._text(403, "refused: CSRF token invalid; nothing was written")
         op_id = mp.fields.get("op_id", "")
         if "packet" not in mp.files or not mp.files["packet"][1]:
-            return self._send(422, self.page_error("verify: choose an export zip first"))
+            return self._send(422, self.page_verify({}, None, "No file was chosen (or the file is empty). Choose the export zip as downloaded from the other workspace and submit again."))
         ws = self.server.ws
         tmp = ws.imports / f"upload-{secrets.token_hex(6)}.zip"
         tmp.write_bytes(mp.files["packet"][1])
