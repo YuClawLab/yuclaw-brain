@@ -139,6 +139,20 @@ class TestIngestBoundaries(unittest.TestCase):
             ingest.fetch("https://www.sec.gov/x", opener=self.FakeOpener(final="https://evil.example/y"))  # final host outside the list
         got = ingest.fetch("https://www.sec.gov/x", opener=self.FakeOpener(b"<p>ok</p>")); self.assertEqual(got["bytes"], 9); self.assertTrue(got["retrieved_at"].endswith("Z"))
 
+    def test_replay_keeps_the_original_artifact_and_its_first_retrieval_time(self):
+        """DAT-10 (V8-010): running the same ingestion again is idempotent on identical bytes and never replaces a kept original."""
+        import tempfile
+        out = pathlib.Path(tempfile.mkdtemp(prefix="wb-ingest-")); doc = b"<html><p>Net sales were $1.0 billion.</p></html>"
+        kw = dict(url="https://ir.microchip.com/x", kind="press_release", form="press release", accession="TEST:publisher:1", cik=None, pattern=r"Net sales were \$1\.0 billion\.", available_as_of="2026-01-01T12:00:00Z",
+                  availability_basis="stated", rights="COMPANY_PRESS_RELEASE", out=out, label="original", filed_at="2026-01-01")
+        first = ingest.ingest(opener=self.FakeOpener(doc), **kw); kept = (out / "original.original.htm").read_bytes()
+        again = ingest.ingest(opener=self.FakeOpener(doc), **kw)
+        self.assertEqual(again["source"], first["source"]); self.assertEqual(again["provenance"]["first_retrieved_at"], first["provenance"]["retrieved_at"]); self.assertEqual((out / "original.original.htm").read_bytes(), kept)
+        with self.assertRaises(ingest.IngestError) as cm:
+            ingest.ingest(opener=self.FakeOpener(doc.replace(b"1.0", b"1.1")), **dict(kw, pattern=r"Net sales were \$1\.1 billion\."))
+        self.assertIn("already holds different original bytes", str(cm.exception)); self.assertEqual((out / "original.original.htm").read_bytes(), kept)
+        self.assertEqual(json.loads((out / "original.source.json").read_text()), first["source"])                 # the refused replay wrote nothing
+
     def test_cross_host_redirect_refused(self):
         h = ingest._NoCrossHostRedirect(); req = ingest.urllib.request.Request("https://www.sec.gov/a")
         with self.assertRaises(ingest.IngestError):

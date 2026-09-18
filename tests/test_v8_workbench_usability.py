@@ -135,6 +135,12 @@ class TestUsability(unittest.TestCase):
         st, _, page = c.upload({"csrf": c.csrf, "op_id": "ui:verify-0002"}, b"not a zip at all"); text = page.decode()
         self.assertEqual(st, 200); self.assertRegex(text, r"Result: <span class=\"bad\">(UNSUPPORTED|MISMATCH)</span>"); self.assertIn("<b>Next:</b>", text); self.assertTrue("nothing was imported" in text or "Do not rely on it" in text)
 
+    def test_065_values_that_become_file_names_are_bounded(self):
+        """Found by the V8-010 route fuzz: an over-long packaged-example name raised OSError (file name too long) and dropped the connection."""
+        c = self.c; n0 = self.events()
+        st, _, page = c.post("/sci/replay", {"example": "x" * 5000, "actor": "a"}); self.assertEqual(st, 422); self.assertIn(b"unknown packaged example", page)
+        st, _, page = c.post("/fixtures/load", {"fixture": "001_" + "a" * 5000}); self.assertEqual(st, 422); self.assertIn(b"unknown fixture id", page); self.assertEqual(self.events(), n0)
+
     def test_07_guide_is_packaged_printed_and_truthful_about_the_entry_point(self):
         guide = S.GUIDE_PATH.read_text(encoding="utf-8")
         for needle in ("python -m v8.workbench serve --workspace", "--port 8765", "--port 8766", "http://127.0.0.1:8766/verify", "Ctrl-C", "python -m v8.workbench recover --workspace", "Run recovery",

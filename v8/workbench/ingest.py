@@ -103,6 +103,12 @@ def ingest(*, url: str, kind: str, form: str, accession: str, cik: str | None, p
     got = fetch(url, opener=opener)
     out.mkdir(parents=True, exist_ok=True)
     raw = out / f"{label}.original.{'htm' if 'html' in got['content_type'] else 'bin'}"
+    if raw.exists() and hashlib.sha256(raw.read_bytes()).hexdigest() != got["sha256"]:
+        # a replay never replaces the original artifact it kept: the publisher's document changed since the first retrieval
+        raise IngestError(f"refused: {raw.name} already holds different original bytes (the document at this URL changed since it was first retrieved); the earlier original is kept — use a new --label or --out for this retrieval")
+    prior = out / f"{label}.provenance.json"                       # a replay of the same bytes keeps the time the document was FIRST retrieved
+    earlier = json.loads(prior.read_text()) if raw.exists() and prior.exists() else {}
+    first = earlier.get("first_retrieved_at") or earlier.get("retrieved_at")
     raw.write_bytes(got["body"])
     text = strip_text(got["body"]); passage = extract_passage(text, pattern)
     avail = available_as_of; edgar = None; filed = filed_at
@@ -114,7 +120,7 @@ def ingest(*, url: str, kind: str, form: str, accession: str, cik: str | None, p
         raise IngestError("availability and filed date required for a non-filing source (give --available-as-of and --filed-at)")
     src = {"kind": kind, "form": form, "accession": accession, "url": url, "filed_at": filed, "available_as_of": avail, "excerpt": passage["excerpt"],
            "source_hash": hashlib.sha256(passage["excerpt"].encode("utf-8")).hexdigest(), "fictional": False, "rights": rights}
-    prov = {"record": "yuclaw-ingestion/1", "label": label, "retrieved_at": got["retrieved_at"], "http": {"status": got["status"], "content_type": got["content_type"], "final_url": got["final_url"]},
+    prov = {"record": "yuclaw-ingestion/1", "label": label, "retrieved_at": got["retrieved_at"], "first_retrieved_at": first or got["retrieved_at"], "http": {"status": got["status"], "content_type": got["content_type"], "final_url": got["final_url"]},
             "original_bytes": {"file": raw.name, "sha256": got["sha256"], "bytes": got["bytes"]}, "passage": {k: v for k, v in passage.items() if k != "excerpt"}, "availability_basis": availability_basis, "edgar": edgar,
             "observed_at": got["retrieved_at"], "note": "observed_at is the retrieval time of this ingestion; available_as_of is when the source became public; the two are kept apart on every workbench event"}
     (out / f"{label}.source.json").write_text(json.dumps(src, indent=1, ensure_ascii=False) + "\n")
