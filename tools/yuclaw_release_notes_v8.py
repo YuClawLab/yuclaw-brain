@@ -5,7 +5,9 @@ Inputs, all explicit and checked (nothing free-typed decides what "ships"):
   * the workbench's own step inventory  — v8.workbench.server.STEPS (the seven steps the shipped code serves);
   * the machine-readable release scope  — v8/scope/v8.0.0-scope.json (enabled workstreams, minimal RIV/ACT
     behaviour, experimental default-off modules, deferred work, the owner's backup policy and its exact disclosure);
-  * the recorded journey evidence       — the V8-005 scorecards (7/7 + research notes, dataset, SCI DEMONSTRATED);
+  * the recorded journey evidence       — the scorecards of the NEWEST order record that carries both journeys
+    (v8/V8-*/scorecard_fixtures.json + scorecard_mchp.json); each names the candidate commit it ran on and the notes
+    repeat that identity, so evidence for an earlier candidate is never presented as the current candidate's;
   * the release policy record           — allocation (D1) as RECORDED by the publisher's policy stage, with Gate #15
     NOT_REQUIRED bound to the owner's recorded v8 decision (v8/policy/gate15_release_requirement.json: the human-
     comprehension study is not a required input to a v8 release — REMOVED_BY_OWNER, never PASSED); a missing record
@@ -84,15 +86,21 @@ def policy_disclosure(policy: dict | None, decision: dict | None) -> str:
     else:
         lines.append(f"- Gate #15: route {g.get('route')!r} is not applicable to a v8 release (the requirement was removed by the owner; NOT_REQUIRED expected)")
     return "\n".join(lines)
-SCORECARDS = (_REPO / "v8" / "V8-005" / "scorecard_fixtures.json", _REPO / "v8" / "V8-005" / "scorecard_mchp.json")
+def latest_scorecards(root: Path | None = None) -> tuple:
+    """(fixtures, mchp) scorecard paths of the newest order record that holds both; () when none does."""
+    recs = sorted((d for d in ((root or _REPO) / "v8").glob("V8-[0-9][0-9][0-9]") if (d / "scorecard_fixtures.json").exists() and (d / "scorecard_mchp.json").exists()), key=lambda d: d.name)
+    return (recs[-1] / "scorecard_fixtures.json", recs[-1] / "scorecard_mchp.json") if recs else ()
+
+
+SCORECARDS = latest_scorecards()
 EXPECTED_STEPS = ("source", "claim", "comparison", "calculation", "history", "adjudication", "export")
 EXPECTED_FEATURES = ("research_notes", "dataset", "sci")
 
 # Feature account per ENABLED workstream (the scope decides which lines may appear; a line for a workstream that the
 # scope does not enable is refused, and an enabled workstream without a line is refused).
 FEATURE_LINES = {
-    "UX": "- One owner-operated, loopback-only browser workbench traces a financial commitment through seven visible steps — {steps} — with plain HTML forms and no scripts; a second, fresh workspace verifies any export.",
-    "DAT": "- Bounded disclosure ingestion (command line, allow-listed hosts, https only, bounded body): original bytes and digests kept, exact passage registered with its availability time, source rights recorded; excerpt bytes travel only under rights that allow it.",
+    "UX": "- One owner-operated, loopback-only browser workbench traces a financial commitment through seven visible steps — {steps} — with plain HTML forms and no scripts; a refused form returns with its reasons and the entries kept; every field is labelled and wide tables scroll inside the page; an in-app Help page lists every function and shows the packaged operator guide and data dictionary; a second, fresh workspace verifies any export.",
+    "DAT": "- Bounded disclosure ingestion (command line, allow-listed hosts, https only, bounded body): original bytes and digests kept, exact passage registered with its availability time, source rights recorded; the record the tool writes is registered in the browser as pasted data and a replayed registration never duplicates a source; excerpt bytes travel only under rights that allow it.",
     "CLM": "- Typed commitments (`CommitmentClaim.v1`): currency, unit, scale, metric, accounting basis, fiscal period with explicit dates and resolution rule are mandatory; a missing or incompatible field blocks with every reason listed; freezing is one-way and later edits create successor versions.",
     "RIV": "- Comparison (minimal shared behaviour): original and revised ranges side by side with basis checks; an incompatible metric, basis, unit or period yields INCOMPARABLE with its reasons; explanatory notes are not causal evidence.",
     "CHK": "- Deterministic calculation: the disclosed outcome against each compatible range with visible inputs, formula and source links; a currency, scale or period mismatch never produces a pass.",
@@ -102,7 +110,7 @@ FEATURE_LINES = {
     "SCI": "- Scientific report and replay through the adapted kernel: a bounded science journal (a JSON event list) scored by paired Brier improvement with a sequential evidence value; explicit eligibility refusals; report status is conditional statistical evidence only and grants no action.",
     "INT": "- Local persistence and integrity: one append-only journal per workspace, one re-entrant write lock, idempotent submissions, additive event kinds, bounded inputs that are never executed, opened or fetched; nothing binds outside 127.0.0.1.",
     "GOV": "- Scope and controls: the enabled 8.0.0 scope is frozen, the mission and vision wording is checked byte-for-byte, authored product content is English with YUCLAW on public surfaces.",
-    "REL": "- Reproducible artifacts: wheel and sdist built with a fixed source-date epoch from the frozen commit, verified from fresh installs; order records and scope documents are excluded from the distribution; every workbench module compiles on Python 3.10.",
+    "REL": "- Reproducible artifacts: wheel and sdist built with a fixed source-date epoch from the frozen commit, verified from fresh installs; order records, scope and release-policy documents are excluded from the distribution; every workbench module compiles on Python 3.10.",
 }
 ENABLED_BUT_DEFERRED_NOTE = "- Deferred beyond 8.0.0: {deferred}. No runtime endpoint, tab or promised benefit for any of them."
 EXPERIMENTAL_NOTE = "- Experimental optional modules {modules}: ABSENT from the distribution; nothing is default-on; no benefit is claimed."
@@ -152,7 +160,7 @@ def capability_matrix(*, scope: dict | None = None, steps: list | None = None, s
 def feature_account(matrix: dict) -> str:
     steps = " → ".join(matrix["steps"])
     lines = [FEATURE_LINES[ws].format(steps=steps) for ws in ("UX", "DAT", "CLM", "RIV", "CHK", "TIM", "ACT", "SET", "SCI", "INT", "GOV", "REL") if ws in matrix["enabled"] or ws in matrix["minimal"]]
-    ev = "; ".join(f"{k}: {v['score']} + notes {v['features']['research_notes']}, dataset {v['features']['dataset']}, scientific report {v['features']['sci']}" for k, v in matrix["evidence"].items()) or "no journey evidence recorded"
+    ev = "; ".join(f"{k} (candidate {str(v['candidate'] or 'unrecorded')[:12]}): {v['score']} + notes {v['features']['research_notes']}, dataset {v['features']['dataset']}, scientific report {v['features']['sci']}" for k, v in matrix["evidence"].items()) or "no journey evidence recorded"
     lines.append(f"- Journey evidence (automated browser journeys on the candidate, from the checkout and from the installed wheel and sdist): {ev}." if matrix["demonstrated"] else f"- Journey evidence INCOMPLETE: {ev}.")
     return "\n".join(lines)
 
