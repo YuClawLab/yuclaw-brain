@@ -2,6 +2,35 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [8.0.0] — 2026-09-21
+
+Research & education only. Not investment advice.
+
+### YUCLAW 8.0.0 — the source-to-export commitment workbench (local, owner-operated)
+
+**New: `python -m v8.workbench serve`** — a loopback-only browser workbench that traces one financial commitment through seven visible steps: 1 Source → 2 Typed claim → 3 Comparison → 4 Calculation → 5 History → 6 Adjudication → 7 Reproducible export. Plain HTML forms, no scripts, one append-only digest-chained journal per workspace; a second, fresh workspace verifies any export through the browser. Everything in 7.0.1 continues unchanged.
+
+- Source: the exact passage is registered with its availability time, kept apart from the workspace's observation time and the local action time. A bounded command-line ingestion tool (allow-listed hosts, https only, bounded body) keeps the original bytes and digests; the record it writes is registered in the browser as pasted data, and a replayed registration never duplicates a source. Excerpt bytes travel in an export only under rights that allow it; otherwise the reference and digest travel alone.
+- Typed claim (`CommitmentClaim.v1`): currency, unit, scale, metric, accounting basis, fiscal period with explicit dates and resolution rule are mandatory; a missing or incompatible field blocks the freeze with every reason listed. Freezing is one-way; a revision, a corrected source or a withdrawal is a new event and the original is never rewritten.
+- Comparison and calculation: original and revised ranges side by side, or INCOMPARABLE with its reasons; the disclosed outcome is evaluated against each compatible range separately, in exact decimal arithmetic with visible inputs, formula, rule and source links. In the packaged fictional example the original target (110–120 million) and the revision (105–115 million) are each IN_RANGE for an actual of 112 million; the two results are separate and no accuracy improvement is inferred. A currency, scale, basis or period mismatch never produces a pass; a missing outcome stays unresolved; a withdrawal is not a miss.
+- History and adjudication: as-of replay at any cutoff, where later information is never shown as known earlier; reviewer label, rule, evidence, reason and conflicts are recorded, and a label that differs from the computed result must be flagged disputed and stays visible. Reviewer names are attribution labels, not authenticated identities.
+- Research notes: an unresolved question or explanation, the next evidence needed, a reason and an actor label on a frozen claim; a correction is a new linked note; a note never changes a claim or its result.
+- Dataset coverage: one row per frozen claim derived from stored records, a deterministic snapshot identity, retained earlier snapshots with an explicit difference, a machine-readable view and a dataset snapshot export that a fresh workspace re-derives row by row. A packaged data dictionary and dataset card state coverage, annotation rules, source restrictions and prohibited interpretations; quality estimates are not available.
+- Scientific report and replay: a bounded science journal (a JSON event list) is replayed through the packaged kernel — paired binary-probability predictions scored by Brier improvement with a sequential evidence value under a frozen family-wise error budget — or refused with a specific reason (for example monetary ranges supplied as probabilities). Every replay is recorded, exported and recomputed in a fresh workspace.
+- Reproducible export and verification: schema, claim versions, source references and digests, events, method, results, notes, dataset rows and scientific records; the canonical research digest excludes the export identifier and time. Verification reads the archive in memory within fixed bounds, refuses unsafe member names, re-derives every digest and recomputes every result; a changed payload is MISMATCH and an unknown format is UNSUPPORTED. A research export is not a publication (publication eligibility is shown separately as NOT ELIGIBLE) and not a backup.
+- Operation: a refused form returns with its reasons and the entries kept; every field is labelled, tables scroll inside the page at phone width, focus is visible and the seven steps link to their sections; an in-app Help page lists every function and shows the packaged startup and operator guide (isolated research and fresh verification workspaces, start and stop, interrupted-write recovery). These were checked by automated browser inspection; no human study, screen-reader session or accessibility review was performed.
+- Boundaries: binds 127.0.0.1 only; Host, Origin, session and CSRF checks on every write, a null Origin is refused; pages are not cached; source text and imported packets render as inert text and are never executed, opened or fetched.
+
+### Evidence and its limits
+- Real data: one issuer's quarterly guidance (Microchip Technology, Q1 FY2026 net sales) was replayed RETROSPECTIVELY on real sources as a behaviour demonstration. The issuer is NOT ELIGIBLE under the recorded selection criteria and no dataset product is claimed. The original source states 1.020 billion at the low end where the revision describes the prior range from 1.025 billion; the discrepancy is preserved as stated. The actual, 1.0755 billion, is outside both recorded ranges. The press-release excerpts are withheld from exports under their rights class.
+- Every adjudication and note in the release evidence was recorded by the automated journey runner as a simulated test action; there was no human review and no user study. Human benefit: PENDING.
+- Gate #15 (user comprehension test): the requirement was removed by the owner for v8 releases on 2026-09-16; no human comprehension study was run and none is claimed — not a pass. The automated consumer-posture check is retained.
+- Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery.
+- Experimental optional modules COM / PRC / SHD / EVO are absent from the distribution and nothing is default-on. Deferred beyond 8.0.0: CTL, RES, RND, full RIV, full ACT, the real-user pilot, multi-tenancy, managed accounts and billing.
+
+### Unchanged
+- Protocol registry, research chain, statistics, estimators, thresholds and every 7.0.1 surface. Every proposed activation stays INACTIVE. Releases 6.0.0, 6.0.1, 7.0.0 and 7.0.1 are preserved.
+
 ## [7.0.1] — 2026-09-15
 
 Research & education only. Not investment advice.

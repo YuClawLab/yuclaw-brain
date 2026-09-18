@@ -93,16 +93,16 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript produced from the release-candidate wheel `yuclaw-7.0.1-py3-none-any.whl` (yuclaw 7.0.1, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact.
+Transcript produced from the release-candidate wheel `yuclaw-8.0.0-py3-none-any.whl` (yuclaw 8.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact.
 
 ```text
 $ yuclaw --version
-yuclaw 7.0.1
+yuclaw 8.0.0
 [exit 0]
 ```
 ```text
 $ yuclaw --help
-yuclaw 7.0.1 — evidence-first financial research CLI (research and education only; not investment advice)
+yuclaw 8.0.0 — evidence-first financial research CLI (research and education only; not investment advice)
 
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
@@ -229,7 +229,7 @@ research classifications, not buy/sell recommendations.
 
 ## v7 — check → reproduce → challenge → document use (outsider verification, offline)
 
-Everything below runs without an account or a hosted service. Outputs are from the 7.0.1 candidate checkout (operator runs; **not** outsider receipts).
+Everything below runs without an account or a hosted service. Outputs are from the 8.0.0 candidate checkout (operator runs; **not** outsider receipts).
 
 ```
 $ yuclaw packet build ./yuclaw-packet --source <checkout>
@@ -311,9 +311,9 @@ mismatch.
 
 ## What is in 6.0.x
 
-Current package version: `7.0.1` — the release notes, the frozen wheel and sdist
+Current package version: `8.0.0` — the release notes, the frozen wheel and sdist
 SHA-256 hashes, and the shipped-object list live on the
-[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v7.0.1)
+[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.0)
 ([all releases](https://github.com/YuClawLab/yuclaw-brain/releases) ·
 [CHANGELOG](CHANGELOG.md)). 7.0.0 adds the receipt engine, the offline verification packet, structured claim-support limits, local challenges and document-use receipts, and the Evidence Scoreboard. Scientific states are unchanged: Gate #15 stays MANUAL_REVIEW, Phase 6 N_eff stays PENDING, C6 stays DESCRIPTIVE, U350 stays shadow-only. Zero outsider receipts exist at release; the scoreboard shows that as a real zero.
 
