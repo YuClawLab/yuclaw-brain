@@ -1,0 +1,193 @@
+{
+ "record": "v8-release-state-run/1",
+ "order": "V8-010 §6",
+ "generator": "tools/yuclaw_release_state_v6.py --evidence <session-measured facts>  (no --release-policy: D1 is PROPOSED, not accepted)",
+ "run_on": {
+  "head": "a69296f07daf347528350bbcb80afd1f79b5e4d4",
+  "tree": "631cbb0347d70fd881ef1be8e9b8630226041003",
+  "meaning": "the evidence-only record HEAD on top of candidate source 93274e7d (packaged content identical); the composer reads this tree's V8-010 scorecards",
+  "generated_utc": "2026-09-18T14:50:29.292583+00:00"
+ },
+ "exact_output": [
+  "[release-state-v6] gates {'GREEN': 19, 'REMOVED_BY_OWNER': 1} · tripwire(pre) GREEN · chain 82/ac51ddfe97eb · phase6 STRUCTURE_PRINTED — structural_completeness = PARTIAL; N_eff PENDING; READ_SCOPE = STRUCTURAL_ONLY · gate16 GREEN",
+  "  # 1 GREEN            P0 registrations valid",
+  "  # 2 GREEN            chain verifies",
+  "  # 3 GREEN            zero unexplained ledger breaks",
+  "  # 4 GREEN            point-in-time guard",
+  "  # 5 GREEN            no v1 historical silent rewrite",
+  "  # 6 GREEN            dependency calculations reproducible",
+  "  # 7 GREEN            truncation ledger reconciles",
+  "  # 8 GREEN            hypothesis/discovery lineage reconciles",
+  "  # 9 GREEN            sequential methods pass registered fixtures",
+  "  #10 GREEN            research-state derivation reproducible",
+  "  #11 GREEN            machine JSON agrees with human page",
+  "  #12 GREEN            source citations resolve",
+  "  #13 GREEN            negative/inconclusive findings preserved",
+  "  #14 GREEN            language rails pass",
+  "  #15 REMOVED_BY_OWNER user comprehension test passes",
+  "  #16 GREEN            stranger-machine reproduction passes",
+  "  #17 GREEN            G1 copy-consistency (canonical blocks byte-identical)",
+  "  #18 GREEN            G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+  "  #19 GREEN            G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+  "  #20 GREEN            G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+  "  failing checks: none",
+  "  notes: internal sha256 6ef95864a342b679 · public sha256 da19798c9ac9d4a0",
+  "generator_rc=0"
+ ],
+ "gate_counts": {
+  "GREEN": 19,
+  "REMOVED_BY_OWNER": 1
+ },
+ "gate_table": [
+  {
+   "gate": 1,
+   "name": "P0 registrations valid",
+   "result": "GREEN",
+   "evidence": "bace258b0bbb + 74c9a12a60e3 LOCKED; module METHOD_HASH == registry; A1 file sha256 == line-81 method_hash"
+  },
+  {
+   "gate": 2,
+   "name": "chain verifies",
+   "result": "GREEN",
+   "evidence": "Registry.verify_chain on load: 82 lines, tip ac51ddfe97eb709a"
+  },
+  {
+   "gate": 3,
+   "name": "zero unexplained ledger breaks",
+   "result": "GREEN",
+   "evidence": "docs/ledger 84 blocks 2026-05-20..2026-09-14; sessions without a block: 0; evidence-changes gate rc=0"
+  },
+  {
+   "gate": 4,
+   "name": "point-in-time guard",
+   "result": "GREEN",
+   "evidence": "as_of endpoint hash + twice-run identity (evidence-changes gate); u350 isolation proven by attempted writes"
+  },
+  {
+   "gate": 5,
+   "name": "no v1 historical silent rewrite",
+   "result": "GREEN",
+   "evidence": "chain file byte-identical to base 696d871e: True; v1 evidence_geometry.json identical to base: True (last changed 0f10c2ec 2026-07-31); Phase-6 canonical artifact identical to base: True; 02A restage left live/registry/output trees byte-identical: True; chain append-only"
+  },
+  {
+   "gate": 6,
+   "name": "dependency calculations reproducible",
+   "result": "GREEN",
+   "evidence": "the registered structural first-read computation reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)"
+  },
+  {
+   "gate": 7,
+   "name": "truncation ledger reconciles",
+   "result": "GREEN",
+   "evidence": "[truncation-gate] OK — 13 ledger entries (schema + anchors verified), detector clean over v3/tools (allowlist v1, 10 constants)"
+  },
+  {
+   "gate": 8,
+   "name": "hypothesis/discovery lineage reconciles",
+   "result": "GREEN",
+   "evidence": "[discovery-gate] OK — 37 hypotheses <-> 37 protocol lines (bijection both directions), 33 families locked, artifact byte-identical to chain-derived rebuild; status_counts={'ACCRUING': 18, 'INCONCLUSIVE': 1, 'OPEN': 7, 'REGISTERED': 7, 'SUPE"
+  },
+  {
+   "gate": 9,
+   "name": "sequential methods pass registered fixtures",
+   "result": "GREEN",
+   "evidence": "anytime gate + registered fixtures selftest"
+  },
+  {
+   "gate": 10,
+   "name": "research-state derivation reproducible",
+   "result": "GREEN",
+   "evidence": "[research-state-gate] OK — 132 names render registered artifacts only; byte-identical rebuild; platform C6 verdict verbatim"
+  },
+  {
+   "gate": 11,
+   "name": "machine JSON agrees with human page",
+   "result": "GREEN",
+   "evidence": "[science-trust-gate] OK — 132 cards: machine JSON == human card == fresh derivation (field-for-field); research states verified against research_state.json directly; sequential panel verified against the canonical Anytime artifact independe"
+  },
+  {
+   "gate": 12,
+   "name": "source citations resolve",
+   "result": "GREEN",
+   "evidence": "site-walk: all links + anchors resolve; index completeness; copy integrity"
+  },
+  {
+   "gate": 13,
+   "name": "negative/inconclusive findings preserved",
+   "result": "GREEN",
+   "evidence": "discovery status_counts ACCRUING 18, INCONCLUSIVE 1, OPEN 7, REGISTERED 7, SUPERSEDED 4; questions insider-directional RETIRED, reversal-coherence OPEN, reversal-structure-dominance OPEN; reversal first read INSUFFICIENT preserved"
+  },
+  {
+   "gate": 14,
+   "name": "language rails pass",
+   "result": "GREEN",
+   "evidence": "language rail (pages + README + COMPARISON + architecture + CHANGELOG) + leak sweep (private denylist) + no-forms + header layout (badge == package version) + weekly-note reconciliation"
+  },
+  {
+   "gate": 15,
+   "name": "user comprehension test passes",
+   "result": "REMOVED_BY_OWNER",
+   "evidence": "requirement removed by the owner on 2026-09-16 for v8 releases (decision record sha256 45d23007e958ac96…); consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING"
+  },
+  {
+   "gate": 16,
+   "name": "stranger-machine reproduction passes",
+   "result": "GREEN",
+   "evidence": "External-machine reproduction completed by an affiliated operator; unaffiliated replications: 0 — registered sentence \"stranger-machine reproduction passes\" (requires reproduction on an external (stranger) MACHINE; it does not require an unaffiliated operator — affiliation is disclosed, never implied away); public log entries: 1, external-machine REPRODUCED: 1, failed: 0"
+  },
+  {
+   "gate": 17,
+   "name": "G1 copy-consistency (canonical blocks byte-identical)",
+   "result": "GREEN",
+   "evidence": "[copy-consistency] OK — 8 target blocks byte-identical to their canonical sources (MISSION-VISION: sha256 c3b3d26ca94f, LOOKAHEAD: sha256 34ff23ecbef0, REPLICATION-SENTENCE: sha256 f940a6f509ab)"
+  },
+  {
+   "gate": 18,
+   "name": "G2 version (package = badge = capabilities = index = llms = README = PyPI metadata)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages"
+  },
+  {
+   "gate": 19,
+   "name": "G3 base URL (capabilities = index = llms = release_manifest.public_base_url)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G3 base https://yuclaw.ca (77 URLs, zero github.io)"
+  },
+  {
+   "gate": 20,
+   "name": "G4 endpoints (declared set = generated set; static 200/type/schema; wildcards by discovery)",
+   "result": "GREEN",
+   "evidence": "[release-manifest] OK — G4 22 endpoints declared on 3 surfaces, 31 representatives local-resolved and schema-valid"
+  }
+ ],
+ "gate15_requirement": {
+  "status": "REMOVED_BY_OWNER",
+  "decision_utc": "2026-09-16",
+  "record": "v8/policy/gate15_release_requirement.json",
+  "record_sha256": "45d23007e958ac968d6d2f5939a69b27b706766ded6b01a4915696b4bb6054fd",
+  "meaning": "not a pass; no study run; human benefit PENDING"
+ },
+ "tripwire_pre_publish": "GREEN",
+ "remaining_blockers": [],
+ "policy_correspondence": [
+  "no release-policy record"
+ ],
+ "release_authorized": false,
+ "publishing_permitted": false,
+ "manifest_sha256": "12482336896741306dd23f5d4b37228669c00b7970dbca4334fc6580d971db01",
+ "public_notes_sha256": "da19798c9ac9d4a0b66ff1ff7148f465200e20fabc7bb7f75fc0da854999d26a",
+ "public_notes_never_say_gate15_passed": true,
+ "session_measured_inputs": {
+  "gate6": "carried unchanged from the V8-006 correction (three NO-WRITE replays under the manifest-pinned historical calendar reproduce 0b2ac8a5…); calendar research not reopened; the optional A1.2 note not applied",
+  "restage": "re-measured on the candidate (restage_measurement.json)",
+  "tripwire": "observed read-only (tripwire_observations.json)"
+ },
+ "reading": [
+  "19 GREEN / 0 RED / 1 REMOVED_BY_OWNER: no technical gate is red on the candidate",
+  "Gate 15 is REMOVED_BY_OWNER — a removed requirement, never a passed study; human benefit PENDING",
+  "policy_correspondence = ['no release-policy record'] is the honest state until the owner accepts D1 and the policy stage records it; the publisher refuses authorization on it",
+  "gate 14 is GREEN with the weekly note rendered at 2026-09-18T14:31:43Z; LIVE_RECHECK: a later evidence-store change turns it RED until the note is rendered again (a new source identity)",
+  "the generator must be re-run at the frozen commit with --release-policy before any authorization"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

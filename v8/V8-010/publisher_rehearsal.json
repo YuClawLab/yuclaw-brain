@@ -1,0 +1,176 @@
+{
+ "record": "v8-publisher-focused-rehearsal/1",
+ "order": "V8-010 §6",
+ "publisher": "internal/release_v8_0_0/publish_v800.py (private, outside the tree)",
+ "publisher_identity": {
+  "before_V8_010": "a71782d8cd2d828cee71062a03fda06d89d00b5c0f8d95f351b48542ef5c160a",
+  "after_V8_010": "5649f289306237eb3a222542af6fac4896240a355bb68a5736f4337cfb9ab829",
+  "no_authorization_was_bound_to_the_old_identity": true
+ },
+ "publisher_defects_found_by_this_rehearsal_and_fixed": [
+  {
+   "defect": "gh-release checked the 8.0.0 notes with the 7.x composer (v3/release/notes_v7), which can never accept the v8 policy record (\"policy record has no Gate #15 route\")",
+   "consequence_if_unfixed": "a real 8.0.0 release would have STOPPED at gh-release AFTER push-main, push-tag and the PyPI upload",
+   "why_latent": "the unit tests stubbed the module and the full rehearsal was not re-run after the V8-009 rule change",
+   "fix": "notes_correspondence() dispatches on the release version and loads the composer from the authorized build worktree; notes_ready() also runs before the FIRST public write (push-main); new unit test"
+  },
+  {
+   "defect": "the worktree stage raised KeyError when no authorization existed",
+   "fix": "typed, journalled STOP (release_authorized != true)"
+  }
+ ],
+ "publisher_tests": "test_publish_v800.py 16 + test_download_proof_journal_v800.py 7 = 23 passed",
+ "focused_rehearsal": {
+  "refusals": {
+   "adopt_without_policy_or_authorization": "STOP: adopt: release_authorized != true",
+   "the_actual_PROPOSED_D1_document": "STOP: allocation file does not record an accepted allocation (D1-ACCEPT / D1-AMEND)",
+   "gate15_route_A": "STOP: Gate #15 route 'A' is not applicable to 8.0.0: the owner removed the study requirement for v8 releases (NOT_REQUIRED); no study, route A/B or exception statement is recorded",
+   "gate15_route_B": "STOP: Gate #15 route 'B' is not applicable to 8.0.0: the owner removed the study requirement for v8 releases (NOT_REQUIRED); no study, route A/B or exception statement is recorded",
+   "stale_manifest_gate15_MANUAL_REVIEW": "STOP: release policy not recorded/consistent before authorization: gate 15 result 'MANUAL_REVIEW': a v8 release-state manifest must report REMOVED_BY_OWNER (regenerate with the owner's decision record present); MANUAL_REVIEW/GREEN are not a",
+   "notes_not_corresponding": "STOP: public notes do not correspond to the policy record: ['no release-policy record']",
+   "a_sentence_that_is_not_the_authorization": "STOP: authorization wording does not match the required sentence verbatim",
+   "authorization_for_another_commit": "STOP: authorization sha/tree 000000000000/3349b0643fe3 != frozen HEAD 93274e7d7cb9/3349b0643fe3",
+   "stages_without_authorization": [
+    "STOP: worktree: release_authorized != true",
+    "STOP: tag: release_authorized != true",
+    "STOP: push-main: release_authorized != true",
+    "STOP: upload-pypi: release_authorized != true",
+    "STOP: gh-release: release_authorized != true"
+   ],
+   "pair_bound_to_another_commit": "STOP: adopt: identity record binds 111111111111/3349b0643fe3, not the authorized 93274e7d7cb9/3349b0643fe3 — refused",
+   "pair_with_changed_bytes": "STOP: adopt: yuclaw-8.0.0-py3-none-any.whl bytes differ from the identity record (sha256 c80c4bb7f967… / 867865 B vs 319ce0b55a44… / 867864 B) — refused",
+   "a_superseded_pair_from_this_order": "STOP: adopt: identity record binds 51f9c9ae2e1d/96ab1bd5961e, not the authorized 93274e7d7cb9/3349b0643fe3 — refused",
+   "public_write_before_verification_completes": "STOP: tag: verification-completion record missing — build verification did not complete",
+   "second_adoption_or_rebuild": [
+    "STOP: artifacts already exist — one final artifact set; never re-adopt or rebuild-to-repair (use verify-retry for verifi",
+    "STOP: artifacts already exist — BUILD ONCE; never rebuild-to-repair (use verify-retry for verification)"
+   ]
+  },
+  "policy_record": {
+   "gate15": "NOT_REQUIRED / REMOVED_BY_OWNER",
+   "decision_record_sha256": "45d23007e958ac968d6d2f5939a69b27b706766ded6b01a4915696b4bb6054fd",
+   "allocation_document": "SYNTHETIC-REHEARSAL-ALLOC (not an owner decision)"
+  },
+  "notes": {
+   "composer": "tools/yuclaw_release_notes_v8.py in the clone",
+   "correspond_to_synthetic_policy": true,
+   "scorecards_read": "v8/V8-005",
+   "journey_evidence_names_candidate": [
+    "d70edd02062c"
+   ],
+   "observation": "the clone is detached at the candidate SOURCE commit, whose tree does not yet hold the V8-010 scorecards (they are in the later evidence-only record commit), so the notes composed here name the candidate of the newest scorecards in that tree; the notes never present earlier evidence under the current candidate's name. At the record HEAD the composer reads v8/V8-010 and names 93274e7d7cb9 (gates.json)",
+   "proposed_or_missing_policy_never_corresponds": [
+    "no release-policy record"
+   ]
+  },
+  "interruption_during_verification": "STOP: REHEARSAL: simulated interruption while verifying the sdist",
+  "adoption": {
+   "adopted_pair": {
+    "wheel_sha256": "319ce0b55a4460001a9acdf4110521671185f6d17d95dd7baf03036a67ad5117",
+    "wheel_size": 867864,
+    "sdist_sha256": "3290240cb5080f44ca49f5d96c4cfa936544a444802d6652079ffda98a812274",
+    "sdist_size": 5008566
+   },
+   "bound_to": {
+    "commit": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce",
+    "tree": "3349b0643fe3c5c8e84c3d7424f10bb9d41807db"
+   },
+   "identity_label": "PRELIMINARY development build",
+   "verification_attempts": [
+    "PASS",
+    "STOP",
+    "PASS",
+    "PASS",
+    "WRITTEN"
+   ],
+   "verification": "installed-journey evidence REUSED from the V8-010 clean-install record of the same bytes; the publisher's real install/journey block was not re-run in this focused rehearsal",
+   "reused_calls": [
+    "wheel",
+    "sdist",
+    "wheel",
+    "sdist"
+   ]
+  },
+  "interruption_during_upload": "STOP: simulated interruption after the first file",
+  "resume": {
+   "uploaded_before_interruption": [
+    "yuclaw-8.0.0-py3-none-any.whl"
+   ],
+   "after_resume": [
+    "yuclaw-8.0.0-py3-none-any.whl",
+    "yuclaw-8.0.0.tar.gz"
+   ],
+   "release_assets": [
+    "yuclaw-8.0.0-py3-none-any.whl",
+    "yuclaw-8.0.0.tar.gz"
+   ],
+   "destinations": "in-memory fakes and a bare local origin inside the disposable tree"
+  },
+  "operation_identifiers_on_every_journal_line": true,
+  "journal_lines": 58,
+  "prior_releases": [
+   "6.0.0",
+   "6.0.1",
+   "7.0.0",
+   "7.0.1"
+  ],
+  "kind": "FOCUSED REHEARSAL — disposable HOME; synthetic allocation and authorization records that exist only there; fake PyPI/GitHub/Pages; nothing retained, nothing published, no synthetic decision in the candidate records",
+  "candidate_source": {
+   "commit": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce",
+   "tree": "3349b0643fe3c5c8e84c3d7424f10bb9d41807db"
+  },
+  "publisher_identity": "5649f289306237eb3a222542af6fac4896240a355bb68a5736f4337cfb9ab829",
+  "utc": "2026-09-18T14:59:43+00:00"
+ },
+ "real_verification_block_once": {
+  "kind": "REAL publisher verification block on the adopted candidate pair (disposable tree; synthetic policy/authorization; nothing public)",
+  "candidate_source": {
+   "commit": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce",
+   "tree": "3349b0643fe3c5c8e84c3d7424f10bb9d41807db"
+  },
+  "wheel_sha256": "319ce0b55a4460001a9acdf4110521671185f6d17d95dd7baf03036a67ad5117",
+  "sdist_sha256": "3290240cb5080f44ca49f5d96c4cfa936544a444802d6652079ffda98a812274",
+  "publisher_identity": "5649f289306237eb3a222542af6fac4896240a355bb68a5736f4337cfb9ab829",
+  "checks_passed": [
+   "wheel:install",
+   "wheel:version",
+   "wheel:abuse-matrix",
+   "wheel:check-claim-smoke",
+   "wheel:d3-matrix",
+   "wheel:transcript-exact",
+   "wheel:v7-journeys",
+   "wheel:v8-workbench",
+   "sdist:install",
+   "sdist:version",
+   "sdist:abuse-matrix",
+   "sdist:check-claim-smoke",
+   "sdist:d3-matrix",
+   "sdist:transcript-exact",
+   "sdist:v7-journeys",
+   "sdist:v8-workbench"
+  ],
+  "attempt": 1,
+  "utc": "2026-09-18T15:01:59+00:00",
+  "wheel": {
+   "transcript_exact": true,
+   "v7_journeys_ok": true,
+   "v8_workbench": {
+    "ok": true,
+    "score": "7/7",
+    "candidate": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce"
+   }
+  },
+  "sdist": {
+   "transcript_exact": true,
+   "v7_journeys_ok": true,
+   "v8_workbench": {
+    "ok": true,
+    "score": "7/7",
+    "candidate": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce"
+   }
+  }
+ },
+ "full_rehearsal_note": "test_publish_v800_rehearsal.py was not run: it applies a rehearsal-only 7.0.1→8.0.0 bump to a clone and the branch is now at 8.0.0; this focused rehearsal on the actual candidate replaces it for V8-010",
+ "synthetic_records": "the allocation acceptance and the authorization sentence existed only inside the disposable tree and were deleted with it; the actual D1 document stays PROPOSED (the rehearsal confirms the policy stage refuses it as it is)",
+ "not_advice": "Research and education only. Not investment advice."
+}

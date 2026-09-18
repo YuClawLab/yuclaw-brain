@@ -1,0 +1,210 @@
+{
+ "record": "v8-capability-status-matrix/1",
+ "order": "V8-010",
+ "candidate": {
+  "commit": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce",
+  "tree": "3349b0643fe3c5c8e84c3d7424f10bb9d41807db"
+ },
+ "states_kept_apart": [
+  "implemented locally",
+  "integrated",
+  "independently evaluated",
+  "pilot-enabled",
+  "publicly released"
+ ],
+ "enabled": [
+  {
+   "capability": "1 Source — exact passage, availability/observation/action times, as-of view, inert rendering",
+   "where": "/source",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "scorecard_fixtures step 1; scorecard_mchp step 1"
+  },
+  {
+   "capability": "Bounded source ingestion (allow-listed https, bounded body, originals kept, replay-safe) and ingestion-record registration in the browser",
+   "where": "python -m v8.workbench.ingest; /source → Register from an ingestion record",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "tests/test_v8_workbench_boundaries.py; usability feature; scorecard_mchp step 1"
+  },
+  {
+   "capability": "2 Typed claim — mandatory comparability fields, one-way freeze, append-only amendments",
+   "where": "/claim/new; /claim/<id>#claim",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 2"
+  },
+  {
+   "capability": "3 Comparison — original vs revised, INCOMPARABLE with reasons",
+   "where": "/claim/<id>#comparison",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 3"
+  },
+  {
+   "capability": "4 Calculation — exact per-range results with inputs, formula, rule, tolerance, missing inputs",
+   "where": "/claim/<id>#calculation",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 4 (112 vs 110–120 and 105–115: two separate IN_RANGE results; no accuracy-improvement inference)"
+  },
+  {
+   "capability": "5 History — as-of replay; later knowledge never shown as known earlier",
+   "where": "/claim/<id>#history",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 5; tests/test_v8_time_boundaries.py"
+  },
+  {
+   "capability": "6 Adjudication — reviewer label, rule, evidence, conflicts; disputed labels visible; corrections retained",
+   "where": "/claim/<id>#adjudication",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 6 (simulated adjudications only)"
+  },
+  {
+   "capability": "7 Reproducible export and fresh-workspace verification (browser and command line)",
+   "where": "/claim/<id>#export; /verify; python -m v8.workbench verify-export",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "step 7"
+  },
+  {
+   "capability": "Research notes with correction chains",
+   "where": "/claim/<id>#notes; /notes",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "feature research_notes"
+  },
+  {
+   "capability": "Narrow dataset coverage, deterministic snapshots, verifiable snapshot export, data dictionary and dataset card",
+   "where": "/dataset; /dataset.json; /help/data",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "feature dataset"
+  },
+  {
+   "capability": "Scientific report/replay through the packaged kernel with explicit refusals; recomputed in a fresh workspace",
+   "where": "/sci; /sci/S<n>",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "feature sci"
+  },
+  {
+   "capability": "Operator usability — retained entries after a refusal, labelled fields, readable tables at phone width, visible focus, in-app Help and packaged operator guide, browser recovery of an interrupted write",
+   "where": "every page; /help; python -m v8.workbench guide | recover",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "feature usability; ui_inspection.json (automated inspection only)"
+  },
+  {
+   "capability": "Application-code rollback to 7.0.1 without touching workspaces",
+   "where": "pip install yuclaw==7.0.1",
+   "implemented_locally": "YES",
+   "integrated": "YES — candidate 93274e7d, installed wheel and sdist",
+   "independently_evaluated": "NO — no independent reviewer, no human review",
+   "pilot_enabled": "NO — the real-user pilot is deferred; human benefit PENDING",
+   "publicly_released": "NO — candidate only; release_authorized=false",
+   "evidence": "rollback_rehearsal.json"
+  }
+ ],
+ "experimental_absent": [
+  {
+   "capability": "COM",
+   "status": "ABSENT from the distribution; experimental, default-off; no benefit claimed"
+  },
+  {
+   "capability": "PRC",
+   "status": "ABSENT from the distribution; experimental, default-off; no benefit claimed"
+  },
+  {
+   "capability": "SHD",
+   "status": "ABSENT from the distribution; experimental, default-off; no benefit claimed"
+  },
+  {
+   "capability": "EVO",
+   "status": "ABSENT from the distribution; experimental, default-off; no benefit claimed"
+  }
+ ],
+ "deferred": [
+  {
+   "capability": "CTL",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "RES",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "RND",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "full RIV",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "full ACT",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "real-user pilot (VAL)",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "multi-tenancy",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "managed accounts",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  },
+  {
+   "capability": "billing",
+   "status": "DEFERRED beyond 8.0.0; no endpoint, tab or promised benefit"
+  }
+ ],
+ "canceled_by_owner": [
+  {
+   "capability": "backup creation, scheduling, restoration, restore drills",
+   "status": "CANCELED; existing data preserved; disclosure: Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery."
+  }
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}
