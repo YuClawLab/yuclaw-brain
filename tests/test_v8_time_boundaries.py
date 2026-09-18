@@ -46,6 +46,10 @@ class TestTimeBoundaries(unittest.TestCase):
         self.assertEqual(before["versions"][0]["claim"]["range"]["low"], 110000000)                       # later knowledge never rewrites the original
         ev = before["events"][0]["time"]; self.assertEqual(ev["observed_at"][:19], late[:19]); self.assertEqual(ev["source_available_as_of"], rec["claim"]["source"]["available_as_of"])
         row = dataset.build_snapshot(self.ws)["rows"][0]; self.assertTrue(row["status"]["retrospective"]); self.assertIn("observed", row["status"]["retrospective_reason"])
+        # the export of the backdated history verifies and recomputes; the three times travel apart inside it
+        from v8.workbench import export
+        x = export.build_export(self.ws, self.cid, op_id="op:export-0001"); v = export.verify_export(x["zip_path"])
+        self.assertEqual(v["result"], "SUCCESS"); self.assertEqual(v["recompute"]["result"], "IN_RANGE"); self.assertEqual(v["canonical_digest"], x["canonical_digest"])
 
     def test_the_same_refusals_over_http(self):
         srv = S.WorkbenchServer(self.ws.root.parent / "http", 0); threading.Thread(target=srv.serve_forever, daemon=True).start(); S.Handler.log_message = lambda *a, **k: None

@@ -90,8 +90,12 @@ amendment, a wrong note is a correcting note. A missing outcome stays `PENDING_O
 Freezing is one-way and the log is append-only.
 
 Timestamps you cannot establish: leave nothing to be guessed. A source whose availability time is unknown cannot be
-registered as available; if a recorded availability later proves wrong, record a CORRECTED_SOURCE amendment citing the
-corrected passage — what the workspace previously recorded as known, and when it recorded it, stays in the history.
+registered as available. If a claim cited the wrong passage, register the right one and record a CORRECTED_SOURCE
+amendment that cites it — what the workspace previously recorded as known, and when it recorded it, stays in the history.
+Known limit: the availability time of an already-registered passage cannot be corrected in 8.0.0 (a registered source is
+never edited and the same passage is never registered twice). Record the error and the correct time in a research note
+on each claim that cites it; as-of views keep using the recorded time, so check the time against the original document
+before you register.
 
 ## 5. An interrupted write
 

@@ -48,7 +48,10 @@ available. An as-of view at cutoff T shows an event only if its source was avail
 reconstruction from availability times, and is labelled RETROSPECTIVE when every source was first observed after the
 latest one became public. All times are UTC (`YYYY-MM-DDTHH:MM:SSZ`); an input with another offset is refused rather
 than converted. A registered source is never edited: the same passage registered again is the same source (its first
-observation stands), and a differing record under the same identity is refused.
+observation stands), and a differing record under the same identity is refused. Consequence and known limit: a wrong
+availability time on an already-registered passage has no in-place correction in 8.0.0; the error is recorded in a
+research note and as-of views keep using the recorded time. A claim that cited the wrong passage is corrected by a
+CORRECTED_SOURCE amendment citing a separately registered source; the earlier version stays in the history.
 
 ## Source
 
