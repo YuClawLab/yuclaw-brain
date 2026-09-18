@@ -1,0 +1,32 @@
+{
+ "record": "yuclaw-v8-python-floor-check/1",
+ "requires_python": ">=3.10",
+ "wheel_sha256": "319ce0b55a4460001a9acdf4110521671185f6d17d95dd7baf03036a67ad5117",
+ "install": "pip --no-deps into a fresh Python 3.10 virtual environment outside the checkout, no PYTHONPATH",
+ "python": "3.10.21",
+ "module": "<record>/python_floor/venv/lib/python3.10/site-packages/v8/workbench",
+ "every_workbench_module_compiles": true,
+ "export_verifies": "SUCCESS",
+ "recompute": {
+  "result": "IN_RANGE",
+  "original": "IN_RANGE",
+  "revised": "IN_RANGE"
+ },
+ "sci_example_status": "EXPLORATORY_REPLAY",
+ "dataset_rows": 1,
+ "pages_all_200": true,
+ "pages": {
+  "/": 200,
+  "/source": 200,
+  "/claim/new": 200,
+  "/claim/ZZFX-FY2026-REV-GUIDE": 200,
+  "/notes": 200,
+  "/dataset": 200,
+  "/sci": 200,
+  "/verify": 200,
+  "/journal": 200,
+  "/help": 200,
+  "/help/data": 200
+ },
+ "note": "the full clean-install verification (dependencies resolved, browser journeys) ran on Python 3.12.3; this check exercises the workbench on the declared floor"
+}

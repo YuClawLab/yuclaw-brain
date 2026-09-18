@@ -1,0 +1,44 @@
+{
+ "record": "v8-version-surfaces-applied/1",
+ "order": "V8-010 §4",
+ "applied_on": "codex/v8-integration (authorized locally by the order; not publication, not a final designation)",
+ "tool": "v8/V8-010/apply_version_surfaces_8.0.0.py (re-derives the reviewed substitutions on the current tree; no cherry-pick of an old staging commit; allow-list enforced; symlinks refused; no commit by the tool)",
+ "commit": "232b561b14f34c15f327fb4856fe767666722edf",
+ "changes": {
+  "pyproject.toml": 1,
+  "release_manifest.json": 3,
+  "docs/capabilities.json": 1,
+  "docs/evidence_index.json": 1,
+  "docs/llms.txt": 1,
+  "CITATION.cff": 1,
+  "README.md": 3,
+  "CHANGELOG.md": 1,
+  "badge pages": "98 pages, 98 badges",
+  "README transcript": "yuclaw-8.0.0-py3-none-any.whl",
+  "docs/preview (staged renderer)": "regenerated"
+ },
+ "touched_count": 108,
+ "outside_allow_list": [],
+ "comparison_with_the_reviewed_patch": {
+  "reviewed_patch": "V8-006/V8-008 candidate_8.0.0_version_surfaces.patch (108 files; staged commit 3d43089e)",
+  "same_path_set": true,
+  "paths": 108,
+  "content_differs_from_3d43089e_in": [
+   "CHANGELOG.md",
+   "pyproject.toml"
+  ],
+  "why": {
+   "CHANGELOG.md": "a real 8.0.0 entry for the actual scope (v8/V8-010/changelog_entry_8.0.0.md; language rail OK) instead of a pointer to a draft",
+   "pyproject.toml": "the v8/policy packaging exclusion committed in 1acacb00"
+  }
+ },
+ "checks_after_apply": [
+  "check_release_manifest.py --only g2: OK — G2 version 8.0.0 on 9 surfaces + 98 badge pages",
+  "check_header_layout.py: OK — 98 pages, badge v8.0.0 == package version",
+  "check_no_forms.py: OK — 323 html files",
+  "check_leak_sweep.py: OK"
+ ],
+ "approved_logo_bytes": "unchanged (brand/ untouched; no asset published)",
+ "baseline_preserved": "the v7.0.1 baseline and releases 6.0.0, 6.0.1, 7.0.0, 7.0.1 are untouched (tripwire_observations.json)",
+ "not_advice": "Research and education only. Not investment advice."
+}

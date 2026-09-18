@@ -1,0 +1,249 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-010 (selected product scope and release candidate) — real-source retrospective replay (Microchip; NOT ELIGIBLE under the original corpus criteria) with the ingestion-record replay, eligibility note, dataset row and retrospective scientific link",
+ "mode": "mchp",
+ "recorded_utc": "2026-09-18T14:49:23+00:00",
+ "candidate": {
+  "commit": "93274e7d7cb9e4c38583e976e94f7fe4874e39ce",
+  "tree": "3349b0643fe3c5c8e84c3d7424f10bb9d41807db",
+  "version": "8.0.0",
+  "branch": "codex/v8-integration",
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "319ce0b55a4460001a9acdf4110521671185f6d17d95dd7baf03036a67ad5117"
+  },
+  "artifact_label": "CANDIDATE / PRE-RELEASE-REVIEW ARTIFACTS — built once from the candidate source commit for owner review; NOT a final release set: release_authorized=false; the authorized publisher later adopts an appropriately bound verified pair or performs its documented single build",
+  "runtime": "INSTALLED wheel in a fresh virtual environment outside the checkout (no editable install, no PYTHONPATH); the same journey also ran from the installed sdist: 7/7 + research_notes DEMONSTRATED, dataset DEMONSTRATED, sci DEMONSTRATED, usability NOT_RUN"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:38295",
+  "B_fresh_workspace": "http://127.0.0.1:36971",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_mchp_sources.png",
+     "sha256": "da1eea973c7accb609b050e1890d2f7eac8a8c6426fde4eee19486c3409a0a45",
+     "url": "http://127.0.0.1:38295/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "02_step2_mchp_claim_frozen.png",
+     "sha256": "753a24e1252040b79e71631474e266d0bd063dd1eb7397fa854e140b92e8cba0",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "03_step3_mchp_comparison_discrepancy.png",
+     "sha256": "b6c85b27ddfb41faf118fa9415e7d3c0ceaa4c433e3105e62da0a6a7111a8997",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step4_mchp_calculation.png",
+     "sha256": "7a7cfd499dbf78d816d83f533cb6b8324979ff1a5a391ac34b78379e00b97db4",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE#calculation"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "05_step5_mchp_asof_may20.png",
+     "sha256": "a0218a7b65e45c44c7977502ac1ff83f19e99cc39bc713726d0eb46067f4bf73",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE?as_of=2025-05-20T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step6_mchp_adjudicated.png",
+     "sha256": "dca5788f6b1eb459fe06b1152b92d3eaa92d8f0cfc2972ea4c1f23f9bcfb6d65",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE#adjudication"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "07_step7_mchp_export_built.png",
+     "sha256": "3975ee5ad1b2faae84312c7f0af4009c55763f1881c56ee2c47ff2589dfd35a0",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE?built=exp-be1b57f8c806b14d#export"
+    },
+    {
+     "file": "08_step7_mchp_verified_fresh.png",
+     "sha256": "b2a79d3d53943d0d7a2349a3f7048fbe75b785ba4d275554c51009f00e04d3b0",
+     "url": "http://127.0.0.1:36971/verify"
+    }
+   ]
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "09_research_notes_mchp_notes.png",
+     "sha256": "87930e48d63a1682429f55ea9017406af3b584bf00badc4e531967ebc91a0ae4",
+     "url": "http://127.0.0.1:38295/claim/MCHP-Q1FY2026-NETSALES-GUIDE#notes"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "10_dataset_mchp_dataset_row.png",
+     "sha256": "b3b07e72e1c6a681181c6eeb7384441a99732349fa7a6d6903cdcae18d071f3d",
+     "url": "http://127.0.0.1:38295/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "11_sci_mchp_sci_retrospective_link.png",
+     "sha256": "5188b172e278bd0d7f9a1bd2145be3e9c6620edf8c7ef03956741551d985767d",
+     "url": "http://127.0.0.1:38295/sci/S1"
+    }
+   ]
+  },
+  "usability": {
+   "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+   "status": "NOT_RUN",
+   "positive_assertions": 0,
+   "negative_assertions": 0,
+   "failed": [],
+   "screenshots": []
+  }
+ },
+ "post_statuses": {
+  "303": 12,
+  "422": 2,
+  "200": 2
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-010/journey_mchp/journey_log.json (paths scrubbed)",
+  "journey_log_sha256_private": "4435abd99e870cf6bb682a793b693c16e7c330cd957acb747cd18a505678be03",
+  "screenshots": "private record; named with sha256 in the scorecard"
+ },
+ "earlier_records_preserved": "V8-002 … V8-005 scorecards keep their original candidate identities (a41dc39e … d70edd02); this scorecard does not replace them",
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice.",
+ "sources": {
+  "original": {
+   "accession": "0000827054-25-000061",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000061/exhibit991q4fy25.htm",
+   "available_as_of": "2025-05-08T20:17:05Z",
+   "source_hash": "d7e97b2b48c5403830d6f236d2c8f0f51aa57503296c733425de2635ccb3ec17",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "2721209b4a130b169bdff0c150bd06e6ece4dce4dcc900f1580b3423a2c4522c",
+   "retrieved_at": "2026-09-15T10:27:12Z"
+  },
+  "revision": {
+   "accession": "IR:ir.microchip.com:1315",
+   "url": "https://ir.microchip.com/news-events/press-releases/detail/1315/microchip-technology-raises-financial-guidance-for-sales-and-eps-for-first-quarter-of-fiscal-year-2026",
+   "available_as_of": "2025-05-30T03:59:59Z",
+   "source_hash": "a584cfdd883abee660dad362ca1731f55311a465d9bb0cd9e3ce51b902730bf3",
+   "rights": "COMPANY_PRESS_RELEASE",
+   "original_bytes_sha256": "6d7e3abc46fa141c60a8ae520be215cb242c777de76abe5223937d98bd0d3fed",
+   "retrieved_at": "2026-09-15T10:28:25Z"
+  },
+  "actual": {
+   "accession": "0000827054-25-000132",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000132/exhibit991q1fy26.htm",
+   "available_as_of": "2025-08-07T20:20:13Z",
+   "source_hash": "55b697c56b1c9536b54296f0462cdfad0469f8d67119c594712c289b6c8958e2",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "d29d76af9a0a8cd73ee47992599759f961b98aa16c58d1c385b5244b9ec56fbc",
+   "retrieved_at": "2026-09-15T10:29:11Z"
+  }
+ },
+ "replay_label": "RETROSPECTIVE: sources observed on the ingestion date, after the outcome was public; as-of views are reconstructions from availability timestamps",
+ "limitations": [
+  "RETROSPECTIVE replay: every source was first observed on the ingestion date (2026-09-15), after the outcome was public; as-of views are reconstructions",
+  "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA (recorded in the workspace as an attribution-labelled, simulated-test note citing v8/V8-003/real_data_selection.json): a behaviour demonstration, not real-data quality and not a dataset product",
+  "the original source states 1.020 billion at the low end where the revision describes the prior range from 1.025 billion; the discrepancy is preserved verbatim and not corrected",
+  "the actual (1.0755 billion) is outside both recorded ranges: OUT_OF_RANGE / OUT_OF_RANGE, never presented as IN_RANGE",
+  "press-release excerpts are withheld from exports (COMPANY_PRESS_RELEASE rights); digests remain; publication eligibility NOT ELIGIBLE",
+  "existing acquired source records were reused (v8_003 ingestion records); no new retrieval, no larger corpus search",
+  "the usability feature is NOT_RUN in this mode by design (it is demonstrated in the fixtures journey); the scientific link is a retrospective label, never prospective evidence"
+ ]
+}

@@ -1,0 +1,55 @@
+{
+ "record": "v8-weekly-note-reconciliation/1",
+ "order": "V8-010 §4",
+ "where": "rendered and checked in the candidate's own checkout (codex/v8-integration) with the established renderer and checker; the evidence store was read with SELECT only; the production checkout, its note and the refresh chain were not touched",
+ "runs": {
+  "A_checker_on_the_previously_committed_note": {
+   "command": "python3 tools/check_weekly_note.py --require-contract v3",
+   "note_sha256": "4a2623e422c42604acce96d828c3488a3aa4d7ab5d06805f74e9a6f4639c65c6",
+   "output": [
+    "[note-gate] FAIL — note disagrees with the chain:",
+    "  · events: note 245+8=253 vs store 327+11=338",
+    "rc=1"
+   ]
+  },
+  "B_renderer": {
+   "command": "python3 tools/yuclaw_weekly_note.py",
+   "started_utc": "2026-09-18T14:31:43Z",
+   "output": [
+    "[weekly-note] wrote <checkout>/docs/weekly_note.html (2026-09-12 -> 2026-09-18; as_of 2026-09-18T14:31:43.617751Z; 0 filings, 0 runs; self-check OK)",
+    "rc=0"
+   ],
+   "rendered_note_sha256": "3c4069c87093d1682cda65a3006fe72ded226ccb2b19209ca51ec2a5b94e23d2",
+   "rendered_note_metadata": {
+    "yuclaw-note-contract": "v3",
+    "yuclaw-note-window": "2026-09-12/2026-09-18",
+    "yuclaw-note-as-of": "2026-09-18T14:31:43.617751Z",
+    "yuclaw-note-as-of-meaning": "generated-at"
+   }
+  },
+  "C_checker_on_the_rendered_note": {
+   "command": "python3 tools/check_weekly_note.py --require-contract v3",
+   "output": [
+    "[note-gate] reconciled: 242 events (236/6), 0 protocols, 0 runs, 0 supersessions for 2026-09-12..2026-09-18 (contract v3, generated at 2026-09-18T14:31:43.617751Z; live recheck)",
+    "rc=0"
+   ]
+  }
+ },
+ "input_identity": {
+  "renderer": "tools/yuclaw_weekly_note.py",
+  "checker": "tools/check_weekly_note.py",
+  "declared_inputs": [
+   "docs/evidence_changes/*.json of this checkout (committed archive through 2026-09-15)",
+   "registry/protocols.jsonl of this checkout",
+   "the evidence store, read-only, window acceptance count"
+  ],
+  "archive_lag": "the production archive also holds 2026-09-16 and 2026-09-17 (each 0 new filings); they are not on this branch, so the note reports 0 new filings across 2 archived days; event counts come from the live store and reconcile"
+ },
+ "production_note_untouched": {
+  "sha256_before": "b6ac48c57648580ac523c454f4f7a94425ad35e70bd53545c2a449c210896ae7",
+  "sha256_after": "b6ac48c57648580ac523c454f4f7a94425ad35e70bd53545c2a449c210896ae7"
+ },
+ "committed_in": "232b561b14f34c15f327fb4856fe767666722edf (with the version surfaces)",
+ "point_in_time": "LIVE_RECHECK semantics: as_of is the generation time and the recount is live; a later evidence-store change legitimately fails strict equality and requires a final refresh before the freeze",
+ "not_advice": "Research and education only. Not investment advice."
+}

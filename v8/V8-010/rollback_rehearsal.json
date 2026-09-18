@@ -1,0 +1,91 @@
+{
+ "record": "yuclaw-v8-rollback-rehearsal/1",
+ "recorded_utc": "2026-09-18T14:48:39Z",
+ "new_wheel": {
+  "name": "yuclaw-8.0.0-py3-none-any.whl",
+  "sha256": "319ce0b55a4460001a9acdf4110521671185f6d17d95dd7baf03036a67ad5117"
+ },
+ "old_wheel": {
+  "name": "yuclaw-7.0.1-py3-none-any.whl",
+  "sha256": "794dfc5c612b3369ba702258f49c7ff03661de971c6f15757979e28c8bd56afc"
+ },
+ "install_mode": "pip --no-deps, fresh virtual environment outside the checkout, no PYTHONPATH",
+ "steps": [
+  {
+   "step": "install the 8.0.0 candidate wheel",
+   "ok": true,
+   "observed": "8.0.0"
+  },
+  {
+   "step": "record a claim, a revision, an outcome and an export with the installed 8.0.0",
+   "ok": true,
+   "observed": {
+    "workspace_id": "ws-a4504fe45db4",
+    "events": 7,
+    "tip": "94626640d1fa2e6d3baead3c0dc138d9a428d63cc00fadfcbb814e0d3d348146",
+    "torn_tail": null,
+    "integrity": "OK",
+    "claims": [
+     "ZZFX-FY2026-REV-GUIDE"
+    ]
+   }
+  },
+  {
+   "step": "roll the package back to the published 7.0.1 wheel",
+   "ok": true,
+   "observed": "7.0.1"
+  },
+  {
+   "step": "7.0.1 has no workbench module: it cannot read or change a workspace",
+   "ok": true,
+   "observed": [
+    "ModuleNotFoundError: No module named 'v8'"
+   ]
+  },
+  {
+   "step": "the 7.0.1 packages import after the rollback (no leftover or missing 7.0.1 module)",
+   "ok": true,
+   "observed": "ok"
+  },
+  {
+   "step": "every workspace file is byte-identical after the rollback",
+   "ok": true,
+   "observed": "7 files"
+  },
+  {
+   "step": "install 8.0.0 again",
+   "ok": true,
+   "observed": "8.0.0"
+  },
+  {
+   "step": "the workspace opens unchanged: same chain tip, same event count, integrity OK",
+   "ok": true,
+   "observed": {
+    "workspace_id": "ws-a4504fe45db4",
+    "events": 7,
+    "tip": "94626640d1fa2e6d3baead3c0dc138d9a428d63cc00fadfcbb814e0d3d348146",
+    "torn_tail": null,
+    "integrity": "OK",
+    "claims": [
+     "ZZFX-FY2026-REV-GUIDE"
+    ]
+   }
+  },
+  {
+   "step": "the export built before the rollback verifies SUCCESS with the same canonical digest",
+   "ok": true,
+   "observed": {
+    "result": "SUCCESS",
+    "recompute": "IN_RANGE"
+   }
+  },
+  {
+   "step": "every workspace file is still byte-identical (status and offline verification write nothing)",
+   "ok": true,
+   "observed": "7 files"
+  }
+ ],
+ "is_not": "a backup, a restore drill or recovery of unwritten data",
+ "ok": true,
+ "rollback_instruction": "pip install yuclaw==7.0.1 (same environment); workspace directories are left as they are; pip install yuclaw==8.0.0 reads them again unchanged"
+}
