@@ -1,8 +1,8 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 127 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay RKLB --date D",
- "build_id": "why-2026-09-15T042601",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 128 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay RKLB --date D",
+ "build_id": "why-2026-09-18T230229",
  "components": {
-  "c1": -1.0,
+  "c1": -0.9215,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -10,7 +10,7 @@
   "c6": -0.46211717,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": -0.2
  },
  "corrections": [
   {
@@ -40,16 +40,26 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "ecs": 80,
-  "events_90d": 87,
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "ecs": 85,
+  "events_90d": 88,
   "metric_id": "ecs",
-  "recency_days": 10.3,
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "recency_days": 3.7,
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001753926-26-001769",
+   "available_as_of": "2026-09-15T00:44:20-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "Item 7.01. Regulation FD Disclosure. On Septembe",
+   "filing_date": "2026-09-15",
+   "protocol_id": null,
+   "source_hash": "e20d6aa0e077bb0fc62e5c2a5b88c8dd437696e1859e0aef62b6befc9fd65d78",
+   "ticker": "RKLB"
+  },
   {
    "accession_number": "0002001011-26-000136",
    "available_as_of": "2026-09-04T16:14:34.649862-06:00",
@@ -1039,38 +1049,44 @@
    "protocol_id": null,
    "source_hash": "9f82a6ba4e30d547fb5ea1be0f85fe29c5fc7e237e70ddde7cce055115b41d6b",
    "ticker": "RKLB"
-  },
-  {
-   "accession_number": "0002001011-26-000022",
-   "available_as_of": "2026-03-04T19:25:38-07:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Spice Adam C. S 6929 shares @ $70.62 on 2026-03-02 ($489,305)",
-   "filing_date": "2026-03-04",
-   "protocol_id": null,
-   "source_hash": "914610d8770be7a0b9dc3e18b8c7a398f36329675e0b0044bb7f15cfcff52445",
-   "ticker": "RKLB"
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-14T22:26:02.363481-06:00",
+  "corpus_end": "2026-09-18T17:02:30.141329-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-04T16:14:34.649862-06:00",
+  "newest_returned_available_as_of": "2026-09-15T00:44:20-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-03-04T19:25:38-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "returned": 100,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for RKLB in the declared corpus",
-  "total_available": 127
+  "total_available": 128
  },
- "generated": "2026-09-15T04:26:01.741086+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/RKLB.history.json",
  "label": "NEGATIVE_EVENT",
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "NEGATIVE_EVENT"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "NEGATIVE_EVENT"
+  },
   {
    "date": "2026-09-14",
    "label": "NEGATIVE_EVENT"
@@ -1174,22 +1190,6 @@
   {
    "date": "2026-08-10",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-04",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -1297,7 +1297,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.2196,
+ "score": -0.2236,
  "threshold_band": {
   "ceiling": -0.2,
   "floor": -0.4

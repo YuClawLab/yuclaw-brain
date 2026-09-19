@@ -1,25 +1,25 @@
 {
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 9 of 9 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay BAC --date D",
- "build_id": "why-2026-09-15T042601",
+ "build_id": "why-2026-09-18T230229",
  "components": {
-  "c1": -0.412,
+  "c1": -0.506,
   "c2": 0.0,
-  "c3": -0.008739137,
+  "c3": 0.22832032,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": 0.123449445,
+  "c7": 0.30051774,
   "c8": 0.0,
   "c9": 0.5
  },
  "corrections": [],
  "evidence_coverage": {
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "ecs": 52,
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "ecs": 51,
   "events_90d": 2,
   "metric_id": "ecs",
-  "recency_days": 33.4,
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "recency_days": 37.2,
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -116,10 +116,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-14T22:26:01.853440-06:00",
+  "corpus_end": "2026-09-18T17:02:29.653641-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-08-12T11:42:10.880611-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -130,11 +130,27 @@
   "scope": "accepted evidence objects for BAC in the declared corpus",
   "total_available": 9
  },
- "generated": "2026-09-15T04:26:01.741086+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/BAC.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-14",
    "label": "WATCH"
@@ -237,22 +253,6 @@
   },
   {
    "date": "2026-08-10",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-04",
    "label": "NEUTRAL"
   }
  ],
@@ -362,10 +362,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1892,
+ "score": 0.2448,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "BAC",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

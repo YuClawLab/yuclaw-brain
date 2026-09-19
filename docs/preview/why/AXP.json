@@ -1,29 +1,39 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 16 of 16 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",
- "build_id": "why-2026-09-15T042601",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 17 of 17 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AXP --date D",
+ "build_id": "why-2026-09-18T230229",
  "components": {
-  "c1": -0.237,
+  "c1": -0.398,
   "c2": 0.0,
-  "c3": -0.008739137,
+  "c3": 0.22832032,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.04473892,
-  "c7": 0.14302114,
+  "c6": 0.0,
+  "c7": 0.31304553,
   "c8": 0.0,
   "c9": 0.4
  },
  "corrections": [],
  "evidence_coverage": {
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "ecs": 73,
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "ecs": 85,
   "events_90d": 9,
   "metric_id": "ecs",
-  "recency_days": 26.3,
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "recency_days": 3.6,
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000004962-26-000353",
+   "available_as_of": "2026-09-15T01:35:25-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Shares (par value $0.20 per Share) AXP New York Stock Exchange",
+   "filing_date": "2026-09-15",
+   "protocol_id": null,
+   "source_hash": "36ff4a4a86b155253d007c55134aec0df8cf1071f431d0a485033042606e8b67",
+   "ticker": "AXP"
+  },
   {
    "accession_number": "0000004962-26-000348",
    "available_as_of": "2026-08-19T14:08:23.130963-06:00",
@@ -186,25 +196,41 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-14T22:26:01.840220-06:00",
+  "corpus_end": "2026-09-18T17:02:29.641353-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-08-19T14:08:23.130963-06:00",
+  "newest_returned_available_as_of": "2026-09-15T01:35:25-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-02-20T14:05:01-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 16,
+  "returned": 17,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AXP in the declared corpus",
-  "total_available": 16
+  "total_available": 17
  },
- "generated": "2026-09-15T04:26:01.741086+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/AXP.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-14",
    "label": "WATCH"
@@ -308,22 +334,6 @@
   {
    "date": "2026-08-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-04",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -360,7 +370,7 @@
     "insider_form4": "MEDIUM",
     "macro_series": "NOT_APPLICABLE",
     "pricing": "MEDIUM",
-    "sec_primary": "MEDIUM"
+    "sec_primary": "HIGH"
    }
   },
   "forward_maturity": {
@@ -431,10 +441,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1908,
+ "score": 0.2451,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "AXP",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

@@ -1,14 +1,14 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 6 of 6 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PEP --date D",
- "build_id": "why-2026-09-15T042601",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 7 of 7 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PEP --date D",
+ "build_id": "why-2026-09-18T230229",
  "components": {
-  "c1": -0.085,
+  "c1": -0.3705,
   "c2": 0.0,
-  "c3": 0.57633233,
+  "c3": -0.30647913,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.03941803,
+  "c7": 0.1577356,
   "c8": 0.0,
   "c9": -0.2
  },
@@ -37,19 +37,54 @@
     "verified_against": "primary document (EDGAR)"
    },
    "status": "CORRECTED"
+  },
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 9, 2026 PepsiCo, Inc.",
+   "corrected_sha256": "3304778ac8c6a551810b384c4de0ca1f3307946e079df45837e6c11b1e5b78d7",
+   "correction_id": "exc-a9213d76bff37071",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000077476-26-000037",
+    "excerpt_sha256": "654caf0368307d21f34d0498c078786f41964dbbfa95d9fabccd71bc3c91e0ee",
+    "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+    "ticker": "PEP"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000077476-26-000037",
+    "char_offset": 1390,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/77476/000007747626000037/pep-20260709.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "ecs": 52,
-  "events_90d": 3,
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "ecs": 74,
+  "events_90d": 4,
   "metric_id": "ecs",
-  "recency_days": 47.3,
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "recency_days": 1.2,
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000077476-26-000042",
+   "available_as_of": "2026-09-17T11:10:36-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 &#160; FORM 8-K CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "filing_date": "2026-09-17",
+   "protocol_id": null,
+   "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+   "ticker": "PEP"
+  },
   {
    "accession_number": "0001846812-26-000003",
    "available_as_of": "2026-07-29T14:05:13.338011-06:00",
@@ -112,25 +147,41 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-14T22:26:02.292013-06:00",
+  "corpus_end": "2026-09-18T17:02:30.070501-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-07-29T14:05:13.338011-06:00",
+  "newest_returned_available_as_of": "2026-09-17T11:10:36-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-03-03T14:20:32-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 6,
+  "returned": 7,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PEP in the declared corpus",
-  "total_available": 6
+  "total_available": 7
  },
- "generated": "2026-09-15T04:26:01.741086+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/PEP.history.json",
- "label": "NEUTRAL",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-14",
    "label": "NEUTRAL"
@@ -234,22 +285,6 @@
   {
    "date": "2026-08-10",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-04",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -286,7 +321,7 @@
     "insider_form4": "MEDIUM",
     "macro_series": "NOT_APPLICABLE",
     "pricing": "MEDIUM",
-    "sec_primary": "LOW"
+    "sec_primary": "MEDIUM"
    }
   },
   "forward_maturity": {
@@ -357,10 +392,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.21,
+ "score": 0.0122,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "PEP",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

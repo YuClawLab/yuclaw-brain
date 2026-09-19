@@ -1,16 +1,16 @@
 {
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 101 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",
- "build_id": "why-2026-09-15T042601",
+ "build_id": "why-2026-09-18T230229",
  "components": {
-  "c1": -0.257,
+  "c1": -0.1105,
   "c2": 0.0,
-  "c3": -0.5291444,
+  "c3": 0.6783254,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.45588148,
-  "c7": 0.06094852,
+  "c6": -0.31053856,
+  "c7": -0.060242064,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": 0.26666668
  },
  "corrections": [
   {
@@ -65,12 +65,12 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "ecs": 87,
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "ecs": 84,
   "events_90d": 60,
   "metric_id": "ecs",
-  "recency_days": 0.5,
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "recency_days": 4.3,
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -1077,10 +1077,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-14T22:26:01.811524-06:00",
+  "corpus_end": "2026-09-18T17:02:29.615636-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-09-14T10:45:41-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -1091,11 +1091,27 @@
   "scope": "accepted evidence objects for AMZN in the declared corpus",
   "total_available": 101
  },
- "generated": "2026-09-15T04:26:01.741086+00:00",
+ "generated": "2026-09-18T23:02:29.537958+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/AMZN.history.json",
- "label": "WEAKENING",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-14",
    "label": "WEAKENING"
@@ -1199,22 +1215,6 @@
   {
    "date": "2026-08-10",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-04",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -1251,7 +1251,7 @@
     "insider_form4": "HIGH",
     "macro_series": "NOT_APPLICABLE",
     "pricing": "MEDIUM",
-    "sec_primary": "MEDIUM"
+    "sec_primary": "HIGH"
    }
   },
   "forward_maturity": {
@@ -1322,10 +1322,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.1419,
+ "score": 0.0954,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "AMZN",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"
