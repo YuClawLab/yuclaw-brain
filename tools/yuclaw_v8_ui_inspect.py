@@ -143,8 +143,18 @@ def main(argv=None) -> int:
         kept = page.input_value("input[name=claim_id]") == "KEEP-THIS-ENTRY" and page.input_value("textarea[name=statement]") == "kept statement" and "nothing was written" in text and "fiscal_period" in text
         err_tab = _tab_walk(page, a.tab_limit); page.set_viewport_size(NARROW); err_narrow = page.evaluate(PAGE_JS)["overflow_px"]; page.set_viewport_size(WIDE)
         pages.append({"page": "refused freeze (comparability fields missing)", "path": err_url.replace(base, ""), "wide": err, "keyboard": err_tab, "narrow_overflow_px": err_narrow, "narrow_viewport": NARROW, "entries_retained": kept})
-        for path, label in (("/", "workspace (three fixtures)"), ("/source", "step 1 source"), ("/source?as_of=2026-02-01T00:00:00Z", "step 1 source as-of view"), ("/claim/new", "step 2 typed claim form"),
-                            (base_claim, "claim page (base fixture: steps 1-7)"), (base_claim + "?as_of=2026-03-01T00:00:00Z", "claim page as-of replay"), (pending, "claim page (missing outcome)"),
+        # V8-011: one availability correction on the base fixture's outcome source, so the corrected claim page, the as-of view that
+        # only LISTS the later correction and a refused correction form are inspected like every other page (paths carry no URL
+        # fragment: a fragment moves the keyboard starting point, and the walk is defined from the top of the document)
+        page.goto(base + "/source"); page.select_option("select[name=source_ref]", index=1); page.fill("input[name=corrected_available_as_of]", "2026-02-30T00:00:00Z"); page.click("text=Record availability correction")
+        page.wait_for_load_state("load")                             # the table check reads computed style: measure only after the stylesheet of the refused page has loaded
+        ref_wide = page.evaluate(PAGE_JS); ref_url = page.url; ref_tab = _tab_walk(page, a.tab_limit); page.set_viewport_size(NARROW); ref_narrow = page.evaluate(PAGE_JS)["overflow_px"]; page.set_viewport_size(WIDE)   # measured on the refused page itself, as for the refused freeze
+        pages.append({"page": "refused availability correction (impossible time)", "path": ref_url.replace(base, ""), "wide": ref_wide, "keyboard": ref_tab, "narrow_overflow_px": ref_narrow, "narrow_viewport": NARROW})
+        page.goto(base + "/source"); opts = page.eval_on_selector_all("select[name=source_ref] option", "els => els.map(e => e.value)"); ref = next(o for o in opts if o.startswith("0000000000-26-000003:"))          # the base fixture's outcome source (available 2027-02-09T21:10:00Z)
+        page.select_option("select[name=source_ref]", ref); page.fill("input[name=corrected_available_as_of]", "2027-02-10T09:00:00Z"); page.fill("input[name=reason]", "ui-inspection correction (automated)"); page.fill("input[name=evidence_ref]", "fictional fixture")
+        page.fill("form#form-availability input[name=actor]", "ui-inspection (automated)"); page.check("form#form-availability input[name=simulated]"); page.click("text=Record availability correction"); page.wait_for_load_state("load")
+        for path, label in (("/", "workspace (three fixtures)"), ("/source", "step 1 source"),  (base_claim + "?as_of=2026-09-01T00:00:00Z", "claim page as-of view listing a later correction"), ("/source?as_of=2026-02-01T00:00:00Z", "step 1 source as-of view"), ("/claim/new", "step 2 typed claim form"),
+                            (base_claim, "claim page (base fixture: steps 1-7, with an availability correction)"), (base_claim + "?as_of=2026-03-01T00:00:00Z", "claim page as-of replay"), (pending, "claim page (missing outcome)"),
                             (incomparable, "claim page (incomparable basis)"), ("/notes", "research notes"), ("/dataset", "dataset coverage"), ("/sci", "scientific report"), ("/sci/S1", "scientific record"),
                             ("/verify", "verify an export"), ("/journal", "journal"), ("/help", "operator guide (in-app)"), ("/help/data", "data dictionary (in-app)")):
             r = page.goto(base + path)

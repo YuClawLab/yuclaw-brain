@@ -41,17 +41,51 @@ same content is the same event; different content under the same identifier is r
 | `recorded_at` | the local time of the action itself |
 
 Kinds: `SOURCE_REGISTERED`, `CLAIM_FROZEN`, `CLAIM_REVISED`, `SOURCE_CORRECTED`, `CLAIM_WITHDRAWN`, `OUTCOME_RECORDED`,
-`ADJUDICATION_RECORDED`, `RESEARCH_NOTE_RECORDED`, `SCI_REPLAY_RECORDED`, `EXPORT_BUILT`, `PACKET_VERIFIED`, `RECOVERY`.
+`ADJUDICATION_RECORDED`, `RESEARCH_NOTE_RECORDED`, `SCI_REPLAY_RECORDED`, `EXPORT_BUILT`, `PACKET_VERIFIED`, `RECOVERY`,
+`SOURCE_AVAILABILITY_CORRECTED`.
 
 **Unreliable or unknown timestamps.** An unknown availability time is never guessed and cannot be registered as
 available. An as-of view at cutoff T shows an event only if its source was available at or before T; an as-of view is a
 reconstruction from availability times, and is labelled RETROSPECTIVE when every source was first observed after the
 latest one became public. All times are UTC (`YYYY-MM-DDTHH:MM:SSZ`); an input with another offset is refused rather
 than converted. A registered source is never edited: the same passage registered again is the same source (its first
-observation stands), and a differing record under the same identity is refused. Consequence and known limit: a wrong
-availability time on an already-registered passage has no in-place correction in 8.0.0; the error is recorded in a
-research note and as-of views keep using the recorded time. A claim that cited the wrong passage is corrected by a
-CORRECTED_SOURCE amendment citing a separately registered source; the earlier version stays in the history.
+observation stands), and a differing record under the same identity is refused. A claim that cited the wrong passage is
+corrected by a CORRECTED_SOURCE amendment citing a separately registered source; the earlier version stays in the history.
+
+**Correcting a wrong availability time (`SOURCE_AVAILABILITY_CORRECTED`).** A workspace-level event linked to the
+registration it refers to; it edits nothing. Payload: `correction_id` (AC1, AC2, …), `source_id`, `accession`,
+`source_hash`, `registration_event` (hash of the SOURCE_REGISTERED event), `registered_available_as_of`,
+`prior_available_as_of` and `prior_event` (the value it replaces and the event that carried it: the registration, or
+the previous correction), `corrected_available_as_of`, `direction` (EARLIER / LATER), `reason`, `evidence_ref` (text;
+never fetched), `actor` with `actor_kind` and the attribution sentence (a label, not authenticated identity),
+`effect_rule`, and `changes_source` / `changes_claim`, both always false. Its own `source_available_as_of` is null: a
+correction has no availability of its own and is placed by `recorded_at`, which the server stamps.
+
+| Time on a corrected source | Where it lives | Ever changed? |
+|---|---|---|
+| asserted availability, as registered | the SOURCE_REGISTERED event and every claim version citing it | never |
+| asserted availability, as corrected | the SOURCE_AVAILABILITY_CORRECTED chain | by a further linked correction only |
+| observation by this workspace | `observed_at` of the registration | never |
+| recording of the correction | `recorded_at` of the correction event (server clock) | never |
+
+Historical-view rule `EFFECTIVE_FROM_RECORDED_AT/1`: an as-of view whose cutoff is at or after a correction's
+`recorded_at` cuts every event citing the source by the corrected availability. A view at an earlier cutoff keeps the
+value the record held then and lists the correction as a later correction with what it would change. A later
+correction is never presented as known at the cutoff and never makes a source known earlier than the record held it.
+
+Recomputation sits beside the record. `results`, the dataset row's `status`, `computed`, `withdrawal` and `outcome`
+fields, and every adjudication stay as recorded. When — and only when — a cited source was corrected, a claim export
+gains `source_availability` (`schema` yuclaw-source-availability/1: the rule and its semantics, each source's
+registration, corrections and effective availability, the `corrected_view` with the recomputed result and
+retrospective status, the full `corrected_results`, and `review` / `needs_review`), and its dataset row gains
+`availability_corrections` plus a coverage gap. Review codes: `RESULT_CHANGES`, `RETROSPECTIVE_STATUS_RETAINED` (a
+correction never upgrades a retrospective record), `RETROSPECTIVE_UNDER_CORRECTION`, `ADJUDICATION_PREDATES_CORRECTION`,
+`AVAILABILITY_AFTER_OBSERVATION`. An adjudication recorded after a correction also carries
+`availability_corrected_view` (what the reviewer was shown); the label rule is unchanged. The verifier checks each
+correction's links (registration, replaced value, order, no availability of its own) and re-derives the block from the
+packed events; an export without a correction has no such block and the bytes it had before, so earlier exports verify
+under the schema they recorded. Prohibited interpretation: a corrected availability is an attributed assertion with an
+evidence reference, not a verified publisher clock, and never evidence that anything was known earlier.
 
 ## Source
 

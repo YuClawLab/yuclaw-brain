@@ -31,7 +31,8 @@ from v8.workbench import server as S  # noqa: E402
 
 STEP_TITLES = {1: "source", 2: "typed claim", 3: "comparison", 4: "calculation", 5: "history", 6: "adjudication", 7: "reproducible export"}
 FEATURE_TITLES = {"research_notes": "research notes and unresolved-evidence workflow (V8-004 §3)", "dataset": "dataset coverage view, snapshot and verifiable export (V8-004 §4)", "sci": "scientific report/replay through the adapted kernel (V8-005)",
-                  "usability": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)"}
+                  "usability": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+                  "availability_correction": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)"}
 RUNNER = "journey-runner (automated test action; not a human review)"
 ATTRIBUTION = "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries"
 
@@ -265,6 +266,7 @@ class Journey:
             page.goto(f"{b}/"); self.check(7, "B still holds no claims after imports", "none yet" in page.locator("body").inner_text())
             self.demo_features(page, a, b, A, B, wsA)
             self.demo_usability(page, a, b, A, B)
+            self.demo_availability(page, ctx, a, b, A, B)
             browser.close()
         A.shutdown(); B.shutdown()
         return self.finish()
@@ -318,6 +320,97 @@ class Journey:
         t = page.locator("body").inner_text(); evs = B.ws.load()["events"]; side = list(log_path.parent.glob(log_path.name + ".torn.*"))
         self.check(F, "Run recovery in the browser preserves the torn bytes in a side file, changes no durable event, records a RECOVERY event and the workspace serves again",
                    "Recovery completed" in t and evs[-1]["kind"] == "RECOVERY" and len(evs) == n1 + 1 and log_path.read_bytes().startswith(durable) and len(side) == 1 and side[0].read_bytes().endswith(b'"interrupted": tr'), t[:160]); self.shot(page, F, "recovered")
+
+    # ---------------------------------------------------------------- V8-011 §3: a wrong availability time is corrected with a linked event, through the browser
+    def demo_availability(self, page, ctx, a: str, b: str, A, B):
+        """Its own fictional claim, so nothing the seven steps or the other features recorded is touched: guidance, outcome,
+        then a withdrawal whose registered availability wrongly precedes the outcome. The correction moves it after the
+        outcome; every earlier record must stay byte-identical and the recorded result must stay where it was."""
+        from v3.receipts.contracts import canonical_json
+        from v8.workbench import availability, store
+        F = "availability_correction"; CID = "ZZFX-FY2025-AVAIL-CORR"; KIND = availability.KIND
+        src = lambda acc, filed, avail, excerpt: {"kind": "filing", "form": "8-K (fictional)", "accession": acc, "url": "", "filed_at": filed, "available_as_of": avail, "excerpt": excerpt, "rights": "FICTIONAL", "fictional": True}
+        for s in (src("0000000000-25-000041", "2025-02-10", "2025-02-10T21:05:00Z", "expects full-year 2025 revenue of $110 million to $120 million (availability demonstration)"),
+                  src("0000000000-25-000042", "2025-08-04", "2025-08-04T20:58:00Z", "is withdrawing its full-year 2025 revenue guidance (availability demonstration)"),
+                  src("0000000000-26-000043", "2026-02-09", "2026-02-09T21:10:00Z", "full-year 2025 revenue was $112 million (availability demonstration)")):
+            page.goto(f"{a}/source"); self.submit(page, "form[action='/source/register']", s, "Register source")
+        page.goto(f"{a}/claim/new")
+        self.submit(page, "form[action='/claim/freeze']", {"claim_id": CID, "issuer_name": "Fictional Example Corp", "issuer_ticker": "ZZFX", "issuer_cik": "0000000000", "metric": "revenue", "range_low": "110000000", "range_high": "120000000", "scale_as_stated": "millions",
+                                                           "currency": "USD", "unit": "USD", "basis": "GAAP", "resolution_rule": "RANGE_CONTAINS_ACTUAL", "fp_label": "FY2025", "fp_type": "FY", "fp_start": "2025-01-01", "fp_end": "2025-12-31",
+                                                           "statement": "The company expects full-year 2025 revenue of $110 million to $120 million.", "source_id": self.source_id(page, a, "0000000000-25-000041"), "fictional": True}, "Save and freeze claim")
+        sid_w = self.source_id(page, a, "0000000000-25-000042"); sid_o = self.source_id(page, a, "0000000000-26-000043")
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/outcome']", {"actual": "112000000", "source_id": sid_o}, "Record outcome")
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/amend']", {"amend_type": "WITHDRAWN", "reason": "guidance withdrawn (fictional)", "source_id": sid_w}, "Record amendment")
+        page.goto(f"{a}/claim/{CID}"); first = A.ws.claim_state(CID)["events"][0]["event_hash"]
+        form = page.locator(f"form[action='/claim/{CID}/adjudicate']").first; form.locator(f"input[name='evidence'][value='{first}']").check()
+        self.submit(page, f"form[action='/claim/{CID}/adjudicate']", {"reviewer": RUNNER, "reason": "withdrawn before the outcome was public (as registered)"}, "Record adjudication")
+        calc0 = self.section(page, "calculation"); log0 = A.ws.log.read_bytes(); digests0 = [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]]
+        self.check(F, "before any correction the claim computes WITHDRAWN_BEFORE_OUTCOME and offers the correction from the source section", "Overall: WITHDRAWN_BEFORE_OUTCOME" in calc0 and "Correct a source's availability time" in self.section(page, "source"), calc0[:160])
+        # ---- refused: an impossible time and no reason — nothing written, entries kept
+        ref = lambda: page.locator(f"form[action='/source/correct-availability'] select[name='source_ref'] option[value^='{sid_w}@']").first.get_attribute("value")
+        page.goto(f"{a}/source"); n0 = len(A.ws.load()["events"])
+        self.submit(page, "form[action='/source/correct-availability']", {"source_ref": ref(), "corrected_available_as_of": "2026-02-30T00:00:00Z", "actor": RUNNER, "evidence_ref": "EDGAR filing index, acceptance line (fictional)", "simulated": True}, "Record availability correction")
+        t = page.locator("body").inner_text(); kept = page.input_value("form[action='/source/correct-availability'] input[name='evidence_ref']")
+        self.check(F, "an impossible corrected time is refused with the field named, the entries kept and nothing written", "Blocked — nothing was written" in t and "is not a real UTC date and time" in t and kept.startswith("EDGAR filing index") and len(A.ws.load()["events"]) == n0, t[:200], negative=True)
+        # ---- the correction: the withdrawal became public only AFTER the outcome
+        page.goto(f"{a}/source"); old_ref = ref()
+        self.submit(page, "form[action='/source/correct-availability']", {"source_ref": old_ref, "corrected_available_as_of": "2026-03-01T00:00:00Z", "reason": "the registered time was the dateline of the draft, not the public release (fictional)", "evidence_ref": "EDGAR filing index, acceptance line (fictional)", "actor": RUNNER, "simulated": True}, "Record availability correction")
+        t = page.locator("body").inner_text(); evs = A.ws.load()["events"]; corr = [e for e in evs if e["kind"] == KIND]
+        self.check(F, "the correction is recorded as a new linked event (AC1) with prior and corrected values, reason, evidence reference, actor label and the server's action time", "Availability correction AC1 recorded" in t and len(corr) == 1 and corr[0]["payload"]["prior_available_as_of"] == "2025-08-04T20:58:00Z" and corr[0]["payload"]["corrected_available_as_of"] == "2026-03-01T00:00:00Z"
+                   and corr[0]["payload"]["direction"] == "LATER" and corr[0]["payload"]["actor_kind"] == "simulated_test_action" and corr[0]["time"]["source_available_as_of"] is None and "simulated test action" in t, t[:200]); self.shot(page, F, "correction_recorded")
+        reg = next(e for e in evs if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source_id"] == sid_w)
+        self.check(F, "nothing recorded earlier was edited: every earlier log line is byte-identical, the registration keeps its time and observation, the claim digests are unchanged", A.ws.log.read_bytes().startswith(log0) and reg["payload"]["source"]["available_as_of"] == "2025-08-04T20:58:00Z"
+                   and corr[0]["payload"]["registration_event"] == reg["event_hash"] and [v["claim"]["_digest"] for v in A.ws.claim_state(CID)["versions"]] == digests0, negative=True)
+        page.goto(f"{a}/source"); body = page.locator("body").inner_text()
+        self.check(F, "the source table shows the registered availability retained and the corrected one beside it", "2025-08-04T20:58:00Z" in body and "corrected to 2026-03-01T00:00:00Z" in body and "the registered value above is retained" in body, body[:200])
+        # ---- the claim: recorded result where it was, corrected view beside it, what needs review listed
+        page.goto(f"{a}/claim/{CID}"); ssec = self.section(page, "source"); csec = self.section(page, "calculation"); asec = self.section(page, "adjudication")
+        self.check(F, "the claim shows the corrected view beside the recorded result and lists what needs review", "Source availability corrections" in ssec and "as recorded: WITHDRAWN_BEFORE_OUTCOME" in ssec and "under the corrected availability: IN_RANGE" in ssec and "RESULT_CHANGES" in ssec and "ADJUDICATION_PREDATES_CORRECTION" in ssec, ssec[:300]); self.shot(page, F, "corrected_view")
+        self.check(F, "the recorded calculation and the earlier adjudication are not overwritten", "Overall: WITHDRAWN_BEFORE_OUTCOME" in csec and self.no_pass(csec) and "WITHDRAWN_BEFORE_OUTCOME" in asec and "retained unchanged" in asec, csec[:160], negative=True)
+        # ---- historical views: before the correction was recorded it is only LISTED; at or after, it applies
+        page.goto(f"{a}/claim/{CID}?as_of=2025-09-01T00:00:00Z"); t = page.locator("body").inner_text(); ssec = self.section(page, "source")
+        self.check(F, "a view at a cutoff before the correction was recorded keeps what the record held and lists the correction as LATER, never applied", "Later corrections — recorded after this cutoff" in t and "NOT applied to the as-of view" in t and "would not yet count as public at this cutoff" in t and "corrected to 2026-03-01" not in ssec and "W1 WITHDRAWN" in ssec, ssec[:300], negative=True); self.shot(page, F, "as_of_before_correction")
+        page.goto(f"{a}/claim/{CID}?as_of=2030-01-01T00:00:00Z"); t = page.locator("body").inner_text(); ssec = self.section(page, "source")
+        self.check(F, "a view at a cutoff after the correction was recorded uses the corrected availability and says so", "corrected to 2026-03-01T00:00:00Z" in ssec and "Later corrections" not in t, ssec[:300])
+        # ---- two tabs: the second submission was prepared against a value that is no longer in force
+        tab = ctx.new_page(); tab.goto(f"{a}/source"); stale = tab.locator(f"form[action='/source/correct-availability'] select[name='source_ref'] option[value^='{sid_w}@']").first.get_attribute("value")
+        page.goto(f"{a}/source"); self.submit(page, "form[action='/source/correct-availability']", {"source_ref": ref(), "corrected_available_as_of": "2026-03-02T00:00:00Z", "reason": "acceptance time re-read from the filing index (fictional)", "evidence_ref": "EDGAR filing index, acceptance line (fictional)", "actor": RUNNER, "simulated": True}, "Record availability correction")
+        n1 = len(A.ws.load()["events"])
+        self.submit(tab, "form[action='/source/correct-availability']", {"source_ref": stale, "corrected_available_as_of": "2026-03-05T00:00:00Z", "reason": "a competing correction prepared earlier (fictional)", "evidence_ref": "EDGAR filing index (fictional)", "actor": RUNNER, "simulated": True}, "Record availability correction")
+        tt = tab.locator("body").inner_text(); chain = [e for e in A.ws.load()["events"] if e["kind"] == KIND]; tab.close()
+        self.check(F, "a submission prepared before another correction landed is refused as out of date and nothing is written; the further correction links to the one it replaces", "Blocked — nothing was written" in tt and "now reads 2026-03-02T00:00:00Z" in tt and len(A.ws.load()["events"]) == n1 and len(chain) == 2 and chain[1]["payload"]["prior_event"] == chain[0]["event_hash"] and chain[1]["payload"]["correction_id"] == "AC2", tt[:240], negative=True)
+        # ---- export → fresh workspace B recomputes the chain; an altered counterpart is refused
+        page.goto(f"{a}/claim/{CID}"); self.submit(page, f"form[action='/claim/{CID}/export']", {}, "Build export"); m = re.search(r"(exp-[0-9a-f]{16})\.zip", page.locator("body").inner_text())
+        with page.expect_download() as dl:
+            page.locator(f"a[href='/exports/{m.group(1)}.zip']").click()
+        zp = self.out / f"{m.group(1)}_availability.zip"; dl.value.save_as(str(zp))
+        with zipfile.ZipFile(zp) as z:
+            members = {i.filename: z.read(i) for i in z.infolist()}
+        can = json.loads(members["canonical.json"]); blk = can.get("source_availability") or {}; packed = [e for e in can["events"] if e["kind"] == KIND]; preg = [e for e in can["events"] if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source_id"] == sid_w]
+        self.check(F, "the export carries the original registration, the whole correction chain, the historical-view rule and the corrected view; the recorded results stay as recorded", len(packed) == 2 and len(preg) == 1 and preg[0]["payload"]["source"]["available_as_of"] == "2025-08-04T20:58:00Z" and blk.get("effect_rule") == availability.EFFECT_RULE
+                   and blk["sources"][0]["effective_available_as_of"] == "2026-03-02T00:00:00Z" and blk["corrected_view"]["result"] == "IN_RANGE" and can["results"]["result"] == "WITHDRAWN_BEFORE_OUTCOME" and blk["needs_review"] is True, str(blk)[:200])
+        page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(zp))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text()
+        self.check(F, "the fresh workspace verifies the export and re-derives the corrected view from the packed registration and correction events", "Result: SUCCESS" in t and "recompute-source-availability" in t and "2 correction(s) linked to their registration" in t and "Recomputed: WITHDRAWN_BEFORE_OUTCOME" in t, t[:300]); self.shot(page, F, "verified_in_fresh_workspace")
+        e = next(x for x in can["events"] if x["kind"] == KIND and x["payload"]["correction_id"] == "AC2"); e["payload"]["corrected_available_as_of"] = "2025-08-05T00:00:00Z"; e["payload"]["direction"] = "EARLIER"      # put the withdrawal back before the outcome, as a self-consistent link …
+        e["event_hash"] = store._line_hash({k: v for k, v in e.items() if k != "event_hash"})                                                        # … with a consistent event hash and consistent declared digests
+        members["canonical.json"] = canonical_json(can); man = json.loads(members["EXPORT_MANIFEST.json"]); dig = hashlib.sha256(members["canonical.json"]).hexdigest(); man["canonical_digest"] = dig
+        for f in man["files"]:
+            if f["path"] == "canonical.json":
+                f["sha256"], f["size_bytes"] = dig, len(members["canonical.json"])
+        members["EXPORT_MANIFEST.json"] = (json.dumps(man, indent=1, sort_keys=True, ensure_ascii=True) + "\n").encode("ascii"); tam = self.out / "availability_tampered.zip"; buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as z:
+            for k, v in members.items():
+                z.writestr(k, v)
+        tam.write_bytes(buf.getvalue()); page.goto(f"{b}/verify"); page.set_input_files("input[name='packet']", str(tam))
+        with page.expect_navigation():
+            page.get_by_role("button", name="Verify").click()
+        t = page.locator("body").inner_text()
+        self.check(F, "an altered correction — even with matching hashes and digests — is refused: the corrected view no longer reproduces from the packed events", "Result: MISMATCH" in t and "source availability block differs" in t, t[:300], negative=True); self.shot(page, F, "tampered_correction_refused")
+        page.goto(f"{a}/dataset"); t = page.locator("body").inner_text()
+        self.check(F, "the dataset coverage view names the correction as a coverage gap needing review", "source availability corrected after registration" in t and "RESULT_CHANGES" in t, t[:200])
 
     # ---------------------------------------------------------------- V8-004: research notes + dataset coverage, through the browser
     def demo_features(self, page, a: str, b: str, A, B, wsA):

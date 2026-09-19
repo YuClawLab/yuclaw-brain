@@ -39,7 +39,7 @@ The navigation bar is on every page. With the research server on port 8765:
 | Function | Where | What you do there |
 |---|---|---|
 | Workspace overview | <http://127.0.0.1:8765/> | see your claims and computed results; load a clearly fictional fixture (demonstration data) |
-| 1 Source | <http://127.0.0.1:8765/source> | register the exact passage with its availability time; register a record written by the ingestion tool; view sources as of a cutoff |
+| 1 Source | <http://127.0.0.1:8765/source> | register the exact passage with its availability time; register a record written by the ingestion tool; view sources as of a cutoff; correct a wrong availability time with a linked event (<http://127.0.0.1:8765/source#availability>) |
 | 2 Typed claim | <http://127.0.0.1:8765/claim/new> | save and freeze a fully specified commitment; every comparability field is mandatory |
 | 3 Comparison | a claim's page, `#comparison` | original and revised ranges side by side, or INCOMPARABLE with every reason |
 | 4 Calculation | a claim's page, `#calculation` | the disclosed outcome against each range, with inputs, formula and source links; record the outcome |
@@ -69,8 +69,18 @@ disclosure from an allow-listed host and extract the exact passage:
         --accession <EDGAR accession> --cik <CIK> --pattern '<regex locating the passage>' \
         --rights SEC_PUBLIC_FILING --out ~/yuclaw-ingest --label original
 
-Set `SEC_USER_AGENT="Your Name your.address@example.org"` first: the SEC asks every requester to identify themselves,
-and without it the tool identifies as the package maintainer. On success it writes `original.source.json` (paste its content into **1 Source → Register from an ingestion record**,
+**Your SEC request identity is your own setting.** The SEC asks every requester to identify themselves with a name and
+a contact address. Before a run that reaches the SEC (every `--kind filing` run does), set the environment variable in
+the shell you run the tool from, replacing both parts with your own:
+
+    export SEC_USER_AGENT="Your Name your.address@example.org"
+
+The tool supplies no identity on your behalf and looks for one nowhere else. If the variable is missing, still holds
+the placeholder above, or carries no name or no contact address, the tool prints `[ingest] REFUSED: SEC_USER_AGENT …`
+with this setup step, exits 2 and sends no request. The value is sent to `www.sec.gov` and `data.sec.gov` in the
+request header only: other allow-listed hosts receive the product name without a contact, and the value is never
+written into a source record, a provenance record, an export or a message. Nothing else needs it — fixtures, stored
+source records, calculations, exports and export verification all work offline without the variable. On success the tool writes `original.source.json` (paste its content into **1 Source → Register from an ingestion record**,
 with the `retrieved_at` of `original.provenance.json` as the observation time) and keeps the original bytes. On failure
 it prints `[ingest] REFUSED: <reason>`, exits 2 and writes no source record: correct what it names and run it again.
 
@@ -92,10 +102,27 @@ Freezing is one-way and the log is append-only.
 Timestamps you cannot establish: leave nothing to be guessed. A source whose availability time is unknown cannot be
 registered as available. If a claim cited the wrong passage, register the right one and record a CORRECTED_SOURCE
 amendment that cites it — what the workspace previously recorded as known, and when it recorded it, stays in the history.
-Known limit: the availability time of an already-registered passage cannot be corrected in 8.0.0 (a registered source is
-never edited and the same passage is never registered twice). Record the error and the correct time in a research note
-on each claim that cites it; as-of views keep using the recorded time, so check the time against the original document
-before you register.
+**A wrong availability time is corrected, not edited.** A registered source is never edited and the same passage is
+never registered twice. If the time it became public was entered wrongly, open **1 Source → Correct a source's
+availability time**, choose the source, and give the corrected UTC time, the reason, an evidence reference (where the
+corrected time comes from, e.g. the EDGAR filing index acceptance line — recorded as text, never fetched) and your
+actor label. This records a new linked event, `SOURCE_AVAILABILITY_CORRECTED`; the server stamps its recording time
+itself. The registration, the passage and its digest, the time this workspace observed it, and every frozen claim,
+outcome and adjudication stay exactly as written. Three times stay apart: the *asserted availability* (registered,
+then corrected), the *observation* by this workspace, and the *recording of the correction*.
+
+What a correction does to historical views: it applies to cutoffs **at or after the time it was recorded**. A view at
+an earlier cutoff keeps the value the record held then and lists the correction as a *later correction*, with what it
+would change. A later correction is later knowledge — it is never shown as something known at the cutoff, it never
+makes a source known earlier than the record held it, and no historical view is revised silently. On each claim that
+cites the source, the recorded result stays where it was and the *corrected view* is shown beside it: the result
+recomputed with the corrected time (a withdrawal counts as "before the outcome" only by availability), the
+retrospective status, and a **Needs review** list when they differ or when an adjudication predates the correction.
+A correction can make a record retrospective; it never makes a retrospective record contemporaneous. If your review
+reaches a different label, record a further adjudication as **Disputed** with the reason; the correction event can be
+ticked as its evidence. If someone corrected the same source after you opened the page, your submission is refused as
+out of date and nothing is written. Exports carry the original registration and the whole correction chain; a fresh
+workspace checks the links and recomputes the corrected view, and an export without a correction is unchanged.
 
 ## 5. An interrupted write
 
