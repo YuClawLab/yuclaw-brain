@@ -369,3 +369,28 @@ def check_note(raw: dict, field: str = "note") -> tuple[dict | None, list[str]]:
         return None, reasons
     return {"category": cat, "actor": actor.strip(), "reason": reason.strip(), "unresolved_question": q.strip(), "next_evidence": nxt.strip(),
             "version_ref": vref or None, "evidence": list(ev), "supersedes_note": sup or None, "simulated": bool(raw.get("simulated"))}, []
+
+
+# ---------------------------------------------------------------- source-availability corrections (V8-011, TIM-08)
+EVIDENCE_REF_MAX = 500
+
+
+def check_availability_correction(raw: dict, field: str = "correction") -> tuple[dict | None, list[str]]:
+    """The authored part of a source-availability correction: the corrected UTC time, why, where the corrected time comes
+    from (an evidence reference — it is recorded, never fetched) and an actor LABEL. Bounded printable text only."""
+    reasons: list[str] = []
+    if not isinstance(raw, dict):
+        return None, [f"{field}: object required"]
+    ts = raw.get("corrected_available_as_of")
+    try:
+        parse_ts(ts)
+    except ContractError as exc:
+        reasons.append(f"{field}.corrected_available_as_of: {exc} (an unknown availability stays unknown — it is never guessed)")
+    reason = _text(raw.get("reason"), f"{field}.reason", NOTE_TEXT_MAX, reasons)
+    ref = _text(raw.get("evidence_ref"), f"{field}.evidence_ref", EVIDENCE_REF_MAX, reasons)
+    actor = _text(raw.get("actor"), f"{field}.actor", 120, reasons)
+    if raw.get("simulated") not in (True, False, None):
+        reasons.append(f"{field}.simulated: boolean")
+    if reasons:
+        return None, reasons
+    return {"corrected_available_as_of": ts, "reason": reason.strip(), "evidence_ref": ref.strip(), "actor": actor.strip(), "simulated": bool(raw.get("simulated"))}, []

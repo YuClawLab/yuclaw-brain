@@ -14,7 +14,7 @@ import hashlib
 import json
 
 from v3.receipts.contracts import canonical_json
-from v8.workbench import NOT_ADVICE, WORKBENCH_VERSION, calc, schema
+from v8.workbench import NOT_ADVICE, WORKBENCH_VERSION, availability, calc, schema
 
 DATASET_SCHEMA = "yuclaw-commitment-dataset/1"
 METHOD = {"calculator": calc.CALCULATOR, "claim_schema": schema.SCHEMA, "outcome_schema": schema.OUTCOME_SCHEMA, "dataset_schema": DATASET_SCHEMA, "workbench": WORKBENCH_VERSION,
@@ -99,6 +99,9 @@ def build_row(state: dict, seen: dict | None = None) -> dict:
         gaps.append("eligibility not recorded in this workspace")
     if res["result"] in calc.UNRESOLVED:
         gaps.append(f"result unresolved: {res['result']}")
+    corrected = availability.row_block(state)                        # None unless a cited source's availability was corrected: an uncorrected row keeps its earlier bytes
+    if corrected is not None:
+        gaps.append("source availability corrected after registration" + (": the corrected view needs review (" + ", ".join(sorted({r["code"] for r in corrected["review"]})) + ")" if corrected["needs_review"] else " (the corrected view computes the same result)"))
     row = {"claim_id": state["claim_id"], "issuer": original["issuer"], "metric": original["metric"], "fiscal_period": original["fiscal_period"],
            "identifiers": {"claim_id": state["claim_id"], "versions": [v["version_id"] for v in versions], "current_version": state["current"]["version_id"], "original_digest": original["_digest"], "current_digest": state["current"]["claim"]["_digest"]},
            "status": {"fictional": bool(original["fictional"]), "retrospective": retro["retrospective"], "retrospective_reason": retro["reason"],
@@ -117,6 +120,8 @@ def build_row(state: dict, seen: dict | None = None) -> dict:
            "sources": sources, "rights": {"withheld_excerpts": withheld, "rights_present": sorted({s["rights"] for s in sources})},
            "calculation": {"rule": res["rule"], "rule_text": res["rule_text"], "formula": calc.FORMULA, "currency": state["current"]["claim"]["currency"], "unit": state["current"]["claim"]["unit"], "comparison_limits": METHOD["comparison_limits"], "no_inference": calc.NO_INFERENCE},
            "versions": vrows, "coverage_gaps": gaps}
+    if corrected is not None:
+        row["availability_corrections"] = corrected                  # the fields above stay as recorded; the corrected view sits beside them
     row["row_digest"] = _sha(canonical_json(row))
     return row
 

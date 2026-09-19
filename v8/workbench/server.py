@@ -28,7 +28,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from v3.receipts.contracts import ContractError
-from v8.workbench import NOT_ADVICE, calc, dataset, export, money, schema
+from v8.workbench import NOT_ADVICE, availability, calc, dataset, export, money, schema
 from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
@@ -43,6 +43,7 @@ _EXPORT_ID = re.compile(r"^exp-[0-9a-f]{16}$")
 _FIXTURE = re.compile(r"^00[1-9]_[a-z_]{1,64}$")          # bounded: the value becomes a file name (an over-long one raised OSError and dropped the connection)
 _SCI_EXAMPLE = re.compile(r"^[a-z_]{1,64}$")
 _SCI_ID = re.compile(r"^S[0-9]{1,5}$")
+_CORRECTION_ID = re.compile(r"^AC[0-9]{1,6}$")
 SCI_EXAMPLES_DIR = Path(__file__).resolve().parent / "resources" / "sci"
 GUIDE_PATH = Path(__file__).resolve().parent / "resources" / "OPERATOR_GUIDE.md"   # packaged; shown under /help and by `python -m v8.workbench guide`
 DICTIONARY_PATH = Path(__file__).resolve().parent / "resources" / "DATA_DICTIONARY.md"   # packaged; shown under /help/data
@@ -332,6 +333,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.post_source(form, op_id)
             if path == "/source/import":
                 return self.post_import(form, op_id)
+            if path == "/source/correct-availability":
+                return self.post_availability(form, op_id)
             if path == "/claim/freeze":
                 return self.post_freeze(form, op_id)
             m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|export|note)$", path)
@@ -367,10 +370,10 @@ class Handler(BaseHTTPRequestHandler):
         form with everything the user entered still in its fields. Nothing was written."""
         m = re.match(r"^/claim/([^/]+)/(amend|outcome|adjudicate|note)$", path)
         self._pf, self._pf_msg = form, msg
-        self._pf_action = m.group(2) if m else {"/source/register": "register", "/source/import": "import", "/claim/freeze": "freeze", "/sci/replay": "replay"}.get(path)
+        self._pf_action = m.group(2) if m else {"/source/register": "register", "/source/import": "import", "/source/correct-availability": "availability", "/claim/freeze": "freeze", "/sci/replay": "replay"}.get(path)
         if m and self.server.ws.claim_state(urllib.parse.unquote(m.group(1))) is not None:
             return self.page_claim(urllib.parse.unquote(m.group(1)), {})
-        if self._pf_action in ("register", "import"):
+        if self._pf_action in ("register", "import", "availability"):
             return self.page_source({})
         if self._pf_action == "freeze":
             return self.page_claim_new({})
@@ -439,8 +442,9 @@ class Handler(BaseHTTPRequestHandler):
         return [e["payload"] for e in self.server.ws.events() if e["kind"] == "SOURCE_REGISTERED"]
 
     def _source_select(self, action: str, name="source_id") -> str:
-        cur = self._cur(action, name)
-        opts = "".join(f'<option value="{esc(s["source_id"])}"{" selected" if s["source_id"] == cur else ""}>{esc(s["source"]["accession"])} · {esc(s["source"]["form"])} · filed {esc(s["source"]["filed_at"])} · available {esc(s["source"]["available_as_of"])} · {esc(s["source"]["rights"])}</option>' for s in self._sources())
+        cur = self._cur(action, name); idx = availability.index(self.server.ws.events())
+        fixed = lambda s: f' (corrected to {esc(idx[s["source_id"]]["effective"])})' if idx.get(s["source_id"], {}).get("applied") else ""
+        opts = "".join(f'<option value="{esc(s["source_id"])}"{" selected" if s["source_id"] == cur else ""}>{esc(s["source"]["accession"])} · {esc(s["source"]["form"])} · filed {esc(s["source"]["filed_at"])} · available {esc(s["source"]["available_as_of"])}{fixed(s)} · {esc(s["source"]["rights"])}</option>' for s in self._sources())
         return f'<label>Registered source (step 1)</label><select name="{name}" required><option value="">— choose a registered source —</option>{opts}</select>'
 
     def _source_by_id(self, sid: str) -> dict:
@@ -502,7 +506,7 @@ class Handler(BaseHTTPRequestHandler):
         vopts = "".join(f'<option value="{esc(v["version_id"])}"{" selected" if v["version_id"] == vcur else ""}>{esc(v["version_id"])} · {esc(v["type"])} · {esc(v["claim"]["_digest"][:12])}…</option>' for v in full["versions"])
         copts = "".join(f'<option value="{esc(c)}"{" selected" if c == self._cur(A, "category") else ""}>{esc(c)}</option>' for c in schema.NOTE_CATEGORIES)
         sopts = "".join(f'<option value="{esc(n["note_id"])}"{" selected" if n["note_id"] == self._cur(A, "supersedes_note") else ""}>{esc(n["note_id"])} · {esc(n["category"])} · {esc(n["reason"][:40])}</option>' for n in full.get("research_notes_current", []))
-        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
+        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] + self._correction_events(full) if e["kind"] not in ("RESEARCH_NOTE_RECORDED",))
         form = f"""<form class="card" id="form-note" method="post" action="/claim/{esc(cq)}/note">{self._csrf_field(A)}<h3>Record a research note</h3>
 <p class="muted">A note is a separate research action: it records an unresolved question or explanation, the next evidence needed and why. It changes nothing about the claim — range, metric, currency, basis, fiscal period, sources and frozen digests stay exactly as they are — and it never resolves an outcome or reopens a withdrawn commitment. A correction is a new note that names the note it corrects; the earlier text is retained.</p>
 <div class="row"><div><label>Category</label><select name="category">{copts}</select></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor" value="{V('actor')}"></div><div><label>About version</label><select name="version_ref">{vopts}</select></div><div><label>Corrects an earlier note (optional)</label><select name="supersedes_note"><option value="">— new note —</option>{sopts}</select></div></div>
@@ -514,6 +518,40 @@ class Handler(BaseHTTPRequestHandler):
 <button type="submit">Record research note</button></form>"""
         table = f'{self._NOTE_HEAD}{rows}</table>' if rows else '<p class="muted">No research notes on this claim yet.</p>'
         return f'<p class="muted">{esc(len(notes))} note(s), {esc(len([n for n in notes if n.get("supersedes_note")]))} correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.</p>{table}{later}{form}'
+
+    @staticmethod
+    def _correction_events(full: dict) -> list[dict]:
+        return sorted((e for ent in (full.get("availability") or {}).values() for e in ent["applied"] + ent["later"]), key=lambda e: e["seq"])
+
+    @staticmethod
+    def _later_corrections_html(later: list[dict], cut: str | None) -> str:
+        if not later:
+            return ""
+        def line(x: dict) -> str:
+            if x["public_as_held"] == x["public_under_correction"]:
+                effect = "it does not change whether the source counts as public at this cutoff"
+            elif x["public_under_correction"]:
+                effect = "under it the source would already count as public at this cutoff, but that was not known then: the view keeps the source as the record held it"
+            else:
+                effect = "under it the source would not yet count as public at this cutoff: the view keeps the source as the record held it, and what it shows needs review"
+            return f'<li><b>{esc(x["correction_id"])}</b> on <code>{esc(x["source_id"])}</code>, recorded {esc(x["recorded_at"])}: {esc(x["held_at_cutoff"])} → {esc(x["corrected_available_as_of"])} — {effect}</li>'
+        return f'<div class="notice"><b>Later corrections — recorded after this cutoff ({esc(cut)}); NOT applied to the as-of view.</b> A later correction is later knowledge and is never shown as known at the cutoff.<ul>{"".join(line(x) for x in later)}</ul></div>'
+
+    def _availability_html(self, st: dict, cut: str | None, later: list[dict]) -> str:
+        """Beside the source table: the correction chain of this claim's sources, the corrected view next to the recorded
+        result, and what needs review. The registration, the claim versions and earlier adjudications are never rewritten."""
+        blk = availability.block(st)
+        if blk is None or not any(s["corrections"] for s in blk["sources"]):
+            return self._later_corrections_html(later, cut) or '<p class="muted">A wrong availability time is corrected with a linked event under <a href="/source#availability">1 Source — Correct a source\'s availability time</a>; the registration is never edited.</p>'
+        rows = "".join(f'<tr><td><b>{esc(c["correction_id"])}</b></td><td><code>{esc(s["source_id"])}</code><br><span class="muted">registered {esc(s["registration"]["available_as_of"])} · observed {esc(s["registration"]["observed_at"])}</span></td><td>{esc(c["prior_available_as_of"])}</td><td><b>{esc(c["corrected_available_as_of"])}</b><br><span class="muted">{esc(c["direction"])}</span></td><td>{esc(c["reason"])}</td><td>{esc(c["evidence_ref"])}</td><td>{esc(c["actor"])}<br><span class="{"warn" if c["actor_kind"] == "simulated_test_action" else "muted"}">{esc(c["actor_kind"].replace("_", " "))}</span></td><td>{esc(c["recorded_at"])}</td></tr>' for s in blk["sources"] for c in s["corrections"])
+        v = blk["corrected_view"]
+        windows = "".join(f'<li><code>{esc(s["source_id"])}</code>: cutoffs from {esc(s["affected_cutoffs"]["from"])} until {esc(s["affected_cutoffs"]["until"])} differ between the registered and the corrected availability</li>' for s in blk["sources"])
+        review = "".join(f'<li><b>{esc(r["code"])}</b>: {esc(r["detail"])}</li>' for r in blk["review"])
+        return f"""<h3 id="availability">Source availability corrections</h3>
+<table><tr><th>correction</th><th>source</th><th>replaces</th><th>corrected availability</th><th>reason</th><th>evidence reference</th><th>actor</th><th>recorded (local action)</th></tr>{rows}</table>
+<p>Computed result <b>as recorded: {esc(v["recorded_result"])}</b> · <b>under the corrected availability: {esc(v["result"])}</b>{' <span class="warn">— they differ</span>' if v["result_changes"] else " (the same)"} · retrospective as recorded: {esc(v["recorded_retrospective"])} · recomputed: {esc(v["recomputed_retrospective"])}. The frozen claim versions, their digests, the outcome and earlier adjudications are unchanged; the calculation in section 4 is the as-recorded one.</p>
+{('<div class="notice"><b>Needs review.</b><ul>' + review + '</ul></div>') if review else '<p class="muted">Nothing needs review: the corrected view computes the same result and status.</p>'}
+<p class="muted">Historical views: a correction applies to cutoffs at or after the time it was recorded; an earlier cutoff keeps the value the record held then and lists the correction as later.</p><ul class="muted">{windows}</ul>{self._later_corrections_html(later, cut)}"""
 
     def _sci_linked_html(self, full: dict) -> str:
         recs = full.get("sci", [])
@@ -658,14 +696,36 @@ class Handler(BaseHTTPRequestHandler):
         else:
             as_of_err = None
         evs = [e for e in self.server.ws.events(None, cut) if e["kind"] == "SOURCE_REGISTERED"]
-        hidden = len([e for e in self.server.ws.events() if e["kind"] == "SOURCE_REGISTERED"]) - len(evs)
-        rows = "".join(f'<tr><td><code>{esc(e["payload"]["source_id"])}</code></td><td>{esc(e["payload"]["source"]["accession"])}<br>{esc(e["payload"]["source"]["form"])}</td><td>{esc(e["payload"]["source"]["filed_at"])}</td><td><b>{esc(e["payload"]["source"]["available_as_of"])}</b></td><td>{esc(e["time"]["observed_at"])}</td><td>{esc(e["time"]["recorded_at"])}</td><td>{esc(e["payload"]["source"]["rights"])}{" · fictional" if e["payload"]["source"]["fictional"] else ""}</td><td><pre class="excerpt">{esc(e["payload"]["source"]["excerpt"])}</pre><span class="muted">sha256 {esc(e["payload"]["source"]["source_hash"])}</span></td></tr>' for e in evs)
+        everything = self.server.ws.events(); idx = availability.index(everything, cut)
+        hidden = len([e for e in everything if e["kind"] == "SOURCE_REGISTERED"]) - len(evs)
+        def avail_cell(e) -> str:
+            ent = idx[e["payload"]["source_id"]]
+            fixed = f'<br><span class="warn">corrected to <b>{esc(ent["effective"])}</b></span> <span class="muted">({esc(", ".join(c["payload"]["correction_id"] for c in ent["applied"]))}; the registered value above is retained)</span>' if ent["applied"] else ""
+            later = "".join(f'<br><span class="muted">later correction {esc(c["payload"]["correction_id"])} → {esc(c["payload"]["corrected_available_as_of"])}, recorded {esc(c["time"]["recorded_at"])}: not applied at this cutoff</span>' for c in ent["later"])
+            return f'<b>{esc(ent["registered"])}</b>{fixed}{later}'
+        rows = "".join(f'<tr><td><code>{esc(e["payload"]["source_id"])}</code></td><td>{esc(e["payload"]["source"]["accession"])}<br>{esc(e["payload"]["source"]["form"])}</td><td>{esc(e["payload"]["source"]["filed_at"])}</td><td>{avail_cell(e)}</td><td>{esc(e["time"]["observed_at"])}</td><td>{esc(e["time"]["recorded_at"])}</td><td>{esc(e["payload"]["source"]["rights"])}{" · fictional" if e["payload"]["source"]["fictional"] else ""}</td><td><pre class="excerpt">{esc(e["payload"]["source"]["excerpt"])}</pre><span class="muted">sha256 {esc(e["payload"]["source"]["source_hash"])}</span></td></tr>' for e in evs)
+        corr_rows = "".join(f'<tr><td><b>{esc(c["payload"]["correction_id"])}</b>{"<br><span class=warn>recorded after this cutoff — not applied</span>" if c in idx[c["payload"]["source_id"]]["later"] else ""}</td><td><code>{esc(c["payload"]["source_id"])}</code></td><td>{esc(c["payload"]["prior_available_as_of"])}</td><td><b>{esc(c["payload"]["corrected_available_as_of"])}</b><br><span class="muted">{esc(c["payload"]["direction"])}</span></td><td>{esc(c["payload"]["reason"])}</td><td>{esc(c["payload"]["evidence_ref"])}</td><td>{esc(c["payload"]["actor"])}<br><span class="{"warn" if c["payload"]["actor_kind"] == "simulated_test_action" else "muted"}">{esc(c["payload"]["actor_kind"].replace("_", " "))}</span></td><td>{esc(c["time"]["recorded_at"])}</td><td><code>{esc(c["event_hash"][:12])}…</code><br><span class="muted">replaces <code>{esc(c["payload"]["prior_event"][:12])}…</code></span></td></tr>' for c in everything if c["kind"] == availability.KIND)
+        done = q.get("corrected"); corr_notice = f'<div class="notice">Availability correction <b>{esc(done)}</b> recorded. The registration it refers to is unchanged; claims citing the source show the corrected view beside their recorded result.</div>' if done and _CORRECTION_ID.match(done) else ""
+        AV = "availability"; cur_ref = self._cur(AV, "source_ref")
+        ref_opts = "".join(f'<option value="{esc(sid + "@" + ent["effective"])}"{" selected" if sid + "@" + ent["effective"] == cur_ref else ""}>{esc(ent["registration"]["payload"]["source"]["accession"])} · {esc(ent["registration"]["payload"]["source"]["form"])} · filed {esc(ent["registration"]["payload"]["source"]["filed_at"])} · availability now in force {esc(ent["effective"])}{" (registered " + esc(ent["registered"]) + ")" if ent["applied"] else ""}</option>' for sid, ent in availability.index(everything).items())
+        corr_html = f"""<h2 id="availability">Correct a source's availability time</h2>{corr_notice}
+<p>If the time a registered source became public was entered wrongly, record a correction. It is a new, linked event: the registration, the passage and its digest, the time this workspace observed it, and every frozen claim, outcome and adjudication stay exactly as they were written. Three times are kept apart — the <b>asserted availability</b> (registered, then corrected), the <b>observation</b> by this workspace, and the <b>recording of the correction</b>, which the server stamps itself.</p>
+<p><b>Historical views.</b> A correction takes effect for cutoffs at or after the moment it was recorded. A view at an earlier cutoff keeps the value the record held then and lists the correction as a <i>later correction</i> with what it would change — a later correction is never shown as something known at the cutoff, and no historical view is revised silently. Claims citing the source keep their recorded result; the corrected view and anything needing review are shown beside it.</p>
+<table><tr><th>correction</th><th>source id</th><th>replaces</th><th>corrected availability</th><th>reason</th><th>evidence reference</th><th>actor</th><th>recorded (local action)</th><th>event · replaces event</th></tr>{corr_rows or '<tr><td colspan="9" class="muted">no availability correction recorded</td></tr>'}</table>
+<form class="card" id="form-availability" method="post" action="/source/correct-availability">{self._csrf_field(AV)}
+<label>Registered source and the availability now in force</label><select name="source_ref" required><option value="">— choose a registered source —</option>{ref_opts}</select>
+<div class="row"><div><label>Corrected availability (UTC, YYYY-MM-DDTHH:MM:SSZ)</label><input type="text" name="corrected_available_as_of" value="{self._val(AV, 'corrected_available_as_of')}"></div><div><label>Actor (attribution label — not authenticated identity; does not establish independent review)</label><input type="text" name="actor" value="{self._val(AV, 'actor')}"></div></div>
+<label>Reason for the correction (required)</label><input type="text" name="reason" value="{self._val(AV, 'reason')}">
+<label>Evidence reference — where the corrected time comes from, e.g. the EDGAR filing index acceptance line (recorded as text; never fetched)</label><input type="text" name="evidence_ref" value="{self._val(AV, 'evidence_ref')}">
+<label><input type="checkbox" name="simulated" value="1"{self._checked(AV, 'simulated')}> This is a simulated test action (automated), not a human's correction</label>
+<p class="muted">If someone else corrected this source after you opened the page, your submission is refused as out of date and nothing is written; review their correction and choose the source again.</p>
+<button type="submit">Record availability correction</button></form>"""
         A = "register"; V = lambda n, d="": self._val(A, n, d)
         kinds = self._sel("kind", schema.SOURCE_KINDS, self._cur(A, "kind", "filing"), blank=False); rights = self._sel("rights", schema.RIGHTS, self._cur(A, "rights", "FICTIONAL"), blank=False)
         body = f"""<p>Register the exact passage a claim, an amendment or an outcome comes from. The availability timestamp is when the source became public (EDGAR acceptance), never the time you entered it; the workbench records the observation and action times separately. Passages are stored and shown as inert text.</p>
 <form class="card" method="get" action="/source"><label>View the sources as they were available at a cutoff (UTC, e.g. 2026-03-01T00:00:00Z) — later sources are hidden, not backdated</label><input type="text" name="as_of" value="{esc(as_of)}"><button type="submit">Apply cutoff</button></form>
-{f'<div class="err">{esc(as_of_err)}</div>' if as_of_err else ''}{f'<div class="notice">As-of view at <b>{esc(cut)}</b>: {hidden} source(s) with a later availability are hidden.</div>' if cut else ''}
-<table><tr><th>source id</th><th>accession · form</th><th>filed</th><th>available as of (source)</th><th>observed (workspace)</th><th>recorded (local action)</th><th>rights</th><th>passage</th></tr>{rows or '<tr><td colspan="8" class="muted">no sources registered</td></tr>'}</table>
+{f'<div class="err">{esc(as_of_err)}</div>' if as_of_err else ''}{f'<div class="notice">As-of view at <b>{esc(cut)}</b>: {hidden} source(s) with a later availability are hidden. A correction recorded after this cutoff is listed beside its source but not applied; one recorded at or before it is.</div>' if cut else ''}
+<table><tr><th>source id</th><th>accession · form</th><th>filed</th><th>available as of (source; registered, then corrected)</th><th>observed (workspace)</th><th>recorded (local action)</th><th>rights</th><th>passage</th></tr>{rows or '<tr><td colspan="8" class="muted">no sources registered</td></tr>'}</table>
 <h2>Register a source</h2><form class="card" id="form-register" method="post" action="/source/register">{self._csrf_field(A)}
 <div class="row"><div><label>Kind</label>{kinds}</div><div><label>Form</label><input type="text" name="form" value="{V('form')}" placeholder="8-K EX-99.1"></div><div><label>Accession (EDGAR) or publisher id (PREFIX:publisher:id) for a non-filing</label><input type="text" name="accession" value="{V('accession')}"></div><div><label>URL (optional)</label><input type="text" name="url" value="{V('url')}"></div></div>
 <div class="row"><div><label>Filed at (date)</label><input type="date" name="filed_at" value="{V('filed_at')}"></div><div><label>Available as of (UTC, YYYY-MM-DDTHH:MM:SSZ)</label><input type="text" name="available_as_of" value="{V('available_as_of')}"></div><div><label>Observed at (UTC, optional; default now)</label><input type="text" name="observed_at" value="{V('observed_at')}"></div><div><label>Rights</label>{rights}</div></div>
@@ -676,7 +736,7 @@ class Handler(BaseHTTPRequestHandler):
 <p>The bounded ingestion tool (<code>python -m v8.workbench.ingest</code>; one allow-listed URL per run) runs outside this server, which has no network access of its own. On success it writes <code>&lt;label&gt;.source.json</code> and <code>&lt;label&gt;.provenance.json</code>; on failure it prints <code>[ingest] REFUSED: reason</code>, exits 2 and writes no source record — fix the URL, accession or passage pattern it names and run it again. Paste the <code>.source.json</code> content here to register the passage byte for byte (at most {IMPORT_LIMIT // 1024} KB; the record is data — nothing in it is fetched or executed, and the passage digest is recomputed).</p>
 <label>Ingestion source record (JSON)</label><textarea name="record" rows="6">{self._val('import', 'record')}</textarea>
 <label>Observed at — the provenance record's retrieved_at (UTC, optional; default now)</label><input type="text" name="record_observed_at" value="{self._val('import', 'record_observed_at')}">
-<button type="submit">Register ingested source</button></form>"""
+<button type="submit">Register ingested source</button></form>{corr_html}"""
         return self.page("Step 1 — Source", body)
 
     def page_claim_new(self, q) -> str:
@@ -707,8 +767,10 @@ class Handler(BaseHTTPRequestHandler):
         if full is None:
             return self.page("No such claim", '<div class="err">This claim is not frozen in this workspace.</div>')
         st = ws.claim_state(cid, cut) if cut else full
+        later = availability.later_at(full, availability.index(ws.events(), cut), cut) if cut else []
         if st is None:
-            return self.page(cid, f'<div class="notice">As-of <b>{esc(cut)}</b>: nothing about this claim was available yet (its first source became available {esc(full["versions"][0]["claim"]["source"]["available_as_of"])}).</div><p><a href="/claim/{esc(urllib.parse.quote(cid, safe=""))}">Back to the current view</a></p>')
+            first = full["versions"][0]["claim"]["source"]; held = availability.index(ws.events(), cut).get(availability.source_id(first), {}).get("effective") or first["available_as_of"]
+            return self.page(cid, f'<div class="notice">As-of <b>{esc(cut)}</b>: nothing about this claim was available yet (its first source became available {esc(held)}{"" if held == first["available_as_of"] else ", corrected from the registered " + esc(first["available_as_of"])}).</div>{self._later_corrections_html(later, cut)}<p><a href="/claim/{esc(urllib.parse.quote(cid, safe=""))}">Back to the current view</a></p>')
         res = calc.adjudicate(st)
         orig_eff = next((v for v in reversed(st["versions"]) if v["type"] == "CORRECTED_SOURCE"), st["versions"][0])
         revised = [v for v in st["versions"] if v["type"] == "REVISED"]
@@ -720,14 +782,17 @@ class Handler(BaseHTTPRequestHandler):
         def times_with_source(t: dict, s: dict) -> str:
             sid = s["accession"] + ":" + s["source_hash"][:16]
             return f'{self._times(t)}<br><span class="muted">source observed {esc(src_seen.get(sid) or "—")}</span>'
+        def avail(s: dict) -> str:
+            eff = availability.effective_for(st, s)
+            return f'<b>{esc(s["available_as_of"])}</b>' + (f'<br><span class="warn">corrected to <b>{esc(eff)}</b></span><br><span class="muted">the registered value is retained</span>' if eff != s["available_as_of"] else "")
         src_rows = ""
         for v in st["versions"]:
             s = v["claim"]["source"]
-            src_rows += f'<tr><td>{esc(v["version_id"])} {esc(v["type"])}</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(v["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])} · rights {esc(s["rights"])}</span></td></tr>'
+            src_rows += f'<tr><td>{esc(v["version_id"])} {esc(v["type"])}</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td>{avail(s)}</td><td>{times_with_source(v["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])} · rights {esc(s["rights"])}</span></td></tr>'
         if st["withdrawn"]:
-            s = st["withdrawn"]["source"]; src_rows += f'<tr><td>{esc(st["withdrawn"]["revision_id"])} WITHDRAWN</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(st["withdrawn"]["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre></td></tr>'
+            s = st["withdrawn"]["source"]; src_rows += f'<tr><td>{esc(st["withdrawn"]["revision_id"])} WITHDRAWN</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td>{avail(s)}</td><td>{times_with_source(st["withdrawn"]["time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre></td></tr>'
         if st["outcome"]:
-            s = st["outcome"]["source"]; src_rows += f'<tr><td>OUTCOME</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td><b>{esc(s["available_as_of"])}</b></td><td>{times_with_source(st["outcome"]["_time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])}</span></td></tr>'
+            s = st["outcome"]["source"]; src_rows += f'<tr><td>OUTCOME</td><td>{esc(s["accession"])} · {esc(s["form"])}</td><td>{esc(s["filed_at"])}</td><td>{avail(s)}</td><td>{times_with_source(st["outcome"]["_time"], s)}</td><td><pre class="excerpt">{esc(s["excerpt"])}</pre><span class="muted">sha256 {esc(s["source_hash"])}</span></td></tr>'
         # --- 2 versions
         ver_rows = "".join(f'<tr><td><b>{esc(v["version_id"])}</b><br>{esc(v["type"])}</td><td>{esc(v["claim"]["range"]["low"])} – {esc(v["claim"]["range"]["high"])} {esc(v["claim"]["unit"])}<br><span class="muted">({esc(money.as_stated(money.parse_amount(v["claim"]["range"]["low"]), v["claim"]["scale_as_stated"]))} – {esc(money.as_stated(money.parse_amount(v["claim"]["range"]["high"]), v["claim"]["scale_as_stated"]))})</span></td><td>{esc(v["claim"]["currency"])} / {esc(v["claim"]["unit"])}</td><td>{esc(v["claim"]["basis"])}</td><td>{esc(v["claim"]["fiscal_period"]["label"])} ({esc(v["claim"]["fiscal_period"]["type"])} {esc(v["claim"]["fiscal_period"]["start"])}..{esc(v["claim"]["fiscal_period"]["end"])})</td><td>{esc(v["claim"]["resolution_rule"])}</td><td>{esc(v["claim"]["stated_at"])}</td><td><code>{esc(v["claim"]["_digest"][:16])}…</code>{"<br><span class=muted>supersedes " + esc(v.get("supersedes", "")[:16]) + "…</span>" if v.get("supersedes") else ""}</td><td>{esc(v.get("reason") or "")}</td></tr>' for v in st["versions"])
         # --- 3 comparison
@@ -770,9 +835,11 @@ class Handler(BaseHTTPRequestHandler):
         # --- 6 adjudication
         adj_rows = "".join(f'<tr><td>{esc(a["reviewer"])}</td><td>{esc(a["rule"])}</td><td><b>{esc(a["label"])}</b>{" <span class=warn>DISPUTED</span>" if a["disputed"] else ""}</td><td>{esc(a["computed_result"])}</td><td>{esc(a["reason"])}</td><td>{esc(a["conflicts"] or "—")}</td><td>{"".join(f"<code>{esc(h[:12])}…</code> " for h in a["evidence"])}</td><td>{esc(a["time"]["recorded_at"])}</td></tr>' for a in st["adjudications"])
         A = "adjudicate"; V = lambda n, d="": self._val(A, n, d)
-        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] if e["kind"] != "ADJUDICATION_RECORDED")
+        ev_opts = "".join(f'<label><input type="checkbox" name="evidence" value="{esc(e["event_hash"])}"{self._checked(A, "evidence", value=e["event_hash"])}> {esc(e["seq"])} {esc(e["kind"])} <code>{esc(e["event_hash"][:12])}…</code></label>' for e in full["events"] + self._correction_events(full) if e["kind"] != "ADJUDICATION_RECORDED")
         labels = self._sel("label", calc.RESULTS, self._cur(A, "label", res["result"]), blank=False)
-        adj_form = f"""<form class="card" id="form-adjudicate" method="post" action="/claim/{esc(cq)}/adjudicate">{self._csrf_field(A)}<h3>Record an adjudication</h3><p class="muted">A review is an append-only record with the reviewer label you type (attribution, not authenticated identity). If your label differs from the computed result, tick Disputed and give the reason: both stay visible and the computed result is not changed. A correction is a further adjudication; earlier ones are retained.</p><div class="row"><div><label>Reviewer identity</label><input type="text" name="reviewer" value="{V('reviewer')}"></div><div><label>Rule applied</label><input type="text" name="rule" value="{V('rule', res['rule'])}"></div><div><label>Label (computed: {esc(res["result"])})</label>{labels}</div></div><fieldset><legend>Evidence (events relied on)</legend>{ev_opts}</fieldset><label>Reason</label><textarea name="reason" rows="2">{V('reason')}</textarea><label>Conflicts (who disagrees and why; kept visible)</label><input type="text" name="conflicts" value="{V('conflicts')}"><label><input type="checkbox" name="disputed" value="1"{self._checked(A, 'disputed')}> Disputed — my label differs from the computed result and I explain why (a differing label without this flag is refused)</label><button type="submit">Record adjudication</button></form>"""
+        blk = availability.block(full)
+        adj_corrected = f'<div class="notice"><b>The availability of a cited source was corrected.</b> Computed as recorded: <b>{esc(blk["corrected_view"]["recorded_result"])}</b>; under the corrected availability: <b>{esc(blk["corrected_view"]["result"])}</b>. Earlier adjudications are retained unchanged. A label that differs from the as-recorded result is recorded as Disputed with your reason; the correction event can be ticked as evidence.</div>' if blk and blk["corrected_view"]["result_changes"] else ""
+        adj_form = f"""{adj_corrected}<form class="card" id="form-adjudicate" method="post" action="/claim/{esc(cq)}/adjudicate">{self._csrf_field(A)}<h3>Record an adjudication</h3><p class="muted">A review is an append-only record with the reviewer label you type (attribution, not authenticated identity). If your label differs from the computed result, tick Disputed and give the reason: both stay visible and the computed result is not changed. A correction is a further adjudication; earlier ones are retained.</p><div class="row"><div><label>Reviewer identity</label><input type="text" name="reviewer" value="{V('reviewer')}"></div><div><label>Rule applied</label><input type="text" name="rule" value="{V('rule', res['rule'])}"></div><div><label>Label (computed: {esc(res["result"])})</label>{labels}</div></div><fieldset><legend>Evidence (events relied on)</legend>{ev_opts}</fieldset><label>Reason</label><textarea name="reason" rows="2">{V('reason')}</textarea><label>Conflicts (who disagrees and why; kept visible)</label><input type="text" name="conflicts" value="{V('conflicts')}"><label><input type="checkbox" name="disputed" value="1"{self._checked(A, 'disputed')}> Disputed — my label differs from the computed result and I explain why (a differing label without this flag is refused)</label><button type="submit">Record adjudication</button></form>"""
         # --- amendments / outcome forms
         cur = st["current"]["claim"]
         A = "amend"; V = lambda n, d="": self._val(A, n, d)
@@ -795,7 +862,7 @@ class Handler(BaseHTTPRequestHandler):
             if observed and min(observed) > latest_avail:
                 retro = f'<div class="notice"><b>RETROSPECTIVE REPLAY.</b> Every source was first observed by this workspace on {esc(min(observed).strftime("%Y-%m-%d"))}, after the latest source became public ({esc(latest_avail.strftime("%Y-%m-%d"))}). The as-of views below are reconstructions from source availability timestamps, not contemporaneous records.</div>'
         body = f"""{retro}<p class="muted">{esc(cur["issuer"]["name"])} ({esc(cur["issuer"]["ticker"])}, CIK {esc(cur["issuer"]["cik"])}) · {esc(cur["metric"])} · {"FICTIONAL demonstration data" if cur["fictional"] else "real-source data"}{" · <b class=warn>WITHDRAWN</b>" if full["withdrawn"] else ""}</p>
-<h2 id="source">1 Source</h2><table><tr><th>version</th><th>accession · form</th><th>filed</th><th>available as of</th><th>times</th><th>passage</th></tr>{src_rows}</table>
+<h2 id="source">1 Source</h2><table><tr><th>version</th><th>accession · form</th><th>filed</th><th>available as of</th><th>times</th><th>passage</th></tr>{src_rows}</table>{self._availability_html(st, cut, later)}
 <h2 id="claim">2 Typed claim — versions</h2><table><tr><th>version</th><th>range</th><th>currency / unit</th><th>basis</th><th>fiscal period</th><th>rule</th><th>stated</th><th>digest</th><th>reason</th></tr>{ver_rows}</table>{amend_form}
 <h2 id="comparison">3 Comparison — original vs revised</h2>{cmp_html}
 <h2 id="calculation">4 Calculation</h2>{calc_html}{out_form if not full["withdrawn"] else ""}
@@ -823,7 +890,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def page_help(self, q) -> str:
         ws = self.server.ws; claims = ws.status()["claims"]; o = self.server.origin
-        links = [("/", "Workspace overview — claims, computed results, fictional fixtures"), ("/source", "1 Source — register a passage or an ingestion record; as-of view"), ("/claim/new", "2 Typed claim — save and freeze a commitment"),
+        links = [("/", "Workspace overview — claims, computed results, fictional fixtures"), ("/source", "1 Source — register a passage or an ingestion record; as-of view"), ("/source#availability", "1 Source — correct a wrong availability time with a linked event (the registration is never edited)"), ("/claim/new", "2 Typed claim — save and freeze a commitment"),
                  ("/notes", "Research notes — every note across claims"), ("/dataset", "Dataset coverage — rows, snapshot identity, snapshot export"), ("/dataset.json", "Dataset snapshot, machine-readable"),
                  ("/sci", "Scientific report / replay"), ("/verify", "Verify an export (use a fresh workspace)"), ("/journal", "Journal — the append-only event log"),
                  ("/help/data", "Data dictionary and dataset card — every stored field, the three times, rights, prohibited interpretations")]
@@ -869,6 +936,17 @@ class Handler(BaseHTTPRequestHandler):
             raise ContractError(f"ingestion record: unsupported field(s) {', '.join(extra[:8])}; paste the .source.json file, not the .provenance.json file")
         self.server.ws.register_source(raw, op_id=op_id, observed_at=_norm_ts(form.get("record_observed_at"), "observed_at"))
         return self._redirect("/source")
+
+    def post_availability(self, form, op_id):
+        """Record a source-availability correction. The select carries the source id and the availability the page showed for
+        it; if another correction landed since, the store refuses this one as out of date and nothing is written."""
+        sid, sep, expected = form.get("source_ref", "").rpartition("@")
+        if not sep or not sid:
+            raise ContractError("source availability cannot be corrected: source_ref: choose the registered source whose availability is wrong; registered sources are listed in the form")
+        raw = {"corrected_available_as_of": _norm_ts(form.get("corrected_available_as_of"), "correction.corrected_available_as_of") or "", "reason": form.get("reason", ""),
+               "evidence_ref": form.get("evidence_ref", ""), "actor": form.get("actor", "").strip(), "simulated": form.get("simulated") == "1"}
+        ev, _ = self.server.ws.correct_source_availability(sid, raw, expected_prior=expected, op_id=op_id)
+        return self._redirect(f"/source?corrected={ev['payload']['correction_id']}#availability")
 
     def post_freeze(self, form, op_id):
         src = self._source_by_id(form.get("source_id", ""))

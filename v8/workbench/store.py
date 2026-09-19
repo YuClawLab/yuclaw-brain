@@ -29,13 +29,17 @@ from datetime import datetime, timezone
 
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
 from v3.receipts.storage import resolve_store_root
-from v8.workbench import calc, schema
+from v8.workbench import availability, calc, schema
 
 FORMAT = "yuclaw-commitment-workspace/1"
 LOG = "commitments.jsonl"
 GENESIS = "0" * 64
 KINDS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED",
-         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY")
+         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY", availability.KIND)
+# SOURCE_AVAILABILITY_CORRECTED (V8-011, TIM-08): a linked correction of WHEN a registered source became public. Workspace-level
+# like the registration it names. It carries no source availability of its own, so an as-of view places it by its local action
+# time: it takes effect for cutoffs at or after that time and is only listed — as a later correction — before it. The
+# registration, the passage bytes, digests, observation times, claim versions, outcomes and adjudications are never edited.
 # SCI_REPLAY_RECORDED (V8-005): a bounded science-journal input replayed through the adapted kernel — the input (data, never
 # code), its identity, the recomputed report or the specific refusal, link verification and the replay status. Linked to a
 # financial claim when the input names one; otherwise workspace-level (claim_id None). Never changes any claim.
@@ -215,20 +219,25 @@ class Workspace:
         return {e["claim_id"] for e in events if e["kind"] == "CLAIM_FROZEN"}
 
     @staticmethod
-    def visible(ev: dict, as_of: str | None) -> bool:
+    def visible(ev: dict, as_of: str | None, idx: dict | None = None) -> bool:
+        """`idx` is availability.index(events, as_of): with it, an event citing a source whose availability was corrected at
+        or before the cutoff is cut by the corrected value; a correction recorded after the cutoff changes nothing here."""
         if as_of is None:
             return True
         cut = schema.parse_ts(as_of)
-        src = ev["time"].get("source_available_as_of")
+        src = availability.effective_stamp(ev, idx)
         stamp = src if src is not None else ev["time"]["recorded_at"]
         return schema.parse_ts(stamp) <= cut
 
     def events(self, claim_id=None, as_of=None) -> list[dict]:
         evs = self.load()["events"]
-        return [e for e in evs if (claim_id is None or e["claim_id"] == claim_id) and self.visible(e, as_of)]
+        idx = availability.index(evs, as_of) if as_of is not None else None
+        return [e for e in evs if (claim_id is None or e["claim_id"] == claim_id) and self.visible(e, as_of, idx)]
 
     def claim_state(self, claim_id: str, as_of: str | None = None) -> dict | None:
-        return self._derive(claim_id, self.events(claim_id, as_of), as_of)
+        evs = self.load()["events"]; idx = availability.index(evs, as_of)
+        st = self._derive(claim_id, [e for e in evs if e["claim_id"] == claim_id and self.visible(e, as_of, idx)], as_of)
+        return None if st is None else availability.attach(st, idx)
 
     def _state_for(self, claim_id: str, prior: dict | None) -> dict | None:
         """The state a write is computed against: current, or — for a retry — the state as it was just before the
@@ -236,7 +245,9 @@ class Workspace:
         duplicate, while different content under the same op_id is a conflict."""
         if prior is None:
             return self.claim_state(claim_id)
-        return self._derive(claim_id, [e for e in self.load()["events"] if e["claim_id"] == claim_id and e["seq"] < prior["seq"]], None)
+        evs = [e for e in self.load()["events"] if e["seq"] < prior["seq"]]
+        st = self._derive(claim_id, [e for e in evs if e["claim_id"] == claim_id], None)
+        return None if st is None else availability.attach(st, availability.index(evs))
 
     def _derive(self, claim_id: str, evs: list[dict], as_of: str | None) -> dict | None:
         versions, withdrawn, outcome, adjs, exports, verifs, sources, notes, sci = [], None, None, [], [], [], [], [], []
@@ -296,6 +307,38 @@ class Workspace:
                     raise ContractError(f"source cannot be registered: {sid} is already registered with different {', '.join(differs)} (recorded {first['time']['recorded_at']}); a registered source is never edited and the first registration stands — "
                                         "check the values against the original document; nothing was written")
             return self.append("SOURCE_REGISTERED", None, {"source_id": sid, "source": src}, op_id=op_id, observed_at=observed_at, source_available_as_of=src["available_as_of"])
+
+    def correct_source_availability(self, source_id: str, raw: dict, *, expected_prior: str, op_id: str) -> tuple[dict, bool]:
+        """Record a correction of when a registered source became public (V8-011, TIM-08). `expected_prior` is the availability
+        the caller was looking at: if another correction landed in between, this one is refused as stale and nothing is
+        written. The values are computed against the state the operation first ran on, so a retry with the same op_id
+        reproduces the same payload (one durable event) and different content under the same op_id is a conflict."""
+        with self._locked():
+            prior = self._prior(op_id)
+            evs = [e for e in self.load()["events"] if prior is None or e["seq"] < prior["seq"]]
+            ent = availability.index(evs).get(source_id)
+            if ent is None:
+                raise ContractError("source availability cannot be corrected: choose a registered source (step 1); an unregistered passage has no registration to correct")
+            corr, reasons = schema.check_availability_correction(raw)
+            if reasons:
+                raise ContractError("source availability cannot be corrected: " + "; ".join(reasons))
+            src = ent["registration"]["payload"]["source"]; last = ent["applied"][-1] if ent["applied"] else ent["registration"]
+            if expected_prior != ent["effective"]:
+                raise ContractError(f"source availability cannot be corrected: this form was prepared while the availability read {expected_prior or 'nothing'}, but it now reads {ent['effective']} "
+                                    f"({last['payload'].get('correction_id', 'the registration')}, recorded {last['time']['recorded_at']}); review that record and choose the source again — nothing was written")
+            new, old = schema.parse_ts(corr["corrected_available_as_of"]), schema.parse_ts(ent["effective"])
+            if new == old:
+                raise ContractError("source availability cannot be corrected: corrected_available_as_of equals the availability already in force (nothing to correct)")
+            if new.date().isoformat() < src["filed_at"]:
+                raise ContractError(f"source availability cannot be corrected: corrected_available_as_of {corr['corrected_available_as_of']} precedes the source's filing date {src['filed_at']}")
+            n = sum(1 for e in evs if e["kind"] == availability.KIND) + 1
+            payload = {"correction_id": f"AC{n}", "source_id": source_id, "accession": src["accession"], "source_hash": src["source_hash"],
+                       "registration_event": ent["registration"]["event_hash"], "registered_available_as_of": ent["registered"],
+                       "prior_available_as_of": ent["effective"], "prior_event": last["event_hash"], "corrected_available_as_of": corr["corrected_available_as_of"],
+                       "direction": "EARLIER" if new < old else "LATER", "reason": corr["reason"], "evidence_ref": corr["evidence_ref"], "actor": corr["actor"],
+                       "actor_kind": "simulated_test_action" if corr["simulated"] else "attribution_label", "attribution": availability.ATTRIBUTION,
+                       "effect_rule": availability.EFFECT_RULE, "changes_source": False, "changes_claim": False}
+            return self.append(availability.KIND, None, payload, op_id=op_id, actor="researcher")          # no source availability of its own: placed by its recorded (local action) time
 
     def freeze_claim(self, raw_claim: dict, *, op_id: str, observed_at: str | None = None) -> tuple[dict, bool]:
         with self._locked():
@@ -366,7 +409,7 @@ class Workspace:
                 raise ContractError("reviewer identity and reason are required")
             if label not in calc.RESULTS:
                 raise ContractError(f"label must be one of {list(calc.RESULTS)}")
-            known = {e["event_hash"] for e in st["events"]}
+            known = {e["event_hash"] for e in st["events"]} | availability.event_hashes(st)
             bad = [h for h in evidence if h not in known]
             if bad:
                 raise ContractError(f"evidence must reference event hashes of this claim; unknown: {[b[:12] for b in bad]}")
@@ -377,6 +420,10 @@ class Workspace:
                        "computed_result": computed["result"], "computed": {"original": computed["original"]["result"], "revised": None if computed["revised"] is None else computed["revised"]["result"],
                                                                             "comparison_permitted": computed["comparison_permitted"], "reasons": computed["reasons"]},
                        "state_tip": st["events"][-1]["event_hash"]}
+            blk = availability.block(st)
+            if blk is not None:                                          # what the reviewer was shown beside the as-recorded result; the label rule above is unchanged
+                payload["availability_corrected_view"] = {"result": blk["corrected_view"]["result"], "result_changes": blk["corrected_view"]["result_changes"],
+                                                          "corrections": [c["correction_id"] for s in blk["sources"] for c in s["corrections"]]}
             return self.append("ADJUDICATION_RECORDED", claim_id, payload, op_id=op_id)
 
     def record_note(self, claim_id: str, raw_note: dict, *, op_id: str) -> tuple[dict, bool]:
@@ -395,7 +442,7 @@ class Workspace:
             if note["version_ref"] is not None and note["version_ref"] not in versions:
                 raise ContractError(f"note.version_ref: {note['version_ref']!r} is not a version of this claim ({sorted(versions)})")
             vref = note["version_ref"] or st["current"]["version_id"]
-            known = {e["event_hash"] for e in st["events"]}
+            known = {e["event_hash"] for e in st["events"]} | availability.event_hashes(st)
             bad = [h for h in note["evidence"] if h not in known]
             if bad:
                 raise ContractError(f"note.evidence must reference event hashes of this claim; unknown: {[b[:12] for b in bad]}")

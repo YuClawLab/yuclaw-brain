@@ -11,6 +11,12 @@ digest, (d) recomputes every claim-version digest whose excerpt is present, ever
 calculations from the packed versions and outcome, comparing them with the packed results. A changed payload,
 a missing member or a tampered result fails with the first discrepancy named.
 
+Source-availability corrections (V8-011) travel as events: the original registration and every linked correction of a
+cited source are packed, and — only when at least one correction exists — a `source_availability` block carries the chain,
+the historical-view rule, the corrected view and what needs review. The verifier checks the chain links and re-derives the
+block from the packed events; the as-recorded `results` and `dataset_row` stay what they were. An export without a
+correction has no such block and the same bytes as before, so earlier exports verify under the schema they recorded.
+
 Local research export is SEPARATE from public publication: `publication_eligibility()` reports why a commitment
 export is not publishable through the receipts packet in 8.0.0 (not in the PERMITTED class; rights; free-text
 policy) and never adds anything to that class.
@@ -28,7 +34,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
-from v8.workbench import NOT_ADVICE, calc, dataset, schema
+from v8.workbench import NOT_ADVICE, availability, calc, dataset, schema
 from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.store import Workspace, _line_hash
 
@@ -117,7 +123,8 @@ def verify_sci_records(records: list, checks: list) -> str | None:
 
 
 def source_events_for(state: dict, source_events: list[dict] | None) -> list[dict]:
-    """The SOURCE_REGISTERED events of the sources this claim cites (they carry when the workspace first observed each passage)."""
+    """The SOURCE_REGISTERED events of the sources this claim cites (they carry when the workspace first observed each passage)
+    and every availability correction linked to them (the registration is never edited; the chain travels with it)."""
     if not source_events:
         return []
     hashes = {v["claim"]["source"]["source_hash"] for v in state["versions"]}
@@ -125,7 +132,7 @@ def source_events_for(state: dict, source_events: list[dict] | None) -> list[dic
         hashes.add(state["outcome"]["source"]["source_hash"])
     if state.get("withdrawn"):
         hashes.add(state["withdrawn"]["source"]["source_hash"])
-    return [dict(e) for e in source_events if e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source"]["source_hash"] in hashes]
+    return [dict(e) for e in source_events if (e["kind"] == "SOURCE_REGISTERED" and e["payload"]["source"]["source_hash"] in hashes) or (e["kind"] == availability.KIND and e["payload"]["source_hash"] in hashes)]
 
 
 def build_canonical(state: dict, source_events: list[dict] | None = None) -> dict:
@@ -151,8 +158,10 @@ def build_canonical(state: dict, source_events: list[dict] | None = None) -> dic
     # research events only: export/verification events are operation metadata and stay outside the canonical content,
     # so two exports of the same research state reproduce the same canonical digest
     src_evs = source_events_for(state, source_events)
+    if source_events:
+        availability.attach(state, availability.index(source_events))   # the block below and the packed events come from one event list
     events = sorted([dict(e) for e in state["events"] if e["kind"] in RESEARCH_EVENTS] + src_evs, key=lambda e: e["seq"])
-    seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in src_evs}
+    seen = {e["payload"]["source_id"]: e["time"]["observed_at"] for e in src_evs if e["kind"] == "SOURCE_REGISTERED"}
     results = calc.adjudicate(state)
     orig_eff = next((v for v in reversed(state["versions"]) if v["type"] == "CORRECTED_SOURCE"), state["versions"][0])
     revised = [v for v in state["versions"] if v["type"] == "REVISED"]
@@ -165,6 +174,9 @@ def build_canonical(state: dict, source_events: list[dict] | None = None) -> dic
            "research_notes": [_note_ref(n) for n in state.get("research_notes", [])],
            "sci": [_sci_ref(r) for r in state.get("sci", [])],
            "dataset_row": dataset.build_row(state, seen), "limitations": LIMITS, "not_advice": NOT_ADVICE}
+    blk = availability.block(state)
+    if blk is not None:                                           # present only when a cited source's availability was corrected: an uncorrected export keeps its earlier bytes
+        can["source_availability"] = blk
     # events carry the same excerpts as versions/outcome; withhold them under the same rights rule
     withheld = {s["source_hash"] for s in srcs if not s["excerpt_included"]}
     if withheld:
@@ -352,9 +364,10 @@ def _state_from_canonical(can: dict) -> dict:
     if can.get("outcome"):
         outcome = dict(can["outcome"]["outcome"], _digest=can["outcome"]["outcome_digest"], _event_hash=can["outcome"].get("event_hash"), _time=can["outcome"].get("time"))
     notes = [dict(n) for n in can.get("research_notes", [])]
-    events = [e for e in can.get("events", []) if e.get("kind") != "SOURCE_REGISTERED"]           # claim-scoped events, as the store derives them
-    return {"claim_id": can["claim_id"], "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": can.get("adjudications", []), "events": events,
-            "current": versions[-1], "research_notes": notes, "research_notes_current": [n for n in notes if n.get("superseded_by") is None], "sci": [dict(r) for r in can.get("sci", [])]}
+    events = [e for e in can.get("events", []) if e.get("kind") not in ("SOURCE_REGISTERED", availability.KIND)]   # claim-scoped events, as the store derives them
+    st = {"claim_id": can["claim_id"], "versions": versions, "withdrawn": withdrawn, "outcome": outcome, "adjudications": can.get("adjudications", []), "events": events,
+          "current": versions[-1], "research_notes": notes, "research_notes_current": [n for n in notes if n.get("superseded_by") is None], "sci": [dict(r) for r in can.get("sci", [])]}
+    return availability.attach(st, availability.index(can.get("events", [])))
 
 
 def verify_export(zip_path) -> dict:
@@ -478,6 +491,20 @@ def _verify_claim_canonical(can: dict, checks: list) -> tuple[str | None, dict |
             first = first or "research notes block differs from the notes re-derived from the packed events (or a note link is unknown)"
     else:
         checks.append({"check": "recompute-notes", "ok": None, "note": "not present in this export (written before research notes existed); nothing reinterpreted"})
+    # source-availability corrections: chain links checked, then the block re-derived from the packed registration and correction events
+    corrections = [e for e in can.get("events", []) if e.get("kind") == availability.KIND]
+    if corrections or "source_availability" in can:
+        try:
+            problem = availability.chain_problem(can.get("events", []))
+            derived = None if problem else availability.block(_state_from_canonical(can))
+        except Exception as exc:                            # a malformed packet must not produce a traceback
+            problem, derived = f"source availability recompute raised {exc.__class__.__name__}", None
+        same = problem is None and json.loads(canonical_json(derived)) == can.get("source_availability")
+        checks.append({"check": "recompute-source-availability", "ok": same, "note": problem or f"{len(corrections)} correction(s) linked to their registration; corrected view re-derived from the packed events"})
+        if not same:
+            first = first or problem or "source availability block differs from the block re-derived from the packed registration and correction events"
+    else:
+        checks.append({"check": "recompute-source-availability", "ok": None, "note": "no availability correction in this export; nothing reinterpreted"})
     if first:
         return first, None
     # recompute the supported calculations from the packed versions and outcome
