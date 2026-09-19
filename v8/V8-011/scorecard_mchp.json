@@ -1,0 +1,257 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-011 (corrected release candidate) — real-source retrospective replay (Microchip; NOT ELIGIBLE under the recorded corpus criteria) — semantics unchanged from V8-010",
+ "mode": "mchp",
+ "recorded_utc": "2026-09-19T11:17:22+00:00",
+ "candidate": {
+  "commit": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7",
+  "tree": "ba82955d0c3eee9bcd72c4164cfd36b2cf93b0fb",
+  "version": "8.0.0",
+  "branch": "codex/v8-integration",
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "7c2dd63d5094539c487d2e7fc53edebe36154c79c0d89cacd736f933b3afdc94"
+  },
+  "artifact_label": "CANDIDATE / PRE-RELEASE-REVIEW ARTIFACTS — built once from the corrected candidate source commit for owner review; NOT a final release set: release_authorized=false; the authorized publisher later adopts an appropriately bound verified pair or performs its documented single build",
+  "runtime": "INSTALLED wheel in a fresh virtual environment outside the checkout (no editable install, no PYTHONPATH); the same journey also ran from the installed sdist: 7/7 + research_notes DEMONSTRATED, dataset DEMONSTRATED, sci DEMONSTRATED, usability NOT_RUN, availability_correction NOT_RUN"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:38191",
+  "B_fresh_workspace": "http://127.0.0.1:45507",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_mchp_sources.png",
+     "sha256": "1efe60ee0c6b6d062df583d570099ea06e95308b84d2d6f6f93f0dcc686302b8",
+     "url": "http://127.0.0.1:38191/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "02_step2_mchp_claim_frozen.png",
+     "sha256": "f0c0edb88566a5a694f9b97f8acb5a90e2fd881fe799c5fdf0d9031066fc3cfb",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "03_step3_mchp_comparison_discrepancy.png",
+     "sha256": "1185a9662e87fa9f20d5df4cc91b966def32fd5050115e7dbfbc57f7509b4b33",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step4_mchp_calculation.png",
+     "sha256": "75162dd6058aa534e1b1e4968d7fd9f0ddc5a788e62e1bd7d870520bb5f25788",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE#calculation"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "05_step5_mchp_asof_may20.png",
+     "sha256": "cd128d7b0f2395ea106f2c1043596558fc35ae552c1041d50e4f4cb1edc1918b",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE?as_of=2025-05-20T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step6_mchp_adjudicated.png",
+     "sha256": "8bfdce3873c5db15c3d52d1ff087a4f47b37603219d6f52a4d983a7ba6513ad7",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE#adjudication"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "07_step7_mchp_export_built.png",
+     "sha256": "f70ee815b49a2bc1f6801e49b52d3403acaf5972e5a79a8493a017f708d7b66f",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE?built=exp-ba5d3a00969a5206#export"
+    },
+    {
+     "file": "08_step7_mchp_verified_fresh.png",
+     "sha256": "dfd44ba0758883dbf7dfc92685a01d353764447a2b0b2e3929d3ac9f5d6a0512",
+     "url": "http://127.0.0.1:45507/verify"
+    }
+   ]
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "09_research_notes_mchp_notes.png",
+     "sha256": "116a377aa181404f884a316dc9f0c6f207d39cd745eb2f0cd366237b7dd3c088",
+     "url": "http://127.0.0.1:38191/claim/MCHP-Q1FY2026-NETSALES-GUIDE#notes"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "10_dataset_mchp_dataset_row.png",
+     "sha256": "2ea006437e77e3fe2988442439e1941234de5f6b090e2533c6bd37378c3f7d58",
+     "url": "http://127.0.0.1:38191/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "11_sci_mchp_sci_retrospective_link.png",
+     "sha256": "6c4de5f1c8aaca7ce3952dfa7d7b6d13215e16e1cc5345573234db0a883c7cdb",
+     "url": "http://127.0.0.1:38191/sci/S1"
+    }
+   ]
+  },
+  "usability": {
+   "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+   "status": "NOT_RUN",
+   "positive_assertions": 0,
+   "negative_assertions": 0,
+   "failed": [],
+   "screenshots": []
+  },
+  "availability_correction": {
+   "feature": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)",
+   "status": "NOT_RUN",
+   "positive_assertions": 0,
+   "negative_assertions": 0,
+   "failed": [],
+   "screenshots": []
+  }
+ },
+ "post_statuses": {
+  "303": 12,
+  "422": 2,
+  "200": 2
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-011/journey_mchp/journey_log.json (paths scrubbed)",
+  "journey_log_sha256_private": "adb1847c7c69c7c072414a8a2342920a5a7778fde7a17fc9cf94755274ca2912",
+  "screenshots": "private record; named with sha256 in the scorecard"
+ },
+ "earlier_records_preserved": "V8-002 … V8-010 scorecards keep their original candidate identities (a41dc39e … 93274e7d); this scorecard does not replace them",
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice.",
+ "sources": {
+  "original": {
+   "accession": "0000827054-25-000061",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000061/exhibit991q4fy25.htm",
+   "available_as_of": "2025-05-08T20:17:05Z",
+   "source_hash": "d7e97b2b48c5403830d6f236d2c8f0f51aa57503296c733425de2635ccb3ec17",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "2721209b4a130b169bdff0c150bd06e6ece4dce4dcc900f1580b3423a2c4522c",
+   "retrieved_at": "2026-09-15T10:27:12Z"
+  },
+  "revision": {
+   "accession": "IR:ir.microchip.com:1315",
+   "url": "https://ir.microchip.com/news-events/press-releases/detail/1315/microchip-technology-raises-financial-guidance-for-sales-and-eps-for-first-quarter-of-fiscal-year-2026",
+   "available_as_of": "2025-05-30T03:59:59Z",
+   "source_hash": "a584cfdd883abee660dad362ca1731f55311a465d9bb0cd9e3ce51b902730bf3",
+   "rights": "COMPANY_PRESS_RELEASE",
+   "original_bytes_sha256": "6d7e3abc46fa141c60a8ae520be215cb242c777de76abe5223937d98bd0d3fed",
+   "retrieved_at": "2026-09-15T10:28:25Z"
+  },
+  "actual": {
+   "accession": "0000827054-25-000132",
+   "url": "https://www.sec.gov/Archives/edgar/data/827054/000082705425000132/exhibit991q1fy26.htm",
+   "available_as_of": "2025-08-07T20:20:13Z",
+   "source_hash": "55b697c56b1c9536b54296f0462cdfad0469f8d67119c594712c289b6c8958e2",
+   "rights": "SEC_PUBLIC_FILING",
+   "original_bytes_sha256": "d29d76af9a0a8cd73ee47992599759f961b98aa16c58d1c385b5244b9ec56fbc",
+   "retrieved_at": "2026-09-15T10:29:11Z"
+  }
+ },
+ "replay_label": "RETROSPECTIVE: sources observed on the ingestion date, after the outcome was public; as-of views are reconstructions from availability timestamps",
+ "limitations": [
+  "RETROSPECTIVE replay: every source was first observed on the ingestion date (2026-09-15), after the outcome was public; as-of views are reconstructions",
+  "NOT_ELIGIBLE_UNDER_V8_001_CRITERIA (recorded in the workspace as an attribution-labelled, simulated-test note citing v8/V8-003/real_data_selection.json): a behaviour demonstration, not real-data quality and not a dataset product; the criteria were not loosened and no broader issuer search was started",
+  "the original source states 1.020 billion at the low end where the revision describes the prior range from 1.025 billion; the discrepancy is preserved verbatim and not corrected",
+  "the actual (1.0755 billion) is outside both recorded ranges: OUT_OF_RANGE / OUT_OF_RANGE, never presented as IN_RANGE",
+  "press-release excerpts are withheld from exports (COMPANY_PRESS_RELEASE rights); digests remain; publication eligibility NOT ELIGIBLE",
+  "stored source records were replayed offline (v8_003 ingestion records): no new retrieval, no SEC request, so no SEC_USER_AGENT setting was needed or used",
+  "the usability and availability-correction features are NOT_RUN in this mode by design (they are demonstrated in the fixtures journey); the scientific link is a retrospective label, never prospective evidence"
+ ]
+}

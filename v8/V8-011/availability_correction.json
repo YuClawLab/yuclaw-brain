@@ -1,0 +1,129 @@
+{
+ "record": "v8-source-availability-correction/1",
+ "order": "V8-011 §3 (TIM-08)",
+ "commits": {
+  "implementation": "b26ad2eb",
+  "journey_inspector_guides": "2547c43b"
+ },
+ "existing_mechanism_inspected_first": {
+  "candidate": "the CORRECTED_SOURCE claim amendment (SOURCE_CORRECTED event) and register_source",
+  "verdict": "cannot express an availability correction",
+  "reasons": [
+   "it creates a new CLAIM version citing a DIFFERENT passage; the wrong time belongs to the SAME passage",
+   "the amendment event is stamped with the new availability, so an 'earlier' correction would appear in earlier as-of views as if it had been known then",
+   "it records no prior and corrected values, no evidence reference and no check against an out-of-date submission",
+   "register_source refuses a changed availability for an identical passage (the first registration stands)",
+   "a registered source can be cited by several claims; a claim-scoped amendment cannot correct it once"
+  ]
+ },
+ "extension": {
+  "size": "one workspace-level event kind, SOURCE_AVAILABILITY_CORRECTED; one module v8/workbench/availability.py; one store method; one form and route",
+  "reused_controls": [
+   "exclusive workspace lock",
+   "operation identifier retry/conflict",
+   "session cookie",
+   "same-origin Origin and Sec-Fetch-Site",
+   "CSRF token",
+   "contract validation with every reason listed",
+   "refused form re-rendered with entries kept"
+  ],
+  "payload": [
+   "correction_id",
+   "source_id",
+   "accession",
+   "source_hash",
+   "registration_event",
+   "registered_available_as_of",
+   "prior_available_as_of",
+   "prior_event",
+   "corrected_available_as_of",
+   "direction",
+   "reason",
+   "evidence_ref",
+   "actor",
+   "actor_kind",
+   "attribution",
+   "effect_rule",
+   "changes_source=false",
+   "changes_claim=false"
+  ],
+  "server_recorded_time": "recorded_at, stamped by the server; the event carries NO source availability of its own",
+  "no_migration": "no workspace is migrated and no timestamp is fabricated; existing workspaces simply hold no such event"
+ },
+ "three_times": {
+  "asserted_availability": "as registered (never edited) and as corrected (the chain)",
+  "observation": "the registration's observed_at (never corrected)",
+  "correction_recording": "the correction event's recorded_at (server clock)"
+ },
+ "historical_view_semantics": {
+  "rule": "EFFECTIVE_FROM_RECORDED_AT/1",
+  "statement": "a view whose cutoff is at or after a correction's recorded time cuts every event citing the source by the corrected availability; a view at an earlier cutoff keeps the value the record held then and LISTS the correction as a later correction with what it would change",
+  "why": "a later correction is later knowledge: it must stay visible as later, must never make a source known earlier than the record held it, and must never revise a historical view silently",
+  "explained_in": [
+   "the Source page",
+   "the claim page",
+   "the packaged operator guide and data dictionary",
+   "the export block's `semantics`"
+  ]
+ },
+ "eligibility_recomputed_beside_the_record": {
+  "as_recorded_unchanged": [
+   "results",
+   "dataset row status/computed/withdrawal/outcome",
+   "every adjudication",
+   "every claim version and digest"
+  ],
+  "corrected_view": [
+   "result (withdrawal counts as before the outcome only by availability)",
+   "retrospective status"
+  ],
+  "review_codes": [
+   "RESULT_CHANGES",
+   "RETROSPECTIVE_STATUS_RETAINED",
+   "RETROSPECTIVE_UNDER_CORRECTION",
+   "ADJUDICATION_PREDATES_CORRECTION",
+   "AVAILABILITY_AFTER_OBSERVATION"
+  ],
+  "never_upgrades": "a correction can make a record retrospective; it never makes a retrospective record contemporaneous"
+ },
+ "export_contract": {
+  "events": "the original SOURCE_REGISTERED event and the whole correction chain of every cited source",
+  "block": "`source_availability` (yuclaw-source-availability/1) and the row's `availability_corrections` exist ONLY when a correction exists",
+  "earlier_exports": "an export without a correction has the bytes it had before, so earlier exports verify under the schema they recorded (check reported as n/a, nothing reinterpreted)",
+  "verifier": "checks every link (registration, replaced value, recorded order, no availability of its own, contract fields) and re-derives the block from the packed events",
+  "limit": "exports are unsigned: a packet rebuilt wholesale with consistent content is a different export with a different canonical digest, as for every other block"
+ },
+ "focused_cases": {
+  "file": "tests/test_v8_availability_correction.py",
+  "count": 8,
+  "cases": [
+   "LATER: applies from its recorded time, only listed before it",
+   "EARLIER: never turns a later record into earlier knowledge; before the filing date refused",
+   "retry = one event; same op_id different content = conflict; out-of-date submission refused; two concurrent corrections record exactly one",
+   "corrected view beside the record with review codes; earlier adjudication retained; a further disputed adjudication may cite the correction",
+   "a correction never upgrades a retrospective record",
+   "export verified; seven altered counterparts refused (incl. matching hashes and digests); dataset export; fresh workspace over HTTP",
+   "an unrelated claim keeps its export identity",
+   "browser action under session/Origin/CSRF; entries kept; retry; stale refusal; as-of views"
+  ]
+ },
+ "browser_demonstration": {
+  "runner": "v8.workbench.journey (existing), feature slot `availability_correction`",
+  "assertions": 14,
+  "negative": 6,
+  "status_from_installed_wheel": "DEMONSTRATED",
+  "status_from_installed_sdist": "DEMONSTRATED",
+  "installed_cli": "the corrected export verifies (rc 0) and the forged counterpart is refused (rc 1) through the installed command line, wheel and sdist",
+  "attribution": "recorded by the automated journey runner as simulated test actions; not a human review"
+ },
+ "findings_while_verifying": [
+  "the journey's first forged packet was refused by the chain check (stale `direction`) before the block comparison; the forgery was made self-consistent so that only recomputation can refuse it — the stronger case",
+  "two UI-inspection findings on the new pages were measurement errors in the added inspector code, not markup defects: a stylesheet-load race (the table check reads computed style) and a URL fragment that moves the keyboard starting point; both verified by direct experiment and fixed in the inspector"
+ ],
+ "limits": [
+  "a corrected availability is an attributed assertion with an evidence reference, not a verified publisher clock",
+  "the scientific-link retrospective flag and the claim page's RETROSPECTIVE banner stay as recorded; the corrected view reports the difference",
+  "automated inspection and simulated actions only: no human or screen-reader review"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

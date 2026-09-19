@@ -1,0 +1,44 @@
+{
+ "record": "v8-sec-request-identity/1",
+ "order": "V8-011 §4",
+ "commit": "c2f2914b",
+ "before": "v8/workbench/ingest.py read SEC_USER_AGENT at import with a default carrying the maintainer's personal contact address, so any other operator's live SEC request identified the wrong person",
+ "after": {
+  "setting": "environment variable SEC_USER_AGENT (the existing supported configuration path)",
+  "required_for": [
+   "www.sec.gov",
+   "data.sec.gov"
+  ],
+  "read": "when a request is about to be made, never at import",
+  "no_default": true,
+  "no_other_source": "no other credential or configuration is consulted",
+  "refused_before_any_request": [
+   "absent or blank",
+   "the documentation placeholder (example.com/.org/.net, .example, .invalid, .test, .localhost)",
+   "no contact address",
+   "no name beside the address",
+   "over 200 characters",
+   "non-printable characters (no header injection)"
+  ],
+  "message": "names the rule that failed and the setup step; never repeats the value; CLI prints [ingest] REFUSED, exits 2, writes nothing",
+  "other_allow_listed_hosts": "receive the product name without any contact",
+  "kept_out_of": [
+   "source records",
+   "provenance records",
+   "exports",
+   "messages and diagnostics"
+  ],
+  "unchanged": [
+   "host allow-list",
+   "https only",
+   "same-host redirects",
+   "body bound",
+   "content handling"
+  ],
+  "offline_work": "fixtures, stored-source replay (the Microchip journey ran this way), calculations and export verification need no setting"
+ },
+ "documentation": "operator guide §3: how to set your own value, with the placeholder `Your Name your.address@example.org` — which the tool itself refuses",
+ "verification": "mock transport only; no live SEC request was made: unusable values refused with zero requests issued across both SEC hosts; an explicit value sent verbatim; the identity absent from every written record",
+ "not_changed_on_purpose": "the v3 EDGAR pollers behind the published 7.x production path (v3/sources/edgar_poll*.py, v3/extract/narrative.py, yuclaw/data/edgar_downloader.py) keep their own defaults: they are outside the v8 path, the production pipeline depends on them, and historical provenance records and published v7 artifacts are preserved. Whether to change them is a separate owner decision.",
+ "not_advice": "Research and education only. Not investment advice."
+}

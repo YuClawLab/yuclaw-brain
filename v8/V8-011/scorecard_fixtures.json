@@ -1,0 +1,385 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-011 (corrected release candidate) — fixtures journey with the research-notes, dataset, scientific-replay, operator-usability and source-availability-correction demonstrations",
+ "mode": "fixtures",
+ "recorded_utc": "2026-09-19T11:17:22+00:00",
+ "candidate": {
+  "commit": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7",
+  "tree": "ba82955d0c3eee9bcd72c4164cfd36b2cf93b0fb",
+  "version": "8.0.0",
+  "branch": "codex/v8-integration",
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "7c2dd63d5094539c487d2e7fc53edebe36154c79c0d89cacd736f933b3afdc94"
+  },
+  "artifact_label": "CANDIDATE / PRE-RELEASE-REVIEW ARTIFACTS — built once from the corrected candidate source commit for owner review; NOT a final release set: release_authorized=false; the authorized publisher later adopts an appropriately bound verified pair or performs its documented single build",
+  "runtime": "INSTALLED wheel in a fresh virtual environment outside the checkout (no editable install, no PYTHONPATH); the same journey also ran from the installed sdist: 7/7 + research_notes DEMONSTRATED, dataset DEMONSTRATED, sci DEMONSTRATED, usability DEMONSTRATED, availability_correction DEMONSTRATED"
+ },
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:35563",
+  "B_fresh_workspace": "http://127.0.0.1:45787",
+  "bind": "127.0.0.1 only"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+ "score": "7/7",
+ "steps": [
+  {
+   "n": 1,
+   "step": "source",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "d4af3b15fd36e1520ed71b10a2f1bb6fd5f9ff2bc583cf747eac2175fc28199d",
+     "url": "http://127.0.0.1:35563/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "b1fa6af8e2d502c06be59831cc0317bb3564599a797f6f3cf470c1c44b61a838",
+     "url": "http://127.0.0.1:35563/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "25632d57989f2a3780eb698a404c9a802cfdf2cbe41596b13411d1f729c6fce2",
+     "url": "http://127.0.0.1:35563/source"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "step": "typed claim",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 2,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "69a412af851c98a31c688c0495b9b0809299583dcc40ec99d27218fa30bed935",
+     "url": "http://127.0.0.1:35563/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "b3608b0a2bebecf2da379391caed169edf452238915c02612addc4897491112b",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "step": "comparison",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "4096a3bec3063a2085467e3ed2c0831af412a26d72e4b4f96cc6a6c06762bd45",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "f80c89dc04673905b0480e39778eea11301a69f9dd180cdcd46f10c774463860",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "step": "calculation",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 3,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "75eef93a256b6203a729ca7aa4e2eb62ced5095094b26a74e2228651c56e99b4",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "bba2f98857bc289d7d38cbaa1c17602899740015a9dd6ffe3e29734a0987bdd8",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "8c44962b84eb5e395bad994526e5b6863754694e64c4429d875e2d5498359d39",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "d5a982974b57b344712e01894569ee43b1b91c485c4f506e46519688b2ac1903",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "step": "history",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "9d90d1f2563521be2bf94b00dbf293bfc1a2296c218fcd09696596da0d2b342a",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "3a0914b78aed35b37665e2b3f1de7a462a54454ba127a4d2cec5498411e6dc33",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "1b862eb936b4c42c3c4736aa4c86c5fa80adf105c9344764f4b8456970c94a7e",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "step": "adjudication",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "a92df8054c29d7fd503fc559c75412267b76a9f1e650672f0858f9aafead409e",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "ee6f5fb192d9156a2acaae3c2d4d9d1769650ad1f688f1fc3a0d564268c4242f",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "a206c2c71b07e493b7901c5aae4e8ccd27f49bc9a3e7aba900dc69c7a2de6168",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "step": "reproducible export",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "872bebd219ffcc0388f7f378db6cfce5f2e3653aee5569dc1e350b207a7ea956",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?built=exp-4ccb969b6d51a0f4#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "1606649e932f1a5cd8a677cb60165b9c479a344ed31c943c02e9f6a5fe6d2c44",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "c38f20229558d4af7896f2292e23e2278d1095cbbba84f325e972ecf930e84ba",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 7,
+   "negative_assertions": 8,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "21_research_notes_note_recorded.png",
+     "sha256": "ca6749dbecb67db93716fae42eee6548af3977ed82f5800e6bbecfdda00d2fe3",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "22_research_notes_note_corrected.png",
+     "sha256": "c37b82d2aa9da34d8a4a6e5b6c58fe412050e1bf678d2d5147eb1cc21028a280",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "23_research_notes_note_timing_as_of.png",
+     "sha256": "55778d7a2ce1a00a206b770c5327ab6fb014cffa58c01edfb2dbf2e41802c227",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "24_research_notes_note_incomparable.png",
+     "sha256": "4e1f752609fb235e21abd49843265bc928a917ebeb5ed2d98805eca9f7a34286",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#notes"
+    },
+    {
+     "file": "25_research_notes_note_withdrawn_and_pending.png",
+     "sha256": "75962236afe0c8e0b71a1e6abeac8cbe4cde954dac8584f932ef79ab75d5531c",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome#notes"
+    },
+    {
+     "file": "26_research_notes_notes_verified_fresh.png",
+     "sha256": "8bbfafeedd10f46d7056fd44dce466703b9f76f856d19c19fae9daa7f243c618",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 6,
+   "negative_assertions": 4,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "27_dataset_dataset_empty.png",
+     "sha256": "35927617048bb603189631fc18c34bbd73c3f9f849c3890f421b2194e8d516d0",
+     "url": "http://127.0.0.1:45787/dataset"
+    },
+    {
+     "file": "28_dataset_dataset_rows.png",
+     "sha256": "de3ef134e40213a8f68b1998602ec5ca7f9ad38f283ff1d812b7b81bf5239c44",
+     "url": "http://127.0.0.1:35563/dataset"
+    },
+    {
+     "file": "29_dataset_dataset_verified_fresh.png",
+     "sha256": "3be6f0fb4753c39c130ac655ef622d82b68677e065d964e4422547cc4bf933ef",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "30_dataset_dataset_change_identified.png",
+     "sha256": "a3f3cec6b92082561fccb1b3df4b6f952e19b3f2348fdc91e9266162e1af61c8",
+     "url": "http://127.0.0.1:35563/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 6,
+   "negative_assertions": 6,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "31_sci_sci_supported_exploratory.png",
+     "sha256": "f544a94e03be33fa12a2f04f71e4139ec6bffc6b369b7cd92fc35e742181bbff",
+     "url": "http://127.0.0.1:35563/sci/S1"
+    },
+    {
+     "file": "32_sci_sci_refused_monetary.png",
+     "sha256": "9ad2fdbad794c9c1d9375bc1e0c744153d1652bf23442119a259987e7cc129ab",
+     "url": "http://127.0.0.1:35563/sci/S2"
+    },
+    {
+     "file": "33_sci_sci_linked_pending.png",
+     "sha256": "48b39e49389d8f98c94c26ca7419f960cdd586d7332694ff483a66e7581529ed",
+     "url": "http://127.0.0.1:35563/sci/S4"
+    },
+    {
+     "file": "34_sci_sci_verified_fresh.png",
+     "sha256": "09696ff68075df116c43c507f79216e221092d3c09daa52a5fcb361e7a411577",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  },
+  "usability": {
+   "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 5,
+   "negative_assertions": 3,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "35_usability_refused_form_keeps_entries.png",
+     "sha256": "4059711bf6e285373dd66fcf3ad72ef82a52c9ee8a8581a99a25da657237fc10",
+     "url": "http://127.0.0.1:35563/source/register"
+    },
+    {
+     "file": "36_usability_help.png",
+     "sha256": "0e6972495d5e1f85ae35c7f6b688197d6631b9145417654e152e9819c5dda8a3",
+     "url": "http://127.0.0.1:35563/help"
+    },
+    {
+     "file": "37_usability_torn_tail.png",
+     "sha256": "5e87fd6c3b15fe20e6363b10240a0b894be2a2032b551ee97a02abe1f8e94c36",
+     "url": "http://127.0.0.1:45787/"
+    },
+    {
+     "file": "38_usability_recovered.png",
+     "sha256": "187d29269dc044f63789502bc1e143332e0674090983061e531e3a63835743a4",
+     "url": "http://127.0.0.1:45787/?recovered=1"
+    }
+   ]
+  },
+  "availability_correction": {
+   "feature": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 8,
+   "negative_assertions": 6,
+   "failed": [],
+   "screenshots": [
+    {
+     "file": "39_availability_correction_correction_recorded.png",
+     "sha256": "5338e2e64b71940c8983a456d898a0885e6e08448943095fb7f7b4eb0270ed5a",
+     "url": "http://127.0.0.1:35563/source?corrected=AC1#availability"
+    },
+    {
+     "file": "40_availability_correction_corrected_view.png",
+     "sha256": "ebbb237b7707d5fab471a0b650495bb12c01c59229f96454120891db3a850772",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR"
+    },
+    {
+     "file": "41_availability_correction_as_of_before_correction.png",
+     "sha256": "5ee14c57d9f1138bc5a7d15561845d62227d1259826a7840f6ead048105fe056",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR?as_of=2025-09-01T00:00:00Z"
+    },
+    {
+     "file": "42_availability_correction_verified_in_fresh_workspace.png",
+     "sha256": "c59f9521177318243be572245c6466a3432e2e0f1ae3b9267265bf84ba866810",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "43_availability_correction_tampered_correction_refused.png",
+     "sha256": "c875f757c8966d7fc261cfbd7f2b007cf5ef86859082317756abf203d08416b7",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  }
+ },
+ "post_statuses": {
+  "303": 50,
+  "422": 9,
+  "200": 11
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log": "v8/V8-011/journey_fixtures/journey_log.json (paths scrubbed)",
+  "journey_log_sha256_private": "2388473bf0299be57d391ee74399eea1237d9fbd61d1d6eaa2e5fe1ade035781",
+  "screenshots": "private record; named with sha256 in the scorecard"
+ },
+ "earlier_records_preserved": "V8-002 … V8-010 scorecards keep their original candidate identities (a41dc39e … 93274e7d); this scorecard does not replace them",
+ "human_benefit": "PENDING",
+ "experimental_audits": "EXPERIMENTAL",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice.",
+ "fixture_facts": [
+  "fictional original target 110–120 million and revision 105–115 million with actual 112 million are evaluated as two separate IN_RANGE calculations with the explicit no-inference statement; no accuracy-improvement claim",
+  "the availability-correction demonstration uses its own fictional claim (ZZFX-FY2025-AVAIL-CORR), so nothing the seven steps or the other features recorded is touched",
+  "every adjudication, note and correction was recorded by the automated journey runner as a simulated test action; no human reviewer"
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "record": "v8-upstream-integration/1",
+ "order": "V8-011 §2",
+ "remote": "origin (fetch only; no remote write of any kind)",
+ "observed": {
+  "origin_main_tip": "5edb9e7e8502a11727b6174b8cc62f47107a6a91",
+  "observed_utc": "2026-09-19T10:31:47Z",
+  "re_observed_unchanged_utc": [
+   "2026-09-19T11:03:42Z",
+   "2026-09-19T11:07:39Z"
+  ],
+  "common_ancestor": "696d871ebc032f8bc125dda5184e02678e8d0e5c"
+ },
+ "missing_from_the_branch": {
+  "count": 5,
+  "note": "the V8-010 report counted four; one more nightly refresh had landed",
+  "commits": [
+   {
+    "sha": "f26f1d1e24103adf78a67895c498eb504d19af54",
+    "author": "yuclaw-release",
+    "subject": "release evidence: FINAL target manifest for v7.0.1 + derived scoreboard (overlay; 2026-09-15A-FINAL)",
+    "files": 3
+   },
+   {
+    "sha": "ad83ee935ae74f89db14db46c5042b32b9a828ef",
+    "subject": "auto: v3.0 page refresh 2026-09-15 23:00 UTC",
+    "files": 274
+   },
+   {
+    "sha": "94619c418970c5b33aab6889d534fdae5b61a296",
+    "subject": "auto: v3.0 page refresh 2026-09-16 23:00 UTC",
+    "files": 275
+   },
+   {
+    "sha": "a3b3ed2ebac49d861271d6e12aed3f6a8cfbb31d",
+    "subject": "auto: v3.0 page refresh 2026-09-17 23:00 UTC",
+    "files": 275
+   },
+   {
+    "sha": "5edb9e7e8502a11727b6174b8cc62f47107a6a91",
+    "subject": "auto: v3.0 page refresh 2026-09-18 23:00 UTC",
+    "files": 278
+   }
+  ]
+ },
+ "surfaces_touched_upstream": "docs/ (238 under docs/why, the public pages, evidence_changes, ledger, packets, receipts) and registry/ (anytime_observations.jsonl, c6_posture_state.json, completeness_profile.json); no code, no workflow, no packaging input other than data",
+ "merge": {
+  "commit": "ca96f5746a279ffc5277d61c41296b25ebf2b473",
+  "parents": [
+   "7d871a50b873a925f62516cdaa7762bc40aa6da8",
+   "5edb9e7e8502a11727b6174b8cc62f47107a6a91"
+  ],
+  "method": "git merge --no-ff (history preserved; no rebase, no reset; historical author and sign-off records untouched; DCO sign-off on the merge)",
+  "textual_conflicts": {
+   "docs/capabilities.json": "adjacent version + generation-stamp lines: upstream's stamp, the branch's 8.0.0 version",
+   "docs/evidence_index.json": "same",
+   "docs/weekly_note.html": "two renders of one generator: upstream's newer render with the branch's badge; re-rendered with the real renderer in a49dd63e"
+  },
+  "verified_mechanically": {
+   "upstream_only_paths_byte_equal_to_upstream": 187,
+   "of_which_removed_by_upstream_rolling_window": [
+    "docs/evidence_changes/2026-08-06.json",
+    "docs/evidence_changes/2026-08-07.json",
+    "docs/evidence_changes/2026-08-10.json"
+   ],
+   "both_sides_paths": 100,
+   "lines_differing_from_upstream": 100,
+   "lines_differing_by_anything_other_than_7.0.1_to_8.0.0": 0,
+   "v8_only_paths_changed_by_the_merge": 0
+  },
+  "published_evidence_preserved": "the v7.0.1 FINAL target manifest and scoreboard receipts are upstream's bytes unmodified; 6.0.x/7.0.x tags and PyPI file digests re-observed unchanged (tripwire_observations.json)"
+ },
+ "material_follow_up_found_by_regression": {
+  "finding": "the restage invariant (staged renderer re-run at the unchanged chain tip changes nothing) failed after the merge: 345 files under docs/preview/ were stale",
+  "cause": "the nightly refresh on main updates live surfaces but never regenerates the previews; origin/main 5edb9e7e itself shows the same 345 stale files under the same probe — a property of the integrated upstream data, not of the v8 work",
+  "fix": "9d1de81e: previews regenerated with the repo's own renderer in the candidate checkout; deterministic (an independent disposable-worktree run matched byte for byte); nothing outside docs/preview changed; re-measured: 0 changed"
+ },
+ "ancestry": {
+  "candidate": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7",
+  "upstream_tip_is_ancestor_of_candidate": true,
+  "meaning": "local fast-forward eligibility against the observed tip ONLY",
+  "check": "python3 v8/V8-011/check_upstream_ancestry.py (read-only fetch; exit 0 OK / exit 3 STOP, exercised both ways: OK on the candidate, STOP on the V8-010 HEAD 7d871a50); the publisher's push-main stage repeats the test and pushes without force"
+ },
+ "upstream_will_move_again": "the nightly refresh pushes to main every day at about 23:00 UTC. After the next one the candidate is no longer a fast-forward. Each further integration brings new data, so it requires: merge, weekly-note render, preview regeneration, a new source commit and a NEW artifact pair (the sdist ships docs/). This order does not chase upstream: last observed tip 5edb9e7e at 2026-09-19T11:07:39Z.",
+ "focused_regressions": [
+  "full repository suite 306 passed (44 files)",
+  "restage invariant (failed, fixed, re-measured 0)",
+  "weekly-note checker reconciled before and after the render",
+  "release-state generator 19 GREEN / 0 RED / 1 REMOVED_BY_OWNER",
+  "compliance regression 21 passed locally"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

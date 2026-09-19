@@ -1,0 +1,1023 @@
+{
+ "record": "v8-selected-release-gap-list/1",
+ "order": "V8-011 §5",
+ "source": "v8/V8-010/selected_release_gaps.json (56 rows; preserved unchanged) over v8/V8-008/roadmap_reconciliation.json (213 rows; not rebuilt). Only the rows this order affected were updated; no partial row was relabelled complete to raise a count.",
+ "rule": "a broad row stays PARTIAL while its explicitly narrower 8.0.0 deliverable is complete; a status changes to COMPLETE only when every clause of the original description is met; scope is never shrunk to complete a row; nothing deferred or experimental was implemented to raise a count",
+ "status_changes": {
+  "DAT-10": {
+   "from": "PARTIAL",
+   "to": "COMPLETE"
+  },
+  "TIM-10": {
+   "from": "PARTIAL",
+   "to": "COMPLETE"
+  },
+  "UX-11": {
+   "from": "UNVERIFIED",
+   "to": "COMPLETE"
+  },
+  "TIM-08": {
+   "from": "PARTIAL",
+   "to": "COMPLETE"
+  }
+ },
+ "original_roadmap_counts": {
+  "full_roadmap_213": {
+   "before_V8_010": {
+    "COMPLETE": 30,
+    "PARTIAL": 57,
+    "UNBUILT": 125,
+    "UNVERIFIED": 1,
+    "CANCELED": 0
+   },
+   "after_V8_010": {
+    "COMPLETE": 33,
+    "PARTIAL": 55,
+    "UNBUILT": 125,
+    "UNVERIFIED": 0,
+    "CANCELED": 0
+   },
+   "after_V8_011": {
+    "COMPLETE": 34,
+    "PARTIAL": 54,
+    "UNBUILT": 125,
+    "UNVERIFIED": 0,
+    "CANCELED": 0
+   }
+  },
+  "selected_first_release_86": {
+   "before_V8_010": {
+    "COMPLETE": 30,
+    "PARTIAL": 55,
+    "UNBUILT": 0,
+    "UNVERIFIED": 1,
+    "CANCELED": 0
+   },
+   "after_V8_010": {
+    "COMPLETE": 33,
+    "PARTIAL": 53,
+    "UNBUILT": 0,
+    "UNVERIFIED": 0,
+    "CANCELED": 0
+   },
+   "after_V8_011": {
+    "COMPLETE": 34,
+    "PARTIAL": 52,
+    "UNBUILT": 0,
+    "UNVERIFIED": 0,
+    "CANCELED": 0
+   }
+  },
+  "meaning": "task counts with their denominators; NOT hours, workload or completion percentages (the backlog carries no effort estimates)"
+ },
+ "remaining_8_0_0_obligations": [
+  {
+   "task_id": "REL-02",
+   "obligation": "freeze-day surface review at the frozen commit (an owner-gated step: it follows D1 acceptance and the freeze)"
+  },
+  {
+   "task_id": "REL-06",
+   "obligation": "the FINAL artifact set from the frozen, authorized commit (publisher: adopt a pair bound to that commit, or build once)"
+  },
+  {
+   "task_id": "INT-11",
+   "obligation": "remote CI has NOT run. As configured it would not run on a branch-only push or on a pull request from this branch (0 files under the path filters): compliance-regression runs only on a push to main, i.e. with the release itself. Whether to add a pre-release workflow is an owner decision; none was added."
+  }
+ ],
+ "missing_inputs": [
+  {
+   "input": "an SEC-reporting issuer that meets the recorded V8-001 corpus criteria (eligible original and amended quarterly revenue guidance with comparable outcome)",
+   "blocks": [
+    "GOV-03",
+    "DAT-04",
+    "SET-01"
+   ],
+   "effect": "8.0.0 ships with a fictional demonstration and one retrospective NOT ELIGIBLE replay; no dataset product is claimed; not a software gap"
+  }
+ ],
+ "rows": [
+  {
+   "task_id": "GOV-03",
+   "original_description": "Record one initial customer job, eligible company population, disclosure types, and coverage limits; make exclusions visible in the product.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "one customer job recorded; exclusions and coverage limits visible in the product",
+   "completed_in_V8_010": [
+    "dataset card and data dictionary packaged and served under /help/data (coverage, exclusions, prohibited interpretations)",
+    "workspace page states it is a local snapshot, not a live feed"
+   ],
+   "remaining_8_0_0_obligation": "none in software; the eligible real population is empty (NO_ELIGIBLE_ISSUER) — missing input: an issuer that meets the recorded V8-001 criteria",
+   "broader_clause_deferred_by_the_agreed_scope": "a populated eligible corpus",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (initial real-data corpus capped at one verified eligible issuer; a missing outcome stays unresolved; a fictional-only build is a demonstration) and v8/scope/v8.0.0-scope.json initial_real_corpus",
+   "earlier_remaining_criteria_as_recorded": "eligible population is empty (NO_ELIGIBLE_ISSUER); an in-product corpus coverage/exclusion surface beyond per-row eligibility notes",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "GOV-06",
+   "original_description": "Maintain a capability register separating implemented locally, integrated, independently evaluated, pilot-enabled, and publicly released states.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "capability status separated by state for the release package",
+   "completed_in_V8_010": [
+    "v8/V8-010/capability_matrix.json: every enabled function with implemented / integrated / independently evaluated / pilot-enabled / publicly released kept apart"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "a register maintained as an ongoing artifact beyond order records",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row GOV (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "a maintained register with the five states as an ongoing artifact, not an order record",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "GOV-07",
+   "original_description": "Assign accountable owners and independent reviewers; document who can change evidence, freeze studies, adjudicate outcomes, and authorize releases.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "who can change evidence, adjudicate and authorize a release is documented for a single-operator product",
+   "completed_in_V8_010": [
+    "operator guide §6: one operator, no accounts or roles, no independent reviewer assigned by the software; publisher rules document release authorization"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "accountable owners and independent reviewers assigned (an owner decision, not software)",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "release authorization role documented (owner, publisher rules); no accountable owners or independent reviewers assigned for evidence changes, study freezes or adjudication (owners_assigned=false)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-01",
+   "original_description": "Adopt stable issuer, filing, artifact, passage, claim, investigation, and dataset identifiers; preserve inherited v7 IDs through explicit adapters.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "stable source, claim, version, note, scientific-record, dataset-row and export identifiers; v7 identifiers untouched",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0 (the workbench introduces its own identifier namespaces and consumes no v7 identifier; 7.x surfaces and tests unchanged)",
+   "broader_clause_deferred_by_the_agreed_scope": "explicit adapters once workbench records link to inherited v7 objects",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row INT (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "explicit adapters preserving inherited v7 identifiers",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-04",
+   "original_description": "Build ingestion for one approved initial disclosure corpus; retain original artifacts separately from parsed text and YuClaw-authored output.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "one bounded ingestion path; original artifacts kept apart from parsed text and authored output",
+   "completed_in_V8_010": [
+    "an ingestion replay never replaces the original bytes it kept (different bytes are refused; identical bytes are idempotent and keep first_retrieved_at)",
+    "the ingestion record is registered in the browser byte for byte (/source/import)"
+   ],
+   "remaining_8_0_0_obligation": "none in software; no eligible corpus is ingested (selected issuer NOT ELIGIBLE; retrospective replay of one issuer only) — missing input as GOV-03",
+   "broader_clause_deferred_by_the_agreed_scope": "an approved eligible corpus",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (initial real-data corpus capped at one verified eligible issuer; a missing outcome stays unresolved; a fictional-only build is a demonstration) and v8/scope/v8.0.0-scope.json initial_real_corpus",
+   "earlier_remaining_criteria_as_recorded": "no eligible corpus ingested (selected issuer NOT ELIGIBLE); ingestion exercised retrospectively on one issuer only",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-06",
+   "original_description": "Add extraction records for tables, passages, units, fiscal periods, and footnotes; attach uncertain extraction to a review queue.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "exact passage with its digest, unit, scale and fiscal period as typed fields",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "table/footnote extraction records and an uncertain-extraction review queue",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row DAT (8.0.0 deliverable and boundary) — no broad crawler or extraction pipeline",
+   "earlier_remaining_criteria_as_recorded": "table/unit/footnote extraction records and an uncertain-extraction review queue",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-07",
+   "original_description": "Represent primary, derived, and unknown source lineage; retain shared roots and explicit gaps rather than counting URLs as independent sources.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "source kind, rights and digests recorded; no independence claimed for copied sources",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "primary/derived/unknown lineage classes and shared-root detection (COM)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §4 (COM/PRC/SHD/EVO experimental, default-off, absent)",
+   "earlier_remaining_criteria_as_recorded": "primary/derived/unknown lineage classes and shared-root detection (COM absent)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-10",
+   "original_description": "Support idempotent ingestion and explicit failure states; replaying a job must not duplicate an artifact or silently drop failed records.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "COMPLETE",
+   "first_release_deliverable_under_the_scope": "idempotent ingestion and explicit failure states; a replay duplicates no artifact and drops no failure silently",
+   "completed_in_V8_010": [
+    "store: the same passage under a new operation identifier returns the first registration (first observation stands); a differing record under the same identity is refused with the differing fields named",
+    "ingest tool: replay keeps the original artifact and first retrieval time; a changed document is refused",
+    "failed ingestion is explicit in the tool (REFUSED, exit 2, no record) and in the browser import (reasons listed, pasted record kept)",
+    "tests: store replay, ingest replay, import refusals; browser: fixtures and real-source journeys"
+   ],
+   "remaining_8_0_0_obligation": "none",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row DAT (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "ingestion-job replay semantics (artifact de-duplication on replay) not specifically evidenced",
+   "status_after_V8_011": "COMPLETE",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "DAT-12",
+   "original_description": "Publish a data dictionary and fixtures covering missing periods, conflicting currencies, corrected sources, shared roots, and inaccessible licensed content.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "packaged fixtures for missing outcome, withdrawal, incompatible basis, unit mismatch, out-of-range, corrected source, quarterly period; a published data dictionary",
+   "completed_in_V8_010": [
+    "v8/workbench/resources/DATA_DICTIONARY.md packaged and served (/help/data)",
+    "tests for rights-withheld excerpts already existed; time-boundary tests added (TIM-10)"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "fixtures for shared roots (COM) and inaccessible licensed content (no licensed source class exists in 8.0.0)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §4 (COM/PRC/SHD/EVO experimental, default-off, absent)",
+   "earlier_remaining_criteria_as_recorded": "fixtures for shared roots and inaccessible licensed content; a published data dictionary",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-01",
+   "original_description": "Build thesis creation with issuer, information cutoff, research question, author, and initial scope; save drafts without falsely marking them reviewable.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "editable typed revenue commitment saved and frozen in one action; nothing unfrozen is ever shown as reviewable",
+   "completed_in_V8_010": [
+    "a refused freeze returns with every entry kept, so a partly specified commitment is not lost and is never recorded"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "a thesis-level object (question, author, scope) and a persistent draft state",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CLM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "thesis-level object (question, author, scope) and a draft state that is explicitly not reviewable",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-06",
+   "original_description": "Detect unresolved scope, vague terms, and missing units or dates; prevent freezing an operationally undefined prediction.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "missing units, dates, currency, basis or resolution rule block the freeze with every reason",
+   "completed_in_V8_010": [
+    "impossible dates and timestamps are refused with the field named instead of failing the request"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "vague-term and unresolved-scope detection",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CLM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "vague-term and unresolved-scope detection",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-07",
+   "original_description": "Support reviewer comments, proposed edits, accepted revisions, and explicit disagreement with author identity and time.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "reviewer label, reason, conflicts and explicit disagreement with actor label and time",
+   "completed_in_V8_010": [
+    "a refused review returns with the reviewer's text and selected evidence kept"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "proposed-edit / accepted-revision workflow; authenticated author identity",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "proposed-edit / accepted-revision workflow; authenticated author identity",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-10",
+   "original_description": "Attach conditions that would weaken or contradict each claim; allow an honest unresolved state when no discriminating observation exists.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "honest unresolved state and unresolved-explanation / next-evidence notes",
+   "completed_in_V8_010": [
+    "every unresolved result names a valid next action"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "structured weaken/contradict conditions per claim (full RIV)",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json minimal_shared_behavior (RIV: original vs revised comparison and unresolved explanation notes only; ACT: unresolved issue and next-evidence field only)",
+   "earlier_remaining_criteria_as_recorded": "conditions that weaken/contradict each claim as structured fields",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-11",
+   "original_description": "Implement draft, needs clarification, reviewable, frozen, awaiting outcome, adjudicated, and invalidated states with permitted transitions.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "frozen, revised, corrected-source, withdrawn, awaiting outcome and adjudicated states with one-way transitions",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "needs-clarification, reviewable and invalidated claim states",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CLM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "needs-clarification, reviewable and invalidated states with permitted transitions",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CLM-12",
+   "original_description": "Export the claim graph with schema/version information, evidence references, uncertainty, and revision history; support a round-trip validation check.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "export with schema/version information, evidence references, revision history and a round-trip verification",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "claim-graph export and uncertainty fields (no graph exists in 8.0.0)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CLM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "graph export (no graph); uncertainty fields",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "RIV-04",
+   "original_description": "Build a comparison matrix showing supporting observations, contradicting observations, shared predictions, and unresolved differences.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "original versus revised comparison side by side with unresolved differences",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "mechanism comparison matrix with supporting/contradicting observations per alternative",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json minimal_shared_behavior (RIV: original vs revised comparison and unresolved explanation notes only; ACT: unresolved issue and next-evidence field only)",
+   "earlier_remaining_criteria_as_recorded": "mechanism comparison matrix (supporting/contradicting observations per alternative)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CHK-02",
+   "original_description": "Check currency, scale, and conversion basis before comparison; record exchange-rate source and date when an authorized conversion is used.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "currency and scale checked before any comparison; a mismatch never passes",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "authorized conversion path with exchange-rate source and date (no conversion exists; a mismatch is unresolved)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CHK (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "authorized conversion path with exchange-rate source and date",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CHK-03",
+   "original_description": "Resolve fiscal calendars and distinguish quarter, year-to-date, full year, and trailing periods before performing arithmetic.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "explicit fiscal period type, start and end compared exactly",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "fiscal-calendar resolution and quarter/YTD/FY/trailing rules as first-class logic",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CHK (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "fiscal-calendar resolution and quarter/YTD/FY/trailing distinctions as first-class rules",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CHK-04",
+   "original_description": "Check denominators, percentages, percentage-point changes, and per-share bases; preserve the exact inputs and calculation.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "exact inputs and calculation preserved for monetary amounts",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "percentage, percentage-point and per-share bases (metric is quarterly/annual revenue guidance only)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (one metric: revenue guidance)",
+   "earlier_remaining_criteria_as_recorded": "percentage, percentage-point and per-share bases",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CHK-06",
+   "original_description": "Detect metric redefinitions, segment changes, gross/net presentation changes, and accounting-basis differences that break comparability.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "metric and accounting-basis differences yield INCOMPARABLE",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "segment and gross/net presentation changes",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CHK (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "segment and gross/net presentation changes",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "CHK-08",
+   "original_description": "Produce a discrepancy card with rule version, source passages, formula, observed difference, tolerance, missing inputs, and reviewer disposition.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "calculation card with rule, formula, inputs, source links, observed difference and reasons; reviewer disposition in adjudication",
+   "completed_in_V8_010": [
+    "card shows the rule with the calculator version, the tolerance (none: exact arithmetic, inclusive bounds) and the missing inputs (display only; calc output and export bytes unchanged)"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "one combined discrepancy-card object carrying the reviewer disposition",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row CHK (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "rule version, tolerance and missing-input fields on one discrepancy card",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "ACT-01",
+   "original_description": "Convert unresolved claims and rival predictions into candidate actions: inspect a disclosure, obtain a permitted field, request review, or wait.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "unresolved issue and next-evidence field",
+   "completed_in_V8_010": [
+    "unresolved results name the permitted next action in text"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "action objects (inspect / obtain / request / wait) and prioritization",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json minimal_shared_behavior (RIV: original vs revised comparison and unresolved explanation notes only; ACT: unresolved issue and next-evidence field only)",
+   "earlier_remaining_criteria_as_recorded": "action objects (inspect/obtain/request/wait)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "TIM-03",
+   "original_description": "Pin each investigation snapshot to exact source, claim, extraction, rule, model, and reviewer versions.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "exports pin source, claim, rule and calculator versions; reviewer attribution recorded",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "extraction and model versions (no extraction model exists); authenticated reviewer versions",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "extraction/model versions not applicable; reviewer versions are attribution only",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "TIM-05",
+   "original_description": "Add side-by-side comparison of two cutoffs showing added, removed-by-policy, corrected, and still-unresolved evidence.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "as-of replay at any cutoff with hidden later events counted",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "two-cutoff side-by-side view",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row TIM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "two-cutoff side-by-side view",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "TIM-06",
+   "original_description": "Explain why a source was excluded from a historical view; distinguish later availability, missing date, and entitlement restrictions.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "later availability and unknown availability explained in as-of views",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "entitlement-restriction exclusions (no entitlements in a single-owner workspace)",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "entitlement-restriction exclusions",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "TIM-08",
+   "original_description": "Define correction behavior for unreliable timestamps without rewriting what the system previously recorded as known.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "a written policy for unreliable timestamps that never rewrites what was recorded as known",
+   "completed_in_V8_010": [
+    "policy written in the packaged data dictionary and operator guide: unknown availability never guessed, non-UTC input refused not converted, impossible dates refused, first observation stands, corrections are new events"
+   ],
+   "remaining_8_0_0_obligation": "none",
+   "broader_clause_deferred_by_the_agreed_scope": "none — the clause V8-010 listed as deferred (a source-availability correction event) was built under order V8-011 §3",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row TIM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "a written policy for unreliable timestamps",
+   "status_after_V8_011": "COMPLETE",
+   "changed_in_V8_011": true,
+   "completed_in_V8_011": [
+    "the correction behaviour is built, not only written: a linked append-only SOURCE_AVAILABILITY_CORRECTED event (prior and corrected values, reason, evidence reference, actor label, server-recorded time); nothing previously recorded as known is rewritten (every earlier log line byte-identical — tested)",
+    "historical-view rule EFFECTIVE_FROM_RECORDED_AT/1: a later correction is listed as later and never shown as known earlier; corrected view and review list beside the unchanged record; a retrospective record is never upgraded",
+    "exports carry the registration and the chain; a fresh workspace checks the links and recomputes; altered counterparts refused; earlier exports verify unchanged",
+    "8 focused tests; browser demonstration DEMONSTRATED from the installed wheel and sdist (v8/V8-011/scorecard_fixtures.json); packaged guides replace the 'known limit' with the supported path"
+   ],
+   "basis_for_COMPLETE": "every clause of the original description is met: the behaviour is defined (policy), implemented (event), and it never rewrites what the system previously recorded as known",
+   "evidence": [
+    "v8/V8-011/availability_correction.json",
+    "tests/test_v8_availability_correction.py",
+    "v8/V8-011/scorecard_fixtures.json"
+   ]
+  },
+  {
+   "task_id": "TIM-10",
+   "original_description": "Verify historical query and export against fixtures with delayed discovery, later corrections, backdated source metadata, and timezone boundaries.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "COMPLETE",
+   "first_release_deliverable_under_the_scope": "historical query and export verified against delayed discovery, later corrections, backdated metadata and time-zone boundaries",
+   "completed_in_V8_010": [
+    "tests/test_v8_time_boundaries.py: inclusive cutoff at the availability second, UTC day boundary, offsets/missing zones/impossible dates refused over the API and HTTP, backdated registration placed by availability with observation kept apart and labelled retrospective, export of that history verified and recomputed",
+    "delayed discovery and later corrections were already covered by the as-of journeys and the corrected-source fixture"
+   ],
+   "remaining_8_0_0_obligation": "none",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row TIM (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "fixtures for backdated source metadata and timezone boundaries",
+   "status_after_V8_011": "COMPLETE",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-01",
+   "original_description": "Freeze the initial universe, disclosure categories, time coverage, inclusion rules, and exclusion rules; publish known coverage gaps.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "inclusion/exclusion rules and known coverage gaps published with the dataset view",
+   "completed_in_V8_010": [
+    "dataset card states coverage and that no eligible real corpus ships"
+   ],
+   "remaining_8_0_0_obligation": "none in software; the universe is empty (no eligible issuer) — missing input as GOV-03",
+   "broader_clause_deferred_by_the_agreed_scope": "a frozen non-empty universe",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (initial real-data corpus capped at one verified eligible issuer; a missing outcome stays unresolved; a fictional-only build is a demonstration) and v8/scope/v8.0.0-scope.json initial_real_corpus",
+   "earlier_remaining_criteria_as_recorded": "universe is empty (no eligible issuer); coverage statement per release",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-02",
+   "original_description": "Extract explicit management commitments with exact passage, issuer, metric, accounting basis, unit, segment/geography, target range, and horizon.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "explicit commitment with exact passage, issuer, metric, basis, unit, range and horizon, entered by the operator",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "segment/geography field; automated extraction",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "segment/geography field; extraction is manual",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-04",
+   "original_description": "Model amendment, reaffirmation, withdrawal, maturity, and resolution as distinct events linked to the original commitment.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "amendment, withdrawal, corrected source and outcome as distinct linked events",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "reaffirmation and maturity as distinct events",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "reaffirmation and maturity as distinct events",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-05",
+   "original_description": "Match later disclosed outcomes using a written comparability rubric; route metric changes and ambiguous mappings to independent review.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "outcome matched under an explicit comparability rule; mismatches unresolved",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "routing to independent review",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "routing to independent review (adjudication is local, attribution only)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-09",
+   "original_description": "Build versioned snapshots and stable row IDs; allow filtered CSV/JSON downloads and reproducible programmatic queries.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "deterministic versioned snapshots, stable row identifiers and digests, machine-readable /dataset.json and verifiable snapshot export",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "filters, CSV download and a programmatic query interface",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "filters, CSV download, programmatic query interface",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-10",
+   "original_description": "Publish a dataset card covering coverage, annotation rules, quality estimates, corrections, source restrictions, and prohibited interpretations.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "dataset card covering coverage, annotation rules, corrections, source restrictions and prohibited interpretations",
+   "completed_in_V8_010": [
+    "packaged dataset card (quality estimates stated as NOT AVAILABLE)"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "measured quality estimates",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary) — new annotations and measurements, no claimed quality",
+   "earlier_remaining_criteria_as_recorded": "a full dataset card (quality estimates, prohibited interpretations)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SET-11",
+   "original_description": "Add correction reports, dispute submission, and affected-row lookup; keep old snapshots reproducible while displaying later corrections.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "corrections visible with earlier snapshots reproducible and an explicit difference",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "dispute submission and affected-row lookup UI",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "dispute submission and affected-row lookup UI",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SCI-01",
+   "original_description": "Integrate the existing study manifest into a guided workflow covering population, sampling unit, target, loss, effect margin, and model identities.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "typed adapter to the supported kernel with explicit eligibility",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "guided study-authoring workflow",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SCI (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "guided study-authoring workflow",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SCI-03",
+   "original_description": "Commit both predictions and evidence identities before eligible outcomes become available; preserve ordering and pending-outcome constraints.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "ordering and pending-outcome constraints preserved; prospective claims labelled not verified",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "independently anchored commitment time",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SCI (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "independently anchored commitment time for real prospective use",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SCI-04",
+   "original_description": "Authenticate adjudicators, document conflicts, and retain the outcome evidence; prevent the candidate system from unilaterally assigning its own success.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "adjudication claims in a journal are refused or labelled; simulated stays simulated",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "authenticated adjudicators",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "authenticated adjudicators (attribution only)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SCI-06",
+   "original_description": "Maintain a study-attempt registry so retries, renamed families, and unsuccessful experiments remain visible; define cross-study governance before broad adaptive use.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "every replay recorded append-only, including refusals",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "renamed-family detection and cross-study governance",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SCI (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "renamed-family detection; cross-study governance",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "SCI-07",
+   "original_description": "Connect journal export, semantic replay, numerical replay, and independent checkpoints to the application and its review process.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "journal input, semantic and numerical replay and recomputation in a fresh workspace",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "independent checkpoints",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SCI (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "independent checkpoints",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-01",
+   "original_description": "Create the Thesis Workspace with editable claims, typed assumptions, original sources, rivals, calculations, and unresolved questions in one investigation; use the approved Human Trace logo assets unchanged.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "one connected workbench with claims, sources, comparison, calculation, history, adjudication, export and unresolved questions; approved logo assets unchanged",
+   "completed_in_V8_010": [
+    "the seven step chips link to their sections; Help lists every function"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "typed assumptions and rivals",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json minimal_shared_behavior (RIV: original vs revised comparison and unresolved explanation notes only; ACT: unresolved issue and next-evidence field only)",
+   "earlier_remaining_criteria_as_recorded": "typed assumptions and rivals (deferred RIV)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-02",
+   "original_description": "Add company and cutoff selection with clear corpus coverage and freshness; never imply that a bundled snapshot is a live feed.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "cutoff selection, coverage and freshness shown; a snapshot is never presented as a live feed",
+   "completed_in_V8_010": [
+    "workspace page and Help state 'local snapshot, not a live feed' with the last record time",
+    "coverage on the dataset page and card"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "company selection control (claims are listed per workspace; see UX-05 filters)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row UX (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "corpus coverage/freshness surface; explicit 'not a live feed' wording",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-05",
+   "original_description": "Build the Dataset Browser with filters for issuer, metric, period, event, comparability, adjudication, missingness, and snapshot.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "dataset view with one row per claim, snapshot identity and coverage gaps",
+   "completed_in_V8_010": [
+    "wide dataset table readable at phone width inside a scroll region"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "filters by issuer/metric/period/event/comparability/adjudication/missingness/snapshot",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SET (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "filters by issuer/metric/period/event/comparability/adjudication/missingness/snapshot",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-07",
+   "original_description": "Provide an evaluation report with denominator, population, uncertainty, unresolved cases, baselines, study status, and replay download.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "scientific record page with denominators (units resolved/pending), status, limitations and recomputable input identity",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "population, baseline and uncertainty presentation beyond the kernel report",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row SCI (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "population/baseline/uncertainty presentation beyond the kernel report",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-10",
+   "original_description": "Provide useful loading, empty, stale, failed-ingestion, permission-denied, disputed, invalidated, and inconclusive states.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "useful empty, stale, failed-ingestion, disputed, invalidated and inconclusive states",
+   "completed_in_V8_010": [
+    "empty workspace and no-source states say what to do next",
+    "stale: snapshot/not-a-live-feed wording with last record time",
+    "failed ingestion: explicit refusal in tool and browser",
+    "refused requests (403/413/422) name the next action; refused forms keep entries",
+    "unresolved, withdrawn, incompatible, MISMATCH and UNSUPPORTED results name the next action"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "permission-denied state (no accounts or permissions exist); loading state (pages are server-rendered)",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "stale, failed-ingestion and permission-denied states as explicit UI states",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "UX-11",
+   "original_description": "Verify keyboard navigation, readable tables, focus behavior, screen-reader labels, responsive layouts, and accessible status distinctions.",
+   "status_in_V8_008_reconciliation": "UNVERIFIED",
+   "status_after_V8_010": "COMPLETE",
+   "first_release_deliverable_under_the_scope": "keyboard navigation, readable tables, focus behaviour, programmatic field labels, responsive layouts and status distinctions verified on the implemented pages",
+   "completed_in_V8_010": [
+    "131 automated findings fixed (labels, header scope, table regions, landmarks, skip link, focus styles, colour-independent error cue, phone-width overflow)",
+    "tools/yuclaw_v8_ui_inspect.py in Chromium: 19 pages, 0 findings on the candidate; keyboard-only fixture load and visible focus in the browser journey; screenshots inspected at 1280 px and 375 px"
+   ],
+   "remaining_8_0_0_obligation": "none for the row as written. NOT performed and NOT claimed: a human usability review, a screen-reader session, contrast measurement, an accessibility certification; this is not a replacement for the removed Gate 15 study",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row UX (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "keyboard, screen-reader, focus and responsive verification not performed",
+   "status_after_V8_011": "COMPLETE",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "INT-01",
+   "original_description": "Define versioned API contracts for sources, investigations, claims, actions, timelines, adjudications, studies, dataset snapshots, and optional audits.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "versioned schemas for sources, claims, outcomes, events, dataset snapshots, scientific records and exports",
+   "completed_in_V8_010": [
+    "data dictionary documents them"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "versioned API contracts for actions, studies and audits (no such endpoints exist)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §4 (deferred beyond 8.0.0: CTL, RES, full RIV/ACT, RND, multi-tenancy, managed accounts, billing, real VAL pilot)",
+   "earlier_remaining_criteria_as_recorded": "versioned API contracts for actions, studies, audits",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "INT-03",
+   "original_description": "Define storage ownership and migrations against the actual inherited database; preserve source, claim, and historical ledger identities.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "local append-only workspace storage owned by the workbench; additive event kinds; the inherited database untouched",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "storage ownership/migration plan against the inherited database",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row INT (8.0.0 deliverable and boundary); v8/scope/V8_0_0_SCOPE_FREEZE.md §7 (backup creation/restoration canceled by the owner; no destructive migration)",
+   "earlier_remaining_criteria_as_recorded": "storage ownership/migration plan against the inherited database",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "INT-04",
+   "original_description": "Build durable ingestion, extraction, correction propagation, review, and export jobs with idempotency, bounded retries, and inspectable failures.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "idempotent operations with operation identifiers, bounded inputs, inspectable refusals, interrupted-write recovery",
+   "completed_in_V8_010": [
+    "replay-safe source registration and ingestion",
+    "route sweep: every form route answers hostile values; two crash paths fixed"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "a durable job system with bounded retries",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row INT (8.0.0 deliverable and boundary) — bounded jobs, no job service",
+   "earlier_remaining_criteria_as_recorded": "durable job system with bounded retries and inspectable failures",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "INT-09",
+   "original_description": "Establish retention, authorized deletion, secret management, dependency updates, and incident procedures suited to the actual deployment. Backup creation, scheduling, restoration, and restore drills are canceled by the owner; preserve existing data and disclose that restoration is not demonstrated.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "data preserved; backup creation/restoration canceled and disclosed",
+   "completed_in_V8_010": [
+    "operator guide: limits, the backup disclosure verbatim, rollback, SEC_USER_AGENT identification"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "retention, authorized deletion, secret management, dependency-update and incident procedures for a deployed service",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §7 (backup creation/restoration canceled by the owner; no destructive migration); v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "retention, authorized deletion, secret management, dependency updates, incident procedures for the actual deployment",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": true,
+   "completed_in_V8_011": [
+    "SEC request identity is now the operator's own required setting (no maintainer default); operator guide states the setup step and what the value is never written into"
+   ],
+   "evidence": [
+    "v8/V8-011/sec_request_identity.json"
+   ]
+  },
+  {
+   "task_id": "INT-11",
+   "original_description": "Run inherited application/database regressions and authenticated integration tests alongside the selected science tests; complete remote CI and package checks.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "inherited regressions and the selected tests run locally; package checks on the candidate artifacts",
+   "completed_in_V8_010": [
+    "full repository suite on the candidate tree; clean installs of wheel and sdist; twine check; Python 3.10 floor check"
+   ],
+   "remaining_8_0_0_obligation": "remote CI has NOT run. As configured it would not run on a branch-only push or on a pull request from this branch (0 files under the path filters): compliance-regression runs only on a push to main, i.e. with the release itself. Whether to add a pre-release workflow is an owner decision; none was added.",
+   "broader_clause_deferred_by_the_agreed_scope": "authenticated integration tests (no authentication exists)",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row REL boundary (no release, main push, PyPI upload or outreach through an implementation order) and order V8-010 (release_authorized=false)",
+   "earlier_remaining_criteria_as_recorded": "remote CI and authenticated integration tests (nothing pushed)",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": true,
+   "completed_in_V8_011": [
+    "upstream main 5edb9e7e integrated by merge with focused regressions (full suite 306 passed; restage invariant found failing, fixed and re-measured; note checker; gate generator)",
+    "CI workflows inspected unchanged; local equivalents run: compliance regression 21 passed; clean installs; twine 7.0.0; Python 3.10.21 floor"
+   ],
+   "correction_of_the_V8_010_wording": "V8-010 said remote CI 'follows the owner's publication decision'; the inspection shows that no pre-release remote CI exists for the v8 code at all",
+   "evidence": [
+    "v8/V8-011/ci_inspection_and_push_plan.json",
+    "v8/V8-011/upstream_integration.json"
+   ]
+  },
+  {
+   "task_id": "INT-12",
+   "original_description": "Rehearse safe application-code rollback and interrupted-write/export handling with compatible additive migrations and transactions; reject destructive or unsupported data transitions. Do not add backup restoration or imply lost-data recovery.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "interrupted-write and interrupted-export handling; safe application-code rollback without restore claims",
+   "completed_in_V8_010": [
+    "rollback rehearsal on the candidate wheel: 8.0.0 → 7.0.1 → 8.0.0, workspace bytes untouched, same chain tip, export verifies",
+    "torn-tail recovery demonstrated through the browser"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row INT (8.0.0 deliverable and boundary); v8/scope/V8_0_0_SCOPE_FREEZE.md §7 (backup creation/restoration canceled by the owner; no destructive migration)",
+   "earlier_remaining_criteria_as_recorded": "application-code rollback rehearsal",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "REL-02",
+   "original_description": "Freeze enabled v8 capabilities and clearly label unavailable or experimental modules; remove unsupported claims from all product surfaces.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "enabled capabilities frozen and labelled; unavailable and experimental modules stated; unsupported claims absent",
+   "completed_in_V8_010": [
+    "capability matrix; notes composer feature account matches the actual scope; CHANGELOG entry"
+   ],
+   "remaining_8_0_0_obligation": "freeze-day surface review at the frozen commit (an owner-gated step: it follows D1 acceptance and the freeze)",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row REL boundary (no release, main push, PyPI upload or outreach through an implementation order) and order V8-010 (release_authorized=false)",
+   "earlier_remaining_criteria_as_recorded": "freeze-day surface review at the frozen commit",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "REL-03",
+   "original_description": "Prepare English-only onboarding, task examples, API documentation, dataset cards, limitations, accessibility guidance, and operator runbooks; use the approved Human Trace identity without redesign.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "English-only onboarding, task example, data dictionary/dataset card, limitations, operator runbook; approved identity unchanged",
+   "completed_in_V8_010": [
+    "packaged operator guide (startup, workspaces, navigation, refusals, recovery, limits) and data dictionary; in-app Help"
+   ],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "API documentation (no public API for the workbench beyond /dataset.json) and formal accessibility guidance",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row REL (8.0.0 deliverable and boundary)",
+   "earlier_remaining_criteria_as_recorded": "API documentation, dataset card, accessibility guidance, operator runbooks",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "REL-04",
+   "original_description": "Verify corpus/source permissions, customer isolation, export terms, retention configuration, and correction procedures for the actual release scope.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "source permissions and export terms verified for the release scope; single workspace",
+   "completed_in_V8_010": [],
+   "remaining_8_0_0_obligation": "none for 8.0.0",
+   "broader_clause_deferred_by_the_agreed_scope": "customer isolation and retention configuration (no customers, no hosted service)",
+   "governing_scope_boundary": "v8/scope/v8.0.0-scope.json deployment_model (single owner-operated workspace; no accounts) and v8/scope/V8_0_0_SCOPE_FREEZE.md §3 (owner review is never labelled independent review)",
+   "earlier_remaining_criteria_as_recorded": "retention configuration and correction procedures for the release scope",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "REL-05",
+   "original_description": "Complete relevant integration, security, statistical, performance, recovery, and usability reviews; retain unresolved findings with an explicit release disposition.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "integration, recovery and usability checks that can be done without external reviewers, with findings retained",
+   "completed_in_V8_010": [
+    "UI inspection, route sweep, rollback and recovery rehearsals, publisher rehearsal with two publisher defects found and fixed"
+   ],
+   "remaining_8_0_0_obligation": "none that this order can perform",
+   "broader_clause_deferred_by_the_agreed_scope": "independent security and statistical reviews; performance review; human usability review — dispositions are the owner's",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §6 gates D/E (pending/deferred reviews; benefit PENDING)",
+   "earlier_remaining_criteria_as_recorded": "independent security and statistical reviews; performance and usability reviews; dispositions",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  },
+  {
+   "task_id": "REL-06",
+   "original_description": "Package reproducible builds, migrations, rollback instructions, release notes, verification evidence, and a capability-status matrix.",
+   "status_in_V8_008_reconciliation": "PARTIAL",
+   "status_after_V8_010": "PARTIAL",
+   "first_release_deliverable_under_the_scope": "reproducible candidate builds, rollback instructions, release notes, verification evidence and a capability-status matrix",
+   "completed_in_V8_010": [
+    "candidate pair with identity record; rollback instruction rehearsed and in the operator guide; notes draft; capability matrix"
+   ],
+   "remaining_8_0_0_obligation": "the FINAL artifact set from the frozen, authorized commit (publisher: adopt a pair bound to that commit, or build once)",
+   "broader_clause_deferred_by_the_agreed_scope": "none",
+   "governing_scope_boundary": "v8/scope/V8_0_0_SCOPE_FREEZE.md §3 row REL boundary (no release, main push, PyPI upload or outreach through an implementation order) and order V8-010 (release_authorized=false)",
+   "earlier_remaining_criteria_as_recorded": "rollback instructions; final artifact set from the frozen commit",
+   "status_after_V8_011": "PARTIAL",
+   "changed_in_V8_011": false
+  }
+ ],
+ "demonstrated_defects_fixed_in_V8_010": [
+  "Cache-Control: no-store documented but never sent (header call swallowed by a comment since a41dc39e)",
+  "refused forms discarded everything the user had entered",
+  "no form control had a programmatic label; header cells unscoped; wide tables pushed pages sideways by up to 1,332 px at 375 px; date inputs without a focus indicator; no main landmark, skip link or named navigation",
+  "typed-claim form silently unsubmittable in an empty workspace",
+  "replayed source registration duplicated the artifact (up to 7 identical registrations across the packaged fixtures)",
+  "impossible timestamp (30 February, hour 24) killed the request with no response",
+  "over-long packaged-example or fixture name killed the request with no response (OSError: file name too long)",
+  "ingestion replay overwrote the original artifact it had kept",
+  "release-policy record v8/policy shipped inside the wheel; member inspection would have missed order records V8-010 and later",
+  "operator guide described a timestamp-correction path that does not exist (corrected before the candidate was cut)",
+  "publisher (private): gh-release checked 8.0.0 notes with the 7.x composer and would have stopped after the tag push and the PyPI upload; worktree stage raised KeyError instead of a typed refusal"
+ ],
+ "not_advice": "Research and education only. Not investment advice.",
+ "status_changes_in_V8_011": {
+  "TIM-08": {
+   "from": "PARTIAL",
+   "to": "COMPLETE"
+  }
+ },
+ "release_prerequisites_separate_from_the_roadmap": {
+  "meaning": "concrete conditions of THIS release candidate; they are not roadmap tasks and a green gate table does not erase them",
+  "items": [
+   "upstream moves nightly (~23:00 UTC): before the freeze, fetch and — if origin/main moved — merge again, render the weekly note, regenerate docs/preview, commit, and build and verify a NEW pair (v8/V8-011/check_upstream_ancestry.py gives the STOP)",
+   "owner decision D1 (v8/V8-011/D1_allocation_8.0.0_PROPOSED.json, PROPOSED) recorded by the publisher's policy stage",
+   "release-state generator re-run at the frozen commit with --release-policy; notes must correspond",
+   "final artifact set bound to the frozen, authorized commit and tree (adopt or build once)",
+   "the owner's verbatim authorization sentence; release_authorized stays false until then",
+   "remote CI: not run (see INT-11)",
+   "human functional walkthrough: observations blank until a person performs it; human benefit PENDING"
+  ]
+ },
+ "limitations_kept_distinct": [
+  "UX-11 stays COMPLETE on AUTOMATED inspection only (21 pages, 0 findings) — not a human usability review, not a screen-reader session, no contrast measurement",
+  "Gate 15 REMOVED_BY_OWNER (never PASSED); human benefit PENDING",
+  "missing eligible corpus input remains missing: the Microchip example is retrospective and NOT_ELIGIBLE under the original criteria, which were not loosened; no broader issuer hunt was started"
+ ]
+}

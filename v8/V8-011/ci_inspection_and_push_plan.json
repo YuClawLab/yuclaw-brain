@@ -1,0 +1,70 @@
+{
+ "record": "v8-ci-inspection-and-branch-push-plan/1",
+ "order": "V8-011 §6",
+ "remote_ci_status": "NOT RUN. Nothing was pushed; no workflow was dispatched. Local runs below are local equivalents and are not remote CI.",
+ "workflows_inspected_unchanged": {
+  ".github/workflows/compliance.yml": {
+   "name": "compliance-regression",
+   "triggers": {
+    "push": [
+     "v3.0-evidence",
+     "main"
+    ],
+    "pull_request_paths": [
+     "v3/api/**",
+     "v4/**",
+     "sdk/**",
+     "tests/test_compliance_regression.py"
+    ]
+   },
+   "job": "compliance (Postgres service, seed, pytest tests/test_compliance_regression.py)",
+   "can_publish_or_deploy": false,
+   "secrets": "none"
+  },
+  ".github/workflows/heartbeat-watch.yml": {
+   "name": "heartbeat-watch",
+   "triggers": {
+    "schedule": "*/15 * * * *",
+    "workflow_dispatch": "manual"
+   },
+   "permissions": "{}",
+   "job": "check (reads a gist, may send an operator alert)",
+   "can_publish_or_deploy": false,
+   "note": "runs from the default branch on its own schedule; unaffected by a branch push; dispatching it is a remote action and was not done"
+  }
+ },
+ "finding": "as configured, a branch-only push of codex/v8-integration triggers NO workflow, and a pull request from it would trigger none either: the branch differs from origin/main in 0 files under the compliance path filters. Remote CI therefore runs for this work only on a push to main — that is, as part of the release itself. V8-010 described remote CI as following the publication decision; more exactly, no pre-release remote CI exists for the v8 code. The workflows were not changed to obtain a green badge.",
+ "site_deployment": {
+  "observed_read_only": {
+   "build_type": "legacy",
+   "source": {
+    "branch": "main",
+    "path": "/docs"
+   },
+   "cname": "yuclaw.ca",
+   "default_branch": "main"
+  },
+  "meaning": "a push to main deploys the site through GitHub Pages; a branch push deploys nothing"
+ },
+ "local_equivalents_run": {
+  "compliance-regression": "python3 -m pytest tests/test_compliance_regression.py → 21 passed (local database; not the CI Postgres service)",
+  "full_repository_suite": "306 passed across 44 test files",
+  "package_checks": "clean installs of wheel and sdist, twine 7.0.0 check PASSED for both, Python 3.10.21 floor check"
+ },
+ "branch_only_push_plan_for_owner_approval": {
+  "status": "PROPOSED — not executed; needs the owner's explicit approval",
+  "command": "git push origin 9d1de81ef91d033f9d828e7e4b40753a1f39acd7:refs/heads/codex/v8-integration   (or the record HEAD at approval time; non-force; creates the branch — origin has no such branch today)",
+  "branch": "codex/v8-integration",
+  "source_sha": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7",
+  "source_tree": "ba82955d0c3eee9bcd72c4164cfd36b2cf93b0fb",
+  "workflows_expected_to_run": [],
+  "could_any_triggered_job_publish_or_deploy": "no job is triggered; nothing publishes to main, PyPI or the site; Pages builds from main only",
+  "what_it_would_and_would_not_give": "it makes the branch visible on GitHub (an outward-facing act: the unreleased 8.0.0 source, records and candidate identity become public in a public repository). It yields no CI result.",
+  "options_for_remote_ci_before_release": [
+   "accept the local equivalents and let compliance-regression run on the release push to main (current configuration)",
+   "owner authorizes a separate change adding a workflow that runs the v8 suite on this branch or on pull requests — a workflow change was not made under this order",
+   "open a pull request for review visibility (no workflow would run under the current path filters)"
+  ]
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

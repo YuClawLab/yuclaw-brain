@@ -1,0 +1,1720 @@
+{
+ "record": "v8-browser-journey",
+ "mode": "fixtures",
+ "recorded_utc": "2026-09-19T11:11:07+00:00",
+ "candidate": {
+  "commit": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7",
+  "commit_source": "argument",
+  "tree": "fbfa985eaede3e43448f476c7b11a8159e554cb1",
+  "branch": "main",
+  "dirty_entries": 646,
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "7c2dd63d5094539c487d2e7fc53edebe36154c79c0d89cacd736f933b3afdc94"
+  },
+  "runtime": {
+   "python": "3.12.3",
+   "workbench_module": "<record>/clean_install/venv-wheel/lib/python3.12/site-packages/v8/workbench"
+  }
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "browser": {
+  "engine": "chromium",
+  "version": "151.0.7922.34",
+  "playwright": "python"
+ },
+ "steps": {
+  "1": {
+   "step": "source",
+   "assertions": [
+    {
+     "name": "no script executes anywhere (CSP default-src 'none'; no <script>)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "original passage registered with its availability timestamp",
+     "ok": true,
+     "observed": "source id\taccession · form\tfiled\tavailable as of (source; registered, then corrected)\tobserved (workspace)\trecorded (local action)\trights\tpassage\n0000000000-26-000001:45b937ee0c849642\t0000000000-26-00",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a later source is not visible at an earlier cutoff",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "unknown availability is explicit and blocks registration (never guessed)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "source content renders as inert text (script/markup escaped, never executed)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "01_step1_source_registered.png",
+     "sha256": "d4af3b15fd36e1520ed71b10a2f1bb6fd5f9ff2bc583cf747eac2175fc28199d",
+     "url": "http://127.0.0.1:35563/source"
+    },
+    {
+     "file": "02_step1_asof_hidden.png",
+     "sha256": "b1fa6af8e2d502c06be59831cc0317bb3564599a797f6f3cf470c1c44b61a838",
+     "url": "http://127.0.0.1:35563/source?as_of=2026-01-01T00:00:00Z"
+    },
+    {
+     "file": "03_step1_inert_passage.png",
+     "sha256": "25632d57989f2a3780eb698a404c9a802cfdf2cbe41596b13411d1f729c6fce2",
+     "url": "http://127.0.0.1:35563/source"
+    }
+   ]
+  },
+  "2": {
+   "step": "typed claim",
+   "assertions": [
+    {
+     "name": "missing fiscal period, currency, basis and resolution rule block the freeze with every reason listed",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "fully specified claim saved and frozen as V1 with a digest",
+     "ok": true,
+     "observed": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#claim",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a second freeze of the same claim is refused (a change is an amendment)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "04_step2_freeze_blocked.png",
+     "sha256": "69a412af851c98a31c688c0495b9b0809299583dcc40ec99d27218fa30bed935",
+     "url": "http://127.0.0.1:35563/claim/freeze"
+    },
+    {
+     "file": "05_step2_claim_frozen.png",
+     "sha256": "b3608b0a2bebecf2da379391caed169edf452238915c02612addc4897491112b",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#claim"
+    }
+   ]
+  },
+  "3": {
+   "step": "comparison",
+   "assertions": [
+    {
+     "name": "amendment creates a new version R1 and the original V1 stays",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "original and revised ranges side by side, COMPARABLE, direction LOWERED, midpoint delta -5000000",
+     "ok": true,
+     "observed": "\toriginal (V1)\trevised (R1)\tdelta (revised − original)\nlow\t110000000\t105000000\t-5000000\nhigh\t120000000\t115000000\t-5000000\nmidpoint delta\t-5000000 USD\nwidth\t10000000\t10000000\t0\noverlap\t{'low': 110000000, 'high': 115000000}\ndirection\tLOWERED · metrics comparable: COMPARABLE",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "unresolved explanation and next-evidence fields shown as notes, not causal proof",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an accounting-basis change yields INCOMPARABLE with the reason and no delta",
+     "ok": true,
+     "observed": "INCOMPARABLE\nbasis 'GAAP' vs 'non-GAAP adjusted'\nA metric or accounting-basis change yields INCOMPARABLE; no delta is computed.\nAmendment notes on R1 (digest 795db2cba6a1…, recorded 2026-09-19T11:11:1",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "06_step3_comparison.png",
+     "sha256": "4096a3bec3063a2085467e3ed2c0831af412a26d72e4b4f96cc6a6c06762bd45",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+    },
+    {
+     "file": "07_step3_incomparable.png",
+     "sha256": "f80c89dc04673905b0480e39778eea11301a69f9dd180cdcd46f10c774463860",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+    }
+   ]
+  },
+  "4": {
+   "step": "calculation",
+   "assertions": [
+    {
+     "name": "112 recomputed against the original range: IN_RANGE, midpoint 115000000, delta -3000000, inputs and formula and source links shown",
+     "ok": true,
+     "observed": "Overall: IN_RANGE · comparison permitted: True · rule RANGE_CONTAINS_ACTUAL\nOriginal range — IN_RANGE\ninputs\tlow 110000000 · high 120000000 · actual 112000000 · USD/USD · GAAP · FY2026 · revenue\nformula\tcontains = low <= actual <= high; midpoint = (low + high) / 2 (exact); delta_vs_midpoint = actual",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "112 recomputed against the revised range separately: IN_RANGE, midpoint 110000000, delta 2000000",
+     "ok": true,
+     "observed": "Overall: IN_RANGE · comparison permitted: True · rule RANGE_CONTAINS_ACTUAL\nOriginal range — IN_RANGE\ninputs\tlow 110000000 · high 120000000 · actual 112000000 · USD/USD · GAAP · FY2026 · revenue\nformula\tcontains = low <= actual <= high; midpoint = (low + high) / 2 (exact); delta_vs_midpoint = actual",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "both IN_RANGE with the explicit no-inference statement",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a currency/unit (and basis) mismatch cannot produce a pass: unresolved with explicit reasons",
+     "ok": true,
+     "observed": "Overall: INCOMPATIBLE_BASIS · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. INCOMPATIBLE_BASIS: accounting basis 'non-GAAP adjusted' (claim) vs 'GAAP' (outcome)\nError. UNIT_MISMATCH:",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a full-year outcome against a quarterly claim (explicit quarter dates) is PERIOD_MISMATCH, never a pass",
+     "ok": true,
+     "observed": "Overall: PERIOD_MISMATCH · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. PERIOD_MISMATCH: fiscal period label 'Q3 FY2026' vs 'FY2026'\nOriginal range — PERIOD_MISMATCH\ninputs\tlow 2700",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "an outside-range outcome produces the distinct OUT_OF_RANGE result with signed distance",
+     "ok": true,
+     "observed": "Overall: OUT_OF_RANGE · comparison permitted: True · rule RANGE_CONTAINS_ACTUAL\nOriginal range — OUT_OF_RANGE\ninputs\tlow 110000000 · high 120000000 · actual 98000000 · USD/USD · GAAP · FY2026 · revenu",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "08_step4_calculation_both.png",
+     "sha256": "75eef93a256b6203a729ca7aa4e2eb62ced5095094b26a74e2228651c56e99b4",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+    },
+    {
+     "file": "09_step4_mismatch_no_pass.png",
+     "sha256": "bba2f98857bc289d7d38cbaa1c17602899740015a9dd6ffe3e29734a0987bdd8",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+    },
+    {
+     "file": "10_step4_period_mismatch.png",
+     "sha256": "8c44962b84eb5e395bad994526e5b6863754694e64c4429d875e2d5498359d39",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+    },
+    {
+     "file": "11_step4_out_of_range.png",
+     "sha256": "d5a982974b57b344712e01894569ee43b1b91c485c4f506e46519688b2ac1903",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+    }
+   ]
+  },
+  "5": {
+   "step": "history",
+   "assertions": [
+    {
+     "name": "replay before the amendment: only V1 visible, result PENDING_OUTCOME, later events counted as hidden",
+     "ok": true,
+     "observed": "version\trange\tcurrency / unit\tbasis\tfiscal period\trule\tstated\tdigest\treason\nV1\nFROZEN\t110000000 – 120000000 USD\n(110 millions – 120 millions)\tUSD / USD\tGAAP\tFY2026 (FY 2026-01-01..2026-12-31)\tRANGE_CO",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "replay after the amendment, before the actual: V1 and R1 visible, still PENDING_OUTCOME",
+     "ok": true,
+     "observed": "version\trange\tcurrency / unit\tbasis\tfiscal period\trule\tstated\tdigest\treason\nV1\nFROZEN\t110000000 – 120000000 USD\n(110 millions – 120 millions)\tUSD / USD\tGAAP\tFY2026 (FY 2026-01-01..2026-12-31)\tRANGE_CO",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "replay after the actual disclosure: IN_RANGE; original V1 range 110000000–120000000 unchanged",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "three times shown apart on every event (source available / observed / recorded)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "before the first source was available nothing is shown as known (later information never backdated)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "12_step5_asof_before_amendment.png",
+     "sha256": "9d90d1f2563521be2bf94b00dbf293bfc1a2296c218fcd09696596da0d2b342a",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+    },
+    {
+     "file": "13_step5_asof_after_amendment.png",
+     "sha256": "3a0914b78aed35b37665e2b3f1de7a462a54454ba127a4d2cec5498411e6dc33",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "14_step5_asof_nothing_known.png",
+     "sha256": "1b862eb936b4c42c3c4736aa4c86c5fa80adf105c9344764f4b8456970c94a7e",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+    }
+   ]
+  },
+  "6": {
+   "step": "adjudication",
+   "assertions": [
+    {
+     "name": "adjudication recorded with reviewer identity, rule, evidence, reason, conflicts and result",
+     "ok": true,
+     "observed": "reviewer\trule\tlabel\tcomputed\treason\tconflicts\tevidence\trecorded\njourney-runner (automated test action; not a human review)\tRANGE_CONTAINS_ACTUAL\tIN_RANGE\tIN_RANGE\tthe disclosed actual of 112 million lies inside both the original and the revised range\tnone recorded\ta080a5e1ed8c… 4b86b43ebc30…\t2026-09",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a label that differs from the computed result without the disputed flag is refused",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a disputed label stays visible next to the computed result",
+     "ok": true,
+     "observed": "reviewer\trule\tlabel\tcomputed\treason\tconflicts\tevidence\trecorded\njourney-runner (automated test action; not a human review)\tRANGE_CONTAINS_ACTUAL\tIN_RANGE\tIN_RANGE\tthe disclosed actual of 112 million lies inside both the original and the revised range\tnone recorded\ta080a5e1ed8c… 4b86b43ebc30…\t2026-09",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a missing outcome is unresolved (PENDING_OUTCOME), never scored",
+     "ok": true,
+     "observed": "Overall: PENDING_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. PENDING_OUTCOME: no outcome recorded; unresolved\nOriginal range — PENDING_OUTCOME\ninputs\tlow 110000000 · high",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a withdrawal is WITHDRAWN_BEFORE_OUTCOME, not automatically a miss",
+     "ok": true,
+     "observed": "Overall: WITHDRAWN_BEFORE_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. WITHDRAWN_BEFORE_OUTCOME: the commitment was withdrawn before any comparable outcome was available; ",
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "15_step6_adjudicated.png",
+     "sha256": "a92df8054c29d7fd503fc559c75412267b76a9f1e650672f0858f9aafead409e",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "16_step6_disputed_visible.png",
+     "sha256": "ee6f5fb192d9156a2acaae3c2d4d9d1769650ad1f688f1fc3a0d564268c4242f",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+    },
+    {
+     "file": "17_step6_withdrawal_not_a_miss.png",
+     "sha256": "a206c2c71b07e493b7901c5aae4e8ccd27f49bc9a3e7aba900dc69c7a2de6168",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+    }
+   ]
+  },
+  "7": {
+   "step": "reproducible export",
+   "assertions": [
+    {
+     "name": "export built from the UI with a canonical research digest",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "export downloaded through the browser; it is a complete zip (no .part left behind)",
+     "ok": true,
+     "observed": "10037",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "packet carries schema, claim versions, source references/digests, events, method and results",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "publication eligibility shown as separate and NOT ELIGIBLE (not in the PERMITTED class)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "workspace B is fresh (no claims, separate workspace id)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "verified in the fresh workspace through the UI: SUCCESS, canonical hash checked AND calculations recomputed (IN_RANGE)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a changed payload fails verification with the first discrepancy named",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "an incomplete packet is not presented as complete",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "unsafe archive paths are refused",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "export terms forbid bundling source bytes where rights do not allow it (excerpt withheld, digest kept)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "imported packets are recorded as verifications in B and never become claims",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "B still holds no claims after imports",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "18_step7_export_built.png",
+     "sha256": "872bebd219ffcc0388f7f378db6cfce5f2e3653aee5569dc1e350b207a7ea956",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?built=exp-4ccb969b6d51a0f4#export"
+    },
+    {
+     "file": "19_step7_verified_fresh_workspace.png",
+     "sha256": "1606649e932f1a5cd8a677cb60165b9c479a344ed31c943c02e9f6a5fe6d2c44",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "20_step7_tampered_rejected.png",
+     "sha256": "c38f20229558d4af7896f2292e23e2278d1095cbbba84f325e972ecf930e84ba",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  }
+ },
+ "responses": [
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/amend",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE-NEG/amend",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/outcome",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE-NEG/outcome",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/fixtures/load",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly/outcome",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/fixtures/load",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/adjudicate",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/adjudicate",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/adjudicate",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/fixtures/load",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/fixtures/load",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-RIGHTS-UNKNOWN/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE-NEG/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/note",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "A/dataset/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/note",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/sci/replay",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2026-REV-GUIDE/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/import",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/import",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/import",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "B/fixtures/load",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/recover",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/register",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/freeze",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2025-AVAIL-CORR/outcome",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2025-AVAIL-CORR/amend",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2025-AVAIL-CORR/adjudicate",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/correct-availability",
+   "status": 422
+  },
+  {
+   "method": "POST",
+   "url": "A/source/correct-availability",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/source/correct-availability",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "A/claim/ZZFX-FY2025-AVAIL-CORR/export",
+   "status": 303
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  },
+  {
+   "method": "POST",
+   "url": "B/verify",
+   "status": 200
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "assertions": [
+    {
+     "name": "a research note is recorded from the claim page as a separate action (N1, version R1, actor label, local action time)",
+     "ok": true,
+     "observed": "1 note(s), 0 correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.\nnote\tcategory\tactor\tversion\tunresolved question / explanation\tnex",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "adding a note changes no claim field or frozen digest and adds no version",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the note is shown beside the comparison (COMPARABLE) with its version link",
+     "ok": true,
+     "observed": "\toriginal (V1)\trevised (R1)\tdelta (revised − original)\nlow\t110000000\t105000000\t-5000000\nhigh\t120000000\t115000000\t-5000000\nmidpoint delta\t-5000000 USD\nwidth\t10000000\t10000000\t0\noverlap\t{'low': 11000000",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the same note form submitted twice with its identical operation identifier creates exactly one durable note event (retry safety through the browser session)",
+     "ok": true,
+     "observed": "(303, 1)",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a correction is a new note N3 linked to N1; N1's text stays visible and is marked corrected",
+     "ok": true,
+     "observed": "3 note(s), 1 correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.\nnote\tcategory\tactor\tversion\tunresolved question / explanation\tnext evidence\treason\tevidence\trecorded (local action)\nN1\ncorrected by N3 (this text is retained)\tunreso",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "at an earlier research cutoff today's notes do not appear as contemporaneous; they are listed under 'Later annotations' with their actual action times",
+     "ok": true,
+     "observed": "0 note(s), 0 correction(s). Notes carry no source availability: an as-of replay shows only the notes recorded at or before the cutoff.\nNo research notes on this claim yet.\nLater annotations — recorded",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "in the INCOMPARABLE branch the amendment's explanation/next-evidence notes are visible with their version link (previously hidden)",
+     "ok": true,
+     "observed": "INCOMPARABLE\nbasis 'GAAP' vs 'non-GAAP adjusted'\nA metric or accounting-basis change yields INCOMPARABLE; no delta is computed.\nAmendment notes on R1 (digest 795db2cba6a1…, recorded 2026-09-19T11:11:1",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a research note is shown beside an INCOMPARABLE comparison and the comparison stays INCOMPARABLE",
+     "ok": true,
+     "observed": "INCOMPARABLE\nbasis 'GAAP' vs 'non-GAAP adjusted'\nA metric or accounting-basis change yields INCOMPARABLE; no delta is computed.\nAmendment notes on R1 (digest 795db2cba6a1…, recorded 2026-09-19T11:11:1",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a note on a withdrawn claim is shown and the result stays WITHDRAWN_BEFORE_OUTCOME (nothing reopened)",
+     "ok": true,
+     "observed": "Overall: WITHDRAWN_BEFORE_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. WITHDRAWN_BEFORE_OUTCOME: the commitment was withdrawn before any comparable outcome was available; ",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a note on a claim without an outcome is shown beside PENDING_OUTCOME and resolves nothing",
+     "ok": true,
+     "observed": "Overall: PENDING_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. PENDING_OUTCOME: no outcome recorded; unresolved\nOriginal range — PENDING_OUTCOME\ninputs\tlow 110000000 · high",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a note without a reason is refused (nothing written)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the Research notes index lists notes across claims with actor kind and action time",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the export carries the notes and their correction history (N1 corrected by N3) and the dataset row",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the fresh workspace re-derives the notes and the dataset row from the packed events (recompute-notes, recompute-dataset-row) and verifies SUCCESS",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "publication eligibility stays NOT ELIGIBLE after notes are added",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "21_research_notes_note_recorded.png",
+     "sha256": "ca6749dbecb67db93716fae42eee6548af3977ed82f5800e6bbecfdda00d2fe3",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "22_research_notes_note_corrected.png",
+     "sha256": "c37b82d2aa9da34d8a4a6e5b6c58fe412050e1bf678d2d5147eb1cc21028a280",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+    },
+    {
+     "file": "23_research_notes_note_timing_as_of.png",
+     "sha256": "55778d7a2ce1a00a206b770c5327ab6fb014cffa58c01edfb2dbf2e41802c227",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+    },
+    {
+     "file": "24_research_notes_note_incomparable.png",
+     "sha256": "4e1f752609fb235e21abd49843265bc928a917ebeb5ed2d98805eca9f7a34286",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#notes"
+    },
+    {
+     "file": "25_research_notes_note_withdrawn_and_pending.png",
+     "sha256": "75962236afe0c8e0b71a1e6abeac8cbe4cde954dac8584f932ef79ab75d5531c",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome#notes"
+    },
+    {
+     "file": "26_research_notes_notes_verified_fresh.png",
+     "sha256": "8bbfafeedd10f46d7056fd44dce466703b9f76f856d19c19fae9daa7f243c618",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "assertions": [
+    {
+     "name": "an empty workspace shows honest empty coverage (no rows, zero counts, nothing sampled)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the dataset view lists one row per frozen claim (7) with identifiers, targets, outcome, computed result, reviewer labels and disagreement, notes, availability/observation and gaps",
+     "ok": true,
+     "observed": "(7, 7)",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "fictional rows are labelled FICTIONAL (6 of 7; the rights-unknown claim is a real-source row), eligibility is NOT_RECORDED for every row and no issuer or result is hardcoded",
+     "ok": true,
+     "observed": "(6, 6)",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the snapshot identity, schema/method versions, coverage gaps and known omissions are displayed",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "/dataset.json carries the same rows machine-readably with the snapshot digest outside any timestamp",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a dataset snapshot export is built from the page and listed as retained with its digest",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the fresh workspace re-derives every row from the embedded claim content and reproduces the snapshot identity (SUCCESS)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a forged row inside a dataset snapshot fails verification (rows do not reproduce)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "after a record changes, the earlier snapshot stays retained and the view identifies what changed (claim, field)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the fresh workspace holds no claims after importing a dataset snapshot",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "27_dataset_dataset_empty.png",
+     "sha256": "35927617048bb603189631fc18c34bbd73c3f9f849c3890f421b2194e8d516d0",
+     "url": "http://127.0.0.1:45787/dataset"
+    },
+    {
+     "file": "28_dataset_dataset_rows.png",
+     "sha256": "de3ef134e40213a8f68b1998602ec5ca7f9ad38f283ff1d812b7b81bf5239c44",
+     "url": "http://127.0.0.1:35563/dataset"
+    },
+    {
+     "file": "29_dataset_dataset_verified_fresh.png",
+     "sha256": "3be6f0fb4753c39c130ac655ef622d82b68677e065d964e4422547cc4bf933ef",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "30_dataset_dataset_change_identified.png",
+     "sha256": "a3f3cec6b92082561fccb1b3df4b6f952e19b3f2348fdc91e9266162e1af61c8",
+     "url": "http://127.0.0.1:35563/dataset"
+    }
+   ]
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "assertions": [
+    {
+     "name": "the Scientific report page is reachable from the navigation, states the supported contract, the kernel identity and the standing limits, and has no records yet",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a supported fictional input (the bundle's exploratory template family, 61 events) is replayed through the kernel: EXPLORATORY_REPLAY, claim EXPLORATORY_ONLY, root recomputed and checkpoint matched, input identity, kernel identity and limitations shown",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a refused input (a revenue range 110–120 million supplied as probabilities) is INELIGIBLE with the specific reason, and no report is shown",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "an unsupported metric is refused with UNSUPPORTED_METRIC",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a prospective-mode fixture with a pending unit reports AWAITING_OUTCOME under PROSPECTIVE_CLAIMED_NOT_VERIFIED; linked to the frozen claim, the link is VERIFIED_EXISTS and the page states that the commitment's IN_RANGE results are not units of the study",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the claim page lists the linked scientific record with its status and input identity, states that the link yields no scientific improvement about the commitment, and the claim's own result is unchanged",
+     "ok": true,
+     "observed": "record\tstatus · replay status\tfamily\tinput identity\tactor\trecorded (local action)\nS4\tSUPPORTED_REPLAY\nPROSPECTIVE_CLAIMED_NOT_VERIFIED\tFICTIONAL-PROSPECTIVE-FIXTURE\t4bddc3a9c0d2da23…\tjourney-runner (a",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "recording scientific replays changes no claim field or digest",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "an input with unsupported envelope fields is refused before any parsing of events (nothing written)",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the claim export carries the linked scientific record (input, identity, report, kernel identity, limitations)",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the fresh workspace recomputes the scientific report from the packed events (recompute-sci) and verifies SUCCESS",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a semantically tampered scientific input (an outcome flipped inside the packet) fails verification",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the fresh workspace holds no scientific records after verifying imports",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "31_sci_sci_supported_exploratory.png",
+     "sha256": "f544a94e03be33fa12a2f04f71e4139ec6bffc6b369b7cd92fc35e742181bbff",
+     "url": "http://127.0.0.1:35563/sci/S1"
+    },
+    {
+     "file": "32_sci_sci_refused_monetary.png",
+     "sha256": "9ad2fdbad794c9c1d9375bc1e0c744153d1652bf23442119a259987e7cc129ab",
+     "url": "http://127.0.0.1:35563/sci/S2"
+    },
+    {
+     "file": "33_sci_sci_linked_pending.png",
+     "sha256": "48b39e49389d8f98c94c26ca7419f960cdd586d7332694ff483a66e7581529ed",
+     "url": "http://127.0.0.1:35563/sci/S4"
+    },
+    {
+     "file": "34_sci_sci_verified_fresh.png",
+     "sha256": "09696ff68075df116c43c507f79216e221092d3c09daa52a5fcb361e7a411577",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  },
+  "usability": {
+   "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+   "assertions": [
+    {
+     "name": "an impossible availability date (31 June) is refused with the field named, nothing is written, and every entry is still in the form",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "correcting the one field in the returned form and submitting registers the source once",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an ingestion source record pasted into the import form is registered with the digest the tool computed and the retrieval time as observation; importing it again registers nothing new",
+     "ok": true,
+     "observed": "1",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a record whose passage no longer matches its digest is refused and the pasted text stays in the form",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "Help lists every enabled function with its address, per-claim links to steps 3–7, and shows the packaged operator guide (start/stop, fresh workspace, recovery, backup disclosure)",
+     "ok": true,
+     "observed": "74",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "keyboard only: the first Tab stop is the skip link, the fixture loader is reached by Tab with a visible focus ring, and Enter on its button loads the fixture",
+     "ok": true,
+     "observed": "'Skip to the page content' solid http://127.0.0.1:45787/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "after an interrupted append every page is the integrity page: nothing is served or written over a torn tail",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "Run recovery in the browser preserves the torn bytes in a side file, changes no durable event, records a RECOVERY event and the workspace serves again",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Ty",
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "35_usability_refused_form_keeps_entries.png",
+     "sha256": "4059711bf6e285373dd66fcf3ad72ef82a52c9ee8a8581a99a25da657237fc10",
+     "url": "http://127.0.0.1:35563/source/register"
+    },
+    {
+     "file": "36_usability_help.png",
+     "sha256": "0e6972495d5e1f85ae35c7f6b688197d6631b9145417654e152e9819c5dda8a3",
+     "url": "http://127.0.0.1:35563/help"
+    },
+    {
+     "file": "37_usability_torn_tail.png",
+     "sha256": "5e87fd6c3b15fe20e6363b10240a0b894be2a2032b551ee97a02abe1f8e94c36",
+     "url": "http://127.0.0.1:45787/"
+    },
+    {
+     "file": "38_usability_recovered.png",
+     "sha256": "187d29269dc044f63789502bc1e143332e0674090983061e531e3a63835743a4",
+     "url": "http://127.0.0.1:45787/?recovered=1"
+    }
+   ]
+  },
+  "availability_correction": {
+   "feature": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)",
+   "assertions": [
+    {
+     "name": "before any correction the claim computes WITHDRAWN_BEFORE_OUTCOME and offers the correction from the source section",
+     "ok": true,
+     "observed": "Overall: WITHDRAWN_BEFORE_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. WITHDRAWN_BEFORE_OUTCOME: the commitment was withdrawn befor",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an impossible corrected time is refused with the field named, the entries kept and nothing written",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the correction is recorded as a new linked event (AC1) with prior and corrected values, reason, evidence reference, actor label and the server's action time",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "nothing recorded earlier was edited: every earlier log line is byte-identical, the registration keeps its time and observation, the claim digests are unchanged",
+     "ok": true,
+     "observed": null,
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the source table shows the registered availability retained and the corrected one beside it",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the claim shows the corrected view beside the recorded result and lists what needs review",
+     "ok": true,
+     "observed": "version\taccession · form\tfiled\tavailable as of\ttimes\tpassage\nV1 FROZEN\t0000000000-25-000041 · 8-K (fictional)\t2025-02-10\t2025-02-10T21:05:00Z\tsource available 2025-02-10T21:05:00Z · observed 2026-09-19T11:11:42.794245Z · recorded 2026-09-19T11:11:42.794245Z\nsource observed 2026-09-19T11:11:40.911301",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the recorded calculation and the earlier adjudication are not overwritten",
+     "ok": true,
+     "observed": "Overall: WITHDRAWN_BEFORE_OUTCOME · comparison permitted: False · rule RANGE_CONTAINS_ACTUAL\nError. WITHDRAWN_BEFORE_OUTCOME: the commitment was withdrawn befor",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a view at a cutoff before the correction was recorded keeps what the record held and lists the correction as LATER, never applied",
+     "ok": true,
+     "observed": "version\taccession · form\tfiled\tavailable as of\ttimes\tpassage\nV1 FROZEN\t0000000000-25-000041 · 8-K (fictional)\t2025-02-10\t2025-02-10T21:05:00Z\tsource available 2025-02-10T21:05:00Z · observed 2026-09-19T11:11:42.794245Z · recorded 2026-09-19T11:11:42.794245Z\nsource observed 2026-09-19T11:11:40.911301",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "a view at a cutoff after the correction was recorded uses the corrected availability and says so",
+     "ok": true,
+     "observed": "version\taccession · form\tfiled\tavailable as of\ttimes\tpassage\nV1 FROZEN\t0000000000-25-000041 · 8-K (fictional)\t2025-02-10\t2025-02-10T21:05:00Z\tsource available 2025-02-10T21:05:00Z · observed 2026-09-19T11:11:42.794245Z · recorded 2026-09-19T11:11:42.794245Z\nsource observed 2026-09-19T11:11:40.911301",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "a submission prepared before another correction landed is refused as out of date and nothing is written; the further correction links to the one it replaces",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fr",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the export carries the original registration, the whole correction chain, the historical-view rule and the corrected view; the recorded results stay as recorded",
+     "ok": true,
+     "observed": "{'corrected_results': {'calculator': 'v8.workbench.calc/1', 'comparison_permitted': True, 'current_version': 'V1', 'delta_vs_original_midpoint': -3000000, 'delta_vs_revised_midpoint': None, 'no_infere",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "the fresh workspace verifies the export and re-derives the corrected view from the packed registration and correction events",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": false
+    },
+    {
+     "name": "an altered correction — even with matching hashes and digests — is refused: the corrected view no longer reproduces from the packed events",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverage\nScientific report\nVerify an export (fresh workspace)\nJournal\nHelp\n1 Source\n2 Typed claim\n3 Compari",
+     "expected": null,
+     "negative_case": true
+    },
+    {
+     "name": "the dataset coverage view names the correction as a coverage gap needing review",
+     "ok": true,
+     "observed": "Skip to the page content\n\nResearch & education only. Not investment advice. Local workbench bound to 127.0.0.1. Nothing here publishes.\n\nWorkspace\n1 Source\n2 Typed claim\nResearch notes\nDataset coverag",
+     "expected": null,
+     "negative_case": false
+    }
+   ],
+   "screenshots": [
+    {
+     "file": "39_availability_correction_correction_recorded.png",
+     "sha256": "5338e2e64b71940c8983a456d898a0885e6e08448943095fb7f7b4eb0270ed5a",
+     "url": "http://127.0.0.1:35563/source?corrected=AC1#availability"
+    },
+    {
+     "file": "40_availability_correction_corrected_view.png",
+     "sha256": "ebbb237b7707d5fab471a0b650495bb12c01c59229f96454120891db3a850772",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR"
+    },
+    {
+     "file": "41_availability_correction_as_of_before_correction.png",
+     "sha256": "5ee14c57d9f1138bc5a7d15561845d62227d1259826a7840f6ead048105fe056",
+     "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR?as_of=2025-09-01T00:00:00Z"
+    },
+    {
+     "file": "42_availability_correction_verified_in_fresh_workspace.png",
+     "sha256": "c59f9521177318243be572245c6466a3432e2e0f1ae3b9267265bf84ba866810",
+     "url": "http://127.0.0.1:45787/verify"
+    },
+    {
+     "file": "43_availability_correction_tampered_correction_refused.png",
+     "sha256": "c875f757c8966d7fc261cfbd7f2b007cf5ef86859082317756abf203d08416b7",
+     "url": "http://127.0.0.1:45787/verify"
+    }
+   ]
+  }
+ },
+ "servers": {
+  "A_research_workspace": "http://127.0.0.1:35563",
+  "B_fresh_workspace": "http://127.0.0.1:45787",
+  "bind": "127.0.0.1 only"
+ },
+ "scorecard": {
+  "score": "7/7",
+  "steps": [
+   {
+    "n": 1,
+    "step": "source",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 2,
+    "negative_assertions": 3,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "01_step1_source_registered.png",
+      "sha256": "d4af3b15fd36e1520ed71b10a2f1bb6fd5f9ff2bc583cf747eac2175fc28199d",
+      "url": "http://127.0.0.1:35563/source"
+     },
+     {
+      "file": "02_step1_asof_hidden.png",
+      "sha256": "b1fa6af8e2d502c06be59831cc0317bb3564599a797f6f3cf470c1c44b61a838",
+      "url": "http://127.0.0.1:35563/source?as_of=2026-01-01T00:00:00Z"
+     },
+     {
+      "file": "03_step1_inert_passage.png",
+      "sha256": "25632d57989f2a3780eb698a404c9a802cfdf2cbe41596b13411d1f729c6fce2",
+      "url": "http://127.0.0.1:35563/source"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "step": "typed claim",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 2,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "04_step2_freeze_blocked.png",
+      "sha256": "69a412af851c98a31c688c0495b9b0809299583dcc40ec99d27218fa30bed935",
+      "url": "http://127.0.0.1:35563/claim/freeze"
+     },
+     {
+      "file": "05_step2_claim_frozen.png",
+      "sha256": "b3608b0a2bebecf2da379391caed169edf452238915c02612addc4897491112b",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#claim"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "step": "comparison",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 3,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "06_step3_comparison.png",
+      "sha256": "4096a3bec3063a2085467e3ed2c0831af412a26d72e4b4f96cc6a6c06762bd45",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#comparison"
+     },
+     {
+      "file": "07_step3_incomparable.png",
+      "sha256": "f80c89dc04673905b0480e39778eea11301a69f9dd180cdcd46f10c774463860",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#comparison"
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "step": "calculation",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 3,
+    "negative_assertions": 3,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "08_step4_calculation_both.png",
+      "sha256": "75eef93a256b6203a729ca7aa4e2eb62ced5095094b26a74e2228651c56e99b4",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#calculation"
+     },
+     {
+      "file": "09_step4_mismatch_no_pass.png",
+      "sha256": "bba2f98857bc289d7d38cbaa1c17602899740015a9dd6ffe3e29734a0987bdd8",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#calculation"
+     },
+     {
+      "file": "10_step4_period_mismatch.png",
+      "sha256": "8c44962b84eb5e395bad994526e5b6863754694e64c4429d875e2d5498359d39",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-Q3FY2026-REV-GUIDE--FIX-COMMIT-008-quarterly#calculation"
+     },
+     {
+      "file": "11_step4_out_of_range.png",
+      "sha256": "d5a982974b57b344712e01894569ee43b1b91c485c4f506e46519688b2ac1903",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-006-out-of-range"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "step": "history",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 4,
+    "negative_assertions": 1,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "12_step5_asof_before_amendment.png",
+      "sha256": "9d90d1f2563521be2bf94b00dbf293bfc1a2296c218fcd09696596da0d2b342a",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-03-01T00:00:00Z"
+     },
+     {
+      "file": "13_step5_asof_after_amendment.png",
+      "sha256": "3a0914b78aed35b37665e2b3f1de7a462a54454ba127a4d2cec5498411e6dc33",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+     },
+     {
+      "file": "14_step5_asof_nothing_known.png",
+      "sha256": "1b862eb936b4c42c3c4736aa4c86c5fa80adf105c9344764f4b8456970c94a7e",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-01-01T00:00:00Z"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "step": "adjudication",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 1,
+    "negative_assertions": 4,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "15_step6_adjudicated.png",
+      "sha256": "a92df8054c29d7fd503fc559c75412267b76a9f1e650672f0858f9aafead409e",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+     },
+     {
+      "file": "16_step6_disputed_visible.png",
+      "sha256": "ee6f5fb192d9156a2acaae3c2d4d9d1769650ad1f688f1fc3a0d564268c4242f",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#adjudication"
+     },
+     {
+      "file": "17_step6_withdrawal_not_a_miss.png",
+      "sha256": "a206c2c71b07e493b7901c5aae4e8ccd27f49bc9a3e7aba900dc69c7a2de6168",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-003-withdrawal"
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "step": "reproducible export",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 8,
+    "negative_assertions": 4,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "18_step7_export_built.png",
+      "sha256": "872bebd219ffcc0388f7f378db6cfce5f2e3653aee5569dc1e350b207a7ea956",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?built=exp-4ccb969b6d51a0f4#export"
+     },
+     {
+      "file": "19_step7_verified_fresh_workspace.png",
+      "sha256": "1606649e932f1a5cd8a677cb60165b9c479a344ed31c943c02e9f6a5fe6d2c44",
+      "url": "http://127.0.0.1:45787/verify"
+     },
+     {
+      "file": "20_step7_tampered_rejected.png",
+      "sha256": "c38f20229558d4af7896f2292e23e2278d1095cbbba84f325e972ecf930e84ba",
+      "url": "http://127.0.0.1:45787/verify"
+     }
+    ]
+   }
+  ],
+  "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+  "features": {
+   "research_notes": {
+    "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 7,
+    "negative_assertions": 8,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "21_research_notes_note_recorded.png",
+      "sha256": "ca6749dbecb67db93716fae42eee6548af3977ed82f5800e6bbecfdda00d2fe3",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+     },
+     {
+      "file": "22_research_notes_note_corrected.png",
+      "sha256": "c37b82d2aa9da34d8a4a6e5b6c58fe412050e1bf678d2d5147eb1cc21028a280",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE#notes"
+     },
+     {
+      "file": "23_research_notes_note_timing_as_of.png",
+      "sha256": "55778d7a2ce1a00a206b770c5327ab6fb014cffa58c01edfb2dbf2e41802c227",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE?as_of=2026-06-01T00:00:00Z"
+     },
+     {
+      "file": "24_research_notes_note_incomparable.png",
+      "sha256": "4e1f752609fb235e21abd49843265bc928a917ebeb5ed2d98805eca9f7a34286",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE-NEG#notes"
+     },
+     {
+      "file": "25_research_notes_note_withdrawn_and_pending.png",
+      "sha256": "75962236afe0c8e0b71a1e6abeac8cbe4cde954dac8584f932ef79ab75d5531c",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-002-missing-outcome#notes"
+     },
+     {
+      "file": "26_research_notes_notes_verified_fresh.png",
+      "sha256": "8bbfafeedd10f46d7056fd44dce466703b9f76f856d19c19fae9daa7f243c618",
+      "url": "http://127.0.0.1:45787/verify"
+     }
+    ]
+   },
+   "dataset": {
+    "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 6,
+    "negative_assertions": 4,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "27_dataset_dataset_empty.png",
+      "sha256": "35927617048bb603189631fc18c34bbd73c3f9f849c3890f421b2194e8d516d0",
+      "url": "http://127.0.0.1:45787/dataset"
+     },
+     {
+      "file": "28_dataset_dataset_rows.png",
+      "sha256": "de3ef134e40213a8f68b1998602ec5ca7f9ad38f283ff1d812b7b81bf5239c44",
+      "url": "http://127.0.0.1:35563/dataset"
+     },
+     {
+      "file": "29_dataset_dataset_verified_fresh.png",
+      "sha256": "3be6f0fb4753c39c130ac655ef622d82b68677e065d964e4422547cc4bf933ef",
+      "url": "http://127.0.0.1:45787/verify"
+     },
+     {
+      "file": "30_dataset_dataset_change_identified.png",
+      "sha256": "a3f3cec6b92082561fccb1b3df4b6f952e19b3f2348fdc91e9266162e1af61c8",
+      "url": "http://127.0.0.1:35563/dataset"
+     }
+    ]
+   },
+   "sci": {
+    "feature": "scientific report/replay through the adapted kernel (V8-005)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 6,
+    "negative_assertions": 6,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "31_sci_sci_supported_exploratory.png",
+      "sha256": "f544a94e03be33fa12a2f04f71e4139ec6bffc6b369b7cd92fc35e742181bbff",
+      "url": "http://127.0.0.1:35563/sci/S1"
+     },
+     {
+      "file": "32_sci_sci_refused_monetary.png",
+      "sha256": "9ad2fdbad794c9c1d9375bc1e0c744153d1652bf23442119a259987e7cc129ab",
+      "url": "http://127.0.0.1:35563/sci/S2"
+     },
+     {
+      "file": "33_sci_sci_linked_pending.png",
+      "sha256": "48b39e49389d8f98c94c26ca7419f960cdd586d7332694ff483a66e7581529ed",
+      "url": "http://127.0.0.1:35563/sci/S4"
+     },
+     {
+      "file": "34_sci_sci_verified_fresh.png",
+      "sha256": "09696ff68075df116c43c507f79216e221092d3c09daa52a5fcb361e7a411577",
+      "url": "http://127.0.0.1:45787/verify"
+     }
+    ]
+   },
+   "usability": {
+    "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 5,
+    "negative_assertions": 3,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "35_usability_refused_form_keeps_entries.png",
+      "sha256": "4059711bf6e285373dd66fcf3ad72ef82a52c9ee8a8581a99a25da657237fc10",
+      "url": "http://127.0.0.1:35563/source/register"
+     },
+     {
+      "file": "36_usability_help.png",
+      "sha256": "0e6972495d5e1f85ae35c7f6b688197d6631b9145417654e152e9819c5dda8a3",
+      "url": "http://127.0.0.1:35563/help"
+     },
+     {
+      "file": "37_usability_torn_tail.png",
+      "sha256": "5e87fd6c3b15fe20e6363b10240a0b894be2a2032b551ee97a02abe1f8e94c36",
+      "url": "http://127.0.0.1:45787/"
+     },
+     {
+      "file": "38_usability_recovered.png",
+      "sha256": "187d29269dc044f63789502bc1e143332e0674090983061e531e3a63835743a4",
+      "url": "http://127.0.0.1:45787/?recovered=1"
+     }
+    ]
+   },
+   "availability_correction": {
+    "feature": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)",
+    "status": "DEMONSTRATED",
+    "positive_assertions": 8,
+    "negative_assertions": 6,
+    "failed": [],
+    "screenshots": [
+     {
+      "file": "39_availability_correction_correction_recorded.png",
+      "sha256": "5338e2e64b71940c8983a456d898a0885e6e08448943095fb7f7b4eb0270ed5a",
+      "url": "http://127.0.0.1:35563/source?corrected=AC1#availability"
+     },
+     {
+      "file": "40_availability_correction_corrected_view.png",
+      "sha256": "ebbb237b7707d5fab471a0b650495bb12c01c59229f96454120891db3a850772",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR"
+     },
+     {
+      "file": "41_availability_correction_as_of_before_correction.png",
+      "sha256": "5ee14c57d9f1138bc5a7d15561845d62227d1259826a7840f6ead048105fe056",
+      "url": "http://127.0.0.1:35563/claim/ZZFX-FY2025-AVAIL-CORR?as_of=2025-09-01T00:00:00Z"
+     },
+     {
+      "file": "42_availability_correction_verified_in_fresh_workspace.png",
+      "sha256": "c59f9521177318243be572245c6466a3432e2e0f1ae3b9267265bf84ba866810",
+      "url": "http://127.0.0.1:45787/verify"
+     },
+     {
+      "file": "43_availability_correction_tampered_correction_refused.png",
+      "sha256": "c875f757c8966d7fc261cfbd7f2b007cf5ef86859082317756abf203d08416b7",
+      "url": "http://127.0.0.1:45787/verify"
+     }
+    ]
+   }
+  },
+  "feature_rule": "an enabled function counts as DEMONSTRATED only when every positive and negative assertion for it passed in the browser; BLOCKED names the missing inputs and is never a pass; the seven-step score alone does not establish that every enabled function is finished",
+  "human_benefit": "PENDING",
+  "experimental_audits": "EXPERIMENTAL",
+  "fixture_data": "clearly fictional demonstration data; not a validated dataset product"
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "record": "v8-weekly-note-reconciliation/1",
+ "order": "V8-011 §5",
+ "where": "rendered and checked in the candidate's own checkout with the established renderer and checker; the evidence store was read only; the production checkout and its note were not touched",
+ "runs": {
+  "A_checker_on_the_merged_note": {
+   "command": "python3 tools/check_weekly_note.py --require-contract v3",
+   "note_sha256": "68bbadd14128644a8ee56db0b54acaa3c35b52aedad1051517bdf06f4d0229af",
+   "output": "[note-gate] reconciled: 300 events (293/7), 0 protocols, 0 runs, 0 supersessions for 2026-09-12..2026-09-18 (contract v3, generated at 2026-09-18T23:02:41.904159Z; live recheck)",
+   "rc": 0
+  },
+  "B_renderer": {
+   "command": "python3 tools/yuclaw_weekly_note.py",
+   "started_utc": "2026-09-19T11:00:54Z",
+   "output": "[weekly-note] wrote <checkout>/docs/weekly_note.html (2026-09-13 -> 2026-09-19; as_of 2026-09-19T11:00:54.644479Z; 96 filings, 0 runs; self-check OK)",
+   "rc": 0,
+   "rendered_note_sha256": "4fa1e76ea12288bf06b045e811c65542d61e690d314176db964bbf6af9dcaa5b",
+   "changed": "window and generation stamps only; the 8.0.0 badge comes from the version surface; no other file"
+  },
+  "C_checker_on_the_rendered_note": {
+   "output": "[note-gate] reconciled: 300 events (293/7), 0 protocols, 0 runs, 0 supersessions for 2026-09-13..2026-09-19 (contract v3, generated at 2026-09-19T11:00:54.644479Z; live recheck)",
+   "rc": 0
+  }
+ },
+ "input_identity": {
+  "renderer": "tools/yuclaw_weekly_note.py",
+  "checker": "tools/check_weekly_note.py",
+  "declared_inputs": [
+   "docs/evidence_changes/*.json of this checkout (now through 2026-09-18, integrated from upstream: the V8-010 archive lag is gone)",
+   "registry/protocols.jsonl of this checkout",
+   "the evidence store, read-only, window acceptance count"
+  ],
+  "time_identity": "as_of 2026-09-19T11:00:54.644479Z (generation time, not a cutoff)"
+ },
+ "production_note_untouched": {
+  "sha256_before": "288ea67c4514dd848d19d453e695dfe6b93816f44c0da965c7636ae17e488d11",
+  "sha256_after": "288ea67c4514dd848d19d453e695dfe6b93816f44c0da965c7636ae17e488d11"
+ },
+ "committed_in": "a49dd63eb6c1da562339f560497a347e15e5a68c",
+ "condition_requiring_a_final_refresh": "LIVE_RECHECK: a later evidence-store change inside the window, or a UTC day rollover that moves the window, fails strict equality. The note must then be rendered again; that changes a source file, which requires a NEW source commit and a NEW artifact pair. The 2026-09-19 render is not an evergreen final freeze.",
+ "not_advice": "Research and education only. Not investment advice."
+}
