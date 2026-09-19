@@ -124,9 +124,57 @@ class TestIngestBoundaries(unittest.TestCase):
         def __exit__(self, *a): return False
 
     class FakeOpener:
-        def __init__(self, body=b"<html>x</html>", final=None): self.body, self.final = body, final
+        def __init__(self, body=b"<html>x</html>", final=None): self.body, self.final, self.requests = body, final, []
         def open(self, req, timeout=None):
+            self.requests.append(req)
             return TestIngestBoundaries.FakeResp(self.body, self.final or req.full_url)
+
+    OPERATOR = "Test Operator ops@workbench-unit-test.org"          # an explicit operator setting; used with the mock transport only, never sent anywhere
+
+    def setUp(self):
+        import os
+        from unittest import mock
+        p = mock.patch.dict(os.environ, {"SEC_USER_AGENT": self.OPERATOR}); p.start(); self.addCleanup(p.stop)
+
+    def test_sec_request_identity_is_the_operators_own_setting_never_a_default(self):
+        """V8-011 §4: a live SEC request needs the operator's explicit SEC_USER_AGENT. Absent or unusable, the tool stops with
+        a setup message BEFORE any request is issued; it supplies no one's contact on the operator's behalf, never echoes
+        the value, and keeps it out of the records it writes. Offline work never needs the setting."""
+        import os
+        from unittest import mock
+        src = pathlib.Path(ingest.__file__).read_text()
+        self.assertFalse(hasattr(ingest, "USER_AGENT")); self.assertNotRegex(src.replace(ingest.IDENTITY_EXAMPLE, ""), r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}")   # no address in the module but the placeholder
+        op = self.FakeOpener(b"<p>ok</p>"); ingest.fetch("https://www.sec.gov/x", opener=op)
+        self.assertEqual([r.get_header("User-agent") for r in op.requests], [self.OPERATOR])                                  # the explicit setting is what the SEC receives
+        op = self.FakeOpener(b"<p>ok</p>"); ingest.fetch("https://ir.microchip.com/x", opener=op)
+        self.assertEqual([r.get_header("User-agent") for r in op.requests], [ingest.PRODUCT_AGENT]); self.assertNotIn("@", ingest.PRODUCT_AGENT)   # the contact goes to the SEC only
+        unusable = {"": "is not set", "   ": "is not set", "Your Name your.address@example.org": "documentation placeholder", "Some Lab contact@lab.invalid": "documentation placeholder",
+                    "just a name without contact": "no contact address", "someone@workbench-unit-test.org": "no name beside", "Name a@workbench-unit-test.org\r\nX-Injected: 1": "printable ASCII", "N " + "x" * 200 + " a@workbench-unit-test.org": "at most 200"}
+        for value, why in unusable.items():
+            for host in ("www.sec.gov", "data.sec.gov"):
+                op = self.FakeOpener()
+                with mock.patch.dict(os.environ, {"SEC_USER_AGENT": value}), self.assertRaises(ingest.IngestError) as cm:
+                    ingest.fetch(f"https://{host}/x", opener=op)
+                msg = str(cm.exception); self.assertIn(why, msg, value); self.assertIn("No request was sent", msg); self.assertIn(ingest.IDENTITY_EXAMPLE, msg)
+                self.assertEqual(op.requests, [], value)                                                                      # refused before the request
+                if value.strip():
+                    self.assertNotIn(value.strip()[:20], msg.replace(ingest.IDENTITY_EXAMPLE, ""))                             # the message never repeats the value
+        env = {k: v for k, v in os.environ.items() if k != "SEC_USER_AGENT"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            op = self.FakeOpener()
+            with self.assertRaisesRegex(ingest.IngestError, "SEC_USER_AGENT is not set"):
+                ingest.edgar_availability("827054", "0000827054-25-000078", opener=op)
+            self.assertEqual(op.requests, [])
+            out = pathlib.Path(tempfile.mkdtemp(prefix="wb-ingest-id-"))
+            rc = ingest.main(["--url", "https://www.sec.gov/Archives/x.htm", "--kind", "filing", "--form", "8-K", "--accession", "0000827054-25-000078", "--cik", "827054", "--pattern", "x", "--rights", "SEC_PUBLIC_FILING", "--out", str(out), "--label", "original"])
+            self.assertEqual(rc, 2); self.assertEqual(list(out.glob("*")), [])                                                # exit 2, no source record, nothing written
+            self.assertEqual(ingest.strip_text(b"<p>offline &amp; usable</p>"), "offline & usable"); self.assertEqual(ingest.extract_passage("net sales were 1", r"net sales")["excerpt"], "net sales")   # offline work needs no setting
+        # the identity never reaches a record the tool writes
+        out = pathlib.Path(tempfile.mkdtemp(prefix="wb-ingest-id-")); doc = b"<html><p>Net sales were $1.0 billion.</p></html>"
+        ingest.ingest(opener=self.FakeOpener(doc), url="https://www.sec.gov/Archives/x.htm", kind="press_release", form="press release", accession="IR:unit.test:1", cik=None, pattern=r"Net sales were \$1\.0 billion\.",
+                      available_as_of="2026-01-05T13:00:00Z", availability_basis="stated", rights="COMPANY_PRESS_RELEASE", out=out, label="original", filed_at="2026-01-05")
+        for f in out.glob("*.json"):
+            self.assertNotIn("workbench-unit-test.org", f.read_text()); self.assertNotIn("Test Operator", f.read_text())
 
     def test_allow_list_scheme_and_bounds(self):
         with self.assertRaises(ingest.IngestError):

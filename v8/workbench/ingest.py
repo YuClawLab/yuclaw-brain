@@ -1,7 +1,8 @@
 """Bounded disclosure ingestion (DAT boundary, V8-003 §1) — a command-line tool, never imported by the server.
 
-One source at a time: fetch ONE URL from an allow-listed host with a bounded body, no cross-host redirects and an
-identifying User-Agent; keep the original bytes and their digest; take EDGAR availability (acceptance time) from the
+One source at a time: fetch ONE URL from an allow-listed host with a bounded body and no cross-host redirects. A request
+to the SEC carries the OPERATOR'S OWN identity from the SEC_USER_AGENT setting — required, validated and never defaulted:
+without it the tool stops with a setup message before any request is sent. Keep the original bytes and their digest; take EDGAR availability (acceptance time) from the
 SEC submissions feed; extract the exact passage by a regular expression over the tag-stripped text; write a source
 record the workbench's step 1 can register verbatim, plus a provenance record with the retrieval time kept apart
 from availability. Nothing here executes, renders or follows page content; nothing is written outside `--out`.
@@ -26,9 +27,16 @@ from pathlib import Path
 ALLOW_HOSTS = ("www.sec.gov", "data.sec.gov", "ir.microchip.com")
 MAX_BYTES = 8 << 20
 TIMEOUT = 60
-# SEC fair-access policy: identify the requester. An operator other than the maintainer sets SEC_USER_AGENT to their own
-# name and contact address (the same override the v3 EDGAR sources honour); the default identifies the maintainer.
-USER_AGENT = os.environ.get("SEC_USER_AGENT", "YUCLAW research workbench (vzhang2099@gmail.com)")
+# SEC fair-access policy: every requester identifies THEMSELVES. The identity is the operator's own setting, read from the
+# environment variable SEC_USER_AGENT when a request is about to be made. There is no default: this tool never supplies
+# anyone's name or address on an operator's behalf, and it never looks for one in another credential or configuration.
+# The value goes into the request header only — never into a source record, a provenance record, an export or a message.
+SEC_HOSTS = ("www.sec.gov", "data.sec.gov")
+PRODUCT_AGENT = "YUCLAW research workbench"                         # other allow-listed hosts: the product name only, never a person's contact
+IDENTITY_EXAMPLE = 'export SEC_USER_AGENT="Your Name your.address@example.org"'
+_CONTACT = re.compile(r"[A-Za-z0-9._%+-]+@((?:[A-Za-z0-9-]+\.)+[A-Za-z]{2,})")
+_PLACEHOLDER_DOMAINS = ("example.com", "example.org", "example.net")
+_PLACEHOLDER_SUFFIXES = (".example", ".invalid", ".test", ".localhost")
 _ACC = re.compile(r"^[0-9]{10}-[0-9]{2}-[0-9]{6}$")
 
 
@@ -47,12 +55,34 @@ def _opener():
     return urllib.request.build_opener(_NoCrossHostRedirect())
 
 
+def sec_identity(environ=None) -> str:
+    """The operator's SEC request identity (SEC_USER_AGENT: a name and a contact address). Raises IngestError with the
+    setup step when it is absent or unusable; the message names the rule that failed and never repeats the value."""
+    raw = (os.environ if environ is None else environ).get("SEC_USER_AGENT")
+    setup = f"set your own name and contact address and run the tool again, e.g.  {IDENTITY_EXAMPLE}  (replace both parts with your own). No request was sent"
+    if raw is None or not raw.strip():
+        raise IngestError(f"SEC_USER_AGENT is not set. The SEC asks every requester to identify themselves, and this tool supplies no identity on your behalf: {setup}")
+    v = raw.strip(); m = _CONTACT.search(v); problem = None
+    if len(v) > 200 or any(not (32 <= ord(ch) < 127) for ch in v):
+        problem = "it must be at most 200 printable ASCII characters on one line"
+    elif m is None:
+        problem = "it carries no contact address (name@domain)"
+    elif m.group(1).lower() in _PLACEHOLDER_DOMAINS or m.group(1).lower().endswith(_PLACEHOLDER_SUFFIXES):
+        problem = "its contact address is the documentation placeholder, not your own"
+    elif not re.search(r"[A-Za-z]", v[:m.start()] + v[m.end():]):
+        problem = "it carries no name beside the contact address"
+    if problem:
+        raise IngestError(f"SEC_USER_AGENT is set but cannot be used: {problem}; {setup}")
+    return v
+
+
 def fetch(url: str, *, opener=None, max_bytes: int = MAX_BYTES, allow_hosts=ALLOW_HOSTS) -> dict:
     """Bounded GET. Returns {'url','final_url','status','content_type','bytes','sha256','retrieved_at','body'}."""
     u = urllib.parse.urlsplit(url)
     if u.scheme != "https" or u.netloc not in allow_hosts:
         raise IngestError(f"refused: only https on {list(allow_hosts)} (got {url})")
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "identity"})
+    agent = sec_identity() if u.netloc in SEC_HOSTS else PRODUCT_AGENT          # checked before any request is issued; redirects stay on the same host
+    req = urllib.request.Request(url, headers={"User-Agent": agent, "Accept-Encoding": "identity"})
     op = opener or _opener()
     retrieved = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
