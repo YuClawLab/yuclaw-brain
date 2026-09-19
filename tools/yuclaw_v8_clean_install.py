@@ -36,7 +36,7 @@ from pathlib import Path
 _REPO = Path(__file__).resolve().parents[1]
 SOURCE_DATE_EPOCH = "1580601600"                      # the publishers' reproducible-build epoch
 FORBIDDEN_MEMBERS = ("internal/", "output/", "archive/", "clawhub/", "v8/V8-", "v8/scope", "v8/policy", "__pycache__", ".pyc")      # "v8/V8-": every order record (the earlier "v8/V8-00" would have missed V8-010 and later)
-REQUIRED_WHEEL = ("v8/__init__.py", "v8/workbench/__init__.py", "v8/workbench/server.py", "v8/workbench/export.py", "v8/workbench/journey.py", "v8/workbench/ingest.py",
+REQUIRED_WHEEL = ("v8/__init__.py", "v8/workbench/__init__.py", "v8/workbench/server.py", "v8/workbench/export.py", "v8/workbench/journey.py", "v8/workbench/ingest.py", "v8/workbench/availability.py",
                   "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/manifest.json", "v8/workbench/resources/fixtures/001_base.json", "v8/workbench/resources/fixtures/008_quarterly.json",
                   "v8/workbench/resources/OPERATOR_GUIDE.md", "v8/workbench/resources/DATA_DICTIONARY.md")
 REQUIRED_SDIST = ("v8/__init__.py", "v8/workbench/server.py", "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/008_quarterly.json", "README_PYPI.md", "README.md", "schemas/CommitmentClaim.v1.json")
