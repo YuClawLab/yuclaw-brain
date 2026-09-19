@@ -1,31 +1,31 @@
 {
  "ticker": "LRCX",
- "generated": "2026-09-15T04:26:01.741086+00:00",
- "label": "NEGATIVE_EVENT",
- "score": -0.2298,
+ "generated": "2026-09-18T23:02:29.537958+00:00",
+ "label": "WEAKENING",
+ "score": -0.0424,
  "threshold_band": {
-  "floor": -0.4,
-  "ceiling": -0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.807,
+  "c1": -0.607,
   "c2": 0.0,
-  "c3": -0.5291444,
+  "c3": 0.6783254,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.035837162,
+  "c7": -0.068071224,
   "c8": 0.0,
-  "c9": -0.26666668
+  "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 90,
+  "ecs": 88,
   "events_90d": 54,
-  "recency_days": 4.5,
+  "recency_days": 8.2,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-09-15T04:24:15.091899+00:00",
-  "source_sha256": "a76cee6e6821e15990adaef9d875e4e7200fb13e5f045f20428f1dac6261f84e",
+  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -649,17 +649,33 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T13:15:02-07:00",
   "newest_returned_available_as_of": "2026-09-10T11:07:20.748047-06:00",
-  "build_id": "why-2026-09-15T042601",
+  "build_id": "why-2026-09-18T230229",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-14T22:26:02.151378-06:00",
+  "corpus_end": "2026-09-18T17:02:29.936464-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LRCX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-15T042601",
+ "build_id": "why-2026-09-18T230229",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-18",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-17",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-16",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-15",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-14",
    "label": "NEGATIVE_EVENT"
@@ -763,22 +779,6 @@
   {
    "date": "2026-08-10",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-07",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-06",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-05",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-04",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 61 of 61 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LRCX --date D",
