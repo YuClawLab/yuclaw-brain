@@ -82,7 +82,7 @@ jobs:
           YUCLAW_PUBLICATION_DENYLIST: ${{ runner.temp }}/synthetic-publication-denylist.txt
         run: |
           printf '# SYNTHETIC publication denylist for CI: one fictional term; not the private list\nwitness: zz-fictional-ci-witness\n' > "$YUCLAW_PUBLICATION_DENYLIST"
-          python3 -m pytest tests --ignore=tests/test_compliance_regression.py -q
+          python3 -m pytest tests --ignore=tests/test_compliance_regression.py -q -rs      # -rs: every skip is printed with its reason
       - name: Apply schema + migrations + seed
         run: |
           export PGPASSWORD=postgres
@@ -118,7 +118,7 @@ jobs:
       - name: Workbench and module tests on Python 3.10
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python3 -m pytest tests/test_v8_*.py -q
+        run: python3 -m pytest tests/test_v8_*.py -q -rs
 
   package:
     # One build of the pair from a clean detached worktree at the commit under test, member and long-description

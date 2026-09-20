@@ -356,6 +356,9 @@ def post(h, path: str) -> None:
                 practice.feedback(ws, p, sid, text_=g("feedback"), op_id=op)
             return h._redirect(back + "?done=" + act)
         # ---- export
+        if path == "/modx/preview":
+            back = "/modx"; pv = modexport.preview(ws, p, modules=[m_ for m_ in ("SHD", "EVO", "COM") if g("mod_" + m_)], prc_sessions=checked(f, "sess_"), withhold_text=bool(g("withhold_text")))
+            h._mod_form = f; return h._send(200, h.page("Module evidence export — preview (nothing was written)", f'<p class="muted">{who(h)}</p>' + page_modx(h, {}, None, preview=pv)))
         if path == "/modx/build":
             back = "/modx"; r = modexport.build_packet(ws, p, modules=[m_ for m_ in ("SHD", "EVO", "COM") if g("mod_" + m_)], prc_sessions=checked(f, "sess_"), withhold_text=bool(g("withhold_text")), op_id=op)
             return h._redirect("/modx?built=" + r["export_id"])
@@ -492,7 +495,10 @@ def page_shd(h, q) -> str:
     for d in st["decisions"].values():
         decided.setdefault(d["submission_id"], []).append(d)
     rows = []
+    own_only = not can(h, "admin", "review")                                  # object scope: a submitter's view is its own submissions
     for s in sorted(st["submissions"].values(), key=lambda s: s["received_at"], reverse=True):
+        if own_only and s["submitter"] != me:
+            continue
         ds = decided.get(s["submission_id"], []); last = ds[-1] if ds else None
         act = form(h, "/shd/admit", f'<input type="hidden" name="submission_id" value="{esc(s["submission_id"])}">', "Request a decision") if can(h, "submit", "review", "admin") and (me == s["submitter"] or can(h, "review", "admin")) else ""
         rows.append([esc(s["submission_id"]), esc(s["title"]), f"<code>{esc(s['bundle_sha256'])}</code>", esc(s["size_bytes"]), esc(s["submitter"]), esc(s["received_at"]),
@@ -542,9 +548,9 @@ def page_shd_trust(h, q) -> str:
 
 
 def page_shd_decision(h, did: str) -> str:
-    ws = h.server.ws; d = shield.state(ws)["decisions"].get(did)
-    if d is None:
-        raise ModuleError("E_NOT_FOUND", "no such decision")
+    ws = h.server.ws; d = shield.state(ws)["decisions"].get(did); p_ = getattr(h, "_principal", None)
+    if d is None or (h.server.principals.configured() and not can(h, "admin", "review") and d["submitter"] != (p_ or {}).get("principal_id")):
+        raise ModuleError("E_NOT_FOUND", "no such decision for this principal")     # one answer for "missing" and "someone else's"
     aa = d["authority_approval"]
     out = [table(["Field", "Value"], [["Result", f"<b>{esc(d['result'])}</b> <code>{esc(d['code'])}</code> {esc(d['detail'])}"], ["Next action", esc(d["next_action"])], ["Byte integrity", esc(d["byte_integrity"])],
                                        ["Authority approval", f"{esc(aa['status'])} — approval {esc(aa['approval_id'])} by {esc(aa['approver'])}, key <code>{esc(aa['key_id'])}</code>, policy v{esc(aa['policy_version'])}, trust revision {esc(aa['trust_revision'])}, expires {esc(aa['expires_at'])}"],
@@ -580,7 +586,10 @@ def page_evo(h, q) -> str:
         sst = shield.state(ws); imported = {e["shd_decision_id"] for e in st["evaluations"].values() if e.get("shd_decision_id")}
         decs = [(d["decision_id"], f"{d['decision_id']} · bundle {d['bundle_sha256'][:12]}… · from {d['submitter']}" + (" · already imported" if d["decision_id"] in imported else "")) for d in sst["decisions"].values() if d["result"] == "ADMITTED" and d["purpose"] == "evo.evaluations"]
         out.append("<h3>Import declared evaluations from an SHD-admitted bundle</h3>" + (form(h, "/evo/import", select(h, "Admitted SHD decision (purpose evo.evaluations)", "decision_id", decs), "Import as DECLARED_IMPORT") if decs else '<p class="muted">No admitted bundle with purpose evo.evaluations. Submit one under <a href="/shd">SHD</a>.</p>'))
-    out.append("<h2>Reevaluation requests</h2>" + table(["Request", "Version", "Protocol", "Job", "Reason", "By"], [[esc(r["request_id"]), esc(r["version_id"]), esc(r["protocol_id"]), esc(r["job"]), esc(r["reason"]), esc(r["requested_by"])] for r in st["requests"].values()]))
+    def fulfilled(r):
+        e = next((x for x in st["evaluations"].values() if x["origin"] == "TRUSTED_RUNNER" and x["version_id"] == r["version_id"] and x["protocol_id"] == r["protocol_id"] and x["recorded_at"] > r["recorded_at"]), None)
+        return f"FULFILLED by {e['evaluation_id']} ({e['result']})" if e else f'OPEN — <a href="/evo/version/{esc(r["version_id"])}">a reviewer runs it on the version page</a>'
+    out.append("<h2>Reevaluation requests</h2>" + table(["Request", "Version", "Protocol", "Job", "Reason", "By", "State"], [[esc(r["request_id"]), esc(r["version_id"]), esc(r["protocol_id"]), esc(r["job"]), esc(r["reason"]), esc(r["requested_by"]), fulfilled(r)] for r in st["requests"].values()]))
     out.append("<h2>Protected-test access records</h2>" + table(["Principal", "Action", "Recorded"], [[esc(a["principal_id"]), esc(a["action"]), esc(a["recorded_at"])] for a in st["test_access"]]))
     out.append("<h2>Configuration (administrator)</h2>" + (f'<p>Recorded {esc(cfg["set_at"])} by {esc(cfg["set_by"])}; digest <code>{esc(cfg["config_digest"][:16])}…</code></p><div class="guide">{esc(json.dumps({k: cfg[k] for k in ("roots", "components", "depends_on", "protocols", "authority")}, indent=1))}</div>' if cfg else "<p><b>Not recorded.</b></p>") + need(h, "admin"))
     if can(h, "admin"):
@@ -776,10 +785,11 @@ def page_prc_session(h, sid: str, q) -> str:
         c = v["comparison"]
         out.append(f'<h2>Comparison</h2><p>Provenance: <b>{esc(c["provenance"])}</b> — {esc(c["provenance_meaning"])}. Curator <code>{esc(c["curator"])}</code>.</p><p>Reference label <b>{esc(c["reference_label"])}</b>.</p><div class="guide">{esc(c["reference_answer"])}</div>'
                    + (f'<p>{esc(c["rationale"])}</p>' if c["rationale"] else "") + '<p class="muted">Agreement with a reference is not correctness, and neither is evidence of learning.</p>')
-        out.append("<h2>Reflections</h2>" + "".join(f'<div class="guide">{esc(r["reflection"])}</div><p class="muted">{esc(r["at"])}</p>' for r in v["reflections"]) + (form(h, base + "/reflect", field(h, "Reflection (a separate later record)", "reflection", rows=4), "Record reflection") if mine else ""))
-    if v["feedback"] or (can(h, "review") and not mine and v["attempt"] is not None):
-        out.append("<h2>Reviewer feedback</h2>" + "".join(f'<div class="guide">{esc(x["feedback"])}</div><p class="muted">{esc(x["reviewer"])} · {esc(x["at"])}</p>' for x in v["feedback"])
-                   + (form(h, base + "/feedback", field(h, "Feedback on this attempt (formative; not a ranking of a person)", "feedback", rows=4), "Record feedback") if can(h, "review") and not mine else ""))
+    thread = sorted([("practitioner " + ss["practitioner"] + " — reflection", r["reflection"], r["at"]) for r in v["reflections"]] + [("reviewer " + x["reviewer"] + " — feedback", x["feedback"], x["at"]) for x in v["feedback"]], key=lambda x: x[2])
+    if thread or v["comparison"] is not None or (can(h, "review") and not mine and v["attempt"] is not None):
+        out.append("<h2>Discussion — reflections and reviewer feedback, in the order they were recorded</h2>" + ("".join(f'<p class="muted">{esc(who_)} · {esc(at)}</p><div class="guide">{esc(txt)}</div>' for who_, txt, at in thread) or '<p class="muted">Nothing yet.</p>')
+                   + (form(h, base + "/reflect", field(h, "Reflection (a separate later record; the attempt is unchanged)", "reflection", rows=4), "Record reflection") if mine and v["comparison"] is not None else "")
+                   + (form(h, base + "/feedback", field(h, "Feedback on this attempt (formative; not a ranking of a person)", "feedback", rows=4), "Record feedback") if can(h, "review") and not mine and v["attempt"] is not None else ""))
     if mine or can(h, "admin"):
         out.append("<h2>Export this session</h2>" + form(h, "/modx/build", f'<input type="hidden" name="sess_{esc(sid)}" value="1">' + '<p><label><input type="checkbox" name="withhold_text" value="1"> Withhold attempt, reflection and feedback text (digests only)</label></p>', f"Build a packet of session {sid}")
                    + '<p class="muted">Never included: a comparison that was not opened in this session.</p>')
@@ -793,8 +803,11 @@ def page_prc_source(h, sid: str, q) -> str:
 
 
 # ------------------------------------------------------------------ pages: export and verification
-def page_modx(h, q, result) -> str:
+def page_modx(h, q, result, preview=None) -> str:
     ws = h.server.ws; p = getattr(h, "_principal", None); out = []
+    if preview is not None:
+        out.append('<div class="notice"><b>Preview — nothing was written.</b> Modules: ' + esc(", ".join(preview["modules"]) or "none") + "." + table(["Session", "Attempt text", "Comparison", "Reflections", "Feedback"],
+                   [[esc(r["session_id"]), esc(r["attempt_text"]), esc(r["comparison"]), esc(r["reflections"]), esc(r["feedback"])] for r in preview["sessions"]]) + "<p>Never included: " + esc("; ".join(preview["never_included"])) + ".</p><p>Your choices are still ticked below: build the packet, or change them and preview again.</p></div>")
     if result is not None:
         cls = "ok" if result["result"] == "SUCCESS" else "bad"
         out.append(f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2>' + (f'<div class="err"><p>First discrepancy: {esc(result["first_discrepancy"])}</p></div>' if result["first_discrepancy"] else "")
@@ -811,7 +824,8 @@ def page_modx(h, q, result) -> str:
         ps = practice.state(ws); mine_ = [(x["session_id"], f"{x['session_id']} · task {x['task_id']} · {x['practitioner']} · {x['category']} · " + ("comparison opened" if x["revealed_at"] else "comparison not opened (it will not be included)"))
                                          for x in ps["sessions"].values() if x["practitioner"] == p["principal_id"] or "admin" in p["caps"]]
         out.append(form(h, "/modx/build", f"<p>{mods}</p><p>Practice sessions to include (your own, or any as administrator):<br>" + checkboxes("sess_", mine_) + "</p>"
-                        + '<p><label><input type="checkbox" name="withhold_text" value="1"> Withhold attempt, reflection and feedback text (digests only)</label></p>', "Build packet")
+                        + '<p><label><input type="checkbox" name="withhold_text" value="1"> Withhold attempt, reflection and feedback text (digests only)</label></p>'
+                        + '<p><button type="submit" formaction="/modx/preview">Preview what would be included (writes nothing)</button></p>', "Build packet")
                    + '<p class="muted">Never included: credential hashes, signing keys, staged bundle bytes, inspection excerpts, a comparison that was not revealed in the session, other practitioners\' sessions. No training dataset or ranking is produced.</p>')
     built = [e for e in ws.load()["events"] if e["kind"] == "MODULE_EXPORT_BUILT" and p and (e["payload"]["built_by"] == p["principal_id"] or "admin" in p["caps"])]
     out.append("<h2>Packets built here</h2>" + table(["Export", "Scope", "Events", "Objects", "By"], [[f'<a href="/modx/{esc(e["payload"]["export_id"])}.zip">{esc(e["payload"]["export_id"])}</a>', esc(json.dumps(e["payload"]["scope"])), esc(e["payload"]["events_included"]), esc(e["payload"]["objects_included"]), esc(e["payload"]["built_by"])] for e in built]))

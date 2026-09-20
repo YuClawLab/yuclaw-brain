@@ -178,6 +178,18 @@ a person is, what they are qualified for, or whether two credentials belong to o
 directory on this machine is outside every boundary described here. `python -m v8.workbench modules --workspace …` prints
 the same status as the Setup page.
 
+**Moving between the modules without retyping.** An object you already chose travels with you: on a claim's page, *submit a review
+packet about it* and *create a practice task on it* open COM and Practice with that claim selected and its current version
+shown; on **SHD → trust** a waiting submission is approved from its own row (the digest is the workspace's record — you add the
+evidence digests you independently expect, the purpose and the expiry); an admitted decision's page offers *take the packets
+into the COM queue* or *import the declared evaluations*; an EVO version's page registers a child of that version; a practice
+session's page builds that session's packet; lineage, dispute targets, parents, supporting evaluations, principals, roots,
+approvals and sessions are chosen from lists. What you still type: a NEW identifier you are creating (a principal, a version,
+a budget period), and digests that come from outside the workspace. Every decision stays a button you press. Nothing carried
+in a link, a list or a hidden field is trusted: the server checks it again for your principal, this workspace and the
+object's present state — a claim amended since the page was shown is refused as a stale selection, and an identifier that
+is not an object of this workspace is refused. **Preview** on the export page shows what a packet would contain and writes nothing.
+
 **SHD — Distillation Shield** (<http://127.0.0.1:8765/shd>). A submitter uploads a bundle: a zip with `bundle.json`
 (`schema` `yuclaw.shd-bundle/1`, one `purpose` of `evidence.reference`, `com.packets` or `evo.evaluations`, the listed
 evidence files with sha256 and size, and a typed payload) plus `evidence/…` files; at most 8 MiB, 64 members. The server
