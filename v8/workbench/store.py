@@ -30,12 +30,15 @@ from datetime import datetime, timezone
 from v3.receipts.contracts import ContractError, canonical_json, digest, format_ts
 from v3.receipts.storage import resolve_store_root
 from v8.workbench import availability, calc, schema
+from v8.workbench.modkinds import MODULE_KINDS
 
 FORMAT = "yuclaw-commitment-workspace/1"
 LOG = "commitments.jsonl"
 GENESIS = "0" * 64
 KINDS = ("SOURCE_REGISTERED", "CLAIM_FROZEN", "CLAIM_REVISED", "SOURCE_CORRECTED", "CLAIM_WITHDRAWN", "OUTCOME_RECORDED",
-         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY", availability.KIND)
+         "ADJUDICATION_RECORDED", "RESEARCH_NOTE_RECORDED", "SCI_REPLAY_RECORDED", "EXPORT_BUILT", "PACKET_VERIFIED", "RECOVERY", availability.KIND) + MODULE_KINDS
+# MODULE_KINDS (V8-014): SHD / EVO / COM / PRC and the local principal registry. Additive and workspace-level (claim_id None): a claim's
+# derivation, its export and the verification of earlier exports never read them. See v8/workbench/modkinds.py.
 # SOURCE_AVAILABILITY_CORRECTED (V8-011, TIM-08): a linked correction of WHEN a registered source became public. Workspace-level
 # like the registration it names. It carries no source availability of its own, so an as-of view places it by its local action
 # time: it takes effect for cutoffs at or after that time and is only listed — as a later correction — before it. The
