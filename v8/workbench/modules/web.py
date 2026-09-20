@@ -86,9 +86,43 @@ def field(h, label: str, name: str, *, kind="text", default="", hint="", rows=0)
 
 
 def select(h, label: str, name: str, options, default=None) -> str:
-    cur = (getattr(h, "_mod_form", None) or {}).get(name, default)
-    opts = "".join(f'<option value="{esc(o)}"{" selected" if o == cur else ""}>{esc(o)}</option>' for o in options)
+    """`options`: plain values, or (value, label) pairs. The label carries enough identity and version context to confirm the choice."""
+    cur = (getattr(h, "_mod_form", None) or {}).get(name, default); pairs = [(o, o) if isinstance(o, str) else (o[0], o[1]) for o in options]
+    opts = "".join(f'<option value="{esc(v)}"{" selected" if v == cur else ""}>{esc(lbl)}</option>' for v, lbl in pairs)
     return f'<p><label>{esc(label)}</label> <select name="{esc(name)}">{opts}</select></p>'
+
+
+def claim_options(ws, *, blank: str | None = None) -> list:
+    """(value, label) per frozen claim. The VALUE carries the claim id AND the version digest the user is looking at, so a claim
+    amended after the page was shown is refused as a stale selection instead of being silently substituted."""
+    out = [("", blank)] if blank is not None else []
+    for cid in sorted(ws.status()["claims"]):
+        r = core.claim_ref(ws, cid); st = ws.claim_state(cid); c = r["contract"]; fp = c.get("fiscal_period") or {}
+        flag = " · WITHDRAWN" if st.get("withdrawn") else ""
+        out.append((f"{cid}|{r['version_digest']}", f"{cid} · {r['version']} · digest {r['version_digest'][:12]}… · {c.get('metric')} {c.get('currency')} {fp.get('label', '')}{flag}"))
+    return out
+
+
+def claim_from(ws, ref: str, *, required: bool = True) -> str | None:
+    """Resolve a `claim|version-digest` reference from a selector, link or hidden field. Validated here, on the server: the
+    claim must be frozen in THIS workspace and its current version must still be the one that was shown."""
+    ref = (ref or "").strip()
+    if not ref:
+        if required:
+            raise ModuleError("E_REQUIRED", "choose a claim")
+        return None
+    cid, _, shown = ref.partition("|"); cur = core.claim_ref(ws, cid)
+    if shown and shown != cur["version_digest"]:
+        raise ModuleError("E_STALE_SELECTION", f"claim {cid} changed after this form was shown (its current version is {cur['version']}, digest {cur['version_digest'][:12]}…); reload the page and confirm the selection")
+    return cid
+
+
+def checked(f: dict, prefix: str) -> list:
+    return [k[len(prefix):] for k in f if k.startswith(prefix) and f[k]]
+
+
+def checkboxes(name_prefix: str, items, *, preselected=()) -> str:
+    return "".join(f'<label><input type="checkbox" name="{esc(name_prefix + v)}" value="1"{" checked" if v in preselected else ""}> {esc(lbl)}</label><br>' for v, lbl in items) or '<span class="muted">none available</span>'
 
 
 def table(head: list, rows: list) -> str:
@@ -227,7 +261,13 @@ def post(h, path: str) -> None:
         if path == "/shd/policy":
             back = "/shd/trust"; shield.set_policy(ws, p, max_approval_days=num("max_approval_days"), allowed_purposes=[x for x in PURPOSES if g("purpose_" + x)], op_id=op); return h._redirect("/shd/trust?done=policy")
         if path == "/shd/approve":
-            back = "/shd/trust"; shield.issue_approval(ws, p, bundle_sha256=g("bundle_sha256").strip(), source_sha256s=g("source_sha256s").split(), purpose=g("purpose"), expires_at=g("expires_at"), op_id=op); return h._redirect("/shd/trust?done=approved")
+            back = "/shd/trust"; sha = g("bundle_sha256").strip()
+            if g("submission_id"):                                           # contextual approval of a waiting submission: the digest comes from the server's own record, never from the form
+                sub = shield.state(ws)["submissions"].get(g("submission_id"))
+                if sub is None:
+                    raise ModuleError("E_UNKNOWN_SUBMISSION", "that submission is not in this workspace")
+                sha = sub["bundle_sha256"]
+            shield.issue_approval(ws, p, bundle_sha256=sha, source_sha256s=g("source_sha256s").split(), purpose=g("purpose"), expires_at=g("expires_at"), op_id=op); return h._redirect("/shd/trust?done=approved")
         if path == "/shd/approval/revoke":
             back = "/shd/trust"; shield.revoke_approval(ws, p, g("approval_id"), g("reason"), op_id=op); return h._redirect("/shd/trust?done=approval-revoked")
         if path == "/shd/admit":
@@ -236,7 +276,8 @@ def post(h, path: str) -> None:
         if path == "/evo/config":
             back = "/evo"; evolution.set_config(ws, p, core.strict_json(g("config").encode("utf-8"), max_bytes=64 * 1024, code="CONFIG"), op_id=op); return h._redirect("/evo?done=config")
         if path == "/evo/register":
-            back = "/evo"; ev = evolution.register_version(ws, p, version_id=g("version_id").strip(), parent_version_id=g("parent_version_id").strip() or None, label=g("label"), declared={"model": g("declared_model")}, op_id=op)
+            back = g("back") if re.match(r"^/evo/version/[A-Za-z0-9._:-]{1,128}$", g("back")) else "/evo"
+            ev = evolution.register_version(ws, p, version_id=g("version_id").strip(), parent_version_id=g("parent_version_id").strip() or None, label=g("label"), declared={"model": g("declared_model")}, op_id=op)
             return h._redirect("/evo/version/" + ev["payload"]["version_id"])
         if path == "/evo/import":
             back = "/evo"; evolution.import_declared(ws, p, g("decision_id").strip(), op_id=op); return h._redirect("/evo?done=imported")
@@ -252,7 +293,7 @@ def post(h, path: str) -> None:
             elif act == "request":
                 evolution.request_reevaluation(ws, p, version_id=vid, protocol_id=g("protocol_id"), reason=g("reason"), op_id=op)
             elif act == "commitment":
-                evolution.link_commitment(ws, p, version_id=vid, claim_id=g("claim_id").strip(), amount=g("amount").strip() or None, currency=g("currency"), op_id=op)
+                evolution.link_commitment(ws, p, version_id=vid, claim_id=claim_from(ws, g("claim_ref")), amount=g("amount").strip() or None, currency=g("currency"), op_id=op)
             else:
                 evolution.resolve_failure(ws, p, issue_id=g("issue_id"), evidence_evaluation_id=g("evidence_evaluation_id").strip(), reason=g("reason"), op_id=op)
             return h._redirect(back + "?done=" + act)
@@ -262,7 +303,7 @@ def post(h, path: str) -> None:
             if path == "/com/budget":
                 commons.set_budget(ws, p, period_id=g("period_id").strip(), review_minutes=num("review_minutes"), practice_minutes=num("practice_minutes"), contributor_packet_cap=num("contributor_packet_cap"), max_open_tasks=num("max_open_tasks"), op_id=op)
             elif path == "/com/submit":
-                commons.submit_direct(ws, p, claim_id=g("claim_id").strip(), kind=g("kind"), ancestry=g("ancestry"), derived_from=g("derived_from").split(), proposed_cost_minutes=max(1, num("proposed_cost_minutes")),
+                commons.submit_direct(ws, p, claim_id=claim_from(ws, g("claim_ref")), kind=g("kind"), ancestry=g("ancestry"), derived_from=checked(f, "df_"), proposed_cost_minutes=max(1, num("proposed_cost_minutes")),
                                       asserts_withdrawn=bool(g("asserts_withdrawn")), client_packet_id=g("client_packet_id").strip() or None, op_id=op)
             elif path == "/com/intake":
                 commons.intake_from_shield(ws, p, g("decision_id").strip(), op_id=op)
@@ -279,7 +320,8 @@ def post(h, path: str) -> None:
             elif path == "/com/urgent":
                 commons.override_urgent(ws, p, group_id_=g("group_id"), reason=g("reason"), op_id=op)
             elif path == "/com/dispute":
-                commons.record_dispute(ws, p, target_type=g("target_type"), target=g("target").strip(), dispute_type=g("dispute_type"), reason=g("reason"), op_id=op)
+                ttype, _, target = g("target_ref").partition(":")
+                commons.record_dispute(ws, p, target_type=ttype, target=target.strip(), dispute_type=g("dispute_type"), reason=g("reason"), op_id=op)
             elif path == "/com/appeal":
                 commons.appeal(ws, p, dispute_id=g("dispute_id"), reason=g("reason"), op_id=op)
             elif path == "/com/resolve":
@@ -290,7 +332,7 @@ def post(h, path: str) -> None:
         # ---- PRC
         if path == "/prc/task":
             back = "/prc"
-            practice.freeze_task(ws, p, title=g("title"), question=g("question"), claim_id=g("claim_id").strip() or None, source_ids=g("source_ids").split(), labels=[x.strip() for x in g("labels").split(",") if x.strip()],
+            practice.freeze_task(ws, p, title=g("title"), question=g("question"), claim_id=claim_from(ws, g("claim_ref"), required=False), source_ids=checked(f, "src_"), labels=[x.strip() for x in g("labels").split(",") if x.strip()],
                                  reference_label=g("reference_label").strip(), reference_answer=g("reference_answer"), rationale=g("rationale"), provenance=g("provenance"), declared_curator_qualification=g("declared_curator_qualification"),
                                  public_example=bool(g("public_example")), session_minutes=num("session_minutes"), evo_version_id=g("evo_version_id").strip() or None, op_id=op)
             return h._redirect("/prc?done=task")
@@ -315,7 +357,7 @@ def post(h, path: str) -> None:
             return h._redirect(back + "?done=" + act)
         # ---- export
         if path == "/modx/build":
-            back = "/modx"; r = modexport.build_packet(ws, p, modules=[m_ for m_ in ("SHD", "EVO", "COM") if g("mod_" + m_)], prc_sessions=g("prc_sessions").split(), withhold_text=bool(g("withhold_text")), op_id=op)
+            back = "/modx"; r = modexport.build_packet(ws, p, modules=[m_ for m_ in ("SHD", "EVO", "COM") if g("mod_" + m_)], prc_sessions=checked(f, "sess_"), withhold_text=bool(g("withhold_text")), op_id=op)
             return h._redirect("/modx?built=" + r["export_id"])
         if path == "/modx/resolve":
             back = "/modx"; modexport.resolve_discrepancy(ws, p, packet_sha256=g("packet_sha256").strip(), resolution=g("resolution"), op_id=op); return h._redirect("/modx?done=resolved")
@@ -425,7 +467,8 @@ def page_setup(h, q) -> str:
             caps = "".join(f'<label><input type="checkbox" name="cap_{c}" value="1"> {c}</label> ' for c in authz.CAPS)
             out.append("<h3>Enroll a principal</h3>" + form(h, "/setup/enroll", field(h, "Principal id", "principal_id", hint="lowercase, 2–40 characters") + f"<p>{caps}</p>" + field(h, "Display name (a label, never an identity)", "display_name")
                        + field(h, "Declared role note (recorded as declared)", "declared_role_note") + field(h, "Expires at (UTC, optional)", "expires_at", hint="YYYY-MM-DDTHH:MM:SSZ"), "Enroll and show the credential once"))
-            out.append("<h3>Rotate or revoke</h3>" + form(h, "/setup/rotate", field(h, "Principal id", "principal_id"), "Rotate credential") + form(h, "/setup/revoke", field(h, "Principal id", "principal_id") + field(h, "Reason", "reason"), "Revoke (never revived)"))
+            live = [(x["principal_id"], f"{x['principal_id']} · {', '.join(x['caps'])}") for x in st.values() if not x["revoked_at"]]
+            out.append("<h3>Rotate or revoke</h3>" + form(h, "/setup/rotate", select(h, "Principal", "principal_id", live), "Rotate credential") + form(h, "/setup/revoke", select(h, "Principal", "principal_id", live) + field(h, "Reason", "reason"), "Revoke (never revived)"))
         else:
             out.append(need(h, "admin"))
     out.append('<h2>2 · Restricted worker (SHD isolation)</h2>')
@@ -474,12 +517,25 @@ def page_shd_trust(h, q) -> str:
                  ("REVOKED " + esc(a["revoked_at"])) if a["revoked_at"] else "issued"] for a in st["approvals"].values()]))
     if can(h, "admin"):
         out.append("<h3>Enroll a root</h3>" + form(h, "/shd/root", field(h, "Label", "label") + field(h, "Ed25519 public key, base64 (leave empty to generate a signing key here)", "public_key"), "Enroll root"))
-        out.append("<h3>Revoke a root</h3>" + form(h, "/shd/root/revoke", field(h, "Key id", "key_id") + field(h, "Reason", "reason"), "Revoke root"))
+        out.append("<h3>Revoke a root</h3>" + form(h, "/shd/root/revoke", select(h, "Root", "key_id", [(r["key_id"], f"{r['key_id']} · {r['label']}") for r in st["roots"].values() if not r["revoked"]]) + field(h, "Reason", "reason"), "Revoke root"))
         purposes = "".join(f'<label><input type="checkbox" name="purpose_{esc(x)}" value="1" checked> {esc(x)}</label> ' for x in PURPOSES)
         out.append("<h3>Set the policy (starts a new policy version)</h3>" + form(h, "/shd/policy", field(h, "Maximum approval validity, days", "max_approval_days", default="30") + f"<p>{purposes}</p>", "Record policy"))
-        out.append("<h3>Approve exact bytes</h3>" + form(h, "/shd/approve", field(h, "Bundle sha256", "bundle_sha256") + field(h, "Evidence sha256 list (space separated; what the bundle's evidence files must hash to)", "source_sha256s", rows=3)
-                   + select(h, "Purpose", "purpose", PURPOSES) + field(h, "Expires at (UTC)", "expires_at", hint="YYYY-MM-DDTHH:MM:SSZ"), "Sign and record the approval"))
-        out.append("<h3>Revoke an approval</h3>" + form(h, "/shd/approval/revoke", field(h, "Approval id", "approval_id") + field(h, "Reason", "reason"), "Revoke approval"))
+        admitted = {d["submission_id"] for d in st["decisions"].values() if d["result"] == "ADMITTED"}; me = h._principal["principal_id"]
+        waiting = [s for s in st["submissions"].values() if s["submission_id"] not in admitted]
+        out.append("<h3>Approve a waiting submission</h3><p class=\"muted\">The bytes to approve are the ones this workspace already holds for the submission; you supply what YOU independently expect its evidence files to hash to, the purpose and the expiry. "
+                   "You cannot approve your own submission.</p>")
+        for s in waiting:
+            if s["submitter"] == me:
+                out.append(f'<p class="muted">{esc(s["submission_id"])} “{esc(s["title"])}” is your own submission — another administrator approves it.</p>'); continue
+            out.append(f'<h4>{esc(s["submission_id"])} “{esc(s["title"])}” from {esc(s["submitter"])}</h4><p>Exact bytes: <code>{esc(s["bundle_sha256"])}</code> · {esc(s["size_bytes"])} bytes · received {esc(s["received_at"])}</p>'
+                       + form(h, "/shd/approve", f'<input type="hidden" name="submission_id" value="{esc(s["submission_id"])}">' + field(h, "Evidence sha256 list you expect (space separated)", "source_sha256s", rows=2)
+                              + select(h, "Purpose", "purpose", st["policy"]["allowed_purposes"]) + field(h, "Expires at (UTC)", "expires_at", hint="YYYY-MM-DDTHH:MM:SSZ"), f"Sign and record the approval of {s['submission_id']}"))
+        if not waiting:
+            out.append('<p class="muted">No submission is waiting.</p>')
+        out.append("<h3>Pre-approve bytes that have not been submitted yet (a digest from outside this workspace)</h3>" + form(h, "/shd/approve", field(h, "Bundle sha256", "bundle_sha256") + field(h, "Evidence sha256 list (space separated)", "source_sha256s", rows=2)
+                   + select(h, "Purpose", "purpose", st["policy"]["allowed_purposes"]) + field(h, "Expires at (UTC)", "expires_at", hint="YYYY-MM-DDTHH:MM:SSZ"), "Sign and record the approval"))
+        out.append("<h3>Revoke an approval</h3>" + form(h, "/shd/approval/revoke", select(h, "Approval", "approval_id", [(a["approval_id"], f"{a['approval_id']} · {a['purpose']} · {a['bundle_sha256'][:12]}… · expires {a['expires_at']}") for a in st["approvals"].values() if not a["revoked_at"]])
+                   + field(h, "Reason", "reason"), "Revoke approval"))
     if st["discrepancies"]:
         out.append("<h2>Trust discrepancies from imports (retained)</h2>" + table(["Recorded", "Record"], [[esc(d["recorded_at"]), esc(d.get("discrepancy") or d.get("resolution"))] for d in st["discrepancies"]]))
     return "".join(out)
@@ -498,6 +554,11 @@ def page_shd_decision(h, did: str) -> str:
         typed = core.Vault(ws).get(d["typed_result_sha256"])
         out.append(f'<h2>Typed result (what a consumer may read)</h2><p>Purpose <code>{esc(typed["purpose"])}</code>; {len(typed["evidence"])} evidence file(s).</p>'
                    + table(["Evidence path", "sha256", "Bytes"], [[esc(e["path"]), f"<code>{esc(e['sha256'])}</code>", esc(e["size"])] for e in typed["evidence"]]) + f'<div class="guide">{esc(json.dumps(typed["payload"], indent=1))}</div>')
+        if can(h, "submit") and typed["purpose"] == "com.packets":
+            out.append("<h2>Next: the review queue</h2>" + form(h, "/com/intake", f'<input type="hidden" name="decision_id" value="{esc(did)}">', f"Take the {len(typed['payload']['packets'])} packet(s) of {did} into the COM queue")
+                       + '<p class="muted">The queue checks again, at that moment, that this decision\'s approval is still applicable.</p>')
+        if can(h, "submit") and typed["purpose"] == "evo.evaluations":
+            out.append("<h2>Next: EVO</h2>" + form(h, "/evo/import", f'<input type="hidden" name="decision_id" value="{esc(did)}">', f"Import the {len(typed['payload']['evaluations'])} declared evaluation(s) of {did} (stored as DECLARED_IMPORT)"))
         if can(h, "admin", "review"):
             out.append('<h2>Human inspection (separate, escaped, never an input to a consumer)</h2>' + "".join(f'<h3>{esc(x["path"])}{" (truncated)" if x["truncated"] else ""}</h3><div class="guide">{esc(x["text"])}</div>' for x in shield.inspection(ws, h._principal, did))
                        + '<p class="muted">Shown as inert text. Instruction-like sentences in evidence are data: nothing here is executed, fetched or passed to a tool.</p>')
@@ -513,15 +574,18 @@ def page_evo(h, q) -> str:
                 for v in st["versions"].values()]))
     out.append("<h2>Register the current state as a version</h2>" + need(h, "submit"))
     if can(h, "submit"):
-        out.append(form(h, "/evo/register", field(h, "Version id", "version_id") + field(h, "Parent version id (empty for the first)", "parent_version_id") + field(h, "Label", "label") + field(h, "Declared model identity (kept as DECLARED)", "declared_model"),
-                        "Measure and register") if cfg else '<p class="muted">An administrator records the configuration first.</p>')
-        out.append("<h3>Import declared evaluations from an SHD-admitted bundle</h3>" + form(h, "/evo/import", field(h, "SHD decision id (purpose evo.evaluations)", "decision_id"), "Import as DECLARED_IMPORT"))
+        vers = list(st["versions"].values()); parents = [("", "— none: this is the first version of a lineage —")] + [(v["version_id"], f"{v['version_id']} · {v['label']} · registered {v['recorded_at'][:19]}Z") for v in reversed(vers)]
+        out.append(form(h, "/evo/register", field(h, "New version id", "version_id") + select(h, "Parent version", "parent_version_id", parents, default=vers[-1]["version_id"] if vers else "") + field(h, "Label", "label")
+                        + field(h, "Declared model identity (kept as DECLARED)", "declared_model"), "Measure and register") if cfg else '<p class="muted">An administrator records the configuration first.</p>')
+        sst = shield.state(ws); imported = {e["shd_decision_id"] for e in st["evaluations"].values() if e.get("shd_decision_id")}
+        decs = [(d["decision_id"], f"{d['decision_id']} · bundle {d['bundle_sha256'][:12]}… · from {d['submitter']}" + (" · already imported" if d["decision_id"] in imported else "")) for d in sst["decisions"].values() if d["result"] == "ADMITTED" and d["purpose"] == "evo.evaluations"]
+        out.append("<h3>Import declared evaluations from an SHD-admitted bundle</h3>" + (form(h, "/evo/import", select(h, "Admitted SHD decision (purpose evo.evaluations)", "decision_id", decs), "Import as DECLARED_IMPORT") if decs else '<p class="muted">No admitted bundle with purpose evo.evaluations. Submit one under <a href="/shd">SHD</a>.</p>'))
     out.append("<h2>Reevaluation requests</h2>" + table(["Request", "Version", "Protocol", "Job", "Reason", "By"], [[esc(r["request_id"]), esc(r["version_id"]), esc(r["protocol_id"]), esc(r["job"]), esc(r["reason"]), esc(r["requested_by"])] for r in st["requests"].values()]))
     out.append("<h2>Protected-test access records</h2>" + table(["Principal", "Action", "Recorded"], [[esc(a["principal_id"]), esc(a["action"]), esc(a["recorded_at"])] for a in st["test_access"]]))
     out.append("<h2>Configuration (administrator)</h2>" + (f'<p>Recorded {esc(cfg["set_at"])} by {esc(cfg["set_by"])}; digest <code>{esc(cfg["config_digest"][:16])}…</code></p><div class="guide">{esc(json.dumps({k: cfg[k] for k in ("roots", "components", "depends_on", "protocols", "authority")}, indent=1))}</div>' if cfg else "<p><b>Not recorded.</b></p>") + need(h, "admin"))
     if can(h, "admin"):
         out.append(form(h, "/evo/config", field(h, "Configuration JSON: roots, components {name: {mode: path|declared|unknown|not_applicable|runtime, …}}, depends_on, protocols {id: {scope, job, validity_days}}, authority", "config", rows=12), "Record configuration")
-                   + form(h, "/evo/access", field(h, "Principal id", "principal_id") + select(h, "Protected-test access", "action", ("GRANTED", "REVOKED")), "Record test access"))
+                   + form(h, "/evo/access", select(h, "Principal", "principal_id", [(x["principal_id"], f"{x['principal_id']} · {', '.join(x['caps'])}") for x in h.server.principals.state().values()]) + select(h, "Protected-test access", "action", ("GRANTED", "REVOKED")), "Record test access"))
     return "".join(out)
 
 
@@ -548,9 +612,13 @@ def page_evo_version(h, vid: str, q) -> str:
     if can(h, "submit", "review", "admin"):
         out.append("<h2>Request a targeted reevaluation</h2>" + form(h, base + "/request", select(h, "Protocol", "protocol_id", protos) + field(h, "Reason", "reason"), "Record request"))
     if can(h, "submit"):
-        out.append("<h2>Link a financial commitment</h2>" + form(h, base + "/commitment", field(h, "Claim id", "claim_id") + field(h, "Amount (whole number, empty = unknown)", "amount") + field(h, "Currency (default: the claim's)", "currency"), "Link"))
+        out.append(f"<h2>Register the current state as a child of {esc(vid)}</h2>" + form(h, "/evo/register", f'<input type="hidden" name="parent_version_id" value="{esc(vid)}"><input type="hidden" name="back" value="{esc(base)}">' + field(h, "New version id", "version_id") + field(h, "Label", "label"), f"Measure and register as a child of {vid}"))
+        co = claim_options(ws)
+        out.append("<h2>Link a financial commitment</h2>" + (form(h, base + "/commitment", select(h, "Claim (current version shown)", "claim_ref", co) + field(h, "Amount (whole number, empty = unknown)", "amount") + field(h, "Currency (default: the claim's)", "currency"), "Link") if co else '<p class="muted">No claim is frozen in this workspace yet.</p>'))
     if can(h, "admin") and a["open_failures"]:
-        out.append("<h2>Resolve a failure (administrator, evidence-backed)</h2>" + form(h, base + "/resolve", select(h, "Issue", "issue_id", [f["issue_id"] for f in a["open_failures"]]) + field(h, "Supporting trusted-runner PASS (evaluation id)", "evidence_evaluation_id") + field(h, "Reason", "reason", rows=3), "Record resolution"))
+        passes = [(x["evaluation_id"], f"{x['evaluation_id']} · PASS on {x['version_id']} · {x['protocol_id']} · covers {', '.join(x['subject']['closure'])}") for x in st["evaluations"].values() if x["version_id"] in a["lineage"] and x["origin"] == "TRUSTED_RUNNER" and x["result"] == "PASS"]
+        out.append("<h2>Resolve a failure (administrator, evidence-backed)</h2>" + (form(h, base + "/resolve", select(h, "Issue", "issue_id", [(f["issue_id"], f"{f['issue_id']} · {f['issue_key']} · first failed on {f['first_failed_version']}") for f in a["open_failures"]])
+                   + select(h, "Supporting trusted-runner PASS on this lineage", "evidence_evaluation_id", passes) + field(h, "Reason", "reason", rows=3), "Record resolution") if passes else '<p class="muted">No trusted-runner PASS exists on this lineage yet; a resolution needs one.</p>'))
     return "".join(out) + '<p><a href="/evo">Back to EVO</a></p>'
 
 
@@ -581,17 +649,22 @@ def page_com(h, q) -> str:
                      esc(("QUARANTINED by " + ", ".join(g["quarantined_by"])) if g["quarantined_by"] else ("fits now" if gid in fits else why.get(gid, ""))) + " " + esc("; ".join(d["upstream_flags"].get(gid, []))), "".join(acts)])
     out.append("<h2>Review groups (one task per exact duplicate group)</h2>" + table(["Group", "Claim", "Packets", "Contributors (all retained)", "Ancestry", "State", "Scheduling cost", "Assignee", "Observed s", "Plan / flags", "Actions"], rows)
                + f'<p class="muted">Unspent after this plan: {esc(d["plan"].get("unspent_after_plan"))} minute(s).</p>')
-    out.append("<h2>Submit a packet that references a claim in this workspace</h2>" + need(h, "submit"))
+    out.append('<h2 id="submit">Submit a packet that references a claim in this workspace</h2>' + need(h, "submit"))
     if can(h, "submit"):
-        out.append(form(h, "/com/submit", field(h, "Claim id", "claim_id") + select(h, "Kind", "kind", ("SUMMARY", "PRIMARY")) + select(h, "Ancestry", "ancestry", ("KNOWN", "UNKNOWN")) + field(h, "Derived from (packet or source ids, space separated)", "derived_from")
-                        + field(h, "Your packet id (optional)", "client_packet_id") + field(h, "Proposed minutes (a proposal only)", "proposed_cost_minutes", default="30") + '<p><label><input type="checkbox" name="asserts_withdrawn" value="1"> I assert the source was withdrawn (kept as an assertion; quarantines nothing)</label></p>', "Submit packet")
-                   + "<h3>Intake from an SHD-admitted bundle</h3>" + form(h, "/com/intake", field(h, "SHD decision id (purpose com.packets)", "decision_id"), "Take the packets in"))
+        co = claim_options(ws); pre = next((v for v, _ in co if v.split("|")[0] == q.get("claim")), None)
+        lineage = [(sid_, f"source {sid_}") for sid_ in sorted(core.source_ids(ws))][:30] + [(pid, f"packet {pid} ({s['packets'][pid]['submitter']})") for pid in list(s["packets"])[-20:]]
+        out.append((form(h, "/com/submit", select(h, "Claim (its current version is shown; a claim amended meanwhile is refused as stale)", "claim_ref", co, default=pre) + select(h, "Kind", "kind", ("SUMMARY", "PRIMARY")) + select(h, "Ancestry", "ancestry", ("KNOWN", "UNKNOWN"))
+                        + "<p>Derived from (optional):<br>" + checkboxes("df_", lineage) + "</p>" + field(h, "Your own packet label (optional)", "client_packet_id") + field(h, "Proposed minutes (a proposal only)", "proposed_cost_minutes", default="30")
+                        + '<p><label><input type="checkbox" name="asserts_withdrawn" value="1"> I assert the source was withdrawn (kept as an assertion; quarantines nothing)</label></p>', "Submit packet") if co else '<p class="muted">No claim is frozen in this workspace yet: start at <a href="/source">1 Source</a>.</p>'))
+        taken = {p_["admission"]["shd_decision_id"] for p_ in s["packets"].values() if p_["admission"]["shd_decision_id"]}
+        decs = [(d["decision_id"], f"{d['decision_id']} · bundle {d['bundle_sha256'][:12]}… · from {d['submitter']}" + (" · already taken in" if d["decision_id"] in taken else "")) for d in shield.state(ws)["decisions"].values() if d["result"] == "ADMITTED" and d["purpose"] == "com.packets"]
+        out.append("<h3>Intake from an SHD-admitted bundle</h3>" + (form(h, "/com/intake", select(h, "Admitted SHD decision (purpose com.packets)", "decision_id", decs), "Take the packets in") if decs else '<p class="muted">No admitted bundle with purpose com.packets. Submit one under <a href="/shd">SHD</a>; its decision page also offers this step.</p>'))
     if can(h, "review", "admin"):
         gsel = select(h, "Group", "group_id", sorted(s["groups"]))
         out.append("<h2>Reviewer and administrator actions</h2>" + form(h, "/com/cost", gsel + field(h, "Scheduling cost, minutes", "minutes") + field(h, "Estimation rule", "rule"), "Set the scheduling cost")
                    + form(h, "/com/effort", gsel + field(h, "Minutes", "minutes") + select(h, "Category", "category", commons.EFFORT_CATEGORIES), "Declare manual effort") + form(h, "/com/leases", "", "Return tasks with an expired lease to the queue")
                    + form(h, "/com/work", gsel + '<input type="hidden" name="action" value="cancel">' + field(h, "Reason", "note"), "Cancel a task")
-                   + "<h3>Record a dispute, withdrawal or source correction (changes queue handling)</h3>" + form(h, "/com/dispute", select(h, "Target type", "target_type", ("source", "claim", "packet")) + field(h, "Target id", "target") + select(h, "Type", "dispute_type", ("DISPUTED", "WITHDRAWN", "SOURCE_CORRECTED")) + field(h, "Reason", "reason", rows=2), "Record"))
+                   + "<h3>Record a dispute, withdrawal or source correction (changes queue handling)</h3>" + form(h, "/com/dispute", select(h, "Target", "target_ref", dispute_targets(ws, s)) + select(h, "Type", "dispute_type", ("DISPUTED", "WITHDRAWN", "SOURCE_CORRECTED")) + field(h, "Reason", "reason", rows=2), "Record"))
     out.append("<h2>Disputes</h2>" + table(["Id", "Target", "Type", "Reason", "By", "Appeals", "Resolution"], [[esc(x["dispute_id"]), esc(x["target_type"] + " " + x["target"]), esc(x["dispute_type"]), esc(x["reason"]), esc(x["recorded_by"]),
                "<br>".join(esc(a_["appellant"] + ": " + a_["reason"]) for a_ in x["appeals"]), esc((x["resolution"] or {}).get("outcome", "open")) + " " + esc((x["resolution"] or {}).get("reason", ""))] for x in s["disputes"].values()])
                + '<p class="muted">Quarantine is a handling state pending resolution. It is not a finding of plagiarism or misconduct.</p>')
@@ -609,6 +682,18 @@ def page_com(h, q) -> str:
     return "".join(out)
 
 
+def dispute_targets(ws, s: dict, only_group: dict | None = None) -> list:
+    """(value, label) of what a dispute may name — objects that exist here. The server checks the chosen target again."""
+    groups = [only_group] if only_group else list(s["groups"].values()); out = []
+    for cid in sorted({g["claim"]["claim_id"] for g in groups} | (set() if only_group else set(ws.status()["claims"]))):
+        out.append((f"claim:{cid}", f"claim {cid}"))
+    for r in sorted({r for g in groups for r in g["source_roots"] + g["unknown_roots"]} | (set() if only_group else set(core.source_ids(ws)))):
+        out.append((f"source:{r}", f"source {r}"))
+    for pid in [p for g in groups for p in g["packets"]][-40:]:
+        out.append((f"packet:{pid}", f"packet {pid} (from {s['packets'][pid]['submitter']})"))
+    return out
+
+
 def page_com_group(h, gid: str) -> str:
     ws = h.server.ws; s = commons.state(ws); g = s["groups"].get(gid)
     if g is None:
@@ -620,6 +705,9 @@ def page_com_group(h, gid: str) -> str:
            [[esc(pid), esc(s["packets"][pid]["submitter"]), esc(s["packets"][pid]["kind"]), esc(", ".join(s["packets"][pid]["derived_from"])), esc(s["packets"][pid]["admission"]["route"] + (" " + (s["packets"][pid]["admission"]["shd_decision_id"] or ""))),
              esc(s["packets"][pid]["proposed_cost_minutes"]), esc("yes (assertion only)" if s["packets"][pid]["submitter_asserts_withdrawn"] else "no"), esc(s["packets"][pid]["recorded_at"])] for pid in g["packets"]]),
            "<h2>Task history</h2>" + table(["At", "From", "To", "By", "Reserved min", "Reason"], [[esc(x["at"]), esc(x["from"]), esc(x["to"]), esc(x["by"]), esc(x["reservation_minutes"]), esc(x["reason"])] for x in g["history"]])]
+    if can(h, "review", "admin"):
+        out.append("<h2>Record a dispute about this group's claim, a source root or a member packet</h2>" + form(h, "/com/dispute", select(h, "Target (from this group)", "target_ref", dispute_targets(ws, s, g))
+                   + select(h, "Type", "dispute_type", ("DISPUTED", "WITHDRAWN", "SOURCE_CORRECTED")) + field(h, "Reason", "reason", rows=2), "Record"))
     return "".join(out) + '<p><a href="/com">Back to COM</a></p>'
 
 
@@ -647,10 +735,18 @@ def page_prc(h, q) -> str:
             rows.append([f'<a href="/prc/session/{esc(x["session_id"])}">{esc(x["session_id"])}</a>', esc(x["task_id"]), esc(x["practitioner"]), f"<b>{esc(x['category'])}</b>", "committed " + esc(x["attempt"]["at"]) if x["attempt"] else "no attempt yet", esc(x["revealed_at"] or "closed")])
     out.append("<h2>Sessions you may see</h2>" + table(["Session", "Task", "Practitioner", "Category", "Attempt", "Comparison"], rows) + '<p class="muted">Participant records are private by default: a practitioner sees only its own sessions; a reviewer sees a session once its attempt is committed.</p>')
     if can(h, "review"):
-        out.append("<h2>Freeze a task (curator)</h2>" + form(h, "/prc/task", field(h, "Title", "title") + field(h, "Question", "question", rows=3) + field(h, "Claim id (optional)", "claim_id") + field(h, "Source ids in scope (space separated)", "source_ids", rows=2)
+        co = claim_options(ws, blank="— no claim: a task on sources only —"); chosen = next((v for v, _ in co if v and v.split("|")[0] == q.get("claim")), ""); known = core.source_ids(ws)
+        roots = core.claim_ref(ws, chosen.split("|")[0])["source_roots"] if chosen else []
+        srcs = [(sid_, f"{sid_} · {(known[sid_]['payload'].get('source') or {}).get('form') or (known[sid_]['payload'].get('source') or {}).get('kind') or ''} · available {(known[sid_]['payload'].get('source') or {}).get('available_as_of')}" + (" · cited by the chosen claim" if sid_ in roots else "")) for sid_ in sorted(known, key=lambda x: (x not in roots, x))][:40]
+        evs_ = [("", "— none —")] + [(v["version_id"], f"{v['version_id']} · {v['label']}") for v in evolution.state(ws)["versions"].values()]
+        pick = ('<form method="get" action="/prc"><p><label>Claim this task is about</label> <select name="claim">' + "".join(f'<option value="{esc(v.split("|")[0])}"{" selected" if v == chosen else ""}>{esc(lbl)}</option>' for v, lbl in co)
+                + '</select> <button type="submit">Use this claim (its sources are then offered as the scope)</button></p></form>')
+        out.append("<h2>Freeze a task (curator)</h2>" + pick + (f'<p>Chosen claim: <b>{esc(dict(co).get(chosen))}</b></p>' if chosen else '<p class="muted">No claim chosen: the task will name sources only.</p>')
+                   + form(h, "/prc/task", f'<input type="hidden" name="claim_ref" value="{esc(chosen)}">' + field(h, "Title", "title") + field(h, "Question", "question", rows=3)
+                   + "<p>Sources the practitioner may read (the frozen scope):<br>" + checkboxes("src_", srcs, preselected=roots) + "</p>"
                    + field(h, "Judgment labels (comma separated; UNRESOLVED is always offered)", "labels", default="IN_RANGE, OUT_OF_RANGE") + field(h, "Reference label", "reference_label") + field(h, "Reference answer (held by the server)", "reference_answer", rows=3)
                    + field(h, "Rationale", "rationale", rows=2) + select(h, "Comparison provenance", "provenance", tuple(practice.PROVENANCE)) + field(h, "Your declared qualification (recorded as declared, not verified)", "declared_curator_qualification")
-                   + field(h, "Session minutes", "session_minutes", default="20") + field(h, "EVO version this task concerns (optional)", "evo_version_id") + '<p><label><input type="checkbox" name="public_example" value="1"> The answer is public (a demonstration task)</label></p>', "Freeze task")
+                   + field(h, "Session minutes", "session_minutes", default="20") + select(h, "EVO version this task concerns (optional)", "evo_version_id", evs_) + '<p><label><input type="checkbox" name="public_example" value="1"> The answer is public (a demonstration task)</label></p>', "Freeze task")
                    + "<h3>Schedule a follow-up (a local due-state; nobody is contacted)</h3>" + form(h, "/prc/followup", select(h, "After session", "session_id", sorted(s["sessions"])) + select(h, "Follow-up task", "followup_task_id", sorted(s["tasks"])) + field(h, "Due at (UTC)", "due_at"), "Schedule"))
     if can(h, "admin"):
         out.append("<h2>Checkpoints (administrator)</h2><p>A signed statement of the journal's tip. Download it and keep it somewhere else: an export is later checked against the separately held copy.</p>"
@@ -684,7 +780,10 @@ def page_prc_session(h, sid: str, q) -> str:
     if v["feedback"] or (can(h, "review") and not mine and v["attempt"] is not None):
         out.append("<h2>Reviewer feedback</h2>" + "".join(f'<div class="guide">{esc(x["feedback"])}</div><p class="muted">{esc(x["reviewer"])} · {esc(x["at"])}</p>' for x in v["feedback"])
                    + (form(h, base + "/feedback", field(h, "Feedback on this attempt (formative; not a ranking of a person)", "feedback", rows=4), "Record feedback") if can(h, "review") and not mine else ""))
-    return "".join(out) + f'<p><a href="/prc">Back to Practice</a> · <a href="/modx">Export this session</a> (session id <code>{esc(sid)}</code>)</p>'
+    if mine or can(h, "admin"):
+        out.append("<h2>Export this session</h2>" + form(h, "/modx/build", f'<input type="hidden" name="sess_{esc(sid)}" value="1">' + '<p><label><input type="checkbox" name="withhold_text" value="1"> Withhold attempt, reflection and feedback text (digests only)</label></p>', f"Build a packet of session {sid}")
+                   + '<p class="muted">Never included: a comparison that was not opened in this session.</p>')
+    return "".join(out) + '<p><a href="/prc">Back to Practice</a></p>'
 
 
 def page_prc_source(h, sid: str, q) -> str:
@@ -709,7 +808,9 @@ def page_modx(h, q, result) -> str:
         out.append(need(h, "submit"))
     else:
         mods = "".join(f'<label><input type="checkbox" name="mod_{m}" value="1"> {m}</label> ' for m in ("SHD", "EVO", "COM")) if can(h, "submit", "review", "admin") else '<span class="muted">SHD, EVO and COM records need the submit, review or admin capability.</span>'
-        out.append(form(h, "/modx/build", f"<p>{mods}</p>" + field(h, "Practice sessions to include (ids, space separated; your own, or any as administrator)", "prc_sessions")
+        ps = practice.state(ws); mine_ = [(x["session_id"], f"{x['session_id']} · task {x['task_id']} · {x['practitioner']} · {x['category']} · " + ("comparison opened" if x["revealed_at"] else "comparison not opened (it will not be included)"))
+                                         for x in ps["sessions"].values() if x["practitioner"] == p["principal_id"] or "admin" in p["caps"]]
+        out.append(form(h, "/modx/build", f"<p>{mods}</p><p>Practice sessions to include (your own, or any as administrator):<br>" + checkboxes("sess_", mine_) + "</p>"
                         + '<p><label><input type="checkbox" name="withhold_text" value="1"> Withhold attempt, reflection and feedback text (digests only)</label></p>', "Build packet")
                    + '<p class="muted">Never included: credential hashes, signing keys, staged bundle bytes, inspection excerpts, a comparison that was not revealed in the session, other practitioners\' sessions. No training dataset or ranking is produced.</p>')
     built = [e for e in ws.load()["events"] if e["kind"] == "MODULE_EXPORT_BUILT" and p and (e["payload"]["built_by"] == p["principal_id"] or "admin" in p["caps"])]
@@ -717,7 +818,9 @@ def page_modx(h, q, result) -> str:
     out.append("<h2>Verify a packet (works in a fresh workspace)</h2>" + form(h, "/modx/verify", '<p><label>Module packet</label> <input type="file" name="packet"></p><p><label>Separately held checkpoint (optional)</label> <input type="file" name="checkpoint"> '
                '<span class="muted">the JSON downloaded from the origin\'s Practice page and kept elsewhere — not a file from inside the packet</span></p>', "Verify", multipart=True))
     if can(h, "admin"):
-        out.append("<h3>Resolve a recorded trust discrepancy (a note; trust changes only on the SHD trust page)</h3>" + form(h, "/modx/resolve", field(h, "Packet sha256", "packet_sha256") + field(h, "Resolution", "resolution", rows=2), "Record resolution"))
+        disc = [(d["packet_sha256"], f"{d['packet_sha256'][:16]}… · {str(d.get('discrepancy'))[:70]}") for d in shield.state(ws)["discrepancies"] if d["kind"] == "SHD_TRUST_DISCREPANCY"]
+        if disc:
+            out.append("<h3>Resolve a recorded trust discrepancy (a note; trust changes only on the SHD trust page)</h3>" + form(h, "/modx/resolve", select(h, "Discrepancy", "packet_sha256", disc) + field(h, "Resolution", "resolution", rows=2), "Record resolution"))
     return "".join(out)
 
 
@@ -727,6 +830,8 @@ def context_links(ws, claim_id: str | None = None) -> str:
     if claim_id:
         groups = [g["group_id"] for g in cs["groups"].values() if g["claim"]["claim_id"] == claim_id]; tasks = [t["task_id"] for t in ps["tasks"].values() if t["claim"] and t["claim"]["claim_id"] == claim_id]
         links = [c["version_id"] for c in es["commitments"] if c["claim_id"] == claim_id]
+        cq = urllib.parse.quote(claim_id, safe="")
         return ('<section id="modules"><h2>In the modules</h2><p>COM review groups: ' + (", ".join(f'<a href="/com/group/{esc(g)}">{esc(g)}</a>' for g in groups) or "none") + " · PRC tasks: " + (esc(", ".join(tasks)) or "none")
-                + " · EVO versions linked: " + (", ".join(f'<a href="/evo/version/{esc(v)}">{esc(v)}</a>' for v in links) or "none") + ' · <a href="/modules">Modules</a></p></section>')
+                + " · EVO versions linked: " + (", ".join(f'<a href="/evo/version/{esc(v)}">{esc(v)}</a>' for v in links) or "none") + ' · <a href="/modules">Modules</a></p>'
+                + f'<p>With this claim selected: <a href="/com?claim={cq}#submit">submit a review packet about it</a> · <a href="/prc?claim={cq}">create a practice task on it</a>. Each page shows the claim\'s current version for you to confirm, and the server checks it again when you submit.</p></section>')
     return '<p class="muted">Registered sources can be named by <a href="/com">COM packets</a>, put in the scope of a <a href="/prc">practice task</a>, and listed as evidence digests in an <a href="/shd">SHD bundle</a>. <a href="/modules">Modules</a></p>'

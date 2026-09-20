@@ -128,7 +128,7 @@ class Surface(Base):
         for u in urls:
             st, body, _ = c.get(u); self.assertNotIn(SECRET, body, u); self.assertNotIn(t["comparison_commitment"], body, u)
         st, body, _ = c.post(f"/prc/session/{ssid}/reveal", {}, page=f"/prc/session/{ssid}"); self.assertEqual(st, 422); self.assertIn("E_ATTEMPT_FIRST", body); self.assertNotIn(SECRET, body)      # direct POST, error page included
-        st, body, _ = c.post("/modx/build", {"prc_sessions": ssid}, page="/modx", follow=False); exp = re.search(r"built=(modx-[0-9a-f]{16})", _ or "")
+        st, body, _ = c.post("/modx/build", {f"sess_{ssid}": "1"}, page="/modx", follow=False); exp = re.search(r"built=(modx-[0-9a-f]{16})", _ or "")
         self.assertIsNotNone(exp); raw = c._req("GET", f"/modx/{exp.group(1)}.zip")[1]; self.assertNotIn(SECRET, raw)                                                        # an export before the attempt carries no answer
         other = self.client("pia"); st, body, _ = other.get(f"/prc/session/{ssid}"); self.assertEqual(st, 404); self.assertNotIn(SECRET, body)                               # cross-session access
         st, body, _ = c.post(f"/prc/session/{ssid}/attempt", {"judgment": "IN_RANGE", "reasoning": "112 is inside", f"ref_{self.sid}": "1", "unresolved_note": ""}, page=f"/prc/session/{ssid}"); self.assertEqual(st, 200)
@@ -148,7 +148,7 @@ class Surface(Base):
         for path, fields in (("/shd/root", {"label": "mine"}), ("/shd/policy", {"max_approval_days": "300", "purpose_com.packets": "1"}), ("/setup/enroll", {"principal_id": "mallory", "cap_admin": "1"}), ("/com/budget", {"period_id": "p9", "review_minutes": "9", "practice_minutes": "9", "contributor_packet_cap": "9", "max_open_tasks": "9"})):
             st, body, _ = s.post(path, fields, page="/com"); self.assertEqual(st, 403, path); self.assertIn("E_FORBIDDEN", body)
         self.assertNotIn("mallory", [p for p in self.srv.srv.principals.state()]); n = len(self.ws.load()["events"])
-        st, body, _ = s.post("/com/submit", {"claim_id": self.cid, "kind": "SUMMARY", "ancestry": "KNOWN", "derived_from": "", "proposed_cost_minutes": "10", "actor": "owner", "principal": "owner", "submitter": "owner", "principal_id": "owner"}, page="/com")
+        st, body, _ = s.post("/com/submit", {"claim_ref": f"{self.cid}|{core.claim_ref(self.ws, self.cid)['version_digest']}", "kind": "SUMMARY", "ancestry": "KNOWN", "proposed_cost_minutes": "10", "actor": "owner", "principal": "owner", "submitter": "owner", "principal_id": "owner"}, page="/com")
         self.assertEqual(st, 200); ev = self.ws.load()["events"][-1]; self.assertEqual((ev["actor"], ev["payload"]["submitter"]), ("principal:alice", "alice"))               # a form field never becomes the actor
         bad = Client(self.srv); bad.cookies = dict(s.cookies); st, body, _ = bad._req("POST", "/com/submit", "claim_id=x&csrf=deadbeef&op_id=op:forged-0001", {"Content-Type": "application/x-www-form-urlencoded"}); self.assertEqual(st, 403); self.assertIn("CSRF", body)
         st, body, _ = s._req("POST", "/com/submit", "x=1", {"Content-Type": "application/x-www-form-urlencoded", "Origin": "http://evil.example"}); self.assertEqual(st, 403)
@@ -159,6 +159,51 @@ class Surface(Base):
         for _ in range(6):
             bad.login("owner", "wrong-credential-xx")
         st, body, _ = bad.login("owner", self.creds["owner"]); self.assertEqual(st, 403); self.assertIn("too many failed attempts", body)                                       # bounded guessing
+
+    def test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference(self):
+        """A selected option, a contextual link or a hidden field is never authority: each carried reference is resolved and
+        checked on the server for this principal, object, workspace and state. Valid counterparts succeed."""
+        from v8.workbench.modules import evolution as evo
+        s, r, a = self.client("alice"), self.client("curator"), self.client("owner"); vd = core.claim_ref(self.ws, self.cid)["version_digest"]; ref = f"{self.cid}|{vd}"
+        page = s.get(f"/com?claim={self.cid}")[1]; self.assertIn(f'value="{ref}" selected', page); self.assertIn(vd[:12], page)                                # the claim arrives selected, with its version shown
+        self.assertNotIn('name="claim_id"', page); self.assertNotIn('name="derived_from"', page); self.assertNotIn('name="decision_id" value="" size', page)         # no free-text identifier fields remain on the form
+        st, body, _ = s.post("/com/submit", {"claim_ref": ref, "kind": "SUMMARY", "ancestry": "KNOWN", f"df_{self.sid}": "1"}, page="/com"); self.assertEqual(st, 200)
+        pk = list(com.state(self.ws)["packets"].values())[-1]; self.assertEqual((pk["claim"]["version_digest"], pk["derived_from"]), (vd, [self.sid]))
+        for bad_ref, expect in ((f"{self.cid}|{'0' * 64}", "E_STALE_SELECTION"), ("NO-SUCH-CLAIM|" + vd, "E_UNKNOWN_CLAIM"), ("", "E_REQUIRED")):
+            st, body, _ = s.post("/com/submit", {"claim_ref": bad_ref, "kind": "SUMMARY", "ancestry": "KNOWN"}, page="/com"); self.assertEqual(st, 422, bad_ref); self.assertIn(expect, body)
+        st, body, _ = s.post("/com/submit", {"claim_ref": ref, "kind": "SUMMARY", "ancestry": "KNOWN", "df_not-a-source-or-packet": "1"}, page="/com"); self.assertIn("E_UNKNOWN_LINEAGE", body)   # a substituted lineage id
+        other = workspace("stale"); ocid, osid = load_fixture(other); oa, ocred = principal(other, "owner", ["admin"]); osub, oscred = principal(other, "alice", ["submit"], by=oa)      # a REAL amendment between showing the form and submitting it
+        com.set_budget(other, oa, period_id="p1", review_minutes=60, practice_minutes=10, contributor_packet_cap=5, max_open_tasks=5, op_id="op:budget-001"); osrv = Server(other.root); self.addCleanup(osrv.close)
+        oc = Client(osrv); oc.login("alice", oscred); shown = f"{ocid}|{core.claim_ref(other, ocid)['version_digest']}"; self.assertIn(shown, oc.get(f"/com?claim={ocid}")[1])
+        from v8.workbench import schema as _schema; import json as _json, pathlib as _pl
+        rev = _schema.from_fixture(_json.loads((_pl.Path(__file__).resolve().parents[1] / "v8/workbench/resources/fixtures/001_base.json").read_text()))["revisions"][0]
+        other.register_source(rev["source"], op_id="op:src-rev0001", observed_at=rev["source"]["available_as_of"]); other.amend_claim(ocid, rev["type"], changes={"range": rev["claim"]["range"]}, reason="per fixture", source=rev["source"], op_id="op:amend-000001", observed_at=rev["source"]["available_as_of"])
+        st, body, _ = oc.post("/com/submit", {"claim_ref": shown, "kind": "SUMMARY", "ancestry": "KNOWN"}, page="/com"); self.assertEqual(st, 422); self.assertIn("E_STALE_SELECTION", body); self.assertEqual(com.state(other)["packets"], {})
+        fresh_ref = f"{ocid}|{core.claim_ref(other, ocid)['version_digest']}"; self.assertNotEqual(fresh_ref, shown); self.assertEqual(oc.post("/com/submit", {"claim_ref": fresh_ref, "kind": "SUMMARY", "ancestry": "KNOWN"}, page="/com")[0], 200)
+        # disputes: only objects of this workspace can be named, whatever the form carries
+        st, body, _ = r.post("/com/dispute", {"target_ref": "claim:SOME-OTHER-WORKSPACE-CLAIM", "dispute_type": "DISPUTED", "reason": "x"}, page="/com"); self.assertEqual(st, 422); self.assertIn("E_UNKNOWN_TARGET", body)
+        st, body, _ = r.post("/com/dispute", {"target_ref": f"source:{self.sid}", "dispute_type": "DISPUTED", "reason": "contested"}, page="/com"); self.assertEqual(st, 200); self.assertEqual(len(com.state(self.ws)["disputes"]), 1)
+        # SHD: a waiting submission is approved from its own row — the digest is the server's, a forged submission id is refused, and the submitter still cannot approve its own
+        shield.enroll_root(self.ws, self.admin, label="root", op_id="op:root-000001"); data, h, srcs = bundle(purpose="com.packets", payload={"packets": [{"packet_id": "ext-1", "claim_id": self.cid, "claim_version_digest": vd, "source_roots": [self.sid], "kind": "SUMMARY", "ancestry": "KNOWN"}]})
+        st, body, _ = s.upload("/shd/submit", {"title": "packets"}, {"bundle": ("b.zip", data)}, page="/shd"); self.assertIn("SB1", body)
+        trust = a.get("/shd/trust")[1]; self.assertIn('name="submission_id" value="SB1"', trust); self.assertIn(h, trust)
+        st, body, _ = a.post("/shd/approve", {"submission_id": "SB9", "source_sha256s": " ".join(srcs), "purpose": "com.packets", "expires_at": FUTURE}, page="/shd/trust"); self.assertIn("E_UNKNOWN_SUBMISSION", body)
+        st, body, _ = a.post("/shd/approve", {"submission_id": "SB1", "bundle_sha256": "f" * 64, "source_sha256s": " ".join(srcs), "purpose": "com.packets", "expires_at": FUTURE}, page="/shd/trust"); self.assertEqual(st, 200)
+        self.assertEqual(list(shield.state(self.ws)["approvals"].values())[0]["bundle_sha256"], h)                                                           # a digest smuggled beside the submission id is ignored: the server's record wins
+        st, body, loc = s.post("/shd/admit", {"submission_id": "SB1"}, page="/shd"); did = loc.rsplit("/", 1)[1]; self.assertIn("Take the 1 packet(s)", body); self.assertIn(f'name="decision_id" value="{did}"', body)
+        st, body, _ = s.post("/com/intake", {"decision_id": did}, page=f"/shd/decision/{did}"); self.assertEqual(st, 200); self.assertEqual(list(com.state(self.ws)["packets"].values())[-1]["admission"]["shd_decision_id"], did)
+        st, body, _ = s.post("/com/intake", {"decision_id": "DC99"}, page="/com"); self.assertIn("REFUSED_NOT_ADMITTED", body)                                     # a made-up decision id reaches no queue
+        # PRC: the task form reached from the claim carries the claim and offers ITS sources; a stale claim reference and an unknown EVO version are refused; practice-only principals never see the curator form
+        form_ = r.get(f"/prc?claim={self.cid}")[1]; self.assertIn(f'name="claim_ref" value="{ref}"', form_); self.assertRegex(form_, rf'name="src_{re.escape(self.sid)}" value="1" checked')
+        base = {"title": "t", "question": "q?", "labels": "A, B", "reference_label": "A", "reference_answer": SECRET, "provenance": "MODEL_ANSWER", "session_minutes": "20", f"src_{self.sid}": "1"}
+        st, body, _ = r.post("/prc/task", {**base, "claim_ref": f"{self.cid}|{'1' * 64}"}, page="/prc"); self.assertIn("E_STALE_SELECTION", body)
+        st, body, _ = r.post("/prc/task", {**base, "claim_ref": ref, "evo_version_id": "v-none"}, page="/prc"); self.assertIn("E_UNKNOWN", body)
+        st, body, _ = r.post("/prc/task", {**base, "claim_ref": ref}, page="/prc"); self.assertEqual(st, 200); t_ = list(prc.state(self.ws)["tasks"].values())[-1]; self.assertEqual((t_["claim"]["version_digest"], [x["source_id"] for x in t_["source_scope"]]), (vd, [self.sid]))
+        pc = self.client("pat"); ppage = pc.get(f"/prc?claim={self.cid}")[1]; self.assertNotIn('action="/prc/task"', ppage); self.assertNotIn(SECRET, ppage)
+        # export from the session page: the carried session id is checked again — another practitioner's id is refused as not found
+        ss = self.session(self.pat, t_["task_id"])["session_id"]; self.assertIn(f'name="sess_{ss}"', pc.get(f"/prc/session/{ss}")[1])
+        st, body, _ = self.client("pia").post("/modx/build", {f"sess_{ss}": "1"}, page="/modx"); self.assertEqual(st, 404); self.assertIn("E_NOT_FOUND", body)
+        st, body, loc = pc.post("/modx/build", {f"sess_{ss}": "1"}, page=f"/prc/session/{ss}", follow=False); self.assertEqual(st, 303); self.assertIn("built=modx-", loc)
 
     def test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading(self):
         x = '<script>alert("x")</script><img src=x onerror=alert(1)>'; c = self.client("curator"); a = self.client("owner")

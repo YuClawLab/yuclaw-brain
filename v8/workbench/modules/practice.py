@@ -84,6 +84,10 @@ def freeze_task(ws: Workspace, principal, *, title: str, question: str, claim_id
     if not scope:
         raise ModuleError("E_SCOPE", "a task names at least one registered source the practitioner may read")
     ref = core.claim_ref(ws, claim_id) if claim_id else None
+    if evo_version_id:
+        from v8.workbench.modules import evolution
+        if core.ident(evo_version_id, "EVO version") not in evolution.state(ws)["versions"]:
+            raise ModuleError("E_UNKNOWN", f"EVO version {evo_version_id!r} is not registered in this workspace")
     with ws._locked():
         evs = ws.load()["events"]; done = core.prior(evs, op_id)
         if done is not None and done["kind"] == "PRC_TASK_FROZEN":

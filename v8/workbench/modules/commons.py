@@ -194,6 +194,10 @@ def submit_direct(ws: Workspace, principal, *, claim_id: str, kind: str, ancestr
         evs = ws.load()["events"]; done = core.prior(evs, op_id)
         if done is not None and done["kind"] == "COM_PACKET_SUBMITTED":
             return done
+        s0 = state(ws, evs=evs); known_refs = set(core.source_ids(ws)) | set(s0["packets"])
+        unknown = [x for x in derived_from if x not in known_refs]
+        if unknown:
+            raise ModuleError("E_UNKNOWN_LINEAGE", "derived-from names something that is neither a registered source nor a packet of this queue: " + ", ".join(map(str, unknown))[:200])
         row = {"claim_id": claim_id, "kind": kind, "ancestry": ancestry, "derived_from": [core.ident(x, "derived from") for x in derived_from][:8], "proposed_cost_minutes": proposed_cost_minutes,
                "asserts_withdrawn": asserts_withdrawn, "packet_id": client_packet_id}
         return _admit_packet(ws, evs, state(ws, evs=evs), principal, row, {"route": "DIRECT_REFERENCE", "shd_decision_id": None}, op_id)
@@ -342,7 +346,11 @@ def record_dispute(ws: Workspace, principal, *, target_type: str, target: str, d
     if target_type not in ("source", "claim", "packet") or dispute_type not in ("DISPUTED", "WITHDRAWN", "SOURCE_CORRECTED"):
         raise ModuleError("E_DISPUTE", "target type: source, claim or packet; type: DISPUTED, WITHDRAWN or SOURCE_CORRECTED")
     with ws._locked():
-        evs = ws.load()["events"]
+        evs = ws.load()["events"]; s = state(ws, evs=evs); core.ident(target, "target")
+        exists = {"claim": target in ws.status()["claims"], "packet": target in s["packets"],
+                  "source": target in core.source_ids(ws) or any(target in g["source_roots"] + g["unknown_roots"] for g in s["groups"].values()) or any(target in p_["derived_from"] for p_ in s["packets"].values())}[target_type]
+        if not exists:                                                            # a selected option or a hidden field is not authority: the named object must exist in THIS workspace
+            raise ModuleError("E_UNKNOWN_TARGET", f"{target_type} {target!r} is not an object of this workspace (a claim frozen here, a source registered or named by a packet here, or a packet of this queue)")
         return ws._append_unlocked("COM_DISPUTE_RECORDED", None, {"dispute_id": core.next_id(evs, "COM_DISPUTE_RECORDED", "DP", "dispute_id"), "target_type": target_type, "target": core.ident(target, "target"),
                                    "dispute_type": dispute_type, "reason": core.text(reason, "reason", maxlen=1000), "recorded_by": principal["principal_id"],
                                    "meaning": "affected groups are quarantined (a handling state, not a finding of misconduct); source bytes and earlier reviews are untouched; an appeal and a resolution are new events"},

@@ -62,6 +62,8 @@ class ModJourney:
         form = page.locator(f"form[action='{action}']")
         if has_value:
             form = form.filter(has=page.locator(f"input[value='{has_value}']"))
+        elif fields:                                                            # several forms may share an action: take the one that really has the first field
+            form = form.filter(has=page.locator(f"[name='{next(iter(fields))}']"))
         form = form.first
         for k, v in (fields or {}).items():
             el = form.locator(f"[name='{k}']").first; tag = el.evaluate("e => e.tagName.toLowerCase()"); typ = el.evaluate("e => e.type || ''")
@@ -74,6 +76,12 @@ class ModJourney:
         for k, path in (files or {}).items():
             form.locator(f"input[name='{k}']").set_input_files(str(path))
         form.locator("button").first.click(); page.wait_for_load_state("load"); return page.locator("body").inner_text()
+
+    @staticmethod
+    def via_claim(page, base, claim_id, link_text):
+        """Workspace → the claim's page → the contextual module link: the claim is chosen once, by clicking."""
+        page.goto(f"{base}/"); page.locator(f"a[href*='/claim/']", has_text=claim_id).first.click(); page.wait_for_load_state("load")
+        page.locator("#modules a", has_text=link_text).first.click(); page.wait_for_load_state("load")
 
     def bundle(self, name, purpose, payload, files):
         man = {"schema": "yuclaw.shd-bundle/1", "purpose": purpose, "title": name, "evidence": [{"path": p, "sha256": hashlib.sha256(b).hexdigest(), "size": len(b)} for p, b in sorted(files.items())], "payload": payload}
@@ -122,14 +130,16 @@ class ModJourney:
                 alice.goto(f"{a}/shd"); self.submit(alice, "/shd/submit", {"title": "journey packets"}, {"bundle": good}); body = self.submit(alice, "/shd/admit", has_value="SB1")
                 self.check(2, "without an approval the protected route refuses with a fixed code and a next action", "REFUSED_NO_APPROVAL" in body and "Next action" in body, body[:120], negative=True)
                 soon = (datetime.now(timezone.utc) + timedelta(seconds=4)).strftime("%Y-%m-%dT%H:%M:%SZ"); far = (datetime.now(timezone.utc) + timedelta(days=3)).strftime("%Y-%m-%dT%H:%M:%SZ")
-                owner.goto(f"{a}/shd/trust"); self.submit(owner, "/shd/approve", {"bundle_sha256": gh, "source_sha256s": gsrc, "purpose": "com.packets", "expires_at": soon}); time.sleep(5)
+                owner.goto(f"{a}/shd/trust"); self.submit(owner, "/shd/approve", {"source_sha256s": gsrc, "purpose": "com.packets", "expires_at": soon}, has_value="SB1"); time.sleep(5)      # the waiting submission's own row: its digest comes from the server
                 alice.goto(f"{a}/shd"); body = self.submit(alice, "/shd/admit", has_value="SB1"); self.check(2, "an EXPIRED approval is refused at the protected operation", "REFUSED_APPROVAL_EXPIRED" in body, body[:120], negative=True)
                 alice.goto(f"{a}/shd"); self.submit(alice, "/shd/submit", {"title": "changed bytes"}, {"bundle": changed}); body = self.submit(alice, "/shd/admit", has_value="SB2")
                 self.check(2, "a CHANGED bundle is not covered by the approval of the original bytes", "REFUSED_NO_APPROVAL" in body, body[:120], negative=True)
                 bctx, bob = self.signin(browser, a, "bob"); own, bh, bsrc = self.bundle("bob-own", "evidence.reference", {}, {"evidence/b.txt": b"bob's own fictional evidence\n"})
-                bob.goto(f"{a}/shd"); self.submit(bob, "/shd/submit", {"title": "bob's own"}, {"bundle": own}); bob.goto(f"{a}/shd/trust"); body = self.submit(bob, "/shd/approve", {"bundle_sha256": bh, "source_sha256s": bsrc, "purpose": "evidence.reference", "expires_at": far})
+                bob.goto(f"{a}/shd"); self.submit(bob, "/shd/submit", {"title": "bob's own"}, {"bundle": own}); bob.goto(f"{a}/shd/trust"); own_ctx = bob.locator("form[action='/shd/approve']").filter(has=bob.locator("input[value='SB3']")).count()
+                self.check(2, "the trust page offers bob NO approval action on his own submission", own_ctx == 0 and "is your own submission" in bob.locator("body").inner_text(), own_ctx, negative=True)
+                body = self.submit(bob, "/shd/approve", {"bundle_sha256": bh, "source_sha256s": bsrc, "purpose": "evidence.reference", "expires_at": far})      # he types the digest into the pre-approval form instead
                 self.check(2, "a principal holding BOTH capabilities cannot approve its own bundle", "REFUSED_SELF_APPROVAL" in body, body[:120], negative=True)
-                owner.goto(f"{a}/shd/trust"); self.submit(owner, "/shd/approve", {"bundle_sha256": gh, "source_sha256s": gsrc, "purpose": "com.packets", "expires_at": far}); alice.goto(f"{a}/shd"); body = self.submit(alice, "/shd/admit", has_value="SB1")
+                owner.goto(f"{a}/shd/trust"); self.submit(owner, "/shd/approve", {"source_sha256s": gsrc, "purpose": "com.packets", "expires_at": far}, has_value="SB1"); alice.goto(f"{a}/shd"); body = self.submit(alice, "/shd/admit", has_value="SB1")
                 admitted = "ADMITTED" in body and "NOT_ASSESSED" in body and "NONE" in body
                 self.check(2, f"an independently approved valid bundle is ADMITTED inside the restricted worker ({cap['backend']}); factual adjudication stays NOT_ASSESSED although the evidence states a false figure", admitted and str(cap["backend"]) in body, body[:160])
                 decision = alice.url.rsplit("/", 1)[1]; self.check(2, "the submitter cannot open the evidence text; the typed result shows digests only", "IGNORE ALL PREVIOUS" not in body)
@@ -137,25 +147,28 @@ class ModJourney:
                 self.check(2, "hostile instruction text is shown to an administrator as inert escaped text: no script ran, no file was touched, the title is unchanged", "IGNORE ALL PREVIOUS" in ob and owner.locator("script").count() == 0 and "pwned" not in owner.title() and not canary.exists())
                 # ------------------------------------------------ step 3 (COM)
                 owner.goto(f"{a}/com"); self.submit(owner, "/com/budget", {"period_id": "journey-1", "review_minutes": "120", "practice_minutes": "40", "contributor_packet_cap": "8", "max_open_tasks": "20"})
-                alice.goto(f"{a}/com"); self.submit(alice, "/com/intake", {"decision_id": decision}); alice.goto(f"{a}/com"); self.submit(alice, "/com/submit", {"claim_id": c1, "kind": "SUMMARY", "ancestry": "KNOWN", "proposed_cost_minutes": "600"})
-                bob.goto(f"{a}/com"); self.submit(bob, "/com/submit", {"claim_id": c1, "kind": "SUMMARY", "ancestry": "KNOWN", "proposed_cost_minutes": "1"}); bob.goto(f"{a}/com"); self.submit(bob, "/com/submit", {"claim_id": c2, "kind": "PRIMARY", "ancestry": "KNOWN"})
+                alice.goto(f"{a}/shd/decision/{decision}") if not alice.url.endswith(decision) else None; self.submit(alice, "/com/intake", has_value=decision)                     # the decision page's own hand-over button
+                self.via_claim(alice, a, c1, "submit a review packet"); self.submit(alice, "/com/submit", {"kind": "SUMMARY", "ancestry": "KNOWN", "proposed_cost_minutes": "600"})
+                self.via_claim(bob, a, c1, "submit a review packet"); self.submit(bob, "/com/submit", {"kind": "SUMMARY", "ancestry": "KNOWN", "proposed_cost_minutes": "1"}); self.via_claim(bob, a, c2, "submit a review packet"); self.submit(bob, "/com/submit", {"kind": "PRIMARY", "ancestry": "KNOWN"})
                 srv.shutdown(); srv.server_close(); srv, a2 = self.start(ws_a)                                  # RESTART: a new server process state on the same workspace; every session is gone
                 anon.goto(f"{a2}/com"); self.check(3, "after the restart the old sessions are gone: sign-in is required again", "/login" in anon.url, anon.url, negative=True); a = a2
                 for c in (octx, actx, bctx):
                     c.close()
                 octx, owner = self.signin(browser, a, "owner"); actx, alice = self.signin(browser, a, "alice"); bctx, bob = self.signin(browser, a, "bob")
-                alice.goto(f"{a}/com"); self.submit(alice, "/com/submit", {"claim_id": c1, "kind": "SUMMARY", "ancestry": "KNOWN"}); owner.goto(f"{a}/com"); dash = owner.locator("body").inner_text()
+                self.via_claim(alice, a, c1, "submit a review packet"); self.submit(alice, "/com/submit", {"kind": "SUMMARY", "ancestry": "KNOWN"}); owner.goto(f"{a}/com"); dash = owner.locator("body").inner_text()
                 self.check(3, "six packets about one claim contract (three through SHD, three direct, one after the restart) form ONE group; the other claim stays a separate group", "review groups 2" in dash and "packets 7" in dash and "duplicate volume 5" in dash, re.findall(r"review groups \d+|packets \d+|duplicate volume \d+", dash))
                 self.check(3, "every contributor keeps its attribution in the group and the submitters' 600- and 1-minute proposals did not move the scheduling cost", "alice, bob" in dash and "built-in default" in dash)
                 rctx, rita = self.signin(browser, a, "rita"); rita.goto(f"{a}/com"); gid = rita.locator("a[href^='/com/group/']").first.inner_text(); self.submit(rita, "/com/assign", has_value=gid); owner.goto(f"{a}/com"); dash = owner.locator("body").inner_text()
                 row = re.search(r"Review minutes\s+120\s+(\d+)\s+(\d+)\s+(\d+)", dash); self.check(3, "one reservation of the group's cost — duplicate packets spent nothing more", bool(row) and row.group(1) == "30" and row.group(3) == "90", row.groups() if row else dash[:120])
-                rita.goto(f"{a}/com"); self.submit(rita, "/com/dispute", {"target_type": "claim", "target": c2, "dispute_type": "DISPUTED", "reason": "journey: figure contested"}); owner.goto(f"{a}/com"); q1 = "quarantined 1" in owner.locator("body").inner_text()
-                alice.goto(f"{a}/com"); body = self.submit(alice, "/com/dispute", {"target_type": "claim", "target": c1, "dispute_type": "WITHDRAWN", "reason": "I say so"}) if alice.locator("form[action='/com/dispute']").count() else "no form"
+                rita.goto(f"{a}/com"); self.submit(rita, "/com/dispute", {"target_ref": f"claim:{c2}", "dispute_type": "DISPUTED", "reason": "journey: figure contested"}); owner.goto(f"{a}/com"); q1 = "quarantined 1" in owner.locator("body").inner_text()
+                alice.goto(f"{a}/com"); body = self.submit(alice, "/com/dispute", {"target_ref": f"claim:{c1}", "dispute_type": "WITHDRAWN", "reason": "I say so"}) if alice.locator("form[action='/com/dispute']").count() else "no form"
                 self.check(3, "a recorded dispute by a reviewer quarantines the affected group; a submitter has no such form", q1 and body == "no form", (q1, body[:60]), negative=True)
                 alice.goto(f"{a}/com"); self.submit(alice, "/com/appeal", {"dispute_id": "DP1", "reason": "journey: the figure is in the fictional filing"}); owner.goto(f"{a}/com"); self.submit(owner, "/com/resolve", {"dispute_id": "DP1", "outcome": "LIFTED", "reason": "journey: checked"})
                 owner.goto(f"{a}/com"); dash = owner.locator("body").inner_text(); self.check(3, "the appeal and an administrator's resolution are new events: quarantine lifted, dispute, appeal and reason all still shown", "quarantined 0" in dash and "journey: figure contested" in dash and "LIFTED" in dash)
                 # ------------------------------------------------ step 4 (PRC)
-                rita.goto(f"{a}/prc"); self.submit(rita, "/prc/task", {"title": "Journey: guidance range reading", "question": "Is an actual of 112 million inside the stated fictional range?", "claim_id": c1, "source_ids": src1, "labels": "IN_RANGE, OUT_OF_RANGE",
+                self.via_claim(rita, a, c1, "create a practice task"); pre = rita.locator(f"input[name='src_{src1}']").is_checked()
+                self.check(4, "reached from the claim page, the task form carries the claim with its version shown and offers the claim's own source as the scope, already ticked", pre and c1 in rita.locator("body").inner_text(), pre)
+                self.submit(rita, "/prc/task", {"title": "Journey: guidance range reading", "question": "Is an actual of 112 million inside the stated fictional range?", "labels": "IN_RANGE, OUT_OF_RANGE",
                                                                    "reference_label": "IN_RANGE", "reference_answer": REFERENCE, "rationale": "read from the fictional source", "provenance": "UNADJUDICATED_REFERENCE", "session_minutes": "20", "public_example": True})
                 pctx, pat = self.signin(browser, a, "pat"); pat.goto(f"{a}/prc"); self.submit(pat, "/prc/open", {"task_id": "TK1", "assistance": "NONE", "prior_exposure": "NOT_SEEN"}); sess = pat.url.rsplit("/", 1)[1]
                 owner.goto(f"{a}/com"); self.check(4, "the session drew 20 minutes from the separately reserved practice capacity, none from review", bool(re.search(r"Practice minutes \(separate reserve\)\s+40\s+20", owner.locator("body").inner_text())))
@@ -171,7 +184,7 @@ class ModJourney:
                 pat.goto(f"{a}/prc/session/{sess}"); self.submit(pat, f"/prc/session/{sess}/attempt", {"judgment": "IN_RANGE", "reasoning": "112 lies between 110 and 120 in the fictional source", f"ref_{src1}": True})
                 body = self.submit(pat, f"/prc/session/{sess}/reveal"); self.check(4, "after the attempt is committed the comparison opens, labelled as not ground truth", REFERENCE in body and "not ground truth" in body)
                 self.submit(pat, f"/prc/session/{sess}/reflect", {"reflection": "journey: cite the range line next time"}); body = pat.locator("body").inner_text(); self.check(4, "a reflection is a separate later record; the original attempt text is unchanged", "cite the range line" in body and "112 lies between" in body)
-                pat.goto(f"{a}/modx"); self.submit(pat, "/modx/build", {"prc_sessions": sess}); self.check(4, "the practitioner exports its own permitted session record", "modx-" in pat.locator("body").inner_text())
+                pat.goto(f"{a}/prc/session/{sess}") if not pat.url.endswith(sess) else None; self.submit(pat, "/modx/build", has_value="1"); self.check(4, "the practitioner exports its own permitted session record", "modx-" in pat.locator("body").inner_text())
                 ictx, pia = self.signin(browser, a, "pia"); pia.goto(f"{a}/prc"); self.submit(pia, "/prc/open", {"task_id": "TK1", "assistance": "AI_ASSISTED", "assistance_note": "journey: used an assistant", "prior_exposure": "SEEN_ANSWER"})
                 body = pia.locator("body").inner_text(); pia.goto(f"{a}/prc/session/{sess}"); other = pia.locator("body").inner_text()
                 self.check(4, "an assisted, already-exposed session is ACCEPTED and labelled ALREADY_EXPOSED — never called unaided; another practitioner's session is not visible to it", "ALREADY_EXPOSED" in body and REFERENCE not in other and "E_NOT_FOUND" in other)
@@ -194,21 +207,22 @@ class ModJourney:
                 (sysd / "policy" / "policy.json").write_text(json.dumps({**pol, "tools": {"read_filing": "allow", "place_order": "allow"}}))                           # a REAL relevant change on disk
                 rita.goto(f"{a}/evo/version/v1"); body = self.submit(rita, "/evo/version/v1/evaluate", {"protocol_id": "tool-safety"})
                 self.check(5, "the changed file is NOT evaluated under the old identity", "REJECTED_SUBJECT_CHANGED" in body, body[:140], negative=True)
-                imp.goto(f"{a}/evo"); self.submit(imp, "/evo/register", {"version_id": "v2", "parent_version_id": "v1", "label": "journey policy change"}); body = imp.locator("body").inner_text()
+                imp.goto(f"{a}/evo/version/v1"); self.submit(imp, "/evo/register", {"version_id": "v2", "label": "journey policy change"}); body = imp.locator("body").inner_text()      # registered as a child FROM v1's page
                 stale = re.search(r"tool-safety\s+REEVALUATE", body) and re.search(r"memory-check\s+REUSE", body)
                 self.check(5, "after the measured change the affected evidence is stale (tool-safety REEVALUATE) while the unrelated evidence is reused (memory-check REUSE) with reasons", bool(stale) and "tool_policy" in body)
                 rita.goto(f"{a}/evo/version/v2"); self.submit(rita, "/evo/version/v2/evaluate", {"protocol_id": "tool-safety"}); (sysd / "policy" / "policy.json").write_text(json.dumps(pol))
-                imp.goto(f"{a}/evo"); self.submit(imp, "/evo/register", {"version_id": "v3", "parent_version_id": "v2", "label": "journey policy restored"}); rita.goto(f"{a}/evo/version/v3"); self.submit(rita, "/evo/version/v3/evaluate", {"protocol_id": "tool-safety"})
+                imp.goto(f"{a}/evo/version/v2"); self.submit(imp, "/evo/register", {"version_id": "v3", "label": "journey policy restored"}); rita.goto(f"{a}/evo/version/v3"); self.submit(rita, "/evo/version/v3/evaluate", {"protocol_id": "tool-safety"})
                 owner.goto(f"{a}/evo/version/v3"); body = owner.locator("body").inner_text(); still = "OPEN_FAILURE" in body and "PASS" in body
                 self.check(5, "the failure recorded on v2 stays visible on v3 although v3 passed", still, negative=True)
-                ev_id = re.findall(r"\b(EV\d+)\s+v3\b", body); self.submit(owner, "/evo/version/v3/resolve", {"evidence_evaluation_id": ev_id[-1] if ev_id else "", "reason": "journey: policy restored; trusted-runner PASS on v3"}); body = owner.locator("body").inner_text()
+                opt = owner.locator("select[name='evidence_evaluation_id'] option", has_text="PASS on v3").first.get_attribute("value")                                                 # chosen from the offered trusted-runner PASSes, by reading its label
+                self.submit(owner, "/evo/version/v3/resolve", {"evidence_evaluation_id": opt, "reason": "journey: policy restored; trusted-runner PASS on v3"}); body = owner.locator("body").inner_text()
                 self.check(5, "an administrator's evidence-backed resolution closes it on v3; the eligibility answer is read-only and names the exact subject", "OPEN_FAILURE" not in body and "controls no external deployment" in body, body[:120])
                 # ------------------------------------------------ step 6 (export → fresh workspace)
                 owner.goto(f"{a}/prc"); self.submit(owner, "/prc/checkpoint")
                 with owner.expect_download() as dl:
                     owner.locator("a[href^='/prc/checkpoint/']").last.click()
                 cp = self.out / "checkpoint-held-separately.json"; dl.value.save_as(str(cp))
-                owner.goto(f"{a}/modx"); self.submit(owner, "/modx/build", {"mod_SHD": True, "mod_EVO": True, "mod_COM": True, "prc_sessions": sess})
+                owner.goto(f"{a}/modx"); self.submit(owner, "/modx/build", {"mod_SHD": True, "mod_EVO": True, "mod_COM": True, f"sess_{sess}": True})
                 with owner.expect_download() as dl:
                     owner.locator("a[href^='/modx/modx-']").first.click()
                 pkt = self.out / "module-packet.zip"; dl.value.save_as(str(pkt)); raw = pkt.read_bytes(); inner = zipfile.ZipFile(io.BytesIO(raw)).read("packet.json").decode()
