@@ -1,0 +1,121 @@
+{
+ "record": "v8-module-measurements/1",
+ "seed": 20260920,
+ "measured_utc": "2026-09-20T06:12:40Z",
+ "machine": {
+  "platform": "Linux 6.17.0-1008-nvidia aarch64",
+  "cpus": 20,
+  "python": "3.12.3",
+  "cryptography": "41.0.7",
+  "isolation_backend": "landlock"
+ },
+ "shd": {
+  "small: 1 file x 1 KiB": {
+   "runs": 10,
+   "bundle_bytes": 1469,
+   "admit_wall_ms": {
+    "median": 47.5,
+    "max": 60.8
+   },
+   "of_which_worker_ms": {
+    "median": 33.0,
+    "max": 43
+   },
+   "children_peak_rss_kib_so_far": 44652,
+   "children_peak_rss_kib_before": 23004,
+   "declared_budgets": {
+    "wall_seconds": 30,
+    "address_space_bytes": 1073741824,
+    "stdout_bytes": 2097152,
+    "bundle_bytes": 8388608
+   }
+  },
+  "large: 32 files x 128 KiB": {
+   "runs": 10,
+   "bundle_bytes": 4201943,
+   "admit_wall_ms": {
+    "median": 74.1,
+    "max": 78.8
+   },
+   "of_which_worker_ms": {
+    "median": 49.0,
+    "max": 57
+   },
+   "children_peak_rss_kib_so_far": 46572,
+   "children_peak_rss_kib_before": 44652,
+   "declared_budgets": {
+    "wall_seconds": 30,
+    "address_space_bytes": 1073741824,
+    "stdout_bytes": 2097152,
+    "bundle_bytes": 8388608
+   }
+  },
+  "over-limit upload (8 MiB + 1 byte)": {
+   "outcome": "INPUT_TOO_LARGE",
+   "refused_in_ms": 0.15,
+   "worker_started": false
+  },
+  "journal_events_at_end": 63,
+  "note": "admit latency grows with the journal because every decision replays it (no index); the journal here held the runs above"
+ },
+ "com": {
+  "200 operations, 4 threads": {
+   "applied": 70,
+   "refused_by_rule": 129,
+   "capacity_violations_observed": 0,
+   "first_violations": [],
+   "final": {
+    "review_minutes": 150,
+    "reserved": 0,
+    "consumed": 60,
+    "remaining": 90,
+    "overrun": 0
+   },
+   "reservations_equal_sum_over_holding_tasks": true,
+   "packets": 56,
+   "groups": 6,
+   "seconds": 1.2
+  },
+  "600 operations, 4 threads": {
+   "applied": 72,
+   "refused_by_rule": 516,
+   "capacity_violations_observed": 0,
+   "first_violations": [],
+   "final": {
+    "review_minutes": 150,
+    "reserved": 0,
+    "consumed": 120,
+    "remaining": 30,
+    "overrun": 0
+   },
+   "reservations_equal_sum_over_holding_tasks": true,
+   "packets": 60,
+   "groups": 6,
+   "seconds": 5.1
+  }
+ },
+ "evo": {
+  "3 protocols, 6 real single-component changes": {
+   "targeted_reevaluations": 6,
+   "repeat_everything_reevaluations": 18,
+   "missed_material_changes": 0,
+   "unnecessary_targeted_reruns": 0,
+   "targeted_seconds": 0.03,
+   "repeat_everything_seconds_estimate": 0.1,
+   "estimate_basis": "measured mean seconds per trusted evaluation x baseline count (the baseline was not executed)",
+   "ground_truth": "a protocol is affected when the changed component is in its configured closure"
+  },
+  "6 protocols, 6 real single-component changes": {
+   "targeted_reevaluations": 12,
+   "repeat_everything_reevaluations": 36,
+   "missed_material_changes": 0,
+   "unnecessary_targeted_reruns": 0,
+   "targeted_seconds": 0.07,
+   "repeat_everything_seconds_estimate": 0.21,
+   "estimate_basis": "measured mean seconds per trusted evaluation x baseline count (the baseline was not executed)",
+   "ground_truth": "a protocol is affected when the changed component is in its configured closure"
+  }
+ },
+ "reading": "one machine, fixed seeds, synthetic fictional inputs; no universal latency target is stated and no claim is made beyond the enumerated runs; zero violations means none in these runs",
+ "not_advice": "Research and education only. Not investment advice."
+}
