@@ -141,6 +141,14 @@ If the integrity page reports a chain failure (`E_HASH`, `E_CHAIN`, `E_SEQ`, `E_
 outside the workbench. Nothing is repaired automatically: stop the server, keep the directory as it is, and inspect it.
 An export interrupted while being built is never listed as complete; build it again.
 
+What is and is not established about interruptions. Every event is one appended line followed by a file sync; a private
+object of the modules (a practice attempt, a comparison, uploaded bundle bytes, a key, the credential registry) is written,
+synced, renamed into place and its directory synced BEFORE the event that names it. A process killed at any point of an
+append leaves either the whole event or none of it (plus, at most, the torn bytes described above, or a private file that
+no event names): no half decision, no capacity spent without its record, no comparison opened without its attempt. This was
+checked by killing processes at those points. It was NOT checked by cutting power: whether synced data survives a power
+failure depends on the disk, its write cache and the file system, which this software cannot verify.
+
 ## 6. Limits to keep in mind
 
 - Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery.
@@ -153,9 +161,9 @@ An export interrupted while being built is never listed as complete; build it ag
   review. Computational verification (digests re-derived, results recomputed) does not establish source authenticity.
 - To return to the previous release: `pip install yuclaw==7.0.1` in the same environment. 7.0.1 has no workbench and
   does not read or change workspace directories; reinstalling 8.0.0 reads them again unchanged.
-- One owner, one machine: there are no accounts, no roles and no network service. The person operating the workbench
-  is the only one who can change evidence, record adjudications and build exports; no independent reviewer is assigned
-  by the software.
+- One machine, no network service. The seven-step workbench has no accounts or roles of its own; the four modules add
+  LOCAL principals with capabilities (section 7), which separate the people who reach the browser from each other and
+  never from the host operator. No independent reviewer is assigned by the software.
 
 ## 7. The four modules: SHD, EVO, COM and PRC
 
@@ -177,6 +185,14 @@ open Practice, Modules, Help and its own exports, and nothing else. Signing in s
 a person is, what they are qualified for, or whether two credentials belong to one person. Whoever can read the workspace
 directory on this machine is outside every boundary described here. `python -m v8.workbench modules --workspace …` prints
 the same status as the Setup page.
+
+*The command line is the host operator.* Besides `principals init`, the same command offers `principals add --id … --caps …`,
+`principals rotate`, `principals revoke` and `principals list`. Anyone who can run commands as the operating-system user that
+owns the workspace directory can therefore create an administrator: that person is the host operator, and the roles above do
+not constrain them — the roles separate the people who only reach the browser. Each such change is written to the journal
+under the actor name `host-operator(cli)`, so it is visible, not hidden. The command line prints a credential once and stores
+none; it offers no approval, admission, review, practice attempt or comparison; `build-export` builds a claim's research
+export, which carries no module record and no private comparison.
 
 **Moving between the modules without retyping.** An object you already chose travels with you: on a claim's page, *submit a review
 packet about it* and *create a practice task on it* open COM and Practice with that claim selected and its current version
@@ -239,8 +255,12 @@ cutoff. The eligibility line is a read-only answer about recorded evidence; it c
 separate practice reserve, a per-principal packet cap and a maximum of open tasks. Submitters send packets that reference a
 claim here (or take them in from an SHD-admitted bundle). Packets with the same claim version, the same financial contract
 (metric, currency, unit, scale, basis, fiscal period) and the same known source roots form one group with one review task;
-every contributor stays listed. Identity is exact: no similarity is computed and no alias is resolved, so the same document
-registered twice is two roots. A reviewer who did not contribute **takes** a task (its cost is reserved under the workspace
+every contributor stays listed. One document is one root: two registrations with identical passage bytes (for example the same
+passage under a second accession) resolve to the first registration automatically, and a reviewer or administrator can
+declare that a registered source is another name of the same document (**Source aliases** on the COM page; the declaration
+can be retracted, and both stay in the record). Aliases never count as independent corroboration, and a dispute on any name
+reaches every group resting on that document. No similarity is computed: a different rendering that nobody declared still
+looks like a separate root. Groups formed before a declaration keep their ids. A reviewer who did not contribute **takes** a task (its cost is reserved under the workspace
 lock), then start / pause / resume / finish / release; a lease that ran out returns the task to the queue with its observed
 seconds. Scheduling cost is a default until a reviewer or administrator sets it; a submitter's estimate is only a proposal.
 A task that does not fit waits with its reason while smaller ones proceed; an aged task holds the remaining capacity; an

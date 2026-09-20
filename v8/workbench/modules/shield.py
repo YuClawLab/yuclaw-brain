@@ -107,6 +107,7 @@ def enroll_root(ws: Workspace, principal, *, label: str, public_key: str | None 
                 os.write(fd, pem); os.fsync(fd)
             finally:
                 os.close(fd)
+            core.fsync_dir(path.parent)
         if kid in state(ws, evs=evs)["roots"]:
             raise ModuleError("E_ROOT_EXISTS", "this key is already enrolled (a revoked root is never revived: enroll a new key)")
         ev, _ = ws._append_unlocked("SHD_ROOT_ENROLLED", None, {"key_id": kid, "public_key": pub, "label": core.text(label, "label", maxlen=120), "algorithm": "Ed25519",

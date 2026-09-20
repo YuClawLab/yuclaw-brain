@@ -33,8 +33,9 @@ BOOTSTRAP, WORKER = _DIR / "sandbox_bootstrap.py", _DIR / "shield_worker.py"
 BACKENDS = ("bwrap", "landlock")                       # preference order: namespaces first, process confinement second
 WALL_SECONDS, MAX_STDOUT, MAX_STDERR = 30, 2 * 1024 * 1024, 16 * 1024
 REQUIRED_DENIALS = {"landlock": ("read_canary_secret", "read_home_listing", "read_etc_passwd", "write_forbidden_path", "write_tmp", "tcp_connect_canary", "udp_send_canary", "unix_socket",
-                                 "fork_process", "signal_parent", "allocate_2GiB"),
-                    "bwrap": ("read_canary_secret", "read_home_listing", "read_etc_passwd", "write_forbidden_path", "tcp_connect_canary", "udp_send_canary", "fork_process", "allocate_2GiB")}
+                                 "fork_process", "signal_parent", "allocate_2GiB", "open_beyond_descriptor_limit"),
+                    "bwrap": ("read_canary_secret", "read_home_listing", "read_etc_passwd", "write_forbidden_path", "tcp_connect_canary", "udp_send_canary", "fork_process", "allocate_2GiB",
+                              "open_beyond_descriptor_limit")}
 _cache_lock = threading.Lock(); _cache: dict = {}
 
 

@@ -342,6 +342,7 @@ def _probe(spec: dict) -> dict:
     attempt("signal_parent", lambda: os.kill(os.getppid(), 0))
     attempt("allocate_2GiB", lambda: bytearray(2 * 1024 * 1024 * 1024))
     attempt("read_staged_input", lambda: open(sys.argv[2], "rb").read(1))
+    attempt("open_beyond_descriptor_limit", lambda: [open(sys.argv[2], "rb") for _ in range(1024)])     # the one readable file, opened until the descriptor limit stops it
     return out
 
 

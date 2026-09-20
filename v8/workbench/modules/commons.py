@@ -48,14 +48,22 @@ def group_id(claim: dict, roots: list, ancestry: str) -> str:
 # ------------------------------------------------------------------ state (journal replay)
 def state(ws: Workspace, as_of: str | None = None, evs: list | None = None) -> dict:
     evs_all = ws.load()["events"] if evs is None else evs
-    s = {"budgets": {}, "period": None, "packets": {}, "groups": {}, "disputes": {}, "overrides": [], "efforts": [], "practice_reserved": {}}
+    s = {"budgets": {}, "period": None, "packets": {}, "groups": {}, "disputes": {}, "overrides": [], "efforts": [], "practice_reserved": {}, "alias_records": [], "alias_of": {}}
     for e in core.events(ws, COM_KINDS + ("PRC_SESSION_OPENED",), as_of=as_of, evs=evs_all):
         k, p, at = e["kind"], e["payload"], e["time"]["recorded_at"]
         if k == "COM_BUDGET_SET":
             b = s["budgets"].setdefault(p["period_id"], {"revisions": []}); b.update(p); b["revisions"].append({"at": at, "by": e["actor"], "review_minutes": p["review_minutes"], "practice_minutes": p["practice_minutes"]})
             s["period"] = p["period_id"]
+        elif k == "COM_ALIAS_RECORDED":
+            s["alias_records"].append({**p, "at": at, "by": e["actor"]})
+            if p["action"] == "DECLARE":
+                s["alias_of"][p["source_id"]] = {"canonical": p["alias_of"], "basis": f"DECLARED by {p['recorded_by']}"}
+            elif s["alias_of"].get(p["source_id"], {}).get("basis", "").startswith("DECLARED"):
+                del s["alias_of"][p["source_id"]]
         elif k == "COM_PACKET_SUBMITTED":
             s["packets"][p["packet_id"]] = {**p, "recorded_at": at}
+            for r, a in (p.get("root_aliases") or {}).items():                  # identical passage bytes, recorded with the packet so a receiver recomputes the same view
+                s["alias_of"].setdefault(r, a)
             g = s["groups"].setdefault(p["group_id"], {"group_id": p["group_id"], "claim": p["claim"], "source_roots": p["source_roots"], "unknown_roots": p["unknown_roots"], "ancestry": p["ancestry"],
                                                        "packets": [], "contributors": [], "first_at": at, "state": "QUEUED", "cost_minutes": DEFAULT_COST_MINUTES, "cost_authority": "built-in default",
                                                        "proposed_costs": [], "reservation": None, "assignee": None, "lease_until": None, "observed_seconds": 0, "active_since": None, "history": [],
@@ -96,6 +104,25 @@ def state(ws: Workspace, as_of: str | None = None, evs: list | None = None) -> d
     return s
 
 
+def canonical_root(s: dict, root: str) -> str:
+    """The one root an identifier stands for: aliases (identical passage bytes, or an authorized declaration) resolve to
+    their canonical source, so two names of one document are never two independent roots."""
+    seen = set()
+    while root in s["alias_of"] and root not in seen:
+        seen.add(root); root = s["alias_of"][root]["canonical"]
+    return root
+
+
+def identical_byte_aliases(ws: Workspace) -> dict:
+    """source id -> {'canonical', 'basis'} for every registration whose passage hash equals an EARLIER registration's."""
+    first, out = {}, {}
+    for sid, e in core.source_ids(ws).items():                                  # journal order: the first registration of a passage is its canonical root
+        h = (e["payload"].get("source") or {}).get("source_hash")
+        if h and first.setdefault(h, sid) != sid:
+            out[sid] = {"canonical": first[h], "basis": "IDENTICAL_PASSAGE_BYTES"}
+    return out
+
+
 def _quarantine(s: dict):
     """Effective quarantine: an UNRESOLVED (or upheld) authorized dispute on a source root, a claim, a packet, or anything a
     packet declares it derives from. The task's own state underneath is untouched, so lifting the dispute restores it."""
@@ -103,9 +130,10 @@ def _quarantine(s: dict):
     for g in s["groups"].values():
         hits = []
         derived = {x for pid in g["packets"] for x in s["packets"][pid]["derived_from"]}
+        named = {canonical_root(s, r) for r in list(g["source_roots"]) + list(g["unknown_roots"]) + list(derived)}     # a dispute on any alias reaches every group that rests on the same document
         for d in live:
             t = d["target"]
-            if (d["target_type"] == "source" and (t in g["source_roots"] or t in g["unknown_roots"] or t in derived)) or (d["target_type"] == "claim" and t == g["claim"]["claim_id"]) \
+            if (d["target_type"] == "source" and canonical_root(s, t) in named) or (d["target_type"] == "claim" and t == g["claim"]["claim_id"]) \
                     or (d["target_type"] == "packet" and (t in g["packets"] or t in derived)):
                 hits.append(d["dispute_id"])
         g["quarantined_by"] = hits
@@ -170,15 +198,18 @@ def _admit_packet(ws, evs, s, principal, row: dict, admission: dict, op_id: str)
         if row["claim_version_digest"] not in versions:
             raise ModuleError("E_CLAIM_VERSION", "the packet names a claim-version digest that this workspace never recorded")
         ref = {**ref, "version_digest": row["claim_version_digest"], "note": "an earlier version of the claim"}
-    known = core.source_ids(ws); roots = sorted(set(row.get("source_roots") or ref["source_roots"]))
-    unknown = [r for r in roots if r not in known]; roots = [r for r in roots if r in known]
+    known = core.source_ids(ws); cited = sorted(set(row.get("source_roots") or ref["source_roots"]))
+    unknown = [r for r in cited if r not in known]; by_bytes = identical_byte_aliases(ws); sa = {"alias_of": {**by_bytes, **s["alias_of"]}}
+    roots = sorted({canonical_root(sa, r) for r in cited if r in known})          # aliases collapse BEFORE grouping: a second name of one document joins the same group
+    root_aliases = {r: sa["alias_of"][r] for r in cited if r in known and canonical_root(sa, r) != r}
     ancestry = "UNKNOWN" if (row.get("ancestry") == "UNKNOWN" or unknown or not roots) else "KNOWN"
     claim = {"claim_id": ref["claim_id"], "version_digest": ref["version_digest"], "contract_digest": ref["contract_digest"], "contract": ref["contract"]}
     gid = group_id(claim, roots, ancestry)
     if gid not in s["groups"] and sum(1 for g in s["groups"].values() if g["state"] in OPEN_STATES) >= cap["max_open_tasks"]:
         raise ModuleError("E_QUEUE_BOUND", f"the queue already holds its maximum of {cap['max_open_tasks']} open tasks")
     payload = {"packet_id": core.next_id(evs, "COM_PACKET_SUBMITTED", "PK", "packet_id"), "client_packet_id": row.get("packet_id"), "submitter": me, "period_id": cap["period_id"], "claim": claim,
-               "source_roots": roots, "unknown_roots": unknown, "ancestry": ancestry, "kind": row.get("kind", "SUMMARY"), "derived_from": list(row.get("derived_from") or []), "group_id": gid,
+               "source_roots": roots, "cited_roots": [r for r in cited if r in known], "root_aliases": root_aliases, "unknown_roots": unknown, "ancestry": ancestry, "kind": row.get("kind", "SUMMARY"),
+               "derived_from": list(row.get("derived_from") or []), "group_id": gid,
                "proposed_cost_minutes": int(row.get("proposed_cost_minutes") or DEFAULT_COST_MINUTES), "submitter_asserts_withdrawn": bool(row.get("asserts_withdrawn")), "admission": admission,
                "duplicate_of_group": gid in s["groups"], "note": "a proposal and an assertion by the submitter change neither the group's scheduling cost nor its handling"}
     ev, _ = ws._append_unlocked("COM_PACKET_SUBMITTED", None, payload, op_id=op_id, observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))
@@ -357,6 +388,34 @@ def record_dispute(ws: Workspace, principal, *, target_type: str, target: str, d
                                    op_id=op_id, observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))[0]
 
 
+def record_alias(ws: Workspace, principal, *, source_id: str, alias_of: str | None, reason: str, op_id: str) -> dict:
+    """An authorized statement that one registered source is another name of the same document (`alias_of`), or the
+    retraction of such a statement (`alias_of` None). Identical passage bytes need no declaration. Append-only: groups
+    formed earlier keep their ids; views, quarantine and new packets use the canonical root from now on."""
+    if principal is None or not ({"review", "admin"} & set(principal["caps"])):
+        raise ModuleError("E_FORBIDDEN", "declaring or retracting a source alias needs the review or admin capability")
+    with ws._locked():
+        evs = ws.load()["events"]; done = core.prior(evs, op_id)
+        if done is not None and done["kind"] == "COM_ALIAS_RECORDED":
+            return done
+        s = state(ws, evs=evs); known = core.source_ids(ws); core.ident(source_id, "source")
+        if source_id not in known or (alias_of is not None and core.ident(alias_of, "alias of") not in known):
+            raise ModuleError("E_UNKNOWN_SOURCE", "both sources must be registered in this workspace")
+        if alias_of is None:
+            if not s["alias_of"].get(source_id, {}).get("basis", "").startswith("DECLARED"):
+                raise ModuleError("E_NO_ALIAS", "no declared alias exists for that source (identical passage bytes are a fact of the registrations and cannot be retracted)")
+        else:
+            sa = {"alias_of": {**identical_byte_aliases(ws), **s["alias_of"]}}
+            if canonical_root(sa, alias_of) == canonical_root(sa, source_id):
+                raise ModuleError("E_ALIAS", "these two already resolve to the same root (or a source was named as its own alias)")
+            alias_of = canonical_root(sa, alias_of)                              # always point at the canonical end: no chain can loop
+            if source_id in {a["canonical"] for a in sa["alias_of"].values()}:
+                raise ModuleError("E_ALIAS", "that source is itself the canonical root of other aliases; declare the alias in the other direction")
+        return ws._append_unlocked("COM_ALIAS_RECORDED", None, {"action": "DECLARE" if alias_of else "RETRACT", "source_id": source_id, "alias_of": alias_of, "reason": core.text(reason, "reason", maxlen=1000),
+                                   "recorded_by": principal["principal_id"], "meaning": "a reviewer's or administrator's statement about two registrations; no bytes were compared by this event and no registration is edited"},
+                                   op_id=op_id, observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))[0]
+
+
 def appeal(ws: Workspace, principal, *, dispute_id: str, reason: str, op_id: str) -> dict:
     if principal is None:
         raise ModuleError("E_SIGN_IN", "sign in to appeal")
@@ -382,7 +441,7 @@ def dashboard(ws: Workspace, as_of: str | None = None) -> dict:
     s = state(ws, as_of=as_of); now = core.parse_time(core.norm_time(as_of, "as of")) if as_of else core.now(); groups = list(s["groups"].values())
     root_use: dict = {}
     for g in groups:
-        for r in g["source_roots"]:
+        for r in sorted({canonical_root(s, x) for x in g["source_roots"]}):
             root_use.setdefault(r, []).append(g["group_id"])
     ages = sorted((now - core.parse_time(g["first_at"])).total_seconds() / 3600 for g in groups if g["state"] in OPEN_STATES)
     declared: dict = {}
@@ -400,7 +459,8 @@ def dashboard(ws: Workspace, as_of: str | None = None) -> dict:
                 flags.append("SOURCE_TIME_CORRECTED")                          # a linked availability correction exists on a source this claim cites (the registration itself is unchanged)
         upstream[g["group_id"]] = flags
     return {"as_of": as_of, "capacity": capacity(s), "plan": plan(s, now), "unique_claims": len({g["claim"]["claim_id"] for g in groups}), "groups": len(groups), "packets": len(s["packets"]),
-            "duplicate_volume": len(s["packets"]) - len(groups), "shared_roots": {r: gs for r, gs in root_use.items() if len(gs) > 1}, "unknown_ancestry_groups": sum(1 for g in groups if g["ancestry"] == "UNKNOWN"),
+            "duplicate_volume": len(s["packets"]) - len(groups), "shared_roots": {r: gs for r, gs in root_use.items() if len(gs) > 1},
+            "aliases": {r: a for r, a in sorted({**identical_byte_aliases(ws), **s["alias_of"]}.items())}, "unknown_ancestry_groups": sum(1 for g in groups if g["ancestry"] == "UNKNOWN"),
             "by_state": {st_: sum(1 for g in groups if g["state"] == st_) for st_ in OPEN_STATES + ("COMPLETED", "CANCELED")}, "quarantined": sum(1 for g in groups if g["quarantined_by"]),
             "backlog_age_hours": {"oldest": round(ages[-1], 1) if ages else 0, "median": round(ages[len(ages) // 2], 1) if ages else 0, "open_tasks": len(ages)},
             "effort": {"estimated_minutes_completed": sum(g["consumed_minutes"] for g in groups), "server_observed_seconds": sum(g["observed_seconds"] for g in groups), "declared_minutes_by_category": declared,

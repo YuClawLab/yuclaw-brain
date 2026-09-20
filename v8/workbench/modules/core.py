@@ -121,6 +121,16 @@ def text(v, field: str, *, maxlen: int = MAX_TEXT, required: bool = True) -> str
     return v
 
 
+def fsync_dir(path) -> None:
+    """Make a directory entry durable (a new file, or a rename into place). An fsync of the FILE alone does not cover its
+    name: after a power cut the journal could otherwise name a private object whose rename was never written."""
+    fd = os.open(str(path), os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+    try:
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
 def sha256_bytes(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
@@ -183,7 +193,7 @@ class Vault:
                 os.write(fd, data); os.fsync(fd)
             finally:
                 os.close(fd)
-            os.replace(tmp, p)
+            os.replace(tmp, p); fsync_dir(self.dir)                # the NAME is durable before any event names this digest
         return h
 
     def put(self, obj) -> str:

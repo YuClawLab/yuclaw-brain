@@ -71,7 +71,7 @@ class Principals:
             os.write(fd, (json.dumps(reg, indent=1, sort_keys=True) + "\n").encode("utf-8")); os.fsync(fd)
         finally:
             os.close(fd)
-        os.replace(tmp, self.path)
+        os.replace(tmp, self.path); core.fsync_dir(self.path.parent)
 
     def configured(self) -> bool:
         return any(e["kind"] == "PRINCIPAL_ENROLLED" for e in self.ws.load()["events"])

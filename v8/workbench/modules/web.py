@@ -23,8 +23,13 @@ PRACTICE_ONLY_OK = ("/prc", "/modx", "/modules", "/logout", "/login", "/help", "
 _ID = r"([A-Za-z0-9][A-Za-z0-9._:-]{0,127})"
 
 
+_INVISIBLE = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f\u200e\u200f\u202a-\u202e\u2066-\u2069]")
+
+
 def esc(v) -> str:
-    return html.escape("" if v is None else str(v), quote=True)
+    """HTML-escape, and make characters that act instead of showing VISIBLE: control characters (terminal escapes among them)
+    and the bidirectional overrides that can make untrusted text read differently from its bytes."""
+    return _INVISIBLE.sub(lambda m: f"\\u{ord(m.group()):04x}", html.escape("" if v is None else str(v), quote=True))
 
 
 def owns(path: str) -> bool:
@@ -322,6 +327,8 @@ def post(h, path: str) -> None:
             elif path == "/com/dispute":
                 ttype, _, target = g("target_ref").partition(":")
                 commons.record_dispute(ws, p, target_type=ttype, target=target.strip(), dispute_type=g("dispute_type"), reason=g("reason"), op_id=op)
+            elif path == "/com/alias":
+                commons.record_alias(ws, p, source_id=g("source_id"), alias_of=g("alias_of") or None, reason=g("reason"), op_id=op)
             elif path == "/com/appeal":
                 commons.appeal(ws, p, dispute_id=g("dispute_id"), reason=g("reason"), op_id=op)
             elif path == "/com/resolve":
@@ -677,6 +684,16 @@ def page_com(h, q) -> str:
     out.append("<h2>Disputes</h2>" + table(["Id", "Target", "Type", "Reason", "By", "Appeals", "Resolution"], [[esc(x["dispute_id"]), esc(x["target_type"] + " " + x["target"]), esc(x["dispute_type"]), esc(x["reason"]), esc(x["recorded_by"]),
                "<br>".join(esc(a_["appellant"] + ": " + a_["reason"]) for a_ in x["appeals"]), esc((x["resolution"] or {}).get("outcome", "open")) + " " + esc((x["resolution"] or {}).get("reason", ""))] for x in s["disputes"].values()])
                + '<p class="muted">Quarantine is a handling state pending resolution. It is not a finding of plagiarism or misconduct.</p>')
+    out.append("<h2>Source aliases</h2>" + table(["Source", "Stands for (canonical root)", "Basis"], [[f"<code>{esc(r)}</code>", f"<code>{esc(a_['canonical'])}</code>", esc(a_["basis"])] for r, a_ in d["aliases"].items()])
+               + '<p class="muted">Two registrations with identical passage bytes are one root automatically. A different rendering of the same document is one root only after a reviewer or administrator declares it; '
+                 'nothing else is compared, so an undeclared alias still looks like a separate root. Groups formed before a declaration keep their ids; the shared-root view, quarantine and new packets use the canonical root.</p>')
+    if can(h, "review") or can(h, "admin"):
+        srcs = [(sid, f"{sid} · {str((e_['payload'].get('source') or {}).get('title') or (e_['payload'].get('source') or {}).get('form') or '')[:50]}") for sid, e_ in core.source_ids(ws).items()]
+        declared = [r for r, a_ in s["alias_of"].items() if a_["basis"].startswith("DECLARED")]
+        if len(srcs) > 1:
+            out.append(form(h, "/com/alias", select(h, "This source", "source_id", srcs) + select(h, "is another name of", "alias_of", srcs) + field(h, "Reason (what you compared)", "reason", rows=2), "Declare alias"))
+        if declared:
+            out.append(form(h, "/com/alias", select(h, "Declared alias", "source_id", declared) + '<input type="hidden" name="alias_of" value="">' + field(h, "Reason", "reason", rows=2), "Retract declaration"))
     if getattr(h, "_principal", None) and s["disputes"]:
         out.append(form(h, "/com/appeal", select(h, "Dispute", "dispute_id", sorted(s["disputes"])) + field(h, "Reason", "reason", rows=2), "Appeal"))
     if can(h, "admin"):

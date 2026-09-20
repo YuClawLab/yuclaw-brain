@@ -197,7 +197,7 @@ class Workspace:
                 "time": {"source_available_as_of": source_available_as_of, "observed_at": observed_at or rec_at, "recorded_at": rec_at},
                 "actor": actor, "prev_hash": st["tip"]}
         body["event_hash"] = _line_hash(body)
-        line = canonical_json(body) + b"\n"
+        line = canonical_json(body) + b"\n"; created = not self.log.exists()
         fd = os.open(self.log, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o600)
         try:
             n = os.write(fd, line)
@@ -206,6 +206,12 @@ class Workspace:
             os.fsync(fd)
         finally:
             os.close(fd)
+        if created:                                                       # the first event also needs a durable NAME for the journal file
+            dfd = os.open(self.root, os.O_RDONLY)
+            try:
+                os.fsync(dfd)
+            finally:
+                os.close(dfd)
         with contextlib.suppress(OSError):
             os.chmod(self.log, 0o600)
         return body, False

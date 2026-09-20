@@ -130,27 +130,40 @@ def a11y(markup: str) -> str:
 
 
 class Multipart:
-    """Minimal multipart/form-data reader (one file field + text fields), bounded by the caller."""
+    """Minimal multipart/form-data reader (one file field + text fields). The caller bounds the body size; this reader bounds
+    the number of parts BEFORE it splits anything and refuses what a browser never sends: a body without its closing
+    delimiter (a truncated upload), a part without a header/body separator, a part without a name, and a name given twice
+    (two values for one field are never silently reduced to the last one)."""
+    MAX_PARTS, MAX_PART_HEADER = 32, 4096
+
     def __init__(self, content_type: str, body: bytes):
         m = re.search(r'boundary="?([^";]+)"?', content_type)
-        if not m:
-            raise ContractError("multipart boundary missing")
-        b = m.group(1).encode()
+        if not m or not 1 <= len(m.group(1)) <= 70:                      # RFC 2046: at most 70 characters
+            raise ContractError("multipart boundary missing or too long")
+        delim = b"--" + m.group(1).encode("latin-1", "replace")
+        if body.count(delim) > self.MAX_PARTS + 1:                       # counted in place: no per-part allocation for a hostile body
+            raise ContractError(f"more than {self.MAX_PARTS} multipart parts")
         self.fields: dict[str, str] = {}
         self.files: dict[str, tuple[str, bytes]] = {}
-        for part in body.split(b"--" + b)[1:]:
+        closed = False
+        for part in body.split(delim)[1:]:
             if part.startswith(b"--"):
-                break
-            head, _, data = part.partition(b"\r\n\r\n")
-            data = data[:-2] if data.endswith(b"\r\n") else data
-            hd = head.decode("latin-1")
-            name = re.search(r'name="([^"]*)"', hd); fn = re.search(r'filename="([^"]*)"', hd)
-            if not name:
-                continue
+                closed = True; break
+            head, sep, data = part.partition(b"\r\n\r\n")
+            if not part.startswith(b"\r\n") or not sep or not data.endswith(b"\r\n") or len(head) > self.MAX_PART_HEADER:
+                raise ContractError("malformed multipart part")
+            data = data[:-2]; hd = head.decode("latin-1")
+            name = re.search(r'\bname="([^"]*)"', hd); fn = re.search(r'\bfilename="([^"]*)"', hd)
+            if not name or len(re.findall(r"(?i)content-disposition\s*:", hd)) != 1:
+                raise ContractError("multipart part without exactly one Content-Disposition name")
+            if name.group(1) in self.fields or name.group(1) in self.files:
+                raise ContractError(f"multipart field {name.group(1)[:40]!r} given twice")
             if fn:
                 self.files[name.group(1)] = (Path(fn.group(1)).name, data)
             else:
                 self.fields[name.group(1)] = data.decode("utf-8", "replace")
+        if not closed:
+            raise ContractError("multipart body is truncated (closing delimiter missing)")
 
 
 class WorkbenchServer(ThreadingHTTPServer):
@@ -179,6 +192,7 @@ class Handler(BaseHTTPRequestHandler):
     server_version = "YUCLAW-workbench/1"
     sys_version = ""
     protocol_version = "HTTP/1.1"
+    timeout = 30                                # seconds per socket operation: a client that declares more bytes than it sends cannot hold a thread
 
     # ------------------------------------------------------------------ plumbing
     def log_message(self, fmt, *args):
@@ -246,10 +260,17 @@ class Handler(BaseHTTPRequestHandler):
             return None
         if n < 0 or n > limit:
             return None
-        return self.rfile.read(n) if n else b""
+        try:
+            data = self.rfile.read(n) if n else b""
+        except OSError:                                                   # includes the socket timeout: the declared bytes never arrived
+            data = None
+        if data is None or len(data) != n:
+            self.close_connection = True                                  # an incomplete body is never parsed and never followed by another request
+            return None
+        return data
 
     def _csrf_ok(self, form: dict) -> bool:
-        return hmac.compare_digest(form.get("csrf", ""), self.server.csrf_for(self._sess))
+        return hmac.compare_digest(str(form.get("csrf", "")).encode("utf-8", "replace"), self.server.csrf_for(self._sess).encode("ascii"))   # bytes: a non-ASCII token is a wrong token, not an exception
 
     # ------------------------------------------------------------------ routing
     def do_HEAD(self):
@@ -1079,7 +1100,7 @@ class Handler(BaseHTTPRequestHandler):
             mp = Multipart(ct, body)
         except ContractError as exc:
             return self._text(400, f"refused: {exc}")
-        if not hmac.compare_digest(mp.fields.get("csrf", ""), self.server.csrf_for(self._sess)):
+        if not self._csrf_ok(mp.fields):
             return self._text(403, "refused: CSRF token invalid; nothing was written")
         op_id = mp.fields.get("op_id", "")
         if "packet" not in mp.files or not mp.files["packet"][1]:
