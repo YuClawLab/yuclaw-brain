@@ -1,0 +1,113 @@
+{
+ "record": "v8-prerelease-ci-workflow/1",
+ "order": "V8-012 §3",
+ "remote_ci_status": "NOT_RUN — nothing was pushed, no pull request opened, no workflow dispatched. INT-11 stays incomplete until a hosted run on the pushed sha succeeds or the owner changes the requirement. The local rehearsals below are not remote CI.",
+ "commit": "51d039d535215a12d7244df20531abccdb819e67",
+ "files": {
+  ".github/workflows/v8-validation.yml": "0389ad15ff86a7d3276caef4b797866e73a81cf424faa382c5ee49d4a4f14abb",
+  ".github/v8-validation-constraints.txt": "f49232f00fe864107e1ca49d08313df6c1e58b05b91966e35a360c1eefcc30b0"
+ },
+ "workflow_name": "v8-prerelease-validation",
+ "triggers": {
+  "push": {
+   "branches": [
+    "codex/v8-integration"
+   ],
+   "note": "push workflows are read from the pushed commit, so the first push of the branch runs it although main has no such file"
+  },
+  "pull_request": {
+   "paths": [
+    "v8/**",
+    "v3/receipts/**",
+    "v3/release/**",
+    "schemas/**",
+    "sdk/**",
+    "tests/**",
+    "tools/yuclaw_v8_*.py",
+    "tools/yuclaw_release_notes_v8.py",
+    "tools/yuclaw_release_state_v6.py",
+    "tools/yuclaw_readme_pypi.py",
+    "pyproject.toml",
+    "README.md",
+    "README_PYPI.md",
+    ".github/workflows/v8-validation.yml"
+   ],
+   "note": "the ordinary pull_request event: a read-only token and no secrets for submitted code; pull_request_target is not used"
+  }
+ },
+ "jobs": {
+  "tests": "Python 3.12 · the repository suite minus the compliance file with no database settings and no SEC identity (a SYNTHETIC one-term publication denylist is written to the runner temp directory and passed through the existing YUCLAW_PUBLICATION_DENYLIST operator override — the private list never leaves the machine), then the compliance regression with compliance.yml's Postgres 16 service, schema, migrations and public seed",
+  "python-floor": "Python 3.10 · tests/test_v8_*.py with pytest only (the workbench is standard-library code), including the real 3.10 compile of every packaged workbench module",
+  "package": "Python 3.12 · build 1.4.2, hatchling 1.32.3, twine 7.0.0, playwright 1.62.0 from the constraints file (PIP_CONSTRAINT also reaches the isolated build) · Chromium via `playwright install --with-deps chromium` · tools/yuclaw_v8_clean_install.py --commit HEAD (UNCHANGED tool, no --sources): one build from a clean detached worktree, member + long-description checks, twine check --strict, wheel and sdist installed into fresh environments under the runner temp directory, fixtures journey (seven steps, availability correction, fresh-workspace export verification, negative packets), every export re-verified by the installed CLI · a summary step prints result, commit, tree, digests and scores"
+ },
+ "no_new_entry_point_needed": "the existing runner has no private-path dependency without --sources; the only private dependency found was the publication denylist of the v3 receipts tests, met by the existing override with a synthetic file",
+ "boundaries": {
+  "permissions": "contents: read (top level; no job widens it)",
+  "checkout": "actions/checkout@v4 with persist-credentials: false",
+  "secrets_referenced": 0,
+  "environment": null,
+  "id_token": false,
+  "deploy_pages_tag_release_upload_artifact_repository_write_cloud_login": false,
+  "live_sec_access": "none: SEC_USER_AGENT is never set, so the v8 ingestion tool refuses before a request; no test needed the network (suite passed with dead proxies)",
+  "private_inputs": "none: no Microchip provenance records, no internal/ path, no maintainer contact",
+  "actions_used": [
+   "actions/checkout@v4",
+   "actions/setup-python@v5"
+  ],
+  "network_use": "PyPI, the Playwright browser download, Ubuntu packages for the browser, the postgres:16 image"
+ },
+ "expected_side_effects_of_a_run": [
+  "a run (logs, check status on the commit) visible publicly under the repository's Actions tab",
+  "a throwaway wheel and sdist inside the runner, deleted with it — never a candidate, never uploaded",
+  "nothing else"
+ ],
+ "downstream_inspection": {
+  "workflow_run_repository_dispatch_workflow_call_deployment_listeners_in_any_tracked_workflow": 0,
+  "workflows_on_origin_main": [
+   "compliance.yml (push to main/v3.0-evidence; PR paths v3/api, v4, sdk)",
+   "heartbeat-watch.yml (schedule + manual; permissions {})"
+  ],
+  "pages": "legacy build from main:/docs (cname yuclaw.ca): a branch push or this workflow builds nothing",
+  "repository_webhooks": 0,
+  "repository_rulesets": 0,
+  "main_branch_protection": "none",
+  "environments": [
+   "github-pages"
+  ],
+  "default_workflow_token_permissions": "read",
+  "repository_secrets_count": 4,
+  "could_not_inspect": [
+   "GitHub Apps installed on the repository or organization (needs an app token / admin:org)",
+   "organization-level webhooks, rulesets and Actions policy (token lacks admin:org; API returned 404)",
+   "PyPI trusted-publisher settings (this workflow requests no id-token, so it could not use one)",
+   "any third party polling the public repository"
+  ]
+ },
+ "local_validation": {
+  "syntax": "check-jsonschema (vendor.github-workflows schema) ok; actionlint (incl. shellcheck of run blocks) rc 0 — on the committed file",
+  "rehearsal_environment": "a depth-1 file:// clone in the session scratchpad with a scratch commit whose tree equals the committed tree aadc9a9424d9575e62ff74d6c47f4d1311454de6; fresh virtual environments; env -i with a scratch HOME; no PG* variables; dead HTTP(S) proxies during pytest",
+  "tests_job_offline_step": "285 passed, 1 skipped (the 3.10 compile test — no python3.10 on that PATH; it runs in python-floor). First attempt: 14 failed across 5 receipts test files — two causes only: the `mcp` extra was not installed and the private publication denylist was absent (the product fails closed); with the project's own `mcp>=1.0,<2` extra and the synthetic denylist: 0 failed",
+  "tests_job_compliance_step": "NOT re-run locally (steps copied from compliance.yml, whose hosted run on main 5edb9e7e is green; V8-011 local result 21 passed stays applicable — no v3/api, v4 or sdk file changed)",
+  "python_floor_job": "102 passed on CPython 3.10.21 with pytest only",
+  "package_job": {
+   "result": "PASS — wheel and sdist: fixtures 7/7 each, checks all true, twine check rc 0, build 1.4.2 / hatchling 1.32.3 via PIP_CONSTRAINT; the summary step ran",
+   "observation": "the throwaway rehearsal pair had the same digests as the V8-011 candidate pair (7c2dd63d… / 9c4fc99f…): no packaged byte changed. It was bound to a scratch commit, was not kept as a candidate and relabels nothing",
+   "not_rehearsed": "`playwright install --with-deps chromium` (needs root; the local browser cache was used)"
+  }
+ },
+ "unverified_until_the_hosted_run": [
+  "Chromium launch and system libraries on ubuntu-latest x86-64 (all local evidence is linux-aarch64)",
+  "the fresh environments' interpreter resolving without LD_LIBRARY_PATH under setup-python's tool cache (the runner passes a minimal environment)",
+  "PostgreSQL 16 client/server binaries at /usr/lib/postgresql/16/bin on the runner (the two pg16 test files skip cleanly if absent)",
+  "unpinned application dependencies resolving to versions newer than the local ones",
+  "run time (timeouts 30 / 15 / 45 minutes)"
+ ],
+ "proposed_branch_push": {
+  "status": "PENDING — needs the owner's explicit approval; not executed",
+  "branch": "codex/v8-integration (origin has no such branch today; the push creates it; non-force)",
+  "sha": "the branch tip that carries this record — its full sha is in the handoff report, because a file cannot name the commit that contains it; source commit below it: 51d039d535215a12d7244df20531abccdb819e67",
+  "what_it_exposes": "the repository is PUBLIC: the push publishes the unreleased 8.0.0 source, every v8 order record and the candidate identities on GitHub. It deploys nothing, tags nothing and uploads nothing.",
+  "tie_result_to_sha": "gh run list -R YuClawLab/yuclaw-brain --workflow v8-prerelease-validation --branch codex/v8-integration --json headSha,conclusion,databaseId,url — the run counts only when headSha equals the pushed sha; every job's first step prints HEAD and tree and the tests job fails a push run whose HEAD differs from GITHUB_SHA"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

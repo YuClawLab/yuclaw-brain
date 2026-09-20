@@ -1,0 +1,74 @@
+{
+ "record": "v8-012-checkpoint/1",
+ "branch": "codex/v8-integration",
+ "source_commit": "51d039d535215a12d7244df20531abccdb819e67",
+ "source_tree": "aadc9a9424d9575e62ff74d6c47f4d1311454de6",
+ "parents": {
+  "V8-011 record HEAD": "c38cdb8486f4d0d623bac29e458f7cc74630635c",
+  "V8-011 candidate source": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7"
+ },
+ "commits": {
+  "046f81f6a777f55c789e06322b8bf0b8ac027347": "release-tooling: notes composer + tests",
+  "51d039d535215a12d7244df20531abccdb819e67": "ci: v8-prerelease-validation workflow + constraints",
+  "record": "this directory (evidence only)"
+ },
+ "packaged_paths_changed_since_9d1de81e": 0,
+ "changed_paths_outside_both_distributions": [
+  ".github/v8-validation-constraints.txt",
+  ".github/workflows/v8-validation.yml",
+  "tests/test_release_notes_v8.py",
+  "tools/yuclaw_release_notes_v8.py",
+  "v8/V8-011/** (V8-011 record)",
+  "v8/V8-012/** (this record)"
+ ],
+ "candidate_pair_unchanged": {
+  "wheel_sha256": "7c2dd63d5094539c487d2e7fc53edebe36154c79c0d89cacd736f933b3afdc94",
+  "sdist_sha256": "9c4fc99ff734aac67b0024fc9792f52f75136db4c16b3c509ae7cc87fbac6d1e",
+  "identity": "built 2026-09-19T11:10:51Z from source 9d1de81ef91d033f9d828e7e4b40753a1f39acd7 (tree ba82955d0c3eee9bcd72c4164cfd36b2cf93b0fb); candidate evidence under that identity only — never relabelled"
+ },
+ "new_build_in_this_order": "none as a candidate (only the throwaway CI rehearsal build in the scratchpad); the identity-bound final build is deferred to the freeze",
+ "evidence_still_applicable_from_V8_011": [
+  "306 application tests (packaged code unchanged; tests/test_release_notes_v8.py superseded by the 11-test version, re-run)",
+  "installed journeys from wheel and sdist: fixtures 7/7 and real-source 7/7; availability-correction demonstration",
+  "clean installs, member inspection, twine 7.0.0 check, Python 3.10.21 floor, rollback rehearsal, UI inspection (automated only)",
+  "publisher rehearsal (publisher identity unchanged)",
+  "restage measurement on 9d1de81e (docs/preview and the chain untouched since)",
+  "gate 6 replays (carried)"
+ ],
+ "evidence_superseded_or_invalidated": [
+  "V8-011 public notes draft d630af5f… → a455c5c3… (two lines)",
+  "V8-011 gates.json (run on 7a145bdc) → re-run on 51d039d5: 19 GREEN / 0 RED / 1 REMOVED_BY_OWNER, tripwire GREEN, correspondence ['no release-policy record']",
+  "V8-011 finding 'no workflow would run on a branch push' → a workflow now exists locally (hosted: NOT_RUN)",
+  "V8-011 statement that a UTC day rollover alone fails the weekly-note check: observed otherwise — the 2026-09-19 render still reconciles at 2026-09-20T02:3xZ (rc 0); a store change inside the note's window is what fails it"
+ ],
+ "upstream_observed_once": {
+  "origin_main": "5edb9e7e8502a11727b6174b8cc62f47107a6a91",
+  "utc": "2026-09-20T02:30:59Z",
+  "relation": "ancestor of the branch tip: a non-force push to main would be a fast-forward against this observed tip only",
+  "origin_has_integration_branch": false
+ },
+ "reusable_commands": {
+  "focused_notes_checks": "python3 -m pytest tests/test_release_notes_v8.py tests/test_release_state_gate15.py -q",
+  "draft_notes": "python3 tools/yuclaw_release_state_v6.py --evidence ~/yuclaw/internal/v8/v8_012_20260920T023432Z/gates/evidence_v8_012.json   # writes internal/release_notes_v8.0.0_PUBLIC.md + manifest (gitignored)",
+  "ancestry": "python3 v8/V8-011/check_upstream_ancestry.py",
+  "note_check": "python3 tools/check_weekly_note.py --require-contract v3",
+  "workflow_lint": "check-jsonschema --builtin-schema vendor.github-workflows .github/workflows/v8-validation.yml && actionlint .github/workflows/v8-validation.yml   # pip install check-jsonschema actionlint-py",
+  "clean_install": "python3 tools/yuclaw_v8_clean_install.py --commit <sha> --out <dir outside the checkout> --twine ~/yuclaw/internal/release_v6/twine-venv/bin/twine --playwright-spec \"playwright==1.62.0\""
+ },
+ "artifact_locations_private": {
+  "V8-012 record": "~/yuclaw/internal/v8/v8_012_20260920T023432Z/ (gates/: evidence input, generator log, DRAFT + PUBLIC notes, manifest; make_v8_012_record.py)",
+  "V8-011 candidate pair": "~/yuclaw/internal/v8/v8_011_20260919T110207Z/clean_install/dist/",
+  "walkthrough environment": "~/yuclaw/internal/v8/v8_011_20260919T110207Z/walkthrough/venv (installed from the candidate wheel 7c2dd63d…; pip's direct_url record confirms the hash)",
+  "publisher": "~/yuclaw/internal/release_v8_0_0/publish_v800.py"
+ },
+ "status": {
+  "release_authorized": false,
+  "D1": "V8-ALLOC-2026-09-20-P5 PROPOSED (P4 and P3 preserved as history)",
+  "gate15": "REMOVED_BY_OWNER / NOT_REQUIRED — never PASSED",
+  "human_benefit": "PENDING",
+  "remote_ci": "NOT_RUN",
+  "INT-11": "incomplete",
+  "pushed_tagged_uploaded_deployed": "nothing"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

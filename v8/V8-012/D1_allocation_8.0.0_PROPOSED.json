@@ -1,0 +1,135 @@
+{
+ "document_id": "V8-ALLOC-2026-09-20-P5",
+ "supersedes_proposal": "V8-ALLOC-2026-09-19-P4 (v8/V8-011/D1_allocation_8.0.0_PROPOSED.json, revision 5; never recorded; preserved unchanged as history) — P4 predates the completed public release description and the pre-release CI workflow, and it described a final pair that the freeze procedure now shows can only be bound at the freeze",
+ "version": "8.0.0",
+ "decision": "PROPOSED — the owner replaces this value with D1-ACCEPT (or D1-AMEND: <note>) to record acceptance; nothing is accepted until then. Order V8-012 is an implementation and release-preparation order: it neither accepts this allocation nor authorizes publication.",
+ "prepared_utc": "2026-09-20",
+ "revision": "6 (V8-012, 2026-09-20) — an AMENDMENT of P4 against the actual reviewed state: scope, selected capabilities, activations, ineligibility, backup cancellation and governing rules are P4's, unchanged; the candidate references, the evidence list, the limitations and the obligations changed. New document id because the referenced commit changed.",
+ "candidate_this_allocation_refers_to": {
+  "source_commit": "51d039d535215a12d7244df20531abccdb819e67",
+  "source_tree": "aadc9a9424d9575e62ff74d6c47f4d1311454de6",
+  "branch": "codex/v8-integration (local; nothing pushed; origin has no such branch)",
+  "content": "the V8-011 corrected candidate (upstream 5edb9e7e integrated, availability correction, operator SEC request identity, note and previews) plus two V8-012 commits outside both distributions: 046f81f6 (the 8.0.0 notes composer states the availability correction and the SEC_USER_AGENT requirement) and 51d039d5 (the validation-only pre-release workflow); later commits on the branch are evidence-only records",
+  "upstream_binding": "fast-forward eligible against origin/main 5edb9e7e ONLY (observed once in V8-012: 2026-09-20T02:30:59Z, unchanged). The refresh runs Mon–Fri 23:00 UTC; after the next one (Monday 2026-09-21 23:00 UTC) a re-integration produces a NEW source commit and a NEW pair, and the accepted document must name those",
+  "candidate_artifacts": {
+   "label": "CANDIDATE / PRE-RELEASE-REVIEW artifacts — not a final release set",
+   "wheel": {
+    "name": "yuclaw-8.0.0-py3-none-any.whl",
+    "sha256": "7c2dd63d5094539c487d2e7fc53edebe36154c79c0d89cacd736f933b3afdc94",
+    "size": 884968
+   },
+   "sdist": {
+    "name": "yuclaw-8.0.0.tar.gz",
+    "sha256": "9c4fc99ff734aac67b0024fc9792f52f75136db4c16b3c509ae7cc87fbac6d1e",
+    "size": 5151389
+   },
+   "build": {
+    "build_utc": "2026-09-19T11:10:51+00:00",
+    "source_date_epoch": "1580601600",
+    "tools": {
+     "python": "3.12.3",
+     "build": "build 1.4.2",
+     "wheel_generator": "hatchling 1.32.3"
+    }
+   },
+   "meaning": "UNCHANGED candidate evidence, under its ORIGINAL identity only: built once from 9d1de81e. It is NOT a pair built from the source commit above and is not relabelled as one, although no packaged byte differs. The final pair is bound at the freeze: built from, and naming, the frozen commit and tree (v8/V8-012/freeze_procedure.md steps 5 and 9)"
+  },
+  "packaged_content_source": "9d1de81ef91d033f9d828e7e4b40753a1f39acd7 (tree ba82955d0c3eee9bcd72c4164cfd36b2cf93b0fb): 0 paths inside the wheel or the sdist differ between it and the source commit above"
+ },
+ "selected_capabilities": [
+  "seven-step source-to-export workbench in the browser (source, typed claim, comparison, calculation, history, adjudication, reproducible export), loopback only, no scripts",
+  "bounded command-line source ingestion (allow-listed hosts, https, bounded body, originals and digests kept, replay never replaces a kept original) and registration of its record in the browser as pasted data without duplicate sources; a request to the SEC carries the OPERATOR'S OWN SEC_USER_AGENT setting — required, validated, never defaulted, refused before any request when unusable, and written into no record, export or message",
+  "typed commitments with mandatory currency, unit, scale, metric, basis, fiscal period and resolution rule; one-way freeze; append-only amendments (REVISED / WITHDRAWN / CORRECTED_SOURCE)",
+  "original/revised comparison and exact calculation with separate per-range results (the fictional 110–120 and 105–115 million ranges with actual 112 million are two separate IN_RANGE results; no accuracy-improvement inference)",
+  "history with three separate times, as-of replay, adjudication with disputed labels kept visible (reviewer names are attribution labels)",
+  "correction of a wrong source-availability time by a linked append-only event (prior and corrected values, reason, evidence reference, actor label, server-recorded time): the registration, passage, digests, observation time, claim versions, outcomes and adjudications are never edited; a correction applies to as-of views from the time it was recorded and is only listed as a later correction before it; the corrected view and what needs review are shown beside the unchanged recorded result; a retrospective record is never upgraded; exports carry the registration and the chain for a fresh workspace to check and recompute",
+  "research notes with correction chains; narrow dataset coverage, deterministic snapshots and verifiable dataset exports; packaged data dictionary and dataset card (quality estimates NOT AVAILABLE)",
+  "scientific report/replay through the packaged kernel with explicit refusals; recomputation in a fresh workspace",
+  "reproducible, rights-filtered exports and fresh-workspace verification through the browser and the installed command line",
+  "operator usability: refused forms keep entries, labelled fields, in-page table scrolling, visible focus, in-app Help with the packaged startup/operator guide, browser recovery of an interrupted write (automated inspection only; no human study)"
+ ],
+ "inactive_optional_programs": {
+  "real receipt program": "INACTIVE (no reviewer appointed, no registration record adopted)",
+  "nightly status delivery": "INACTIVE (adapter and preview only)",
+  "note-snapshot coordinator": "INACTIVE",
+  "sentinel policy": "INACTIVE",
+  "Phase-C prospective protocol": "INACTIVE (draft, unregistered)",
+  "Phase 6 / A2 designation of S": "INACTIVE",
+  "ETF class addendum": "INACTIVE",
+  "U-ladder promotion / window": "INACTIVE",
+  "Gate #15 human study": "INACTIVE (kit ships; no study run)",
+  "COM / PRC / SHD / EVO optional modules": "INACTIVE (absent from the distribution; experimental, default-off)",
+  "commitments in the receipts PERMITTED class": "INACTIVE (not added; publication eligibility stays NOT ELIGIBLE)"
+ },
+ "publication_ineligibility": "research exports are local packets for verification by another researcher; public publication eligibility is shown separately and is NOT ELIGIBLE for every claim (commitments are not in the receipts PERMITTED class; press-release excerpts are withheld under their rights class; the real-source issuer is NOT ELIGIBLE under the recorded corpus criteria and its replay is RETROSPECTIVE)",
+ "backup_cancellation": "Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery. (owner decision 2026-09-15: canceled; existing data preserved; no automatic resumption)",
+ "remaining_limitations": [
+  "remote CI NOT_RUN: the workflow exists locally and was rehearsed locally; no hosted run exists until the owner approves the branch push (INT-11 incomplete)",
+  "no final artifact pair exists: the V8-011 pair is candidate evidence for 9d1de81e only; the final pair is built at the freeze and must name the frozen commit and tree",
+  "the owner's functional walkthrough has not been performed (observations blank)",
+  "human benefit PENDING: no pilot, no user study, no human reviewer; every adjudication and note in the evidence is a simulated test action",
+  "Gate #15: requirement REMOVED_BY_OWNER for v8 releases (2026-09-16); no study was run — not a pass; the automated consumer-posture check is retained",
+  "no eligible real-data corpus (NO_ELIGIBLE_ISSUER); the Microchip example is a retrospective replay, NOT ELIGIBLE; the 1.020 vs 1.025 source discrepancy is preserved; actual 1.0755 billion is outside both recorded ranges",
+  "usability was checked by automated browser inspection and journeys only: no human usability review, no screen-reader session, no contrast measurement, no accessibility certification",
+  "COM / PRC / SHD / EVO absent and default-off; CTL, RES, RND, full RIV/ACT, multi-tenancy, accounts, billing and the pilot deferred",
+  "a corrected availability is an attributed assertion with an evidence reference, not a verified publisher clock; the claim page's RETROSPECTIVE banner and the scientific-link retrospective flag stay as recorded while the corrected view reports the difference",
+  "weekly note and preview surfaces: point-in-time renders in this checkout (note 2026-09-19T11:00:54Z); a later evidence-store change, a UTC day rollover or a further upstream refresh requires rendering again before the freeze, which creates a new source identity and a new artifact pair",
+  "remote CI NOT run (nothing pushed). As configured no workflow runs on a branch-only push or on a pull request from this branch; compliance-regression runs only on a push to main. Local equivalents passed (compliance 21, full suite 306); independent security/statistical review not performed",
+  "the v3 EDGAR pollers behind the published 7.x production path keep their own request-identity defaults; only the v8 ingestion tool was changed"
+ ],
+ "governing_rules": {
+  "recording": "internal/release_v8_0_0/publish_v800.py cmd_policy: the allocation file must carry decision D1-ACCEPT or D1-AMEND*, a unique document_id and version 8.0.0; every activation must be INACTIVE unless an activation record is attached; the policy stage records the document by id + sha256 + size and the authorization later binds that policy record's hash",
+  "validation": "publish_v800.py policy_valid: allocation.accepted must be true with document_id and a 64-hex sha256 for version 8.0.0; otherwise every publishing stage stops before any write",
+  "coupling_with_D2": "SUPERSEDED (owner decision 2026-09-16): cmd_policy records D1 alone — `policy <allocation file>` — and writes Gate #15 as NOT_REQUIRED / REMOVED_BY_OWNER bound to the tracked decision record's sha256; no route A/B selection and no exception statement are required or accepted; a study is not a required input (and none was run — this is not a pass)"
+ },
+ "what_D1_ACCEPT_permits": [
+  "records that the owner accepts the 8.0.0 allocation scope and every activation status below",
+  "satisfies the allocation half of policy_valid once recorded by the policy stage"
+ ],
+ "what_D1_ACCEPT_does_not_permit": [
+  "it designates and freezes no candidate (the designation order and the freeze are separate acts)",
+  "it authorizes no publication: release_authorized stays false until the owner's authorization sentence binds the frozen sha and tree and every precondition holds",
+  "it activates nothing: every activation stays INACTIVE",
+  "it says nothing about Gate #15: the requirement is removed by the owner (NOT_REQUIRED), never passed; human benefit stays PENDING"
+ ],
+ "activations": {
+  "real receipt program": "INACTIVE (no reviewer appointed, no registration record adopted)",
+  "nightly status delivery": "INACTIVE (adapter and preview only)",
+  "note-snapshot coordinator": "INACTIVE",
+  "sentinel policy": "INACTIVE",
+  "Phase-C prospective protocol": "INACTIVE (draft, unregistered)",
+  "Phase 6 / A2 designation of S": "INACTIVE",
+  "ETF class addendum": "INACTIVE",
+  "U-ladder promotion / window": "INACTIVE",
+  "Gate #15 human study": "INACTIVE (kit ships; no study run)",
+  "COM / PRC / SHD / EVO optional modules": "INACTIVE (absent from the distribution; experimental, default-off)",
+  "commitments in the receipts PERMITTED class": "INACTIVE (not added; publication eligibility stays NOT ELIGIBLE)"
+ },
+ "allocation_scope": "8.0.0 ships the enabled 8.0.0 scope only: the owner-operated local financial-evidence workbench (bounded source ingestion; typed commitments; original/revised comparison and calculation; history and adjudication; research notes; narrow dataset snapshots; supported scientific report/replay; reproducible exports) with its packaged operator guide and data dictionary; deferred workstreams (CTL, RES, full RIV/ACT, RND, accounts, billing, pilot) stay outside; optional modules stay absent; backups stay canceled; no human benefit is claimed (PENDING)",
+ "evidence": [
+  "v8/V8-012/release_notes_additions.json (the generated public body states both V8-011 additions; correspondence ['no release-policy record'] while D1 is unaccepted)",
+  "v8/V8-012/ci_workflow.json (validation-only workflow; hosted run NOT_RUN)",
+  "v8/V8-012/freeze_procedure.md",
+  "v8/V8-012/checkpoint.json (which V8-011 evidence stays applicable)",
+  "v8/V8-011/scorecard_fixtures.json, scorecard_mchp.json (installed candidate wheel: 7/7 + research notes, dataset, scientific replay, usability and availability correction DEMONSTRATED; real-source 7/7 retrospective, NOT ELIGIBLE; the sdist install matches)",
+  "v8/V8-011/packaging.json (candidate pair identity, member inspection, PyPI long description under twine 7.0.0, clean installs of wheel and sdist; the superseded first build disclosed), python_floor.json (3.10.21, incl. the correction path), rollback_rehearsal.json (against the published 7.0.1 wheel)",
+  "v8/V8-011/upstream_integration.json, availability_correction.json, sec_request_identity.json, weekly_note_reconciliation.json, restage_measurement.json, tripwire_observations.json",
+  "v8/V8-011/ui_inspection.json (21 pages, 0 findings; automated only), selected_release_gaps.json (TIM-08 → COMPLETE; 213 = 34/54/125; 86 = 34/52), ci_inspection_and_push_plan.json",
+  "v8/V8-011/gates.json (release-state generator at the record HEAD), publisher_rehearsal.json (focused rehearsal of the affected publisher behaviour)",
+  "v8/policy/gate15_release_requirement.json (owner decision 2026-09-16: REMOVED_BY_OWNER); earlier order records V8-002 … V8-010 keep their original identities"
+ ],
+ "remaining_obligations": [
+  "owner: approve or decline the branch push of the V8-012 tip (public exposure of the unreleased source) and read the hosted run for that exact sha",
+  "owner: functional walkthrough",
+  "owner decision D1 on the private copy naming the frozen commit (freeze_procedure.md step 6b), recorded with the publisher's policy stage",
+  "freeze: v8/V8-012/freeze_procedure.md steps 1–9; publication only on the owner's separate verbatim authorization sentence for the frozen commit and tree"
+ ],
+ "what_changes_on_acceptance": [
+  "the owner edits `decision` to `D1-ACCEPT` (or `D1-AMEND: <note>`); every activation stays INACTIVE unless an activation record is attached",
+  "the publisher's policy stage records the file by document_id + sha256 + size together with Gate #15 = NOT_REQUIRED (bound to the owner's decision record); policy_valid is then satisfied when the release-state manifest reports gate 15 REMOVED_BY_OWNER",
+  "the 8.0.0 notes composer discloses the allocation decision, document id and sha256 prefix verbatim and the removed Gate #15 requirement (not a pass); the notes then correspond to the record",
+  "nothing else changes: no designation, no freeze, no authorization, no activation, no publication"
+ ],
+ "not_advice": "Research and education only. Not investment advice.",
+ "at_acceptance": "the accepted document is a PRIVATE copy of this file (freeze_procedure.md step 6b) in which the owner sets the candidate references to the frozen commit, its tree and the pair built from it; accepting this tracked file as it stands would bind a commit that is not yet frozen"
+}

@@ -1,0 +1,56 @@
+{
+ "record": "v8-release-notes-additions/1",
+ "order": "V8-012 §2",
+ "change": {
+  "commit": "046f81f6a777f55c789e06322b8bf0b8ac027347",
+  "files": [
+   "tools/yuclaw_release_notes_v8.py (two sentences appended to the fixed TIM and DAT accounts)",
+   "tests/test_release_notes_v8.py (1 new test, 2 new altered-text cases)"
+  ],
+  "why_this_is_the_smallest_change": "the composer's accounts are fixed text that check_correspondence requires verbatim, so extending the two existing accounts makes the generated body state both items AND makes the correspondence check bind them; no new section, input, key or code path; compose(), the policy disclosure, the Gate #15 line, the v7 composer and the generator dispatch are untouched",
+  "packaged": false
+ },
+ "generated_by": "the real generator: python3 tools/yuclaw_release_state_v6.py --evidence <session-measured facts> (no --release-policy: D1 is PROPOSED)",
+ "generated_at_head": {
+  "commit": "51d039d535215a12d7244df20531abccdb819e67",
+  "tree": "aadc9a9424d9575e62ff74d6c47f4d1311454de6",
+  "utc": "2026-09-20T02:34:48.736502+00:00"
+ },
+ "public_notes_sha256": "a455c5c3856246f1065b60cafc2e7d59f5394e29bc498d80888480cc2f6eaf8a",
+ "previous_public_notes_sha256_V8_011": "d630af5fdbe738087bb87fc110a20292bc910be9a8a5a418992a966fc6441c6e",
+ "lines_changed_against_the_V8_011_notes": 2,
+ "availability_correction_as_generated": "A wrong source-availability time is corrected by a linked, append-only event, never by editing: the original records and earlier historical views stay intact, the corrected result is shown separately beside the recorded one, and the correction chain is exported for a fresh workspace to recompute. Availability times are asserted by the operator, not authenticated.",
+ "sec_request_identity_as_generated": "A new live request to the SEC requires the operator's own `SEC_USER_AGENT` setting — required, never defaulted: a missing or unusable value is refused before any request is sent; stored-source replay and every other offline function work without it.",
+ "full_lines_as_generated": {
+  "DAT": "- Bounded disclosure ingestion (command line, allow-listed hosts, https only, bounded body): original bytes and digests kept, exact passage registered with its availability time, source rights recorded; the record the tool writes is registered in the browser as pasted data and a replayed registration never duplicates a source; excerpt bytes travel only under rights that allow it. A new live request to the SEC requires the operator's own `SEC_USER_AGENT` setting — required, never defaulted: a missing or unusable value is refused before any request is sent; stored-source replay and every other offline function work without it.",
+  "TIM": "- Three separate times on every record (source availability, observation, recording) and as-of replay at any cutoff; later information is never shown as known earlier; append-only, digest-chained history with operation identifiers and explicit torn-tail recovery. A wrong source-availability time is corrected by a linked, append-only event, never by editing: the original records and earlier historical views stay intact, the corrected result is shown separately beside the recorded one, and the correction chain is exported for a fresh workspace to recompute. Availability times are asserted by the operator, not authenticated."
+ },
+ "policy_correspondence": [
+  "no release-policy record"
+ ],
+ "missing_policy_stays_explicit": "- Release policy: NOT RECORDED — owner decision D1 (allocation) is pending; these notes are a draft and are not publishable until the policy record exists",
+ "gate_counts": {
+  "GREEN": 19,
+  "REMOVED_BY_OWNER": 1
+ },
+ "release_authorized": false,
+ "publishing_permitted": false,
+ "wording_limits_checked": [
+  "availability times are stated as asserted by the operator, not authenticated",
+  "Microchip stays 'replayed RETROSPECTIVELY … NOT ELIGIBLE under the recorded selection criteria'",
+  "'no human review and no user study'; human benefit PENDING",
+  "experimental modules COM / PRC / SHD / EVO ABSENT; nothing default-on",
+  "every Gate #15 line read: 'requirement REMOVED BY OWNER … not a pass' (the word 'passes' appears only in the gate's own title)",
+  "banned claim words and Tier-2 path tokens absent (unit-tested)"
+ ],
+ "focused_checks": {
+  "tests/test_release_notes_v8.py + tests/test_release_state_gate15.py": "14 passed (11 + 3)",
+  "with tests/test_v8_workbench_packaging.py at the committed HEAD": "20 passed"
+ },
+ "publisher": {
+  "identity": "5649f289306237eb3a222542af6fac4896240a355bb68a5736f4337cfb9ab829",
+  "unchanged": true,
+  "behaviour_affected": "no — notes_ready/notes_correspondence load check_correspondence(body, policy) from the authorized tree with the same signature; the check before the first public write is preserved; no publisher rehearsal was repeated (V8-011 publisher_rehearsal.json stays applicable)"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}
