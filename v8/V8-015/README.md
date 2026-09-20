@@ -90,7 +90,7 @@ choose lineage and dispute targets from the group's own objects; on a **practice
   journal or order record in either distribution. → `packaging.json`
 - Full suite **371 passed**; Python 3.10.21 floor **166 passed**; no skips on the executor. Old exports: a V8-011 wheel's export
   verifies under the new code and the new export verifies under the old code (private run `x04_compat`).
-- Gates at the record HEAD: see gates.json → `gates.json` (correspondence `['no release-policy record']` while D1 is PROPOSED).
+- Gates at the record HEAD: {"GREEN": 19, "REMOVED_BY_OWNER": 1} → `gates.json` (correspondence `['no release-policy record']` while D1 is PROPOSED).
 - Help and notes: operator guide §7 (connected pages, clauses above), the notes composer's integration line, CHANGELOG.
 - D1: `D1_allocation_8.0.0_PROPOSED.json` = `V8-ALLOC-2026-09-20-P7`, PROPOSED; P6 … P3 preserved unchanged.
 
