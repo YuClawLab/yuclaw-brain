@@ -96,6 +96,16 @@ class PolicyInputs(unittest.TestCase):
         self.assertIn("Release policy: NOT RECORDED", text); self.assertIn("owner decision D1 (allocation) is pending", text); self.assertIn("requirement REMOVED BY OWNER", text)
         self.assertEqual(n8.check_correspondence(text, None, MATRIX), ["no release-policy record"])
 
+    def test_v8_011_additions_are_in_the_public_body_without_overclaiming(self):
+        text = compose8(None)                                                                        # present in the draft too, not only under a policy
+        self.assertIn("corrected by a linked, append-only event, never by editing", text); self.assertIn("the original records and earlier historical views stay intact", text)
+        self.assertIn("the corrected result is shown separately beside the recorded one", text); self.assertIn("the correction chain is exported for a fresh workspace to recompute", text)
+        self.assertIn("Availability times are asserted by the operator, not authenticated.", text)
+        self.assertIn("requires the operator's own `SEC_USER_AGENT` setting — required, never defaulted", text); self.assertIn("refused before any request is sent", text)
+        self.assertIn("stored-source replay and every other offline function work without it", text)
+        self.assertIn("NOT ELIGIBLE under the recorded selection criteria", text); self.assertIn(n8.BENEFIT_NOTE, text); self.assertIn(n8.REVIEW_NOTE, text)
+        self.assertNotRegex(text, r"(?i)authenticated (source )?timestamps? (are|is) (provided|established)|prospective(ly)? eligible|study (was )?completed")
+
     def test_proposed_allocation_is_not_a_decision(self):
         proposed = synthetic_policy(accepted=False)
         text = compose8(proposed); problems = n8.check_correspondence(text, proposed, MATRIX)
@@ -144,6 +154,8 @@ class PolicyInputs(unittest.TestCase):
             "human benefit PENDING statement missing": text.replace(n8.BENEFIT_NOTE, "- Human benefit: established."),
             "experimental modules": text.replace("ABSENT from the distribution", "included"),
             "feature account for enabled workstream SET": text.replace("- Dataset coverage:", "- Dataset coverage (with alpha):"),
+            "feature account for enabled workstream TIM": text.replace("never by editing: the original records and earlier historical views stay intact", "by editing the record"),
+            "feature account for enabled workstream DAT": text.replace("required, never defaulted: a missing or unusable value is refused before any request is sent", "optional"),
             "banned claim word present": text + "\n- Results are validated.\n",
         }
         for expect, bad in cases.items():
