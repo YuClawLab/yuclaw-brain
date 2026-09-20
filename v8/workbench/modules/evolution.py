@@ -418,6 +418,8 @@ def record_test_access(ws: Workspace, principal, *, subject_principal: str, acti
     if action not in ("GRANTED", "REVOKED"):
         raise ModuleError("E_ACTION", "action: GRANTED or REVOKED")
     core.ident(subject_principal, "principal", core.PRINCIPAL_ID)
+    if subject_principal not in authz.Principals(ws).state():                 # revoked principals stay known: their earlier exposure is still recorded against them
+        raise ModuleError("E_UNKNOWN_PRINCIPAL", f"{subject_principal!r} was never enrolled in this workspace")
     return core.append(ws, "EVO_TEST_ACCESS_RECORDED", {"principal_id": subject_principal, "action": action,
                        "meaning": "revoking access ends future access; it does not erase that the principal could read the protected tests before"}, op_id=op_id, principal=principal)[0]
 

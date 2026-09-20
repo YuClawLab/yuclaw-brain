@@ -257,5 +257,8 @@ def _record(ws, out, principal, op_id, snap=None):
 def resolve_discrepancy(ws: Workspace, principal, *, packet_sha256: str, resolution: str, op_id: str) -> dict:
     from v8.workbench.modules import authz
     authz.require(principal, "admin")
+    from v8.workbench.modules import shield
+    if core.hex64(packet_sha256, "packet sha256") not in {d.get("packet_sha256") for d in shield.state(ws)["discrepancies"] if d["kind"] == "SHD_TRUST_DISCREPANCY"}:
+        raise ModuleError("E_UNKNOWN_DISCREPANCY", "no trust discrepancy was recorded in this workspace for that packet")
     return core.append(ws, "SHD_TRUST_RESOLUTION", {"packet_sha256": core.hex64(packet_sha256, "packet sha256"), "resolution": core.text(resolution, "resolution", maxlen=1000),
                        "effect": "an administrator's note; the discrepancy record is kept; trust changes only through the SHD trust page"}, op_id=op_id, principal=principal)[0]

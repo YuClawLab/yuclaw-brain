@@ -209,6 +209,14 @@ class EvoComPrc(unittest.TestCase):
         __import__("time").sleep(1.1); evo.run_evaluation(ws, rev, version_id="v2-renamed", protocol_id="tool-safety", op_id="op:evo-run-0001"); self.assertIn("FULFILLED by EV1 (PASS)", cl.get("/evo")[1])
         self.assertEqual(code(evo.request_reevaluation, ws, imp2, version_id="v2-renamed", protocol_id="no-such-protocol", reason="x", op_id="op:evo-req-0002"), "E_UNKNOWN")
 
+    def test_E03_test_access_is_recorded_only_for_a_principal_of_this_workspace(self):
+        ws = workspace(); adm, _ = principal(ws, "owner", ["admin"]); principal(ws, "ivy", ["submit"], by=adm); other = workspace("other"); oadm, _ = principal(other, "oowner", ["admin"]); principal(other, "zed", ["submit"], by=oadm)
+        self.assertEqual(code(evo.record_test_access, ws, adm, subject_principal="ghost", action="GRANTED", op_id="op:access-0001"), "E_UNKNOWN_PRINCIPAL")
+        self.assertEqual(code(evo.record_test_access, ws, adm, subject_principal="zed", action="GRANTED", op_id="op:access-0002"), "E_UNKNOWN_PRINCIPAL")     # enrolled elsewhere is not enrolled here
+        evo.record_test_access(ws, adm, subject_principal="ivy", action="GRANTED", op_id="op:access-0003"); authz.Principals(ws).revoke("ivy", "left", op_id="op:revoke-ivy01", by=adm)
+        evo.record_test_access(ws, adm, subject_principal="ivy", action="REVOKED", op_id="op:access-0004")                                                     # a revoked principal stays known: its access can still be ended on the record
+        self.assertEqual([e["payload"]["action"] for e in ws.load()["events"] if e["kind"] == "EVO_TEST_ACCESS_RECORDED"], ["GRANTED", "REVOKED"])
+
     def test_C04_concurrent_admission_at_the_cap_boundary_admits_exactly_the_cap(self):
         ws = workspace(); cid, _ = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); sub, _ = principal(ws, "alice", ["submit"], by=adm)
         com.set_budget(ws, adm, period_id="p1", review_minutes=60, practice_minutes=0, contributor_packet_cap=3, max_open_tasks=5, op_id="op:budget-001"); out = []

@@ -275,6 +275,8 @@ class Packets(Base):
         self.assertTrue(any(d.startswith("REVOKED_HERE_TRUSTED_THERE") for d in r["discrepancies"])); self.assertEqual(r["trust"]["packet_signature"]["trust"], "REVOKED_ROOT")
         st = shield.state(recv); self.assertTrue(st["roots"][kid]["revoked"]); self.assertEqual(st["policy"]["policy_version"], 1); self.assertEqual(len(st["discrepancies"]), 2)   # an import never revives a root or installs a policy
         self.assertEqual(code(mx.resolve_discrepancy, recv, None, packet_sha256=r["packet_sha256"], resolution="x", op_id="op:resolve-0001"), "E_SIGN_IN")
+        self.assertEqual(code(mx.resolve_discrepancy, recv, radmin, packet_sha256="a" * 64, resolution="x", op_id="op:resolve-0003"), "E_UNKNOWN_DISCREPANCY")                  # a packet digest nothing was recorded for
+        self.assertEqual(code(mx.resolve_discrepancy, self.ws, self.admin, packet_sha256=r["packet_sha256"], resolution="x", op_id="op:resolve-0004"), "E_UNKNOWN_DISCREPANCY")   # the receiver's record is not the sender's
         mx.resolve_discrepancy(recv, radmin, packet_sha256=r["packet_sha256"], resolution="confirmed with the origin's owner by phone; our revocation stands", op_id="op:resolve-0002"); self.assertEqual(len(shield.state(recv)["discrepancies"]), 3)
 
 
