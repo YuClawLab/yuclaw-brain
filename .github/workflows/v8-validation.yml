@@ -1,0 +1,157 @@
+name: v8-prerelease-validation
+
+# Pre-release validation of the v8 integration branch (V8-012 §3). VALIDATION ONLY: it builds and tests inside the
+# runner and publishes nothing — no deployment, no Pages publication, no tag or release, no package upload, no
+# repository write, no cloud login, no environment, no repository secret, no maintainer contact and no live SEC
+# access (SEC_USER_AGENT is never set, so the v8 ingestion tool refuses before any request; every fixture is the
+# public, fictional set under tests/fixtures and v8/workbench/resources).
+#
+# Why it exists: compliance.yml runs on a push to main (that is, as part of a release) or on pull requests touching
+# v3/api, v4 or sdk; the v8 branch touches none of them, so nothing ran before a release (V8-011 finding).
+#
+# No workflow in this repository listens for this one (no workflow_run trigger anywhere), and GitHub Pages builds
+# from main:/docs only, so a run here starts nothing else. A green run is evidence for the commit it ran on
+# (the first step of every job prints it); it is not a release gate result and it authorizes nothing.
+#
+# pull_request (never pull_request_target): code from a pull request runs with a read-only token and no secrets.
+
+on:
+  push:
+    branches: [codex/v8-integration]
+  pull_request:
+    paths:
+      - "v8/**"
+      - "v3/receipts/**"
+      - "v3/release/**"
+      - "schemas/**"
+      - "sdk/**"
+      - "tests/**"
+      - "tools/yuclaw_v8_*.py"
+      - "tools/yuclaw_release_notes_v8.py"
+      - "tools/yuclaw_release_state_v6.py"
+      - "tools/yuclaw_readme_pypi.py"
+      - "pyproject.toml"
+      - "README.md"
+      - "README_PYPI.md"
+      - ".github/workflows/v8-validation.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    # The repository test suite without any private input, then the compliance regression against the same
+    # Postgres service + public seed that compliance.yml uses.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: yuclaw_events
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Commit under test
+        run: |
+          echo "event=$GITHUB_EVENT_NAME ref=$GITHUB_REF github_sha=$GITHUB_SHA"
+          echo "head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then test "$(git rev-parse HEAD)" = "$GITHUB_SHA"; fi
+      - name: Install deps
+        run: |
+          pip install fastapi httpx pytest psycopg2-binary pydantic jinja2 pandas \
+                      click feedparser tenacity requests "mcp>=1.0,<2"
+          pip install ./sdk        # yuclaw_py (imported by the server + tests)
+      - name: Offline test suite (no database settings, no SEC identity)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+          # The receipts publication sweep fails closed without a denylist, and the real one is private and never
+          # in the repository. The tests get a SYNTHETIC list with one fictional term through the operator override.
+          YUCLAW_PUBLICATION_DENYLIST: ${{ runner.temp }}/synthetic-publication-denylist.txt
+        run: |
+          printf '# SYNTHETIC publication denylist for CI: one fictional term; not the private list\nwitness: zz-fictional-ci-witness\n' > "$YUCLAW_PUBLICATION_DENYLIST"
+          python3 -m pytest tests --ignore=tests/test_compliance_regression.py -q
+      - name: Apply schema + migrations + seed
+        run: |
+          export PGPASSWORD=postgres
+          psql -h localhost -U postgres -d yuclaw_events -f v3/schema.sql || true
+          # migrations are for upgrading old DBs; some columns already exist in schema.sql — ignore those.
+          for m in v3/migrations/*.sql; do psql -h localhost -U postgres -d yuclaw_events -f "$m" || true; done
+          psql -h localhost -U postgres -d yuclaw_events -f tests/fixtures/v4_seed.sql
+      - name: Compliance regression
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PYTHONPATH: ${{ github.workspace }}
+        run: python3 -m pytest tests/test_compliance_regression.py -v
+
+  python-floor:
+    # requires-python is >=3.10: the workbench and its tests on the supported minimum, including a real 3.10
+    # compile of every packaged workbench module (tests/test_v8_workbench_packaging.py finds python3.10 here).
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - name: Commit under test
+        run: |
+          echo "event=$GITHUB_EVENT_NAME github_sha=$GITHUB_SHA head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
+          python3 --version
+      - name: Install deps
+        run: pip install pytest
+      - name: Workbench tests on Python 3.10
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python3 -m pytest tests/test_v8_*.py -q
+
+  package:
+    # One build of the pair from a clean detached worktree at the commit under test, member and long-description
+    # checks, twine check --strict, then the wheel and the sdist each installed into a fresh environment outside
+    # the checkout (no editable install, no PYTHONPATH) and driven through the fictional-fixture browser journey:
+    # seven steps, the availability correction, and export verification in a second, fresh workspace; every
+    # downloaded export is verified again through the installed command line. The pair is a throwaway development
+    # build: it is not uploaded, not kept as an artifact and is never a release candidate.
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PIP_CONSTRAINT: ${{ github.workspace }}/.github/v8-validation-constraints.txt
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Commit under test
+        run: |
+          echo "event=$GITHUB_EVENT_NAME github_sha=$GITHUB_SHA head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
+      - name: Install pinned packaging and browser tools
+        run: |
+          pip install build twine playwright        # versions come from the constraints file
+          python3 -m playwright install --with-deps chromium
+      - name: Build once, check, install wheel and sdist outside the checkout, run the fixture journey
+        run: |
+          python3 tools/yuclaw_v8_clean_install.py --commit HEAD --out "$RUNNER_TEMP/v8-clean-install" \
+                  --playwright-spec "playwright==1.62.0"
+      - name: Result summary
+        if: always()
+        run: |
+          python3 - <<'EOF'
+          import json, os, pathlib
+          p = pathlib.Path(os.environ["RUNNER_TEMP"]) / "v8-clean-install" / "packaging.json"
+          if not p.exists():
+              raise SystemExit("no packaging.json was written")
+          r = json.loads(p.read_text()); b = r["build"]
+          print(json.dumps({"result": r["result"], "commit": r["commit"], "tree": b["tree"], "build_tools": b["build_tools"], "twine_check_rc": r["twine_check"]["rc"],
+                            "wheel_sha256": b["wheel"]["sha256"], "sdist_sha256": b["sdist"]["sha256"],
+                            "installs": {k: {"ok": v.get("ok"), "stop": v.get("stop"), "checks": v.get("checks"),
+                                             "journeys": {m: {"score": j.get("score"), "rc": j.get("rc"), "ok": j.get("ok"), "stderr_tail": j.get("stderr_tail")} for m, j in (v.get("journeys") or {}).items()}}
+                                         for k, v in r["installs"].items()}}, indent=1))
+          EOF
