@@ -75,7 +75,7 @@ class ModJourney:
                 el.fill(str(v))
         for k, path in (files or {}).items():
             form.locator(f"input[name='{k}']").set_input_files(str(path))
-        form.locator("button").first.click(); page.wait_for_load_state("load"); return page.locator("body").inner_text()
+        form.locator("button:not([formaction])").first.click(); page.wait_for_load_state("load"); return page.locator("body").inner_text()      # the form's own action, not an alternative such as Preview
 
     @staticmethod
     def via_claim(page, base, claim_id, link_text):
@@ -222,6 +222,8 @@ class ModJourney:
                 with owner.expect_download() as dl:
                     owner.locator("a[href^='/prc/checkpoint/']").last.click()
                 cp = self.out / "checkpoint-held-separately.json"; dl.value.save_as(str(cp))
+                owner.goto(f"{a}/modx"); owner.locator("form[action='/modx/build']").first.locator(f"[name='sess_{sess}']").set_checked(True); owner.locator("button[formaction='/modx/preview']").first.click(); owner.wait_for_load_state("load")
+                pv = owner.locator("body").inner_text(); self.check(6, "the export preview lists what would be included and writes nothing", "nothing was written" in pv and "included (revealed)" in pv)
                 owner.goto(f"{a}/modx"); self.submit(owner, "/modx/build", {"mod_SHD": True, "mod_EVO": True, "mod_COM": True, f"sess_{sess}": True})
                 with owner.expect_download() as dl:
                     owner.locator("a[href^='/modx/modx-']").first.click()
