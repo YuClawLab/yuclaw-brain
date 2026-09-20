@@ -162,5 +162,5 @@ def run_worker(staged: Path, expected_sha256: str) -> dict:
         obj = shield_worker.validate_result(obj, expected_sha256)
     except (ModuleError, shield_worker.Rejected) as exc:
         raise ModuleError("E_WORKER_OUTPUT_REJECTED", f"the worker's output failed the parent's re-validation ({getattr(exc, 'code', exc)}); nothing was admitted") from None
-    obj["_isolation"] = {"backend": cap["backend"], "seconds": r["seconds"]}
+    obj["_isolation"] = {"backend": cap["backend"], "milliseconds": int(r["seconds"] * 1000)}      # integers only: module events travel in packets whose parser refuses floats
     return obj

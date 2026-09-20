@@ -47,7 +47,8 @@ from v8.workbench.store import Workspace
 COMPONENTS = ("model", "agent_code", "tool_policy", "memory", "data", "runtime", "grader", "evaluation_data")
 STATUSES = ("MEASURED", "DECLARED", "UNKNOWN", "NOT_APPLICABLE")
 AUTHORITY_FIELDS = ("grader_writer_ids", "evidence_writer_ids", "release_authorizer_ids", "hidden_test_reader_ids")
-JOBS = ("policy_conformance",)
+JOBS = ("policy_conformance", "json_wellformed")
+JOB_NEEDS = {"policy_conformance": ("tool_policy",), "json_wellformed": ()}      # components a job READS beyond grader and evaluation data: they must be in the protocol scope
 MAX_FILES, MAX_BYTES, MAX_FILE = 5000, 256 * 1024 * 1024, 64 * 1024 * 1024
 _SECRETISH = (".env", ".pem", ".key", ".p12", ".pfx", "id_rsa", "id_ed25519", "credentials", "secret", ".git", "__pycache__", ".ssh", ".gnupg")
 
@@ -144,6 +145,9 @@ def set_config(ws: Workspace, principal, cfg: dict, *, op_id: str) -> dict:
         scope = sorted(set(p.get("scope") or []))
         if not scope or any(s not in COMPONENTS for s in scope) or p.get("job") not in JOBS + (None,):
             raise ModuleError("E_CONFIG", f"protocol {pid}: a non-empty component scope and an optional built-in job ({', '.join(JOBS)})")
+        missing = [c for c in JOB_NEEDS.get(p.get("job"), ()) if c not in scope]
+        if missing:
+            raise ModuleError("E_CONFIG", f"protocol {pid}: job {p.get('job')} reads {', '.join(missing)}, so the scope must name it (a job never reads outside its protocol's closure)")
         protos[pid] = {"scope": scope, "job": p.get("job"), "validity_days": int(p.get("validity_days", 90))}
     auth = {f: sorted({core.ident(x, f, core.PRINCIPAL_ID) for x in (cfg.get("authority") or {}).get(f, [])}) for f in AUTHORITY_FIELDS}
     payload = {"roots": [os.path.realpath(r) for r in roots], "components": comps, "depends_on": edges, "protocols": protos, "authority": auth}
@@ -296,6 +300,19 @@ def _job_policy_conformance(snap: Path) -> tuple[str, list]:
     return ("FAIL" if failing else "PASS"), sorted(set(map(str, failing)))[:20]
 
 
+def _job_json_wellformed(snap: Path, scope: list) -> tuple[str, list]:
+    """Built-in job. Every .json file of the protocol's scoped components parses under the strict bounded parser (no duplicate
+    keys, no floats, bounded depth and size). Data only."""
+    failing = []
+    for comp in scope:
+        for f in sorted((snap / comp).rglob("*.json")) if (snap / comp).is_dir() else []:
+            try:
+                core.strict_json(f.read_bytes(), max_bytes=1 << 20, code="JOB_INPUT")
+            except ModuleError as exc:
+                failing.append(f"{comp}/{f.name}:{exc.code}")
+    return ("FAIL" if failing else "PASS"), failing[:20]
+
+
 def run_evaluation(ws: Workspace, principal, *, version_id: str, protocol_id: str, op_id: str) -> dict:
     """Trusted-runner evaluation of one registered version under one configured protocol. Grader conflicts are checked on
     THIS task: the grading principal must not be an improver anywhere in the version's ancestry."""
@@ -317,7 +334,7 @@ def run_evaluation(ws: Workspace, principal, *, version_id: str, protocol_id: st
     moved = sorted(c for c, dg in digests.items() if v["components"][c]["digest"] != dg)
     if moved:
         raise ModuleError("REJECTED_SUBJECT_CHANGED", f"the bytes now at the configured location differ from registered version {version_id} for: {', '.join(moved)}. Register the new state as a new version; nothing was evaluated under the old identity")
-    result, failing = _job_policy_conformance(snap)
+    result, failing = _job_policy_conformance(snap) if proto["job"] == "policy_conformance" else _job_json_wellformed(snap, proto["scope"])
     now = core.now()
     with ws._locked():
         evs = ws.load()["events"]; done = core.prior(evs, op_id)
@@ -330,7 +347,7 @@ def run_evaluation(ws: Workspace, principal, *, version_id: str, protocol_id: st
                    "valid_until": (now + timedelta(days=proto["validity_days"])).strftime("%Y-%m-%dT%H:%M:%SZ")}
         ev, _ = ws._append_unlocked("EVO_EVALUATION_RECORDED", None, payload, op_id=op_id, observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))
         if result == "FAIL":
-            _open_failure(ws, evs + [ev], payload, "policy_conformance:" + hashlib.sha256("|".join(failing).encode()).hexdigest()[:12], op_id, principal)
+            _open_failure(ws, evs + [ev], payload, proto["job"] + ":" + hashlib.sha256("|".join(failing).encode()).hexdigest()[:12], op_id, principal)
         return ev
 
 

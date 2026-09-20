@@ -189,7 +189,9 @@ class Packets(Base):
         b = io.BytesIO(); zipfile.ZipFile(b, "w").writestr("packet.json", json.dumps(p)); return b.getvalue()
 
     def test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries(self):
-        shield.enroll_root(self.ws, self.admin, label="root", op_id="op:root-000001"); com.submit_direct(self.ws, self.alice, claim_id=self.cid, kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=10, asserts_withdrawn=False, client_packet_id=None, op_id=self.op())
+        shield.enroll_root(self.ws, self.admin, label="root", op_id="op:root-000001"); data, bh, bsrc = bundle(); sb = shield.submit(self.ws, self.alice, data, title="b", op_id="op:sub-packet01")["payload"]["submission_id"]
+        shield.issue_approval(self.ws, self.admin, bundle_sha256=bh, source_sha256s=bsrc, purpose="evidence.reference", expires_at=FUTURE, op_id="op:apr-packet01"); self.assertEqual(shield.admit(self.ws, self.alice, sb, op_id="op:adm-packet01")["payload"]["result"], "ADMITTED")
+        com.submit_direct(self.ws, self.alice, claim_id=self.cid, kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=10, asserts_withdrawn=False, client_packet_id=None, op_id=self.op())
         t = self.task(); ss = self.session(self.pat, t["task_id"])["session_id"]; early = self.build(self.pat, prc_sessions=[ss]); self.assertNotIn(SECRET.encode(), zipfile.ZipFile(io.BytesIO(early)).read("packet.json"))
         self.assertEqual(code(mx.build_packet, self.ws, self.pia, modules=[], prc_sessions=[ss], withhold_text=False, op_id=self.op()), "E_NOT_FOUND")                          # another practitioner's session
         self.assertEqual(code(mx.build_packet, self.ws, self.pat, modules=["COM"], prc_sessions=[], withhold_text=False, op_id=self.op()), "E_FORBIDDEN")

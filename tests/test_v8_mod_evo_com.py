@@ -37,7 +37,7 @@ class EvoBase(unittest.TestCase):
         self.cfg = {"roots": [str(self.root)], "components": {"model": {"mode": "declared", "value": "provider-alias:latest"}, "agent_code": {"mode": "path", "path": str(self.root / "agent")},
                     "tool_policy": {"mode": "path", "path": str(self.root / "policy")}, "memory": {"mode": "path", "path": str(self.root / "memory")}, "data": {"mode": "path", "path": str(self.root / "data")},
                     "runtime": {"mode": "runtime"}, "grader": {"mode": "path", "path": str(self.root / "grader")}, "evaluation_data": {"mode": "path", "path": str(self.root / "evaldata")}},
-                    "depends_on": {"tool_policy": ["agent_code"], "agent_code": ["runtime"]}, "protocols": {"tool-safety": {"scope": ["tool_policy"], "job": "policy_conformance"}, "data-only": {"scope": ["data"], "job": "policy_conformance"}},
+                    "depends_on": {"tool_policy": ["agent_code"], "agent_code": ["runtime"]}, "protocols": {"tool-safety": {"scope": ["tool_policy"], "job": "policy_conformance"}, "data-only": {"scope": ["data"], "job": "json_wellformed"}},
                     "authority": {"grader_writer_ids": ["grader"]}}
         evo.set_config(self.ws, self.admin, self.cfg, op_id="op:evo-config1"); self.n = 0
 
@@ -74,6 +74,9 @@ class Evolution(EvoBase):
         # E-07: a submitter's metadata cannot drop an edge — the closure comes from the administrator's configuration
         self.assertIn("agent_code", evo.closure(["tool_policy"], evo.state(self.ws)["config"]["depends_on"])); self.assertIn("grader", evo.closure(["data"], {}))
         plan = evo.reevaluation_plan(evo.state(self.ws), "v4"); self.assertEqual(plan["baseline_repeat_everything"], ["data-only", "tool-safety"])
+        bad = json.loads(json.dumps(self.cfg)); bad["protocols"]["data-only"] = {"scope": ["data"], "job": "policy_conformance"}                                      # a job never reads outside its protocol's closure
+        self.assertEqual(code(evo.set_config, self.ws, self.admin, bad, op_id="op:evo-config9"), "E_CONFIG"); (self.root / "data" / "broken.json").write_text('{"a":1,"a":2}'); self.reg("v5", "v4")
+        self.assertEqual(self.evaluate("v5", proto="data-only")["failing"], ["data/broken.json:JOB_INPUT_DUPLICATE_KEY"])
 
     def test_E07_a_file_swapped_between_collection_and_execution_is_not_evaluated_under_the_old_identity(self):
         self.reg("v1"); self.write_policy({**self.POLICY, "tools": {"read_filing": "allow", "place_order": "allow"}})

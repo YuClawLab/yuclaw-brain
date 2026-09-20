@@ -94,6 +94,7 @@ def build_packet(ws: Workspace, principal, *, modules: list, prc_sessions: list,
         data = json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
         if len(data) > MAX_PACKET:
             raise ModuleError("E_TOO_LARGE", "the packet would exceed 8 MiB; narrow the scope")
+        core.strict_json(data, max_bytes=MAX_PACKET, code="PACKET", max_nodes=400000, max_string=1 << 20)      # what is built here must be readable by the strict verifier anywhere
         if done is not None and done["kind"] == "MODULE_EXPORT_BUILT":
             return {**done["payload"], "zip_path": str(ws.exports / f"{done['payload']['export_id']}.zip")}
         export_id = "modx-" + secrets.token_hex(8); buf = io.BytesIO()

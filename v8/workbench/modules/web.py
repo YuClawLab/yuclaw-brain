@@ -696,8 +696,8 @@ def page_modx(h, q, result) -> str:
     if result is not None:
         cls = "ok" if result["result"] == "SUCCESS" else "bad"
         out.append(f'<h2>Result: <span class="{cls}">{esc(result["result"])}</span></h2>' + (f'<div class="err"><p>First discrepancy: {esc(result["first_discrepancy"])}</p></div>' if result["first_discrepancy"] else "")
-                   + table(["Check", "Finding"], [["Integrity (independent of trust)", esc(json.dumps(result["integrity"]))], ["Recomputed views", esc(", ".join(result["recompute"]))], ["Trust (this receiver's own roots)", esc(json.dumps(result["trust"]))],
-                                                   ["Freshness", esc(json.dumps(result["freshness"]))], ["Separately held checkpoint", esc(result["checkpoint"])], ["Discrepancies recorded", esc("; ".join(result["discrepancies"]) or "none")],
+                   + table(["Check", "Finding"], [["Integrity (independent of trust)", esc(json.dumps(result["integrity"], ensure_ascii=False))], ["Recomputed views", esc(", ".join(result["recompute"]))], ["Trust (this receiver's own roots)", esc(json.dumps(result["trust"], ensure_ascii=False))],
+                                                   ["Freshness", esc(json.dumps(result["freshness"], ensure_ascii=False))], ["Separately held checkpoint", esc(result["checkpoint"])], ["Discrepancies recorded", esc("; ".join(result["discrepancies"]) or "none")],
                                                    ["Imported into this workspace's state", "nothing — no claim, queue entry, role, key or policy is installed by verification"]]))
     if q.get("built"):
         out.append(f'<div class="notice">Built <a href="/modx/{esc(q["built"])}.zip"><code>{esc(q["built"])}.zip</code></a>.</div>')
