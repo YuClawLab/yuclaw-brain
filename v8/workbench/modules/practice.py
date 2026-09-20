@@ -136,6 +136,9 @@ def open_session(ws: Workspace, principal, *, task_id: str, assistance: str, ass
         payload = {"session_id": core.next_id(evs, "PRC_SESSION_OPENED", "SS", "session_id"), "task_id": task_id, "practitioner": principal["principal_id"],
                    "declarations": {"assistance": assistance, "assistance_note": core.text(assistance_note, "assistance note", maxlen=500, required=False), "prior_exposure": prior_exposure},
                    "category": category(assistance, prior_exposure), "period_id": cap["period_id"], "practice_minutes_reserved": t["session_minutes"],
+                   "confinement": ("PRACTICE_ONLY — this principal is confined to the practice routes" if set(principal["caps"]) == {"practice"} else
+                                   "NOT_CONFINED — this principal also holds " + ", ".join(c for c in principal["caps"] if c != "practice") + ", so claim pages, the journal and exports are open to it; the comparison itself stays server-held, "
+                                   "but anything those pages show about the question is not withheld from this practitioner"),
                    "declaration_meaning": "declarations are the practitioner's own statements; this software cannot observe outside help or earlier exposure"}
         ev, _ = ws._append_unlocked("PRC_SESSION_OPENED", None, payload, op_id=op_id, observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))
         return ev
@@ -256,7 +259,7 @@ def session_view(ws: Workspace, principal, session_id: str) -> dict:
     if not (mine or "admin" in principal["caps"] or ("review" in principal["caps"] and ss["attempt"] is not None)):
         raise ModuleError("E_NOT_FOUND", "no such session for this principal")
     t = s["tasks"][ss["task_id"]]; v = core.Vault(ws)
-    out = {"session": {k: ss[k] for k in ("session_id", "task_id", "practitioner", "declarations", "category", "opened_at", "reads", "revealed_at")},
+    out = {"session": {**{k: ss[k] for k in ("session_id", "task_id", "practitioner", "declarations", "category", "opened_at", "reads", "revealed_at")}, "confinement": ss.get("confinement", "not recorded (session opened before this field existed)")},
            "task": {k: t[k] for k in ("task_id", "title", "question", "claim", "source_scope", "labels", "comparison_provenance", "curator", "declared_curator_qualification", "qualification_status", "public_example", "session_minutes")},
            "attempt": None, "comparison": None, "reflections": [], "feedback": [], "current_interpretation": annotations(ws, t, ss)}
     if ss["attempt"] is not None:

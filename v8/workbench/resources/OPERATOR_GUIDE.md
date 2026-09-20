@@ -246,7 +246,9 @@ only a salted digest. A practitioner (never the curator) opens a session, declar
 truthfully — every answer is accepted and labelled — reads the frozen evidence, and commits a judgment, reasoning, the
 sources it rests on, or UNRESOLVED with what would resolve it. Only then does **Open the comparison** work. The attempt is
 never replaced; reflections and reviewer feedback are later records; follow-ups are local due-states — nobody is contacted
-and no study is run. A later source correction or claim amendment appears as a note on the current interpretation. Not
+and no study is run. A later source correction or claim amendment appears as a note on the current interpretation. Each session records its route confinement: a
+practice-only principal is confined to the practice routes; a practitioner who also holds another capability is labelled
+NOT_CONFINED, because claim pages, the journal and exports are open to it. Not
 confidential from: the host administrator, the curator, an administrator principal, outside help, or an answer that is
 public elsewhere. The records cannot prove authorship, comprehension or improved ability.
 

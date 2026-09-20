@@ -765,7 +765,7 @@ def page_prc(h, q) -> str:
 
 def page_prc_session(h, sid: str, q) -> str:
     ws = h.server.ws; v = practice.session_view(ws, h._principal, sid); ss, t = v["session"], v["task"]; mine = ss["practitioner"] == h._principal["principal_id"]; base = f"/prc/session/{sid}"
-    out = [f'<p>Task <b>{esc(t["task_id"])}</b> — {esc(t["title"])}. Session category: <b>{esc(ss["category"])}</b> (assistance {esc(ss["declarations"]["assistance"])}, prior exposure {esc(ss["declarations"]["prior_exposure"])}; these are the practitioner\'s own declarations).</p>',
+    out = [f'<p>Task <b>{esc(t["task_id"])}</b> — {esc(t["title"])}. Session category: <b>{esc(ss["category"])}</b> (assistance {esc(ss["declarations"]["assistance"])}, prior exposure {esc(ss["declarations"]["prior_exposure"])}; these are the practitioner\'s own declarations). Route confinement: {esc(ss["confinement"])}.</p>',
            f'<h2>Question</h2><div class="guide">{esc(t["question"])}</div>',
            "<h2>Frozen evidence in scope</h2><ul>" + "".join(f'<li><a href="{base}/source?id={esc(urllib.parse.quote(x["source_id"], safe=""))}">{esc(x["source_id"])}</a> <span class="muted">source hash {esc((x["source_hash"] or "")[:16])}…</span></li>' for x in t["source_scope"]) + "</ul>"
            + f'<p class="muted">Opened so far: {esc(", ".join(r["source_id"] for r in ss["reads"]) or "none")}. Opening a page shows access, not comprehension.</p>']

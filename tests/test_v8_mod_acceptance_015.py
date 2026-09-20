@@ -147,6 +147,28 @@ class EvoComPrc(unittest.TestCase):
         notes = " | ".join(v["current_interpretation"]); self.assertIn("CLAIM_REVISED", notes); self.assertIn("EVO: version v2 succeeded v1", notes); self.assertEqual(v["attempt"], before)
         self.assertEqual(prc.state(ws)["tasks"][t["task_id"]]["claim"]["version_digest"], t["claim"]["version_digest"])                  # the frozen task still names the version it was frozen on
 
+    def test_P02_a_practitioner_with_other_capabilities_is_labelled_not_confined_and_C04_E02_bounds(self):
+        ws = workspace(); cid, sid = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); cur, _ = principal(ws, "curator", ["review"], by=adm); pat, _ = principal(ws, "pat", ["practice"], by=adm); both, _ = principal(ws, "pam", ["practice", "submit"], by=adm)
+        com.set_budget(ws, adm, period_id="p1", review_minutes=60, practice_minutes=60, contributor_packet_cap=9, max_open_tasks=9, op_id="op:budget-001")
+        t = prc.freeze_task(ws, cur, title="t", question="q?", claim_id=cid, source_ids=[sid], labels=["A", "B"], reference_label="A", reference_answer="REF", rationale="", provenance="MODEL_ANSWER", declared_curator_qualification="", public_example=True,
+                            session_minutes=20, evo_version_id=None, op_id="op:task-00001")["payload"]
+        a = prc.open_session(ws, pat, task_id=t["task_id"], assistance="NONE", assistance_note="", prior_exposure="NOT_SEEN", op_id="op:sess-00001")["payload"]; b = prc.open_session(ws, both, task_id=t["task_id"], assistance="NONE", assistance_note="", prior_exposure="NOT_SEEN", op_id="op:sess-00002")["payload"]
+        self.assertTrue(a["confinement"].startswith("PRACTICE_ONLY")); self.assertTrue(b["confinement"].startswith("NOT_CONFINED")); self.assertIn("submit", b["confinement"])              # truthful label; both still need an attempt before the comparison
+        self.assertEqual(code(prc.reveal, ws, both, b["session_id"]), "E_ATTEMPT_FIRST"); self.assertIn("NOT_CONFINED", prc.session_view(ws, both, b["session_id"])["session"]["confinement"])
+        with mock.patch.object(com, "MAX_PACKETS", 1):                                                                                                                                   # C-04: the storage bound itself
+            com.submit_direct(ws, both, claim_id=cid, kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=5, asserts_withdrawn=False, client_packet_id=None, op_id="op:pk-bound-01")
+            self.assertEqual(code(com.submit_direct, ws, both, claim_id=cid, kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=5, asserts_withdrawn=False, client_packet_id=None, op_id="op:pk-bound-02"), "E_STORAGE_BOUND")
+        root = pathlib.Path(tempfile.mkdtemp())                                                                                                                                         # E-02: a RUNTIME change invalidates what depends on it
+        for d in ("agent", "grader", "evaldata"):
+            (root / d).mkdir(); (root / d / "x.json").write_text("{}")
+        evo.set_config(ws, adm, {"roots": [str(root)], "components": {"agent_code": {"mode": "path", "path": str(root / "agent")}, "grader": {"mode": "path", "path": str(root / "grader")}, "evaluation_data": {"mode": "path", "path": str(root / "evaldata")}, "runtime": {"mode": "runtime"}},
+                                "depends_on": {"agent_code": ["runtime"]}, "protocols": {"agent-json": {"scope": ["agent_code"], "job": "json_wellformed"}}}, op_id="op:evo-config1")
+        evo.register_version(ws, both, version_id="v1", parent_version_id=None, label="", op_id="op:evo-reg-v1"); evo.run_evaluation(ws, cur, version_id="v1", protocol_id="agent-json", op_id="op:evo-run-0001")
+        real = evo.measure_runtime
+        with mock.patch.object(evo, "measure_runtime", lambda: {**real(), "digest": "f" * 64}):                                                                                          # as after a dependency upgrade
+            v2 = evo.register_version(ws, both, version_id="v2", parent_version_id="v1", label="", op_id="op:evo-reg-v2")["payload"]
+        self.assertEqual(v2["changed_components"], ["runtime"]); r = evo.audit(ws, "v2")["reuse"]["agent-json"]; self.assertEqual(r["decision"], "REEVALUATE"); self.assertIn("runtime", " ".join(r["reasons"]))
+
     def test_P06_the_export_preview_writes_nothing_and_says_what_cannot_leave(self):
         ws = workspace(); cid, sid = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); cur, _ = principal(ws, "curator", ["review"], by=adm); pat, cred = principal(ws, "pat", ["practice"], by=adm)
         com.set_budget(ws, adm, period_id="p1", review_minutes=60, practice_minutes=60, contributor_packet_cap=5, max_open_tasks=5, op_id="op:budget-001")
