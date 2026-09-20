@@ -68,6 +68,36 @@ class Boundaries(unittest.TestCase):
         self.assertIn("ghost", json.loads(P.path.read_text())); self.assertNotIn("ghost", P.state()); self.assertIsNone(P.active("ghost"))         # a hash without its journal event authorizes nobody
         _, cred = P.enroll("ghost", ["submit"], op_id="op:enroll-ghost", by=adm); self.assertEqual(P.authenticate("ghost", cred)["caps"], ["submit"])
 
+    def test_X05_a_process_killed_while_it_holds_the_lock_commits_nothing_and_blocks_nobody(self):
+        import subprocess
+        ws = workspace(); cid, sid = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); cur, _ = principal(ws, "curator", ["review"], by=adm); pat, cred = principal(ws, "pat", ["practice"], by=adm)
+        com.set_budget(ws, adm, period_id="p1", review_minutes=60, practice_minutes=60, contributor_packet_cap=5, max_open_tasks=5, op_id="op:budget-001")
+        t = prc.freeze_task(ws, cur, title="t", question="q?", claim_id=cid, source_ids=[sid], labels=["A", "B"], reference_label="A", reference_answer="REF", rationale="", provenance="MODEL_ANSWER", declared_curator_qualification="",
+                            public_example=True, session_minutes=20, evo_version_id=None, op_id="op:task-00001")["payload"]
+        ss = prc.open_session(ws, pat, task_id=t["task_id"], assistance="NONE", assistance_note="", prior_exposure="NOT_SEEN", op_id="op:sess-00001")["payload"]["session_id"]
+        before = len(ws.load()["events"]); root = pathlib.Path(__file__).resolve().parents[1]
+        child = f"""
+import os, sys
+sys.path.insert(0, {str(root)!r})
+from v8.workbench import store
+from v8.workbench.modules import authz, practice as prc
+ws = store.Workspace({str(ws.root)!r}); pat = authz.Principals(ws).authenticate("pat", os.environ["V8_TEST_CRED"]); real = store.Workspace._append_unlocked
+def killed(self_, kind, *a, **k):
+    if kind == "PRC_ATTEMPT_COMMITTED":
+        os._exit(9)                      # no cleanup, no unlock, no flush: the private object is on disk, the event is not
+    return real(self_, kind, *a, **k)
+store.Workspace._append_unlocked = killed
+prc.commit_attempt(ws, pat, {ss!r}, judgment="A", reasoning="because", source_refs=[{sid!r}], unresolved_note="", op_id="op:attempt-001")
+os._exit(0)
+"""
+        run = subprocess.run([sys.executable, "-c", child], env={**os.environ, "V8_TEST_CRED": cred}, capture_output=True, text=True, timeout=120)
+        self.assertEqual(run.returncode, 9, run.stderr[-600:])
+        self.assertEqual(len(ws.load()["events"]), before); self.assertIsNone(prc.state(ws)["sessions"][ss]["attempt"])
+        done = []
+        th = threading.Thread(target=lambda: done.append(prc.commit_attempt(ws, pat, ss, judgment="A", reasoning="because", source_refs=[sid], unresolved_note="", op_id="op:attempt-001")), daemon=True)
+        th.start(); th.join(30); self.assertTrue(done, "the dead process's lock still blocks the workspace")                  # the kernel released the file lock
+        self.assertEqual(sum(1 for e in ws.load()["events"] if e["kind"] == "PRC_ATTEMPT_COMMITTED"), 1); self.assertEqual(prc.reveal(ws, pat, ss)["reference_answer"], "REF")
+
     def test_S01_a_copied_approval_is_useless_in_another_workspace_even_when_its_root_is_trusted_there(self):
         wa, wb = workspace("a"), workspace("b"); aa, _ = principal(wa, "owner", ["admin"]); ab, _ = principal(wb, "owner", ["admin"]); sub, _ = principal(wb, "alice", ["submit"], by=ab)
         shield.enroll_root(wa, aa, label="A", op_id="op:root-000001"); data, h, srcs = bundle()
@@ -100,6 +130,62 @@ class Boundaries(unittest.TestCase):
             h = hashlib.sha256(data).hexdigest(); sid = shield.submit(ws, sub, data, title=expect, op_id=f"op:sub-hostile{i}")["payload"]["submission_id"]
             shield.issue_approval(ws, adm, bundle_sha256=h, source_sha256s=[], purpose="evidence.reference", expires_at=FUTURE, op_id=f"op:apr-hostile{i}")      # approved, so the worker really opens it
             d = shield.admit(ws, sub, sid, op_id=f"op:adm-hostile{i}")["payload"]; self.assertEqual((d["code"], d["detail"], d["typed_result_sha256"]), ("REFUSED_BUNDLE_REJECTED", expect, None), expect); self.assertEqual(d["isolation"]["backend"], CAP["backend"])
+
+    def test_S03_a_member_that_lies_about_its_size_is_refused_after_a_bounded_read(self):
+        import struct
+        raw = bundle(files={"evidence/a.txt": b"A" * 4000})[0]; self.assertIn("evidence/a.txt", W.read_archive(raw))            # positive counterpart
+        def lying(declared):
+            data = bytearray(raw); at = data.find(b"PK\x01\x02")
+            while at != -1:                                                                                                    # central directory entries
+                n = struct.unpack_from("<H", data, at + 28)[0]
+                if bytes(data[at + 46:at + 46 + n]) == b"evidence/a.txt":
+                    struct.pack_into("<I", data, at + 24, declared); return bytes(data)
+                at = data.find(b"PK\x01\x02", at + 4)
+            raise AssertionError("member not found")
+        def rejected(data):
+            with self.assertRaises(W.Rejected) as cm:
+                W.read_archive(data)
+            return cm.exception.code
+        self.assertEqual(rejected(lying(4100)), "ARCHIVE_SIZE_MISMATCH")                                                       # claims more than it holds
+        reads = []
+        real_open = zipfile.ZipFile.open
+        def watched(zf, info, *a, **k):
+            fh = real_open(zf, info, *a, **k); real_read = fh.read
+            fh.read = lambda n=-1: (reads.append(n), real_read(n))[1]; return fh
+        with mock.patch.object(zipfile.ZipFile, "open", watched):
+            self.assertEqual(rejected(lying(100)), "ARCHIVE_INVALID")                                                          # claims less: never read past the claim
+        self.assertTrue(reads and all(0 < n <= W.MAX_MEMBER + 1 for n in reads) and 101 in reads, reads)
+
+    def test_S03_a_staged_input_changed_while_it_is_being_read_is_refused(self):
+        d = pathlib.Path(tempfile.mkdtemp()); f = d / "in"; body = b"x" * 200000; f.write_bytes(body)
+        self.assertEqual(W.read_input(str(f)), body)                                                                           # positive counterpart
+        real_read, fired = os.read, []
+        def racing(fd, n):                                                                                                     # another writer acts after the first chunk
+            part = real_read(fd, n)
+            if not fired:
+                fired.append(1)
+                with open(f, "ab") as other:
+                    other.write(b"SUBSTITUTED")
+            return part
+        with mock.patch.object(W.os, "read", racing):
+            with self.assertRaises(W.Rejected) as cm:
+                W.read_input(str(f))
+        self.assertEqual(cm.exception.code, "INPUT_CHANGED_DURING_READ")
+        g = d / "in2"; g.write_bytes(body); fired.clear()
+        def truncating(fd, n):
+            part = real_read(fd, n)
+            if not fired:
+                fired.append(1); os.truncate(g, 10)
+            return part
+        with mock.patch.object(W.os, "read", truncating):
+            with self.assertRaises(W.Rejected) as cm:
+                W.read_input(str(g))
+        self.assertEqual(cm.exception.code, "INPUT_CHANGED_DURING_READ")
+        # a replacement by rename gives the path a NEW file; the open descriptor still reads the old one completely, and the parent
+        # accepts a result only when the worker's digest equals the digest of the bytes the parent stored (validate_result)
+        with self.assertRaises(W.Rejected):
+            W.validate_result({"worker": W.WORKER, "result": "VERIFIED", "code": "OK", "bundle_sha256": "0" * 64, "manifest_sha256": "0" * 64, "purpose": "evidence.reference", "title": "",
+                               "evidence": [], "payload": {}, "excerpts": [], "meaning": ""}, "1" * 64)
 
     def test_S07_the_error_channel_is_bounded_too(self):
         self.assertIsNotNone(CAP["backend"]); d = pathlib.Path(tempfile.mkdtemp()); wk = d / "noisy_worker.py"; wk.write_text("import sys\nwhile True:\n    sys.stderr.write('e' * 65536)\n"); inp = d / "in"; inp.write_bytes(b"x")

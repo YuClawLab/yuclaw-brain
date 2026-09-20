@@ -201,7 +201,12 @@ decision page shows a fixed code (for example `REFUSED_NO_APPROVAL`, `REFUSED_AP
 `REFUSED_SELF_APPROVAL`, `REFUSED_BUNDLE_REJECTED`, `REFUSED_ISOLATION_UNAVAILABLE`), the next action, and four separate
 answers: byte integrity, authority approval, factual adjudication (always NOT_ASSESSED) and release permission (always
 NONE). An admitted bundle can feed COM intake or the EVO import while its approval stays applicable. Evidence text is shown
-only to an administrator or reviewer, as inert escaped text.
+only to an administrator or reviewer, as inert escaped text. *Who stands behind what:* the submitter is recorded as the
+principal that brought the bytes; an evidence file may name the `source_id` of a source registered in this workspace, and that
+registration stays the record of where the source came from; the approving administrator vouches for the exact bytes and
+purpose — not for who wrote or owns a document, and not for its truth. A correctly approved bundle that contains a false
+statement is admitted with factual adjudication NOT_ASSESSED: that is a possible failure of any approval process and SHD
+does not remove it.
 
 *The restricted worker.* Setup shows a live probe. Backend `bwrap` (bubblewrap namespaces) is preferred; backend `landlock`
 (Landlock file rules, a seccomp filter that refuses every socket, ptrace, signals to other processes and namespace calls,
@@ -218,7 +223,11 @@ review has been performed.
 **EVO — Evolution Evidence Audit** (<http://127.0.0.1:8765/evo>). The administrator records one JSON configuration:
 measurement `roots`, the eight `components` (`path` inside a root, `runtime`, `declared`, `unknown`, or `not_applicable`
 with a justification), `depends_on` edges, `protocols` (component scope, built-in job `policy_conformance` or
-`json_wellformed`, validity days) and `authority` lists. **Register** measures the configured files now (links and
+`json_wellformed`, validity days) and `authority` lists (`grader_writer_ids`, `evidence_writer_ids`,
+`release_authorizer_ids`, `hidden_test_reader_ids`: who may change graders, write evidence, authorize a release or read
+protected tests — a change to any list stops evidence reuse; the administrator is the custodian who records each grant or
+revocation of protected-test access, and an earlier exposure is never erased; no release is authorized by this software).
+**Register** measures the configured files now (links and
 secret-looking names are skipped unread) and records what changed from the parent. A reviewer who improved nothing on the
 lineage runs the **trusted evaluation**: the scope is copied to a private immutable snapshot and the copy is what runs; if
 the files no longer match the registered version the run is refused — register the new state as a new version. The
@@ -230,7 +239,8 @@ cutoff. The eligibility line is a read-only answer about recorded evidence; it c
 separate practice reserve, a per-principal packet cap and a maximum of open tasks. Submitters send packets that reference a
 claim here (or take them in from an SHD-admitted bundle). Packets with the same claim version, the same financial contract
 (metric, currency, unit, scale, basis, fiscal period) and the same known source roots form one group with one review task;
-every contributor stays listed. A reviewer who did not contribute **takes** a task (its cost is reserved under the workspace
+every contributor stays listed. Identity is exact: no similarity is computed and no alias is resolved, so the same document
+registered twice is two roots. A reviewer who did not contribute **takes** a task (its cost is reserved under the workspace
 lock), then start / pause / resume / finish / release; a lease that ran out returns the task to the queue with its observed
 seconds. Scheduling cost is a default until a reviewer or administrator sets it; a submitter's estimate is only a proposal.
 A task that does not fit waits with its reason while smaller ones proceed; an aged task holds the remaining capacity; an
@@ -250,10 +260,12 @@ and no study is run. A later source correction or claim amendment appears as a n
 practice-only principal is confined to the practice routes; a practitioner who also holds another capability is labelled
 NOT_CONFINED, because claim pages, the journal and exports are open to it. Not
 confidential from: the host administrator, the curator, an administrator principal, outside help, or an answer that is
-public elsewhere. The records cannot prove authorship, comprehension or improved ability.
+public elsewhere. The records cannot prove human authorship, the absence of outside assistance, research originality,
+comprehension or improved ability.
 
 **Export and verification** (<http://127.0.0.1:8765/modx>). Build a packet of the module records you may export (a
-practitioner: its own sessions, optionally with text withheld). Never included: credential hashes, signing keys, staged
+practitioner: its own sessions, optionally with text withheld; principal identifiers are exported as they are — a packet is
+not anonymous, and no ranking of people is produced anywhere). Never included: credential hashes, signing keys, staged
 bundle bytes, inspection excerpts, a comparison that was not revealed in the session. In a **fresh workspace**, Verify
 re-hashes every event into the journal skeleton, links every private object, recomputes the COM, EVO and SHD views, and
 reports signatures against that workspace's own trust roots: an unknown signer stays unknown, current authorization is
