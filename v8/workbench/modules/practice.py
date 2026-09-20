@@ -179,12 +179,17 @@ def commit_attempt(ws: Workspace, principal, session_id: str, *, judgment: str, 
         return ev
 
 
+def _may_reveal(ss: dict) -> bool:
+    """THE confidentiality rule, in one place: a comparison opens only for a session whose attempt is committed in the journal."""
+    return ss["attempt"] is not None
+
+
 def reveal(ws: Workspace, principal, session_id: str) -> dict:
     """The comparison — ONLY after this session's attempt is committed in the journal. Checked and recorded under the lock."""
     authz.require(principal, "practice")
     with ws._locked():
         evs = ws.load()["events"]; s = state(ws, evs=evs); ss, t = _own_session(s, principal, session_id)
-        if ss["attempt"] is None:
+        if not _may_reveal(ss):
             raise ModuleError("E_ATTEMPT_FIRST", "the comparison stays closed until this session's attempt is committed")
         ws._append_unlocked("PRC_COMPARISON_REVEALED", None, {"session_id": session_id, "task_id": t["task_id"], "after_attempt_event": ss["attempt"]["event_hash"], "comparison_commitment": t["comparison_commitment"]},
                             op_id="prc:reveal:" + hashlib.sha256(session_id.encode()).hexdigest()[:24], observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))
@@ -252,7 +257,7 @@ def session_view(ws: Workspace, principal, session_id: str) -> dict:
            "attempt": None, "comparison": None, "reflections": [], "feedback": [], "current_interpretation": annotations(ws, t, ss)}
     if ss["attempt"] is not None:
         out["attempt"] = {**v.get(ss["attempt"]["attempt_sha256"]), "committed_at": ss["attempt"]["at"], "attempt_sha256": ss["attempt"]["attempt_sha256"]}
-    if ss["revealed_at"] is not None or (not mine and ss["attempt"] is not None):
+    if ss["revealed_at"] is not None or (not mine and _may_reveal(ss)):
         c = v.get(t["comparison_commitment"]); out["comparison"] = {k: c[k] for k in ("reference_label", "reference_answer", "rationale", "provenance", "curator")}; out["comparison"]["provenance_meaning"] = PROVENANCE[c["provenance"]]
     if ss["revealed_at"] is not None or not mine:
         out["reflections"] = [{**v.get(r["reflection_sha256"]), "at": r["at"]} for r in ss["reflections"]]

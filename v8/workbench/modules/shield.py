@@ -212,18 +212,25 @@ def submit(ws: Workspace, principal, data: bytes, *, title: str, op_id: str) -> 
         return ev
 
 
-def applicable_approval(ws: Workspace, st: dict, sub: dict, purpose: str | None, evidence_sha256s: list | None) -> tuple[dict | None, str, str]:
-    """(approval, code, detail) for one submission against the registry state `st` AS READ NOW. code 'OK' or a fixed refusal."""
+def _distinct_approver(approval: dict, sub: dict) -> bool:
+    """One place for the rule: whoever submitted the bytes cannot be the principal whose approval admits them."""
+    return approval["approver"] != sub["submitter"]
+
+
+def applicable_approval(ws: Workspace, st: dict, sub: dict, purpose: str | None, evidence_sha256s: list | None, only_id: str | None = None) -> tuple[dict | None, str, str]:
+    """(approval, code, detail) for one submission against the registry state `st` AS READ NOW. code 'OK' or a fixed refusal.
+    `only_id` restricts the check to ONE approval: a consumer re-validates exactly the approval its decision was bound to."""
     why = core.clock_problem(ws)
     if why:
         return None, "REFUSED_CLOCK_UNCERTAIN", why
-    cands = [a for a in st["approvals"].values() if a["bundle_sha256"] == sub["bundle_sha256"]]
+    cands = [a for a in st["approvals"].values() if a["bundle_sha256"] == sub["bundle_sha256"] and (only_id is None or a["approval_id"] == only_id)]
     if not cands:
         return None, "REFUSED_NO_APPROVAL", "no approval names these exact bytes; an administrator other than the submitter issues one for this sha256"
-    now, last = core.now(), (None, "REFUSED_NO_APPROVAL", "")
+    now, first = core.now(), None                                     # the reason reported is the NEWEST approval's; older ones are only tried for applicability
     trusted = {k: {"public_key": r["public_key"], "revoked": r["revoked"]} for k, r in st["roots"].items()}
     for a in sorted(cands, key=lambda a: a["recorded_at"], reverse=True):
         v = envelope.verify(a["envelope"], "shd.approval", trusted)
+        last = None
         if a["revoked_at"]:
             last = (a, "REFUSED_APPROVAL_REVOKED", f"approval {a['approval_id']} was revoked at {a['revoked_at']}")
         elif v["integrity"] == "UNVERIFIABLE":
@@ -236,7 +243,7 @@ def applicable_approval(ws: Workspace, st: dict, sub: dict, purpose: str | None,
             last = (a, "REFUSED_UNKNOWN_SIGNER", "the signing key is not a root enrolled in this workspace")
         elif a["workspace_id"] != ws.meta["workspace_id"]:
             last = (a, "REFUSED_WORKSPACE_MISMATCH", "the approval was issued for another workspace")
-        elif a["approver"] == sub["submitter"]:
+        elif not _distinct_approver(a, sub):
             last = (a, "REFUSED_SELF_APPROVAL", "the approver is the submitter")
         elif a["policy_version"] != st["policy"]["policy_version"]:
             last = (a, "REFUSED_POLICY_VERSION", f"approved under policy version {a['policy_version']}; the current version is {st['policy']['policy_version']}")
@@ -250,7 +257,8 @@ def applicable_approval(ws: Workspace, st: dict, sub: dict, purpose: str | None,
             last = (a, "REFUSED_SOURCE_DIGESTS_MISMATCH", "the evidence digests in the bundle are not the ones the approval names")
         else:
             return a, "OK", ""
-    return last
+        first = first or last
+    return first
 
 
 def admit(ws: Workspace, principal, submission_id: str, *, op_id: str) -> dict:
@@ -319,8 +327,8 @@ def require_current(ws: Workspace, evs: list, decision_id: str, purpose: str) ->
     if d["purpose"] != purpose:
         raise ModuleError("REFUSED_PURPOSE_MISMATCH", f"decision {decision_id} was admitted for {d['purpose']}, not {purpose}")
     sub = st["submissions"][d["submission_id"]]; typed = core.Vault(ws).get(d["typed_result_sha256"])
-    _, code, detail = applicable_approval(ws, st, sub, typed["purpose"], [e["sha256"] for e in typed["evidence"]])
-    if code != "OK":
+    _, code, detail = applicable_approval(ws, st, sub, typed["purpose"], [e["sha256"] for e in typed["evidence"]], only_id=d["authority_approval"]["approval_id"])
+    if code != "OK":                                                       # the decision is bound to ONE approval; another approval of the same bytes needs its own decision
         raise ModuleError(code, f"the approval behind decision {decision_id} is no longer applicable: {detail}")
     return typed
 
