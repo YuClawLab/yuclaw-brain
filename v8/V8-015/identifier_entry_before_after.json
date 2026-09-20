@@ -1,0 +1,220 @@
+{
+ "record": "v8-015-identifier-entry/1",
+ "method": "the integrated module journey was instrumented: every identifier the runner TYPES into a text field is recorded in order and classified — NEW (an identifier being created), EXTERNAL (comes from outside the workspace), REDUNDANT (names an object that already exists here and was already chosen or created in the workflow); selections (list, checkbox, contextual button, link path) are counted apart. Same tasks, same data, both 6/6.",
+ "correction": "the V8-014 handoff said an identifier is typed or pasted 11 times; that was an estimate from reading the runner. The instrumented count on that same commit is 29 typed entries, 16 of them redundant.",
+ "before": {
+  "commit": "68daca6daa6266591dc4c3e44b63e36b993f0615",
+  "typed_identifier_entries": 29,
+  "by_class": {
+   "REDUNDANT": 16,
+   "EXTERNAL": 3,
+   "NEW": 10
+  },
+  "deliberate_selections": 14,
+  "redundant_sequence": [
+   {
+    "n": 8,
+    "action": "/shd/approve",
+    "field": "bundle_sha256"
+   },
+   {
+    "n": 12,
+    "action": "/shd/approve",
+    "field": "bundle_sha256"
+   },
+   {
+    "n": 14,
+    "action": "/shd/approve",
+    "field": "bundle_sha256"
+   },
+   {
+    "n": 18,
+    "action": "/com/intake",
+    "field": "decision_id"
+   },
+   {
+    "n": 19,
+    "action": "/com/submit",
+    "field": "claim_id"
+   },
+   {
+    "n": 20,
+    "action": "/com/submit",
+    "field": "claim_id"
+   },
+   {
+    "n": 21,
+    "action": "/com/submit",
+    "field": "claim_id"
+   },
+   {
+    "n": 22,
+    "action": "/com/submit",
+    "field": "claim_id"
+   },
+   {
+    "n": 24,
+    "action": "/com/dispute",
+    "field": "target"
+   },
+   {
+    "n": 27,
+    "action": "/prc/task",
+    "field": "claim_id"
+   },
+   {
+    "n": 28,
+    "action": "/prc/task",
+    "field": "source_ids"
+   },
+   {
+    "n": 30,
+    "action": "/modx/build",
+    "field": "prc_sessions"
+   },
+   {
+    "n": 37,
+    "action": "/evo/register",
+    "field": "parent_version_id"
+   },
+   {
+    "n": 40,
+    "action": "/evo/register",
+    "field": "parent_version_id"
+   },
+   {
+    "n": 42,
+    "action": "/evo/version/v3/resolve",
+    "field": "evidence_evaluation_id"
+   },
+   {
+    "n": 43,
+    "action": "/modx/build",
+    "field": "prc_sessions"
+   }
+  ]
+ },
+ "after": {
+  "commit": "6e7b91d6d230afb07cd0a3733763ff0cb4cd1827",
+  "typed_identifier_entries": 14,
+  "by_class": {
+   "REDUNDANT": 1,
+   "EXTERNAL": 3,
+   "NEW": 10
+  },
+  "deliberate_selections": 24,
+  "remaining_typed_entry_that_names_an_existing_object": [
+   {
+    "n": 12,
+    "action": "/shd/approve",
+    "field": "bundle_sha256"
+   }
+  ],
+  "why_it_remains": "it occurs only in the journey's REFUSED negative case: a principal holding both capabilities tries to approve its own submission. The trust page offers that principal no approval action on its own row (by design), so the attempt goes through the separate approve-by-digest form, which exists for digests that arrive from outside before a submission does. In every AUTHORIZED workflow the count of redundant re-entry is 0.",
+  "typed_sequence": [
+   {
+    "n": 1,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 2,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 3,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 4,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 5,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 6,
+    "action": "/setup/enroll",
+    "field": "principal_id",
+    "class": "NEW"
+   },
+   {
+    "n": 8,
+    "action": "/shd/approve",
+    "field": "source_sha256s",
+    "class": "EXTERNAL"
+   },
+   {
+    "n": 12,
+    "action": "/shd/approve",
+    "field": "bundle_sha256",
+    "class": "REDUNDANT"
+   },
+   {
+    "n": 13,
+    "action": "/shd/approve",
+    "field": "source_sha256s",
+    "class": "EXTERNAL"
+   },
+   {
+    "n": 14,
+    "action": "/shd/approve",
+    "field": "source_sha256s",
+    "class": "EXTERNAL"
+   },
+   {
+    "n": 17,
+    "action": "/com/budget",
+    "field": "period_id",
+    "class": "NEW"
+   },
+   {
+    "n": 30,
+    "action": "/evo/register",
+    "field": "version_id",
+    "class": "NEW"
+   },
+   {
+    "n": 34,
+    "action": "/evo/register",
+    "field": "version_id",
+    "class": "NEW"
+   },
+   {
+    "n": 36,
+    "action": "/evo/register",
+    "field": "version_id",
+    "class": "NEW"
+   }
+  ]
+ },
+ "explicit_decisions_kept": [
+  "approve (button on the submission's row; the approver still types the evidence digests they independently expect, the purpose and the expiry)",
+  "request a decision",
+  "take into the COM queue / import into EVO (buttons on the admitted decision's page)",
+  "submit a packet",
+  "record / appeal / resolve a dispute",
+  "take a task",
+  "freeze a practice task",
+  "commit an attempt",
+  "open the comparison",
+  "build an export (Preview is a separate button and writes nothing)"
+ ],
+ "observed_mistakes": [
+  "while Preview was added it became the form's first button and the runner's generic 'press the first button' built nothing: the following verification used a stale packet and the journey scored 5/6. Kept as designed for people (Enter on the form gives the harmless preview); the runner now presses the build button explicitly",
+  "several forms share one action on the trust page; the runner picked the first and timed out — forms are now addressed by the field or object they carry",
+  "my earlier hand estimate of 11 typed identifiers was wrong (see correction)"
+ ],
+ "limit": "an instrumented automated journey establishes workflow behaviour; it is not evidence that people make fewer mistakes or work faster — human benefit stays PENDING",
+ "not_advice": "Research and education only. Not investment advice."
+}

@@ -1,0 +1,285 @@
+{
+ "record": "v8-modules-journey-scorecard/1",
+ "order": "V8-015 §4 — integrated demonstration of the CONNECTED workflow from the INSTALLED artifacts",
+ "candidate": {
+  "commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+  "tree": "5543108042e16400017e29145b810c3f38f7cb40",
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "d1f5c59f030d42600241b6dbebb257a66054d2bb8be29b43ae4ff82536adb0f4",
+   "yuclaw-8.0.0.tar.gz": "8d4b78f146ededb20987f3da8d06f0ba4c9001737b22a43c51e7fa6ba0639acf"
+  }
+ },
+ "wheel": {
+  "score": "6/6",
+  "assertions": 42,
+  "negative_assertions": 15,
+  "isolation_backend": "landlock",
+  "runtime": {
+   "python": "3.12.3",
+   "platform": "Linux 6.17.0-1008-nvidia aarch64"
+  }
+ },
+ "sdist": {
+  "score": "6/6",
+  "assertions": 42,
+  "isolation_backend": "landlock"
+ },
+ "steps": {
+  "1": {
+   "step": "source and typed claim in the existing workbench; principals set up",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "with principals configured an unsigned browser is sent to sign-in",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "the administrator created by the host command signs in",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "six further principals enrolled in the browser, each credential shown once",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "two fictional typed claims with their sources are frozen through the existing workbench",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the claim page links to where the claim appears in the modules",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "Modules page lists all four modules with their status",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  },
+  "2": {
+   "step": "SHD: changed, self-approved and expired bundles refused on the protected route; an independently approved bundle admitted; hostile text inert",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "the administrator enrolls a trust root (a signing key generated in the workspace's private area)",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a submitter sees no approval or root form and a direct attempt is refused",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "without an approval the protected route refuses with a fixed code and a next action",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "an EXPIRED approval is refused at the protected operation",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a CHANGED bundle is not covered by the approval of the original bytes",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "the trust page offers bob NO approval action on his own submission",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a principal holding BOTH capabilities cannot approve its own bundle",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "an independently approved valid bundle is ADMITTED inside the restricted worker (landlock); factual adjudication stays NOT_ASSESSED although the evidence states a false figure",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the submitter cannot open the evidence text; the typed result shows digests only",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "hostile instruction text is shown to an administrator as inert escaped text: no script ran, no file was touched, the title is unchanged",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  },
+  "3": {
+   "step": "COM: repeated packets incl. after a restart form one group with retained attribution and one reservation; another contract stays separate; a dispute has a reversible review path",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "after the restart the old sessions are gone: sign-in is required again",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "six packets about one claim contract (three through SHD, three direct, one after the restart) form ONE group; the other claim stays a separate group",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "every contributor keeps its attribution in the group and the submitters' 600- and 1-minute proposals did not move the scheduling cost",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "one reservation of the group's cost — duplicate packets spent nothing more",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a recorded dispute by a reviewer quarantines the affected group; a submitter has no such form",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "the appeal and an administrator's resolution are new events: quarantine lifted, dispute, appeal and reason all still shown",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  },
+  "4": {
+   "step": "PRC: no comparison before the attempt on any tried surface; commit, reveal, reflect, export; an assisted session labelled honestly",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "reached from the claim page, the task form carries the claim with its version shown and offers the claim's own source as the scope, already ticked",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the session drew 20 minutes from the separately reserved practice capacity, none from review",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "before the attempt the reference is on NONE of 14 pages the practitioner can request, claim and journal pages are closed to it, and a direct reveal request is refused",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "after the attempt is committed the comparison opens, labelled as not ground truth",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a reflection is a separate later record; the original attempt text is unchanged",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the practitioner exports its own permitted session record",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "an assisted, already-exposed session is ACCEPTED and labelled ALREADY_EXPOSED — never called unaided; another practitioner's session is not visible to it",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  },
+  "5": {
+   "step": "EVO: a measured version, scoped review evidence, a REAL relevant change makes evidence stale while unrelated evidence is reused; a failure stays visible until a valid resolution",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "a version is MEASURED from configured files; the model alias stays DECLARED and the unconfigured data component stays UNKNOWN",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "trusted-runner evaluations on an immutable snapshot and a scoped review are recorded",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the changed file is NOT evaluated under the old identity",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "after the measured change the affected evidence is stale (tool-safety REEVALUATE) while the unrelated evidence is reused (memory-check REUSE) with reasons",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the failure recorded on v2 stays visible on v3 although v3 passed",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "an administrator's evidence-backed resolution closes it on v3; the eligibility answer is read-only and names the exact subject",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  },
+  "6": {
+   "step": "export verified in a FRESH workspace: integrity independent of trust, unknown signer not trusted, derived views recomputed, forged links and an unauthorized answer rejected, truncation detected",
+   "status": "DEMONSTRATED",
+   "assertions": [
+    {
+     "name": "the export preview lists what would be included and writes nothing",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "the packet carries no credential, key or staged evidence text",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "a FRESH workspace verifies the packet: events re-hashed, COM/EVO/SHD views recomputed, integrity VALID while the signer stays UNKNOWN_SIGNER and current authorization UNKNOWN",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "verification enrolled nothing: the fresh workspace still trusts no root",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "against the separately held checkpoint the journal is CONSISTENT",
+     "ok": true,
+     "negative_case": false
+    },
+    {
+     "name": "a packet with a forged derived view is a MISMATCH, and a truncated journal is detected against the held checkpoint",
+     "ok": true,
+     "negative_case": true
+    },
+    {
+     "name": "the practitioner's own session packet verifies in the fresh workspace",
+     "ok": true,
+     "negative_case": false
+    }
+   ]
+  }
+ },
+ "commands": [
+  {
+   "command": "python -m v8.workbench principals init --workspace <research workspace> --id owner",
+   "rc": 0
+  }
+ ],
+ "principals": "automated test fixtures created by this runner; not people, not qualified reviewers, not owner decisions",
+ "limits": "automated fixtures on fictional data: no human study, no qualified reviewer, no independent security review, no deployment control, no claim of truth, benefit or improved ability",
+ "status_word": "INSTALLED_AND_DEMONSTRATED (both artifacts, executor Linux aarch64); not HOSTED_CI_VERIFIED; not RELEASED",
+ "not_advice": "Research and education only. Not investment advice."
+}

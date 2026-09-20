@@ -1,0 +1,158 @@
+{
+ "record": "v8-015-packaging/1",
+ "result": "PASS",
+ "mode": "PRELIMINARY_BUILD",
+ "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+ "source_tree": "5543108042e16400017e29145b810c3f38f7cb40",
+ "build_utc": "2026-09-20T07:36:07+00:00",
+ "source_date_epoch": "1580601600",
+ "build_tools": {
+  "python": "3.12.3",
+  "build": "build 1.4.2",
+  "wheel_generator": "hatchling 1.32.3"
+ },
+ "wheel": {
+  "name": "yuclaw-8.0.0-py3-none-any.whl",
+  "sha256": "d1f5c59f030d42600241b6dbebb257a66054d2bb8be29b43ae4ff82536adb0f4",
+  "size": 1004415
+ },
+ "sdist": {
+  "name": "yuclaw-8.0.0.tar.gz",
+  "sha256": "8d4b78f146ededb20987f3da8d06f0ba4c9001737b22a43c51e7fa6ba0639acf",
+  "size": 5259183
+ },
+ "wheel_inspection": {
+  "kind": "wheel",
+  "members": 279,
+  "missing_required": [],
+  "forbidden_present": [],
+  "test_tree_present": [],
+  "home_paths_in_names": [],
+  "ok": true
+ },
+ "sdist_inspection": {
+  "kind": "sdist",
+  "members": 1198,
+  "missing_required": [],
+  "forbidden_present": [],
+  "test_tree_present": [],
+  "home_paths_in_names": [],
+  "ok": true
+ },
+ "long_description": {
+  "wheel": {
+   "content_type": "text/markdown",
+   "has_picture_element": false,
+   "has_relative_brand_path": false,
+   "has_mission_vision_markers": true,
+   "ok": true
+  },
+  "sdist": {
+   "content_type": "text/markdown",
+   "has_picture_element": false,
+   "has_relative_brand_path": false,
+   "has_mission_vision_markers": true,
+   "ok": true
+  }
+ },
+ "twine_check": {
+  "rc": 0,
+  "tool": "twine 7.0.0"
+ },
+ "installs": {
+  "wheel": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true
+   },
+   "stop": null,
+   "journeys": {
+    "fixtures": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "0ddb55ec5bf4951f06b248d3271db9c691b7a9dbe50efc27a2306eb9edc914f8"
+    },
+    "mchp": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "085004a9a45e911434e7f2afadbdd7148577ad3af10188442588b14eb730944d"
+    },
+    "modules": {
+     "rc": 0,
+     "score": "6/6",
+     "ok": true,
+     "assertions": 42,
+     "negative_assertions": 15,
+     "isolation_backend": "landlock",
+     "failed_assertions": [],
+     "module_inside_venv": true,
+     "journey_log_sha256": "1e47e8d7813bdb91f56809f9fd5f08e32ab012b415b8e826cc208d7bac044c69"
+    }
+   }
+  },
+  "sdist": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true
+   },
+   "stop": null,
+   "journeys": {
+    "fixtures": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "b9061d8a8abfb849b32f05b95dae013498dcaffa0fc695a6fea699d04b148fa2"
+    },
+    "mchp": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "66f921b90e85e8352ed846f5b115ac502548983ec525ce3dd36a078cac018fa2"
+    },
+    "modules": {
+     "rc": 0,
+     "score": "6/6",
+     "ok": true,
+     "assertions": 42,
+     "negative_assertions": 15,
+     "isolation_backend": "landlock",
+     "failed_assertions": [],
+     "module_inside_venv": true,
+     "journey_log_sha256": "d39fc9e79803a9d04e13c0b8f64af22ced3e72e1560c08fd397ec59ac6f46bb4"
+    }
+   }
+  }
+ },
+ "label": "CANDIDATE / PRE-RELEASE-REVIEW artifacts of the REVISED expanded candidate — built once from the source commit; NOT a final release set; release_authorized=false",
+ "never_relabelled": {
+  "V8-014 pair (source 4f2ec113; also rebuilt byte-identically by hosted run 35495154439 from 68daca6d)": "wheel 05a50fa2cff970b2… / sdist 81ff6ae080b0750d…",
+  "V8-015 earlier build (source e1cc206e; PASSED every check; superseded by later packaged changes)": "wheel 357a2c92e6058998… / sdist 289b9c883cc5c8b2…",
+  "two stopped builds (df5e0b5d, 0ebe216d)": "never completed; never candidates",
+  "V8-010 and V8-011 pairs": "history"
+ },
+ "test_evidence_on_the_source_commit": {
+  "full_suite": "371 passed",
+  "python_3_10_21_floor": "166 passed",
+  "skips": "none locally (-rs prints every skip; both runs printed none)"
+ },
+ "platform": {
+  "python": "3.12.3",
+  "machine": "Linux aarch64 (executor)",
+  "isolation_backend": "landlock"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}

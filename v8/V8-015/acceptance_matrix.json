@@ -1,0 +1,1202 @@
+{
+ "record": "v8-015-acceptance-matrix/1",
+ "source_of_requirements": "V8_014_RESEARCH_AND_ACCEPTANCE.md (r2 archive sha256 26dd2a5c…; requirement text verbatim)",
+ "candidate_source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+ "counts": {
+  "families": 43,
+  "with_untested_subclauses": 20,
+  "needing_external_evidence": 4
+ },
+ "installed_journey_results": {
+  "wheel": {
+   "fixtures": {
+    "score": "7/7",
+    "journey_log_sha256": "0ddb55ec5bf4951f06b248d3271db9c691b7a9dbe50efc27a2306eb9edc914f8"
+   },
+   "mchp": {
+    "score": "7/7",
+    "journey_log_sha256": "085004a9a45e911434e7f2afadbdd7148577ad3af10188442588b14eb730944d"
+   },
+   "modules": {
+    "score": "6/6",
+    "assertions": 42,
+    "negative_assertions": 15,
+    "isolation_backend": "landlock",
+    "journey_log_sha256": "1e47e8d7813bdb91f56809f9fd5f08e32ab012b415b8e826cc208d7bac044c69"
+   }
+  },
+  "sdist": {
+   "fixtures": {
+    "score": "7/7",
+    "journey_log_sha256": "b9061d8a8abfb849b32f05b95dae013498dcaffa0fc695a6fea699d04b148fa2"
+   },
+   "mchp": {
+    "score": "7/7",
+    "journey_log_sha256": "66f921b90e85e8352ed846f5b115ac502548983ec525ce3dd36a078cac018fa2"
+   },
+   "modules": {
+    "score": "6/6",
+    "assertions": 42,
+    "negative_assertions": 15,
+    "isolation_backend": "landlock",
+    "journey_log_sha256": "d39fc9e79803a9d04e13c0b8f64af22ced3e72e1560c08fd397ec59ac6f46bb4"
+   }
+  }
+ },
+ "module_tests_not_cited_by_any_row": [],
+ "reading": "software status, hosted CI, independent review and human evidence are separate columns; a passing test is evidence for the clause it exercises and nothing more",
+ "rows": [
+  {
+   "id": "X-01",
+   "requirement": "Fresh installed wheel and sdist expose all four normal browser workflows, help and required resources outside the source checkout.",
+   "entry_points": "v8/workbench/modules/* packaged (wheel: packages v8; sdist: v8/workbench); /modules /setup /login /shd /evo /com /prc /modx; Help lists every route; OPERATOR_GUIDE §7, DATA_DICTIONARY",
+   "tests_and_journey_assertions": [
+    "tools/yuclaw_v8_clean_install.py: REQUIRED_WHEEL/REQUIRED_SDIST member checks + three journeys per artifact",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist 6/6",
+    "tests/test_v8_mod_prc_web.py::Surface::test_X01_X05_unconfigured_workspace_shows_the_setup_step_and_state_survives_restart"
+   ],
+   "valid_authorized_cases": "fresh installs outside the checkout run all four workflows",
+   "rejected_cases": "missing module file or a credential store/key/vault/journal in a distribution fails the tool",
+   "untested_subclauses": [
+    "macOS and Windows installs were not run (SHD admission refuses there by design; other pages untested on those platforms)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there; the V8-015 artifacts have no hosted run",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-02",
+   "requirement": "Shared IDs refer to real canonical claim/source/version objects; changing an actor label cannot change authenticated authority.",
+   "entry_points": "core.claim_ref / core.source_ids; web.claim_from (claim|version-digest references); journal actor = authenticated principal",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor (forged actor/principal/submitter fields ignored)",
+    "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate",
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E06_requests_commitments_eligibility_and_declared_imports",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_test_access_is_recorded_only_for_a_principal_of_this_workspace",
+    "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes (unknown discrepancy)"
+   ],
+   "valid_authorized_cases": "packets, tasks, commitments and disputes name real claims, versions and sources of this workspace",
+   "rejected_cases": "unknown claim (E_UNKNOWN_CLAIM), unknown version digest (E_CLAIM_VERSION), stale version (E_STALE_SELECTION), unknown source (E_UNKNOWN_SOURCE), unknown lineage (E_UNKNOWN_LINEAGE), unknown dispute target (E_UNKNOWN_TARGET), unknown EVO version (E_UNKNOWN), test access for a principal never enrolled here (E_UNKNOWN_PRINCIPAL), a resolution for a discrepancy never recorded here (E_UNKNOWN_DISCREPANCY). A V8-015 audit called every form handler's operation with a made-up identifier: these two were the only ones that had accepted it",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the V8-015 reference checks; hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there for the forged-actor case",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-03",
+   "requirement": "Cross-role, cross-object and cross-workspace access is denied across HTTP, CLI/service and export surfaces; sessions remain separate.",
+   "entry_points": "web.gate (sign-in on every page once configured; practice-only confinement); authz.require/conflict per route; object checks in shield.admit, page_shd_decision, practice._own_session, modexport.build_packet",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X03_a_session_of_one_server_is_nothing_to_another_and_decisions_are_object_scoped",
+    "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries (foreign session export E_NOT_FOUND)",
+    "tests/test_v8_mod_shield.py::Foundation::test_capabilities_are_separate_and_a_submitter_cannot_administer"
+   ],
+   "valid_authorized_cases": "reviewer opens another submitter's decision; admin exports any session",
+   "rejected_cases": "cross-role POSTs 403; foreign decision 404 and unlisted; foreign session 404; session id or credential of workspace A unknown to workspace B; signed-out and revoked sessions",
+   "untested_subclauses": [
+    "CLI surface: the CLI performs host-operator administration only (principals, status) and no module action as a principal, so there is no CLI authorization to test; this is a documented design limit, not a tested denial"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the cross-server and object-scope tests; hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there for test_X03_roles…",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-04",
+   "requirement": "Existing data, seven-step journeys, source-time correction and old export verification remain valid after additive migration.",
+   "entry_points": "store.KINDS += MODULE_KINDS (additive, claim_id None); claim derivation/export untouched",
+   "tests_and_journey_assertions": [
+    "full suite (371 passed; the 307 tests that predate the modules are unchanged and passing)",
+    "clean-install: original fixtures journey 7/7 and real-source journey 7/7 from both artifacts",
+    "private evidence run x04_compat (old V8-011 wheel ↔ new code): old export verifies under new code; old workspace opens; module events leave the claim's canonical digest unchanged; new export verifies under OLD code; old code reads the extended journal"
+   ],
+   "valid_authorized_cases": "old data and exports keep working in both directions",
+   "rejected_cases": "a future packet format is refused as UNSUPPORTED (test_X08_P06…)",
+   "untested_subclauses": [
+    "the old-wheel compatibility run is a recorded private run, not an automated test (it needs the old wheel)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there for the suite and fixtures journey; the compatibility run is local only",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-05",
+   "requirement": "Repeated operations, concurrent writers, crashes and restart preserve atomic decisions, capacity and history.",
+   "entry_points": "one workspace lock + op_id idempotency; vault written before the committing event; journal replay on restart",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X05_a_crash_between_the_private_write_and_the_committing_event_commits_nothing",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X05_a_process_killed_while_it_holds_the_lock_commits_nothing_and_blocks_nobody",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_never_double_spends_and_X11_detects_a_disabled_check",
+    "tests/test_v8_mod_prc_web.py::Practice::test_P03_concurrent_attempt_and_reveal_are_deterministic",
+    "tests/test_v8_mod_prc_web.py::Surface::test_X01_X05_unconfigured_workspace_shows_the_setup_step_and_state_survives_restart (restart)",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate (restart)",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 3 (server restart)"
+   ],
+   "valid_authorized_cases": "retry after a simulated crash, and after a killed process, commits exactly once; the dead process's lock blocks nobody",
+   "rejected_cases": "second attempt, double reservation, reveal before commit",
+   "untested_subclauses": [
+    "a power cut (loss of unsynced data) was not staged: one test raises at the append, one kills the whole process with os._exit while it holds the workspace lock; a torn last journal line is covered by the pre-existing store tests"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the crash test; hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there for the others",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-06",
+   "requirement": "New inputs obey bounds, safe rendering, CSRF/origin rules, secret handling and dependency/platform constraints.",
+   "entry_points": "core.strict_json / core.text bounds; web.esc on every dynamic value; server CSRF/Origin/Host guard; CSP; credentials never in journal/log/URL",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading",
+    "tests/test_v8_mod_shield.py::Foundation::test_strict_json_bounds",
+    "tests/test_v8_mod_shield.py::Foundation::test_credentials_expiry_rotation_revocation_and_no_stale_session (credential absent from journal and registry)",
+    "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor (CSRF, Origin, Host)"
+   ],
+   "valid_authorized_cases": "a valid upload and form succeed",
+   "rejected_cases": "oversized upload refused on Content-Length alone (413); forged CSRF; foreign Origin; foreign Host; script markup rendered inert",
+   "untested_subclauses": [
+    "dependency constraint is declared (cryptography>=41) and resolved in fresh installs; no lower-bound matrix was run"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-01",
+   "requirement": "A submitter cannot enroll a root, self-approve a bundle, overwrite approval/audit records or use a copied approval for another purpose/workspace.",
+   "entry_points": "shield.enroll_root / issue_approval / set_policy (admin only); shield._distinct_approver; approval body binds purpose + workspace_id",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Approval::test_S01_submitter_cannot_enroll_approve_or_reuse_an_approval",
+    "tests/test_v8_mod_shield.py::Approval::test_a_pre_approved_self_submission_is_refused_at_the_protected_operation",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S01_a_copied_approval_is_useless_in_another_workspace_even_when_its_root_is_trusted_there",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 2"
+   ],
+   "valid_authorized_cases": "an independent administrator's approval admits the bundle",
+   "rejected_cases": "submitter enrolling a root / approving / changing policy (E_FORBIDDEN); dual-role self-approval; pre-approved self-submission; other purpose; other workspace (REFUSED_WORKSPACE_MISMATCH with a valid signature and trusted root)",
+   "untested_subclauses": [
+    "'overwrite approval/audit records': there is no route that edits a journal line; the hash chain's tamper detection is covered by pre-existing store tests, not re-tested for module kinds"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the copied-approval test; hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there for the rest",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-02",
+   "requirement": "Expiry, revocation, key rotation, clock uncertainty and concurrent use have explicit tested outcomes; no stale-cache authorization.",
+   "entry_points": "shield.applicable_approval (expiry, revocation, root revocation, policy version, clock) re-run under the lock in admit() and in require_current()",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Approval::test_S02_expiry_revocation_rotation_policy_clock_and_concurrent_revocation",
+    "tests/test_v8_mod_shield.py::Approval::test_S02_revocation_between_worker_and_commit_wins",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_intake_from_shield_needs_an_admitted_and_still_approved_bundle (consumer after revocation)",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 2 (real expiry)"
+   ],
+   "valid_authorized_cases": "a fresh approval under the current policy/root admits",
+   "rejected_cases": "expired, revoked, rotated root, stale policy version, clock behind the journal, revocation racing the worker",
+   "untested_subclauses": [
+    "clock skew smaller than the journal's last timestamp is undetectable; key-file theft is outside the model"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-03",
+   "requirement": "Strict JSON, duplicate keys, parser exhaustion, archive/file escape, link/special-file and unstable-read cases fail at the integrated entry point.",
+   "entry_points": "shield_worker.read_archive / strict_json / read_input; parent stores and hashes only",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Parsing::test_valid_bundle_and_every_manifest_refusal",
+    "tests/test_v8_mod_shield.py::Parsing::test_archive_escapes_links_duplicates_and_bombs",
+    "tests/test_v8_mod_shield.py::Parsing::test_unstable_or_unsafe_staged_input",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_hostile_archives_are_rejected_at_the_INTEGRATED_route_by_the_real_worker",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_a_member_that_lies_about_its_size_is_refused_after_a_bounded_read",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_a_staged_input_changed_while_it_is_being_read_is_refused",
+    "tests/test_v8_mod_shield.py::Isolation::test_S03_integrated_route_rejects_a_tampered_bundle_and_admits_a_valid_one"
+   ],
+   "valid_authorized_cases": "a valid bundle verifies and is admitted through the real worker",
+   "rejected_cases": "duplicate keys, depth, floats, traversal and absolute names, symlink and FIFO members, duplicate names, ratio bomb, member count, unlisted/mismatching evidence, a member declaring more bytes than it holds (ARCHIVE_SIZE_MISMATCH) or fewer (read stops at the declared size + 1, ARCHIVE_INVALID), hard-linked/symlinked/FIFO staged input, input appended to or truncated during the read (INPUT_CHANGED_DURING_READ)",
+   "untested_subclauses": [
+    "the change during the read is injected deterministically after the first chunk (append, truncate); a scheduler-timed race by a second real process was not staged. A replacement by rename gives the path a new file the open descriptor never reads; the parent accepts only a result whose digest equals the stored bytes' digest"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the integrated hostile-archive, lying-size and changed-input tests",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-04",
+   "requirement": "The actual restricted worker cannot read canary secrets, write forbidden host paths, reach a canary network endpoint or escape resource bounds.",
+   "entry_points": "sandbox_bootstrap (Landlock + seccomp + rlimits + no_new_privs | bubblewrap), sandbox.probe/capability",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary",
+    "tests/test_v8_mod_shield.py::Isolation::test_S04_descriptors_and_environment_do_not_leak_into_the_worker",
+    "hosted log: live probe printed on x86-64"
+   ],
+   "valid_authorized_cases": "the worker reads its one staged input",
+   "rejected_cases": "canary secret, home listing, /etc/passwd, any write, TCP, UDP, unix socket, fork, signal to parent, 2 GiB allocation; spin and flood bounded",
+   "untested_subclauses": [
+    "the bubblewrap backend has never passed a probe anywhere (executor: blocked by AppArmor; hosted runner: not installed) — it is implemented and unverified",
+    "RLIMIT_CPU and RLIMIT_NOFILE are set but not separately probed (wall-clock kill and the fork/alloc probes are)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "process confinement, not a container; no independent security review",
+   "hosted_ci": "HOSTED_VERIFIED for the landlock backend on Linux 6.17 azure x86-64 at 68daca6d (sandbox code unchanged since); aarch64 verified locally",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-05",
+   "requirement": "Isolation failure, worker error or forged output never falls back to an unprotected success route.",
+   "entry_points": "sandbox.run_worker raises; shield.admit records REFUSED_*; shield_worker.validate_result",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Isolation::test_S05_closed_route_has_no_fallback",
+    "tests/test_v8_mod_shield.py::Parsing::test_S05_forged_worker_output_is_rejected_by_the_parent"
+   ],
+   "valid_authorized_cases": "n/a (refusal family); positive counterpart is S-03/S-04 admission",
+   "rejected_cases": "no backend → REFUSED_ISOLATION_UNAVAILABLE; worker exit ≠ 0; forged/extra/mismatching worker output; and the parent has no in-process parser",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-06",
+   "requirement": "Hostile instruction text stays data; a correctly approved false statement can pass byte checks without acquiring truth or benefit status.",
+   "entry_points": "typed result without excerpts; shield.inspection (admin/review, escaped)",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Approval::test_S06_hostile_text_is_inert_and_an_approved_false_statement_stays_unassessed",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 2 (title unchanged, no script element, canary file absent)"
+   ],
+   "valid_authorized_cases": "an approved bundle with a false statement is ADMITTED with factual_adjudication NOT_ASSESSED",
+   "rejected_cases": "submitter cannot read the inspection view",
+   "untested_subclauses": [
+    "one constructed payload family; says nothing about prompt-injection in general"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-01",
+   "requirement": "All eight inventory components distinguish measured, declared, unknown and justified non-applicable state.",
+   "entry_points": "evolution.collect / measure_path / measure_runtime / set_config",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E01_inventory_distinguishes_measured_declared_unknown_not_applicable",
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E01_unknown_required_inventory_blocks_reuse",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 5"
+   ],
+   "valid_authorized_cases": "measured components carry digests",
+   "rejected_cases": "path outside roots; non-admin config; secret-named files never read",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-02",
+   "requirement": "Controlled real dependency/grader/policy changes invalidate relevant reviews; unrelated changes retain justified reuse.",
+   "entry_points": "evolution.closure / reuse_decisions",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E02_E07_real_changes_invalidate_relevant_evidence_and_keep_unrelated_evidence",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P02_a_practitioner_with_other_capabilities_is_labelled_not_confined_and_C04_E02_bounds (runtime change)",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 5",
+    "v8/V8-014/measurements.json (12 real changes: 0 missed, 0 unnecessary)"
+   ],
+   "valid_authorized_cases": "unrelated real change → REUSE with reasons",
+   "rejected_cases": "transitive dependency, grader, policy and runtime changes → REEVALUATE",
+   "untested_subclauses": [
+    "the runtime change is simulated by substituting the runtime digest, not by upgrading a package"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the runtime case",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-03",
+   "requirement": "Authentication, ancestry conflicts and previous protected-test exposure survive credential revocation and relabeling.",
+   "entry_points": "authz.conflict through evolution.lineage; EVO_TEST_ACCESS_RECORDED",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E03_conflicts_through_ancestry_and_persistent_test_exposure",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_E06_exposure_survives_principal_revocation_and_relabelling_and_requests_show_fulfilment",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_test_access_is_recorded_only_for_a_principal_of_this_workspace"
+   ],
+   "valid_authorized_cases": "an independent grader evaluates",
+   "rejected_cases": "improver grading or reviewing its own lineage; exposure after access REVOKED, after the PRINCIPAL is revoked, across a relabelled child",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the revocation/relabel case",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-04",
+   "requirement": "A matching unresolved failure persists across later passes/protocol names; an authorized evidence-backed resolution is append-only and scoped.",
+   "entry_points": "evolution._open_failure / resolve_failure",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E04_a_failure_persists_until_an_authorized_evidence_backed_resolution",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 5"
+   ],
+   "valid_authorized_cases": "an administrator's resolution backed by a trusted-runner PASS on the lineage closes the issue from that version on",
+   "rejected_cases": "later pass, renamed protocol, new label do not close it; improver or a FAIL as evidence refused; unrelated lineage not held",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-05",
+   "requirement": "Historical views use knowledge recorded by the cutoff; later review cannot manufacture earlier approval.",
+   "entry_points": "core.events(as_of) by recorded_at; asserted_review_time labelled",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E05_historical_views_use_recorded_time_and_label_backdated_assertions"
+   ],
+   "valid_authorized_cases": "present view shows the review",
+   "rejected_cases": "earlier cutoff does not; backdated assertion labelled BACKDATED_ASSERTION",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-06",
+   "requirement": "Targeted reevaluation and export are usable; unknown monetary amounts remain separate by currency; external deployment is not falsely claimed controlled.",
+   "entry_points": "evolution.request_reevaluation / run_evaluation / link_commitment / audit.eligibility; web fulfilment state",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E06_requests_commitments_eligibility_and_declared_imports",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_E06_exposure_survives_principal_revocation_and_relabelling_and_requests_show_fulfilment (OPEN → FULFILLED by EV1)",
+    "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries"
+   ],
+   "valid_authorized_cases": "request recorded, run by a reviewer, shown FULFILLED; commitments grouped by currency with unknown amounts separate",
+   "rejected_cases": "unknown protocol/claim refused; declared import without SHD admission refused",
+   "untested_subclauses": [
+    "only two built-in job types exist; no external deployment is controlled (by design)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the fulfilment state",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-01",
+   "requirement": "Duplicate membership persists across repeated ingestion and restart; incompatible claim contracts remain separate.",
+   "entry_points": "commons.group_id / _admit_packet / intake_from_shield",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_intake_from_shield_needs_an_admitted_and_still_approved_bundle",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 3"
+   ],
+   "valid_authorized_cases": "repeat packets join one group across a restart",
+   "rejected_cases": "different contract, unknown ancestry stay separate; un-admitted or revoked SHD decision refused",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-02",
+   "requirement": "Aliases and shared roots do not create independent corroboration; unknown ancestry stays unknown.",
+   "entry_points": "commons.dashboard shared_roots / unknown_ancestry_groups",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate"
+   ],
+   "valid_authorized_cases": "shared root shown once per root",
+   "rejected_cases": "—",
+   "untested_subclauses": [
+    "'aliases' are exact-identity only: two different source registrations of the same document are different roots (no alias resolution exists)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-03",
+   "requirement": "Only an authorized recorded dispute/withdrawal changes queue handling; propagation, appeal and resolution preserve original history.",
+   "entry_points": "commons.record_dispute / appeal / resolve_dispute / _quarantine",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C03_only_an_authorized_dispute_changes_handling_and_history_survives_appeal_and_resolution",
+    "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference (unknown target)",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 3"
+   ],
+   "valid_authorized_cases": "reviewer's dispute quarantines; appeal; administrator lifts; work resumes",
+   "rejected_cases": "submitter's dispute (E_FORBIDDEN); submitter's 'withdrawn' assertion quarantines nothing; recorder cannot decide an appealed dispute; target must exist here",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-04",
+   "requirement": "Stable-principal caps, rate/storage bounds and concurrent admission resist simple rename/replay/flood attempts.",
+   "entry_points": "commons._admit_packet caps, RATE_PER_MINUTE, max_open_tasks, MAX_PACKETS",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C04_caps_count_the_authenticated_principal_and_bound_the_queue",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C04_concurrent_admission_at_the_cap_boundary_admits_exactly_the_cap",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P02_a_practitioner_with_other_capabilities_is_labelled_not_confined_and_C04_E02_bounds (storage bound)"
+   ],
+   "valid_authorized_cases": "another principal is unaffected by one principal's cap",
+   "rejected_cases": "rename, replay (same op), flood, queue bound, storage bound, 8 concurrent submissions at a cap of 3 → exactly 3",
+   "untested_subclauses": [
+    "collusion between principals and real-world Sybil identity are not addressed (documented)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the concurrent and storage-bound cases",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-05",
+   "requirement": "Reservations, leases, partial work, cancellation, rollover and urgent overrides neither double-spend nor silently erase capacity/backlog.",
+   "entry_points": "commons.assign/work/recover_leases/set_budget/override_urgent",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_never_double_spends_and_X11_detects_a_disabled_check",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C05_C06_state_machine_leases_rollover_cancellation_and_three_effort_numbers",
+    "v8/V8-014/measurements.json"
+   ],
+   "valid_authorized_cases": "one of two racing reviewers is assigned",
+   "rejected_cases": "double spend; non-assignee work; invalid transition; contributor reviewing own group",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-06",
+   "requirement": "Practice reserve, fitting smaller tasks, backlog age, estimates, observed duration and manually declared effort are distinguishable.",
+   "entry_points": "commons.plan / dashboard.effort",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C05_C06_state_machine_leases_rollover_cancellation_and_three_effort_numbers",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C06_C09_fit_smaller_aged_hold_oversized_escalation_urgent_and_budget_cut",
+    "tests/test_v8_mod_prc_web.py::Practice::test_P05_reflection_feedback_followup_and_the_practice_reserve (practice reserve)"
+   ],
+   "valid_authorized_cases": "smaller fitting task proceeds; practice draws only on its reserve",
+   "rejected_cases": "—",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-07",
+   "requirement": "A reproducible FIFO comparison uses identical synthetic assumptions; human productivity/error reduction remains unestablished.",
+   "entry_points": "commons.simulate",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C07_the_fifo_comparison_is_reproducible_and_labelled"
+   ],
+   "valid_authorized_cases": "reproducible on identical arrivals",
+   "rejected_cases": "—",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "ACTUAL human productivity/error comparison: NOT AVAILABLE (COM-12)",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-01",
+   "requirement": "Frozen task and sources are useful in the browser; reference identity cannot silently change after opening.",
+   "entry_points": "practice.freeze_task",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Practice::test_P01_frozen_task_identity_and_curator_conflict",
+    "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference (task form carries the claim version; stale refused)"
+   ],
+   "valid_authorized_cases": "task frozen on a claim version with its sources",
+   "rejected_cases": "practitioner cannot curate; curator cannot practise own task; unknown source; stale claim version",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "a QUALIFIED reviewer choosing tasks: NOT AVAILABLE (PRC-01)",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-02",
+   "requirement": "No early answer through direct HTTP/API/static/help/journal/export/cache/error/alternate-view access by the practitioner.",
+   "entry_points": "vault-held salted comparison; web.gate confinement; practice._may_reveal; session 'confinement' label",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Surface::test_P02_no_early_answer_on_any_surface_a_practitioner_can_reach (31 URLs + direct POST + export + other session)",
+    "tests/test_v8_mod_prc_web.py::Surface::test_P02_X11_sensitivity_disabling_the_reveal_rule_is_detected_by_the_leak_check",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P02_a_practitioner_with_other_capabilities_is_labelled_not_confined_and_C04_E02_bounds",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 4"
+   ],
+   "valid_authorized_cases": "after the attempt the comparison opens",
+   "rejected_cases": "every listed surface before the attempt",
+   "untested_subclauses": [
+    "a practitioner that ALSO holds another capability is not route-confined (now labelled NOT_CONFINED); whether a claim page already reveals the answer is the curator's judgement and is not detected"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the confinement label",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-03",
+   "requirement": "Only a committed attempt unlocks a comparison; retries and concurrent requests cannot leak or overwrite the original attempt.",
+   "entry_points": "practice.commit_attempt / reveal under the lock",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Practice::test_P03_only_a_committed_attempt_unlocks_and_retries_are_idempotent",
+    "tests/test_v8_mod_prc_web.py::Practice::test_P03_concurrent_attempt_and_reveal_are_deterministic"
+   ],
+   "valid_authorized_cases": "idempotent retry returns the same event",
+   "rejected_cases": "second attempt; reveal before commit; 4 reveals racing 4 attempts",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-04",
+   "requirement": "Assisted/already-exposed sessions are accepted with truthful labels; unresolved judgments are supported.",
+   "entry_points": "practice.open_session declarations/category",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Practice::test_P04_assisted_exposed_and_unresolved_sessions_are_accepted_with_truthful_labels",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 4"
+   ],
+   "valid_authorized_cases": "ASSISTED, ALREADY_EXPOSED and UNRESOLVED accepted with labels",
+   "rejected_cases": "invalid declaration value; second session on the same task",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-05",
+   "requirement": "Reflection, reviewer feedback and local delayed-task due states work without rewriting attempts or inventing human research.",
+   "entry_points": "practice.reflect / feedback / schedule_followup / due_state; ordered discussion view",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Practice::test_P05_reflection_feedback_followup_and_the_practice_reserve"
+   ],
+   "valid_authorized_cases": "reflection, feedback, due-states NOT_YET_DUE → DUE → COMPLETED",
+   "rejected_cases": "reflection before reveal; self-feedback",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "learning transfer / delayed assessment study: NOT AVAILABLE (PRC-09); nobody is contacted",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-06",
+   "requirement": "Export permissions/redaction protect participant content and hidden references; independent checkpoints detect modification/truncation.",
+   "entry_points": "modexport.build_packet/preview/verify_packet; practice.issue_checkpoint",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P06_the_export_preview_writes_nothing_and_says_what_cannot_leave",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 6"
+   ],
+   "valid_authorized_cases": "own session exported, text optionally withheld; preview",
+   "rejected_cases": "foreign session; unrevealed comparison never included; truncation vs a separately held checkpoint",
+   "untested_subclauses": [
+    "practitioner identifiers are not pseudonymised in a packet (text can be withheld; ids cannot)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the preview",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "P-07",
+   "requirement": "Later source/EVO changes annotate the session's current interpretation without replacing historical evidence or answers.",
+   "entry_points": "practice.annotations",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Practice::test_P07_later_source_and_claim_changes_annotate_without_rewriting",
+    "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P07_a_claim_amendment_and_an_EVO_successor_annotate_the_session_without_rewriting_it"
+   ],
+   "valid_authorized_cases": "session and attempt unchanged",
+   "rejected_cases": "—",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the amendment/EVO case",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-07",
+   "requirement": "End-to-end SHD -> COM -> PRC plus EVO change/review behavior can be repeated from both installed artifacts.",
+   "entry_points": "journey_modules.py",
+   "tests_and_journey_assertions": [
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist: 6/6 locally on aarch64 for the V8-015 candidate; 6/6 hosted on x86-64 for 68daca6d"
+   ],
+   "valid_authorized_cases": "whole chain",
+   "rejected_cases": "negative assertions inside each step",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there — NOT for the revised journey",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-08",
+   "requirement": "Fresh receiver recomputes valid exports, rejects forged relationships and distinguishes integrity from receiver trust.",
+   "entry_points": "modexport.verify_packet",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 6"
+   ],
+   "valid_authorized_cases": "fresh receiver SUCCESS; TRUSTED only after the receiver's own administrator enrols the key",
+   "rejected_cases": "six forgeries; future format; non-zip",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-09",
+   "requirement": "Expanded CI checks are rehearsed and ready; hosted status is tied only to the SHA actually run after a separately approved push.",
+   "entry_points": ".github/workflows/v8-validation.yml",
+   "tests_and_journey_assertions": [
+    "actionlint + workflow schema; local rehearsal of each job's commands",
+    "hosted run 35495154439 success on 68daca6d"
+   ],
+   "valid_authorized_cases": "—",
+   "rejected_cases": "—",
+   "untested_subclauses": [],
+   "software_status": "HOSTED for 68daca6d; REMOTE_CI_NOT_RUN for the V8-015 commit",
+   "limitations": "",
+   "hosted_ci": "68daca6d only",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-10",
+   "requirement": "Package contents exclude credentials, private approvals/participant records and order files; claims map to observed evidence and explicit limits.",
+   "entry_points": "clean-install FORBIDDEN_MEMBERS; claim_to_evidence.md",
+   "tests_and_journey_assertions": [
+    "tools/yuclaw_v8_clean_install.py member inspection of both artifacts",
+    "v8/V8-014/claim_to_evidence.md (unchanged claims) + v8/V8-015 records"
+   ],
+   "valid_authorized_cases": "—",
+   "rejected_cases": "credential store, key, vault, journal, order records in a distribution",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-07",
+   "requirement": "Intake is bounded before complex parent parsing; restricted-worker setup leaks no unintended environment or handles; all output/error channels are bounded.",
+   "entry_points": "web.post_upload (Content-Length before read; parent splits only the multipart frame); sandbox._run (empty env, close_fds, bounded stdout/stderr/wall)",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Isolation::test_bounded_intake_before_any_parse",
+    "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading (413 on the header)",
+    "tests/test_v8_mod_shield.py::Isolation::test_S04_descriptors_and_environment_do_not_leak_into_the_worker",
+    "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S07_the_error_channel_is_bounded_too"
+   ],
+   "valid_authorized_cases": "valid upload stored unparsed",
+   "rejected_cases": "oversize; garbage bytes stored but never parsed by the parent; stderr flood",
+   "untested_subclauses": [
+    "the parent's multipart splitter is bounded by the upload limit but was not fuzzed separately"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "NOT hosted: added or changed in V8-015; REMOTE_CI_NOT_RUN for the revised commit for the stderr bound",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "S-08",
+   "requirement": "Offline results expose trust/revocation freshness; old imports cannot roll back trusted state, revive a revoked credential or reinterpret an approval as another signed record type.",
+   "entry_points": "envelope record types; modexport freshness/discrepancies; shield.trust_snapshot",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Foundation::test_envelope_domain_separation_and_unknown_versions",
+    "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes"
+   ],
+   "valid_authorized_cases": "newer snapshot verifies cleanly",
+   "rejected_cases": "approval replayed as evaluation/checkpoint; older trust revision; root revoked here but trusted there; nothing installed by import",
+   "untested_subclauses": [
+    "rollback detection needs the receiver to have verified a newer packet from that workspace before"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "E-07",
+   "requirement": "Actual execution uses the measured immutable subject; swapping an input or omitting a required dependency cannot preserve an invalid review result.",
+   "entry_points": "evolution._snapshot + REJECTED_SUBJECT_CHANGED; closure from configuration; JOB_NEEDS scope validation",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E07_a_file_swapped_between_collection_and_execution_is_not_evaluated_under_the_old_identity",
+    "tests/test_v8_mod_evo_com.py::Evolution::test_E02_E07_real_changes_invalidate_relevant_evidence_and_keep_unrelated_evidence (edge cannot be dropped; job scope validated)"
+   ],
+   "valid_authorized_cases": "recollected as a new version and evaluated",
+   "rejected_cases": "swapped file; protocol whose job reads outside its scope",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-08",
+   "requirement": "Submitter cost manipulation cannot inflate/reduce established duplicate-group cost or evade reservations; estimates and scheduling authority remain distinguishable.",
+   "entry_points": "commons.set_cost authority; proposals recorded only",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C08_a_duplicate_submitter_cannot_move_the_scheduling_cost_in_either_direction",
+    "module journey (v8/workbench/modules/journey_modules.py) from the installed wheel AND sdist step 3"
+   ],
+   "valid_authorized_cases": "reviewer sets the cost",
+   "rejected_cases": "submitter setting cost; 600- and 1-minute duplicate proposals; duplicate after reservation",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "C-09",
+   "requirement": "Aging/escalation and budget reduction preserve historical consumption and show starvation/overrun explicitly without creating capacity.",
+   "entry_points": "commons.plan aged hold / oversized escalation; capacity overrun",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_evo_com.py::Commons::test_C06_C09_fit_smaller_aged_hold_oversized_escalation_urgent_and_budget_cut"
+   ],
+   "valid_authorized_cases": "—",
+   "rejected_cases": "small late arrival cannot starve an aged task; oversized escalates; cut below use shows overrun, remaining never negative",
+   "untested_subclauses": [],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-11",
+   "requirement": "Valid authorized counterparts succeed; targeted isolated test variants show that key boundary tests detect deliberately disabled controls.",
+   "entry_points": "positive counterparts throughout; three isolated sensitivity variants (mock.patch inside one test each; the product is never weakened)",
+   "tests_and_journey_assertions": [
+    "tests/test_v8_mod_shield.py::Approval::test_X11_sensitivity_disabling_the_distinct_approver_rule_is_detected",
+    "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_…_X11_detects_a_disabled_check",
+    "tests/test_v8_mod_prc_web.py::Surface::test_P02_X11_sensitivity_disabling_the_reveal_rule_is_detected_by_the_leak_check"
+   ],
+   "valid_authorized_cases": "every refusal family above lists its authorized counterpart",
+   "rejected_cases": "—",
+   "untested_subclauses": [
+    "no sensitivity variant exists for the isolation boundary itself (disabling Landlock/seccomp in a test variant was judged unsafe to build)"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "none required",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  },
+  {
+   "id": "X-12",
+   "requirement": "Reproducible workload and performance measurements disclose resource bounds, workload sizes, hardware, denominators, unfavorable outcomes and comparable baselines.",
+   "entry_points": "tools/yuclaw_v8_module_measure.py",
+   "tests_and_journey_assertions": [
+    "v8/V8-014/measurements.json (source 4f2ec113; the measured code paths are unchanged in V8-015)",
+    "v8/V8-015/identifier_entry_before_after.json"
+   ],
+   "valid_authorized_cases": "—",
+   "rejected_cases": "—",
+   "untested_subclauses": [
+    "one machine; the repeat-everything baseline's time is an estimate; the connected-workflow comparison is an instrumented automated journey, not people"
+   ],
+   "software_status": "IMPLEMENTED_AND_LOCALLY_VERIFIED",
+   "limitations": "",
+   "hosted_ci": "hosted run 35495154439 on 68daca6d (V8-014 code, x86-64, landlock): this test/journey existed and passed there",
+   "independent_review_or_human_evidence": "human benefit: PENDING",
+   "evidence_applies_to": {
+    "source_commit": "f6a879b21137f60d9e85b5cc675e6f11125e613a",
+    "platform": "Linux 6.17 aarch64 (executor), Python 3.12.3 and 3.10.21, isolation backend landlock",
+    "commands": [
+     "python3 -m pytest tests -q -rs → 371 passed",
+     "python3 -m pytest tests/test_v8_*.py -q -rs (fresh CPython 3.10.21 environment) → 166 passed",
+     "tools/yuclaw_v8_clean_install.py --commit <source> … → see v8/V8-015/packaging.json"
+    ]
+   }
+  }
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

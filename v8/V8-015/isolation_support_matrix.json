@@ -1,0 +1,57 @@
+{
+ "record": "v8-015-isolation-support/1",
+ "executor_linux_aarch64": {
+  "kernel": "Linux 6.17.0-1008-nvidia aarch64",
+  "landlock": "AVAILABLE — every required denial observed by the live probe (canary secret, home, /etc/passwd, all writes, TCP, UDP, unix socket, fork, signal to parent, 2 GiB allocation; empty environment; no inherited descriptor; wall and output bounds)",
+  "bwrap": "UNAVAILABLE — the probe worker did not run under this backend (rc 1, OK): bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted",
+  "bwrap_gap": "kernel.apparmor_restrict_unprivileged_userns=1 without an AppArmor profile for /usr/bin/bwrap; only the machine's administrator can change that; NOT done and not requested by the product",
+  "probe": {
+   "observed": {
+    "allocate_2GiB": "DENIED:MemoryError",
+    "environment_names": [
+     "LC_CTYPE"
+    ],
+    "fork_process": "DENIED:Resource temporarily unavailable",
+    "open_descriptors_above_2": [],
+    "read_canary_secret": "DENIED:Permission denied",
+    "read_etc_passwd": "DENIED:Permission denied",
+    "read_home_listing": "DENIED:Permission denied",
+    "read_staged_input": "ALLOWED",
+    "signal_parent": "DENIED:Operation not permitted",
+    "tcp_connect_canary": "DENIED:Operation not permitted",
+    "udp_send_canary": "DENIED:Operation not permitted",
+    "unix_socket": "DENIED:Operation not permitted",
+    "write_forbidden_path": "DENIED:Permission denied",
+    "write_tmp": "DENIED:Permission denied"
+   },
+   "parent_observed": {
+    "canary_tcp_connection_received": false,
+    "canary_udp_datagram_received": false,
+    "forbidden_file_created": false
+   },
+   "bounds": {
+    "spin": {
+     "status": "WALL_TIME_EXCEEDED",
+     "rc": -9,
+     "seconds": 4.005
+    },
+    "flood": {
+     "status": "OUTPUT_LIMIT_EXCEEDED",
+     "rc": -9,
+     "seconds": 0.033
+    }
+   }
+  },
+  "also_verified_on": "CPython 3.10.21 (uv-managed interpreter) and from both installed artifacts"
+ },
+ "hosted_linux_x86_64": {
+  "status": "landlock backend VERIFIED by the live probe and by the module tests and installed journeys in hosted run 35495154439 on 68daca6d (kernel 6.17.0-1022-azure; Landlock in the LSM list). The sandbox, bootstrap and worker files are unchanged between 68daca6d and the V8-015 candidate.",
+  "bwrap": "NOT VERIFIED — not installed on the runner",
+  "detail": "v8/V8-015/hosted_ci.json"
+ },
+ "bubblewrap_everywhere": "implemented, preferred when its probe passes, and so far verified on NO host. Where it cannot start, the landlock backend is used only after its own probe passes; where neither passes, SHD admission refuses with REFUSED_ISOLATION_UNAVAILABLE. No host setting was weakened and no privileged helper was installed.",
+ "difference_local_vs_hosted": "none observed for the landlock backend (same denials on aarch64 and x86-64). The hosted package job does not run the real-source journey (private sources); the executor does.",
+ "other_platforms": "macOS, Windows, kernels without Landlock or working bubblewrap: SHD admission refuses with REFUSED_ISOLATION_UNAVAILABLE; every other function works",
+ "what_it_is_not": "process confinement, not a container; no PID/mount namespace on the landlock backend; no defence against a kernel vulnerability or the same OS user outside the worker; no independent security review",
+ "not_advice": "Research and education only. Not investment advice."
+}

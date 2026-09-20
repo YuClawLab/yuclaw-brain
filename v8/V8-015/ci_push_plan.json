@@ -1,0 +1,17 @@
+{
+ "record": "v8-015-ci-push-plan/1",
+ "status": "PROPOSED — needs the owner's separate explicit approval; NOT executed. The V8-015 approval covered exactly 68daca6d and was used for exactly that push.",
+ "remote_ci": "REMOTE_CI_NOT_RUN for this commit — run 35495154439 belongs to 68daca6daa6266591dc4c3e44b63e36b993f0615 and is never attached to a later commit",
+ "branch": "codex/v8-integration (on origin at 68daca6d…; the push is a fast-forward, non-force)",
+ "sha": "the record HEAD that contains this file — its full sha is in the handoff report (a file cannot name its own commit); candidate source below it: f6a879b21137f60d9e85b5cc675e6f11125e613a",
+ "workflow": "v8-prerelease-validation (.github/workflows/v8-validation.yml): tests (suite with -rs + printed live isolation probe + compliance), python-floor (3.10, -rs), package (clean installs + journeys). Validation only: contents:read, no secrets, no publication, no deployment.",
+ "what_it_exposes": "the repository is PUBLIC: the push publishes the V8-015 module changes, their tests, the workflow's -rs change and the v8/V8-015 record (acceptance matrix, reconciliation, hosted-CI summary, identifier counts, packaging identities, D1 P7 PROPOSED). It deploys, tags and uploads nothing.",
+ "credential_note": "this push changes .github/workflows/v8-validation.yml (-rs), so GitHub will reject it with the stored git token, which lacks the `workflow` scope. Whether to use the gh login once more through a one-command credential-helper override is the owner's decision for this push; no token or git configuration was altered.",
+ "expected": [
+  "the module journey on the runner now exercises the connected workflow (contextual approval, claim-page entry, preview)",
+  "the new acceptance tests run the real worker on x86-64 for the first time",
+  "-rs prints the reason of the one expected skip (no python3.10 in the 3.12 job)"
+ ],
+ "tie_result_to_sha": "gh run list -R YuClawLab/yuclaw-brain --workflow v8-prerelease-validation --branch codex/v8-integration --json headSha,conclusion,databaseId,url — count only headSha == the pushed sha",
+ "not_advice": "Research and education only. Not investment advice."
+}

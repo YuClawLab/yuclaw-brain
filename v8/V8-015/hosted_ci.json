@@ -1,0 +1,99 @@
+{
+ "record": "v8-015-hosted-ci/1",
+ "approved_push": {
+  "command": "git push origin 68daca6daa6266591dc4c3e44b63e36b993f0615:refs/heads/codex/v8-integration",
+  "executed_utc": "2026-09-20T06:47:37Z",
+  "result": "fast-forward a4fa151f..68daca6d, non-force; the owner confirmed interactively before the write",
+  "credential": "the existing gh login through a one-command credential-helper override (-c credential.helper= -c credential.helper='!gh auth git-credential'); stored token, git configuration and gh configuration unchanged; no token printed",
+  "pre_checks": [
+   "worktree clean at the approved commit",
+   "remote = YuClawLab/yuclaw-brain; remote branch tip a4fa151f (the V8-012 tip) is an ancestor",
+   "workflow validation-only: permissions contents:read, no secrets, no publication or deployment step",
+   "origin/main untouched (5edb9e7e)"
+  ]
+ },
+ "run": {
+  "workflow": "v8-prerelease-validation",
+  "url": "https://github.com/YuClawLab/yuclaw-brain/actions/runs/35495154439",
+  "id": 35495154439,
+  "event": "push",
+  "branch": "codex/v8-integration",
+  "head_sha": "68daca6daa6266591dc4c3e44b63e36b993f0615",
+  "head_tree_printed_by_every_job": "2c78f20e6b451b88092e20c8a937e23647ea08b6",
+  "created": "2026-09-20T06:47:41Z",
+  "completed": "2026-09-20T06:51:54Z",
+  "conclusion": "success",
+  "other_workflows_triggered_by_this_commit": "none",
+  "jobs": [
+   {
+    "name": "tests",
+    "conclusion": "success",
+    "started": "2026-09-20T06:47:43Z",
+    "completed": "2026-09-20T06:49:37Z",
+    "steps_not_successful": []
+   },
+   {
+    "name": "package",
+    "conclusion": "success",
+    "started": "2026-09-20T06:47:43Z",
+    "completed": "2026-09-20T06:51:54Z",
+    "steps_not_successful": []
+   },
+   {
+    "name": "python-floor",
+    "conclusion": "success",
+    "started": "2026-09-20T06:47:43Z",
+    "completed": "2026-09-20T06:48:45Z",
+    "steps_not_successful": []
+   }
+  ],
+  "annotations": [
+   "Node.js 20 actions deprecation warning for actions/checkout@v4 and actions/setup-python@v5 (informational)"
+  ]
+ },
+ "jobs_in_detail": {
+  "tests (Python 3.12, x86-64)": {
+   "offline_suite": "334 passed, 1 skipped",
+   "the_one_skip": "tests/test_v8_workbench_packaging.py::TestPackaging::test_packaged_modules_compile_on_minimum_python — established from the log: the skip is test 313 of 335 in collection order; that test skips when no python3.10 interpreter is on the host, and the python-floor job runs the module code on 3.10 for real. The run used -q without -rs, so the reason text itself was not printed; the workflow now passes -rs",
+   "postgresql": "RAN, not skipped: the five disposable-PostgreSQL-16 tests (test_form4_integration_pg16: 1, test_note_snapshot_pg16: 4) passed using the runner image's PostgreSQL 16 binaries; the compliance regression ran separately against the postgres:16 service (PostgreSQL 16.15): 21 passed",
+   "module_tests": "all 49 V8-014 module tests ran with the real restricted worker; none skipped"
+  },
+  "python-floor (CPython 3.10.21)": {
+   "result": "151 passed",
+   "overlap": "these are the SAME v8 test files as in the tests job, run on another interpreter — not additional independent coverage; do not add the counts"
+  },
+  "package (Python 3.12.14)": {
+   "result": "clean-install PASS on 68daca6d",
+   "artifacts": "wheel 05a50fa2cff970b2… and sdist 81ff6ae080b0750d… — the same digests as the local V8-014 pair (a reproducibility observation; hosted artifacts are not release artifacts)",
+   "fresh_installs": "wheel and sdist each: fixtures journey 7/7, module journey 6/6 with isolation_backend landlock; twine 7.0.0 check rc 0",
+   "not_run_hosted": "the real-source regression journey (its stored sources are private and are not in the repository)",
+   "tools": "build 1.4.2, hatchling 1.32.3, twine 7.0.0, playwright 1.62.0"
+  }
+ },
+ "isolation_on_the_hosted_x86_64_runner": {
+  "kernel": "Linux 6.17.0-1022-azure x86_64",
+  "lsm": "lockdown,capability,landlock,yama,apparmor,ima,evm",
+  "backend_that_passed": "landlock (Landlock + seccomp + rlimits + no_new_privs)",
+  "bwrap": "not installed on the runner — NOT verified there; nothing was installed or reconfigured to change that",
+  "probe_denials_observed": [
+   "canary secret unreadable",
+   "home listing refused",
+   "/etc/passwd unreadable",
+   "no write anywhere",
+   "TCP refused",
+   "UDP refused",
+   "unix socket refused",
+   "fork refused",
+   "signal to the parent refused",
+   "2 GiB allocation refused",
+   "environment empty apart from LC_CTYPE set by the interpreter",
+   "no inherited descriptor",
+   "spin stopped at the wall-clock limit",
+   "output flood stopped at the output limit"
+  ],
+  "valid_input": "the staged input was readable and valid bundles were ADMITTED in the module tests and in both installed module journeys",
+  "skips_or_weakened_controls": "none"
+ },
+ "what_this_run_does_not_cover": "any commit after 68daca6d: the V8-015 changes (connected workflow, reference checks, new tests, guide) have NO hosted result — REMOTE_CI_NOT_RUN for the revised commit",
+ "not_advice": "Research and education only. Not investment advice."
+}
