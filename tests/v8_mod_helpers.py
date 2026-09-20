@@ -20,8 +20,13 @@ def principal(ws, pid, caps, by=None):
     P = authz.Principals(ws); _, cred = P.enroll(pid, caps, op_id=f"op:enroll-{pid}", by=by); return P.authenticate(pid, cred), cred
 
 
-def load_fixture(ws, name="001_base", n=1):
-    rec = schema.from_fixture(json.loads((FIX / f"{name}.json").read_text())); s0 = rec["claim"]["source"]
+def load_fixture(ws, name="001_base", n=1, claim_id=None):
+    """Register the fixture's source and freeze its claim. `claim_id` makes a further FICTIONAL claim from the same fixture
+    (the packaged set has two distinct claim ids)."""
+    fx = json.loads((FIX / f"{name}.json").read_text())
+    if claim_id:
+        fx["claim"]["claim_id"] = claim_id
+    rec = schema.from_fixture(fx); s0 = rec["claim"]["source"]
     ws.register_source(s0, op_id=f"op:src-{n:04d}", observed_at=s0["available_as_of"]); ws.freeze_claim(rec["claim"], op_id=f"op:frz-{n:04d}", observed_at=s0["available_as_of"])
     from v8.workbench import availability
     return rec["claim"]["claim_id"], availability.source_id(s0)
