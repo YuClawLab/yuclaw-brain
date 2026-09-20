@@ -1,0 +1,116 @@
+{
+ "record": "seven-step-and-feature-scorecard",
+ "order": "V8-016 (verification candidate) — the ORIGINAL mchp journey as a regression reference on the candidate that now also carries SHD, EVO, COM and PRC",
+ "mode": "mchp",
+ "recorded_utc": "2026-09-20T09:32:43+00:00",
+ "candidate": {
+  "commit": "35d1d9d97e5d85b09ceb5ac1178ac7396ca4c76e",
+  "tree": "83634f37f4ff2284572369090ff63e5a325f3496",
+  "version": "8.0.0",
+  "branch": "codex/v8-integration",
+  "artifacts": {
+   "yuclaw-8.0.0-py3-none-any.whl": "fb452859000bc2dea943f47fedaa9fc575c25b421f0e15eb629f359a62df0291"
+  },
+  "artifact_label": "CANDIDATE / PRE-RELEASE-REVIEW artifacts of the revised expanded candidate — not a final release set; release_authorized=false",
+  "installed_from": "the wheel, in a fresh environment outside the checkout (the sdist install scored 7/7)"
+ },
+ "rule": "a step counts only when every positive and negative assertion for it passed in the browser on the identified candidate; HTTP-level or unit tests never count",
+ "score": "7/7",
+ "steps": [
+  {
+   "step": "1",
+   "title": "source",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": []
+  },
+  {
+   "step": "2",
+   "title": "typed claim",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  {
+   "step": "3",
+   "title": "comparison",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  {
+   "step": "4",
+   "title": "calculation",
+   "positive_assertions": 3,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  {
+   "step": "5",
+   "title": "history",
+   "positive_assertions": 4,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  {
+   "step": "6",
+   "title": "adjudication",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  {
+   "step": "7",
+   "title": "reproducible export",
+   "positive_assertions": 4,
+   "negative_assertions": 2,
+   "failed": []
+  }
+ ],
+ "features": {
+  "research_notes": {
+   "feature": "research notes and unresolved-evidence workflow (V8-004 §3)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 2,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  "dataset": {
+   "feature": "dataset coverage view, snapshot and verifiable export (V8-004 §4)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  "sci": {
+   "feature": "scientific report/replay through the adapted kernel (V8-005)",
+   "status": "DEMONSTRATED",
+   "positive_assertions": 1,
+   "negative_assertions": 1,
+   "failed": []
+  },
+  "usability": {
+   "feature": "operator usability: retained entries after a refusal, ingestion-record import without duplicates, in-app help, interrupted-write recovery, keyboard-only operation (V8-010 §3)",
+   "status": "NOT_RUN",
+   "positive_assertions": 0,
+   "negative_assertions": 0,
+   "failed": []
+  },
+  "availability_correction": {
+   "feature": "source-availability correction: a linked append-only event, the historical-view rule, the corrected view beside the record, an out-of-date submission refused, the chain verified in a fresh workspace (V8-011 §3)",
+   "status": "NOT_RUN",
+   "positive_assertions": 0,
+   "negative_assertions": 0,
+   "failed": []
+  }
+ },
+ "review_attribution": "every adjudication in this log was recorded by the automated journey runner as a simulated test action; it is neither owner review nor independent review, whatever identity the form carries",
+ "evidence": {
+  "journey_log_sha256": "03808a47fa7ef851e6c13048fb965cfa07c8b14b921d6c2c790b4cb3bad5fd62",
+  "held": "private record directory (journey logs and screenshots)"
+ },
+ "earlier_records_preserved": "V8-002 … V8-015 scorecards keep their original candidate identities; this scorecard does not replace them",
+ "human_benefit": "PENDING",
+ "release_authorized": false,
+ "not_advice": "Research and education only. Not investment advice."
+}

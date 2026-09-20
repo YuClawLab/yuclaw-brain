@@ -1,0 +1,80 @@
+{
+ "record": "v8-016-verification-workloads/1",
+ "source_commit": "35d1d9d97e5d85b09ceb5ac1178ac7396ca4c76e",
+ "hardware": "one executor: Linux 6.17 aarch64, 20 cores; CPython 3.12.3 (and 3.10.21 for the floor runs)",
+ "reproduce": "python3 -m pytest tests/test_v8_mod_verification_016.py -q -s",
+ "cross_process": {
+  "mechanism": "multiprocessing 'spawn' — each participant is its own interpreter process that opens the workspace from disk and authenticates with a credential; OS-level barriers and events; assertions read the durable journal",
+  "cases": {
+   "last capacity / same task": "3 rounds x 2 processes (+2 on the same task)",
+   "contributor cap": "6 processes, cap 3 → exactly 3 admitted",
+   "revocation between worker and commit": "1 barrier-ordered round with the REAL worker → REFUSED_APPROVAL_REVOKED, revocation recorded first",
+   "free admission/revocation races": "4 rounds → never an admission after the revocation",
+   "stale form": "a server process and an amending process, event-ordered → HTTP 422 E_STALE_SELECTION, no packet",
+   "two different attempts and a reveal": "4 rounds x 3 processes → one attempt each; the reveal arrived first in 3 of 4 rounds on the recorded run and was refused each time",
+   "staged input rewritten in place": "one writer process alternating two complete valid 300 kB bundles while the REAL restricted worker verified 30 times: 30 refused INPUT_CHANGED_DURING_READ, 0 results for other bytes; then 3 calm runs accepted"
+  }
+ },
+ "crash_boundaries": {
+  "mechanism": "a child process is killed with SIGKILL inside the journal append: BEFORE the write, after HALF the line (synced), or AFTER the synced line",
+  "operations": [
+   "PRC attempt x3 modes",
+   "PRC reveal (AFTER)",
+   "COM reservation x3 modes",
+   "SHD decision x3 modes",
+   "COM packet (BEFORE)",
+   "module export (BEFORE)"
+  ],
+  "invariants": [
+   "earlier event hashes unchanged",
+   "0 or 1 new event exactly as the mode implies",
+   "a torn tail refuses writes until recovery and its bytes are preserved",
+   "reserved minutes = sum of live reservations, remaining never negative",
+   "no comparison without a durable attempt",
+   "the retry with the same operation id yields exactly one event"
+  ],
+  "what_it_does_not_show": "behaviour under physical power loss (disk cache, file system): not staged, not claimed"
+ },
+ "upload_entry": {
+  "hand_made_cases": 16,
+  "hostile_delimiter_body": "about 6.6 MB made of 600001 delimiters → HTTP 400 before any split; time and peak-memory growth are asserted (< 5 s, < 96 MiB)",
+  "generated": {
+   "seed": 20260920,
+   "mutants": 160,
+   "mutations": [
+    "truncate",
+    "delete",
+    "insert",
+    "duplicate part",
+    "LF-only",
+    "boundary noise",
+    "bit flips",
+    "none"
+   ],
+   "length_lies": "15% of cases",
+   "recorded_result": {
+    "303": 20,
+    "400": 102,
+    "403": 4,
+    "413": 8,
+    "422": 26,
+    "5xx": 0,
+    "dropped_connections": 0
+   },
+   "slowest_seconds": 1.5
+  },
+  "unfavorable_outcome": "before the fix, 2 of the 160 mutants (non-ASCII bytes in the CSRF field) ended in an unhandled TypeError and a dropped connection; nothing was written. Fixed; the test now fails on any dropped connection"
+ },
+ "sensitivity": {
+  "variants": 14,
+  "detected": 14,
+  "mechanism": "one exact text replacement per disposable copy of the packages; fake HOME and own TMPDIR; the named test must fail by assertion; the unmodified copy passes; candidate files hashed before and after; copies deleted",
+  "unfavorable_outcome": "the first run showed one control (session ownership) whose removal failed NO test; a test was added and the variant is now detected"
+ },
+ "isolation_bounds": {
+  "cpu_limit": "a spinning worker is ended by RLIMIT_CPU (20 s) with the wall-clock bound set to 45 s",
+  "descriptor_limit": "part of the required live probe"
+ },
+ "unsupported_environment": "SIMULATED: a seccomp filter makes the kernel's three Landlock calls answer ENOSYS and PATH holds no bubblewrap; the unpatched product refuses admission with REFUSED_ISOLATION_UNAVAILABLE and serves everything else. Not a macOS or Windows run.",
+ "not_advice": "Research and education only. Not investment advice."
+}

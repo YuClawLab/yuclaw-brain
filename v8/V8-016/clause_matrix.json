@@ -1,0 +1,1818 @@
+{
+ "record": "v8-016-clause-matrix/1",
+ "candidate_source_commit": "35d1d9d97e5d85b09ceb5ac1178ac7396ca4c76e",
+ "requirements_source": "v8/V8-015/acceptance_matrix.json (verbatim from the verified R2 input; 43 families)",
+ "counts": {
+  "families": 43,
+  "clauses": 125,
+  "by_status": {
+   "VERIFIED_BY_SOFTWARE_TESTS": 104,
+   "NOT_VERIFIABLE_IN_THIS_ENVIRONMENT": 3,
+   "VERIFIED_WITH_STATED_LIMIT": 13,
+   "EXTERNAL_EVIDENCE_REQUIRED": 5
+  },
+  "v8_015_untested_subclauses": 21
+ },
+ "status_words": {
+  "VERIFIED_BY_SOFTWARE_TESTS": "every behaviour of the clause has a passing test on the candidate",
+  "VERIFIED_WITH_STATED_LIMIT": "verified, with a limitation that software on this host cannot remove (stated in the clause)",
+  "EXTERNAL_EVIDENCE_REQUIRED": "needs people or an institution; nothing here substitutes for it",
+  "NOT_VERIFIABLE_IN_THIS_ENVIRONMENT": "the named capability does not exist in this environment; nothing is certified"
+ },
+ "hosted": "[hosted …] marks a test that existed in 0c58de3387fa84d1037dd45c92753d1d942bcb92 and ran green in run 35500468128; every other test and every V8-016 code change has NO hosted result",
+ "module_tests_not_cited_by_any_clause": [],
+ "owner_manual_walkthrough": "NOT_PERFORMED_OPTIONAL",
+ "gate15": "REMOVED_BY_OWNER / NOT_REQUIRED — not revived",
+ "human_benefit": "PENDING",
+ "rows": [
+  {
+   "id": "X-01",
+   "requirement": "Fresh installed wheel and sdist expose all four normal browser workflows, help and required resources outside the source checkout.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "macOS and Windows installs were not run (SHD admission refuses there by design; other pages untested on those platforms)"
+   ],
+   "clauses": [
+    {
+     "clause": "fresh installs of the wheel and of the sdist expose all four browser workflows",
+     "existing_evidence": [
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128",
+      "tools/yuclaw_v8_clean_install.py (fresh environments, no editable install, no PYTHONPATH)"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "help and required resources are present",
+     "existing_evidence": [
+      "clean-install REQUIRED_WHEEL / REQUIRED_SDIST member checks",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 1 (Modules and Help pages)"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "outside the source checkout",
+     "existing_evidence": [
+      "clean-install asserts the imported module path is inside the fresh environment"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "(platform scope of the statement)",
+     "existing_evidence": [],
+     "missing_when_v8_016_began": "macOS and Windows installs were never run",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::UnsupportedEnvironment::test_S05_X01_a_kernel_without_landlock_and_a_host_without_bubblewrap_closes_admission_only (a Linux host WITHOUT any isolation facility, simulated by a kernel-level refusal of the Landlock calls: every page and every workflow except SHD admission works) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "macOS and Windows: NOT RUN and not certified. Supported and verified: Linux aarch64 (executor) and Linux x86-64 (hosted runner). A simulated unsupported Linux kernel is not another operating system.",
+     "status": "NOT_VERIFIABLE_IN_THIS_ENVIRONMENT"
+    }
+   ]
+  },
+  {
+   "id": "X-02",
+   "requirement": "Shared IDs refer to real canonical claim/source/version objects; changing an actor label cannot change authenticated authority.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "shared ids refer to real canonical claim, source and version objects",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_test_access_is_recorded_only_for_a_principal_of_this_workspace [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "a real second process changing the object between showing a form and submitting it",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X02_a_claim_amended_by_another_process_makes_the_shown_form_stale (two server/worker processes, barrier-ordered; durable state: no packet) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "changing an actor label cannot change authenticated authority",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor (forged actor, principal and submitter fields are ignored) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "editing the RECORDED label or capability in the journal itself",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::TamperedRecords::test_S01_an_edited_approval_or_principal_record_stops_the_workspace_instead_of_being_used (a rewritten capability, approver or expiry stops the workspace; authentication and admission refuse; nothing is appended) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-03",
+   "requirement": "Cross-role, cross-object and cross-workspace access is denied across HTTP, CLI/service and export surfaces; sessions remain separate.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "CLI surface: the CLI performs host-operator administration only (principals, status) and no module action as a principal, so there is no CLI authorization to test; this is a documented design limit, not a tested denial"
+   ],
+   "clauses": [
+    {
+     "clause": "cross-role access is denied over HTTP",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Foundation::test_capabilities_are_separate_and_a_submitter_cannot_administer [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "evidence that the role test would notice a disabled check",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (variant 'the capability check always passes' → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "cross-object access is denied",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X03_a_session_of_one_server_is_nothing_to_another_and_decisions_are_object_scoped (SHD decisions object-scoped) [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries (foreign session export) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "NO test exercised another practitioner reading, attempting, revealing or reflecting in a foreign session (found by the sensitivity run: disabling the ownership rule failed no test)",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::ObjectScope::test_X03_P03_another_practitioner_cannot_read_attempt_reveal_or_reflect_in_a_foreign_session (domain and HTTP level; durable state unchanged) [NOT hosted: added in V8-016]",
+      "sensitivity variant 'another practitioner's session is served' → now detected"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "cross-workspace access is denied",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X03_a_session_of_one_server_is_nothing_to_another_and_decisions_are_object_scoped (a session or credential of one server is nothing to another) [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S01_a_copied_approval_is_useless_in_another_workspace_even_when_its_root_is_trusted_there [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "CLI / service surface",
+     "existing_evidence": [
+      "V8-015 recorded only a design statement"
+     ],
+     "missing_when_v8_016_began": "the actual command-line trust boundary was neither established nor tested; `principals add|rotate|revoke|list` were not described in the guide",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CliBoundary::test_X03_the_command_line_surface_its_record_and_what_it_never_reveals (exact subcommand surface; no module action exists on it; host-operator actions are journaled as host-operator(cli); credentials printed once and stored nowhere; the claim export carries no module record or private comparison; CLI revocation ends the browser session) [NOT hosted: added in V8-016]",
+      "operator guide §7 now states the boundary"
+     ],
+     "residual_limitation": "BY DESIGN the host operator (anyone who can run commands as the OS user owning the workspace) is not constrained by principal roles; this is documented, journaled and not presented as a control over that person.",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "export surfaces",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P06_the_export_preview_writes_nothing_and_says_what_cannot_leave [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::MultiCapabilityPractitioner::test_P02_a_practitioner_who_is_also_reviewer_and_submitter_finds_the_reference_nowhere_before_the_attempt (a packet built by a multi-capability practitioner holds no unrevealed reference) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "sessions remain separate",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Foundation::test_credentials_expiry_rotation_revocation_and_no_stale_session [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-04",
+   "requirement": "Existing data, seven-step journeys, source-time correction and old export verification remain valid after additive migration.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "the old-wheel compatibility run is a recorded private run, not an automated test (it needs the old wheel)"
+   ],
+   "clauses": [
+    {
+     "clause": "existing data stays valid after the additive migration",
+     "existing_evidence": [
+      "V8-015 private run x04_compat"
+     ],
+     "missing_when_v8_016_began": "no automated test (the evidence needed the old wheel)",
+     "work_performed_in_v8_016": [
+      "tests/fixtures/v8/pre_modules/ (journal and export written by the PRE-MODULE build, fictional fixture)",
+      "tests/test_v8_mod_verification_016.py::PreModuleData::test_X04_a_journal_and_an_export_written_before_the_modules_existed_stay_valid (the old journal opens with integrity OK; module events are appended without changing one earlier hash) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "seven-step journeys stay valid",
+     "existing_evidence": [
+      "original seven-step fixtures journey from both installed artifacts (7/7) — local; hosted on 0c58de33",
+      "real-source regression journey 7/7 from both artifacts (executor only: its stored sources are private)"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "the real-source journey cannot run on hosted CI",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "source-time correction stays valid",
+     "existing_evidence": [
+      "original seven-step fixtures journey from both installed artifacts (7/7) — local; hosted on 0c58de33 — feature 'availability_correction'",
+      "tests/test_v8_workbench_availability*.py"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "old export verification stays valid",
+     "existing_evidence": [
+      "V8-015 private run"
+     ],
+     "missing_when_v8_016_began": "no automated test",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::PreModuleData::test_X04_a_journal_and_an_export_written_before_the_modules_existed_stay_valid (the pre-module export verifies under the new code with the same canonical digest; the claim's export rebuilt after module events has the same canonical digest) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "the opposite direction (a NEW export read by the OLD build) needs the old wheel and stays a private run, repeated for this candidate (private record x04_compat)",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    }
+   ]
+  },
+  {
+   "id": "X-05",
+   "requirement": "Repeated operations, concurrent writers, crashes and restart preserve atomic decisions, capacity and history.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "a power cut (loss of unsynced data) was not staged: one test raises at the append, one kills the whole process with os._exit while it holds the workspace lock; a torn last journal line is covered by the pre-existing store tests"
+   ],
+   "clauses": [
+    {
+     "clause": "repeated operations are idempotent",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P03_only_a_committed_attempt_unlocks_and_retries_are_idempotent [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "a retry by a caller that never received the answer",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_C05_a_killed_reservation_spends_nothing_and_a_durable_one_is_spent_once (AFTER-mode: the event is durable, the retry returns it and spends nothing twice) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "concurrent writers",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_never_double_spends_and_X11_detects_a_disabled_check (threads in one process) [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Practice::test_P03_concurrent_attempt_and_reveal_are_deterministic (threads) [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C04_concurrent_admission_at_the_cap_boundary_admits_exactly_the_cap (threads) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "every concurrency test used threads of ONE process",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X05_C05_two_processes_reserving_the_last_capacity_and_the_same_task [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X05_C04_concurrent_admission_from_separate_processes_stops_at_the_cap [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S02_a_revocation_by_another_process_between_the_worker_and_the_commit_wins [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S02_free_races_never_record_an_admission_after_the_revocation [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_P03_commit_and_reveal_from_separate_processes_never_disclose_before_a_durable_attempt [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S03_another_process_rewriting_the_staged_input_never_yields_a_result_for_other_bytes [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X02_a_claim_amended_by_another_process_makes_the_shown_form_stale [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "crashes",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X05_a_crash_between_the_private_write_and_the_committing_event_commits_nothing (an exception at the append) [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_X05_a_process_killed_while_it_holds_the_lock_commits_nothing_and_blocks_nobody (os._exit while holding the lock) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "no kill at a byte boundary INSIDE the append; no torn line from a module writer; no check of budget conservation after a crash",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_P03_a_killed_attempt_never_opens_the_comparison_and_a_durable_one_is_never_doubled [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_C05_a_killed_reservation_spends_nothing_and_a_durable_one_is_spent_once [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_S05_a_killed_decision_admits_nothing_and_the_retry_decides_once [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_other_writers_killed_before_their_event_leave_only_unreferenced_private_files [NOT hosted: added in V8-016]",
+      "SIGKILL at BEFORE / TORN (half a line, synced) / AFTER (line synced, caller never told)"
+     ],
+     "residual_limitation": "see the durability clause",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "restart",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X01_X05_unconfigured_workspace_shows_the_setup_step_and_state_survives_restart [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 3 (server restart)"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "atomic decisions, capacity and history are preserved",
+     "existing_evidence": [
+      "as above"
+     ],
+     "missing_when_v8_016_began": "history immutability and budget conservation were asserted only in the happy path",
+     "work_performed_in_v8_016": [
+      "every crash case asserts: earlier event hashes unchanged; reserved = sum of live reservations; remaining never negative; no comparison without a durable attempt"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "(durability actually claimed)",
+     "existing_evidence": [
+      "journal: one appended line + fsync"
+     ],
+     "missing_when_v8_016_began": "FOUND: a private object was synced but its directory entry was not — after a power cut the journal could name an object whose rename was lost",
+     "work_performed_in_v8_016": [
+      "core.fsync_dir: vault objects, signing keys, the credential registry and a newly created journal get a synced directory entry before the event that relies on them",
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_durable_names_are_written_before_the_event_that_relies_on_them (system-call order asserted) [NOT hosted: added in V8-016]",
+      "sensitivity variant 'the private object's name is not made durable' → detected",
+      "guide §5 states what was and was not checked"
+     ],
+     "residual_limitation": "PHYSICAL POWER LOSS WAS NOT STAGED and cannot be on this host: whether synced data survives depends on the disk, its write cache and the file system. SIGKILL shows process-death behaviour only.",
+     "status": "NOT_VERIFIABLE_IN_THIS_ENVIRONMENT"
+    }
+   ]
+  },
+  {
+   "id": "X-06",
+   "requirement": "New inputs obey bounds, safe rendering, CSRF/origin rules, secret handling and dependency/platform constraints.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "dependency constraint is declared (cryptography>=41) and resolved in fresh installs; no lower-bound matrix was run"
+   ],
+   "clauses": [
+    {
+     "clause": "new inputs obey bounds",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Foundation::test_strict_json_bounds [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading (upload refused on Content-Length alone) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the multipart reader itself was unbounded in parts and accepted truncated and ambiguous bodies",
+     "work_performed_in_v8_016": [
+      "server.Multipart: at most 32 parts (counted before splitting), closing delimiter required, a name given twice refused, part header bounded; socket timeout; incomplete bodies refused",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_malformed_truncated_duplicated_and_inconsistent_uploads_are_refused_and_write_nothing [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_a_body_made_of_delimiters_is_refused_before_it_is_split [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_generated_mutants_never_crash_the_server_and_every_stored_object_matches_its_digest [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "safe rendering",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Approval::test_S06_hostile_text_is_inert_and_an_approved_false_statement_stays_unassessed [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "one payload family; FOUND: terminal-escape and bidirectional-override characters of untrusted text reached module pages verbatim",
+     "work_performed_in_v8_016": [
+      "modules/web.esc shows control and bidi-override characters as visible \\uXXXX",
+      "tests/test_v8_mod_verification_016.py::HostileText::test_S06_every_family_of_hostile_text_stays_inert_data (14 families) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "constructed families only",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "CSRF and origin rules",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X03_roles_objects_sessions_csrf_host_and_forged_actor [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "FOUND by generated input: a CSRF field with non-ASCII bytes raised an unhandled TypeError (connection dropped, nothing written)",
+     "work_performed_in_v8_016": [
+      "constant-time comparison on bytes at both sites",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_generated_mutants_never_crash_the_server_and_every_stored_object_matches_its_digest (a dropped connection is a failure unless the client under-delivered) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "secret handling",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Foundation::test_credentials_expiry_rotation_revocation_and_no_stale_session [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the command line's outputs were not checked",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CliBoundary::test_X03_the_command_line_surface_its_record_and_what_it_never_reveals [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "dependency and platform constraints",
+     "existing_evidence": [
+      "fresh installs resolve cryptography>=41",
+      "Python 3.10.21 floor run"
+     ],
+     "missing_when_v8_016_began": "the declared LOWER bound of the dependency was never installed",
+     "work_performed_in_v8_016": [
+      "private run: every v8 test on CPython 3.10.21 with cryptography==41.0.0 exactly (result in packaging.json → lower_bound_run)",
+      "tests/test_v8_mod_verification_016.py::UnsupportedEnvironment::test_S05_X01_a_kernel_without_landlock_and_a_host_without_bubblewrap_closes_admission_only (platform without an isolation facility) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "one lower-bound combination, on aarch64 only; not part of hosted CI",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    }
+   ]
+  },
+  {
+   "id": "S-01",
+   "requirement": "A submitter cannot enroll a root, self-approve a bundle, overwrite approval/audit records or use a copied approval for another purpose/workspace.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "'overwrite approval/audit records': there is no route that edits a journal line; the hash chain's tamper detection is covered by pre-existing store tests, not re-tested for module kinds"
+   ],
+   "clauses": [
+    {
+     "clause": "a submitter cannot enroll a root",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S01_submitter_cannot_enroll_approve_or_reuse_an_approval [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "a submitter cannot self-approve",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S01_submitter_cannot_enroll_approve_or_reuse_an_approval [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Approval::test_a_pre_approved_self_submission_is_refused_at_the_protected_operation [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Approval::test_X11_sensitivity_disabling_the_distinct_approver_rule_is_detected [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (disposable-copy variant → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "approval and audit records cannot be overwritten",
+     "existing_evidence": [
+      "pre-existing hash-chain tests of the store (not for module kinds)"
+     ],
+     "missing_when_v8_016_began": "no test edited a MODULE record",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::TamperedRecords::test_S01_an_edited_approval_or_principal_record_stops_the_workspace_instead_of_being_used (expiry pushed out, capability raised, approver renamed: each stops the workspace) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "removing the LAST record leaves a valid shorter chain: only a separately held checkpoint shows it (P-06)",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "a copied approval is useless for another purpose",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S01_submitter_cannot_enroll_approve_or_reuse_an_approval [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "a copied approval is useless in another workspace",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S01_a_copied_approval_is_useless_in_another_workspace_even_when_its_root_is_trusted_there [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-02",
+   "requirement": "Expiry, revocation, key rotation, clock uncertainty and concurrent use have explicit tested outcomes; no stale-cache authorization.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "clock skew smaller than the journal's last timestamp is undetectable; key-file theft is outside the model"
+   ],
+   "clauses": [
+    {
+     "clause": "expiry",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S02_expiry_revocation_rotation_policy_clock_and_concurrent_revocation [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 2 (a real expiry)"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "revocation",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S02_expiry_revocation_rotation_policy_clock_and_concurrent_revocation [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_intake_from_shield_needs_an_admitted_and_still_approved_bundle [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "key rotation",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S02_expiry_revocation_rotation_policy_clock_and_concurrent_revocation [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "clock uncertainty",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S02_expiry_revocation_rotation_policy_clock_and_concurrent_revocation (a clock behind the journal's last record refuses) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing that software can add",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "a clock that is wrong by LESS than the distance to the last journal record is undetectable locally; key-file theft is outside the model",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "concurrent use",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S02_revocation_between_worker_and_commit_wins (one process, the worker call wrapped) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "no second real process",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S02_a_revocation_by_another_process_between_the_worker_and_the_commit_wins (the REAL worker finishes, another process revokes, the commit refuses; journal order asserted) [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S02_free_races_never_record_an_admission_after_the_revocation (4 unsynchronized rounds: never an admission after the revocation) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "no stale-cache authorization",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Foundation::test_credentials_expiry_rotation_revocation_and_no_stale_session [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "no evidence that the freshness test would notice a cached decision",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (variant 'no re-validation at the commit' → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-03",
+   "requirement": "Strict JSON, duplicate keys, parser exhaustion, archive/file escape, link/special-file and unstable-read cases fail at the integrated entry point.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "the change during the read is injected deterministically after the first chunk (append, truncate); a scheduler-timed race by a second real process was not staged. A replacement by rename gives the path a new file the open descriptor never reads; the parent accepts only a result whose digest equals the stored bytes' digest"
+   ],
+   "clauses": [
+    {
+     "clause": "strict JSON and duplicate keys",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Parsing::test_valid_bundle_and_every_manifest_refusal [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "parser exhaustion",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Parsing::test_archive_escapes_links_duplicates_and_bombs (ratio, member count, sizes) [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_a_member_that_lies_about_its_size_is_refused_after_a_bounded_read [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the PARENT's multipart splitter",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_a_body_made_of_delimiters_is_refused_before_it_is_split (600001 delimiters refused before any split; time and memory measured) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "archive and file escape",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Parsing::test_archive_escapes_links_duplicates_and_bombs [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_hostile_archives_are_rejected_at_the_INTEGRATED_route_by_the_real_worker [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "link and special files",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Parsing::test_archive_escapes_links_duplicates_and_bombs [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Parsing::test_unstable_or_unsafe_staged_input [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "unstable reads",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_a_staged_input_changed_while_it_is_being_read_is_refused (change injected after the first chunk) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "a scheduler-timed race by a second real process",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_S03_another_process_rewriting_the_staged_input_never_yields_a_result_for_other_bytes (another process rewrites the file in place while the REAL restricted worker verifies it 30 times: 0 results for other bytes; then 3 calm runs accept) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "a rename-replacement gives the path a new file the open descriptor never reads; the parent accepts only a result whose digest equals the stored bytes' digest",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "failures happen at the integrated entry point",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S03_hostile_archives_are_rejected_at_the_INTEGRATED_route_by_the_real_worker [hosted in run 35500468128]",
+      "tests/test_v8_mod_shield.py::Isolation::test_S03_integrated_route_rejects_a_tampered_bundle_and_admits_a_valid_one [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the HTTP upload entry itself",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_malformed_truncated_duplicated_and_inconsistent_uploads_are_refused_and_write_nothing [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_generated_mutants_never_crash_the_server_and_every_stored_object_matches_its_digest [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-04",
+   "requirement": "The actual restricted worker cannot read canary secrets, write forbidden host paths, reach a canary network endpoint or escape resource bounds.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "the bubblewrap backend has never passed a probe anywhere (executor: blocked by AppArmor; hosted runner: not installed) — it is implemented and unverified",
+    "RLIMIT_CPU and RLIMIT_NOFILE are set but not separately probed (wall-clock kill and the fork/alloc probes are)"
+   ],
+   "clauses": [
+    {
+     "clause": "the actual restricted worker cannot read canary secrets",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "evidence that the test notices missing confinement",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (Landlock rules not applied → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "cannot write forbidden host paths",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "as above",
+     "work_performed_in_v8_016": [
+      "same variant"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "cannot reach a canary network endpoint",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "as above",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (seccomp filter not installed → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "cannot escape resource bounds",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary (address space, wall clock, output) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the descriptor limit and the CPU limit were set but never observed",
+     "work_performed_in_v8_016": [
+      "live probe now REQUIRES 'open_beyond_descriptor_limit' DENIED",
+      "tests/test_v8_mod_verification_016.py::IsolationBounds::test_S04_the_cpu_limit_stops_a_spinning_worker_before_the_wall_clock_does (a spinning worker is ended by the CPU limit at about 20 s, not by the wall clock) [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (resource limits not applied → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "(which backend)",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_descriptors_and_environment_do_not_leak_into_the_worker [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "bubblewrap has never passed a probe on any host",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "landlock backend: verified by live probe on Linux aarch64 (executor) and Linux x86-64 (hosted run 35500468128). bubblewrap: NOT VERIFIED ANYWHERE — the missing capability is a host that lets bubblewrap create an unprivileged user namespace (the executor's AppArmor policy denies it; the runner has no bubblewrap); nothing was installed or loosened. Process confinement, not a container; no independent security review.",
+     "status": "NOT_VERIFIABLE_IN_THIS_ENVIRONMENT"
+    }
+   ]
+  },
+  {
+   "id": "S-05",
+   "requirement": "Isolation failure, worker error or forged output never falls back to an unprotected success route.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "isolation failure never falls back to an unprotected route",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S05_closed_route_has_no_fallback (capability mocked to none) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "a REAL process on a host with no working backend",
+     "work_performed_in_v8_016": [
+      "tests/v8_mod_oldkernel.py (unprivileged seccomp filter: the kernel's Landlock calls answer ENOSYS; no bubblewrap on PATH; product unpatched)",
+      "tests/test_v8_mod_verification_016.py::UnsupportedEnvironment::test_S05_X01_a_kernel_without_landlock_and_a_host_without_bubblewrap_closes_admission_only [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "a simulated unsupported Linux kernel; not macOS or Windows",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "worker error never falls back",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S05_closed_route_has_no_fallback [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_S05_a_killed_decision_admits_nothing_and_the_retry_decides_once (a decision process killed after the worker: no decision exists until the retry) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "forged worker output never falls back",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Parsing::test_S05_forged_worker_output_is_rejected_by_the_parent [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (parent accepts a result for other bytes → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-06",
+   "requirement": "Hostile instruction text stays data; a correctly approved false statement can pass byte checks without acquiring truth or benefit status.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "one constructed payload family; says nothing about prompt-injection in general"
+   ],
+   "clauses": [
+    {
+     "clause": "hostile instruction text stays data",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S06_hostile_text_is_inert_and_an_approved_false_statement_stays_unassessed (one family) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "breadth",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::HostileText::test_S06_every_family_of_hostile_text_stays_inert_data (14 families: markup, handlers, URLs, entities, templates, shell, lookups, SQL, terminal escapes, bidi override, instructions to a model, path-like, long line, CSV formula) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "constructed families say nothing about prompt injection in general; no immunity from AI attacks is claimed",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "a correctly approved false statement passes byte checks without acquiring truth or benefit status",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_S06_hostile_text_is_inert_and_an_approved_false_statement_stays_unassessed [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 2"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-01",
+   "requirement": "All eight inventory components distinguish measured, declared, unknown and justified non-applicable state.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "all eight components distinguish measured, declared, unknown and justified not-applicable",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E01_inventory_distinguishes_measured_declared_unknown_not_applicable [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E01_unknown_required_inventory_blocks_reuse [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-02",
+   "requirement": "Controlled real dependency/grader/policy changes invalidate relevant reviews; unrelated changes retain justified reuse.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "the runtime change is simulated by substituting the runtime digest, not by upgrading a package"
+   ],
+   "clauses": [
+    {
+     "clause": "controlled real dependency, grader and policy changes invalidate relevant reviews",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E02_E07_real_changes_invalidate_relevant_evidence_and_keep_unrelated_evidence [hosted in run 35500468128]",
+      "v8/V8-014/measurements.json (12 real file changes)"
+     ],
+     "missing_when_v8_016_began": "the RUNTIME change was a substituted digest",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::RealRuntimeChange::test_E02_an_actually_different_installed_distribution_invalidates_what_depends_on_the_runtime (two interpreter processes whose import path holds a different installed VERSION of a distribution; the product's own measurement differs; dependent evidence → REEVALUATE) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "unrelated changes retain justified reuse",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E02_E07_real_changes_invalidate_relevant_evidence_and_keep_unrelated_evidence [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::RealRuntimeChange::test_E02_an_actually_different_installed_distribution_invalidates_what_depends_on_the_runtime (evidence outside the runtime's closure → REUSE with reasons) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-03",
+   "requirement": "Authentication, ancestry conflicts and previous protected-test exposure survive credential revocation and relabeling.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "authentication of the acting roles",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E03_conflicts_through_ancestry_and_persistent_test_exposure [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_test_access_is_recorded_only_for_a_principal_of_this_workspace [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "release authorizers and the other authority lists are NAMED ids; no release is authorized here (EVO-05)",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "ancestry conflicts",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E03_conflicts_through_ancestry_and_persistent_test_exposure [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "previous protected-test exposure survives credential revocation and relabeling",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_E06_exposure_survives_principal_revocation_and_relabelling_and_requests_show_fulfilment [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-04",
+   "requirement": "A matching unresolved failure persists across later passes/protocol names; an authorized evidence-backed resolution is append-only and scoped.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "a matching unresolved failure persists across later passes and protocol names",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E04_a_failure_persists_until_an_authorized_evidence_backed_resolution [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "an authorized evidence-backed resolution is append-only and scoped",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E04_a_failure_persists_until_an_authorized_evidence_backed_resolution [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-05",
+   "requirement": "Historical views use knowledge recorded by the cutoff; later review cannot manufacture earlier approval.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "historical views use knowledge recorded by the cutoff",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E05_historical_views_use_recorded_time_and_label_backdated_assertions [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "one-second resolution of cutoffs",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "a later review cannot manufacture an earlier approval",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E05_historical_views_use_recorded_time_and_label_backdated_assertions [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-06",
+   "requirement": "Targeted reevaluation and export are usable; unknown monetary amounts remain separate by currency; external deployment is not falsely claimed controlled.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "only two built-in job types exist; no external deployment is controlled (by design)"
+   ],
+   "clauses": [
+    {
+     "clause": "targeted reevaluation is usable",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E06_requests_commitments_eligibility_and_declared_imports [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_E03_E06_exposure_survives_principal_revocation_and_relabelling_and_requests_show_fulfilment (OPEN → FULFILLED) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "two built-in job types exist (by design of the 8.0.0 scope)",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "export is usable",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 6"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "unknown monetary amounts stay separate by currency",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E06_requests_commitments_eligibility_and_declared_imports [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "external deployment is not falsely claimed controlled",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E06_requests_commitments_eligibility_and_declared_imports (the eligibility answer is read-only) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "a separately trusted deployment controller needs an institution's authorized integration (EVO-10)",
+     "status": "EXTERNAL_EVIDENCE_REQUIRED"
+    }
+   ]
+  },
+  {
+   "id": "C-01",
+   "requirement": "Duplicate membership persists across repeated ingestion and restart; incompatible claim contracts remain separate.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "duplicate membership persists across repeated ingestion and restart",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 3"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "incompatible claim contracts remain separate",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-02",
+   "requirement": "Aliases and shared roots do not create independent corroboration; unknown ancestry stays unknown.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "'aliases' are exact-identity only: two different source registrations of the same document are different roots (no alias resolution exists)"
+   ],
+   "clauses": [
+    {
+     "clause": "aliases do not create independent corroboration",
+     "existing_evidence": [
+      "V8-015: documented as NOT implemented (exact identity only)"
+     ],
+     "missing_when_v8_016_began": "REQUIRED BEHAVIOUR MISSING: the same passage registered under a second accession counted as a second independent root",
+     "work_performed_in_v8_016": [
+      "commons: canonical roots — identical passage bytes resolve to the first registration automatically; a reviewer or administrator can declare (and retract) an alias; new event COM_ALIAS_RECORDED; packets record cited and canonical roots so a receiver recomputes the same view; COM page section",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C02_aliases_are_one_root_for_grouping_corroboration_and_disputes [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "no similarity is computed: a different rendering that nobody declared still looks like a separate root (stated on the page and in the guide)",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "shared roots do not create independent corroboration",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "the shared-root view now groups by canonical root"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "unknown ancestry stays unknown",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C01_C02_groups_persist_across_restart_and_incompatible_contracts_stay_separate [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-03",
+   "requirement": "Only an authorized recorded dispute/withdrawal changes queue handling; propagation, appeal and resolution preserve original history.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "only an authorized recorded dispute or withdrawal changes queue handling",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C03_only_an_authorized_dispute_changes_handling_and_history_survives_appeal_and_resolution [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "propagation",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C03_only_an_authorized_dispute_changes_handling_and_history_survives_appeal_and_resolution [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference (targets must exist here) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "propagation through ALIASES (COM-04) did not exist",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C02_aliases_are_one_root_for_grouping_corroboration_and_disputes (a dispute on any name of a document quarantines every group resting on it; a retraction ends that) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "appeal and resolution preserve the original history",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C03_only_an_authorized_dispute_changes_handling_and_history_survives_appeal_and_resolution [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-04",
+   "requirement": "Stable-principal caps, rate/storage bounds and concurrent admission resist simple rename/replay/flood attempts.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "collusion between principals and real-world Sybil identity are not addressed (documented)"
+   ],
+   "clauses": [
+    {
+     "clause": "stable-principal caps",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C04_caps_count_the_authenticated_principal_and_bound_the_queue [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (contributor cap not counted → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "rate and storage bounds",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C04_caps_count_the_authenticated_principal_and_bound_the_queue [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P02_a_practitioner_with_other_capabilities_is_labelled_not_confined_and_C04_E02_bounds (storage bound) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "concurrent admission",
+     "existing_evidence": [
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C04_concurrent_admission_at_the_cap_boundary_admits_exactly_the_cap (threads) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "separate processes",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X05_C04_concurrent_admission_from_separate_processes_stops_at_the_cap (six processes at one barrier against a cap of three → exactly three) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "resists simple rename, replay and flood attempts",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C04_caps_count_the_authenticated_principal_and_bound_the_queue [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "collusion between principals and real-world Sybil identity are outside what local credentials can establish (COM-05)",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    }
+   ]
+  },
+  {
+   "id": "C-05",
+   "requirement": "Reservations, leases, partial work, cancellation, rollover and urgent overrides neither double-spend nor silently erase capacity/backlog.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "reservations never double-spend",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_never_double_spends_and_X11_detects_a_disabled_check [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "separate processes; process death",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_X05_C05_two_processes_reserving_the_last_capacity_and_the_same_task [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_C05_a_killed_reservation_spends_nothing_and_a_durable_one_is_spent_once [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "leases, partial work, cancellation, rollover and urgent overrides never silently erase capacity or backlog",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C05_C06_state_machine_leases_rollover_cancellation_and_three_effort_numbers [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C06_C09_fit_smaller_aged_hold_oversized_escalation_urgent_and_budget_cut [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-06",
+   "requirement": "Practice reserve, fitting smaller tasks, backlog age, estimates, observed duration and manually declared effort are distinguishable.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "practice reserve, fitting smaller tasks, backlog age, estimates, observed duration and declared effort are distinguishable",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C05_C06_state_machine_leases_rollover_cancellation_and_three_effort_numbers [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C06_C09_fit_smaller_aged_hold_oversized_escalation_urgent_and_budget_cut [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Practice::test_P05_reflection_feedback_followup_and_the_practice_reserve [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "a timer and a declaration are not verified attentive work (COM-06)",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-07",
+   "requirement": "A reproducible FIFO comparison uses identical synthetic assumptions; human productivity/error reduction remains unestablished.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "a reproducible FIFO comparison uses identical synthetic assumptions",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C07_the_fifo_comparison_is_reproducible_and_labelled [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "human productivity or error reduction remains unestablished",
+     "existing_evidence": [
+      "page and guide wording"
+     ],
+     "missing_when_v8_016_began": "cannot be produced by software",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "needs real participants (COM-12)",
+     "status": "EXTERNAL_EVIDENCE_REQUIRED"
+    }
+   ]
+  },
+  {
+   "id": "P-01",
+   "requirement": "Frozen task and sources are useful in the browser; reference identity cannot silently change after opening.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "frozen task and sources are useful in the browser",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P01_frozen_task_identity_and_curator_conflict [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 4"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "whether a task is SUITABLE needs a qualified reviewer (PRC-01)",
+     "status": "EXTERNAL_EVIDENCE_REQUIRED"
+    },
+    {
+     "clause": "reference identity cannot silently change after opening",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P01_frozen_task_identity_and_curator_conflict [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Surface::test_V8_015_connected_workflow_carries_selections_and_the_server_validates_every_reference [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "P-02",
+   "requirement": "No early answer through direct HTTP/API/static/help/journal/export/cache/error/alternate-view access by the practitioner.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "a practitioner that ALSO holds another capability is not route-confined (now labelled NOT_CONFINED); whether a claim page already reveals the answer is the curator's judgement and is not detected"
+   ],
+   "clauses": [
+    {
+     "clause": "no early answer through direct HTTP/API, static, help, journal, export, error or alternate views",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_P02_no_early_answer_on_any_surface_a_practitioner_can_reach (a practice-only principal: 31 URLs, direct POST, export, another session) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "a practitioner who ALSO holds other capabilities reaches claim pages, the journal, COM, EVO, SHD and exports — never swept",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::MultiCapabilityPractitioner::test_P02_a_practitioner_who_is_also_reviewer_and_submitter_finds_the_reference_nowhere_before_the_attempt (27 URLs + reveal POST + a full export + the journal bytes, before the attempt) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "whether a claim page itself gives the answer away is the curator's judgement; such sessions are labelled NOT_CONFINED",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "no early answer through a cache",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading (no-store on one page) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "only one page was checked",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::MultiCapabilityPractitioner::test_P02_a_practitioner_who_is_also_reviewer_and_submitter_finds_the_reference_nowhere_before_the_attempt (every page reached carries Cache-Control: no-store) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "(would the sweep notice?)",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Surface::test_P02_X11_sensitivity_disabling_the_reveal_rule_is_detected_by_the_leak_check [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (the comparison opens without an attempt → detected) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "P-03",
+   "requirement": "Only a committed attempt unlocks a comparison; retries and concurrent requests cannot leak or overwrite the original attempt.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "only a committed attempt unlocks a comparison",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P03_only_a_committed_attempt_unlocks_and_retries_are_idempotent [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "process death between the private write and the event",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrashBoundaries::test_X05_P03_a_killed_attempt_never_opens_the_comparison_and_a_durable_one_is_never_doubled [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "retries cannot leak or overwrite the original attempt",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P03_only_a_committed_attempt_unlocks_and_retries_are_idempotent [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "concurrent requests cannot leak or overwrite the original attempt",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P03_concurrent_attempt_and_reveal_are_deterministic (threads) [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "separate processes; a second, DIFFERENT attempt racing the first; another practitioner",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CrossProcess::test_P03_commit_and_reveal_from_separate_processes_never_disclose_before_a_durable_attempt (three processes per round: two different attempts and a reveal) [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::ObjectScope::test_X03_P03_another_practitioner_cannot_read_attempt_reveal_or_reflect_in_a_foreign_session [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "P-04",
+   "requirement": "Assisted/already-exposed sessions are accepted with truthful labels; unresolved judgments are supported.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "assisted and already-exposed sessions are accepted with truthful labels; unresolved judgments are supported",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P04_assisted_exposed_and_unresolved_sessions_are_accepted_with_truthful_labels [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "a declaration is the practitioner's statement",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "P-05",
+   "requirement": "Reflection, reviewer feedback and local delayed-task due states work without rewriting attempts or inventing human research.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "reflection, reviewer feedback and local delayed-task due states work without rewriting attempts",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P05_reflection_feedback_followup_and_the_practice_reserve [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "without inventing human research",
+     "existing_evidence": [
+      "nobody is contacted; page and guide wording"
+     ],
+     "missing_when_v8_016_began": "cannot be produced by software",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "learning transfer needs a consented study (PRC-09)",
+     "status": "EXTERNAL_EVIDENCE_REQUIRED"
+    }
+   ]
+  },
+  {
+   "id": "P-06",
+   "requirement": "Export permissions/redaction protect participant content and hidden references; independent checkpoints detect modification/truncation.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "practitioner identifiers are not pseudonymised in a packet (text can be withheld; ids cannot)"
+   ],
+   "clauses": [
+    {
+     "clause": "export permissions protect participant content",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P06_the_export_preview_writes_nothing_and_says_what_cannot_leave [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::CliBoundary::test_X03_the_command_line_surface_its_record_and_what_it_never_reveals (the command-line export too) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "principal identifiers are exported as they are: a packet is not anonymous (PRC-08)",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "redaction protects hidden references",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::MultiCapabilityPractitioner::test_P02_a_practitioner_who_is_also_reviewer_and_submitter_finds_the_reference_nowhere_before_the_attempt [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "independent checkpoints detect modification and truncation",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 6"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "P-07",
+   "requirement": "Later source/EVO changes annotate the session's current interpretation without replacing historical evidence or answers.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "later source or EVO changes annotate the session's current interpretation without replacing historical evidence or answers",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Practice::test_P07_later_source_and_claim_changes_annotate_without_rewriting [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_P07_a_claim_amendment_and_an_EVO_successor_annotate_the_session_without_rewriting_it [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-07",
+   "requirement": "End-to-end SHD -> COM -> PRC plus EVO change/review behavior can be repeated from both installed artifacts.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "the end-to-end chain repeats from both installed artifacts",
+     "existing_evidence": [
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "hosted for 0c58de33; NOT hosted for the V8-016 commit",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-08",
+   "requirement": "Fresh receiver recomputes valid exports, rejects forged relationships and distinguishes integrity from receiver trust.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "a fresh receiver recomputes valid exports",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "module journey from the installed wheel AND sdist (6/6) — local on the V8-016 candidate; hosted on 0c58de33 in run 35500468128 step 6"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_acceptance_015.py::EvoComPrc::test_C02_aliases_are_one_root_for_grouping_corroboration_and_disputes (alias-bearing COM views recompute without the sender's sources) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "rejects forged relationships",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "distinguishes integrity from receiver trust",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_X08_P06_fresh_receiver_recomputes_distinguishes_trust_and_rejects_forgeries [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-09",
+   "requirement": "Expanded CI checks are rehearsed and ready; hosted status is tied only to the SHA actually run after a separately approved push.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "expanded CI checks are rehearsed and ready",
+     "existing_evidence": [
+      "workflow linted; every job's commands rehearsed locally"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "the new tests run inside the existing tests and python-floor jobs; no workflow change was needed"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "hosted status is tied only to the SHA actually run after a separately approved push",
+     "existing_evidence": [
+      "run 35495154439 ↔ 68daca6d"
+     ],
+     "missing_when_v8_016_began": "the V8-015 commit had no hosted run",
+     "work_performed_in_v8_016": [
+      "run 35500468128 ↔ 0c58de3387fa84d1037dd45c92753d1d942bcb92: success (v8/V8-016/hosted_ci.json)"
+     ],
+     "residual_limitation": "the V8-016 commit has NO hosted run",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    }
+   ]
+  },
+  {
+   "id": "X-10",
+   "requirement": "Package contents exclude credentials, private approvals/participant records and order files; claims map to observed evidence and explicit limits.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "package contents exclude credentials, private approvals, participant records and order files",
+     "existing_evidence": [
+      "clean-install FORBIDDEN_MEMBERS inspection of both artifacts"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "the new test fixtures and harnesses live under tests/ and are in neither distribution (checked by the same inspection)"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "claims map to observed evidence and explicit limits",
+     "existing_evidence": [
+      "v8/V8-014/claim_to_evidence.md",
+      "v8/V8-015 records"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "this matrix"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-07",
+   "requirement": "Intake is bounded before complex parent parsing; restricted-worker setup leaks no unintended environment or handles; all output/error channels are bounded.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "the parent's multipart splitter is bounded by the upload limit but was not fuzzed separately"
+   ],
+   "clauses": [
+    {
+     "clause": "intake is bounded before complex parent parsing",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_bounded_intake_before_any_parse [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Surface::test_X06_unsafe_text_is_rendered_inert_and_uploads_are_bounded_before_reading [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "the multipart splitter was never exercised with hostile input",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_malformed_truncated_duplicated_and_inconsistent_uploads_are_refused_and_write_nothing (15 hand-made cases + a stalled client) [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_a_body_made_of_delimiters_is_refused_before_it_is_split [NOT hosted: added in V8-016]",
+      "tests/test_v8_mod_verification_016.py::UploadParser::test_S07_generated_mutants_never_crash_the_server_and_every_stored_object_matches_its_digest (seed 20260920, 160 mutants; no 5xx, no dropped connection, every stored object matches its digest, no file outside the vault) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "local generated cases, not a coverage-guided fuzzer",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "restricted-worker setup leaks no unintended environment or handles",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_descriptors_and_environment_do_not_leak_into_the_worker [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "all output and error channels are bounded",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Isolation::test_S04_S07_the_real_restricted_worker_denies_each_canary [hosted in run 35500468128]",
+      "tests/test_v8_mod_acceptance_015.py::Boundaries::test_S07_the_error_channel_is_bounded_too [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "S-08",
+   "requirement": "Offline results expose trust/revocation freshness; old imports cannot roll back trusted state, revive a revoked credential or reinterpret an approval as another signed record type.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "rollback detection needs the receiver to have verified a newer packet from that workspace before"
+   ],
+   "clauses": [
+    {
+     "clause": "offline results expose trust and revocation freshness",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "old imports cannot roll back trusted state",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing that software can add",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "a receiver that never verified a newer packet from that origin cannot know a snapshot is old; the result states the snapshot's revision and time and changes nothing locally",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "old imports cannot revive a revoked credential",
+     "existing_evidence": [
+      "tests/test_v8_mod_prc_web.py::Packets::test_S08_an_older_trust_snapshot_and_a_locally_revoked_root_are_discrepancies_not_state_changes [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "an approval cannot be reinterpreted as another signed record type",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Foundation::test_envelope_domain_separation_and_unknown_versions [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "E-07",
+   "requirement": "Actual execution uses the measured immutable subject; swapping an input or omitting a required dependency cannot preserve an invalid review result.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "actual execution uses the measured immutable subject",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E07_a_file_swapped_between_collection_and_execution_is_not_evaluated_under_the_old_identity [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "swapping an input cannot preserve an invalid review result",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E07_a_file_swapped_between_collection_and_execution_is_not_evaluated_under_the_old_identity [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "omitting a required dependency cannot preserve an invalid review result",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Evolution::test_E02_E07_real_changes_invalidate_relevant_evidence_and_keep_unrelated_evidence [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-08",
+   "requirement": "Submitter cost manipulation cannot inflate/reduce established duplicate-group cost or evade reservations; estimates and scheduling authority remain distinguishable.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "submitter cost manipulation cannot inflate or reduce an established group's cost or evade reservations",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C08_a_duplicate_submitter_cannot_move_the_scheduling_cost_in_either_direction [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "estimates and scheduling authority remain distinguishable",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C08_a_duplicate_submitter_cannot_move_the_scheduling_cost_in_either_direction [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "C-09",
+   "requirement": "Aging/escalation and budget reduction preserve historical consumption and show starvation/overrun explicitly without creating capacity.",
+   "untested_subclauses_recorded_by_v8_015": [],
+   "clauses": [
+    {
+     "clause": "aging, escalation and budget reduction preserve historical consumption and show starvation and overrun explicitly without creating capacity",
+     "existing_evidence": [
+      "tests/test_v8_mod_evo_com.py::Commons::test_C06_C09_fit_smaller_aged_hold_oversized_escalation_urgent_and_budget_cut [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-11",
+   "requirement": "Valid authorized counterparts succeed; targeted isolated test variants show that key boundary tests detect deliberately disabled controls.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "no sensitivity variant exists for the isolation boundary itself (disabling Landlock/seccomp in a test variant was judged unsafe to build)"
+   ],
+   "clauses": [
+    {
+     "clause": "valid authorized counterparts succeed",
+     "existing_evidence": [
+      "every refusal test names its counterpart"
+     ],
+     "missing_when_v8_016_began": "nothing",
+     "work_performed_in_v8_016": [
+      "every new V8-016 test carries its counterpart (calm verification, the owner's attempt, the unfiltered host, the valid upload, the retry)"
+     ],
+     "residual_limitation": "none",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    },
+    {
+     "clause": "targeted isolated variants show that key boundary tests detect deliberately disabled controls",
+     "existing_evidence": [
+      "tests/test_v8_mod_shield.py::Approval::test_X11_sensitivity_disabling_the_distinct_approver_rule_is_detected [hosted in run 35500468128]",
+      "tests/test_v8_mod_evo_com.py::Commons::test_C05_concurrent_reservation_never_double_spends_and_X11_detects_a_disabled_check [hosted in run 35500468128]",
+      "tests/test_v8_mod_prc_web.py::Surface::test_P02_X11_sensitivity_disabling_the_reveal_rule_is_detected_by_the_leak_check [hosted in run 35500468128]"
+     ],
+     "missing_when_v8_016_began": "NO variant touched the isolation boundary; the three existing ones patched one process in memory",
+     "work_performed_in_v8_016": [
+      "tests/test_v8_mod_verification_016.py::Sensitivity::test_X11_each_disabled_control_is_caught_by_its_test_and_none_reaches_the_candidate (14 controls disabled one at a time in DISPOSABLE COPIES (fake HOME, own TMPDIR): Landlock, seccomp, resource limits, digest re-check, capability check, distinct approver, session ownership, commit-time re-validation, plan capacity, contributor cap, reveal rule, stale selection, truncated upload, durable name — each caught; the unmodified copy passes; the candidate's files hash the same before and after; every copy deleted) [NOT hosted: added in V8-016]"
+     ],
+     "residual_limitation": "fourteen chosen controls, not every line of the product",
+     "status": "VERIFIED_BY_SOFTWARE_TESTS"
+    }
+   ]
+  },
+  {
+   "id": "X-12",
+   "requirement": "Reproducible workload and performance measurements disclose resource bounds, workload sizes, hardware, denominators, unfavorable outcomes and comparable baselines.",
+   "untested_subclauses_recorded_by_v8_015": [
+    "one machine; the repeat-everything baseline's time is an estimate; the connected-workflow comparison is an instrumented automated journey, not people"
+   ],
+   "clauses": [
+    {
+     "clause": "reproducible workload and performance measurements disclose bounds, sizes, hardware, denominators, unfavorable outcomes and baselines",
+     "existing_evidence": [
+      "v8/V8-014/measurements.json",
+      "v8/V8-015/identifier_entry_before_after.json"
+     ],
+     "missing_when_v8_016_began": "nothing required",
+     "work_performed_in_v8_016": [
+      "v8/V8-016/verification_workloads.json: seeds, rounds, sizes, timings and the unfavorable results of the new tests (3 of 4 reveal races arrived first and were refused; 30 of 30 hammered reads were refused; 2 of 160 mutants exposed a defect)"
+     ],
+     "residual_limitation": "one executor class (aarch64) for timings; hosted x86-64 runs are pass/fail, not benchmarks",
+     "status": "VERIFIED_WITH_STATED_LIMIT"
+    },
+    {
+     "clause": "human benefit",
+     "existing_evidence": [],
+     "missing_when_v8_016_began": "cannot be produced by software",
+     "work_performed_in_v8_016": [],
+     "residual_limitation": "PENDING",
+     "status": "EXTERNAL_EVIDENCE_REQUIRED"
+    }
+   ]
+  }
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

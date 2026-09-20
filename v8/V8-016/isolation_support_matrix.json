@@ -1,0 +1,16 @@
+{
+ "record": "v8-016-isolation-support/1",
+ "supported_and_verified": {
+  "linux_aarch64_executor": "landlock backend: live probe incl. the descriptor limit, CPU-limit test, 14 disabled-control variants, installed journeys — on the V8-016 candidate",
+  "linux_x86_64_hosted_runner": "landlock backend: live probe, module tests and both installed journeys in run 35500468128 on 0c58de33 (the V8-015 state; the descriptor-limit probe and the V8-016 tests have not run there)"
+ },
+ "not_verified_anywhere": {
+  "bubblewrap": "implemented and preferred when its probe passes; verified on NO host. Missing capability: a host whose policy lets bubblewrap create an unprivileged user namespace. Nothing was installed or loosened to obtain one."
+ },
+ "unsupported_environments": {
+  "simulated": "a Linux kernel that answers ENOSYS to the Landlock calls, without bubblewrap: explicit REFUSED_ISOLATION_UNAVAILABLE, recorded; every other function works (tests/test_v8_mod_verification_016.py::UnsupportedEnvironment)",
+  "not_run": "macOS, Windows — by design SHD admission refuses there; NOTHING about those systems is certified"
+ },
+ "what_it_is_not": "process confinement, not a container; no PID/mount namespace on the landlock backend; no defence against a kernel vulnerability or the same OS user outside the worker; no independent security review",
+ "not_advice": "Research and education only. Not investment advice."
+}

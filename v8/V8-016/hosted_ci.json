@@ -1,0 +1,80 @@
+{
+ "record": "v8-016-hosted-ci/1",
+ "approved_push": {
+  "command": "git push origin 0c58de3387fa84d1037dd45c92753d1d942bcb92:refs/heads/codex/v8-integration",
+  "executed_utc": "2026-09-20T08:46:07Z",
+  "result": "fast-forward 68daca6d..0c58de33, non-force; the approval arrived as pasted text and was confirmed once interactively before the public write",
+  "credential": "the existing gh login through a one-command credential-helper override; stored token, git configuration and gh configuration unchanged; no token printed",
+  "pre_checks": [
+   "full sha present and equal to the local HEAD; worktree clean",
+   "remote = YuClawLab/yuclaw-brain; remote branch tip 68daca6d is an ancestor",
+   "workflow validation-only: permissions contents:read, no secrets, no publication or deployment step",
+   "no run existed yet for this sha",
+   "origin/main untouched (5edb9e7e)"
+  ]
+ },
+ "run": {
+  "workflow": "v8-prerelease-validation",
+  "url": "https://github.com/YuClawLab/yuclaw-brain/actions/runs/35500468128",
+  "id": 35500468128,
+  "event": "push",
+  "branch": "codex/v8-integration",
+  "head_sha": "0c58de3387fa84d1037dd45c92753d1d942bcb92",
+  "head_tree_printed_by_every_job": "1eeadbed99fdb6eb04f2efd4aeec6055b6138202",
+  "created": "2026-09-20T08:46:09Z",
+  "completed": "2026-09-20T08:50:54Z",
+  "conclusion": "success",
+  "other_workflows_triggered_by_this_commit": "none",
+  "jobs": [
+   {
+    "name": "package",
+    "conclusion": "success",
+    "started": "2026-09-20T08:46:11Z",
+    "completed": "2026-09-20T08:50:53Z",
+    "steps_not_successful": []
+   },
+   {
+    "name": "python-floor",
+    "conclusion": "success",
+    "started": "2026-09-20T08:46:11Z",
+    "completed": "2026-09-20T08:47:22Z",
+    "steps_not_successful": []
+   },
+   {
+    "name": "tests",
+    "conclusion": "success",
+    "started": "2026-09-20T08:46:11Z",
+    "completed": "2026-09-20T08:48:20Z",
+    "steps_not_successful": []
+   }
+  ]
+ },
+ "jobs_in_detail": {
+  "tests (Python 3.12, x86-64)": {
+   "offline_suite": "349 passed, 1 skipped",
+   "the_one_skip": "printed by -rs: tests/test_v8_workbench_packaging.py:32 'no python3.10 interpreter on this host' — the python-floor job runs the same code on 3.10 for real",
+   "postgresql": "the five disposable-PostgreSQL-16 tests ran and passed inside the 349; the compliance regression ran against the postgres:16 service: 21 passed",
+   "module_tests": "all 64 module tests of the V8-015 state ran with the real restricted worker, including the 15 added in V8-015 (first hosted execution of those)"
+  },
+  "python-floor (CPython 3.10.21)": {
+   "result": "166 passed",
+   "overlap": "the SAME v8 test files as in the tests job on another interpreter — not additional independent coverage; the counts are not added"
+  },
+  "package (Python 3.12)": {
+   "result": "clean-install PASS on 0c58de33",
+   "artifacts": "wheel d1f5c59f030d… and sdist 8d4b78f146ed… — the same digests as the local V8-015 pair built from f6a879b2 (no packaged path differs between the two commits); hosted artifacts are not release artifacts",
+   "fresh_installs": "wheel and sdist each: fixtures journey 7/7, module journey 6/6 (the connected workflow), isolation backend landlock",
+   "not_run_hosted": "the real-source regression journey (its stored sources are private)"
+  }
+ },
+ "isolation_on_the_hosted_x86_64_runner": {
+  "kernel": "Linux 6.17.0-1022-azure x86_64",
+  "lsm": "lockdown,capability,landlock,yama,apparmor,ima,evm",
+  "backend_that_ran": "landlock",
+  "bwrap": "not installed on the runner — NOT verified; bubblewrap is verified on no host",
+  "valid_and_invalid_cases": "the live probe showed every required denial and the staged input readable; valid bundles were admitted and hostile or tampered ones refused in the module tests and both installed journeys",
+  "skips_or_weakened_controls": "none"
+ },
+ "what_this_run_does_not_cover": "any commit after 0c58de33: the V8-016 fixes and its 26 new tests have NO hosted result",
+ "not_advice": "Research and education only. Not investment advice."
+}

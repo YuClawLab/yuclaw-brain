@@ -1,0 +1,34 @@
+{
+ "record": "v8-016-ci-push-plan/1",
+ "status": "PROPOSED — needs the owner's separate explicit approval; NOT executed. The V8-016 approval covered exactly 0c58de33 and was used for exactly that push.",
+ "remote_ci": "none for this commit — run 35500468128 belongs to 0c58de3387fa84d1037dd45c92753d1d942bcb92 and is never attached to a later commit",
+ "branch": "codex/v8-integration (on origin at 0c58de33…; the push is a fast-forward, non-force)",
+ "sha": "the record HEAD that contains this file — its full sha is in the handoff report (a file cannot name its own commit); candidate source below it: 35d1d9d97e5d85b09ceb5ac1178ac7396ca4c76e",
+ "reviewed_diff_summary": {
+  "source_vs_pushed_tip": "23 files changed, 1047 insertions(+), 36 deletions(-)",
+  "packaged_code": [
+   "v8/workbench/store.py, modules/core.py, authz.py, shield.py — synced directory entries",
+   "v8/workbench/server.py — multipart reader, socket timeout, incomplete body, byte-wise CSRF comparison",
+   "v8/workbench/modules/web.py — visible control/bidi characters; COM alias section and route",
+   "v8/workbench/modules/commons.py + modkinds.py — canonical roots, COM_ALIAS_RECORDED",
+   "v8/workbench/modules/shield_worker.py + sandbox.py — descriptor-limit probe, required",
+   "resources: OPERATOR_GUIDE.md, DATA_DICTIONARY.md"
+  ],
+  "not_packaged": [
+   "tests/test_v8_mod_verification_016.py + three helper files + tests/fixtures/v8/pre_modules/ (fictional fixture written by the pre-module build)",
+   "one test added to tests/test_v8_mod_acceptance_015.py",
+   "CHANGELOG.md, tools/yuclaw_release_notes_v8.py (COM line)",
+   "v8/V8-016 records"
+  ],
+  "workflow_file_changed": false
+ },
+ "workflow": "v8-prerelease-validation, unchanged: the new tests run inside the existing tests and python-floor jobs (about four more minutes each); validation only: contents:read, no secrets, no publication, no deployment",
+ "credential_note": "this push does NOT change a workflow file, so the stored git token's missing `workflow` scope does not apply to it; whether the stored token can push this branch at all has not been tried (the three earlier branch pushes each used the gh login once, by the owner's choice)",
+ "expected_on_the_runner": [
+  "first x86-64 execution of the descriptor-limit probe, the CPU-limit test, the seccomp ENOSYS harness (syscall numbers 444–446 are the same on x86-64) and the 14 disposable-copy variants",
+  "process-spawning tests on a smaller runner are slower; their timeouts are generous but untested there",
+  "the python-floor job has a 15-minute limit: the same run takes 193.41s on the executor (20 cores) — if the runner needs more, the job fails by timeout, which would be reported, not worked around"
+ ],
+ "tie_result_to_sha": "gh run list -R YuClawLab/yuclaw-brain --workflow v8-prerelease-validation --branch codex/v8-integration --json headSha,conclusion,databaseId,url — count only headSha == the pushed sha",
+ "not_advice": "Research and education only. Not investment advice."
+}

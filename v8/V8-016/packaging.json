@@ -1,0 +1,167 @@
+{
+ "record": "v8-016-packaging/1",
+ "result": "PASS",
+ "mode": "PRELIMINARY_BUILD",
+ "source_commit": "35d1d9d97e5d85b09ceb5ac1178ac7396ca4c76e",
+ "source_tree": "83634f37f4ff2284572369090ff63e5a325f3496",
+ "build_utc": "2026-09-20T09:31:43+00:00",
+ "source_date_epoch": "1580601600",
+ "build_tools": {
+  "python": "3.12.3",
+  "build": "build 1.4.2",
+  "wheel_generator": "hatchling 1.32.3"
+ },
+ "wheel": {
+  "name": "yuclaw-8.0.0-py3-none-any.whl",
+  "sha256": "fb452859000bc2dea943f47fedaa9fc575c25b421f0e15eb629f359a62df0291",
+  "size": 1008322
+ },
+ "sdist": {
+  "name": "yuclaw-8.0.0.tar.gz",
+  "sha256": "851e6a2c1d1133961217e51487b2224c05dd14716570533b5e33adcd52b4284f",
+  "size": 5263294
+ },
+ "wheel_inspection": {
+  "kind": "wheel",
+  "members": 279,
+  "missing_required": [],
+  "forbidden_present": [],
+  "test_tree_present": [],
+  "home_paths_in_names": [],
+  "ok": true
+ },
+ "sdist_inspection": {
+  "kind": "sdist",
+  "members": 1198,
+  "missing_required": [],
+  "forbidden_present": [],
+  "test_tree_present": [],
+  "home_paths_in_names": [],
+  "ok": true
+ },
+ "long_description": {
+  "wheel": {
+   "content_type": "text/markdown",
+   "has_picture_element": false,
+   "has_relative_brand_path": false,
+   "has_mission_vision_markers": true,
+   "ok": true
+  },
+  "sdist": {
+   "content_type": "text/markdown",
+   "has_picture_element": false,
+   "has_relative_brand_path": false,
+   "has_mission_vision_markers": true,
+   "ok": true
+  }
+ },
+ "twine_check": {
+  "rc": 0,
+  "tool": "twine 7.0.0"
+ },
+ "installs": {
+  "wheel": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true
+   },
+   "stop": null,
+   "journeys": {
+    "fixtures": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "aec0920329458ea1afba0fc2d94353c4cc2bc1f14581c04295fdaa56b7471a96"
+    },
+    "mchp": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "03808a47fa7ef851e6c13048fb965cfa07c8b14b921d6c2c790b4cb3bad5fd62"
+    },
+    "modules": {
+     "rc": 0,
+     "score": "6/6",
+     "ok": true,
+     "assertions": 42,
+     "negative_assertions": 15,
+     "isolation_backend": "landlock",
+     "failed_assertions": [],
+     "module_inside_venv": true,
+     "journey_log_sha256": "a65715b13aaad81ceb8daa15756874648b8c0850c4b7be788c8e966b248e61b7"
+    }
+   }
+  },
+  "sdist": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true
+   },
+   "stop": null,
+   "journeys": {
+    "fixtures": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "fc4086301ad99a8d6a4a6c7ffabf0698856bc76536bb058794b8d9ed762bd2a8"
+    },
+    "mchp": {
+     "rc": 0,
+     "score": "7/7",
+     "ok": true,
+     "module_inside_venv": true,
+     "journey_log_sha256": "abd001967414dda56d38df496ab4863a1d599fbb56d90e7b9fa8863e97f042c5"
+    },
+    "modules": {
+     "rc": 0,
+     "score": "6/6",
+     "ok": true,
+     "assertions": 42,
+     "negative_assertions": 15,
+     "isolation_backend": "landlock",
+     "failed_assertions": [],
+     "module_inside_venv": true,
+     "journey_log_sha256": "cc9afd303dc6f5de022b245013bb8b51f89e11c615e258b226636a0297b7989b"
+    }
+   }
+  }
+ },
+ "label": "CANDIDATE / PRE-RELEASE-REVIEW artifacts of the V8-016 candidate — built once from the source commit; NOT a final release set; release_authorized=false",
+ "never_relabelled": {
+  "V8-015 pair (source f6a879b2; rebuilt byte-identically by hosted run 35500468128 from 0c58de33)": "wheel d1f5c59f030d4260… / sdist 8d4b78f146ededb2…",
+  "V8-014 pair (source 4f2ec113; hosted run 35495154439 from 68daca6d)": "wheel 05a50fa2cff970b2… / sdist 81ff6ae080b0750d…",
+  "superseded or stopped V8-015 builds, V8-010 and V8-011 pairs": "history, kept privately under their own identities",
+  "V8-016 first build (source 6f9fcd15)": "FAILED its own member inspection although every install and journey passed: the sdist (d9a259438b76…) carried a test-fixture note; kept privately as a failed build, never a candidate. The wheel bytes were already those of this candidate"
+ },
+ "test_evidence_on_the_source_commit": {
+  "full_suite": "397 passed",
+  "python_3_10_21_floor": "192 passed",
+  "lower_bound_run": "CPython 3.10.21 with cryptography==41.0.0 exactly (the declared lower bound): 192 passed — a private run on the executor, not part of hosted CI",
+  "skips": "none (-rs prints every skip; all three runs printed none)",
+  "checkout_browser_journeys": "fixtures 7/7 and modules 6/6 against the hardened upload reader before the build"
+ },
+ "old_build_compatibility": {
+  "run": "V8-016 private reverse-compatibility run on the working tree == 6f9fcd15",
+  "old_build": "yuclaw 8.0.0 wheel of V8-011 (pre-module; no v8/workbench/modules package), its own environment, run outside the checkout",
+  "new_export_verified_by_old_code": "SUCCESS (canonical digest 31bc5cbc7536bf90a83359b021aab147671f95b4cccbf36f1721ae30d00f98e4)",
+  "old_code_reads_the_extended_journal": "integrity OK, 7 events (3 claim events + principal, budget, packet and export events)",
+  "why_private": "needs the old wheel, which is not in the repository; the forward direction (old export and journal under the new code) is automated in tests/test_v8_mod_verification_016.py::PreModuleData"
+ },
+ "platform": {
+  "python": "3.12.3",
+  "machine": "Linux aarch64 (executor)",
+  "isolation_backend": "landlock"
+ },
+ "not_advice": "Research and education only. Not investment advice."
+}
