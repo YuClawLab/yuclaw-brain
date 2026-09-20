@@ -203,7 +203,10 @@ def post(h, path: str) -> None:
             except ModuleError:
                 h.server.sessions.failed(pid); raise
             sid = h.server.sessions.open(pr); nxt = g("next") if re.match(r"^/[A-Za-z0-9/_.-]*$", g("next")) else "/modules"
-            return h._headers(303, "text/plain; charset=utf-8", 0, {"Location": nxt, "Set-Cookie": f"wb_auth={sid}; Path=/; HttpOnly; SameSite=Strict"})
+            h.send_response(303); h.send_header("Location", nxt); h.send_header("Content-Length", "0"); h.send_header("Cache-Control", "no-store")
+            h.send_header("Set-Cookie", f"wb_auth={sid}; Path=/; HttpOnly; SameSite=Strict")
+            h.send_header("Set-Cookie", f"wb_session={secrets.token_hex(16)}; Path=/; HttpOnly; SameSite=Strict")      # a fresh form-token session at sign-in: a pre-login cookie value never carries over
+            return h.end_headers()
         # ---- setup (admin)
         if path == "/setup/enroll":
             back = "/setup"; authz.require(p, "admin")

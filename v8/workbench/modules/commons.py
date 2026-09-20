@@ -388,8 +388,8 @@ def dashboard(ws: Workspace, as_of: str | None = None) -> dict:
                 flags.append("CLAIM_WITHDRAWN in the workbench")
             if st["versions"][-1]["claim"].get("_digest") != g["claim"]["version_digest"]:
                 flags.append("NEWER_CLAIM_VERSION exists")
-            if (st.get("availability") or {}).get("corrections"):
-                flags.append("SOURCE_TIME_CORRECTED")
+            if any(a.get("applied") or a.get("later") for a in (st.get("availability") or {}).values() if isinstance(a, dict)):
+                flags.append("SOURCE_TIME_CORRECTED")                          # a linked availability correction exists on a source this claim cites (the registration itself is unchanged)
         upstream[g["group_id"]] = flags
     return {"as_of": as_of, "capacity": capacity(s), "plan": plan(s, now), "unique_claims": len({g["claim"]["claim_id"] for g in groups}), "groups": len(groups), "packets": len(s["packets"]),
             "duplicate_volume": len(s["packets"]) - len(groups), "shared_roots": {r: gs for r, gs in root_use.items() if len(gs) > 1}, "unknown_ancestry_groups": sum(1 for g in groups if g["ancestry"] == "UNKNOWN"),

@@ -108,6 +108,8 @@ class Practice(Base):
         src = self.ws.claim_state(self.cid)["versions"][0]["claim"]["source"]
         self.ws.correct_source_availability(self.sid, {"corrected_available_as_of": "2027-03-01T00:00:00Z", "reason": "wrong time", "evidence_ref": "fictional", "actor": "test fixture", "simulated": True}, expected_prior=src["available_as_of"], op_id="op:availcorr-01")
         v = prc.session_view(self.ws, self.pat, ss); self.assertEqual(v["attempt"], before); self.assertTrue(any("availability time was corrected" in n for n in v["current_interpretation"]))
+        g = com.submit_direct(self.ws, self.alice, claim_id=self.cid, kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=5, asserts_withdrawn=False, client_packet_id=None, op_id=self.op())["payload"]["group_id"]
+        self.assertEqual(com.dashboard(self.ws)["upstream_flags"][g], ["SOURCE_TIME_CORRECTED"])                                                           # the COM queue shows the same correction on the group (found missing by the V8-014 claim check, fixed)
         self.assertEqual(prc.state(self.ws)["tasks"][t["task_id"]]["comparison_commitment"], t["comparison_commitment"])
 
 
@@ -141,6 +143,7 @@ class Surface(Base):
                 self.assertNotIn(SECRET, body)                                                                                                                                # with the rule off the same assertion fails: the test sees the leak
 
     def test_X03_roles_objects_sessions_csrf_host_and_forged_actor(self):
+        pre = Client(self.srv); before = pre.cookies.get("wb_session"); pre.login("owner", self.creds["owner"]); self.assertNotEqual(pre.cookies.get("wb_session"), before)   # the form-token session is replaced at sign-in
         a, s = self.client("owner"), self.client("alice")
         for path, fields in (("/shd/root", {"label": "mine"}), ("/shd/policy", {"max_approval_days": "300", "purpose_com.packets": "1"}), ("/setup/enroll", {"principal_id": "mallory", "cap_admin": "1"}), ("/com/budget", {"period_id": "p9", "review_minutes": "9", "practice_minutes": "9", "contributor_packet_cap": "9", "max_open_tasks": "9"})):
             st, body, _ = s.post(path, fields, page="/com"); self.assertEqual(st, 403, path); self.assertIn("E_FORBIDDEN", body)
