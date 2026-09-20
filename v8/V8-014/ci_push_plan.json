@@ -1,0 +1,17 @@
+{
+ "record": "v8-014-ci-push-plan/1",
+ "status": "PROPOSED — needs the owner's separate explicit approval; NOT executed; the earlier approval covered the exact V8-012 push only",
+ "remote_ci": "REMOTE_CI_NOT_RUN_FOR_NEW_SHA — run 35485844365 belongs to a4fa151f82efd8e7de45c1a5cd66088ae4a9c2c7 and is never attached to a later commit",
+ "branch": "codex/v8-integration (exists on origin at a4fa151f…; the push is a fast-forward, non-force)",
+ "sha": "the record HEAD that contains this file — its full sha is in the handoff report (a file cannot name its own commit); candidate source below it: 4f2ec11323938888c13a4102c0a50f8a62dbc013",
+ "workflow": "v8-prerelease-validation (.github/workflows/v8-validation.yml): tests (suite + printed live isolation probe + compliance), python-floor (3.10 incl. module tests with the real worker), package (clean installs + three journeys)",
+ "what_it_exposes": "the repository is PUBLIC: the push publishes the four modules' source, their tests, the owner's V8-014 order and scope-expansion documents under v8/scope/, and the V8-014 record. It deploys, tags and uploads nothing.",
+ "credential_note": "the stored git token lacks the `workflow` scope; this push changes .github/workflows/v8-validation.yml, so GitHub will reject it with that token. Whether to use the gh credential again is the owner's decision for this push; no token or git configuration was altered.",
+ "expected_unknowns_on_the_hosted_runner": [
+  "Landlock in the runner kernel's LSM list and the x86-64 seccomp table — if no backend passes, module tests and the package job FAIL (not skipped)",
+  "cryptography wheel resolution on Python 3.10 and 3.12 (expected fine)",
+  "run time of three journeys x two installs within 45 minutes"
+ ],
+ "tie_result_to_sha": "gh run list -R YuClawLab/yuclaw-brain --workflow v8-prerelease-validation --branch codex/v8-integration --json headSha,conclusion,databaseId,url — count only headSha == the pushed sha",
+ "not_advice": "Research and education only. Not investment advice."
+}

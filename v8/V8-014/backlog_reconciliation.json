@@ -1,0 +1,762 @@
+{
+ "record": "v8-014-backlog-reconciliation/1",
+ "source": "v8-014-backlog-map.json (r2 archive; 46 original descriptions preserved verbatim)",
+ "candidate_source_commit": "4f2ec11323938888c13a4102c0a50f8a62dbc013",
+ "status_words": "IMPLEMENTED (code + passing checks in the checkout) · INSTALLED_AND_DEMONSTRATED (also exercised by the module journey from the installed wheel and sdist) · HOSTED_CI_VERIFIED and RELEASED are NOT claimed for any row",
+ "counts": {
+  "rows": 46,
+  "original_row_not_complete": 5,
+  "with_stated_limit": 11,
+  "installed_and_demonstrated": 13,
+  "implemented_only": 33
+ },
+ "rows": [
+  {
+   "id": "COM-01",
+   "original_description": "Connect incoming claim packets to shared evidence and claim objects; preserve exact source-root identities rather than inventing a second provenance system.",
+   "acceptance_ids": [
+    "X-02",
+    "C-01"
+   ],
+   "code": "commons._admit_packet + core.claim_ref/source_ids: packets name the workbench's own claim id, version digest, contract digest and registered source ids; unknown ids are refused or kept as unknown roots",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C01_C02…",
+    "tests/test_v8_mod_evo_com.py::test_C01_intake_from_shield…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 3"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-02",
+   "original_description": "Persist duplicate groups across ingestion runs with idempotent membership updates; distinguish exact duplication from unverified semantic similarity.",
+   "acceptance_ids": [
+    "C-01",
+    "X-05"
+   ],
+   "code": "commons.group_id + journal replay: membership is an event; a repeat joins its group; op_id retries are the same event; exact identity only (no similarity is computed)",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C01_C02… (restart, idempotent retry)",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 3 (restart)"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-03",
+   "original_description": "Show shared primary roots and unknown ancestry; do not count many summaries of one source as independent corroboration.",
+   "acceptance_ids": [
+    "C-02"
+   ],
+   "code": "commons.dashboard shared_roots / unknown_ancestry_groups; group page lists known and unknown roots",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C01_C02…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-04",
+   "original_description": "Propagate declared disputes and withdrawals through aliases and dependencies; retain the original source and reasons for quarantine.",
+   "acceptance_ids": [
+    "C-03",
+    "P-07"
+   ],
+   "code": "commons.record_dispute + _quarantine: propagation through source roots, claims, packets and declared derived_from; source bytes untouched; dashboard upstream flags for workbench withdrawals, newer versions and availability corrections",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C03…",
+    "tests/test_v8_mod_prc_web.py::test_P07…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 3"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-05",
+   "original_description": "Add authenticated contributor identities and admission limits; document remaining collusion and identity-abuse limits.",
+   "acceptance_ids": [
+    "X-03",
+    "C-04"
+   ],
+   "code": "authz principals + commons caps, rate and queue bounds counted per authenticated principal; guide and Modules page state the collusion/Sybil limit",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C04…",
+    "tests/test_v8_mod_prc_web.py::test_X03…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Local credentials do not establish real-world uniqueness or prevent collusion — documented, not solved.",
+   "external_evidence_or_claim_limit": "Local credential authentication does not establish real-world uniqueness or prevent collusion."
+  },
+  {
+   "id": "COM-06",
+   "original_description": "Replace assumed review costs with estimated and observed minutes; include triage, quarantine investigation, corrections, and coordination.",
+   "acceptance_ids": [
+    "C-06",
+    "C-07",
+    "C-08"
+   ],
+   "code": "three separate numbers: scheduling cost (authority), server-observed seconds between ACTIVE transitions, COM_EFFORT_DECLARED by category (triage, review, quarantine investigation, correction, coordination)",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C05_C06…",
+    "tests/test_v8_mod_evo_com.py::test_C08…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "A timer and a declaration are not verified attentive human labour.",
+   "external_evidence_or_claim_limit": "Observed session duration and self-reported effort are not verified attentive human labor."
+  },
+  {
+   "id": "COM-07",
+   "original_description": "Integrate contributor caps, review budgets, and a separately reserved practice allocation into a persistent daily or session queue.",
+   "acceptance_ids": [
+    "C-05",
+    "C-06",
+    "X-05"
+   ],
+   "code": "commons.set_budget/capacity/assign under the workspace lock; practice reserve consumed only by PRC_SESSION_OPENED; per-period",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C05_concurrent…",
+    "tests/test_v8_mod_prc_web.py::test_P05…",
+    "v8/V8-014/measurements.json (0 violations in 200- and 600-operation runs)"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-08",
+   "original_description": "Define queue rollover, cancellation, partial work, urgent review, and budget changes explicitly; log overrides rather than silently erasing backlog.",
+   "acceptance_ids": [
+    "C-05",
+    "C-09"
+   ],
+   "code": "TRANSITIONS state machine; rollover on a new period; cancel; release/partial seconds kept; COM_OVERRIDE_RECORDED; budget revisions with visible overrun",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C05_C06…",
+    "tests/test_v8_mod_evo_com.py::test_C06_C09…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-09",
+   "original_description": "Preserve useful smaller tasks when one task exceeds available capacity; display both selected work and reasons for deferral.",
+   "acceptance_ids": [
+    "C-06",
+    "C-09"
+   ],
+   "code": "commons.plan: fit-smaller, deferral reasons, aged hold, oversized escalation, unspent capacity shown",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C06_C09…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-10",
+   "original_description": "Provide manual dispute resolution and appeals with reviewer identity; avoid treating an automated quarantine as a verdict of misconduct.",
+   "acceptance_ids": [
+    "C-03",
+    "X-03"
+   ],
+   "code": "record_dispute (review/admin), appeal (any signed-in principal), resolve_dispute (admin, not the recorder when appealed); wording: handling state, not misconduct",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C03…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 3"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-11",
+   "original_description": "Record backlog age, repeated roots, unique claims, estimated versus actual effort, and review completion without equating document volume with productivity.",
+   "acceptance_ids": [
+    "C-06"
+   ],
+   "code": "commons.dashboard: backlog age, shared roots, unique claims, estimates vs observed vs declared, completion; page wording that volume is not productivity",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C01_C02…",
+    "tests/test_v8_mod_evo_com.py::test_C05_C06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "COM-12",
+   "original_description": "Compare the integrated queue with a conventional queue using actual review effort, error, coverage, and contributor participation.",
+   "acceptance_ids": [
+    "C-07",
+    "X-12"
+   ],
+   "code": "commons.simulate (plain FIFO, FIFO + exact de-duplication, this rule) on identical synthetic arrivals + the dashboard counters a future voluntary comparison would use",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_C07…",
+    "v8/V8-014/measurements.json"
+   ],
+   "status": "IMPLEMENTED — ORIGINAL ROW NOT COMPLETE",
+   "remaining_gap": "ORIGINAL ROW NOT COMPLETE: no actual human effort, error, coverage or participation comparison exists; a simulation cannot supply it.",
+   "external_evidence_or_claim_limit": "Actual human effort/error/coverage/participation comparison requires real participants and evidence; simulation cannot complete the original row."
+  },
+  {
+   "id": "PRC-01",
+   "original_description": "Choose suitable, bounded financial-research tasks with a qualified reviewer; do not assume every withheld answer creates meaningful practice.",
+   "acceptance_ids": [
+    "P-01"
+   ],
+   "code": "practice.freeze_task: bounded task, declared curator qualification stored as DECLARED; public_example flag",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P01…"
+   ],
+   "status": "IMPLEMENTED — ORIGINAL ROW NOT COMPLETE",
+   "remaining_gap": "ORIGINAL ROW NOT COMPLETE: no qualified reviewer chose or reviewed tasks; fixtures and a credential field cannot supply one.",
+   "external_evidence_or_claim_limit": "A qualified actual reviewer and suitable task review cannot be invented by a fixture or a credential field."
+  },
+  {
+   "id": "PRC-02",
+   "original_description": "Freeze the question, source scope, task identity, and comparison digest before a session opens.",
+   "acceptance_ids": [
+    "P-01",
+    "P-02"
+   ],
+   "code": "PRC_TASK_FROZEN: question, claim version digest, source scope with source hashes, salted comparison commitment",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P01…",
+    "tests/test_v8_mod_prc_web.py::test_P02…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-03",
+   "original_description": "Build an evidence-reading and reasoning view that allows an unaided attempt before the normal comparison view becomes available.",
+   "acceptance_ids": [
+    "P-02"
+   ],
+   "code": "session page + evidence view (PRC_EVIDENCE_READ = access, not comprehension); comparison closed until the attempt",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P02… (31 URLs)",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 4 (14 pages + direct request)"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-04",
+   "original_description": "Require a judgment, supporting reasoning, relevant source references, and an explicit unresolved option; record assistance and prior exposure as declarations.",
+   "acceptance_ids": [
+    "P-03",
+    "P-04"
+   ],
+   "code": "commit_attempt requires judgment or UNRESOLVED, reasoning, in-scope source refs; declarations ASSISTED / ALREADY_EXPOSED accepted and labelled",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P03…",
+    "tests/test_v8_mod_prc_web.py::test_P04…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-05",
+   "original_description": "Preserve the attempt without replacement; record later revisions as separate reflection rather than rewriting the original response.",
+   "acceptance_ids": [
+    "P-03",
+    "P-05",
+    "X-05"
+   ],
+   "code": "content-addressed attempt written before the committing event; never replaced; reflection and feedback are later events",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P03… (idempotent, concurrent)",
+    "tests/test_v8_mod_prc_web.py::test_P05…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-06",
+   "original_description": "Separate question and comparison storage permissions where genuine confidentiality is required; do not describe the local CLI ordering check as access control.",
+   "acceptance_ids": [
+    "P-02",
+    "X-03"
+   ],
+   "code": "server-held salted vault object; practice-only principals confined to practice routes once principals exist; one E_NOT_FOUND for missing and foreign sessions",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P02…",
+    "tests/test_v8_mod_prc_web.py::test_X03…",
+    "tests/test_v8_mod_prc_web.py::test_P02_X11_sensitivity…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Outside the boundary by design and stated in the guide: host administrator, curator, administrator principal, outside help, public answers.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-07",
+   "original_description": "Reveal a clearly labeled comparison and support discussion; distinguish an unadjudicated model answer from an independently reviewed reference.",
+   "acceptance_ids": [
+    "P-05"
+   ],
+   "code": "reveal shows provenance UNADJUDICATED_REFERENCE / MODEL_ANSWER / REVIEWED_REFERENCE (a declaration) with 'not ground truth' wording; feedback thread",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P03…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 4"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED — with stated limit",
+   "remaining_gap": "An independently reviewed reference needs an actual review: none exists; the label stays a declaration.",
+   "external_evidence_or_claim_limit": "An independently reviewed reference needs an actual review; an unadjudicated comparison must retain that label."
+  },
+  {
+   "id": "PRC-08",
+   "original_description": "Add optional reflection, reviewer feedback, and exportable records; protect participant privacy and avoid unsupported employee capability rankings.",
+   "acceptance_ids": [
+    "P-05",
+    "P-06"
+   ],
+   "code": "reflect, feedback, modexport with preview/withheld text; private by default; no ranking or training export exists",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P05…",
+    "tests/test_v8_mod_prc_web.py::test_X08_P06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "PRC-09",
+   "original_description": "Design delayed, unaided assessment with consent, suitable tasks, and a comparator workflow; measure accuracy and reasoning transfer, not only assisted task scores.",
+   "acceptance_ids": [
+    "P-05",
+    "P-06"
+   ],
+   "code": "schedule_followup + due_state (NOT_YET_DUE / DUE / COMPLETED) as local due-states; nobody is contacted",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_P05…"
+   ],
+   "status": "IMPLEMENTED — ORIGINAL ROW NOT COMPLETE",
+   "remaining_gap": "ORIGINAL ROW NOT COMPLETE: no consented delayed assessment, comparator workflow or learning-transfer measurement was run; none is authorized here.",
+   "external_evidence_or_claim_limit": "Software and study design do not demonstrate learning transfer; no human study or recruitment is authorized here."
+  },
+  {
+   "id": "PRC-10",
+   "original_description": "Retain journal replay and independently held checkpoints; document that records alone cannot prove human authorship, no outside assistance, or research originality.",
+   "acceptance_ids": [
+    "P-06",
+    "X-08"
+   ],
+   "code": "journal replay; PRC_CHECKPOINT_ISSUED signed envelope held separately; verify_packet detects truncation/alteration against it; guide states what records cannot prove",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_prc_web.py::test_X08_P06…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 6"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-01",
+   "original_description": "Document trusted approval roots, untrusted inputs, source owners, executable identity, and the exact outputs that cross the boundary.",
+   "acceptance_ids": [
+    "S-01",
+    "S-04",
+    "S-06"
+   ],
+   "code": "shield.py / sandbox_bootstrap.py docstrings + operator guide §7: trust roots, untrusted inputs, fixed executable, exact typed outputs",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S01…",
+    "tests/test_v8_mod_shield.py::test_S04_S07…",
+    "tests/test_v8_mod_shield.py::test_S06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-02",
+   "original_description": "Provision approved pins through a separately controlled process; the submitting agent must not be able to approve its own evidence bundle.",
+   "acceptance_ids": [
+    "S-01",
+    "S-08"
+   ],
+   "code": "approvals are admin-only signed events; approver != submitter incl. dual-role and pre-approved self-submission; no trust on first use from an import",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S01…",
+    "tests/test_v8_mod_shield.py::test_a_pre_approved…",
+    "tests/test_v8_mod_prc_web.py::test_S08…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-03",
+   "original_description": "Add approval identity, expiry, rotation, revocation, and retrieval records without weakening exact-byte matching.",
+   "acceptance_ids": [
+    "S-02",
+    "S-08"
+   ],
+   "code": "approval binds approver, key, expiry, policy version; rotation (new root + revocation), revocation, decision events as retrieval/audit records; exact-byte sha256 lookup unchanged",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S02_expiry…",
+    "tests/test_v8_mod_shield.py::test_S02_revocation_between…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-04",
+   "original_description": "Preserve strict JSON validation, duplicate-key rejection, numerical constraints, depth limits, and documented input and file budgets.",
+   "acceptance_ids": [
+    "S-03",
+    "S-07",
+    "X-06"
+   ],
+   "code": "shield_worker.strict_json / read_archive bounds; core.strict_json; upload refused on Content-Length before reading",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::Parsing::*",
+    "tests/test_v8_mod_shield.py::test_strict_json_bounds",
+    "tests/test_v8_mod_prc_web.py::test_X06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-05",
+   "original_description": "Preserve safe relative-file access and rejection of escaping paths, symbolic links, inappropriate file types, and unstable reads.",
+   "acceptance_ids": [
+    "S-03"
+   ],
+   "code": "member-name allow-list, no links/special files, duplicate names, ratio; staged input O_NOFOLLOW, regular single-link, stable read",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_archive_escapes…",
+    "tests/test_v8_mod_shield.py::test_unstable_or_unsafe…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "A true concurrent-replacement race was not staged; the before/after fstat identity check that would catch it is unit-tested only through link/special/size cases.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-06",
+   "original_description": "Keep evidence bodies inert during verification; expose only typed fields, fixed result codes, and permitted references to privileged callers.",
+   "acceptance_ids": [
+    "S-05",
+    "S-06"
+   ],
+   "code": "typed result without excerpts; fixed CODES; separate escaped inspection view for admin/review",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S06…",
+    "tests/test_v8_mod_shield.py::test_S05_forged…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 2"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-07",
+   "original_description": "Place the verifier in an operating-system and service boundary with resource limits, least privilege, and controlled network and secret access.",
+   "acceptance_ids": [
+    "S-04",
+    "S-05",
+    "S-07",
+    "X-11"
+   ],
+   "code": "sandbox_bootstrap: Landlock + seccomp + rlimits + no_new_privs (or bubblewrap), empty environment, closed descriptors, bounded output/time; live probe gates use",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S04_S07… (REAL worker)",
+    "tests/test_v8_mod_shield.py::test_S04_descriptors…",
+    "v8/V8-014/isolation_support_matrix.json"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Executor: landlock backend VERIFIED by probe; bubblewrap UNAVAILABLE (host AppArmor restriction — a platform gap, not worked around). x86-64 seccomp table and hosted-runner kernel: unverified until a hosted run. Process confinement, not a container.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-08",
+   "original_description": "Wire production routes to fail closed on rejection; prohibit fallback to an unshielded evaluator under the same protected API promise.",
+   "acceptance_ids": [
+    "S-05",
+    "X-07"
+   ],
+   "code": "admit() is the only path to a typed result; consumers call require_current inside their commit; no in-process parser exists in the parent",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S05_closed_route…",
+    "tests/test_v8_mod_evo_com.py::test_C01_intake…",
+    "tests/test_v8_mod_evo_com.py::test_E06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-09",
+   "original_description": "Protect approval and audit stores from tenant crossover and untrusted writes; record administrative changes and emergency revocations.",
+   "acceptance_ids": [
+    "S-01",
+    "S-02",
+    "X-03"
+   ],
+   "code": "per-workspace registry and approvals bound to workspace id; admin-only writes; every administrative change and revocation is a journal event",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S01… (other workspace)",
+    "tests/test_v8_mod_prc_web.py::test_X03…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Single-workspace product: 'tenant crossover' is tested as workspace crossover; there is no multi-tenant host.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-10",
+   "original_description": "Test parser exhaustion, tampering, stale approvals, unsafe files, malicious instruction text, and compromised approval inputs at the integrated boundary.",
+   "acceptance_ids": [
+    "S-01",
+    "S-02",
+    "S-03",
+    "S-04",
+    "S-05",
+    "S-06",
+    "S-07",
+    "S-08",
+    "X-11"
+   ],
+   "code": "integrated boundary tests incl. sensitivity variant",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py (19 tests)",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 2"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-11",
+   "original_description": "Keep source authentication and factual adjudication as separate checks; a correctly approved false document must remain a documented possible failure.",
+   "acceptance_ids": [
+    "S-06"
+   ],
+   "code": "decision fields byte_integrity / authority_approval / factual_adjudication NOT_ASSESSED / release_permission NONE; approved false statement in the negative control",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_shield.py::test_S06…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 2"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "SHD-12",
+   "original_description": "Obtain independent security review for the actual deployed architecture before making product security claims; publish the supported threat model and limits.",
+   "acceptance_ids": [
+    "S-04",
+    "X-10"
+   ],
+   "code": "threat model and limits published in the guide, Modules page, CHANGELOG and notes",
+   "current_candidate_checks": [
+    "v8/workbench/resources/OPERATOR_GUIDE.md §7"
+   ],
+   "status": "IMPLEMENTED — ORIGINAL ROW NOT COMPLETE",
+   "remaining_gap": "ORIGINAL ROW NOT COMPLETE: NO independent security review of the deployed architecture has been performed; no product security claim is made.",
+   "external_evidence_or_claim_limit": "Independent security review of the actual deployment is NOT_PERFORMED; original row cannot be marked COMPLETE from internal tests."
+  },
+  {
+   "id": "EVO-01",
+   "original_description": "Connect the eight-part inventory: model, agent code, tool policy, memory, data, runtime, grader, and evaluation data.",
+   "acceptance_ids": [
+    "E-01"
+   ],
+   "code": "evolution.COMPONENTS, collect(): eight parts with MEASURED / DECLARED / UNKNOWN / NOT_APPLICABLE",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E01_inventory…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 5"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-02",
+   "original_description": "Measure actual runtime and deployment identities where available; mark mutable provider aliases and unavailable identities as unresolved rather than inventing hashes.",
+   "acceptance_ids": [
+    "E-01",
+    "E-02",
+    "E-07"
+   ],
+   "code": "measure_path/measure_runtime from configured roots; provider alias DECLARED; unknown has no digest",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E01…",
+    "tests/test_v8_mod_evo_com.py::test_E02_E07…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Local files and this interpreter's runtime only; a remote deployment identity is never measured here.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-03",
+   "original_description": "Record version ancestry, dependency changes, and authority changes; validate supplied graph completeness against the institution's inventory.",
+   "acceptance_ids": [
+    "E-01",
+    "E-03",
+    "E-07"
+   ],
+   "code": "parent links, changed components, authority digest; closure from the administrator's configuration, not submitted metadata",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E02_E07…",
+    "tests/test_v8_mod_evo_com.py::test_E03…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "ORIGINAL ROW PARTIAL: completeness against an institution's authoritative inventory is unknown — no such inventory exists to validate against.",
+   "external_evidence_or_claim_limit": "Institution-wide completeness is unknown without an actual authoritative institutional inventory."
+  },
+  {
+   "id": "EVO-04",
+   "original_description": "Reuse evaluation evidence only when its dependency scope, fingerprint, protocol, and validity period still apply; explain each reuse decision.",
+   "acceptance_ids": [
+    "E-02",
+    "E-05",
+    "E-07"
+   ],
+   "code": "reuse_decisions with reasons: closure, protocol digest, authority digest, ancestry, validity",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E02_E07…",
+    "tests/test_v8_mod_evo_com.py::test_E05…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-05",
+   "original_description": "Authenticate model improvers, reviewers, graders, test custodians, and release authorizers; check relevant conflicts through ancestry.",
+   "acceptance_ids": [
+    "E-03",
+    "X-03"
+   ],
+   "code": "authenticated improver, grader, reviewer, resolver; conflicts checked through ancestry",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E03…",
+    "tests/test_v8_mod_evo_com.py::test_E04…"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Release authorizers are recorded in the authority state only; no release is authorized by this software.",
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-06",
+   "original_description": "Track protected-test access; revoking access does not erase previous exposure, and a new digest alone does not prove semantic test freshness.",
+   "acceptance_ids": [
+    "E-03"
+   ],
+   "code": "EVO_TEST_ACCESS_RECORDED; exposure persists after REVOKED; gap text on new digests",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E03…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-07",
+   "original_description": "Keep matching failures open until an authorized resolution process addresses them; a later pass, expiry, or renamed protocol cannot silently erase failure.",
+   "acceptance_ids": [
+    "E-04"
+   ],
+   "code": "stable issue ids; open until EVO_FAILURE_RESOLVED with a trusted-runner PASS on the lineage covering the scope; unrelated lineages not held",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E04…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) step 5"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-08",
+   "original_description": "Show current unreviewed transitions, evidence age, and unresolved review gaps; distinguish retrospective review from evidence available at a historical release.",
+   "acceptance_ids": [
+    "E-05"
+   ],
+   "code": "audit(): unreviewed transitions, evidence age, gaps; as_of by recorded time; backdated assertions labelled",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E05…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-09",
+   "original_description": "Link supplied financial commitments to configuration versions and review gaps; group by currency and show unknown amounts separately.",
+   "acceptance_ids": [
+    "E-06"
+   ],
+   "code": "EVO_COMMITMENT_LINKED to canonical claims; grouped by currency, unknown amounts separate, no conversion",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E06…"
+   ],
+   "status": "IMPLEMENTED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-10",
+   "original_description": "Add a separately trusted deployment controller only for institutions that authorize enforcement; the audited agent cannot alter the gate, its rules, or approvals.",
+   "acceptance_ids": [
+    "E-06"
+   ],
+   "code": "read-only eligibility answer naming the exact subject",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E06…"
+   ],
+   "status": "IMPLEMENTED — ORIGINAL ROW NOT COMPLETE",
+   "remaining_gap": "ORIGINAL ROW NOT COMPLETE BY DESIGN: no separately trusted deployment controller exists; it needs an institution's separately authorized integration.",
+   "external_evidence_or_claim_limit": "External institutional deployment enforcement requires separately authorized integration and is not implemented by an audit result."
+  },
+  {
+   "id": "EVO-11",
+   "original_description": "Provide change-diff views, targeted reevaluation requests, independent review exports, and explicit unknown-inventory findings.",
+   "acceptance_ids": [
+    "E-01",
+    "E-06",
+    "X-08"
+   ],
+   "code": "version page: change from parent, typed reevaluation requests, module packet export, UNKNOWN_INVENTORY findings",
+   "current_candidate_checks": [
+    "tests/test_v8_mod_evo_com.py::test_E06…",
+    "tests/test_v8_mod_prc_web.py::test_X08_P06…",
+    "v8/workbench/modules/journey_modules.py (installed wheel + sdist) steps 5–6"
+   ],
+   "status": "INSTALLED_AND_DEMONSTRATED",
+   "remaining_gap": null,
+   "external_evidence_or_claim_limit": null
+  },
+  {
+   "id": "EVO-12",
+   "original_description": "Evaluate missed material changes, unnecessary reevaluation, review delay, and identity failures using real controlled version changes and a strong baseline.",
+   "acceptance_ids": [
+    "E-02",
+    "E-06",
+    "X-12"
+   ],
+   "code": "tools/yuclaw_v8_module_measure.py: targeted vs repeat-everything on real file changes with ground truth",
+   "current_candidate_checks": [
+    "v8/V8-014/measurements.json (0 missed, 0 unnecessary; 6 vs 18 and 12 vs 36)"
+   ],
+   "status": "IMPLEMENTED — with stated limit",
+   "remaining_gap": "Controlled single-component changes on one machine; review delay and identity failures in a real organization were not measured; the baseline's time is an estimate.",
+   "external_evidence_or_claim_limit": null
+  }
+ ],
+ "gate15": "REMOVED_BY_OWNER / NOT_REQUIRED — not revived",
+ "human_benefit": "PENDING",
+ "not_advice": "Research and education only. Not investment advice."
+}

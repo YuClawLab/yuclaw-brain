@@ -1,0 +1,51 @@
+{
+ "record": "v8-014-isolation-support/1",
+ "executor_linux_aarch64": {
+  "kernel": "Linux 6.17.0-1008-nvidia aarch64",
+  "landlock": "AVAILABLE — every required denial observed by the live probe (canary secret, home, /etc/passwd, all writes, TCP, UDP, unix socket, fork, signal to parent, 2 GiB allocation; empty environment; no inherited descriptor; wall and output bounds)",
+  "bwrap": "UNAVAILABLE — the probe worker did not run under this backend (rc 1, OK): bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted",
+  "bwrap_gap": "kernel.apparmor_restrict_unprivileged_userns=1 without an AppArmor profile for /usr/bin/bwrap; only the machine's administrator can change that; NOT done and not requested by the product",
+  "probe": {
+   "observed": {
+    "allocate_2GiB": "DENIED:MemoryError",
+    "environment_names": [
+     "LC_CTYPE"
+    ],
+    "fork_process": "DENIED:Resource temporarily unavailable",
+    "open_descriptors_above_2": [],
+    "read_canary_secret": "DENIED:Permission denied",
+    "read_etc_passwd": "DENIED:Permission denied",
+    "read_home_listing": "DENIED:Permission denied",
+    "read_staged_input": "ALLOWED",
+    "signal_parent": "DENIED:Operation not permitted",
+    "tcp_connect_canary": "DENIED:Operation not permitted",
+    "udp_send_canary": "DENIED:Operation not permitted",
+    "unix_socket": "DENIED:Operation not permitted",
+    "write_forbidden_path": "DENIED:Permission denied",
+    "write_tmp": "DENIED:Permission denied"
+   },
+   "parent_observed": {
+    "canary_tcp_connection_received": false,
+    "canary_udp_datagram_received": false,
+    "forbidden_file_created": false
+   },
+   "bounds": {
+    "spin": {
+     "status": "WALL_TIME_EXCEEDED",
+     "rc": -9,
+     "seconds": 4.005
+    },
+    "flood": {
+     "status": "OUTPUT_LIMIT_EXCEEDED",
+     "rc": -9,
+     "seconds": 0.033
+    }
+   }
+  },
+  "also_verified_on": "CPython 3.10.21 (uv-managed interpreter) and from both installed artifacts"
+ },
+ "hosted_linux_x86_64": "UNVERIFIED — REMOTE_CI_NOT_RUN_FOR_NEW_SHA. The workflow prints the live probe; the x86-64 seccomp syscall table has never executed. If no backend passes there, the module tests and the package job FAIL (they are not skipped).",
+ "other_platforms": "macOS, Windows, kernels without Landlock or working bubblewrap: SHD admission refuses with REFUSED_ISOLATION_UNAVAILABLE; every other function works",
+ "what_it_is_not": "process confinement, not a container; no PID/mount namespace on the landlock backend; no defence against a kernel vulnerability or the same OS user outside the worker; no independent security review",
+ "not_advice": "Research and education only. Not investment advice."
+}
