@@ -30,6 +30,7 @@ from pathlib import Path
 from v3.receipts.contracts import ContractError
 from v8.workbench import NOT_ADVICE, availability, calc, dataset, export, money, schema
 from v8.workbench.sci import adapter as sci_adapter
+from v8.workbench.modules import web as modweb
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -161,6 +162,8 @@ class WorkbenchServer(ThreadingHTTPServer):
             raise ValueError("the workbench binds loopback only; network exposure requires an explicit authenticated deployment design")
         self.ws = Workspace(workspace)
         self.secret = secrets.token_bytes(32)
+        from v8.workbench.modules import authz                          # V8-014: the local principal registry and server-side sessions of the four modules
+        self.principals = authz.Principals(self.ws); self.sessions = authz.Sessions()
         self.fixtures_dir = Path(fixtures_dir or FIXTURES_DIR)
         self.candidate_commit = candidate_commit
         super().__init__((host, port), Handler)
@@ -256,13 +259,20 @@ class Handler(BaseHTTPRequestHandler):
         if not self._host_ok():
             return self._text(400, "refused: Host header is not this loopback origin")
         u = urllib.parse.urlsplit(self.path); path = u.path; q = {k: v[-1] for k, v in urllib.parse.parse_qs(u.query, keep_blank_values=True).items()}
-        self._pf_action = self._pf = self._pf_msg = None
+        self._pf_action = self._pf = self._pf_msg = None; self._principal = self._mod_err = self._mod_form = None
         sess, fresh = self._session(); self._sess = sess
         extra = {"Set-Cookie": f"wb_session={sess}; Path=/; HttpOnly; SameSite=Strict"} if fresh else None
         try:
             if path == "/static/style.css":
                 return self._send(200, CSS, "text/css; charset=utf-8")
             torn = self.server.ws.load()["torn_tail"]           # a chain failure raises here and is handled below
+            if not torn:
+                # V8-014: once a principal exists every page needs sign-in, and a practice-only principal is confined to the
+                # practice routes (so no claim, journal or export page is an alternate view of a practice comparison).
+                if modweb.gate(self, path, "GET"):
+                    return None
+                if modweb.owns(path):
+                    return modweb.get(self, path, q, extra)
             if torn:
                 # Reads are not served over a torn tail: the durable events are intact, but the workspace needs the
                 # operator's recovery decision first, so every page is the integrity page with the recovery form.
@@ -312,12 +322,19 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, self.page_integrity(exc), extra=extra)
 
     def do_POST(self):
-        self._pf_action = self._pf = self._pf_msg = None
+        self._pf_action = self._pf = self._pf_msg = None; self._principal = self._mod_err = self._mod_form = None
         why = self._post_guard()
         if why:
             self._read_body(UPLOAD_LIMIT)
             return self._text(403, f"refused: {why}; nothing was written")
         path = urllib.parse.urlsplit(self.path).path
+        try:
+            if modweb.gate(self, path, "POST"):
+                return None
+            if modweb.owns(path):
+                return modweb.post(self, path)
+        except StoreIntegrityError as exc:
+            return self._send(200, self.page_integrity(exc))
         if path == "/verify":
             return self.post_verify()
         form = self._form()
@@ -419,7 +436,7 @@ class Handler(BaseHTTPRequestHandler):
         return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{"Blocked — " if self._pf_msg else ""}{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
 <a class="skip" href="#main">Skip to the page content</a>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
+<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/modules">Modules</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
 <ol class="steps" aria-label="The seven steps">{steps}</ol>{hint}
 <main id="main" tabindex="-1"><h1>{esc(title)}</h1>
 {a11y((self._blocked() if self._pf_msg else "") + body)}</main>
@@ -737,7 +754,7 @@ class Handler(BaseHTTPRequestHandler):
 <label>Ingestion source record (JSON)</label><textarea name="record" rows="6">{self._val('import', 'record')}</textarea>
 <label>Observed at — the provenance record's retrieved_at (UTC, optional; default now)</label><input type="text" name="record_observed_at" value="{self._val('import', 'record_observed_at')}">
 <button type="submit">Register ingested source</button></form>{corr_html}"""
-        return self.page("Step 1 — Source", body)
+        return self.page("Step 1 — Source", body + modweb.context_links(self.server.ws))
 
     def page_claim_new(self, q) -> str:
         A = "freeze"; V = lambda n, d="": self._val(A, n, d)
@@ -871,7 +888,7 @@ class Handler(BaseHTTPRequestHandler):
 <h2 id="sci">Scientific records linked to this claim</h2>{self._sci_linked_html(full)}
 <h2 id="adjudication">6 Adjudication</h2><table><tr><th>reviewer</th><th>rule</th><th>label</th><th>computed</th><th>reason</th><th>conflicts</th><th>evidence</th><th>recorded</th></tr>{adj_rows or '<tr><td colspan="8" class="muted">no adjudication recorded; the claim stays unresolved</td></tr>'}</table>{adj_form}
 <h2 id="export">7 Reproducible export</h2>{exp_html}"""
-        return self.page(cid, body, claim_id=cid)
+        return self.page(cid, body + modweb.context_links(ws, cid), claim_id=cid)
 
     def page_verify(self, q, result: dict | None, problem: str | None = None) -> str:
         res_html = f'<div class="err"><b>Nothing was verified.</b> {esc(problem)}</div>' if problem else ""
