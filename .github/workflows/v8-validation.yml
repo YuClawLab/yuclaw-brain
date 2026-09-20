@@ -66,8 +66,14 @@ jobs:
       - name: Install deps
         run: |
           pip install fastapi httpx pytest psycopg2-binary pydantic jinja2 pandas \
-                      click feedparser tenacity requests "mcp>=1.0,<2"
+                      click feedparser tenacity requests "mcp>=1.0,<2" "cryptography>=41.0"
           pip install ./sdk        # yuclaw_py (imported by the server + tests)
+      - name: Restricted-worker capability on this runner (live probe; printed for the support matrix)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          uname -srm; cat /sys/kernel/security/lsm || true
+          python3 -c "import json; from v8.workbench.modules import sandbox; c = sandbox.capability(); print(json.dumps({'backend': c['backend'], 'closed_reason': c['closed_reason'], 'probes': [{k: p.get(k) for k in ('backend', 'available', 'reason', 'observed', 'parent_observed', 'bounds')} for p in c['probes']]}, indent=1))"
       - name: Offline test suite (no database settings, no SEC identity)
         env:
           PYTHONPATH: ${{ github.workspace }}
@@ -93,8 +99,9 @@ jobs:
         run: python3 -m pytest tests/test_compliance_regression.py -v
 
   python-floor:
-    # requires-python is >=3.10: the workbench and its tests on the supported minimum, including a real 3.10
-    # compile of every packaged workbench module (tests/test_v8_workbench_packaging.py finds python3.10 here).
+    # requires-python is >=3.10: the workbench, the four modules and their tests on the supported minimum, including a
+    # real 3.10 compile of every packaged workbench module (tests/test_v8_workbench_packaging.py finds python3.10 here)
+    # and the module acceptance tests with the REAL restricted worker (tests/test_v8_mod_*.py; never mocked away).
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -107,8 +114,8 @@ jobs:
           echo "event=$GITHUB_EVENT_NAME github_sha=$GITHUB_SHA head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
           python3 --version
       - name: Install deps
-        run: pip install pytest
-      - name: Workbench tests on Python 3.10
+        run: pip install pytest "cryptography>=41.0"
+      - name: Workbench and module tests on Python 3.10
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: python3 -m pytest tests/test_v8_*.py -q
@@ -118,7 +125,9 @@ jobs:
     # checks, twine check --strict, then the wheel and the sdist each installed into a fresh environment outside
     # the checkout (no editable install, no PYTHONPATH) and driven through the fictional-fixture browser journey:
     # seven steps, the availability correction, and export verification in a second, fresh workspace; every
-    # downloaded export is verified again through the installed command line. The pair is a throwaway development
+    # downloaded export is verified again through the installed command line. Then the integrated module journey from
+    # the same installed artifact: SHD refusals and admission inside the restricted worker, COM across a restart, PRC
+    # with its leak attempts, EVO on real file changes, and packet verification in a fresh workspace (6/6 required). The pair is a throwaway development
     # build: it is not uploaded, not kept as an artifact and is never a release candidate.
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -152,6 +161,6 @@ jobs:
           print(json.dumps({"result": r["result"], "commit": r["commit"], "tree": b["tree"], "build_tools": b["build_tools"], "twine_check_rc": r["twine_check"]["rc"],
                             "wheel_sha256": b["wheel"]["sha256"], "sdist_sha256": b["sdist"]["sha256"],
                             "installs": {k: {"ok": v.get("ok"), "stop": v.get("stop"), "checks": v.get("checks"),
-                                             "journeys": {m: {"score": j.get("score"), "rc": j.get("rc"), "ok": j.get("ok"), "stderr_tail": j.get("stderr_tail")} for m, j in (v.get("journeys") or {}).items()}}
+                                             "journeys": {m: {"score": j.get("score"), "rc": j.get("rc"), "ok": j.get("ok"), "isolation_backend": j.get("isolation_backend"), "failed_assertions": j.get("failed_assertions"), "stderr_tail": j.get("stderr_tail")} for m, j in (v.get("journeys") or {}).items()}}
                                          for k, v in r["installs"].items()}}, indent=1))
           EOF

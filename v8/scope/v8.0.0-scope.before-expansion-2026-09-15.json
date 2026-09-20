@@ -2,12 +2,12 @@
   "schema_version": "1.0",
   "product": "YUCLAW",
   "release": "8.0.0",
-  "decision_date": "2026-09-20",
-  "status": "EXPANDED_IMPLEMENTATION_REQUIRED_NOT_DELIVERED_NOT_RELEASE_AUTHORIZATION",
+  "decision_date": "2026-09-15",
+  "status": "IMPLEMENTATION_SCOPE_SELECTED_NOT_RELEASE_AUTHORIZATION",
   "mission": "Make financial AI accountable to evidence.",
   "vision": "Become the Science Trust Layer for Financial AI.",
-  "scope_document": "OWNER_SCOPE_EXPANSION_2026_09_20.md",
-  "executor_order": "CLAUDE_CODE_ORDER_V8_014.md",
+  "scope_document": "V8_0_0_SCOPE_FREEZE.md",
+  "executor_order": "CLAUDE_CODE_ORDER_V8_001.md",
   "order_sent": false,
   "full_roadmap": "v8-backlog.json",
   "inherited_release": {
@@ -27,11 +27,7 @@
     "SCI",
     "UX",
     "INT",
-    "REL",
-    "SHD",
-    "EVO",
-    "COM",
-    "PRC"
+    "REL"
   ],
   "minimal_shared_behavior": {
     "RIV": "Original versus revised target comparison; explicit unresolved explanation notes only.",
@@ -44,8 +40,13 @@
     "metric": "Quarterly revenue guidance",
     "required_fixture": "Clearly fictional original 110\u2013120 million, revision 105\u2013115 million, actual 112 million; explicit currency, fiscal period, basis and availability."
   },
-  "experimental_default_off": [],
-  "experimental_packaging_rule": "SUPERSEDED for SHD/EVO/COM/PRC by owner on 2026-09-20: implement, integrate and package all four; retain secure setup and per-session choices, never unsafe fallback.",
+  "experimental_default_off": [
+    "COM",
+    "PRC",
+    "SHD",
+    "EVO"
+  ],
+  "experimental_packaging_rule": "Only isolated verified audit/replay artifacts; omit if unsafe or unverified; no activation with Gate F pending.",
   "deferred": [
     "CTL",
     "RES",
@@ -87,20 +88,19 @@
     "B": "Seven-step browser journey not demonstrated",
     "C": "Applicable evidence quality, rights, provenance and access checks pending",
     "D": "Application/science checks pending; backup requirement removed; restore not demonstrated",
-    "E": "Human benefit PENDING; pilot deferred; Gate 15 removed by owner, no study/route/exception required.",
-    "F": "Expanded SHD/EVO/COM/PRC software integration and relevant installed/security checks required; external evidence limits remain explicit.",
+    "E": "Real-user pilot deferred; benefit PENDING; inherited study gate applicability unresolved",
+    "F": "Pending; experimental modules disabled",
     "G": "Pending; release authorization not granted"
   },
   "inherited_policy": {
     "v7_gate15_exception_transfers_to_v8": false,
-    "required_action": "Preserve Gate 15 REMOVED_BY_OWNER / NOT_REQUIRED; retain unrelated allocation, integrity and separate explicit publication authorization.",
+    "required_action": "Map v8 applicability; fulfill any unmet applicable requirement or seek a new explicit concrete release-policy decision before publication.",
     "a6_authorization_preserved": true,
     "same_build_bytes_required": true,
     "prior_releases_preserved": [
       "6.0.x",
       "7.0.0"
-    ],
-    "gate15": "REMOVED_BY_OWNER / NOT_REQUIRED"
+    ]
   },
   "acceptance_steps": [
     "source",
@@ -126,8 +126,7 @@
     "integration_complete_target": "2026-09-18",
     "artifact_freeze_target": "2026-09-20",
     "release_target": "2026-09-21",
-    "promotion_timing": "After verified release, within the authorized concrete outreach scope",
-    "previous_dates_status": "Historical targets; reassess after the expanded candidate is implemented and verified. Dates do not authorize release."
+    "promotion_timing": "After verified release, within the authorized concrete outreach scope"
   },
   "outreach": {
     "status": "PAUSED",
@@ -135,21 +134,5 @@
     "sent_count_this_review": 0
   },
   "publisher_review": "v7-baseline-review-2026-09-15/publisher-reproduction.json",
-  "schedule_addendum": "V8_001_SCHEDULE_ADDENDUM.md",
-  "original_scope_decision_date": "2026-09-15",
-  "enabled_workstreams_meaning": "Required implementation scope, not a statement that those capabilities are implemented, activated or shipped.",
-  "required_module_delivery": {
-    "SHD": "IMPLEMENTATION_AND_CURRENT_CANDIDATE_VERIFICATION_REQUIRED",
-    "EVO": "IMPLEMENTATION_AND_CURRENT_CANDIDATE_VERIFICATION_REQUIRED",
-    "COM": "IMPLEMENTATION_AND_CURRENT_CANDIDATE_VERIFICATION_REQUIRED",
-    "PRC": "IMPLEMENTATION_AND_CURRENT_CANDIDATE_VERIFICATION_REQUIRED"
-  },
-  "snapshot_notice": "Unchanged baseline, journey-score and A-D fields describe the original September 15 planning snapshot. Later execution evidence is in the V8-012 review and handoff-status.json; neither verifies the new four-module scope.",
-  "scope_amendment": {
-    "record": "OWNER_SCOPE_EXPANSION_2026_09_20.md",
-    "paused_order": "V8-013",
-    "historical_scope": "v8-014-research-evidence/scope-before-expansion.json",
-    "release_authorized": false,
-    "remote_implementation_confirmed": false
-  }
+  "schedule_addendum": "V8_001_SCHEDULE_ADDENDUM.md"
 }

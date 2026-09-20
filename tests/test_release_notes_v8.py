@@ -33,9 +33,9 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 
 Built in Canada.
 """
-SCOPE = {"release": "8.0.0", "enabled_workstreams": ["GOV", "DAT", "CLM", "CHK", "TIM", "SET", "SCI", "UX", "INT", "REL"],
+SCOPE = {"release": "8.0.0", "enabled_workstreams": ["GOV", "DAT", "CLM", "CHK", "TIM", "SET", "SCI", "UX", "INT", "REL", "SHD", "EVO", "COM", "PRC"],      # the owner's 2026-09-20 scope expansion
          "minimal_shared_behavior": {"RIV": "comparison only", "ACT": "unresolved/next-evidence only"},
-         "experimental_default_off": ["COM", "PRC", "SHD", "EVO"], "deferred": ["CTL", "RES", "RND", "full_RIV", "full_ACT", "VAL_real_user_pilot", "multi_tenant_platform", "managed_customer_accounts", "billing"],
+         "experimental_default_off": [], "deferred": ["CTL", "RES", "RND", "full_RIV", "full_ACT", "VAL_real_user_pilot", "multi_tenant_platform", "managed_customer_accounts", "billing"],
          "backup_policy": {"disclosure": "Backup creation and restoration are not provided in 8.0.0. Restore not demonstrated. Research exports and release artifacts do not establish disaster recovery."},
          "initial_real_corpus": {"max_issuers": 1}}
 def scorecard(label, ok=True):
@@ -152,7 +152,9 @@ class PolicyInputs(unittest.TestCase):
             "real-data statement": text.replace("replayed RETROSPECTIVELY", "replayed prospectively"),
             "simulated-review attribution missing": text.replace(n8.REVIEW_NOTE, "- Review: reviewed."),
             "human benefit PENDING statement missing": text.replace(n8.BENEFIT_NOTE, "- Human benefit: established."),
-            "experimental modules": text.replace("ABSENT from the distribution", "included"),
+            "included-modules statement": text.replace("Including them activates nothing", "Including them activates everything"),
+            "feature account for enabled workstream SHD": text.replace("an approved statement is never thereby true", "an approved statement is true"),
+            "feature account for enabled workstream PRC": text.replace("and no study was run", "and a study was run"),
             "feature account for enabled workstream SET": text.replace("- Dataset coverage:", "- Dataset coverage (with alpha):"),
             "feature account for enabled workstream TIM": text.replace("never by editing: the original records and earlier historical views stay intact", "by editing the record"),
             "feature account for enabled workstream DAT": text.replace("required, never defaulted: a missing or unusable value is refused before any request is sent", "optional"),
@@ -169,7 +171,7 @@ class PolicyInputs(unittest.TestCase):
     def test_matrix_refuses_wrong_inventory_and_reports_incomplete_evidence(self):
         with self.assertRaises(ValueError):
             n8.capability_matrix(scope=SCOPE, steps=list(server.STEPS)[:-1], scorecards=[scorecard("fixtures")])
-        wider = copy.deepcopy(SCOPE); wider["enabled_workstreams"].append("COM")
+        wider = copy.deepcopy(SCOPE); wider["enabled_workstreams"].append("CTL")                                   # a deferred workstream has no feature account: enabling it cannot compose
         with self.assertRaises(ValueError):
             n8.capability_matrix(scope=wider, steps=list(server.STEPS), scorecards=[scorecard("fixtures")])
         weak = n8.capability_matrix(scope=SCOPE, steps=list(server.STEPS), scorecards=[scorecard("fixtures", ok=False)])
@@ -184,7 +186,11 @@ class PolicyInputs(unittest.TestCase):
         self.assertNotIn("independently replicated", text.lower())
         real = n8.capability_matrix()                                                                # the actual tree: scope file + shipped step inventory + recorded scorecards
         self.assertEqual(real["enabled"], SCOPE["enabled_workstreams"]); self.assertEqual(sorted(real["minimal"]), ["ACT", "RIV"])
-        self.assertEqual(real["experimental"], ["COM", "PRC", "SHD", "EVO"]); self.assertTrue(real["demonstrated"], real["evidence"])
+        self.assertEqual(real["experimental"], []); self.assertTrue(real["demonstrated"], real["evidence"])                                          # V8-014: the four modules are in the enabled scope, none is experimental
+        old_scope = json.loads((REPO / "v8" / "scope" / "v8.0.0-scope.before-expansion-2026-09-15.json").read_text()); self.assertEqual(old_scope["experimental_default_off"], ["COM", "PRC", "SHD", "EVO"])   # history preserved
+        with self.assertRaises(ValueError):                                                                                                            # the earlier scope cannot compose the expanded account
+            n8.capability_matrix(scope=old_scope, steps=list(server.STEPS), scorecards=[scorecard("fixtures")])
+        self.assertIn("Modules SHD / EVO / COM / PRC are INCLUDED", text); self.assertIn("No independent security review has been performed", text); self.assertIn("no human productivity result exists", text)
         self.assertEqual(n8.check_correspondence(n8.compose(V6_STYLE.format(v="8.0.0"), version="8.0.0", policy=synthetic_policy(), board=BOARD), synthetic_policy()), [])
 
 

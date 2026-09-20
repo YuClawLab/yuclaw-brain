@@ -156,3 +156,92 @@ An export interrupted while being built is never listed as complete; build it ag
 - One owner, one machine: there are no accounts, no roles and no network service. The person operating the workbench
   is the only one who can change evidence, record adjudications and build exports; no independent reviewer is assigned
   by the software.
+
+## 7. The four modules: SHD, EVO, COM and PRC
+
+Open **Modules** (<http://127.0.0.1:8765/modules>). Each module is always listed; what is not set up yet shows its exact
+setup step and refuses — nothing falls back to an unprotected path. All four use the claims, versions and sources of this
+workspace and write to the same append-only journal.
+
+**Setup, once per workspace (host operator).** The first administrator is created only from the command line — a browser on
+the loopback port can never enroll itself:
+
+    python -m v8.workbench principals init --workspace ~/yuclaw-workspaces/research
+
+It prints a credential once (only a hash is stored; there is no default password and no key ships with the package). From
+then on **every page asks for sign-in** (<http://127.0.0.1:8765/login>). The administrator enrolls further principals under
+**Setup** with one or more capabilities: `admin` (principals, trust roots, policy, approvals, budgets, overrides, dispute and
+failure resolution), `submit`, `review`, `practice`. A credential can be rotated, given an expiry, or revoked (never
+revived); sessions end on restart, sign-out, rotation and revocation. A principal whose only capability is `practice` can
+open Practice, Modules, Help and its own exports, and nothing else. Signing in shows which local credential acted — not who
+a person is, what they are qualified for, or whether two credentials belong to one person. Whoever can read the workspace
+directory on this machine is outside every boundary described here. `python -m v8.workbench modules --workspace …` prints
+the same status as the Setup page.
+
+**SHD — Distillation Shield** (<http://127.0.0.1:8765/shd>). A submitter uploads a bundle: a zip with `bundle.json`
+(`schema` `yuclaw.shd-bundle/1`, one `purpose` of `evidence.reference`, `com.packets` or `evo.evaluations`, the listed
+evidence files with sha256 and size, and a typed payload) plus `evidence/…` files; at most 8 MiB, 64 members. The server
+stores and hashes the bytes and never opens them. An administrator **other than the submitter** approves that exact sha256
+on **SHD → trust** (purpose, expected evidence digests, expiry within the policy); the approval is signed with the
+workspace's Ed25519 key, whose private half stays in the workspace's private directory. **Request a decision**: the bundle is
+opened only inside the restricted worker, and the approval is checked again at the moment the decision is committed. The
+decision page shows a fixed code (for example `REFUSED_NO_APPROVAL`, `REFUSED_APPROVAL_EXPIRED`, `REFUSED_APPROVAL_REVOKED`,
+`REFUSED_SELF_APPROVAL`, `REFUSED_BUNDLE_REJECTED`, `REFUSED_ISOLATION_UNAVAILABLE`), the next action, and four separate
+answers: byte integrity, authority approval, factual adjudication (always NOT_ASSESSED) and release permission (always
+NONE). An admitted bundle can feed COM intake or the EVO import while its approval stays applicable. Evidence text is shown
+only to an administrator or reviewer, as inert escaped text.
+
+*The restricted worker.* Setup shows a live probe. Backend `bwrap` (bubblewrap namespaces) is preferred; backend `landlock`
+(Landlock file rules, a seccomp filter that refuses every socket, ptrace, signals to other processes and namespace calls,
+resource limits, an empty environment) is used where bubblewrap cannot start. A backend is used only if the probe on this
+host showed each denial: a canary secret unreadable, no write anywhere, canary TCP and UDP endpoints unreachable, no unix
+socket, no new process, no signal to the server, a 2 GiB allocation refused, output and run time bounded. Support matrix:
+Linux x86-64 and aarch64 with kernel Landlock (5.13 or later) or working bubblewrap — supported after the probe passes;
+Ubuntu 24.04 denies bubblewrap its user namespace unless the machine's administrator installs an AppArmor profile for it
+(this product never asks for that and never weakens a host setting); macOS, Windows and kernels without either facility —
+SHD admission stays closed with `REFUSED_ISOLATION_UNAVAILABLE`, everything else works. The `landlock` backend is process
+confinement, not a container: no separate PID or mount namespace, no defence against a kernel flaw. No independent security
+review has been performed.
+
+**EVO — Evolution Evidence Audit** (<http://127.0.0.1:8765/evo>). The administrator records one JSON configuration:
+measurement `roots`, the eight `components` (`path` inside a root, `runtime`, `declared`, `unknown`, or `not_applicable`
+with a justification), `depends_on` edges, `protocols` (component scope, built-in job `policy_conformance` or
+`json_wellformed`, validity days) and `authority` lists. **Register** measures the configured files now (links and
+secret-looking names are skipped unread) and records what changed from the parent. A reviewer who improved nothing on the
+lineage runs the **trusted evaluation**: the scope is copied to a private immutable snapshot and the copy is what runs; if
+the files no longer match the registered version the run is refused — register the new state as a new version. The
+version page shows, per protocol, REUSE or REEVALUATE with reasons, open failures (they persist until an administrator's
+evidence-backed resolution), reviews, test exposure, unknown inventory, linked commitments by currency, and a historical
+cutoff. The eligibility line is a read-only answer about recorded evidence; it controls no deployment.
+
+**COM — Research Commons Guard** (<http://127.0.0.1:8765/com>). The administrator sets a period budget: review minutes, a
+separate practice reserve, a per-principal packet cap and a maximum of open tasks. Submitters send packets that reference a
+claim here (or take them in from an SHD-admitted bundle). Packets with the same claim version, the same financial contract
+(metric, currency, unit, scale, basis, fiscal period) and the same known source roots form one group with one review task;
+every contributor stays listed. A reviewer who did not contribute **takes** a task (its cost is reserved under the workspace
+lock), then start / pause / resume / finish / release; a lease that ran out returns the task to the queue with its observed
+seconds. Scheduling cost is a default until a reviewer or administrator sets it; a submitter's estimate is only a proposal.
+A task that does not fit waits with its reason while smaller ones proceed; an aged task holds the remaining capacity; an
+oversized one is escalated; an urgent override orders first and creates no capacity; a budget cut below recorded use shows
+the overrun. Only a reviewer or administrator can record a dispute, withdrawal or source correction; affected groups are
+quarantined — a handling state, not a finding of misconduct — until an administrator resolves it, and anyone signed in may
+appeal. The queue comparison on the page is a simulation on fixed synthetic arrivals.
+
+**PRC — Independent Practice** (<http://127.0.0.1:8765/prc>). A reviewer freezes a task: question, optional claim, source
+scope, judgment labels, and the reference with its provenance (unadjudicated reference, model answer, or a reference the
+curator declares was reviewed — a declaration, not a verification). The reference is held by the server; the journal keeps
+only a salted digest. A practitioner (never the curator) opens a session, declares assistance and earlier exposure
+truthfully — every answer is accepted and labelled — reads the frozen evidence, and commits a judgment, reasoning, the
+sources it rests on, or UNRESOLVED with what would resolve it. Only then does **Open the comparison** work. The attempt is
+never replaced; reflections and reviewer feedback are later records; follow-ups are local due-states — nobody is contacted
+and no study is run. A later source correction or claim amendment appears as a note on the current interpretation. Not
+confidential from: the host administrator, the curator, an administrator principal, outside help, or an answer that is
+public elsewhere. The records cannot prove authorship, comprehension or improved ability.
+
+**Export and verification** (<http://127.0.0.1:8765/modx>). Build a packet of the module records you may export (a
+practitioner: its own sessions, optionally with text withheld). Never included: credential hashes, signing keys, staged
+bundle bytes, inspection excerpts, a comparison that was not revealed in the session. In a **fresh workspace**, Verify
+re-hashes every event into the journal skeleton, links every private object, recomputes the COM, EVO and SHD views, and
+reports signatures against that workspace's own trust roots: an unknown signer stays unknown, current authorization is
+unknown offline, and nothing is imported. An administrator can issue a **checkpoint** on the Practice page; keep the
+downloaded file somewhere else and supply it at verification to detect a truncated or altered journal.

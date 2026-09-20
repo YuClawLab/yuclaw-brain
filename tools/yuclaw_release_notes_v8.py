@@ -108,12 +108,19 @@ FEATURE_LINES = {
     "ACT": "- Research notes and unresolved evidence (minimal shared behaviour): an unresolved question or explanation, the next evidence needed, the reason and an actor label on a frozen claim, corrected only by a new linked note; no automated prioritisation.",
     "SET": "- Dataset coverage: one row per frozen claim derived from stored records (identifiers, source versions and lineage, targets and revisions, corrections and withdrawals, outcome, computed result, reviewer labels and disagreement), a deterministic snapshot digest and a verifiable dataset export.",
     "SCI": "- Scientific report and replay through the adapted kernel: a bounded science journal (a JSON event list) scored by paired Brier improvement with a sequential evidence value; explicit eligibility refusals; report status is conditional statistical evidence only and grants no action.",
-    "INT": "- Local persistence and integrity: one append-only journal per workspace, one re-entrant write lock, idempotent submissions, additive event kinds, bounded inputs that are never executed, opened or fetched; nothing binds outside 127.0.0.1.",
+    "INT": "- Local persistence and integrity: one append-only journal per workspace, one re-entrant write lock, idempotent submissions, additive event kinds, bounded inputs that are never executed, opened or fetched; nothing binds outside 127.0.0.1. The four modules share one local principal layer (separate capabilities for administration, submission, review and practice; credentials shown once and kept only as hashes; once a principal exists every page needs sign-in): it shows which local credential acted, not legal identity or qualification.",
+    "SHD": "- Distillation Shield (protected evidence intake): a bundle is admitted only when an administrator other than its submitter signed an approval for its exact bytes, evidence digests, one purpose and this workspace, unexpired and unrevoked at the moment of use; archive extraction and parsing run in a restricted worker whose file, network and process denials are probed on the host before it is used, and the route stays closed when none is available; results are typed fields with fixed reason codes and evidence text stays inert; byte integrity, authority approval, factual adjudication and release permission are four separate answers, so an approved statement is never thereby true. No independent security review has been performed.",
+    "EVO": "- Evolution Evidence Audit: versions of an AI system's eight parts (model, agent code, tool policy, memory, data, runtime, grader, evaluation data) are recorded as measured, declared, unknown or not applicable, and a provider alias is never a measurement; review evidence is reused only while the administrator-configured dependency closure, the protocol, the authority state and the validity period still apply, with reasons; a trusted local evaluation runs a built-in job on an immutable snapshot and refuses changed files; failures stay open until an authorized evidence-backed resolution; historical views use recorded time. It audits and controls no deployment.",
+    "COM": "- Research Commons Guard: a durable review queue with one task per exact duplicate group of compatible claim contracts and known source roots, retained attribution, authenticated admission limits, transactional review budgets with a separately reserved practice allocation, leases, rollover, aged holds, recorded overrides, and authorized disputes with appeals; a shared source is not independent corroboration and a duplicate is not misconduct; the queue comparison is a labelled simulation and no human productivity result exists.",
+    "PRC": "- Independent Practice: a frozen task and source scope, truthful assistance and exposure declarations, one preserved attempt committed before a server-held comparison opens, the comparison's provenance shown, reflection, reviewer feedback, local follow-up due states, and a scoped private export with separately held checkpoints; the records cannot prove authorship, comprehension or improved ability, and no study was run.",
     "GOV": "- Scope and controls: the enabled 8.0.0 scope is frozen, the mission and vision wording is checked byte-for-byte, authored product content is English with YUCLAW on public surfaces.",
     "REL": "- Reproducible artifacts: wheel and sdist built with a fixed source-date epoch from the frozen commit, verified from fresh installs; order records, scope and release-policy documents are excluded from the distribution; every workbench module compiles on Python 3.10.",
 }
 ENABLED_BUT_DEFERRED_NOTE = "- Deferred beyond 8.0.0: {deferred}. No runtime endpoint, tab or promised benefit for any of them."
 EXPERIMENTAL_NOTE = "- Experimental optional modules {modules}: ABSENT from the distribution; nothing is default-on; no benefit is claimed."
+MODULES_NOTE = ("- Modules SHD / EVO / COM / PRC are INCLUDED in the distribution (owner scope decision 2026-09-20). Including them activates nothing: no principal, trust root, approval, budget, reviewer, "
+                "study or deployment control exists until the local operator sets one up, and the protected intake stays closed on a host without a working restricted worker. External evidence that does not exist: an actual "
+                "human effort comparison, a qualified independent task reviewer or learning result, an independent security review, an authorized external deployment integration.")
 CORPUS_NOTE = ("- Real data: one issuer's quarterly guidance ({issuer}) was replayed RETROSPECTIVELY through the workbench as a behaviour demonstration on real sources; "
                "the issuer is NOT ELIGIBLE under the recorded selection criteria (unchanged from the first order) and no dataset product is claimed.")
 REVIEW_NOTE = "- Review: every adjudication and note in the release evidence was recorded by the automated journey runner as a simulated test action; there was no human review and no user study."
@@ -159,17 +166,23 @@ def capability_matrix(*, scope: dict | None = None, steps: list | None = None, s
 
 def feature_account(matrix: dict) -> str:
     steps = " → ".join(matrix["steps"])
-    lines = [FEATURE_LINES[ws].format(steps=steps) for ws in ("UX", "DAT", "CLM", "RIV", "CHK", "TIM", "ACT", "SET", "SCI", "INT", "GOV", "REL") if ws in matrix["enabled"] or ws in matrix["minimal"]]
+    lines = [FEATURE_LINES[ws].format(steps=steps) for ws in ("UX", "DAT", "CLM", "RIV", "CHK", "TIM", "ACT", "SET", "SCI", "SHD", "EVO", "COM", "PRC", "INT", "GOV", "REL") if ws in matrix["enabled"] or ws in matrix["minimal"]]
     ev = "; ".join(f"{k} (candidate {str(v['candidate'] or 'unrecorded')[:12]}): {v['score']} + notes {v['features']['research_notes']}, dataset {v['features']['dataset']}, scientific report {v['features']['sci']}" for k, v in matrix["evidence"].items()) or "no journey evidence recorded"
     lines.append(f"- Journey evidence (automated browser journeys on the candidate, from the checkout and from the installed wheel and sdist): {ev}." if matrix["demonstrated"] else f"- Journey evidence INCOMPLETE: {ev}.")
     return "\n".join(lines)
+
+
+def modules_statement(matrix: dict) -> str:
+    """The scope decides: experimental modules the scope still lists are ABSENT; with none listed, the four modules are
+    included and the statement says what inclusion does NOT activate and which external evidence does not exist."""
+    return EXPERIMENTAL_NOTE.format(modules=" / ".join(matrix["experimental"])) if matrix["experimental"] else MODULES_NOTE
 
 
 def not_in_this_release(matrix: dict, tail: str) -> str:
     deferred = ", ".join(str(d).replace("_", " ") for d in matrix["deferred"])
     lines = [f"- {matrix['backup_disclosure']}", BENEFIT_NOTE,
              CORPUS_NOTE.format(issuer="Microchip Technology, Q1 FY2026 net-sales guidance"), REVIEW_NOTE, FIXTURE_NOTE,
-             EXPERIMENTAL_NOTE.format(modules=" / ".join(matrix["experimental"])), ENABLED_BUT_DEFERRED_NOTE.format(deferred=deferred)]
+             modules_statement(matrix), ENABLED_BUT_DEFERRED_NOTE.format(deferred=deferred)]
     return "\n".join(lines) + "\n" + tail.strip("\n")
 
 
@@ -260,8 +273,8 @@ def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = 
         problems.append("simulated-review attribution missing")
     if BENEFIT_NOTE not in notes:
         problems.append("human benefit PENDING statement missing")
-    if EXPERIMENTAL_NOTE.format(modules=" / ".join(m["experimental"])) not in notes:
-        problems.append("experimental modules (absent, default-off) statement missing")
+    if modules_statement(m) not in notes:
+        problems.append("experimental modules (absent, default-off) statement missing" if m["experimental"] else "included-modules statement (what inclusion does not activate; external evidence that does not exist) missing")
     if not m["demonstrated"] and "Journey evidence INCOMPLETE" not in notes:
         problems.append("journey evidence is not complete but the notes do not say so")
     if re.search(r"\b(validated|certif(ied|icate)|guarantee[sd]?|alpha)\b", notes, re.I):

@@ -133,3 +133,42 @@ and verification instructions. The canonical research digest excludes the export
 1 MISMATCH, 3 UNSUPPORTED) reads the archive in memory within fixed bounds, refuses unsafe member names, re-derives every
 digest and recomputes every result, note, dataset row and scientific record. A research export is not a publication
 (publication eligibility is shown separately and is NOT ELIGIBLE) and not a backup.
+
+## Module events (SHD, EVO, COM, PRC and local principals)
+
+Every module event is workspace-level (`claim_id` null) and names claims, claim versions and sources inside its payload, so
+a claim's own export and older exports are unchanged. `actor` is `principal:<id>` — the authenticated principal — or
+`host-operator(cli)`; a form field is never an actor. Times: `recorded_at` is the server's action time and is what every
+module's historical cutoff uses; an asserted earlier time is kept only as a labelled assertion.
+
+| Kinds | Payload, in short |
+|---|---|
+| `PRINCIPAL_ENROLLED` / `_ROTATED` / `_REVOKED` | principal id, capabilities, expiry, credential id (a digest — never the credential or its hash) |
+| `SHD_ROOT_ENROLLED` / `_REVOKED`, `SHD_POLICY_SET` | Ed25519 public key and key id; policy version, approval validity, allowed purposes |
+| `SHD_APPROVAL_ISSUED` / `_REVOKED` | signed envelope `yuclaw.signed-record/1`, record type `shd.approval`: bundle sha256, evidence sha256 list, purpose, workspace id, approver, key id, issue and expiry times, policy version |
+| `SHD_SUBMISSION_RECEIVED`, `SHD_DECISION_RECORDED` | bundle sha256, size, submitter; result ADMITTED/REFUSED, fixed code, the four separate answers, digests of the private typed result and inspection excerpts, isolation backend |
+| `SHD_TRUST_DISCREPANCY` / `_RESOLUTION` | what an imported packet's trust snapshot contradicted; an administrator's note (trust state unchanged) |
+| `EVO_CONFIG_SET`, `EVO_VERSION_REGISTERED` | roots, components, edges, protocols, authority; per component status MEASURED / DECLARED / UNKNOWN / NOT_APPLICABLE with digest and detail, changed components, improver |
+| `EVO_EVALUATION_RECORDED`, `EVO_FAILURE_RECORDED` / `_RESOLVED` | origin TRUSTED_RUNNER or DECLARED_IMPORT, subject (closure, executed digests, snapshot), result; stable issue id, scope, resolution evidence |
+| `EVO_REVIEW_RECORDED`, `EVO_TEST_ACCESS_RECORDED`, `EVO_REEVAL_REQUESTED`, `EVO_COMMITMENT_LINKED` | reviewer, decision, covered versions, asserted-time label; GRANTED/REVOKED; typed job request; claim id, amount or unknown, currency |
+| `COM_BUDGET_SET`, `COM_PACKET_SUBMITTED`, `COM_COST_SET` | period, review and practice minutes, caps; submitter, claim reference with contract digest, known and unknown roots, ancestry, admission route, proposed minutes, group id; scheduling cost and rule |
+| `COM_TASK_TRANSITION`, `COM_EFFORT_DECLARED`, `COM_OVERRIDE_RECORDED` | from/to state, reservation minutes, assignee, lease, reason; declared minutes and category; urgent reason |
+| `COM_DISPUTE_RECORDED` / `COM_APPEAL_RECORDED` / `COM_DISPUTE_RESOLVED` | target, type, reason, recorder; appellant and reason; outcome UPHELD/LIFTED |
+| `PRC_TASK_FROZEN`, `PRC_SESSION_OPENED`, `PRC_EVIDENCE_READ` | question, claim reference, source scope, labels, salted comparison commitment, provenance, curator, declared qualification; declarations and category, practice minutes reserved; source opened (access, not comprehension) |
+| `PRC_ATTEMPT_COMMITTED`, `PRC_COMPARISON_REVEALED`, `PRC_REFLECTION_RECORDED`, `PRC_FEEDBACK_RECORDED` | digests of the private attempt, reflection and feedback; judgment label; the reveal names the attempt event it followed |
+| `PRC_FOLLOWUP_SCHEDULED`, `PRC_CHECKPOINT_ISSUED` | follow-up task and due time (a local due-state); signed `prc.checkpoint` of journal sequence and tip |
+| `MODULE_EXPORT_BUILT`, `MODULE_PACKET_VERIFIED` | export id, scope, digests; verification result, checkpoint finding, origin trust revision, "imported into state: nothing" |
+
+**Private content** (never in the journal, a claim export or a module packet unless stated): credential hashes
+(`private/principals.json`), signing keys (`private/keys/`), staged bundle bytes, inspection excerpts, EVO snapshots, and the
+content-addressed vault (`private/vault/`) holding typed SHD results, practice comparisons (salted), attempts, reflections
+and feedback. A module packet may carry typed SHD results and, for the chosen sessions, attempts, reflections, feedback and
+a comparison that was revealed in that session.
+
+**Module packet** (`modx-<id>.zip`, format `yuclaw-module-packet/1`): `events`, `journal_skeleton` (seq, kind, prev_hash,
+event_hash of every journal line), `objects`, `trust_snapshot`, `derived` (COM, EVO and SHD views), `scope`, `packet_digest`,
+optional `packet_signature` (record type `module.export`). Signed records use domain-separated input
+`"YUCLAW-SIGNED-RECORD/1" 0x00 <record type> 0x00 <canonical JSON>`; a signature is valid for one record type only. Prohibited
+interpretations: an admitted or signed bundle is not a true statement; a duplicate or a shared source is not misconduct; an
+eligibility line is not a deployment control; a practice record is not evidence of authorship, comprehension, ability or
+benefit; the queue comparison is a simulation.

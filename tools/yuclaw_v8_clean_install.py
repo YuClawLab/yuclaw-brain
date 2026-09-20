@@ -35,11 +35,12 @@ from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[1]
 SOURCE_DATE_EPOCH = "1580601600"                      # the publishers' reproducible-build epoch
-FORBIDDEN_MEMBERS = ("internal/", "output/", "archive/", "clawhub/", "v8/V8-", "v8/scope", "v8/policy", "__pycache__", ".pyc")      # "v8/V8-": every order record (the earlier "v8/V8-00" would have missed V8-010 and later)
+FORBIDDEN_MEMBERS = ("internal/", "output/", "archive/", "clawhub/", "v8/V8-", "v8/scope", "v8/policy", "__pycache__", ".pyc", "/private/", "principals.json", ".pem", "commitments.jsonl")      # V8-014: no credential store, signing key, vault or journal ever ships      # "v8/V8-": every order record (the earlier "v8/V8-00" would have missed V8-010 and later)
 REQUIRED_WHEEL = ("v8/__init__.py", "v8/workbench/__init__.py", "v8/workbench/server.py", "v8/workbench/export.py", "v8/workbench/journey.py", "v8/workbench/ingest.py", "v8/workbench/availability.py",
                   "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/manifest.json", "v8/workbench/resources/fixtures/001_base.json", "v8/workbench/resources/fixtures/008_quarterly.json",
-                  "v8/workbench/resources/OPERATOR_GUIDE.md", "v8/workbench/resources/DATA_DICTIONARY.md")
-REQUIRED_SDIST = ("v8/__init__.py", "v8/workbench/server.py", "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/008_quarterly.json", "README_PYPI.md", "README.md", "schemas/CommitmentClaim.v1.json")
+                  "v8/workbench/resources/OPERATOR_GUIDE.md", "v8/workbench/resources/DATA_DICTIONARY.md", "v8/workbench/modkinds.py") + tuple(
+                      f"v8/workbench/modules/{m}.py" for m in ("__init__", "core", "authz", "envelope", "sandbox", "sandbox_bootstrap", "shield_worker", "shield", "evolution", "commons", "practice", "modexport", "web", "journey_modules"))      # V8-014: the four modules ship
+REQUIRED_SDIST = ("v8/__init__.py", "v8/workbench/server.py", "v8/workbench/modkinds.py", "v8/workbench/modules/shield.py", "v8/workbench/modules/shield_worker.py", "v8/workbench/modules/sandbox_bootstrap.py", "v8/workbench/modules/practice.py", "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/008_quarterly.json", "README_PYPI.md", "README.md", "schemas/CommitmentClaim.v1.json")
 _HOME_PATH = re.compile(r"/home/[A-Za-z0-9_.-]+/|/Users/[A-Za-z0-9_.-]+/")
 
 
@@ -221,6 +222,15 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
         journeys[mode]["verify_export"] = ver
         journeys[mode]["ok"] = r.returncode == 0 and journeys[mode]["score"] == "7/7" and cand.get("commit") == art["commit"] and journeys[mode]["module_inside_venv"] and bool(ver) \
             and all((x["rc"] == 0) if x["expected"] == 0 else (x["rc"] != 0) for x in ver.values())
+    # V8-014: the integrated SHD → COM → PRC + EVO + fresh-verification journey from the INSTALLED artifact (separate signed-in principals; real restricted worker)
+    mout = out / f"journey-{what}-modules"
+    r = run([py, "-m", "v8.workbench.modules.journey_modules", "--out", mout, "--candidate", art["commit"], "--artifact", f"{artifact.name}={art[what]['sha256']}"], cwd=cwd, env=env, check=False, timeout=1800)
+    mlog = json.loads((mout / "modules_journey_log.json").read_text()) if (mout / "modules_journey_log.json").exists() else {}
+    sc = mlog.get("scorecard", {}); mod_dir = str(mlog.get("runtime", {}).get("workbench_module", ""))
+    journeys["modules"] = {"rc": r.returncode, "score": sc.get("score"), "assertions": sc.get("assertions"), "negative_assertions": sc.get("negative_assertions"), "isolation_backend": (mlog.get("isolation") or {}).get("backend"),
+                           "isolation_probes": (mlog.get("isolation") or {}).get("probes"), "module_inside_venv": mod_dir.startswith(str(v)), "journey_log_sha256": sha(mout / "modules_journey_log.json") if mlog else None,
+                           "failed_assertions": [a["name"] for s in (mlog.get("steps") or {}).values() for a in s["assertions"] if not a["ok"]], "stderr_tail": r.stderr[-400:] if r.returncode else ""}
+    journeys["modules"]["ok"] = r.returncode == 0 and sc.get("score") == "6/6" and journeys["modules"]["module_inside_venv"] and bool(journeys["modules"]["isolation_backend"])
     res["journeys"] = journeys
     res["ok"] = all(res["checks"].values()) and all(j["ok"] for j in journeys.values())
     return res
