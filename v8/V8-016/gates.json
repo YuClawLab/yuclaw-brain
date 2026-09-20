@@ -1,0 +1,33 @@
+{
+ "record": "v8-release-state-run/1",
+ "order": "V8-016 §6",
+ "run_on": {
+  "head": "32567765faa89571382ac9a7ea444850c632ddb5",
+  "tree": "1a552d3423f772d901dbc3d1f2b6ccb3c3dbaa9d"
+ },
+ "gate_counts": {
+  "GREEN": 19,
+  "REMOVED_BY_OWNER": 1
+ },
+ "gate15": {
+  "gate": 15,
+  "name": "user comprehension test passes",
+  "result": "REMOVED_BY_OWNER",
+  "evidence": "requirement removed by the owner on 2026-09-16 for v8 releases (decision record sha256 45d23007e958ac96…); consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING"
+ },
+ "policy_correspondence": [
+  "no release-policy record"
+ ],
+ "public_notes_sha256": "bcdfb81ce6d6123d403a5736eb45d034da0619019e3a0c37ebeb2565b0ca2a34",
+ "release_authorized": false,
+ "publishing_permitted": false,
+ "a_green_table_does_not_erase": [
+  "the V8-016 commit has NO hosted CI: run 35500468128 covers 0c58de33 only",
+  "D1 PROPOSED: correspondence is ['no release-policy record'] until the owner accepts",
+  "no independent security review; no human study; human benefit PENDING; owner_manual_walkthrough NOT_PERFORMED_OPTIONAL",
+  "bubblewrap verified on no host; power loss not staged",
+  "upstream moves Mon–Fri 23:00 UTC: re-integration needs a new source commit and a NEW pair",
+  "Gate 15 REMOVED_BY_OWNER — never PASSED"
+ ],
+ "not_advice": "Research and education only. Not investment advice."
+}

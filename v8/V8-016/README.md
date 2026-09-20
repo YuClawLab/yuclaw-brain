@@ -76,7 +76,7 @@ a journal and export written before the modules existed. Workloads, seeds and un
 - Full suite **397 passed**; Python 3.10.21 floor **192 passed**; the same floor with `cryptography==41.0.0` exactly (the declared
   lower bound; private run) **192 passed**; no skips. The pre-module build verifies a new export and reads the extended journal
   (private run); the forward direction is an automated test.
-- Gates at the record HEAD: see gates.json → `gates.json`. D1: `V8-ALLOC-2026-09-20-P8`, PROPOSED; P7 … P3 preserved.
+- Gates at the record HEAD: {"GREEN": 19, "REMOVED_BY_OWNER": 1} → `gates.json`. D1: `V8-ALLOC-2026-09-20-P8`, PROPOSED; P7 … P3 preserved.
 
 ## 4. Remaining gaps (exact)
 
