@@ -191,11 +191,11 @@ def reveal(ws: Workspace, principal, session_id: str) -> dict:
         evs = ws.load()["events"]; s = state(ws, evs=evs); ss, t = _own_session(s, principal, session_id)
         if not _may_reveal(ss):
             raise ModuleError("E_ATTEMPT_FIRST", "the comparison stays closed until this session's attempt is committed")
-        ws._append_unlocked("PRC_COMPARISON_REVEALED", None, {"session_id": session_id, "task_id": t["task_id"], "after_attempt_event": ss["attempt"]["event_hash"], "comparison_commitment": t["comparison_commitment"]},
+        ws._append_unlocked("PRC_COMPARISON_REVEALED", None, {"session_id": session_id, "task_id": t["task_id"], "after_attempt_event": (ss["attempt"] or {}).get("event_hash"), "comparison_commitment": t["comparison_commitment"]},
                             op_id="prc:reveal:" + hashlib.sha256(session_id.encode()).hexdigest()[:24], observed_at=None, source_available_as_of=None, actor=core.actor_of(principal))
         c = core.Vault(ws).get(t["comparison_commitment"])
     return {"reference_label": c["reference_label"], "reference_answer": c["reference_answer"], "rationale": c["rationale"], "provenance": c["provenance"], "provenance_meaning": PROVENANCE[c["provenance"]],
-            "curator": c["curator"], "agrees_with_attempt": c["reference_label"] == ss["attempt"]["judgment"],
+            "curator": c["curator"], "agrees_with_attempt": c["reference_label"] == (ss["attempt"] or {}).get("judgment"),
             "note": "agreement with a reference is not correctness, and neither is evidence of learning"}
 
 
