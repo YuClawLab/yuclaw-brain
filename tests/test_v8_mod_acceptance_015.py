@@ -1,6 +1,6 @@
 """V8-015 §2 — subclauses of the 43 R2 acceptance families that the V8-014 tests did not exercise. Each refusal has an
 authorized positive counterpart; isolation cases run the REAL restricted worker (never mocked away). Automated fixtures only."""
-import io, json, os, pathlib, stat, sys, tempfile, threading, unittest, zipfile
+import hashlib, io, json, os, pathlib, stat, sys, tempfile, threading, unittest, zipfile
 from datetime import timedelta
 from unittest import mock
 
@@ -216,6 +216,46 @@ class EvoComPrc(unittest.TestCase):
         evo.record_test_access(ws, adm, subject_principal="ivy", action="GRANTED", op_id="op:access-0003"); authz.Principals(ws).revoke("ivy", "left", op_id="op:revoke-ivy01", by=adm)
         evo.record_test_access(ws, adm, subject_principal="ivy", action="REVOKED", op_id="op:access-0004")                                                     # a revoked principal stays known: its access can still be ended on the record
         self.assertEqual([e["payload"]["action"] for e in ws.load()["events"] if e["kind"] == "EVO_TEST_ACCESS_RECORDED"], ["GRANTED", "REVOKED"])
+
+    def test_C02_aliases_are_one_root_for_grouping_corroboration_and_disputes(self):
+        """V8-016: identical passage bytes under another accession, and an authorized declared alias, never count as a
+        second independent root; a dispute on any name reaches every group; a receiver recomputes the same view."""
+        import copy
+        ws = workspace(); cid, sid = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); rita, _ = principal(ws, "rita", ["review"], by=adm); al, _ = principal(ws, "alice", ["submit"], by=adm)
+        com.set_budget(ws, adm, period_id="p1", review_minutes=600, practice_minutes=60, contributor_packet_cap=50, max_open_tasks=50, op_id="op:budget-001")
+        fx = json.loads((FIX / "001_base.json").read_text()); fx["claim"]["claim_id"] = "ZZAL-FY2026-REV-GUIDE"; rec = schema.from_fixture(fx)
+        twin = copy.deepcopy(rec["claim"]["source"]); twin["accession"] = "0000000000-26-000777"                               # the SAME passage bytes filed under another accession
+        ws.register_source(twin, op_id="op:src-twin1", observed_at=twin["available_as_of"]); rec["claim"]["source"] = twin
+        ws.freeze_claim(rec["claim"], op_id="op:frz-twin1", observed_at=twin["available_as_of"]); tid = f"{twin['accession']}:{twin['source_hash'][:16]}"; cid2 = rec["claim"]["claim_id"]
+        self.assertNotEqual(tid, sid); self.assertEqual(com.identical_byte_aliases(ws), {tid: {"canonical": sid, "basis": "IDENTICAL_PASSAGE_BYTES"}})
+        kw = dict(kind="SUMMARY", ancestry="KNOWN", derived_from=[], proposed_cost_minutes=10, asserts_withdrawn=False, client_packet_id=None)
+        a = com.submit_direct(ws, al, claim_id=cid, op_id="op:pk-0000001", **kw)["payload"]; b = com.submit_direct(ws, al, claim_id=cid2, op_id="op:pk-0000002", **kw)["payload"]
+        self.assertEqual(b["source_roots"], [sid]); self.assertEqual(b["cited_roots"], [tid]); self.assertEqual(b["root_aliases"][tid]["basis"], "IDENTICAL_PASSAGE_BYTES")
+        d = com.dashboard(ws); self.assertEqual(sorted(d["shared_roots"][sid]), sorted([a["group_id"], b["group_id"]]))         # two claims, ONE document: shown as a shared root, not as corroboration
+        self.assertEqual(len(d["shared_roots"]), 1)
+        # a third registration with DIFFERENT bytes of (the reviewer says) the same document: separate until an authorized declaration
+        fx3 = json.loads((FIX / "001_base.json").read_text()); fx3["claim"]["claim_id"] = "ZZAM-FY2026-REV-GUIDE"; rec3 = schema.from_fixture(fx3); src3 = copy.deepcopy(rec3["claim"]["source"])
+        src3.update(accession="0000000000-26-000888", excerpt=src3["excerpt"] + " (HTML rendering)"); src3["source_hash"] = hashlib.sha256(src3["excerpt"].encode()).hexdigest()
+        chk, reasons = schema.check_source(src3)
+        self.assertEqual(reasons, [], reasons); ws.register_source(src3, op_id="op:src-html1", observed_at=src3["available_as_of"]); rec3["claim"]["source"] = src3
+        ws.freeze_claim(rec3["claim"], op_id="op:frz-html1", observed_at=src3["available_as_of"]); hid = f"{src3['accession']}:{chk['source_hash'][:16]}"; cid3 = rec3["claim"]["claim_id"]
+        c = com.submit_direct(ws, al, claim_id=cid3, op_id="op:pk-0000003", **kw)["payload"]; self.assertEqual(c["source_roots"], [hid]); self.assertNotIn(hid, com.dashboard(ws)["shared_roots"])
+        self.assertEqual(code(com.record_alias, ws, al, source_id=hid, alias_of=sid, reason="x", op_id="op:alias-0001"), "E_FORBIDDEN")                          # a submitter cannot merge roots
+        self.assertEqual(code(com.record_alias, ws, rita, source_id="ghost:0000", alias_of=sid, reason="x", op_id="op:alias-0002"), "E_UNKNOWN_SOURCE")
+        self.assertEqual(code(com.record_alias, ws, rita, source_id=tid, alias_of=sid, reason="x", op_id="op:alias-0003"), "E_ALIAS")                          # already one root by bytes
+        self.assertEqual(code(com.record_alias, ws, rita, source_id=sid, alias_of=hid, reason="x", op_id="op:alias-0004"), "E_ALIAS")                          # the canonical end of other aliases cannot itself become an alias
+        com.record_alias(ws, rita, source_id=hid, alias_of=tid, reason="same 8-K, HTML rendering; compared by hand", op_id="op:alias-0005")
+        s = com.state(ws); self.assertEqual(com.canonical_root(s, hid), sid)                                                                                   # declared → tid → (bytes) sid: always the canonical end
+        self.assertEqual(sorted(com.dashboard(ws)["shared_roots"][sid]), sorted([a["group_id"], b["group_id"], c["group_id"]]))
+        self.assertIn(c["group_id"], com.state(ws)["groups"])                                                                                                  # history kept: the earlier group keeps its id
+        com.record_dispute(ws, rita, target_type="source", target=hid, dispute_type="SOURCE_CORRECTED", reason="figure restated", op_id="op:disp-000001")
+        self.assertTrue(all(com.state(ws)["groups"][g]["quarantined_by"] for g in (a["group_id"], b["group_id"], c["group_id"])))                                # a dispute on ANY name reaches every group on that document
+        self.assertEqual(code(com.record_alias, ws, rita, source_id=tid, alias_of=None, reason="x", op_id="op:alias-0006"), "E_NO_ALIAS")                        # identical bytes are not a declaration
+        com.record_alias(ws, rita, source_id=hid, alias_of=None, reason="declared in error", op_id="op:alias-0007")
+        st = com.state(ws); self.assertFalse(st["groups"][a["group_id"]]["quarantined_by"]); self.assertTrue(st["groups"][c["group_id"]]["quarantined_by"]); self.assertEqual(len(st["alias_records"]), 2)
+        # a receiver recomputes the same COM view from the packet alone (it has none of the sender's source registrations)
+        raw = pathlib.Path(mx.build_packet(ws, adm, modules=["COM"], prc_sessions=[], withhold_text=False, op_id="op:export-alias")["zip_path"]).read_bytes()
+        r = mx.verify_packet(workspace("receiver"), raw); self.assertEqual(r["result"], "SUCCESS", r["first_discrepancy"]); self.assertIn("recompute-com: MATCH", r["recompute"])
 
     def test_C04_concurrent_admission_at_the_cap_boundary_admits_exactly_the_cap(self):
         ws = workspace(); cid, _ = load_fixture(ws); adm, _ = principal(ws, "owner", ["admin"]); sub, _ = principal(ws, "alice", ["submit"], by=adm)
