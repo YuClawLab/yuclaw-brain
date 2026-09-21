@@ -12,8 +12,11 @@ Inputs, all explicit and checked (nothing free-typed decides what "ships"):
     NOT_REQUIRED bound to the owner's recorded v8 decision (v8/policy/gate15_release_requirement.json: the human-
     comprehension study is not a required input to a v8 release — REMOVED_BY_OWNER, never PASSED); a missing record
     is stated as NOT RECORDED and never passes correspondence.
-Version support is narrow: only 8.0.0 (SUPPORTED_VERSIONS). The 7.x composer (v3/release/notes_v7.py) is unchanged
-and stays the composer for 7.x. Unknown versions have no composer and never correspond.
+Version support is narrow: 8.0.0 (the major release) and its patch 8.0.1 (SUPPORTED_VERSIONS). A patch release keeps the
+8.0.0 scope file and capability account unchanged — it adds a TRACKED patch change list
+(docs/methodology/release_notes_<version>_changes.md) and says that the scope did not change; it cannot be composed
+without that list, and 8.0.0 cannot be composed with one. The 7.x composer (v3/release/notes_v7.py) is unchanged and
+stays the composer for 7.x. Unknown versions have no composer and never correspond.
 
 Distinctions kept apart on purpose: (1) version SUPPORT (this module knows 8.0.0), (2) CORRESPONDENCE between the
 notes text and the policy record (check_correspondence; empty list = correspond), (3) SATISFACTION of release gates
@@ -28,7 +31,8 @@ import re
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[1]
-SUPPORTED_VERSIONS = ("8.0.0",)
+SUPPORTED_VERSIONS = ("8.0.0", "8.0.1")
+PATCH_OF = {"8.0.1": "8.0.0"}                      # patch release → the release whose frozen scope it keeps
 SCOPE_PATH = _REPO / "v8" / "scope" / "v8.0.0-scope.json"
 GATE15_DECISION = _REPO / "v8" / "policy" / "gate15_release_requirement.json"
 def _activations():
@@ -192,20 +196,27 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
     status and the policy disclosure (NOT RECORDED when no policy record exists)."""
     if version not in SUPPORTED_VERSIONS:
         raise ValueError(f"version {version} has no 8.x notes composition path (supported: {', '.join(SUPPORTED_VERSIONS)})")
-    if patch_changes:
-        raise ValueError("8.0.0 is a major release: there is no patch change list")
+    scope_version = PATCH_OF.get(version, version)
+    if version in PATCH_OF and not (patch_changes or "").strip():
+        raise ValueError(f"{version} is a patch release: its tracked patch change list is required")
+    if version not in PATCH_OF and patch_changes:
+        raise ValueError(f"{version} is a major release: there is no patch change list")
     import sys
     if str(_REPO) not in sys.path:
         sys.path.insert(0, str(_REPO))
     from v3.release import notes_v7                          # shared, unchanged helper: evidence totals
     m = matrix or capability_matrix(); dec = gate15_decision()
-    if m["version"] != version:
-        raise ValueError(f"scope release {m['version']} != version {version}")
+    if m["version"] != scope_version:
+        raise ValueError(f"scope release {m['version']} != {scope_version} (the scope of version {version})")
     head, rest = v6_style_public.split("#### Shipped objects", 1)
     objects, tail = rest.split("#### Not in this release", 1)
     objects = objects.split("\n", 1)[1].strip("\n")
-    parts = [head.rstrip("\n"), "",
-             f"#### New in {version} — the source-to-export commitment workbench (local, loopback only)", "", feature_account(m), "",
+    if version in PATCH_OF:
+        new = [f"#### Changed in {version} — patch: defect repairs and clearer entry points (no methodology, statistic, threshold, registration or scope change)", "", patch_changes.strip("\n"), "",
+               f"#### In the 8.0 line since {scope_version} — the source-to-export commitment workbench (local, loopback only; scope unchanged)", "", feature_account(m), ""]
+    else:
+        new = [f"#### New in {version} — the source-to-export commitment workbench (local, loopback only)", "", feature_account(m), ""]
+    parts = [head.rstrip("\n"), "", *new,
              "#### Evidence totals (public scoreboard at composition)", "", notes_v7.evidence_totals(board), "",
              "#### Activation status (every proposed activation)", "", activation_status(policy), "",
              "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", policy_disclosure(policy, dec), "",
@@ -232,8 +243,14 @@ def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = 
         problems.append("allocation document sha256 prefix absent from the notes")
     if f"decision {al.get('decision')}" not in notes:
         problems.append("allocation decision absent from the notes")
-    if str(policy.get("version")) != SUPPORTED_VERSIONS[0]:
-        problems.append(f"policy record is for version {policy.get('version')!r}, not {SUPPORTED_VERSIONS[0]}")
+    titled = re.search(r"^#### (?:New|Changed) in (\d+\.\d+\.\d+) — ", notes, re.M)
+    notes_version = titled.group(1) if titled else None
+    if notes_version not in SUPPORTED_VERSIONS:
+        problems.append(f"the notes are not titled for a supported 8.x version (found {notes_version!r})")
+    if str(policy.get("version")) != str(notes_version):
+        problems.append(f"policy record is for version {policy.get('version')!r}, not {notes_version}")
+    if notes_version in PATCH_OF and "scope unchanged" not in notes:
+        problems.append("a patch release must state that the scope is unchanged")
     if al.get("accepted") is not True:
         problems.append("allocation is not recorded as accepted (a PROPOSED allocation document is not a decision)")
     dec = decision if decision is not None else gate15_decision()

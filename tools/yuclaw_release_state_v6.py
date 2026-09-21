@@ -302,7 +302,7 @@ def gate15_result(version: str, scaffold_ok: bool, decision: dict | None) -> tup
                                 "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING")
 
 
-NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1)
+NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list)
 
 
 def notes_composer(version: str):
@@ -517,7 +517,7 @@ Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — wit
     patch_changes = None
     if a.patch:
         pc = _REPO / "docs" / "methodology" / f"release_notes_{VERSION}_changes.md"
-        if VERSION.startswith("7.") and pc.exists():
+        if (VERSION.startswith("7.") or VERSION == "8.0.1") and pc.exists():
             patch_changes = pc.read_text()                     # tracked, source-bound patch change list
         else:
             public = _patch_public(VERSION, tip, len(lines), g16, ev)

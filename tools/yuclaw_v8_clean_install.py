@@ -234,6 +234,26 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
     res["checks"]["installed_corpus_snapshot_is_the_commits"] = snap.get("is_the_commits_file") is True and snap.get("sha256") == art["source_documents"]["corpus_snapshot_sha256"]
     t["reason"] = t.get("reason", "")[:400]; res["readme_transcript"] = t
     res["checks"]["packaged_documents_are_the_commits"] = all(v_ is True for k_, v_ in art["source_documents"].items() if k_.startswith(("sdist_", "wheel_")))
+    # 8.0.1 C05/C10: the delegated entry and the installed selftest, from THIS installation (no PYTHONPATH, outside the checkout); --require-isolation: a missing backend FAILS here, never skips
+    exe = str(v / "bin" / "yuclaw"); wsdir = out / f"run-{what}" / "documented-route"
+    h = run([exe, "workbench", "--help"], cwd=cwd, env=env, check=False); flat = " ".join(h.stdout.split())
+    res["checks"]["yuclaw_workbench_help_names_the_four_modules"] = h.returncode == 0 and all(n in flat for n in ("usage: yuclaw workbench", "SHD Distillation Shield", "EVO Evolution Evidence Audit", "COM Research Commons Guard", "PRC Independent Practice", "127.0.0.1"))
+    g1, g2 = run([exe, "workbench", "guide"], cwd=cwd, env=env, check=False), run([py, "-m", "v8.workbench", "guide"], cwd=cwd, env=env, check=False)
+    res["checks"]["delegated_entry_equals_the_module_form"] = g1.returncode == 0 == g2.returncode and g1.stdout == g2.stdout and "yuclaw workbench" in g1.stdout
+    st = {}
+    for form, cmd in (("yuclaw workbench selftest", [exe, "workbench", "selftest", "--json", "--require-isolation"]), ("python -m v8.workbench selftest", [py, "-m", "v8.workbench", "selftest", "--json", "--require-isolation"])):
+        r = run(cmd, cwd=cwd, env=env, check=False, timeout=900)
+        try:
+            j = json.loads(r.stdout)
+        except ValueError:
+            j = {"result": "NO_JSON", "checks": [], "isolation": {}, "stderr_tail": r.stderr[-300:]}
+        st[form] = {"rc": r.returncode, "result": j.get("result"), "checks": len(j.get("checks", [])), "failed": [c["name"] for c in j.get("checks", []) if not c.get("ok")], "isolation": j.get("isolation")}
+    res["selftest"] = st
+    res["checks"]["installed_selftest_passes_in_both_entry_forms_with_isolation_required"] = all(x["rc"] == 0 and x["result"] == "PASS" and x["checks"] >= 15 and (x["isolation"] or {}).get("backend") for x in st.values())
+    r1 = run([exe, "workbench", "principals", "init", "--workspace", wsdir, "--id", "owner"], cwd=cwd, env=env, check=False); r2 = run([exe, "workbench", "modules", "--workspace", wsdir], cwd=cwd, env=env, check=False)
+    r3 = run([exe, "workbench", "status", "--workspace", wsdir], cwd=cwd, env=env, check=False)
+    res["checks"]["documented_route_commands_run"] = r1.returncode == 0 and r2.returncode == 0 and r3.returncode == 0 and wsdir.is_dir()
+    shutil.rmtree(wsdir, ignore_errors=True)                                                # a throwaway fictional workspace: its one-time credential is never kept
     journeys = {}
     modes = [("fixtures", [])] + ([("mchp", ["--mode", "mchp", "--sources", str(sources)])] if sources else [])
     for mode, extra in modes:
@@ -300,6 +320,8 @@ def main(argv=None) -> int:
         scores = ", ".join(f"{m}: {j.get('score')}" for m, j in v.get("journeys", {}).items())
         stop_note = (" STOP " + v["stop"][:200]) if v.get("stop") else ""
         print(f"  {what}: ok={v.get('ok')} journeys={{{scores}}}{stop_note}")
+        for form, x in (v.get("selftest") or {}).items():
+            print(f"    selftest [{form}]: rc={x['rc']} {x['result']} {x['checks']} checks, failed={x['failed']} isolation={(x['isolation'] or {}).get('backend')}")
         t = v.get("readme_transcript") or {}
         if t:
             snap = t.get("snapshot") or {}

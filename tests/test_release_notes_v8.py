@@ -80,7 +80,7 @@ class Dispatch(unittest.TestCase):
         self.assertIn("source → typed claim → comparison → calculation → history → adjudication → reproducible export", text.replace("1 Source", "source").replace("2 Typed claim", "typed claim").replace("3 Comparison", "comparison").replace("4 Calculation", "calculation").replace("5 History", "history").replace("6 Adjudication", "adjudication").replace("7 Reproducible export", "reproducible export"))
 
     def test_unknown_versions_have_no_composition_path(self):
-        for v in ("8.0.1", "8.1.0", "9.0.0", "6.0.1", "8.0.0rc1"):
+        for v in ("8.0.2", "8.1.0", "9.0.0", "6.0.1", "8.0.0rc1", "8.0.1rc1"):                     # 8.0.1 became a supported PATCH of 8.0.0 (owner order of 2026-09-21); nothing else did
             self.assertIsNone(gen.notes_composer(v), v)
             text, corr = gen.compose_public_notes(v, V6_STYLE.format(v=v), policy=synthetic_policy(), board=BOARD)
             self.assertEqual(text, V6_STYLE.format(v=v)); self.assertEqual(len(corr), 1); self.assertIn("no supported notes composition path", corr[0])
@@ -88,6 +88,34 @@ class Dispatch(unittest.TestCase):
                 n8.compose(V6_STYLE.format(v=v), version=v, policy=None, board=None, matrix=MATRIX)
         with self.assertRaises(ValueError):
             n8.compose(V6_STYLE.format(v="8.0.0"), version="8.0.0", policy=None, board=None, matrix=MATRIX, patch_changes="x")
+
+
+class Patch801(unittest.TestCase):
+    """8.0.1 = the 8.0.0 scope and capability account, unchanged, plus a TRACKED patch change list."""
+    CHANGES = "- Example repair: a synthetic change line for the composer test.\n- A second synthetic line."
+
+    def compose(self, policy, changes=CHANGES):
+        return n8.compose(V6_STYLE.format(v="8.0.1"), version="8.0.1", policy=policy, board=BOARD, matrix=MATRIX, patch_changes=changes)
+
+    def test_the_patch_needs_its_change_list_keeps_the_scope_and_says_so(self):
+        self.assertIs(gen.notes_composer("8.0.1"), n8)
+        for missing in (None, "", "  \n"):
+            with self.assertRaises(ValueError):
+                self.compose(synthetic_policy(version="8.0.1"), missing)
+        pol = synthetic_policy(version="8.0.1"); text = self.compose(pol)
+        self.assertIn("#### Changed in 8.0.1 — patch: defect repairs and clearer entry points (no methodology, statistic, threshold, registration or scope change)", text); self.assertIn(self.CHANGES, text)
+        self.assertIn("#### In the 8.0 line since 8.0.0 — the source-to-export commitment workbench (local, loopback only; scope unchanged)", text); self.assertNotIn("#### New in 8.0.1", text)
+        self.assertEqual(n8.check_correspondence(text, pol, MATRIX), [])                                  # the unchanged 8.0.0 capability account, limits and activations all still have to be there
+        for name, _ in notes_v7.ACTIVATIONS:
+            self.assertIn(f"- {name}: INACTIVE", text)
+        self.assertIn("human benefit", text.lower()); self.assertNotRegex(text, r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|satisfied)\b")
+
+    def test_a_policy_recorded_for_another_version_never_corresponds(self):
+        text = self.compose(synthetic_policy(version="8.0.1"))
+        probs = n8.check_correspondence(text, synthetic_policy(version="8.0.0"), MATRIX); self.assertTrue(any("policy record is for version '8.0.0', not 8.0.1" in p for p in probs), probs)   # the 8.0.0 acceptance is never reusable
+        probs = n8.check_correspondence(compose8(synthetic_policy()), synthetic_policy(version="8.0.1"), MATRIX); self.assertTrue(any("not 8.0.0" in p for p in probs), probs)
+        self.assertTrue(any("scope is unchanged" in p for p in n8.check_correspondence(text.replace("; scope unchanged)", ")"), synthetic_policy(version="8.0.1"), MATRIX)))
+        self.assertTrue(any("PROPOSED" in p or "not recorded as accepted" in p for p in n8.check_correspondence(text, synthetic_policy(version="8.0.1", accepted=False), MATRIX)))
 
 
 class PolicyInputs(unittest.TestCase):

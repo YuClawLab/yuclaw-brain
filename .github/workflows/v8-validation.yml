@@ -17,7 +17,9 @@ name: v8-prerelease-validation
 
 on:
   push:
-    branches: [codex/v8-integration]
+    # validation-only branches: the v8 integration branch, and the 8.0.1 patch branch (owner order of 2026-09-21). Nothing here
+    # publishes, deploys or dispatches anything; a run on these branches starts no other workflow.
+    branches: [codex/v8-integration, codex/v8.0.1-quality-fixes]
   pull_request:
     paths:
       - "v8/**"
@@ -148,12 +150,16 @@ jobs:
           echo "event=$GITHUB_EVENT_NAME github_sha=$GITHUB_SHA head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
       - name: Install pinned packaging and browser tools
         run: |
-          pip install build twine playwright        # versions come from the constraints file
+          pip install build twine playwright pytest # build/twine/playwright versions come from the constraints file; pytest drives the one browser test below
           python3 -m playwright install --with-deps chromium
       - name: Build once, check, install wheel and sdist outside the checkout, run the fixture journey
         run: |
           python3 tools/yuclaw_v8_clean_install.py --commit HEAD --out "$RUNNER_TEMP/v8-clean-install" \
                   --playwright-spec "playwright==1.62.0"
+      - name: Explorer filters and sorting from the keyboard, in a real browser (static semantics also run in the tests job)
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python3 -m pytest tests/test_explorer_accessibility.py -q -rs
       - name: Result summary
         if: always()
         run: |
@@ -165,7 +171,7 @@ jobs:
           r = json.loads(p.read_text()); b = r["build"]
           print(json.dumps({"result": r["result"], "commit": r["commit"], "tree": b["tree"], "build_tools": b["build_tools"], "twine_check_rc": r["twine_check"]["rc"],
                             "wheel_sha256": b["wheel"]["sha256"], "sdist_sha256": b["sdist"]["sha256"],
-                            "installs": {k: {"ok": v.get("ok"), "stop": v.get("stop"), "checks": v.get("checks"),
+                            "installs": {k: {"ok": v.get("ok"), "stop": v.get("stop"), "checks": v.get("checks"), "selftest": v.get("selftest"),
                                              "readme_transcript": v.get("readme_transcript"),      # mode, snapshot identity, each command's exit status, first differing line, bounded expected/actual
                                              "journeys": {m: {"score": j.get("score"), "rc": j.get("rc"), "ok": j.get("ok"), "isolation_backend": j.get("isolation_backend"), "failed_assertions": j.get("failed_assertions"), "stderr_tail": j.get("stderr_tail")} for m, j in (v.get("journeys") or {}).items()}}
                                          for k, v in r["installs"].items()}}, indent=1))
