@@ -75,6 +75,9 @@ DEFAULT_PATHS = [
     "signal_review.html",
     "explorer.html",
     "explorer_data.json",
+    # X01 (8.0.1): the ONE shared coverage artifact the homepage, Explorer and Why surfaces above are bound to —
+    # a live /coverage.json older than this build is a stale deploy like any other
+    "coverage.json",
     "sectors.html",
     "tour.html",
     # one generated Why page as the pattern representative (all 79 share

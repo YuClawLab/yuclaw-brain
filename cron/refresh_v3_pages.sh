@@ -211,7 +211,14 @@ print('[registry] chain OK')" || exit 19
 # Commit + push from the main checkout. We don't want to fail the cron chain
 # if there's literally nothing to commit (signals unchanged between runs).
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
+# X01 (8.0.1): docs/coverage.json is written by this run (v3.web.coverage_public, above) and every coverage surface
+# staged here is bound to its as_of + source sha256 — it is committed WITH them. It was missing from this list from
+# 2026-09-15 to 8.0.1: the gates above read the working tree and stayed green while every commit published surfaces
+# bound to an artifact the public /coverage.json did not carry. tests/test_refresh_staging_fresh_checkout.py runs the
+# block between the two markers verbatim in a disposable repository and checks a fresh clone of the resulting commit.
+# >>> refresh staging block >>>
 /usr/bin/git add docs/index.html docs/validation.html docs/validation_lab.html \
+                 docs/coverage.json \
                  docs/etf_evidence.html docs/xlk_evidence.html \
                  docs/canada_resources.html \
                  docs/replay/lab_replay_bundle.json \
@@ -230,6 +237,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 # Observation chain exists only once the first observation is admitted
 # (~2026-09-08); guarded add so an absent file never errors the chain.
 [ -f registry/anytime_observations.jsonl ] && /usr/bin/git add registry/anytime_observations.jsonl
+# <<< refresh staging block <<<
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
