@@ -82,6 +82,23 @@ def long_description_ok(metadata_text: str) -> dict:
             "ok": bool(ctype) and ctype.group(1).strip().startswith("text/markdown") and "<picture" not in body and 'src="brand/' not in body and "<!-- MISSION-VISION-CANONICAL:BEGIN -->" in body}
 
 
+def source_documents(src: Path, out: Path, dist: Path, art: dict) -> dict:
+    """V8-017: the README transcript is compared EXACTLY with a fresh transcript of each installed artifact (the comparison
+    the release publisher makes — a version-only check let a stale `replay-lab` section reach the release). The commit's
+    README.md, README_PYPI.md and replay bundle are kept beside the record for that, and the documents inside the
+    distributions must be the commit's bytes."""
+    keep = out / "source-files"; (keep / "docs" / "replay").mkdir(parents=True, exist_ok=True)
+    for rel in ("README.md", "README_PYPI.md", "docs/replay/lab_replay_bundle.json"):
+        shutil.copy2(src / rel, keep / rel)
+    version = art["version"]; pypi = (src / "README_PYPI.md").read_text(encoding="utf-8").strip()
+    with zipfile.ZipFile(dist / art["wheel"]["name"]) as z:
+        wheel_desc = z.read(f"yuclaw-{version}.dist-info/METADATA").decode("utf-8").split("\n\n", 1)[-1].strip()
+    with tarfile.open(dist / art["sdist"]["name"]) as t:
+        rd = {rel: t.extractfile(f"yuclaw-{version}/{rel}").read() for rel in ("README.md", "README_PYPI.md")}
+    return {"sdist_README_md_is_the_commits": rd["README.md"] == (src / "README.md").read_bytes(), "sdist_README_PYPI_md_is_the_commits": rd["README_PYPI.md"] == (src / "README_PYPI.md").read_bytes(),
+            "wheel_long_description_is_README_PYPI_md": wheel_desc == pypi, "readme_sha256": sha(src / "README.md"), "replay_bundle_sha256": sha(src / "docs" / "replay" / "lab_replay_bundle.json")}
+
+
 # ------------------------------------------------------------------ build
 def build(commit: str, out: Path) -> dict:
     src = out / "src"
@@ -116,6 +133,7 @@ def build(commit: str, out: Path) -> dict:
                  "fixtures": all(sha(f) == sha(src / "v8" / "workbench" / "resources" / "fixtures" / f.name) for f in (src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}
         art["source_resource_identity"] = ident
         art["source_hashes"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json"), "fixtures": {f.name: sha(f) for f in sorted((src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}}
+        art["source_documents"] = source_documents(src, out, dist, art)
         write_identity(dist, art, label="PRELIMINARY development build")
         return art
     finally:
@@ -171,7 +189,7 @@ def adopt(commit: str, artifacts_dir: Path, out: Path) -> dict:
         art["source_resource_identity"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json") == sha(src / "v8" / "workbench" / "resources" / "CommitmentClaim.v1.json"),
                                           "fixtures": all(sha(f) == sha(src / "v8" / "workbench" / "resources" / "fixtures" / f.name) for f in (src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}
         art["source_hashes"] = {"schema": sha(src / "schemas" / "CommitmentClaim.v1.json"), "fixtures": {f.name: sha(f) for f in sorted((src / "tests" / "fixtures" / "v8" / "commitments").glob("*.json"))}}
-
+        art["source_documents"] = source_documents(src, out, dist, art)
     finally:
         run(["git", "worktree", "remove", "--force", src], cwd=_REPO, check=False)
     write_identity(dist, art, label=f"ADOPTED (from {rec.get('label', 'unlabelled')}; bytes verified against the identity record)")
@@ -204,6 +222,12 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
                            "print(json.dumps({'schema': hashlib.sha256((r / 'CommitmentClaim.v1.json').read_bytes()).hexdigest(), 'fixtures': {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted((r / 'fixtures').glob('*.json'))}}))"], cwd=cwd, env=env)
     got = json.loads(ident.stdout); res["checks"]["installed_resources_equal_source_tree"] = got == art["source_hashes"]
     res["checks"]["cli_help_rc0"] = run([py, "-m", "v8.workbench", "--help"], cwd=cwd, env=env, check=False).returncode == 0
+    # the EXACT README transcript comparison of the release publisher, against THIS installed artifact and the commit's own bundle
+    sys.path.insert(0, str(Path(__file__).resolve().parent)) if str(Path(__file__).resolve().parent) not in sys.path else None
+    import cli_transcript
+    keep = out / "source-files"; ok_t, why_t = cli_transcript.compare((keep / "README.md").read_text(encoding="utf-8"), str(v / "bin" / "yuclaw"), art["wheel"]["name"], keep)
+    res["checks"]["readme_transcript_exact"] = ok_t; res["readme_transcript"] = why_t[:400]
+    res["checks"]["packaged_documents_are_the_commits"] = all(v_ is True for k_, v_ in art["source_documents"].items() if k_.startswith(("sdist_", "wheel_")))
     journeys = {}
     modes = [("fixtures", [])] + ([("mchp", ["--mode", "mchp", "--sources", str(sources)])] if sources else [])
     for mode, extra in modes:
