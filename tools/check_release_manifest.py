@@ -78,6 +78,19 @@ def _get(url: str, tries: int = 3) -> tuple[int, bytes, str]:
 
 
 # ------------------------------------------------------------------ G2
+_IDENTITY = re.compile(r"<title>[^<]*?\bv(\d+\.\d+\.\d+)\b[^<]*</title>|\bYUCLAW v(\d+\.\d+\.\d+)\b")
+
+
+def stale_identity_strings(pages, version: str) -> list[str]:
+    """'<page>: <the string>' for every <title> version and every "YUCLAW vX.Y.Z" on the given current pages that is not `version`."""
+    out = []
+    for page in pages:
+        for m in _IDENTITY.finditer(page.read_text(errors="replace")):
+            if (m.group(1) or m.group(2)) != version:
+                out.append(f"{page.name}: {m.group(0)[:70]}")
+    return out
+
+
 def g2(problems: list[str], dist: str | None, pypi: bool) -> dict:
     seen = {"manifest": VERSION, "pyproject": _pyproject_version()}
     caps = json.loads((DOCS / "capabilities.json").read_text())
@@ -105,8 +118,16 @@ def g2(problems: list[str], dist: str | None, pypi: bool) -> dict:
     seen["site_badge_pages"] = len(pages)
     if stale:
         problems.append(f"G2: {len(stale)} shared-header pages without badge v{VERSION}: {stale[:5]}")
+    # 8.0.1 C06: the identity strings of the CURRENT site — every shared-header page's <title> and every "YUCLAW vX.Y.Z"
+    # on it. 8.0.0 shipped a homepage whose badge said v8.0.0 while its <title> and footer still said v7.0.1: the staged
+    # pages had been re-badged, and nothing looked at titles. Archived guides and named earlier releases are not
+    # shared-header pages and are never touched by this rule.
+    wrong = stale_identity_strings(pages, VERSION)
+    seen["site_title_pages"] = len(pages)
+    if wrong:
+        problems.append(f"G2: {len(wrong)} current-page title/identity string(s) not at v{VERSION}: {wrong[:5]}")
     for k, v in seen.items():
-        if k in ("site_badge_pages",):
+        if k in ("site_badge_pages", "site_title_pages"):
             continue
         if v != VERSION:
             problems.append(f"G2: {k} version {v!r} != release_manifest.version {VERSION!r}")

@@ -11,6 +11,15 @@ zero forms. The filter <input> and dropdown <select> elements carry no
 name attribute — the documented transmit-nothing exemption in
 tools/check_no_forms.py (F1 bans <form> outright, so nothing can
 submit; nothing is transmitted anywhere).
+
+Accessibility (8.0.1 C09): every filter control has a visible <label>;
+the sortable headings are real <button>s inside <th scope="col"> (so they
+take keyboard focus and Enter/Space), `aria-sort` follows the active
+column, ties break by ticker so the order is predictable, the result
+count is a polite live region, zero results are said in the table, and a
+Reset button restores the defaults. Focus stays on the control that was
+used: only the <tbody> is re-rendered. Automated checks are not a WCAG or
+screen-reader certification.
 """
 from __future__ import annotations
 
@@ -134,8 +143,13 @@ def render(data: dict) -> str:
  input,select{{background:#151A23;border:1px solid #1E232D;border-radius:8px;color:#E2E8F0;padding:8px 12px;font-size:13px}}
  table{{width:100%;border-collapse:collapse;background:#151A23;border:1px solid #1E232D;border-radius:12px;overflow:hidden}}
  {TABLE_WRAP_CSS}
- th{{padding:10px 12px;color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;text-align:left;cursor:pointer;user-select:none;background:#10141C}}
- th:hover{{color:#00E676}}
+ th{{padding:0;color:#718096;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;text-align:left;background:#10141C}}
+ th button.sort{{all:unset;box-sizing:border-box;display:block;width:100%;padding:10px 12px;cursor:pointer;color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit}}
+ th button.sort:hover,th[aria-sort="ascending"] button.sort,th[aria-sort="descending"] button.sort{{color:#00E676}}
+ th button.sort:focus-visible,.bar button:focus-visible,.bar input:focus-visible,.bar select:focus-visible{{outline:2px solid #00E676;outline-offset:-2px}}
+ .bar label.flt{{display:flex;flex-direction:column;gap:4px;font-size:11px;color:#A0AEC0;text-transform:uppercase;letter-spacing:0.5px}}
+ .bar button#reset{{align-self:flex-end;background:#151A23;border:1px solid #1E232D;border-radius:8px;color:#E2E8F0;padding:8px 12px;font-size:13px;cursor:pointer}}
+ td.none{{color:#A0AEC0;text-align:center;padding:18px}}
  td{{padding:9px 12px;border-top:1px solid #1E232D;font-size:13px}}
  td a{{color:#FFF;text-decoration:none;font-weight:600}}
  td a:hover{{color:#00E676}}
@@ -152,26 +166,28 @@ Signal labels are research classifications, not buy/sell recommendations. Eviden
 not prediction. Nothing on this page transmits anything — filtering and sorting run entirely in your browser
 over data embedded in the page.</div>
 
-<div class="bar">
-  <input id="ftk" placeholder="filter ticker…" oninput="refresh()" style="width:160px">
-  <select id="flb" onchange="refresh()"><option value="">all labels</option>{opt(labels)}</select>
-  <select id="fgr" onchange="refresh()"><option value="">all evidence grades</option>{opt(grades)}</select>
-  <select id="fsc" onchange="refresh()"><option value="">all sectors</option>{opt(sectors)}</select>
+<div class="bar" role="group" aria-label="Filter the universe table">
+  <label class="flt" for="ftk">Ticker <input id="ftk" placeholder="filter ticker…" autocomplete="off" style="width:160px"></label>
+  <label class="flt" for="flb">Signal label <select id="flb"><option value="">all labels</option>{opt(labels)}</select></label>
+  <label class="flt" for="fgr">Evidence grade <select id="fgr"><option value="">all evidence grades</option>{opt(grades)}</select></label>
+  <label class="flt" for="fsc">Sector <select id="fsc"><option value="">all sectors</option>{opt(sectors)}</select></label>
+  <button type="button" id="reset">Reset filters</button>
 </div>
 
 <div class="capline">research classifications — not recommendations · evidence grade = display bucket of the
-coverage score (coverage, not prediction) · <span id="count"></span></div>
+coverage score (coverage, not prediction) · <span id="count" role="status" aria-live="polite"></span></div>
 <div class="table-wrap" role="region" aria-label="Universe table" tabindex="0">
 <table {cov_attrs}>
+  <caption class="muted" style="caption-side:bottom;text-align:left;padding:8px 2px">Column headings are buttons: activate one to sort by it, again to reverse the order.</caption>
   <thead><tr>
-    <th onclick="sortBy('ticker')">Ticker</th>
-    <th onclick="sortBy('label')">Label</th>
-    <th onclick="sortBy('score')">Score ▾</th>
-    <th onclick="sortBy('ecs')">Evidence coverage</th>
-    <th onclick="sortBy('grade')">Grade</th>
-    <th onclick="sortBy('sector')">Sector</th>
-    <th onclick="sortBy('events_30d')">Events 30d</th>
-    <th onclick="sortBy('evidence_age_days')">Evidence age (d)</th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="ticker">Ticker <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="label">Label <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="descending"><button type="button" class="sort" data-key="score">Score <span class="ind" aria-hidden="true">▾</span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="ecs">Evidence coverage <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="grade">Grade <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="sector">Sector <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="events_30d">Events 30d <span class="ind" aria-hidden="true"></span></button></th>
+    <th scope="col" aria-sort="none"><button type="button" class="sort" data-key="evidence_age_days">Evidence age (d) <span class="ind" aria-hidden="true"></span></button></th>
   </tr></thead>
   <tbody id="tb"></tbody>
 </table>
@@ -186,7 +202,17 @@ const COLORS = {{"STRONG_BULLISH":"#00E676","BULLISH":"#00E676","NEUTRAL":"#A0AE
 let sortKey = "score", sortDir = -1;
 function sortBy(k) {{
   if (sortKey === k) sortDir = -sortDir; else {{ sortKey = k; sortDir = -1; }}
+  document.querySelectorAll("th button.sort").forEach(b => {{                       // aria-sort and the visible arrow follow the active column; the button keeps focus
+    const on = b.dataset.key === sortKey;
+    b.parentElement.setAttribute("aria-sort", on ? (sortDir > 0 ? "ascending" : "descending") : "none");
+    b.querySelector(".ind").textContent = on ? (sortDir > 0 ? "▴" : "▾") : "";
+  }});
   refresh();
+}}
+function resetFilters() {{
+  ["ftk", "flb", "fgr", "fsc"].forEach(id => {{ document.getElementById(id).value = ""; }});
+  sortKey = "ticker"; sortDir = 1; sortBy("score");                                  // back to the default: score, descending
+  document.getElementById("ftk").focus();
 }}
 function refresh() {{
   const tk = document.getElementById("ftk").value.toUpperCase();
@@ -198,12 +224,13 @@ function refresh() {{
     (!gr || r.grade === gr) && (!sc || r.sector === sc));
   rows.sort((a, b) => {{
     let x = a[sortKey], y = b[sortKey];
+    if (x == null && y == null) return a.ticker.localeCompare(b.ticker);
     if (x == null) return 1; if (y == null) return -1;
-    if (typeof x === "string") return sortDir * x.localeCompare(y);
-    return sortDir * (x - y);
+    const d = (typeof x === "string") ? sortDir * x.localeCompare(y) : sortDir * (x - y);
+    return d !== 0 ? d : a.ticker.localeCompare(b.ticker);                           // ties break by ticker: a predictable order
   }});
-  document.getElementById("count").textContent = rows.length + " of " + ROWS.length + " names";
-  document.getElementById("tb").innerHTML = rows.map(r => {{
+  document.getElementById("count").textContent = rows.length + " of " + ROWS.length + " names" + (rows.length ? "" : " — no name matches these filters");
+  document.getElementById("tb").innerHTML = !rows.length ? '<tr><td class="none" colspan="8">No name matches these filters. Change a filter or use “Reset filters”.</td></tr>' : rows.map(r => {{
     const c = COLORS[r.label] || "#A0AEC0";
     return `<tr><td><a href="${{r.why}}">${{r.ticker}}</a></td>` +
       `<td><span class="lbl" style="background:${{c}}26;color:${{c}};border:1px solid ${{c}}80">${{r.label}}</span></td>` +
@@ -212,6 +239,10 @@ function refresh() {{
       `<td class="mono">${{r.events_30d}}</td><td class="mono">${{r.evidence_age_days ?? "—"}}</td></tr>`;
   }}).join("");
 }}
+document.getElementById("ftk").addEventListener("input", refresh);
+["flb", "fgr", "fsc"].forEach(id => document.getElementById(id).addEventListener("change", refresh));
+document.querySelectorAll("th button.sort").forEach(b => b.addEventListener("click", () => sortBy(b.dataset.key)));
+document.getElementById("reset").addEventListener("click", resetFilters);
 const params = new URLSearchParams(location.search);
 if (params.get("sector")) document.getElementById("fsc").value = params.get("sector");
 refresh();
