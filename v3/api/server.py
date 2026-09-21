@@ -191,8 +191,12 @@ def v1_cascade(
 ) -> dict[str, Any]:
     """Supply-chain cascade tree that propagated into `ticker`. `cascade: null` if none.
     Edge weights are the public supply_chain.py graph. Research only — not advice."""
-    from v4.api.cascade_builder import build_cascade
-    node = build_cascade(ticker, as_of=_parse_as_of(as_of), depth=depth)
+    from v3.evidence import BackendUnavailable
+    from v4.api.cascade_builder import build_cascade_with_source
+    try:
+        node, _source = build_cascade_with_source(ticker, as_of=_parse_as_of(as_of), depth=depth)
+    except BackendUnavailable:                   # 8.0.1: "could not ask" is never answered as `cascade: null`
+        raise HTTPException(status_code=503, detail="research backend unavailable: the cascade was not queried")
     return {"ticker": ticker.upper(),
             "cascade": (node.model_dump(mode="json") if node else None),
             "compliance": dict(COMPLIANCE)}

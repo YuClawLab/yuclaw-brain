@@ -357,7 +357,8 @@ def main(argv=None):
     import argparse
     p = argparse.ArgumentParser(prog="yuclaw replay-lab",
                                 description="Reproduce the Validation Lab's statistics and "
-                                            "ledger roots from the public replay bundle.")
+                                            "ledger roots from the public replay bundle.",
+                                epilog="Three commands, three contracts: `yuclaw why TICKER --as-of DATE` shows the STORED signal at that date (offline only for the bundled demo signal, AMD @ 2026-05-20; otherwise it reads the research backend); `yuclaw replay TICKER --date DATE` RECOMPUTES the signal from the database as of that date; `yuclaw replay-lab` reproduces the published Validation Lab statistics from the PUBLIC bundle and needs no database.")
     p.add_argument("bundle", nargs="?", help="path to lab_replay_bundle.json "
                                              "(default: fetch the published bundle)")
     p.add_argument("--check", action="store_true",

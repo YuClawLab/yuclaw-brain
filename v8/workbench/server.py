@@ -354,10 +354,10 @@ class Handler(BaseHTTPRequestHandler):
                 return None
             if modweb.owns(path):
                 return modweb.post(self, path)
+            if path == "/verify":
+                return self.post_verify()
         except StoreIntegrityError as exc:
-            return self._send(200, self.page_integrity(exc))
-        if path == "/verify":
-            return self.post_verify()
+            return self._store_refusal(exc, upload=path == "/verify")
         form = self._form()
         if form is None:
             return self._text(413 if self.headers.get("Content-Length", "0").isdigit() and int(self.headers.get("Content-Length", "0")) > FORM_LIMIT else 400, "refused: form body missing, too large or not urlencoded")
@@ -393,7 +393,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self._redirect("/?recovered=" + ("1" if r["recovered"] else "0"))
             return self._text(404, "not found")
         except StoreIntegrityError as exc:
-            return self._send(200, self.page_integrity(exc))
+            return self._store_refusal(exc)
         except ContractError as exc:
             return self._send(422, self._rerender(path, form, str(exc)))
 
@@ -468,7 +468,25 @@ class Handler(BaseHTTPRequestHandler):
         items = "".join(f"<li>{esc(r)}</li>" for r in reasons)
         return self.page("Blocked — nothing was written", f'<div class="err"><p><b>{esc(msg.split(":", 1)[0] if ";" in msg else "Refused")}</b></p><ul>{items}</ul></div><p>Next: <a href="/">go back to the workspace</a> and repeat the action with a valid choice. Pages are not cached, so the browser Back button shows a fresh form.</p>')
 
+    def _store_refusal(self, exc: StoreIntegrityError, upload: bool = False):
+        """An operation conflict is an ordinary refusal (409): the journal is intact and nothing was written. Every other
+        store error keeps the fail-closed integrity page."""
+        if exc.code == "E_OP_CONFLICT":
+            return self._send(409, self.page_conflict(exc, upload))
+        return self._send(200, self.page_integrity(exc))
+
+    def page_conflict(self, exc: StoreIntegrityError, upload: bool = False) -> str:
+        again = " A browser does not keep a chosen file: choose the file again on the fresh page." if upload else ""
+        body = (f'<div class="err"><p><b>{esc(exc.code)}</b>: {esc(str(exc))[:600]}</p></div>'
+                "<p>This submission carried an operation identifier that already belongs to a recorded operation with different content. "
+                "<b>Nothing was written</b>, the recorded operation is unchanged and the journal passes its checks — this is not a damaged workspace and no recovery is needed.</p>"
+                "<p>Repeating the <i>same</i> submission is safe: it returns the recorded result without a second event. To record something different, open the form again "
+                f"(every freshly loaded form carries a fresh operation identifier) and submit it deliberately.{again}</p>")
+        return self.page("Operation already recorded", body)
+
     def page_integrity(self, exc: StoreIntegrityError) -> str:
+        if exc.code == "E_OP_CONFLICT":                       # never describe an ordinary conflict as a broken chain
+            return self.page_conflict(exc)
         body = f'<div class="err"><p><b>{esc(exc.code)}</b>: {esc(str(exc))}</p></div>'
         if exc.code == "E_TORN_TAIL":
             body += f'<form class="card" method="post" action="/recover">{self._csrf_field()}<p>An interrupted append left bytes without a terminating newline. Recovery preserves those bytes in a side file, truncates only them, and records a RECOVERY event. No durable event is changed.</p><button type="submit">Run recovery</button></form>'

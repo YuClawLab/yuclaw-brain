@@ -37,11 +37,20 @@ POINT_IN_TIME_NOTE = (
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw validation",
-                                description="In-Sample Event Validation + Forward Tracking Ledger")
+                                description="In-Sample Event Validation + Forward Tracking Ledger — reads the research "
+                                            "backend (a database): without one it exits 3 (backend unavailable). "
+                                            "`yuclaw replay-lab` reproduces the published Lab from the public bundle.")
     p.add_argument("--json", action="store_true", help="machine-readable output")
     args = p.parse_args(argv)
 
-    panels = build_panels()
+    from v3.cli import _backend
+    try:
+        panels = build_panels()
+    except Exception as exc:                     # noqa: BLE001 — only the expected connection failure is handled
+        if _backend.is_backend_unavailable(exc):
+            return _backend.report("validation", exc, as_json=args.json,
+                                   offline="`yuclaw replay-lab` reproduces the published Validation Lab from the public bundle (no database)")
+        raise
     if args.json:
         out = {
             "panels": panels,

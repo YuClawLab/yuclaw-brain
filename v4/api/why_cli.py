@@ -13,6 +13,7 @@ from typing import Optional
 
 import click
 
+from v3.evidence import BackendUnavailable
 from v4.api.builder import build_response
 from v4.memo.generator import _qual, _signal_human  # reuse the same language
 
@@ -66,9 +67,10 @@ def render(resp, include_score: bool) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(prog="yuclaw why", description="v4 structured research signal.")
+    p = argparse.ArgumentParser(prog="yuclaw why", description="v4 structured research signal.",
+                                epilog="Three commands, three contracts: `yuclaw why TICKER --as-of DATE` shows the STORED signal at that date (offline only for the bundled demo signal, AMD @ 2026-05-20; otherwise it reads the research backend); `yuclaw replay TICKER --date DATE` RECOMPUTES the signal from the database as of that date; `yuclaw replay-lab` reproduces the published Validation Lab statistics from the PUBLIC bundle and needs no database. Exit codes: 0 ok · 2 usage · 3 backend unavailable.")
     p.add_argument("ticker")
-    p.add_argument("--as-of", help="YYYY-MM-DD (or ISO-8601) point-in-time replay")
+    p.add_argument("--as-of", help="YYYY-MM-DD (or ISO-8601): the stored signal as of that date (not a recomputation — see `yuclaw replay`)")
     p.add_argument("--include-score", action="store_true",
                    help="show the composite score (default off — research, not a number)")
     p.add_argument("--n-evidence", type=int, default=10)
@@ -78,6 +80,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         resp = build_response(a.ticker.upper(), as_of=_parse_as_of(a.as_of),
                               include_score=a.include_score, n_evidence=a.n_evidence)
+    except BackendUnavailable as e:              # 8.0.1: backend unavailable is exit 3 (environment unsupported), like events / lens / memo
+        print(str(e), file=sys.stderr)
+        return 3
     except RuntimeError as e:
         print(str(e), file=sys.stderr)
         return 1

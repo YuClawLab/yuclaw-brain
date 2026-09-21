@@ -97,6 +97,9 @@ def _to_evidence(row: dict) -> Evidence:
     )
 
 
+SOURCE_NODE, SOURCE_FIXTURE, SOURCE_CALLER = "research_node", "bundled_demo_fixture", "caller_connection"
+
+
 def build_cascade(
     ticker: str,
     as_of: Optional[datetime] = None,
@@ -105,20 +108,42 @@ def build_cascade(
     dsn: str = DSN,
     conn: Optional[Any] = None,
 ) -> Optional[CascadeNode]:
-    """Reconstruct the cascade(s) that reached `ticker`. None if there are none."""
+    """Reconstruct the cascade(s) that reached `ticker`. None if there are none — AND, for callers that treat the
+    cascade as an optional extra (the research response, the guided demo), None when no backend could be asked.
+    A caller that must tell those apart uses build_cascade_with_source()."""
+    from v3.evidence import BackendUnavailable
+    try:
+        return build_cascade_with_source(ticker, as_of, depth=depth, dsn=dsn, conn=conn)[0]
+    except BackendUnavailable:
+        return None  # cascade is optional here — no backend, no fixture → no tree
+
+
+def build_cascade_with_source(
+    ticker: str,
+    as_of: Optional[datetime] = None,
+    *,
+    depth: int = MAX_DEPTH,
+    dsn: str = DSN,
+    conn: Optional[Any] = None,
+) -> tuple[Optional[CascadeNode], str]:
+    """(node, source). `node` is None ONLY when the source was asked and had no qualifying event. `source` is
+    "research_node", "bundled_demo_fixture" (the one offline demo signal) or "caller_connection". When no backend can
+    be reached and the request is not the bundled fixture, raises BackendUnavailable — never an empty answer."""
     ticker = ticker.upper()
     depth = max(1, min(depth, MAX_DEPTH))
     as_of = as_of or datetime.now(timezone.utc)
 
     own = conn is None
+    source = SOURCE_CALLER
     if own:
         try:
-            conn = psycopg2.connect(dsn)
-        except psycopg2.OperationalError:
+            conn = psycopg2.connect(dsn); source = SOURCE_NODE
+        except psycopg2.OperationalError as exc:
+            from v3.evidence import BackendUnavailable
             from v4.demo.fixture_loader import fixture_conn_or_none
-            conn = fixture_conn_or_none(ticker, as_of)
+            conn = fixture_conn_or_none(ticker, as_of); source = SOURCE_FIXTURE
             if conn is None:
-                return None  # cascade is optional — no backend, no fixture → no tree
+                raise BackendUnavailable(str(exc)) from None
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             # The ticker's cascade-child events (leaves on the path into `ticker`).
@@ -130,7 +155,7 @@ def build_cascade(
             )
             leaves = [dict(r) for r in cur.fetchall()]
             if not leaves:
-                return None
+                return None, source
 
             edges: dict[tuple[str, str], CascadeEdge] = {}
             warnings: list[str] = []
@@ -168,7 +193,7 @@ def build_cascade(
                     child = parent
 
             if not roots:
-                return None
+                return None, source
             # Primary root = the one carrying the most total contribution into the tree.
             primary = max(roots, key=lambda rid: sum(
                 e.contribution for e in edges.values() if e.parent_event_id == rid))
@@ -182,10 +207,10 @@ def build_cascade(
                 depth=0,
                 edges=tree_edges,
                 warnings=sorted(set(warnings)),
-            )
+            ), source
     finally:
         if own:
             conn.close()
 
 
-__all__ = ["build_cascade", "MAX_DEPTH"]
+__all__ = ["build_cascade", "build_cascade_with_source", "MAX_DEPTH"]

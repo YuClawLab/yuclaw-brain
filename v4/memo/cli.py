@@ -57,9 +57,13 @@ def _main(argv: list[str] | None = None) -> int:
     if not a.ticker:
         p.error("provide a positional TICKER (legacy signal memo) or --ticker (evidence memo)")
 
+    from v3.evidence import BackendUnavailable
     try:
         m = generate_memo(a.ticker.upper(), as_of=_parse_as_of(a.as_of),
                           include_score=a.include_score, n_evidence=a.n_evidence)
+    except BackendUnavailable as e:              # 8.0.1: the documented convention — backend unavailable is exit 3, not "ran, negative result"
+        print(str(e), file=sys.stderr)
+        return 3
     except RuntimeError as e:
         print(str(e), file=sys.stderr)
         return 1

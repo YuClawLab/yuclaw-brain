@@ -75,7 +75,14 @@ def _replay_header(ticker: str, as_of: datetime, meta: dict[str, Any]) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="yuclaw replay",
-                                description="Recompute a signal as of a past date")
+                                description="Recompute a signal as of a past date — reads the research backend "
+                                            "(a database): without one it exits 3 (backend unavailable).",
+                                epilog="Three commands, three contracts: `yuclaw why TICKER --as-of DATE` shows the "
+                                       "STORED signal at that date (offline only for the bundled demo signal); "
+                                       "`yuclaw replay TICKER --date DATE` RECOMPUTES it from the database as of that "
+                                       "date; `yuclaw replay-lab` reproduces the published Validation Lab statistics "
+                                       "from the PUBLIC bundle and needs no database. Exit codes: 0 ok · 2 usage · "
+                                       "3 backend unavailable.")
     p.add_argument("ticker", help="ticker (e.g. NVDA, AMD)")
     p.add_argument("--date", required=True,
                    help="point-in-time date YYYY-MM-DD (interpreted as 23:59:59 UTC)")
@@ -89,7 +96,12 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     as_of = d.replace(hour=23, minute=59, second=59, tzinfo=timezone.utc)
 
-    result = replay(args.ticker.upper(), as_of)
+    from v3.cli import _backend
+    try:
+        result = replay(args.ticker.upper(), as_of)
+    except psycopg2.OperationalError as exc:       # the expected failure only; anything else is a defect and propagates
+        return _backend.report("replay", exc, as_json=args.json,
+                               offline="`yuclaw why AMD --as-of 2026-05-20` (the cached demo signal) or `yuclaw replay-lab` (public bundle; no database)")
 
     if args.json:
         print(json.dumps(result, indent=2, default=str))
@@ -99,7 +111,10 @@ def main(argv: list[str] | None = None) -> int:
 
     snap_row = _result_to_snapshot_row(result)
     event_ids = _evidence_event_ids(result)
-    events = _fetch_top_events(args.ticker.upper(), event_ids, as_of)
+    try:
+        events = _fetch_top_events(args.ticker.upper(), event_ids, as_of)
+    except psycopg2.OperationalError as exc:
+        return _backend.report("replay", exc, offline="`yuclaw replay-lab` (public bundle; no database)")
 
     print(render_text(snap_row, events))
     return 0
