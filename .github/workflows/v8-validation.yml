@@ -114,11 +114,12 @@ jobs:
           echo "event=$GITHUB_EVENT_NAME github_sha=$GITHUB_SHA head=$(git rev-parse HEAD) tree=$(git rev-parse 'HEAD^{tree}')"
           python3 --version
       - name: Install deps
-        run: pip install pytest "cryptography>=41.0"
+        run: pip install pytest "cryptography>=41.0" psycopg2-binary   # psycopg2: the disposable test node of the snapshot-mode tests (a usable node must be present for that proof)
       - name: Workbench and module tests on Python 3.10
         env:
           PYTHONPATH: ${{ github.workspace }}
-        run: python3 -m pytest tests/test_v8_*.py -q -rs
+        # the transcript regressions run here too: check-claim's explicit snapshot selection is packaged code under requires-python >=3.10
+        run: python3 -m pytest tests/test_v8_*.py tests/test_cli_transcript_exact.py -q -rs
 
   package:
     # One build of the pair from a clean detached worktree at the commit under test, member and long-description
@@ -129,6 +130,10 @@ jobs:
     # the same installed artifact: SHD refusals and admission inside the restricted worker, COM across a restart, PRC
     # with its leak attempts, EVO on real file changes, and packet verification in a fresh workspace (6/6 required). The pair is a throwaway development
     # build: it is not uploaded, not kept as an artifact and is never a release candidate.
+    # README transcript: compared byte for byte with a fresh transcript of each installed artifact. Every transcript
+    # command runs with YUCLAW_CORPUS=snapshot (set by tools/cli_transcript.py itself — the same function generates the
+    # README block and is called by the release publisher), so check-claim answers from the snapshot bundled in the
+    # artifact on every host; the checker also identifies that snapshot by sha256 as the commit's file.
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -161,6 +166,7 @@ jobs:
           print(json.dumps({"result": r["result"], "commit": r["commit"], "tree": b["tree"], "build_tools": b["build_tools"], "twine_check_rc": r["twine_check"]["rc"],
                             "wheel_sha256": b["wheel"]["sha256"], "sdist_sha256": b["sdist"]["sha256"],
                             "installs": {k: {"ok": v.get("ok"), "stop": v.get("stop"), "checks": v.get("checks"),
+                                             "readme_transcript": v.get("readme_transcript"),      # mode, snapshot identity, each command's exit status, first differing line, bounded expected/actual
                                              "journeys": {m: {"score": j.get("score"), "rc": j.get("rc"), "ok": j.get("ok"), "isolation_backend": j.get("isolation_backend"), "failed_assertions": j.get("failed_assertions"), "stderr_tail": j.get("stderr_tail")} for m, j in (v.get("journeys") or {}).items()}}
                                          for k, v in r["installs"].items()}}, indent=1))
           EOF

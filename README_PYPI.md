@@ -86,7 +86,7 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript produced from the release-candidate wheel `yuclaw-8.0.0-py3-none-any.whl` (yuclaw 8.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact.
+Transcript produced from the release-candidate wheel `yuclaw-8.0.0-py3-none-any.whl` (yuclaw 8.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 
 ```text
 $ yuclaw --version
@@ -124,7 +124,11 @@ $ yuclaw check-claim --text "NVDA reported an insider sale in May 2026"
  },
  "misses": [],
  "matched_evidence": "<5 object(s)>",
- "...": "<9 fields total; not_advice line present: True>"
+ "corpus": {
+  "mode": "offline_snapshot",
+  "snapshot_generated": "2026-08-06T01:06:08.732897+00:00"
+ },
+ "...": "<10 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```
@@ -140,7 +144,11 @@ $ yuclaw check-claim --ticker NVDA --accession 0001045810-26-000019
  },
  "misses": [],
  "matched_evidence": "<1 object(s)>",
- "...": "<9 fields total; not_advice line present: True>"
+ "corpus": {
+  "mode": "offline_snapshot",
+  "snapshot_generated": "2026-08-06T01:06:08.732897+00:00"
+ },
+ "...": "<10 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```
@@ -156,7 +164,11 @@ $ yuclaw check-claim --accession 0001045810-26-000019
  },
  "misses": [],
  "matched_evidence": "<1 object(s)>",
- "...": "<9 fields total; not_advice line present: True>"
+ "corpus": {
+  "mode": "offline_snapshot",
+  "snapshot_generated": "2026-08-06T01:06:08.732897+00:00"
+ },
+ "...": "<10 fields total; not_advice line present: True>"
 }
 [exit 0]
 ```

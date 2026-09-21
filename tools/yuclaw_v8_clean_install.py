@@ -86,9 +86,10 @@ def source_documents(src: Path, out: Path, dist: Path, art: dict) -> dict:
     """V8-017: the README transcript is compared EXACTLY with a fresh transcript of each installed artifact (the comparison
     the release publisher makes — a version-only check let a stale `replay-lab` section reach the release). The commit's
     README.md, README_PYPI.md and replay bundle are kept beside the record for that, and the documents inside the
-    distributions must be the commit's bytes."""
-    keep = out / "source-files"; (keep / "docs" / "replay").mkdir(parents=True, exist_ok=True)
-    for rel in ("README.md", "README_PYPI.md", "docs/replay/lab_replay_bundle.json"):
+    distributions must be the commit's bytes. The transcript runs with YUCLAW_CORPUS=snapshot (tools/cli_transcript.py): the
+    commit's corpus snapshot is kept too, so the snapshot inside each INSTALLED artifact can be identified as the commit's."""
+    keep = out / "source-files"; (keep / "docs" / "replay").mkdir(parents=True, exist_ok=True); (keep / "v3" / "evidence").mkdir(parents=True, exist_ok=True)
+    for rel in ("README.md", "README_PYPI.md", "docs/replay/lab_replay_bundle.json", "v3/evidence/corpus_snapshot.json.gz"):
         shutil.copy2(src / rel, keep / rel)
     version = art["version"]; pypi = (src / "README_PYPI.md").read_text(encoding="utf-8").strip()
     with zipfile.ZipFile(dist / art["wheel"]["name"]) as z:
@@ -96,7 +97,8 @@ def source_documents(src: Path, out: Path, dist: Path, art: dict) -> dict:
     with tarfile.open(dist / art["sdist"]["name"]) as t:
         rd = {rel: t.extractfile(f"yuclaw-{version}/{rel}").read() for rel in ("README.md", "README_PYPI.md")}
     return {"sdist_README_md_is_the_commits": rd["README.md"] == (src / "README.md").read_bytes(), "sdist_README_PYPI_md_is_the_commits": rd["README_PYPI.md"] == (src / "README_PYPI.md").read_bytes(),
-            "wheel_long_description_is_README_PYPI_md": wheel_desc == pypi, "readme_sha256": sha(src / "README.md"), "replay_bundle_sha256": sha(src / "docs" / "replay" / "lab_replay_bundle.json")}
+            "wheel_long_description_is_README_PYPI_md": wheel_desc == pypi, "readme_sha256": sha(src / "README.md"), "replay_bundle_sha256": sha(src / "docs" / "replay" / "lab_replay_bundle.json"),
+            "corpus_snapshot_sha256": sha(src / "v3" / "evidence" / "corpus_snapshot.json.gz")}
 
 
 # ------------------------------------------------------------------ build
@@ -225,8 +227,12 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
     # the EXACT README transcript comparison of the release publisher, against THIS installed artifact and the commit's own bundle
     sys.path.insert(0, str(Path(__file__).resolve().parent)) if str(Path(__file__).resolve().parent) not in sys.path else None
     import cli_transcript
-    keep = out / "source-files"; ok_t, why_t = cli_transcript.compare((keep / "README.md").read_text(encoding="utf-8"), str(v / "bin" / "yuclaw"), art["wheel"]["name"], keep)
-    res["checks"]["readme_transcript_exact"] = ok_t; res["readme_transcript"] = why_t[:400]
+    keep = out / "source-files"; t = cli_transcript.examine((keep / "README.md").read_text(encoding="utf-8"), str(v / "bin" / "yuclaw"), art["wheel"]["name"], keep, python=py)
+    snap = t.get("snapshot") or {}
+    res["checks"]["readme_transcript_exact"] = t["byte_exact"] is True                                   # byte for byte; nothing ignored or normalized
+    res["checks"]["transcript_answers_come_from_the_bundled_snapshot"] = t.get("answers_from_bundled_snapshot") is True and snap.get("passports_state_this_snapshot") is True
+    res["checks"]["installed_corpus_snapshot_is_the_commits"] = snap.get("is_the_commits_file") is True and snap.get("sha256") == art["source_documents"]["corpus_snapshot_sha256"]
+    t["reason"] = t.get("reason", "")[:400]; res["readme_transcript"] = t
     res["checks"]["packaged_documents_are_the_commits"] = all(v_ is True for k_, v_ in art["source_documents"].items() if k_.startswith(("sdist_", "wheel_")))
     journeys = {}
     modes = [("fixtures", [])] + ([("mchp", ["--mode", "mchp", "--sources", str(sources)])] if sources else [])
@@ -294,6 +300,15 @@ def main(argv=None) -> int:
         scores = ", ".join(f"{m}: {j.get('score')}" for m, j in v.get("journeys", {}).items())
         stop_note = (" STOP " + v["stop"][:200]) if v.get("stop") else ""
         print(f"  {what}: ok={v.get('ok')} journeys={{{scores}}}{stop_note}")
+        t = v.get("readme_transcript") or {}
+        if t:
+            snap = t.get("snapshot") or {}
+            print(f"    transcript: byte_exact={t.get('byte_exact')} mode={t.get('mode')} snapshot sha256={snap.get('sha256')} generated={snap.get('generated')} is_the_commits={snap.get('is_the_commits_file')}")
+            print("    commands: " + "; ".join(f"{c['command'].split()[0]} exit {c['exit']}" + (f" ({c['corpus_mode']})" if "corpus_mode" in c else "") for c in t.get("commands", [])))
+            if not t.get("byte_exact"):
+                print(f"    {t.get('reason')}")
+                for label in ("expected", "actual"):
+                    print(f"    {label} from line {t.get('excerpt_starts_at_line')}:"); print("\n".join("      " + x for x in t.get(label, [])))
     return 0 if ok else 1
 
 

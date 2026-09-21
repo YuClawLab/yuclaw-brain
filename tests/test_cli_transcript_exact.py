@@ -3,7 +3,9 @@
 The 8.0.0 release was stopped by the publisher's byte-for-byte transcript comparison: the README recorded the `replay-lab`
 output of an older replay bundle, the version line was right, and the only earlier check compared the version. The exact
 comparison now lives in tools/cli_transcript.py (`--check --exe`) and runs in the clean-install validation. A fake
-executable keeps this test hermetic: its `replay-lab` output depends on the bundle file, like the real one."""
+executable keeps this test hermetic: its `replay-lab` output depends on the bundle file, like the real one, and its
+`check-claim` answers "from the bundled snapshot" only when the tool set YUCLAW_CORPUS=snapshot (the ONE transcript
+environment; the real command line is exercised in tests/test_v8_transcript_snapshot_mode.py)."""
 import contextlib, io, os, pathlib, re, sys, tempfile, unittest
 
 REPO = pathlib.Path(__file__).resolve().parents[1]; sys.path.insert(0, str(REPO / "tools"))
@@ -14,7 +16,8 @@ FAKE = f"""#!/bin/sh
 case "$1" in
   --version) echo "yuclaw {VERSION}";;
   --help) echo "usage: yuclaw <command>";;
-  check-claim) echo '{{"status": "NO_MATCH", "misses": []}}';;
+  check-claim) if [ "$YUCLAW_CORPUS" = "snapshot" ]; then echo '{{"status": "NO_MATCH", "misses": [], "corpus": {{"mode": "offline_snapshot", "snapshot_generated": "2026-09-01T00:00:00+00:00"}}}}'
+               else echo '{{"status": "NO_MATCH", "misses": []}}'; fi;;
   replay-lab) echo "Replay bundle built $(cat "$2")"; echo "[forward] fictional numbers for $(cat "$2")";;
 esac
 """
@@ -50,6 +53,20 @@ class ExactTranscript(unittest.TestCase):
     def test_a_hand_edit_of_any_non_version_line_fails_and_a_missing_block_fails(self):
         text = self.readme.read_text(); self.readme.write_text(text.replace("[exit 0]", "[exit 1]", 1)); rc, out = run(["--check", *self.common]); self.assertEqual(rc, 1, out)
         self.readme.write_text("# no markers here\n"); ok, why = ct.compare(self.readme.read_text(), str(self.exe), "fictional.whl", self.d); self.assertFalse(ok); self.assertIn("no CLI-TRANSCRIPT block", why)
+
+    def test_a_changed_field_count_fails_and_the_failure_is_diagnosable(self):
+        text = self.readme.read_text(); self.assertIn("<3 fields total", text); self.assertIn('"mode": "offline_snapshot"', text)     # the tool ran the command in snapshot mode
+        self.readme.write_text(text.replace("<3 fields total", "<2 fields total", 1)); r = ct.examine(self.readme.read_text(), str(self.exe), "fictional.whl", self.d)
+        self.assertFalse(r["ok"]); self.assertFalse(r["byte_exact"]); self.assertEqual(r["mode"], "YUCLAW_CORPUS=snapshot"); self.assertTrue(r["answers_from_bundled_snapshot"])
+        self.assertIn("<2 fields total", r["expected"][r["first_differing_line"] - r["excerpt_starts_at_line"]]); self.assertIn("<3 fields total", r["actual"][r["first_differing_line"] - r["excerpt_starts_at_line"]])
+        self.assertEqual([(c["command"].split()[0], c["exit"]) for c in r["commands"]], [("--version", 0), ("--help", 0), ("check-claim", 0), ("check-claim", 0), ("check-claim", 0), ("replay-lab", 0)])
+        self.assertLessEqual(len(r["expected"]), 5); self.assertLessEqual(max(map(len, r["expected"] + r["actual"])), 160)                # bounded
+        rc, out = run(["--check", *self.common]); self.assertEqual(rc, 1); self.assertIn("expected (README)", out); self.assertIn("actual (fresh)", out); self.assertIn("exit 0", out)
+
+    def test_an_executable_that_ignores_the_snapshot_selection_is_named_as_such(self):
+        node_like = self.d / "yuclaw-old"; node_like.write_text(FAKE.replace('if [ "$YUCLAW_CORPUS" = "snapshot" ]', 'if [ "never" = "snapshot" ]')); os.chmod(node_like, 0o755)
+        r = ct.examine(self.readme.read_text(), str(node_like), "fictional.whl", self.d)
+        self.assertFalse(r["ok"]); self.assertFalse(r["answers_from_bundled_snapshot"]); self.assertIn("did NOT answer check-claim from the bundled snapshot", r["reason"])
 
 
 if __name__ == "__main__":

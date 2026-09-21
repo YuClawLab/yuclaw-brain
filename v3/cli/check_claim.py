@@ -41,11 +41,19 @@ snapshot (v3/evidence/corpus_snapshot.json.gz — the same
 evidence_objects served at https://yuclaw.ca/why/{TICKER}.json), with
 the passport carrying an explicit "corpus" scope block. Only when
 neither exists: friendly exit 3 pointing at the public JSON.
+
+Explicit selection (v8.0.0): YUCLAW_CORPUS=snapshot answers from the
+bundled snapshot ONLY — no research node is looked for, imported or
+contacted, whatever database settings the environment carries — so the
+passport is the same on every host (the README transcript and its
+release checks run this way). Unset or "auto": the resolution above,
+unchanged. Any other value: exit 2.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -92,11 +100,34 @@ class CorpusUnavailable(Exception):
         super().__init__(ticker)
 
 
+CORPUS_ENV = "YUCLAW_CORPUS"
+CORPUS_CHOICES = ("", "auto", "snapshot")
+
+
+def corpus_selection() -> str:
+    """The explicit corpus selection from the environment: "snapshot", or
+    "" for the default resolution. ValueError on anything else — a typo
+    must never fall back silently to a research node."""
+    sel = os.environ.get(CORPUS_ENV, "").strip().lower()
+    if sel not in CORPUS_CHOICES:
+        raise ValueError(f"{CORPUS_ENV}={os.environ.get(CORPUS_ENV)!r} is "
+                         f"not supported — use 'snapshot' (bundled snapshot "
+                         f"only) or leave it unset")
+    return "snapshot" if sel == "snapshot" else ""
+
+
 def _corpus(ticker: str) -> tuple[list, dict | None]:
     """(evidence objects, corpus scope block). Research node first —
     on-box behavior unchanged (scope block None → field omitted, passport
     byte-identical to v5.3.1). Off-box: the bundled published snapshot,
-    loudly scoped. Neither → CorpusUnavailable."""
+    loudly scoped. Neither → CorpusUnavailable. YUCLAW_CORPUS=snapshot:
+    the bundled snapshot only — the research-node path is never entered."""
+    if corpus_selection() == "snapshot":
+        from v3.evidence.snapshot import snapshot_corpus
+        got = snapshot_corpus(ticker)
+        if got is None:
+            raise CorpusUnavailable(ticker)
+        return got
     from v3.evidence import BackendUnavailable, evidence_objects
     try:
         return evidence_objects(ticker, limit=500), None
@@ -297,6 +328,11 @@ def main(argv=None) -> int:
     if a.type and a.type.upper() not in VALID_TYPES:
         print(f"unknown --type {a.type!r} — valid event types: "
               f"{', '.join(VALID_TYPES)}", file=sys.stderr)
+        return 2
+    try:
+        corpus_selection()
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
         return 2
     try:
         from v3.universe_tiers import scoring_universe
