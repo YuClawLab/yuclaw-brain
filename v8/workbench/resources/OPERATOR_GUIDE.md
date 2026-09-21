@@ -4,12 +4,21 @@ The workbench is a local, owner-operated research tool. It runs on your machine,
 publishes, trades, trains or contacts a service. Research and education only. Not investment advice.
 
 This guide ships inside the installed package and is shown in the running workbench under **Help** (`/help`).
-Print it any time with `python -m v8.workbench guide`.
+Print it any time with `python -m v8.workbench guide`. Every command in this guide can also be typed as
+`yuclaw workbench …` (for example `yuclaw workbench guide`): it is the same program, with the same output and exit codes.
 
 ## 1. Install
 
     python3 -m venv ~/yuclaw-venv
     ~/yuclaw-venv/bin/pip install yuclaw            # or: pip install <the wheel file you were given>
+    ~/yuclaw-venv/bin/yuclaw workbench selftest     # optional: checks THIS installation in a temporary fictional workspace
+
+The self-check needs nothing but the installed package (no test tools, no source checkout). It loads the packaged
+fictional examples through the real forms, compares what is computed with the results those examples record, builds an
+export, verifies it in a second fresh workspace, confirms that a changed packet and an edited journal are refused, and
+then removes its temporary folder. It also reports the isolation available on this computer: on Linux with Landlock the
+restricted worker is exercised; anywhere else it reports the protected SHD route as **closed** and checks that it really
+is closed — it never reports an admission that did not happen. It is not the developers' full test suite.
 
 Python 3.10 or newer. The commands below use that environment's interpreter; from a source checkout the same
 commands work as `python3 -m v8.workbench …` in the repository root.
@@ -87,7 +96,13 @@ it prints `[ingest] REFUSED: <reason>`, exits 2 and writes no source record: cor
 ## 4. When something is refused
 
 Nothing is written when a form is refused. The page comes back with the reasons at the top and everything you entered
-still in the form; correct the listed fields and submit again. Things that are refused by design:
+still in the form; correct the listed fields and submit again. Submitting the very same form twice (a double click, a
+reload) is safe: the recorded result comes back and nothing is recorded twice. If a submission arrives with an operation
+identifier that already belongs to a *different* recorded submission — for example an old page resubmitted with changed
+content, or another file uploaded from a verification page that was already used — the answer is an **"Operation already
+recorded"** page (HTTP 409): nothing was written, the journal is intact and no recovery is needed. Open the form again
+(a freshly loaded form carries a fresh identifier) and submit deliberately; a browser does not keep a chosen file, so
+choose the file again. Things that are refused by design:
 
 - a freeze with a missing fiscal period, currency, basis, unit or resolution rule, or without a registered source;
 - an unknown availability time (it is never guessed) or a timestamp that is not UTC `YYYY-MM-DDTHH:MM:SSZ`;

@@ -18,6 +18,7 @@ COMMANDS: dict[str, str] = {
     "keys": "v4.auth.cli:main",
     "demo": "v4.demo.cli:main",
     "verify": "v3.cli.verify:main",
+    "workbench": "v8.workbench.cli:main_from_yuclaw",
     # v5.0: one-command Validation Lab reproduction (packaged mirror of
     # tools/replay_lab.py — the standalone stdlib script keeps working as-is)
     "replay-lab": "v3.lab.replay_check:main",
@@ -54,6 +55,7 @@ DESCRIPTIONS: dict[str, str] = {
     "keys": "manage API keys for the REST server",
     "demo": "3-minute guided offline journey — zero config, no backend",
     "verify": "Verified Research Ledger integrity check for a ticker/date",
+    "workbench": "v8 LOCAL workbench: source → typed claim → export, with the SHD/EVO/COM/PRC modules (try: yuclaw workbench guide · selftest · serve --workspace DIR)",
     "replay-lab": "reproduce the Validation Lab from the public bundle (exit 0 = reproduced)",
     "events": "accepted-events export (derived data only)",
     "intake-check": "client-side pre-check of a signal CSV for Signal Review (never transmits)",
