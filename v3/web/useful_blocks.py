@@ -355,18 +355,75 @@ def status_block_html() -> str:
 SUNCOR_TRACE_HREF = "trace_su.html"
 
 
+# ---------------------------------------------------------------------------
+# Current guide, historical PDFs, and the local workbench (8.0.1 C05 / C07 / C12).
+# ONE source for the landing generator and for tools/yuclaw_stage_static_surfaces.py
+# (which restages these static fragments on a candidate site without the database).
+GUIDE_URL = "https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md"
+GUIDE_MARK, WORKBENCH_MARK, FOOTER_GUIDE_MARK = "STATIC:guide-links", "STATIC:workbench-card", "STATIC:footer-guides"
+
+
+def _marked(name: str, html: str) -> str:
+    return f"<!-- {name} BEGIN -->{html}<!-- {name} END -->"
+
+
+def guide_links_html() -> str:
+    """The maintained CURRENT guide is the primary route; the earlier PDFs stay at their advertised, versionless addresses
+    (release-manifest rule B4) and are labelled as history with their real scope and length. Until 8.0.0 this line offered the
+    5.x-era PDF as "the" guide and called its 12 pages six."""
+    return _marked(GUIDE_MARK, '<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
+                   f'<a href="{GUIDE_URL}">\U0001F4D6 Current guide (v8, English)</a>'
+                   ' — install, workspaces, roles, the local workbench, the four modules, export and verification; the same text ships in the package '
+                   '(<code>yuclaw workbench guide</code>). · <a href="tour.html">5-minute command-line tour</a> · '
+                   'Earlier PDF guides — historical: written for the 5.x command line, 12 pages, not updated for v8: '
+                   '<a href="YUCLAW_User_Guide.pdf">English</a> · <a href="YUCLAW_Guide_Utilisateur_FR.pdf">Fran\u00e7ais</a></p>')
+
+
+def footer_guide_links_html() -> str:
+    return _marked(FOOTER_GUIDE_MARK, f'<a href="{GUIDE_URL}">\U0001F4D6 Guide (current, v8)</a> \u00b7\n      '
+                   '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (5.x era, historical)</a> \u00b7\n      '
+                   '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF ant\u00e9rieur (s\u00e9rie 5.x, historique)</a> \u00b7')
+
+
+def workbench_card_html() -> str:
+    """What v8 added, where it runs, how to start it, and its actual status — in plain language."""
+    pre = ("pip install yuclaw\n"
+           "yuclaw workbench selftest                                  # checks this installation in a temporary fictional workspace\n"
+           "yuclaw workbench principals init --workspace ~/yuclaw-ws   # optional: roles for the four modules; prints the first administrator's credential once\n"
+           "yuclaw workbench serve --workspace ~/yuclaw-ws             # then open http://127.0.0.1:8765  (Ctrl-C stops it)\n"
+           "yuclaw workbench guide                                     # the full guide, from the package")
+    return _marked(WORKBENCH_MARK, f"""
+    <div class="card" id="workbench">
+      <div class="card-title">The local workbench and its four modules (v8)</div>
+      <p style="font-size:13px;color:#A0AEC0;line-height:1.7">
+        This website is the <strong style="color:#E2E8F0">research-content site</strong>: evidence, labs and records you can read and re-compute.
+        The v8 <strong style="color:#E2E8F0">workbench</strong> is a different thing: an application that runs <strong style="color:#E2E8F0">on your own computer</strong>
+        (it binds 127.0.0.1 only; your data stays in the folder you name; there is no hosted service and no account). It traces one financial commitment from an exact
+        source passage through a typed, frozen claim, its revisions, exact calculation, history and review to an export that a fresh workspace re-verifies.
+        Four modules work on the same records: <strong style="color:#E2E8F0">SHD</strong> Distillation Shield (protected evidence intake),
+        <strong style="color:#E2E8F0">EVO</strong> Evolution Evidence Audit (what changed in an AI system, and which evidence still applies),
+        <strong style="color:#E2E8F0">COM</strong> Research Commons Guard (a fair, bounded review queue) and
+        <strong style="color:#E2E8F0">PRC</strong> Independent Practice (attempt first, then compare).
+      </p>
+      <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;font-family:JetBrains Mono,monospace;font-size:12.5px;color:#E2E8F0;overflow-x:auto">{pre}</pre>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        In the browser: load a fictional example on the Workspace page, follow its seven steps, build the export, then verify it in a second, fresh workspace
+        (<a href="{GUIDE_URL}" style="color:#00E676">current guide</a>).
+        <strong style="color:#E2E8F0">Status: experimental, local, owner-operated.</strong> Including the modules activates nothing — no role, approval, budget or study exists until you set one up.
+        Protected SHD admission needs Linux with Landlock; on macOS, Windows or a kernel without it that one route stays closed and everything else works.
+        No independent security review has been performed, and no user study: human benefit is PENDING. What has and has not been demonstrated is on the
+        <a href="evidence_scoreboard.html" style="color:#00E676">evidence scoreboard</a>, under its own as-of time.
+      </p>
+    </div>""")
+
+
 def use_in_research_html(packet_href: str | None = None,
                          guide_link: bool = False) -> str:
     """Three paths, three lines each. packet_href: this page's evidence packet
     (None on pages without one — the citation path then links the Lab packet).
     guide_link: landing only — adds the User Guide (PDF) line to the block."""
     cite_href = packet_href or "validation_lab.html#evidence-packet"
-    guide = ('<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
-             '<a href="YUCLAW_User_Guide.pdf">\U0001F4D6 User Guide (PDF)</a>'
-             ' — from pip install to full verification, six pages. · '
-             '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">\U0001F4D6 '
-             "Guide de l'utilisateur (FR)</a></p>"
-             ) if guide_link else ""
+    guide = guide_links_html() if guide_link else ""
     return f"""
     <div style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px" id="use-in-research">
       <div style="font-size:13px;font-weight:700;color:#FFF;margin-bottom:8px">Use YUCLAW in your research</div>

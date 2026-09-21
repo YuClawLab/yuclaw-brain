@@ -28,7 +28,7 @@ NEGATIVE_SIG = rig(ic(-0.0912, 0.012, 0.29, 83), ic(-0.0503, 0.2, 0.38, 67), alp
 ZERO = rig(ic(0.0, 1.0, 0.5, 83), ic(0.0, 1.0, 0.5, 67))
 UNRELIABLE = rig(ic(0.09, 0.03, 0.8, 12, reliable=False), ic(0.08, 0.001, 1.0, 4, reliable=False))
 UNAVAILABLE = rig(None, None, evaluable=False)
-BUNDLE = {"n_leaves": 7192, "built_utc": "2026-09-18 23:02 UTC", "source_commit": "a3b3ed2ebac4"}
+BUNDLE = {"n_leaves": 7192, "built_utc": "2026-09-18 23:02 UTC", "source_commit": "a3b3ed2ebac4", "daily_roots": 88}
 
 
 class DerivedProse(unittest.TestCase):
@@ -52,7 +52,7 @@ class DerivedProse(unittest.TestCase):
         self.assertEqual(L.forward_significant(UNRELIABLE["forward"]), [])
         t = L.rigor_reading(UNAVAILABLE); self.assertIn("not evaluable yet", t); self.assertIn("insufficient evidence, not a positive and not a negative finding", t)
         self.assertIn("not evaluable yet", L.ic_not_proven_line(UNAVAILABLE)); self.assertIn("nothing about forward alpha is claimed", L.headline(UNAVAILABLE))
-        self.assertIn("every statistic and every ledger leaf hash", L.reproducibility_line({})); self.assertIn("7,192 leaf hashes", L.reproducibility_line(BUNDLE)); self.assertIn("built 2026-09-18 23:02 UTC from a3b3ed2ebac4", L.reproducibility_line(BUNDLE))
+        self.assertIn("every statistic and every ledger leaf hash", L.reproducibility_line({})); self.assertIn("7,192 leaf hashes", L.reproducibility_line(BUNDLE)); self.assertIn("88 daily roots, source a3b3ed2ebac4", L.reproducibility_line(BUNDLE)); self.assertNotIn("23:02", L.reproducibility_line(BUNDLE))   # no raw build time outside the buildinfo footer
 
     def test_the_generator_renders_prose_and_table_from_one_dictionary(self):
         from v3.web import render_validation_lab as R

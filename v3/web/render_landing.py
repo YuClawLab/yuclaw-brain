@@ -129,7 +129,7 @@ def _row_html(r: dict[str, Any], ecs: dict | None = None) -> str:
 def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
     from v3.web.useful_blocks import (VERSION, build_footer, freshness_strip,
                                       site_header_html, status_block_html,
-                                      use_in_research_html)
+                                      use_in_research_html, workbench_card_html, footer_guide_links_html)
     rebuilt = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     as_of_str = as_of.strftime("%Y-%m-%d %H:%M UTC") if as_of else "no signals yet"
     ecs = _load_ecs()
@@ -372,6 +372,8 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
       </p>
     </div>
 
+    {workbench_card_html()}
+
     <div class="card">
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
@@ -394,8 +396,7 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
       <a href="tour.html">🚀 5-minute tour</a> ·
       <a href="for_ai_builders.html">🤖 For AI builders</a> ·
       <a href="evidencebench.html">📐 EvidenceBench</a> ·
-      <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
-      <a href="YUCLAW_Guide_Utilisateur_FR.pdf">📖 Guide de l'utilisateur (FR)</a> ·
+      {footer_guide_links_html()}
       <a href="methodology/backfill.md">Methodology</a> ·
       <a href="replication.html">Replication</a> ·
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·

@@ -147,6 +147,7 @@ def build_endpoints() -> None:
     (_REPO / "docs" / "capabilities.json").write_text(json.dumps({
         "name": m["api_name"],
         "former_name": m["api_former_name"],
+        "former_name_status": m.get("api_former_name_status", "deprecated compatibility alias; not a product claim"),   # 8.0.1 C11: the alias is retained on purpose — and says so
         "version": f"v{m['version']}", "generated":
             datetime.now(timezone.utc).isoformat(),
         "base_url": base,

@@ -223,8 +223,9 @@ research classifications, not buy/sell recommendations.
 [XLK Evidence Lens](https://yuclaw.ca/xlk_evidence.html) ·
 [Canada Resources](https://yuclaw.ca/canada_resources.html) ·
 [Forward Tracking](https://yuclaw.ca/validation.html) ·
-[📖 User Guide (EN)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
-[📖 Guide (FR)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) ·
+[📖 Current guide (v8)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) ·
+[Earlier PDF guide (5.x era, historical)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
+[Guide PDF antérieur (FR, historique)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) ·
 [Weekly Note](https://yuclaw.ca/weekly_note.html) ·
 [For AI agents → llms.txt](https://yuclaw.ca/llms.txt) ·
 [**⚠️ Disclaimer**](#%EF%B8%8F-disclaimer) ·
@@ -238,6 +239,37 @@ research classifications, not buy/sell recommendations.
 > not predict future performance.
 
 ---
+
+## v8 — the local workbench and its four modules
+
+`yuclaw.ca` is the **research-content site**. The v8 **workbench** is a different thing: an application that runs **on your own
+computer** — it binds `127.0.0.1` only, your data stays in the workspace folder you name, there is no hosted service and no account.
+It traces one financial commitment from an exact source passage through a **typed, frozen claim**, its revisions, exact calculation,
+history and review to an **export that a fresh workspace re-verifies**. Four modules work on the same records:
+
+| Module | In plain words |
+|---|---|
+| **SHD** — Distillation Shield | Protected evidence intake: a bundle is admitted only with another administrator's signed approval for its exact bytes, and it is parsed inside a restricted worker. |
+| **EVO** — Evolution Evidence Audit | Records what changed in an AI system (model, code, tools, memory, data, runtime, grader, evaluation data) and decides which earlier evidence still applies. |
+| **COM** — Research Commons Guard | A fair, bounded review queue: one task per duplicate group, admission limits, review budgets, disputes kept. |
+| **PRC** — Independent Practice | Attempt first, then compare: one preserved attempt before the comparison opens; assistance and exposure are declared, not hidden. |
+
+```bash
+pip install yuclaw
+yuclaw workbench selftest                                  # checks this installation in a temporary fictional workspace (no test tools needed)
+yuclaw workbench principals init --workspace ~/yuclaw-ws   # optional: roles for the four modules; prints the first administrator's credential once
+yuclaw workbench serve --workspace ~/yuclaw-ws             # then open http://127.0.0.1:8765   (Ctrl-C stops it)
+yuclaw workbench guide                                     # the full guide, from the package (the same text as the link below)
+```
+
+In the browser: load a fictional example on the Workspace page, follow its seven steps, build the export, then verify it in a second,
+fresh workspace ([current guide](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md)). `python -m v8.workbench …` is the same program.
+
+**Status: experimental, local, owner-operated.** Including the modules activates nothing — no role, approval, budget or study exists
+until you set one up. Protected SHD admission needs **Linux with Landlock**; on macOS, Windows or a kernel without it that one route
+stays closed and everything else works. No independent security review has been performed, and there has been no user study: human
+benefit is PENDING. What has and has not been demonstrated is on the [evidence scoreboard](https://yuclaw.ca/evidence_scoreboard.html),
+under its own as-of time.
 
 ## v7 — check → reproduce → challenge → document use (outsider verification, offline)
 
@@ -469,7 +501,7 @@ look-ahead-free record.
 | **Validation Lab** | [validation_lab.html](https://yuclaw.ca/validation_lab.html) |
 | **SMH Evidence Lens** | [etf_evidence.html](https://yuclaw.ca/etf_evidence.html) |
 | **XLK Evidence Lens** | [xlk_evidence.html](https://yuclaw.ca/xlk_evidence.html) |
-| **📖 User Guide (EN / FR)** | [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
+| **📖 Guides** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the 5.x command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |

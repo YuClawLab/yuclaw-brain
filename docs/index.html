@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>YUCLAW v7.0.1 — Evidence-First Financial AI</title>
+  <title>YUCLAW v8.0.0 — Evidence-First Financial AI</title>
   <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
@@ -323,7 +323,7 @@ The Science Trust Layer for Financial AI.
           </p>
         </div>
       </div>
-      <p style="font-size:12px;color:#A0AEC0;margin:10px 0 0"><a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> — from pip install to full verification, six pages. · <a href="YUCLAW_Guide_Utilisateur_FR.pdf">📖 Guide de l'utilisateur (FR)</a></p>
+      <!-- STATIC:guide-links BEGIN --><p style="font-size:12px;color:#A0AEC0;margin:10px 0 0"><a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md">📖 Current guide (v8, English)</a> — install, workspaces, roles, the local workbench, the four modules, export and verification; the same text ships in the package (<code>yuclaw workbench guide</code>). · <a href="tour.html">5-minute command-line tour</a> · Earlier PDF guides — historical: written for the 5.x command line, 12 pages, not updated for v8: <a href="YUCLAW_User_Guide.pdf">English</a> · <a href="YUCLAW_Guide_Utilisateur_FR.pdf">Français</a></p><!-- STATIC:guide-links END -->
     </div>
 
     
@@ -354,6 +354,34 @@ The Science Trust Layer for Financial AI.
       </p>
     </div>
 
+<!-- STATIC:workbench-card BEGIN -->
+    <div class="card" id="workbench">
+      <div class="card-title">The local workbench and its four modules (v8)</div>
+      <p style="font-size:13px;color:#A0AEC0;line-height:1.7">
+        This website is the <strong style="color:#E2E8F0">research-content site</strong>: evidence, labs and records you can read and re-compute.
+        The v8 <strong style="color:#E2E8F0">workbench</strong> is a different thing: an application that runs <strong style="color:#E2E8F0">on your own computer</strong>
+        (it binds 127.0.0.1 only; your data stays in the folder you name; there is no hosted service and no account). It traces one financial commitment from an exact
+        source passage through a typed, frozen claim, its revisions, exact calculation, history and review to an export that a fresh workspace re-verifies.
+        Four modules work on the same records: <strong style="color:#E2E8F0">SHD</strong> Distillation Shield (protected evidence intake),
+        <strong style="color:#E2E8F0">EVO</strong> Evolution Evidence Audit (what changed in an AI system, and which evidence still applies),
+        <strong style="color:#E2E8F0">COM</strong> Research Commons Guard (a fair, bounded review queue) and
+        <strong style="color:#E2E8F0">PRC</strong> Independent Practice (attempt first, then compare).
+      </p>
+      <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;font-family:JetBrains Mono,monospace;font-size:12.5px;color:#E2E8F0;overflow-x:auto">pip install yuclaw
+yuclaw workbench selftest                                  # checks this installation in a temporary fictional workspace
+yuclaw workbench principals init --workspace ~/yuclaw-ws   # optional: roles for the four modules; prints the first administrator's credential once
+yuclaw workbench serve --workspace ~/yuclaw-ws             # then open http://127.0.0.1:8765  (Ctrl-C stops it)
+yuclaw workbench guide                                     # the full guide, from the package</pre>
+      <p style="font-size:12px;color:#A0AEC0;margin-top:10px;line-height:1.6">
+        In the browser: load a fictional example on the Workspace page, follow its seven steps, build the export, then verify it in a second, fresh workspace
+        (<a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md" style="color:#00E676">current guide</a>).
+        <strong style="color:#E2E8F0">Status: experimental, local, owner-operated.</strong> Including the modules activates nothing — no role, approval, budget or study exists until you set one up.
+        Protected SHD admission needs Linux with Landlock; on macOS, Windows or a kernel without it that one route stays closed and everything else works.
+        No independent security review has been performed, and no user study: human benefit is PENDING. What has and has not been demonstrated is on the
+        <a href="evidence_scoreboard.html" style="color:#00E676">evidence scoreboard</a>, under its own as-of time.
+      </p>
+    </div><!-- STATIC:workbench-card END -->
+
     <div class="card">
       <div class="card-title">Install + try it</div>
       <pre style="background:#0B0E14;padding:14px;border-radius:8px;border:1px solid #1E232D;
@@ -371,13 +399,14 @@ yuclaw verify AMD --date 2026-05-20 # check the ledger record
     </div>
 
     <div class="footer">
-      YUCLAW v7.0.1 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
+      YUCLAW v8.0.0 · <a href="https://github.com/YuClawLab">YuClawLab</a> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/DISCLAIMER.md">Full Disclaimer</a> ·
       <a href="tour.html">🚀 5-minute tour</a> ·
       <a href="for_ai_builders.html">🤖 For AI builders</a> ·
       <a href="evidencebench.html">📐 EvidenceBench</a> ·
-      <a href="YUCLAW_User_Guide.pdf">📖 User Guide (PDF)</a> ·
-      <a href="YUCLAW_Guide_Utilisateur_FR.pdf">📖 Guide de l'utilisateur (FR)</a> ·
+      <!-- STATIC:footer-guides BEGIN --><a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md">📖 Guide (current, v8)</a> ·
+      <a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (5.x era, historical)</a> ·
+      <a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF antérieur (série 5.x, historique)</a> ·<!-- STATIC:footer-guides END -->
       <a href="methodology/backfill.md">Methodology</a> ·
       <a href="replication.html">Replication</a> ·
       <a href="todays_evidence.html">Today's Evidence Changes</a> ·

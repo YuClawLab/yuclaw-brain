@@ -109,7 +109,8 @@ def reproducibility_line(bundle: dict | None) -> str:
     n = (bundle or {}).get("n_leaves")
     if not n:
         return "One-command reproducibility — every statistic and every ledger leaf hash re-derive from published data"
-    ident = f" (bundle built {bundle['built_utc']}" + (f" from {bundle['source_commit']}" if bundle.get("source_commit") else "") + ")" if bundle.get("built_utc") else ""
+    # identity WITHOUT a timestamp: the site's stamp rule keeps raw build times inside the buildinfo footer (tools/check_site_walk.py)
+    ident = (f" (the published replay bundle: {bundle['daily_roots']} daily roots" if bundle.get("daily_roots") else " (the published replay bundle") + (f", source {bundle['source_commit']}" if bundle.get("source_commit") else "") + ")"
     return f"One-command reproducibility — every statistic + {n:,} leaf hashes re-derive from published data{ident}"
 
 
