@@ -36,7 +36,10 @@ from v3.web.oie_v51_blocks import (baselines_block as _baselines,
                                    transparency_block as _transparency,
                                    lab_clustered_block as _v51_clustered)
 
+from v3.web import lab_prose
+
 OUT = _REPO / "docs" / "validation_lab.html"
+REPLAY_BUNDLE = _REPO / "docs" / "replay" / "lab_replay_bundle.json"     # exported earlier in the same refresh; `expected` IS compute_rigor()
 UNIVERSE_PATH = _REPO / "v3" / "universe.json"
 TRUST_LEDGER = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
 
@@ -511,10 +514,7 @@ def rigor_panel_html(rig: dict) -> str:
       <div class="panel-sub">every statistic carries its n and window · * = p &lt; 0.05 · bootstrap: percentile, 10,000 i.i.d. period resamples, fixed seed · IC t-stats are Newey–West (Bartlett) HAC-corrected for overlapping return windows</div>
       {''.join(sections)}
       <p style="font-size:11px;color:#718096;margin-top:12px">
-        Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is
-        statistically significant at the 5% level once overlap is corrected</strong>. The forward 20-day IC is positive on
-        all observed dates but has too few independent blocks to test. "Not yet significant" is the finding — the
-        statistics accrue daily and this panel recomputes with them.
+        {lab_prose.marked("rigor-reading", lab_prose.rigor_reading(rig))}
       </p>
     </div>"""
 
@@ -654,12 +654,14 @@ def status_cards_html(fwd_n: int, ledger: dict) -> str:
     return f'<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">{tiles}</div>'
 
 
-def honest_reading_html() -> str:
-    return """
+def honest_reading_html(rig: dict | None = None) -> str:
+    # 8.0.1 C01: the headline is derived from the same rigor numbers as Panel 3 (v3/web/lab_prose.py), never typed
+    head = lab_prose.marked("headline", f"<strong>{escape(lab_prose.headline(rig or {}))}</strong>")
+    return f"""
     <div class="panel" style="border-left:3px solid #00E676">
       <div class="panel-title">Honest reading</div>
       <p style="font-size:14px;color:#E2E8F0;line-height:1.7;max-width:860px">
-        <strong>No forward alpha has been statistically proven yet.</strong> What is running:
+        {head} What is running:
         the point-in-time infrastructure is live, every daily signal set is anchored to a public,
         git-committed ledger, and every statistic on this page reproduces from published derived
         data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
@@ -696,19 +698,21 @@ def integrity_log_html() -> str:
     </details>"""
 
 
-def proven_html(fwd_n: int) -> str:
+def proven_html(fwd_n: int, rig: dict | None = None, bundle: dict | None = None) -> str:
     # fwd_n is the SAME computed value the header status card renders
     # (fwd['evaluable_periods']) — never hardcode the n here; the site-walk
     # gate asserts header n == not-proven n on every build.
+    # 8.0.1 C01: the leaf count and the IC statement are DERIVED (v3/web/lab_prose.py) from the published bundle's
+    # identity and from the same rigor numbers Panel 3 tabulates — they were typed by hand until 8.0.0 and went stale.
     proven = [
         "Point-in-time snapshot discipline — daily as-of writes, zero retroactive edits (outage window included)",
         "Git-anchored replayable ledger — daily sha-256 roots committed publicly before pages update",
-        "One-command reproducibility — every statistic + 2,847 leaf hashes re-derive from published data",
+        lab_prose.marked("reproducibility", escape(lab_prose.reproducibility_line(bundle))),
         "Deterministic evidence grounding measurement — corpus grounding 0.75, citation fidelity 0.85 (definitions footnoted below)",
     ]
     not_proven = [
         f"Forward alpha — n={fwd_n} periods, underpowered; not significant at 5%",
-        "IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only",
+        lab_prose.marked("ic-significance", escape(lab_prose.ic_not_proven_line(rig or {}))),
         "Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small",
         "C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)",
     ]
@@ -858,6 +862,14 @@ def panel4_html(q: dict) -> str:
         the public grade rubric and is recomputed point-in-time daily.
       </p>
     </div>"""
+
+
+def _published_bundle() -> dict:
+    """Identity of the public replay bundle this refresh publishes beside the page (leaf count, build time, source)."""
+    try:
+        return lab_prose.bundle_identity(json.loads(REPLAY_BUNDLE.read_text()))
+    except Exception:
+        return {}
 
 
 def render() -> str:
@@ -1037,11 +1049,11 @@ def render() -> str:
       <strong>Disclaimer —</strong> {escape(DISCLAIMER_LINE)}
     </div>
 
-    {honest_reading_html()}
+    {honest_reading_html(rig)}
 
     {integrity_card_html()}
 
-    {proven_html(fwd_n)}
+    {proven_html(fwd_n, rig, _published_bundle())}
 
     <p style="font-size:14px;color:#A0AEC0;margin-bottom:18px;max-width:780px">
       A Fama–French-style <strong>decile-cohort event study</strong>: does YUCLAW's composite

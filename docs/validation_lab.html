@@ -95,7 +95,7 @@
     <div class="panel" style="border-left:3px solid #00E676">
       <div class="panel-title">Honest reading</div>
       <p style="font-size:14px;color:#E2E8F0;line-height:1.7;max-width:860px">
-        <strong>No forward alpha has been statistically proven yet.</strong> What is running:
+        <!-- LAB-DERIVED:headline BEGIN --><strong>No forward alpha has been statistically proven yet.</strong><!-- LAB-DERIVED:headline END --> What is running:
         the point-in-time infrastructure is live, every daily signal set is anchored to a public,
         git-committed ledger, and every statistic on this page reproduces from published derived
         data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
@@ -118,11 +118,11 @@
       <div style="display:flex;gap:24px;flex-wrap:wrap">
         <div style="flex:1;min-width:280px">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#00E676;margin-bottom:6px">Proven (verifiable today)</div>
-          <ul style="list-style:none"><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Point-in-time snapshot discipline — daily as-of writes, zero retroactive edits (outage window included)</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Git-anchored replayable ledger — daily sha-256 roots committed publicly before pages update</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> One-command reproducibility — every statistic + 2,847 leaf hashes re-derive from published data</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Deterministic evidence grounding measurement — corpus grounding 0.75, citation fidelity 0.85 (definitions footnoted below)</li></ul>
+          <ul style="list-style:none"><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Point-in-time snapshot discipline — daily as-of writes, zero retroactive edits (outage window included)</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Git-anchored replayable ledger — daily sha-256 roots committed publicly before pages update</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> <!-- LAB-DERIVED:reproducibility BEGIN -->One-command reproducibility — every statistic + 7,192 leaf hashes re-derive from published data (bundle built 2026-09-18 23:02 UTC from a3b3ed2ebac4)<!-- LAB-DERIVED:reproducibility END --></li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#00E676;font-weight:700">✓</span> Deterministic evidence grounding measurement — corpus grounding 0.75, citation fidelity 0.85 (definitions footnoted below)</li></ul>
         </div>
         <div style="flex:1;min-width:280px">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#FF3366;margin-bottom:6px">Not proven (open, tracked)</div>
-          <ul style="list-style:none"><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Forward alpha — n=82 periods, underpowered; not significant at 5%</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> IC significance — forward 5d IC +0.09 loses significance after overlap (HAC) correction; 20d descriptive only</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</li></ul>
+          <ul style="list-style:none"><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Forward alpha — n=82 periods, underpowered; not significant at 5%</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> <!-- LAB-DERIVED:ic-significance BEGIN -->IC significance — forward 5d IC -0.0277, positive on 47% of 83 observed dates (Newey–West p = 0.477; not significant at 5%); 20d IC -0.0399, positive on 43% of 67 observed dates (Newey–West p = 0.244; not significant at 5%)<!-- LAB-DERIVED:ic-significance END --></li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> Evidence→price lead — event-study CAR is adverse at the current backfill-era sample; live-era n too small</li><li style="margin:5px 0;color:#A0AEC0;font-size:13px;line-height:1.55"><span style="color:#FF3366;font-weight:700">✗</span> C6 risk gate out-of-sample — rareness confirmed OOS 2026-07-06; sign confirmation pending (elevated arm n=2; accrual live from 2026-07-16)</li></ul>
         </div>
       </div>
     </div>
@@ -418,10 +418,7 @@ look-ahead-free record.
         
       </div>
       <p style="font-size:11px;color:#718096;margin-top:12px">
-        Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is
-        statistically significant at the 5% level once overlap is corrected</strong>. The forward 20-day IC is positive on
-        all observed dates but has too few independent blocks to test. "Not yet significant" is the finding — the
-        statistics accrue daily and this panel recomputes with them.
+        <!-- LAB-DERIVED:rigor-reading BEGIN -->Honest reading: at the current sample sizes, <strong style="color:#E2E8F0">no forward spread, IC, or alpha is statistically significant at the 5% level once overlap is corrected</strong>. The forward 20-day IC is -0.0399, positive on 43% of 67 observed dates (Newey–West p = 0.244; not significant at 5%). "Not yet significant" is the finding — the statistics accrue daily and this panel recomputes with them.<!-- LAB-DERIVED:rigor-reading END -->
       </p>
     </div>
 
