@@ -1,0 +1,161 @@
+{
+ "record": "v8-018-packaging/1",
+ "source_commit": "4e792c97d3027ce3948d97dfd4aec652463f9096",
+ "source_tree": "56fc1c2846fa50dd4ad4be3dc6d9e5f4c19ad9ab",
+ "result": "PASS",
+ "label": "CANDIDATE / PRE-RELEASE-REVIEW artifacts of the 8.0.1 patch candidate — not a final release set; release_authorized=false",
+ "build": {
+  "build_utc": "2026-09-21T11:46:40+00:00",
+  "source_date_epoch": "1580601600",
+  "build_tools": {
+   "python": "3.12.3",
+   "build": "build 1.4.2",
+   "wheel_generator": "hatchling 1.32.3"
+  }
+ },
+ "constraints": ".github/v8-validation-constraints.txt",
+ "wheel": {
+  "name": "yuclaw-8.0.1-py3-none-any.whl",
+  "sha256": "5f67db44b8bf89e5440362b72ee0b5c544bb2287d766ba9d4a6f8eafd203ddc8",
+  "size": 1030581
+ },
+ "sdist": {
+  "name": "yuclaw-8.0.1.tar.gz",
+  "sha256": "2d9cf2a88c75ae3381164bd42fe314c27c23e219eac10e356ac0739f795fecae",
+  "size": 5293488
+ },
+ "member_inspection_ok": true,
+ "twine_check_rc": 0,
+ "source_documents": {
+  "sdist_README_md_is_the_commits": true,
+  "sdist_README_PYPI_md_is_the_commits": true,
+  "wheel_long_description_is_README_PYPI_md": true,
+  "readme_sha256": "f085cff91769d28416430103885043df746f3674e8fd165d83fced95f5667eaf",
+  "replay_bundle_sha256": "03c943c6fb56689e65d9f0beca802160839f60314e1e8b709d153359dbfd78e5",
+  "corpus_snapshot_sha256": "6b8509c5f34235901a8b04bb202de32b1e36095d9ba8b666ec9b4384ce53f312"
+ },
+ "installs": {
+  "wheel": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true,
+    "readme_transcript_exact": true,
+    "transcript_answers_come_from_the_bundled_snapshot": true,
+    "installed_corpus_snapshot_is_the_commits": true,
+    "packaged_documents_are_the_commits": true,
+    "yuclaw_workbench_help_names_the_four_modules": true,
+    "delegated_entry_equals_the_module_form": true,
+    "installed_selftest_passes_in_both_entry_forms_with_isolation_required": true,
+    "documented_route_commands_run": true
+   },
+   "selftest": {
+    "yuclaw workbench selftest": {
+     "rc": 0,
+     "result": "PASS",
+     "checks": 17,
+     "failed": [],
+     "isolation_backend": "landlock"
+    },
+    "python -m v8.workbench selftest": {
+     "rc": 0,
+     "result": "PASS",
+     "checks": 17,
+     "failed": [],
+     "isolation_backend": "landlock"
+    }
+   },
+   "transcript": {
+    "byte_exact": true,
+    "mode": "YUCLAW_CORPUS=snapshot",
+    "answers_from_bundled_snapshot": true
+   },
+   "snapshot_sha256": "6b8509c5f34235901a8b04bb202de32b1e36095d9ba8b666ec9b4384ce53f312",
+   "journeys": {
+    "fixtures": {
+     "score": "7/7",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": null
+    },
+    "mchp": {
+     "score": "7/7",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": null
+    },
+    "modules": {
+     "score": "6/6",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": "landlock"
+    }
+   }
+  },
+  "sdist": {
+   "ok": true,
+   "checks": {
+    "module_inside_venv": true,
+    "no_pythonpath": true,
+    "metadata_version": true,
+    "installed_resources_equal_source_tree": true,
+    "cli_help_rc0": true,
+    "readme_transcript_exact": true,
+    "transcript_answers_come_from_the_bundled_snapshot": true,
+    "installed_corpus_snapshot_is_the_commits": true,
+    "packaged_documents_are_the_commits": true,
+    "yuclaw_workbench_help_names_the_four_modules": true,
+    "delegated_entry_equals_the_module_form": true,
+    "installed_selftest_passes_in_both_entry_forms_with_isolation_required": true,
+    "documented_route_commands_run": true
+   },
+   "selftest": {
+    "yuclaw workbench selftest": {
+     "rc": 0,
+     "result": "PASS",
+     "checks": 17,
+     "failed": [],
+     "isolation_backend": "landlock"
+    },
+    "python -m v8.workbench selftest": {
+     "rc": 0,
+     "result": "PASS",
+     "checks": 17,
+     "failed": [],
+     "isolation_backend": "landlock"
+    }
+   },
+   "transcript": {
+    "byte_exact": true,
+    "mode": "YUCLAW_CORPUS=snapshot",
+    "answers_from_bundled_snapshot": true
+   },
+   "snapshot_sha256": "6b8509c5f34235901a8b04bb202de32b1e36095d9ba8b666ec9b4384ce53f312",
+   "journeys": {
+    "fixtures": {
+     "score": "7/7",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": null
+    },
+    "mchp": {
+     "score": "7/7",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": null
+    },
+    "modules": {
+     "score": "6/6",
+     "rc": 0,
+     "ok": true,
+     "isolation_backend": "landlock"
+    }
+   }
+  }
+ },
+ "note": "the pair built from this SOURCE commit is a verification build; the ONE retained pair of the candidate is built from the record HEAD (no packaged path differs) and named in the private decision package",
+ "not_advice": "Research and education only. Not investment advice."
+}

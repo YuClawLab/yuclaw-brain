@@ -1,0 +1,180 @@
+{
+ "record": "v8-018-review-dispositions/1",
+ "release": "8.0.1",
+ "source_commit": "4e792c97d3027ce3948d97dfd4aec652463f9096",
+ "original_ids": [
+  "YUC-001",
+  "YUC-002",
+  "YUC-003",
+  "YUC-004",
+  "YUC-005",
+  "YUC-006",
+  "YUC-007",
+  "YUC-008",
+  "YUC-009",
+  "P8-01",
+  "P8-02",
+  "P8-03",
+  "P8-04",
+  "P8-05",
+  "P8-06",
+  "P8-07",
+  "P8-08"
+ ],
+ "work_items": {
+  "C01": {
+   "title": "Validation Lab narrative/data consistency",
+   "kind": "confirmed defect (P1)",
+   "items": [
+    "YUC-001"
+   ],
+   "reproduced": "tools/yuclaw_lab_prose.py --check on the 8.0.0 tree: RED — four derived sentences stale (5d IC +0.09 / '20-day IC positive on all observed dates' / 2,847 leaves vs the page's own tables and the public bundle: -0.0277, -0.0399 with 43% positive dates, 7,192 leaves)",
+   "change": "v3/web/lab_prose.py derives every numerical, directional and sample-size sentence from the rigor dictionary the tables use (= the bundle's `expected`) and the bundle's identity; the generator uses it; the staged page was restaged from the public bundle (no database)",
+   "regression": "tests/test_lab_prose_derived.py (positive, negative, zero, unreliable, unavailable; table and prose move together; restage touches nothing else; staged page == bundle)",
+   "limit": "statistics themselves unchanged; after every merge of main the staged page must be restaged (the nightly render does it from the same numbers)"
+  },
+  "C02": {
+   "title": "Unknown backend state is not 'no cascade'",
+   "kind": "confirmed defect (P1)",
+   "items": [
+    "YUC-002"
+   ],
+   "reproduced": "PGHOST=<no such dir> yuclaw cascade AMD on 8.0.0 → 'No supply-chain cascade reached AMD .', exit 0",
+   "change": "backend unavailable → exit 3 + message (+ JSON status); queried-zero-rows → exit 0 and says it was queried; bundled fixture → stated; API route answers 503 instead of cascade:null",
+   "regression": "tests/test_cli_backend_states.py (unreachable socket, refused TCP, disposable PostgreSQL node with zero rows and with a real event, fixture, JSON and text, canary password never printed)",
+   "limit": "build_cascade() keeps its optional-extra contract for the research response and the demo"
+  },
+  "C03": {
+   "title": "Backend errors and command help",
+   "kind": "confirmed defect (P2)",
+   "items": [
+    "YUC-003"
+   ],
+   "reproduced": "replay / validation printed a database-driver traceback (exit 1); memo and why explained but exited 1",
+   "change": "only the expected connection failure is handled (exit 3, message, JSON status); bad arguments stay 2; internal errors propagate; why/replay/replay-lab help state their three different contracts; YUCLAW_CORPUS=snapshot untouched",
+   "regression": "tests/test_cli_backend_states.py; tests/test_v8_transcript_snapshot_mode.py (unchanged, still passes)",
+   "limit": "a reachable database without the expected tables is an internal failure and still shows its error"
+  },
+  "C04": {
+   "title": "HTTP operation conflict handling",
+   "kind": "confirmed defect (P2)",
+   "items": [
+    "P8-03"
+   ],
+   "reproduced": "tests/test_v8_op_conflict_http.py on 8.0.0 code: POST /verify with a reused operation identifier and different bytes → connection dropped; other forms → the chain-failure page",
+   "change": "one refusal path for every POST route: HTTP 409 'Operation already recorded' page (escaped reason, nothing written, next step); genuine chain damage / torn tail keep their fail-closed pages",
+   "regression": "tests/test_v8_op_conflict_http.py (real HTTP: identical retry, conflict on upload and on a form, restart with a fresh CSRF token, expired token, journal bytes unchanged, server survives, exactly-one-event)",
+   "limit": "a browser cannot keep a chosen file: the page says to choose it again"
+  },
+  "C05": {
+   "title": "v8 discoverable from installation and the website",
+   "kind": "confirmed defect (adoption, P2)",
+   "items": [
+    "YUC-006",
+    "P8-01"
+   ],
+   "reproduced": "`yuclaw --help` listed no v8 command; README/PyPI text and the homepage did not mention the workbench or the four modules",
+   "change": "`yuclaw workbench …` thin delegate; help, README, PyPI description and homepage explain the local workbench and SHD/EVO/COM/PRC in plain words with the tested route; website = research-content site, workbench = local",
+   "regression": "tests/test_v8_workbench_entry_and_selftest.py; tests/test_site_static_surfaces.py; clean-install checks from wheel and sdist",
+   "limit": "no hosted service or account system exists or was added"
+  },
+  "C06": {
+   "title": "Current version metadata and generation",
+   "kind": "confirmed defect (presentation, P2)",
+   "items": [
+    "YUC-004",
+    "P8-02"
+   ],
+   "reproduced": "extended G2 gate on the 8.0.0 staged site: RED — homepage <title> and footer at v7.0.1 while the badge said v8.0.0",
+   "change": "G2 reads every shared-header page's <title> and 'YUCLAW vX.Y.Z' identity strings; the version step stages the homepage identity; historical files untouched",
+   "regression": "tests/test_release_manifest_titles.py; tests/test_site_static_surfaces.py",
+   "limit": "not a security finding; archived guides are not current pages"
+  },
+  "C07": {
+   "title": "Current user guides and accurate download labels",
+   "kind": "confirmed defect (P2)",
+   "items": [
+    "YUC-005"
+   ],
+   "reproduced": "homepage offered the version-5 PDF as 'the' guide and called its 12 pages six",
+   "change": "the maintained v8 guide (shipped in the package) is the primary link; the earlier PDFs stay at their advertised versionless addresses, labelled historical with their real length; no French content added",
+   "regression": "tests/test_site_static_surfaces.py; release-manifest rule B4 unchanged and green",
+   "limit": "the PDFs were not re-rendered; the current guide is English only"
+  },
+  "C08": {
+   "title": "EvidenceBench instructions, identities and v2 regression",
+   "kind": "confirmed defect (stale wording) + corrected interpretation (identity was present)",
+   "items": [
+    "YUC-007",
+    "P8-05"
+   ],
+   "reproduced": "page said the scorer is not shipped and that v2 arrives 'in the next patch release'; version, protocol, window, count and canonical hash WERE already published",
+   "change": "installed scorer primary, 7.0.0 checkout labelled historical; code / v1 / v2 candidate / item sets / registration / validation stated separately; echo control computed on the release's own items; canonical hash vs raw file SHA-256; weekly lineage from repository history (872 on 2026-09-11 and 750 on 2026-09-18 are two weekly sets)",
+   "regression": "tests/test_evidencebench_page.py; existing rubric contracts (tests/test_public_qa_20260915.py) unchanged",
+   "limit": "v2 stays a candidate: not registered, no v2 item set, nothing validated; releases older than the repository history are not asserted"
+  },
+  "C09": {
+   "title": "Explorer accessibility",
+   "kind": "confirmed defect (P2)",
+   "items": [
+    "YUC-008"
+   ],
+   "reproduced": "selects and ticker input without accessible names; sorting by <th onclick> (no focus, no aria-sort)",
+   "change": "visible labels, real sort buttons in <th scope=col> with aria-sort, polite live count, zero-result row, reset, stable tie-break, no inline handlers; staged page restaged from the public data file",
+   "regression": "tests/test_explorer_accessibility.py (static everywhere; keyboard/focus/aria-sort/zero-result/reset/deep link/390 px/mouse in a real browser where a driver is installed — locally and in the hosted package job)",
+   "limit": "automated checks are not a WCAG or screen-reader certification"
+  },
+  "C10": {
+   "title": "Installed-package selftest",
+   "kind": "confirmed defect (P2)",
+   "items": [
+    "YUC-009",
+    "P8-04"
+   ],
+   "reproduced": "fresh install: `python -m v8.workbench selftest` → 'No module named pytest', and it pointed at repository test files that are not in the wheel",
+   "change": "packaged bounded self-check in a temporary fictional workspace with the real server, fixtures' recorded results, export + verification, tamper and conflict refusals, fail-closed journal, restricted worker or verified CLOSED SHD route; --require-isolation fails instead of skipping; --dev keeps the repository tests",
+   "regression": "tests/test_v8_workbench_entry_and_selftest.py; clean-install runs both entry forms from wheel and sdist with --require-isolation",
+   "limit": "not the repository test suite; no browser; COM/PRC/EVO workflows not exercised by it"
+  },
+  "C11": {
+   "title": "Legacy machine-readable name",
+   "kind": "documented compatibility decision",
+   "items": [
+    "P8-06"
+   ],
+   "reproduced": "former_name is a REQUIRED key of the /capabilities.json contract in release_manifest.json and a deliberate compatibility field of the language gate (existing test)",
+   "change": "retained; former_name_status says: deprecated compatibility alias, not a product claim, not positioning",
+   "regression": "tests/test_site_static_surfaces.py; claims lint and schema gates green",
+   "limit": "removing it would break the documented contract; not done"
+  },
+  "C12": {
+   "title": "Status and outsider evidence",
+   "kind": "editorial improvement (partly overstated as a defect)",
+   "items": [
+    "P8-07"
+   ],
+   "reproduced": "the 8.0.0 notes state the limits in prose; a missing adjective or count in a historical changelog entry is not a correctness failure",
+   "change": "8.0.1 notes, README section and homepage card state once: experimental, local, owner-operated; modules activate nothing; no independent security review; no user study (human benefit PENDING); scoreboard referenced under its own as-of time; no outsider count restated",
+   "regression": "tests/test_site_static_surfaces.py; notes correspondence check",
+   "limit": "published 8.0.0 notes not rewritten"
+  },
+  "C13": {
+   "title": "Canadian-origin wording",
+   "kind": "owner-requested editorial consistency",
+   "items": [
+    "P8-08"
+   ],
+   "reproduced": "'Built in Canada' is already the wording of README and homepage; the release-notes section heading said 'Made in Canada'",
+   "change": "8.0.1 change list and CHANGELOG entry use 'Built in Canada'; nothing implies government endorsement, funding, data residency or an audited guarantee",
+   "regression": "tests/test_site_static_surfaces.py",
+   "limit": "the historical 8.0.0 changelog entry is unchanged"
+  }
+ },
+ "additional_findings_not_counted": {
+  "X01": "live /coverage.json is the 2026-09-15 artifact while live Explorer/Why pages bind to the 2026-09-18 artifact: the nightly refresh regenerates docs/coverage.json but its `git add` list omits it. NOT changed (the refresh job is the owner's); check_coverage_consistency is RED on every clean tree and OK on the production working copy.",
+  "X02": "the README's 'v7 — check → reproduce …' output block was recorded on the 7.0.0 candidate and had been relabelled by each version step; the sentence now says where it was recorded."
+ },
+ "counting": "17 original identifiers → 13 work items: 10 reproduced defect themes (C01–C10) + 3 compatibility/editorial decisions (C11–C13); duplicates are merged, never counted twice",
+ "sources": "two private reviews of the published 8.0.0 (not copied here); every reproduction listed is a minimal synthetic one that runs from this tree",
+ "not_advice": "Research and education only. Not investment advice."
+}
