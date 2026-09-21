@@ -56,7 +56,7 @@ class SnapshotMode(unittest.TestCase):
         except ImportError:
             cls.node_why = "psycopg2 not importable"; return
         cls.pg = tempfile.mkdtemp(prefix="v17pg-"); cls.data = os.path.join(cls.pg, "data"); cls.port = 55000 + (os.getpid() % 1000); cls.log = os.path.join(cls.pg, "log")
-        r = subprocess.run([str(PGBIN / "initdb"), "-D", cls.data, "-A", "trust", "-U", "t", "--no-instructions"], capture_output=True, text=True)
+        r = subprocess.run([str(PGBIN / "initdb"), "-D", cls.data, "-A", "trust", "-U", "t", "-E", "UTF8", "--locale=C", "--no-instructions"], capture_output=True, text=True)
         if r.returncode != 0:
             cls.node_why = "initdb failed: " + r.stderr[-200:]; return
         r = subprocess.run([str(PGBIN / "pg_ctl"), "-D", cls.data, "-o", f"-p {cls.port} -k {cls.pg} -c listen_addresses='' -c log_connections=on", "-l", cls.log, "start", "-w"], capture_output=True, text=True)
@@ -64,11 +64,11 @@ class SnapshotMode(unittest.TestCase):
             cls.node_why = "pg_ctl start failed: " + r.stderr[-200:]; return
         cls.started = True
         cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="postgres"); cn.autocommit = True; cn.cursor().execute("CREATE DATABASE yuclaw_events"); cn.close()
-        cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="yuclaw_events"); cn.autocommit = True; cur = cn.cursor()
+        cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="yuclaw_events"); cn.set_client_encoding("UTF8"); cn.autocommit = True; cur = cn.cursor()
         cur.execute("CREATE TABLE events (event_id text, ticker text, event_type text, source_publish_time timestamptz, source_url text, raw_excerpt text, content_hash text, available_as_of timestamptz, event_status text)")
         cur.execute("INSERT INTO events VALUES (%s, 'NVDA', 'INSIDER_SELL', '2026-05-12T00:00:00Z', %s, %s, 'synthetic-hash', '2026-05-12T00:00:00Z', 'accepted')",
                     (f"NVDA_F4_{ACC.replace('-', '')}_1", f"https://www.sec.gov/Archives/edgar/data/1045810/{ACC.replace('-', '')}/x.xml", MARKER)); cn.close()
-        cls.node_env = dict(cls.base, PGHOST=cls.pg, PGPORT=str(cls.port), PGUSER="t")                  # what the product's DSN `dbname=yuclaw_events` resolves through
+        cls.node_env = dict(cls.base, PGHOST=cls.pg, PGPORT=str(cls.port), PGUSER="t", PGCLIENTENCODING="UTF8")                  # what the product's DSN `dbname=yuclaw_events` resolves through
 
     @classmethod
     def tearDownClass(cls):

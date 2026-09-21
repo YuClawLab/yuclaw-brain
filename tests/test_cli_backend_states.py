@@ -38,17 +38,17 @@ class BackendStates(unittest.TestCase):
         except ImportError:
             cls.why_no_node = "psycopg2 not importable"; return
         cls.pg = tempfile.mkdtemp(prefix="v801pg-"); cls.data = os.path.join(cls.pg, "data"); cls.port = 57000 + (os.getpid() % 1000)
-        if subprocess.run([str(PGBIN / "initdb"), "-D", cls.data, "-A", "trust", "-U", "t", "--no-instructions"], capture_output=True).returncode != 0:
+        if subprocess.run([str(PGBIN / "initdb"), "-D", cls.data, "-A", "trust", "-U", "t", "-E", "UTF8", "--locale=C", "--no-instructions"], capture_output=True).returncode != 0:
             cls.why_no_node = "initdb failed"; return
         if subprocess.run([str(PGBIN / "pg_ctl"), "-D", cls.data, "-o", f"-p {cls.port} -k {cls.pg} -c listen_addresses=''", "-l", os.path.join(cls.pg, "log"), "start", "-w"], capture_output=True).returncode != 0:
             cls.why_no_node = "pg_ctl start failed"; return
         cls.started = True
         cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="postgres"); cn.autocommit = True; cn.cursor().execute("CREATE DATABASE yuclaw_events"); cn.close()
-        cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="yuclaw_events"); cn.autocommit = True; cur = cn.cursor(); cur.execute(f"CREATE TABLE events ({COLS})")
+        cn = psycopg2.connect(host=cls.pg, port=cls.port, user="t", dbname="yuclaw_events"); cn.set_client_encoding("UTF8"); cn.autocommit = True; cur = cn.cursor(); cur.execute(f"CREATE TABLE events ({COLS})")   # independent of the process locale (the release-state generator runs the suite with LC_ALL=C)
         url = "https://www.sec.gov/Archives/edgar/data/1645590/000164559026000045/x.htm"
         cur.execute("INSERT INTO events VALUES ('HPE_SYN_1', 'HPE', 'M_AND_A_CLOSE', 0.5, 1, '2026-05-14T00:00:00Z', 'SYNTHETIC root event (fictional test row)', %s, 0.9, 0, 'synthetic-root-hash', NULL, 'accepted')", (url,))
         cur.execute("INSERT INTO events VALUES ('AMD_SYN_1', 'AMD', 'M_AND_A_CLOSE', 0.05, 1, '2026-05-14T00:00:00Z', 'via HPE→AMD(supply,w=0.10) from SYNTHETIC root (fictional test row)', %s, 0.9, 1, 'synthetic-leaf-hash', 'HPE_SYN_1', 'accepted')", (url,))
-        cn.close(); cls.node = dict(base, PGHOST=cls.pg, PGPORT=str(cls.port), PGUSER="t", PGPASSWORD=CANARY)
+        cn.close(); cls.node = dict(base, PGHOST=cls.pg, PGPORT=str(cls.port), PGUSER="t", PGPASSWORD=CANARY, PGCLIENTENCODING="UTF8")   # the node speaks UTF-8 whatever the locale of the test process
 
     @classmethod
     def tearDownClass(cls):
