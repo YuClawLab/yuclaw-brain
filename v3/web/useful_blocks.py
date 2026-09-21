@@ -370,19 +370,19 @@ def _marked(name: str, html: str) -> str:
 def guide_links_html() -> str:
     """The maintained CURRENT guide is the primary route; the earlier PDFs stay at their advertised, versionless addresses
     (release-manifest rule B4) and are labelled as history with their real scope and length. Until 8.0.0 this line offered the
-    5.x-era PDF as "the" guide and called its 12 pages six."""
+    version-5-era PDF as "the" guide and called its 12 pages six."""
     return _marked(GUIDE_MARK, '<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
                    f'<a href="{GUIDE_URL}">\U0001F4D6 Current guide (v8, English)</a>'
                    ' — install, workspaces, roles, the local workbench, the four modules, export and verification; the same text ships in the package '
                    '(<code>yuclaw workbench guide</code>). · <a href="tour.html">5-minute command-line tour</a> · '
-                   'Earlier PDF guides — historical: written for the 5.x command line, 12 pages, not updated for v8: '
+                   'Earlier PDF guides — historical: written for the version 5 command line, 12 pages, not updated for v8: '
                    '<a href="YUCLAW_User_Guide.pdf">English</a> · <a href="YUCLAW_Guide_Utilisateur_FR.pdf">Fran\u00e7ais</a></p>')
 
 
 def footer_guide_links_html() -> str:
     return _marked(FOOTER_GUIDE_MARK, f'<a href="{GUIDE_URL}">\U0001F4D6 Guide (current, v8)</a> \u00b7\n      '
-                   '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (5.x era, historical)</a> \u00b7\n      '
-                   '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF ant\u00e9rieur (s\u00e9rie 5.x, historique)</a> \u00b7')
+                   '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (version 5 era, historical)</a> \u00b7\n      '
+                   '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF ant\u00e9rieur (version 5, historique)</a> \u00b7')
 
 
 def workbench_card_html() -> str:

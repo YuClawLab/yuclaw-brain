@@ -2,6 +2,27 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [8.0.1] — 2026-09-21
+
+Research & education only. Not investment advice.
+
+### YUCLAW 8.0.1 — patch: defect repairs and clearer entry points
+
+Software, site-generation and documentation changes only. No statistic, estimator, threshold, protocol registration, universe promotion, activation or research-chain line changed; the 8.0.0 scope is unchanged. Releases 6.0.0 … 8.0.0 are preserved.
+
+- Validation Lab: every sentence that states a number, a direction or a sample size is now derived from the same figures as the tables and the public replay bundle. Three hand-typed sentences had gone stale: they said a forward 5-day IC of +0.09, a 20-day IC positive on every observed date and 2,847 ledger leaves, while the tables and the bundle showed −0.0277, −0.0399 with 43% positive dates, and 7,192 leaves. A negative or non-significant result is never worded as positive, and insufficient data is said to be insufficient. No statistic, estimator or threshold changed.
+- Command line: when the research backend cannot be reached, `cascade`, `replay`, `validation`, `memo` and `why` say so and exit 3. `cascade` no longer prints "no cascade" for a database it could not ask: a confirmed zero-event answer, the bundled demo fixture and an unreachable backend are reported as three different things, in text and in JSON. The explicit `YUCLAW_CORPUS=snapshot` mode is unchanged.
+- Workbench: an operation identifier reused with different content is answered with a clear refusal page (HTTP 409) on every form, including export verification, which used to drop the connection. Identical retries still record nothing twice; a damaged journal keeps its own fail-closed page.
+- Finding v8: `yuclaw workbench …` starts the local workbench (the same program as `python -m v8.workbench …`). `yuclaw --help`, the README, the package description and the homepage explain the workbench and the SHD / EVO / COM / PRC modules in plain words, with the route from installation to an export re-checked in a fresh workspace. The website is the research-content site; the workbench runs on the reader's own computer, binds the loopback address only and needs no account.
+- Self-check: `yuclaw workbench selftest` runs from the installed package alone, in a temporary fictional workspace, with the real code and the packaged examples' recorded results. Where no isolation backend passes its live probe it reports the protected SHD route as closed and confirms that it is closed; it never reports an admission that did not happen.
+- Website: the homepage title and footer carry the release version (they still said v7.0.1) and the version gate now reads titles. The current v8 guide is the primary guide link; the earlier PDF guides are labelled as history with their real length (12 pages, not six). The EvidenceBench page gives the installed scorer as the current instruction, states code, rubric status, item sets, registration and what has been checked separately, computes its question-echo control on the release's own items (rubric v1 credits an echo on T1; candidate rubric v2 rejects it — one negative control, nothing more) and publishes the weekly item-set lineage: 872 items on 2026-09-11 and 750 on 2026-09-18 are two different weekly sets. The Universe Explorer's filters have labels and its sortable headings are keyboard-operable buttons that announce the sort order.
+- Machine-readable name: `former_name` stays in `/capabilities.json` as a deprecated compatibility alias and now says so (`former_name_status`); it is not a product claim.
+- Status, stated once: the workbench and its four modules are experimental, local and owner-operated; including the modules activates nothing; protected SHD admission needs Linux with Landlock; no independent security review has been performed; there has been no user study — human benefit PENDING. Built in Canada.
+
+### Not changed, not claimed
+- Gate #15 (user comprehension test): requirement removed by the owner for v8 releases — not a pass. Human benefit: PENDING. No independent security review. bubblewrap, macOS and Windows isolation are not verified; SHD admission there stays closed.
+- The bundled check-claim snapshot still dates from 2026-08-06 and is not live data; the README transcript says so.
+
 ## [8.0.0] — 2026-09-21
 
 Research & education only. Not investment advice.

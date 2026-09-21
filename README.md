@@ -93,16 +93,16 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript produced from the release-candidate wheel `yuclaw-8.0.0-py3-none-any.whl` (yuclaw 8.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
+Transcript produced from the release-candidate wheel `yuclaw-8.0.1-py3-none-any.whl` (yuclaw 8.0.1, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 
 ```text
 $ yuclaw --version
-yuclaw 8.0.0
+yuclaw 8.0.1
 [exit 0]
 ```
 ```text
 $ yuclaw --help
-yuclaw 8.0.0 — evidence-first financial research CLI (research and education only; not investment advice)
+yuclaw 8.0.1 — evidence-first financial research CLI (research and education only; not investment advice)
 
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
@@ -116,7 +116,7 @@ commands:
   events         accepted-events export (derived data only)
   evidencebench  score EvidenceBench predictions against a supplied item set (--items; rubric v1 exact, v2 candidate; stdlib-only) (7.0.1)
   export         lens events export (--format csv|json; --page builds the evidence packet)
-... (16 more lines)
+... (17 more lines)
 [exit 0]
 ```
 ```text
@@ -224,7 +224,7 @@ research classifications, not buy/sell recommendations.
 [Canada Resources](https://yuclaw.ca/canada_resources.html) ·
 [Forward Tracking](https://yuclaw.ca/validation.html) ·
 [📖 Current guide (v8)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) ·
-[Earlier PDF guide (5.x era, historical)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
+[Earlier PDF guide (version 5 era, historical)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
 [Guide PDF antérieur (FR, historique)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) ·
 [Weekly Note](https://yuclaw.ca/weekly_note.html) ·
 [For AI agents → llms.txt](https://yuclaw.ca/llms.txt) ·
@@ -273,7 +273,7 @@ under its own as-of time.
 
 ## v7 — check → reproduce → challenge → document use (outsider verification, offline)
 
-Everything below runs without an account or a hosted service. Outputs are from the 8.0.0 candidate checkout (operator runs; **not** outsider receipts).
+Everything below runs without an account or a hosted service. The outputs below were recorded on the 7.0.0 candidate checkout (operator runs; **not** outsider receipts); the commands are unchanged since, and the manifest digest is different for every later tree.
 
 ```
 $ yuclaw packet build ./yuclaw-packet --source <checkout>
@@ -355,9 +355,9 @@ mismatch.
 
 ## What is in 6.0.x
 
-Current package version: `8.0.0` — the release notes, the frozen wheel and sdist
+Current package version: `8.0.1` — the release notes, the frozen wheel and sdist
 SHA-256 hashes, and the shipped-object list live on the
-[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.0)
+[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.1)
 ([all releases](https://github.com/YuClawLab/yuclaw-brain/releases) ·
 [CHANGELOG](CHANGELOG.md)). 7.0.0 adds the receipt engine, the offline verification packet, structured claim-support limits, local challenges and document-use receipts, and the Evidence Scoreboard. Scientific states are unchanged: Gate #15 stays MANUAL_REVIEW, Phase 6 N_eff stays PENDING, C6 stays DESCRIPTIVE, U350 stays shadow-only. Zero outsider receipts exist at release; the scoreboard shows that as a real zero.
 
@@ -501,7 +501,7 @@ look-ahead-free record.
 | **Validation Lab** | [validation_lab.html](https://yuclaw.ca/validation_lab.html) |
 | **SMH Evidence Lens** | [etf_evidence.html](https://yuclaw.ca/etf_evidence.html) |
 | **XLK Evidence Lens** | [xlk_evidence.html](https://yuclaw.ca/xlk_evidence.html) |
-| **📖 Guides** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the 5.x command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
+| **📖 Guides** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the version 5 command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |

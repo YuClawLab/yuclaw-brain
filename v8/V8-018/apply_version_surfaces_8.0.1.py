@@ -59,8 +59,9 @@ for f in ("docs/capabilities.json", "docs/evidence_index.json"):
     changes[f] = sub(f, f'"version": "v{OLD}"', f'"version": "v{NEW}"', 1)
 changes["docs/llms.txt"] = sub("docs/llms.txt", f"- Version: yuclaw {OLD}", f"- Version: yuclaw {NEW}", 1)
 changes["CITATION.cff"] = sub("CITATION.cff", f"version: {OLD}", f"version: {NEW}", 1)
-changes["README.md"] = sub("README.md", f"Current package version: `{OLD}`", f"Current package version: `{NEW}`", 1) + sub("README.md", f"releases/tag/v{OLD})", f"releases/tag/v{NEW})", 1) \
-    + sub("README.md", f"Outputs are from the {OLD} candidate checkout", f"Outputs are from the {NEW} candidate checkout", 1)
+changes["README.md"] = sub("README.md", f"Current package version: `{OLD}`", f"Current package version: `{NEW}`", 1) + sub("README.md", f"releases/tag/v{OLD})", f"releases/tag/v{NEW})", 1)
+# NOT substituted (8.0.1 finding): the README's "v7 — check → reproduce …" output block was recorded on the 7.0.0 candidate and
+# earlier version steps relabelled it 7.0.1 / 8.0.0 without re-recording it. The README now says where it was recorded.
 cl = (repo / "CHANGELOG.md").read_text(encoding="utf-8"); i = cl.index("## [")
 assert f"## [{NEW}]" not in cl, "CHANGELOG already carries this version"
 (repo / "CHANGELOG.md").write_text(cl[:i] + entry + "\n\n" + cl[i:], encoding="utf-8"); changes["CHANGELOG.md"] = 1
