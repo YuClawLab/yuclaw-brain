@@ -51,8 +51,8 @@
   from the newest post-cutoff evidence</strong>, so no static answer key can have been memorized from a
   training corpus: the answers did not exist at training time. That property is mechanical, not aspirational
   — keys ship openly.</p>
-  <p class="muted" style="margin-top:8px">Current release: 750 items ·
-  item-set hash <span class="mono">e96ea109ea55c228…</span> ·
+  <p class="muted" style="margin-top:8px">Current release: 750 items · generated 2026-09-18 ·
+  canonical item-set hash <span class="mono">e96ea109ea55c228…</span> ·
   generation spec registered as protocol <span class="mono">6adb3a06f578</span> ·
   window: trailing 7 days (post-cutoff, regenerated weekly)</p>
 </div>
@@ -60,23 +60,48 @@
 EvidenceBench measures groundedness against disclosed evidence; nothing here measures or implies future
 returns. Signal labels are research classifications, not buy/sell recommendations.</div>
 
-<div class="card"><h2>How to run (v1 rubric — checkout method)</h2>
-<p style="font-size:13.5px">The released 7.0.0 package does <strong>not</strong> ship the scorer module (<code>tools.yuclaw_evidencebench</code> lives in the
-repository, not in the wheel), so score from a pinned checkout. The released script reads the fixed <code>docs/evidencebench/items.jsonl</code>
-of that checkout and ignores extra arguments — there is no <code>--items</code> flag in 7.0.0. Run from the checkout root:</p>
-<pre>git clone --branch v7.0.0 --depth 1 https://github.com/YuClawLab/yuclaw-brain.git
-cd yuclaw-brain
-python3 -m tools.yuclaw_evidencebench score /absolute/path/predictions.json "your-model-name"</pre>
+<div class="card"><h2>How to run (current: the scorer in the installed package)</h2>
+<p style="font-size:13.5px">The scorer ships inside the package (since 7.0.1); nothing has to be cloned. It is standard-library only and reads exactly the item file you give it:</p>
+<pre>pip install yuclaw
+curl -sO https://yuclaw.ca/evidencebench/items.jsonl
+curl -sO https://yuclaw.ca/evidencebench/meta.json
+yuclaw evidencebench score predictions.json "your-model-name" --items items.jsonl --rubric v1 \
+       --expect-item-set-hash e96ea109ea55c228e8066080e8fb72f6d0e967b4ed32f9152f255fc44ae9a01e</pre>
 <p style="font-size:13.5px"><code>predictions.json</code> maps <code>item_id</code> → answer string; the literal abstention string is
-"cannot verify from the evidence provided". The pinned checkout carries the same item file the leaderboard was scored on.</p>
-<p style="font-size:13px;color:#A0AEC0"><strong>Rubric v1 limitation (disclosed, preserved):</strong> T1 credit is lexical — token overlap ≥ 0.5 with the keyed
-excerpt <em>or</em> the keyed accession appearing in the answer. Because T1 questions quote the accession, an answer that merely echoes the question
-scores 1.0 on those items. v1 numbers therefore reproduce a flawed rubric; they do not measure groundedness. v1 items and results
-stay byte-identical for reproducibility.</p>
-<p style="font-size:13px;color:#A0AEC0"><strong>Rubric v2 status: candidate, not registered, not available.</strong> A structured-fact rule (accession + event type +
-keyed numeric facts, question tokens excluded, contradictions score 0) is implemented and contract-tested in the next patch release as
-<code>yuclaw evidencebench score … --items … --rubric v2</code>; it is bounded lexical/numeric matching, not semantic verification. No v2 item set exists:
-generating one requires a prospective protocol registration (a research-chain append) that has not been adopted. There is no pooled leaderboard across versions.</p>
+"cannot verify from the evidence provided". With <code>meta.json</code> beside the items the identity is checked automatically; a mismatch is a refusal (exit 3), never a score.</p>
+<p style="font-size:13px;color:#A0AEC0"><strong>Historical reproduction only:</strong> release 7.0.0 did not ship the scorer; its numbers reproduce from a pinned checkout
+(<code>git clone --branch v7.0.0 --depth 1 https://github.com/YuClawLab/yuclaw-brain.git</code>, then
+<code>python3 -m tools.yuclaw_evidencebench score /absolute/path/predictions.json "name"</code> from its root, against the item file of that checkout).
+That recipe is kept for the record and is not the current instruction.</p>
+</div>
+
+<div class="card"><h2>What exists, stated separately</h2>
+<table><tbody>
+<tr><th scope="row">Code</th><td>The scorer is in the installed package: <code>yuclaw evidencebench score … --rubric v1|v2</code>.</td></tr>
+<tr><th scope="row">Rubric v1</th><td>The released rule, kept byte-identical for reproduction. <strong>Known flaw (disclosed, preserved):</strong> T1 credit is lexical — token overlap ≥ 0.5 with the keyed
+excerpt <em>or</em> the keyed accession appearing in the answer — and T1 questions quote the accession, so an answer that only repeats the question earns T1 credit. v1 numbers reproduce a flawed rubric; they do not measure groundedness.</td></tr>
+<tr><th scope="row">Rubric v2</th><td><strong>Candidate</strong> — implemented and contract-tested in the package; <strong>not registered</strong>. A structured-fact rule (accession + event type + keyed numeric
+facts, question tokens excluded, contradictions score 0): bounded lexical/numeric matching, not semantic verification.</td></tr>
+<tr><th scope="row">Item set</th><td>One published set: this week's v0.1 items, generated for v1. <strong>No v2 item set exists</strong>; generating one needs a prospective protocol registration that has not been adopted.</td></tr>
+<tr><th scope="row">Registration</th><td>The v0.1 generation spec is registered as protocol <span class="mono">6adb3a06f578</span>. Rubric v2 is not registered.</td></tr>
+<tr><th scope="row">Validation</th><td><strong>None is claimed.</strong> The package's contract tests check the rules on constructed cases (grounded answers, wrong numbers, contradictions, missing facts, abstention). There is no pooled leaderboard across versions and no external validation.</td></tr>
+</tbody></table>
+<p style="font-size:13px;color:#A0AEC0;margin-top:10px"><strong>Negative control on this release</strong> (computed at page build with the packaged scorer, on the 750 items identified below;
+every answer is the question itself): rubric v1 gives T1 = 1.0 and aggregate 0.4; rubric v2 gives T1 = 0.0 and aggregate 0.0.
+It shows v1's disclosed flaw and that v2 rejects a question echo; it is one control, not a validation of v2.</p>
+</div>
+
+<div class="card"><h2>Item-set identity and lineage</h2>
+<p style="font-size:13px">This release: <strong>750 items</strong>, generated 2026-09-18, window: trailing 7 days (post-cutoff, regenerated weekly).
+Two different digests identify it — do not compare one with the other:</p>
+<table><tbody>
+<tr><th scope="row">Canonical item-set hash</th><td class="mono">e96ea109ea55c228e8066080e8fb72f6d0e967b4ed32f9152f255fc44ae9a01e</td><td class="muted">sha256 of the canonical JSON of the items sorted by id (<code>item_set_hash</code> in meta.json; <code>--expect-item-set-hash</code>)</td></tr>
+<tr><th scope="row">Raw file SHA-256</th><td class="mono">461da4c19027ee4703b80327571198209412b4ece68f62e4dbad60e4f4becd50</td><td class="muted">sha256 of the bytes of items.jsonl as downloaded (<code>--expect-items-sha256</code>)</td></tr>
+</tbody></table>
+<p style="font-size:13px;margin-top:10px">The item set is <strong>regenerated every week</strong> from the evidence of the trailing window, so each release is a different set and the
+count moves with that week's evidence volume; nothing is migrated from one release to the next. Published releases
+(<a href="evidencebench/lineage.json" style="color:#00E676">lineage.json</a>; earlier entries come from the repository history of meta.json and name their commit):</p>
+<table><thead><tr><th>Generated</th><th>Items</th><th>Canonical hash</th><th>Recorded from</th></tr></thead><tbody><tr><td class='mono'>2026-09-18</td><td class='mono'>750</td><td class='mono'>e96ea109ea55c228…</td><td class='muted'>repository history, commit 5edb9e7e8502 (2026-09-18)</td></tr><tr><td class='mono'>2026-09-11</td><td class='mono'>872</td><td class='mono'>1bb76176b8598ad5…</td><td class='muted'>repository history, commit 6c8352db41a9 (2026-09-11)</td></tr><tr><td class='mono'>2026-09-04</td><td class='mono'>260</td><td class='mono'>f67198b6564c26b4…</td><td class='muted'>repository history, commit 85cae655419e (2026-09-04)</td></tr><tr><td class='mono'>2026-08-28</td><td class='mono'>448</td><td class='mono'>b9328e70779e504d…</td><td class='muted'>repository history, commit 4d7e7c4aa5ba (2026-08-29)</td></tr><tr><td class='mono'>2026-08-21</td><td class='mono'>338</td><td class='mono'>d3979193cf6b6911…</td><td class='muted'>repository history, commit ec035beae3cc (2026-08-21)</td></tr><tr><td class='mono'>2026-08-14</td><td class='mono'>322</td><td class='mono'>645914efcc8bce85…</td><td class='muted'>repository history, commit 3056c0f2422d (2026-08-14)</td></tr><tr><td class='mono'>2026-08-07</td><td class='mono'>484</td><td class='mono'>f0dc36d9787bccae…</td><td class='muted'>repository history, commit 4e059199f24b (2026-08-07)</td></tr><tr><td class='mono'>2026-08-05</td><td class='mono'>348</td><td class='mono'>51c0b55b917a52ec…</td><td class='muted'>repository history, commit 8b34c7c09e39 (2026-08-04)</td></tr></tbody></table>
 </div>
 
 <div class="card"><h2>Leaderboard</h2>
@@ -97,6 +122,6 @@ the repository (dataset citability: see CITATION.cff at the repo root and the
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="for_ai_builders.html" style="color:#A0AEC0">For AI builders</a></p>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-18 (last completed U.S. trading day); generated at 2026-09-18 23:02 UTC.</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-18 23:02 UTC · daily evidence block root 41fc78923dde (block 2026-09-18)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-18 (last completed U.S. trading day); generated at 2026-09-21 11:25 UTC.</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-21 11:25 UTC · daily evidence block root 41fc78923dde (block 2026-09-18)</footer>
 </div></body></html>
