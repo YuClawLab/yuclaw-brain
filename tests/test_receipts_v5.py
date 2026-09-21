@@ -43,7 +43,7 @@ def sub(aid, *, pid="P-A", grp="G-A", proto="prog", obs=T0, data=WHEEL, t="wheel
 class Fixture:
     """One populated synthetic-provenance-REAL store (test data marked real so public paths can be exercised in a temp dir)."""
     def __init__(self, tmp):
-        self.root = pathlib.Path(tmp) / "s"; self.st = Store(self.root); self.st.designate_reviewer("rev", "R", designated=True)
+        self.root = pathlib.Path(tmp) / "s"; self.st = Store(self.root); self.st.designate_reviewer("rev", "R", designated=True, now=T0 - timedelta(days=1))   # a FIXED appointment before the fixed reviews: an appointment stamped by the wall clock made six tests fail from 2026-09-20T12:00Z on (V8-017)
         self.tok = pathlib.Path(tmp) / "tok"; self.tok.write_text("R\n"); os.chmod(self.tok, 0o600)
     def full(self, raw, data=WHEEL, state="QUALIFIED", imported=None):
         r = self.st.import_submission(raw, synthetic=False, received_at=imported or T0)
