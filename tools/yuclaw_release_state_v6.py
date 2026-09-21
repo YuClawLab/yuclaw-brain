@@ -302,6 +302,16 @@ def gate15_result(version: str, scaffold_ok: bool, decision: dict | None) -> tup
                                 "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING")
 
 
+def canada_heading(version: str) -> str:
+    """The owner's wording is "Built in Canada" (README, homepage, the sentence below). Notes up to 8.0.0 were published with the
+    section heading "Made in Canada" and stay as published; from 8.0.1 the heading uses the same words as the sentence (C13)."""
+    try:
+        v = tuple(int(x) for x in version.split(".")[:3])
+    except ValueError:
+        v = (0, 0, 0)
+    return "Built in Canada" if v >= (8, 0, 1) else "Made in Canada"
+
+
 NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list)
 
 
@@ -510,7 +520,7 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 - {g15_not_in_release}
 - unaffiliated replications {g16['unaffiliated']}
 
-#### Made in Canada
+#### {canada_heading(VERSION)}
 
 Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.
 """

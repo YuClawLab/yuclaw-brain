@@ -106,6 +106,8 @@ class Patch801(unittest.TestCase):
         self.assertIn("#### Changed in 8.0.1 — patch: defect repairs and clearer entry points (no methodology, statistic, threshold, registration or scope change)", text); self.assertIn(self.CHANGES, text)
         self.assertIn("#### In the 8.0 line since 8.0.0 — the source-to-export commitment workbench (local, loopback only; scope unchanged)", text); self.assertNotIn("#### New in 8.0.1", text)
         self.assertEqual(n8.check_correspondence(text, pol, MATRIX), [])                                  # the unchanged 8.0.0 capability account, limits and activations all still have to be there
+        self.assertIn("- 8.0.1 keeps the frozen 8.0.0 scope: every statement below is that scope's own wording and applies to 8.0.1 unchanged.", text); self.assertNotIn("keeps the frozen", compose8(synthetic_policy()))
+        self.assertEqual((gen.canada_heading("8.0.1"), gen.canada_heading("8.1.0"), gen.canada_heading("8.0.0"), gen.canada_heading("7.0.1")), ("Built in Canada", "Built in Canada", "Made in Canada", "Made in Canada"))   # published notes keep their heading
         for name, _ in notes_v7.ACTIVATIONS:
             self.assertIn(f"- {name}: INACTIVE", text)
         self.assertIn("human benefit", text.lower()); self.assertNotRegex(text, r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|satisfied)\b")

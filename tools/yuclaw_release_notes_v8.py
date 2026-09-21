@@ -32,6 +32,7 @@ from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[1]
 SUPPORTED_VERSIONS = ("8.0.0", "8.0.1")
+PATCH_SCOPE_NOTE = "- {version} keeps the frozen {scope_version} scope: every statement below is that scope's own wording and applies to {version} unchanged."
 PATCH_OF = {"8.0.1": "8.0.0"}                      # patch release → the release whose frozen scope it keeps
 SCOPE_PATH = _REPO / "v8" / "scope" / "v8.0.0-scope.json"
 GATE15_DECISION = _REPO / "v8" / "policy" / "gate15_release_requirement.json"
@@ -221,7 +222,7 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
              "#### Activation status (every proposed activation)", "", activation_status(policy), "",
              "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", policy_disclosure(policy, dec), "",
              "#### Continuing objects (unchanged from 7.0.1) — name · receipt · status", "", objects, "",
-             "#### Not in this release", "", not_in_this_release(m, tail), ""]
+             "#### Not in this release", "", *([PATCH_SCOPE_NOTE.format(version=version, scope_version=scope_version)] if version in PATCH_OF else []), not_in_this_release(m, tail), ""]
     return "\n".join(parts)
 
 
