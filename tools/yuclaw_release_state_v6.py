@@ -12,11 +12,22 @@ DEFERRED-BLOCKING. Nothing here flips release_authorized (A-6: only the
 release-day order's Phase 2 may, and it does so outside the tree). Numbers
 are derived, never typed.
 
-Usage: python3 tools/yuclaw_release_state_v6.py --evidence <json> [--public]
+Usage: python3 tools/yuclaw_release_state_v6.py --evidence <json> [--public] [--patch] [--release-policy <json>]
+                                                [--allow-production-write-probe]
   <json> carries session-measured facts that are not re-derivable from the
   tree (gate-6 replay hashes, restage tree hashes, tripwire observations,
   the base main commit the release candidate is built on). Everything else
   is recomputed from the checked-out tree.
+Database environments (8.0.1): the nightly-battery checks and the on-box
+matrices read the research database through sessions that cannot write
+(libpq default_transaction_read_only=on); `pytest tests` runs against a
+disposable PostgreSQL node the generator creates and seeds like hosted CI
+(tools/yuclaw_disposable_pg.py) and is recorded NOT RUN when that node
+cannot be provided — never against the ambient environment. The declared
+production write probe (check_u350_isolation.py, gate 4) is NOT RUN unless
+--allow-production-write-probe expresses the owner's separate authorization.
+Each check's record names its command, database environment (variable names
+and routing values only — no secret) and the candidate commit.
 Outputs: internal/release_state_manifest_v6.json
          internal/release_notes_v6_DRAFT.md   (Tier 1 — internal, never published)
          internal/release_notes_v6_PUBLIC.md  (Tier 2 — GitHub Release body +
@@ -38,6 +49,7 @@ _REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(_REPO / "tools"))
 sys.path.insert(0, str(_REPO))
 from yuclaw_protocol_registry import Registry  # noqa: E402
+import yuclaw_disposable_pg as dpg  # noqa: E402  (8.0.1: production read-only sessions vs a disposable node for write-requiring tests)
 
 VERSION = next(l.split('"')[1] for l in (_REPO / "pyproject.toml").read_text().splitlines()
                if l.startswith("version"))     # never typed: the package version IS the release version
@@ -99,17 +111,75 @@ EXTRA_CHECKS = [
 ]
 
 
-def _run_argv(argv):
-    env = dict(os.environ, TZ="UTC", LC_ALL="C", PYTHONHASHSEED="0",
-               PYTHONDONTWRITEBYTECODE="1", OMP_NUM_THREADS="1")
+# ---- database routing (8.0.1; owner order of 2026-09-21/22: separate database environments) -----------------------
+# ONE invocation, TWO database environments, declared per check — never inferred from what happens to be reachable:
+#   * production-data checks read the research database through a session that cannot write (libpq PGOPTIONS
+#     default_transaction_read_only=on appended to the ambient settings);
+#   * the write-requiring extra check runs against a disposable PostgreSQL node seeded like hosted CI, in an environment
+#     stripped of every production connection variable (tools/yuclaw_disposable_pg.py); if that node cannot be provided
+#     the check is recorded NOT RUN — it is never run against the ambient environment;
+#   * a check that PROBES production by writing is NOT RUN unless the owner's separate authorization is expressed as
+#     --allow-production-write-probe; until then the gate it feeds stays RED (fail-closed, nothing weakened).
+PRODUCTION_WRITE_PROBE_CHECKS = {
+    "check_u350_isolation.py": ("I1/I2 attempt INSERT/UPDATE on public tables as the U350 role (refusal expected), I3 commits a probe row "
+                                "into u350.manifest and deletes it, ensure_namespace() commits GRANT/REVOKE DDL — a production write probe "
+                                "by design (gate 4: 'u350 isolation proven by attempted writes')"),
+}
+WRITE_REQUIRING_EXTRA = {"pytest tests": "tests/test_compliance_regression.py creates and deletes api_keys and request_logs rows"}
+ROUTE_PRODUCTION_RO = "production (read-only session: PGOPTIONS default_transaction_read_only=on)"
+ROUTE_DISPOSABLE = "disposable node"
+ROUTE_PROBE_NOT_RUN = "NOT RUN — production write probe; requires a write-capable session under the owner's separate authorization (--allow-production-write-probe)"
+ROUTE_PROBE_ALLOWED = "production (write probe explicitly allowed by --allow-production-write-probe)"
+ROUTE_DISPOSABLE_UNAVAILABLE = "NOT RUN — disposable node unavailable; never run against the ambient environment"
+RC_NOT_RUN_DISPOSABLE, RC_NOT_RUN_PROBE = 97, 98
+_BASE_ENV = dict(TZ="UTC", LC_ALL="C", PYTHONHASHSEED="0", PYTHONDONTWRITEBYTECODE="1", OMP_NUM_THREADS="1")
+
+
+def route_for(name, *, extra=False, allow_probe=False, node_available=True):
+    """The database environment a check runs in. Declared routing; the same answer whatever is reachable."""
+    if extra and name in WRITE_REQUIRING_EXTRA:
+        return ROUTE_DISPOSABLE if node_available else ROUTE_DISPOSABLE_UNAVAILABLE
+    if not extra and name in PRODUCTION_WRITE_PROBE_CHECKS:
+        return ROUTE_PROBE_ALLOWED if allow_probe else ROUTE_PROBE_NOT_RUN
+    return ROUTE_PRODUCTION_RO
+
+
+def _record(rc, last, argv, route, env, head):
+    """One check's record: result, command, database environment (names and routing values only — no secret), candidate."""
+    return {"rc": rc, "last": last[:240], "argv": [str(x) for x in argv], "database": route,
+            "libpq": dpg.describe_libpq(env) if env else {"variables_set": [], "routing": {}, "password_material_reachable": False, "read_only_guard": False},
+            "candidate_sha": head}
+
+
+def _run_argv(argv, env, route, head):
     p = subprocess.run([sys.executable] + argv, cwd=str(_REPO), capture_output=True,
                        text=True, env=env, timeout=3600)
     lines = [l for l in (p.stdout + p.stderr).splitlines() if l.strip()]
-    return {"rc": p.returncode, "last": (lines[-1] if lines else "")[:240]}
+    return _record(p.returncode, lines[-1] if lines else "", argv, route, env, head)
 
 
-def _run(tool, args):
-    return _run_argv([str(_REPO / "tools" / tool)] + args)
+def run_check(tool, args, head, *, allow_probe=False):
+    """A nightly-battery check (CHECKS): production read-only, or the declared write probe (not run unless allowed)."""
+    argv = [str(_REPO / "tools" / tool)] + list(args)
+    route = route_for(tool, allow_probe=allow_probe)
+    if route == ROUTE_PROBE_NOT_RUN:
+        return _record(RC_NOT_RUN_PROBE, "NOT RUN — " + PRODUCTION_WRITE_PROBE_CHECKS[tool] + "; requires a write-capable production session under the owner's separate authorization",
+                       argv, route, None, head)
+    env = dict(os.environ, **_BASE_ENV)
+    if route == ROUTE_PRODUCTION_RO:
+        env = dpg.readonly_env(env)
+    return _run_argv(argv, env, route, head)
+
+
+def run_extra(name, argv, head, *, node=None, node_error=None):
+    """A release-critical extra check (EXTRA_CHECKS): the write-requiring one on the disposable node, the rest production read-only."""
+    route = route_for(name, extra=True, node_available=node is not None)
+    if route == ROUTE_DISPOSABLE_UNAVAILABLE:
+        return _record(RC_NOT_RUN_DISPOSABLE, "NOT RUN — " + WRITE_REQUIRING_EXTRA[name] + f"; disposable node unavailable ({node_error}); never run against the ambient environment",
+                       argv, route, None, head)
+    env = dict(os.environ, **_BASE_ENV)
+    env = node.env(env) if route == ROUTE_DISPOSABLE else dpg.readonly_env(env)
+    return _run_argv(argv, env, route, head)
 
 
 def _git(*a):
@@ -343,6 +413,9 @@ def main() -> int:
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
     ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
     ap.add_argument("--release-policy", help="private release-policy record (allocation; Gate #15 route for 7.x, NOT_REQUIRED for v8 releases per the owner's recorded decision); the 7.x and 8.0.0 public notes are composed from it and bound to it")
+    ap.add_argument("--allow-production-write-probe", action="store_true",
+                    help="run the declared production write probe(s) (gate 4: check_u350_isolation.py) with a write-capable session — ONLY under the "
+                         "owner's separate authorization; by default they are NOT RUN and gate 4 stays RED")
     a = ap.parse_args()
     ev = json.loads(Path(a.evidence).read_text())
     now = datetime.now(timezone.utc).isoformat()
@@ -381,8 +454,28 @@ def main() -> int:
         if args and args[0] == "--only":            # one tool, several gate rows
             return f"{t} {args[0]} {args[1]}"
         return t + (" " + args[0] if args and args[0].startswith("--") else "")
-    checks = {_key(t, args): _run(t, args) for t, args in CHECKS}
-    extra = {name: _run_argv(argv) for name, argv in EXTRA_CHECKS}
+    head_sha0 = _git("rev-parse", "HEAD")
+    node, node_error = None, None
+    try:
+        node = dpg.DisposableNode(_REPO).start()                  # the write-requiring extra check runs here, or is NOT RUN
+    except dpg.DisposableUnavailable as exc:
+        node_error = str(exc)
+    try:
+        checks = {_key(t, args): run_check(t, args, head_sha0, allow_probe=a.allow_production_write_probe) for t, args in CHECKS}
+        extra = {name: run_extra(name, argv, head_sha0, node=node, node_error=node_error) for name, argv in EXTRA_CHECKS}
+    finally:
+        node_identity = node.stop() if node is not None else {"unavailable": node_error}
+    database_routing = {
+        "policy": "one invocation, two database environments: production-data checks in read-only sessions; write-requiring tests on a disposable node; "
+                  "production write probes NOT RUN unless explicitly allowed (declared routing, no fallback)",
+        "read_only_guard": dpg.READ_ONLY_OPTION,
+        "production_write_probe_allowed": bool(a.allow_production_write_probe),
+        "production_write_probes": PRODUCTION_WRITE_PROBE_CHECKS,
+        "write_requiring_extra_checks": WRITE_REQUIRING_EXTRA,
+        "disposable_node": node_identity,
+        "routes": {**{k: v["database"] for k, v in checks.items()}, **{k: v["database"] for k, v in extra.items()}},
+    }
+    failing = [c for c, v in {**checks, **extra}.items() if v["rc"] != 0]
     def ok(name):
         return checks[name]["rc"] == 0
     # ---- ledger continuity (gate 3)
@@ -671,6 +764,8 @@ Never rendered: "independently replicated".
         "gate_vocabulary": ["GREEN", "RED", "MANUAL_REVIEW", "REMOVED_BY_OWNER", "PENDING_EXTERNAL", "DEFERRED-BLOCKING"],
         "gate15_requirement": ({"status": "REMOVED_BY_OWNER", "decision_utc": g15_dec["decision_utc"], "record": "v8/policy/gate15_release_requirement.json", "record_sha256": g15_dec["sha256"], "meaning": "not a pass; no study run; human benefit PENDING"} if g15_dec else None),
         "checks": checks, "extra_checks": extra,
+        "database_routing": database_routing,
+        "preflight_failing_checks": failing,
         "restage": {"gate11_mutation_boundary": {"live_identical": live_same, "registry_identical": reg_same, "output_identical": out_same, "preview_files_changed": ev["restage"]["preview_files_changed"]}, **ev["restage"]},
         "trees_now": {f"{k}_tree_sha256_over_manifest": v[0] for k, v in trees.items()},
         "artifact_sha256": shas,
@@ -690,7 +785,8 @@ Never rendered: "independently replicated".
         "release_authorized": False, "publishing_permitted": False,
         "remaining_blockers": ([] if g15_dec else [
             "gate #15 full-form user comprehension study does not exist (deterministic scaffold only) — MANUAL_REVIEW",
-        ]) + ([f"gate #{r['gate']} {r['name']} — {r['result']}" for r in table if r["result"] == "RED"]),
+        ]) + ([f"gate #{r['gate']} {r['name']} — {r['result']}" for r in table if r["result"] == "RED"])
+          + [f"preflight check {c} — rc {v['rc']} ({v['database']})" for c, v in {**checks, **extra}.items() if v["rc"] != 0],
         "remaining_external_checks": ([
             "gate #16 stranger-machine replication run (public log honestly empty; nothing may pre-fill it) — PENDING_EXTERNAL"]
             if g16["result"] == "PENDING_EXTERNAL" else []) + [
