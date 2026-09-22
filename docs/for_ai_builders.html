@@ -63,46 +63,37 @@ established — no buy, sell, or alpha conclusion is supported by this page.</di
 returns a passport: the claim as parsed, the matched EvidenceObjects with excerpts and hashes, and one of
 five mechanical statuses. Below is a real passport generated at this page's build:</p>
 <pre>{
- &quot;claim_as_given&quot;: &quot;{\&quot;ticker\&quot;: \&quot;NVDA\&quot;, \&quot;type\&quot;: \&quot;INSIDER_SELL\&quot;, \&quot;accession\&quot;: \&quot;0001588670-26-000014\&quot;}&quot;,
+ &quot;claim_as_given&quot;: &quot;{\&quot;ticker\&quot;: \&quot;NVDA\&quot;, \&quot;type\&quot;: \&quot;INSIDER_SELL\&quot;, \&quot;accession\&quot;: \&quot;0001199039-26-000016\&quot;}&quot;,
  &quot;claim_as_parsed&quot;: {
   &quot;ticker&quot;: &quot;NVDA&quot;,
   &quot;type&quot;: &quot;INSIDER_SELL&quot;,
-  &quot;accession&quot;: &quot;0001588670-26-000014&quot;,
+  &quot;accession&quot;: &quot;0001199039-26-000016&quot;,
   &quot;date_range&quot;: null
  },
- &quot;generated&quot;: &quot;2026-09-21T23:03:06.817084+00:00&quot;,
+ &quot;generated&quot;: &quot;2026-09-22T23:03:35.271141+00:00&quot;,
  &quot;status&quot;: &quot;SOURCE_MATCHED&quot;,
  &quot;matched_evidence&quot;: [
   {
    &quot;ticker&quot;: &quot;NVDA&quot;,
    &quot;evidence_type&quot;: &quot;INSIDER_SELL&quot;,
-   &quot;filing_date&quot;: &quot;2026-09-18&quot;,
-   &quot;accession_number&quot;: &quot;0001588670-26-000014&quot;,
-   &quot;excerpt&quot;: &quot;Kress Colette S 9868 shares @ $219.59 on 2026-09-17 ($2,166,946)&quot;,
-   &quot;source_hash&quot;: &quot;b50c59fc48ecb8fb5366beb61e9dfd8354a7af45b7a0d36b6f0dbb92232ec19e&quot;,
-   &quot;available_as_of&quot;: &quot;2026-09-18T15:14:30.371529-06:00&quot;
+   &quot;filing_date&quot;: &quot;2026-09-22&quot;,
+   &quot;accession_number&quot;: &quot;0001199039-26-000016&quot;,
+   &quot;excerpt&quot;: &quot;STEVENS MARK A S 10000 shares @ $220.42 on 2026-09-18 ($2,204,199)&quot;,
+   &quot;source_hash&quot;: &quot;2bc0e2b12f335a1d6210610b5438ce624babc487aab1026db70607863577b399&quot;,
+   &quot;available_as_of&quot;: &quot;2026-09-22T14:58:46.638515-06:00&quot;
   },
   {
    &quot;ticker&quot;: &quot;NVDA&quot;,
    &quot;evidence_type&quot;: &quot;INSIDER_SELL&quot;,
-   &quot;filing_date&quot;: &quot;2026-09-18&quot;,
-   &quot;accession_number&quot;: &quot;0001588670-26-000014&quot;,
-   &quot;excerpt&quot;: &quot;Kress Colette S 4681 shares @ $218.01 on 2026-09-17 ($1,020,525)&quot;,
-   &quot;source_hash&quot;: &quot;94090f4defae0ed571148ee47fe764bb74549e4d6e3b299c544a3c6d808c286e&quot;,
-   &quot;available_as_of&quot;: &quot;2026-09-18T15:14:30.371529-06:00&quot;
-  },
-  {
-   &quot;ticker&quot;: &quot;NVDA&quot;,
-   &quot;evidence_type&quot;: &quot;INSIDER_SELL&quot;,
-   &quot;filing_date&quot;: &quot;2026-09-18&quot;,
-   &quot;accession_number&quot;: &quot;0001588670-26-000014&quot;,
-   &quot;excerpt&quot;: &quot;Kress Colette S 20369 shares @ $219.02 on 2026-09-17 ($4,461,161)&quot;,
-   &quot;source_hash&quot;: &quot;5336561c92a5a1e5d176f19018e85faa0ae95c34eef646c8f03c6d6e5162d4aa&quot;,
-   &quot;available_as_of&quot;: &quot;2026-09-18T15:14:30.371529-06:00&quot;
+   &quot;filing_date&quot;: &quot;2026-09-22&quot;,
+   &quot;accession_number&quot;: &quot;0001199039-26-000016&quot;,
+   &quot;excerpt&quot;: &quot;STEVENS MARK A S 1356000 shares @ $219.72 on 2026-09-18 ($297,942,896)&quot;,
+   &quot;source_hash&quot;: &quot;b6e2f772791f90da19d076e8ecaf46f074e04538e8b67dd2a1a42f1546c86371&quot;,
+   &quot;available_as_of&quot;: &quot;2026-09-22T14:58:46.638515-06:00&quot;
   }
  ],
  &quot;misses&quot;: [],
- &quot;replay&quot;: &quot;yuclaw check-claim --ticker NVDA --type INSIDER_SELL --accession 0001588670-26-000014&quot;,
+ &quot;replay&quot;: &quot;yuclaw check-claim --ticker NVDA --type INSIDER_SELL --accession 0001199039-26-000016&quot;,
  &quot;not_advice&quot;: &quot;Research and education only \u2014 not investment advice. A passport describes what YUCLAW&#x27;s corpus contains; UNSUPPORTED means &#x27;not found in YUCLAW&#x27;s corpus \u2014 never a truth verdict&#x27;.&quot;,
  &quot;support_limits&quot;: {
   &quot;source_match&quot;: &quot;EXACT&quot;,
@@ -113,7 +104,7 @@ five mechanical statuses. Below is a real passport generated at this page's buil
   &quot;research_interpretation&quot;: &quot;NONE&quot;,
   &quot;research_interpretation_note&quot;: &quot;the passport never states a truth verdict, direction, return, or prediction&quot;,
   &quot;unsupported_conclusion&quot;: &quot;not applicable&quot;,
-  &quot;matched_count&quot;: 3,
+  &quot;matched_count&quot;: 2,
   &quot;miss_count&quot;: 0
  }
 }</pre>
@@ -175,6 +166,6 @@ twice-run identity). Only a true cold start (no previous-day set at all) publish
 <div class="amber"><strong>Research and education only — not investment advice.</strong>
 Past results — in-sample or forward-tracked — do not predict future performance.</div>
 <p class="muted">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a></p>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-21 (last completed U.S. trading day); generated at 2026-09-21 23:03 UTC.</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-21 23:03 UTC · daily evidence block root 77521a55def5 (block 2026-09-21)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-22 (last completed U.S. trading day); generated at 2026-09-22 23:03 UTC.</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-09-22 23:03 UTC · daily evidence block root c091c96c315e (block 2026-09-22)</footer>
 </div></body></html>
