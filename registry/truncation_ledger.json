@@ -211,8 +211,8 @@
   }
  ],
  "detector_allowlist": {
-  "version": 1,
-  "reviewed": "2026-08-07",
+  "version": 2,
+  "reviewed": "2026-08-07; v2 2026-09-22 (8.0.1): MAX_SOCKET_PATH in tools/yuclaw_disposable_pg.py is the operating-system bound on a unix-socket path (sun_path 108 bytes, 100 kept for the .s.PGSQL.<port> file) for the release preflight's disposable PostgreSQL node \u2014 not a data truncation: when the temp path is longer the node is refused (DisposableUnavailable) and the write-requiring check is recorded NOT RUN; no data is filtered or capped",
   "note": "narrow-and-trusted (amendment A-3): cap/limit/max constants and exclusion enums present at registration; widen only by versioned review",
   "constants": [
    {
@@ -254,6 +254,10 @@
    {
     "file": "tools/deploy_verify.py",
     "name": "MAX_HOPS"
+   },
+   {
+    "file": "tools/yuclaw_disposable_pg.py",
+    "name": "MAX_SOCKET_PATH"
    }
   ]
  }
