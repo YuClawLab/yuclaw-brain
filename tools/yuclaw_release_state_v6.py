@@ -121,9 +121,10 @@ EXTRA_CHECKS = [
 #   * a check that PROBES production by writing is NOT RUN unless the owner's separate authorization is expressed as
 #     --allow-production-write-probe; until then the gate it feeds stays RED (fail-closed, nothing weakened).
 PRODUCTION_WRITE_PROBE_CHECKS = {
-    "check_u350_isolation.py": ("I1/I2 attempt INSERT/UPDATE on public tables as the U350 role (refusal expected), I3 commits a probe row "
-                                "into u350.manifest and deletes it, ensure_namespace() commits GRANT/REVOKE DDL — a production write probe "
-                                "by design (gate 4: 'u350 isolation proven by attempted writes')"),
+    "check_u350_isolation.py": ("I1/I2 attempt INSERT/UPDATE on public tables as the U350 role (refusal expected), I3 commits one row with this run's "
+                                "unique identity into u350.manifest and deletes exactly that row in the same transaction — a production write probe "
+                                "by design (gate 4: 'u350 isolation proven by attempted writes'); the configuration is inspected read-only first (I0) "
+                                "and never created, granted or revoked by the check"),
 }
 WRITE_REQUIRING_EXTRA = {"pytest tests": "tests/test_compliance_regression.py creates and deletes api_keys and request_logs rows"}
 ROUTE_PRODUCTION_RO = "production (read-only session: PGOPTIONS default_transaction_read_only=on)"
