@@ -1,10 +1,10 @@
 {
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 0 of 0 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XLF --date D",
- "build_id": "why-2026-09-18T230229",
+ "build_id": "why-2026-09-21T230305",
  "components": {
-  "c1": -0.171,
+  "c1": -0.1375,
   "c2": 0.0,
-  "c3": 0.22832032,
+  "c3": -0.1641228,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -14,21 +14,21 @@
  },
  "corrections": [],
  "evidence_coverage": {
-  "as_of": "2026-09-18T23:02:22.741368+00:00",
+  "as_of": "2026-09-21T23:02:58.565756+00:00",
   "ecs": 0,
   "events_90d": 0,
   "metric_id": "ecs",
   "recency_days": null,
-  "source_sha256": "457a25b893f366412086d630d08f7d12767b1aa9298741cf880ebcd220484abf",
+  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
   "substrate_active": 0,
   "type_diversity": 0
  },
  "evidence_objects": [],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-18T230229",
+  "build_id": "why-2026-09-21T230305",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-18T17:02:30.330336-06:00",
+  "corpus_end": "2026-09-21T17:03:06.619618-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": null,
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -39,11 +39,15 @@
   "scope": "accepted evidence objects for XLF in the declared corpus",
   "total_available": 0
  },
- "generated": "2026-09-18T23:02:29.537958+00:00",
+ "generated": "2026-09-21T23:03:05.813042+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/XLF.history.json",
- "label": "NEUTRAL",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-09-21",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-18",
    "label": "NEUTRAL"
@@ -159,10 +163,6 @@
   {
    "date": "2026-08-11",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-10",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -271,10 +271,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2278,
+ "score": 0.147,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "XLF",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

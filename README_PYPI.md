@@ -174,17 +174,17 @@ $ yuclaw check-claim --accession 0001045810-26-000019
 ```
 ```text
 $ yuclaw replay-lab docs/replay/lab_replay_bundle.json
-Replay bundle built 2026-09-18 23:02 UTC from source commit a3b3ed2ebac4
-Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 0bc4bf2ebdfa
+Replay bundle built 2026-09-21 23:02 UTC from source commit 46832138a830
+Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ f30042a24acb
 
-[forward] 82 rebalance periods, window ['2026-05-20', '2026-09-18']
-  spread top_minus_bottom   mean/period -0.00256  t=-0.83 p=0.407  n=82  CI95=(-0.00854,+0.00336)
-  spread top_minus_universe mean/period -0.00214  t=-1.31 p=0.195  n=82  CI95=(-0.00537,+0.00102)
-  IC  1d  mean -0.0032  NW-t=-0.12 (lag 0) p=0.903  T=87 dates
-  IC  5d  mean -0.0277  NW-t=-0.71 (lag 4) p=0.477  T=83 dates
-  IC 20d  mean -0.0399  NW-t=-1.17 (lag 19) p=0.244  T=67 dates
-  market-model vs_universe  alpha/period -0.00214 beta +1.00  t(alpha)=-1.29 p=0.200  R2=0.225  n=82
-  market-model vs_spy       alpha/period -0.00163 beta +0.87  t(alpha)=-0.96 p=0.339  R2=0.177  n=82
+[forward] 83 rebalance periods, window ['2026-05-20', '2026-09-21']
+  spread top_minus_bottom   mean/period -0.00222  t=-0.73 p=0.467  n=83  CI95=(-0.00821,+0.00371)
+  spread top_minus_universe mean/period -0.00159  t=-0.94 p=0.351  n=83  CI95=(-0.00487,+0.00170)
+  IC  1d  mean -0.0003  NW-t=-0.01 (lag 0) p=0.992  T=88 dates
+  IC  5d  mean -0.0316  NW-t=-0.81 (lag 4) p=0.420  T=84 dates
+  IC 20d  mean -0.0442  NW-t=-1.30 (lag 19) p=0.198  T=68 dates
+  market-model vs_universe  alpha/period -0.00172 beta +1.12  t(alpha)=-1.00 p=0.320  R2=0.258  n=83
+  market-model vs_spy       alpha/period -0.00113 beta +1.00  t(alpha)=-0.65 p=0.521  R2=0.210  n=83
 
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
   spread top_minus_bottom   mean/period +0.00553  t=+0.41 p=0.686  n=13  CI95=(-0.01937,+0.03079)
