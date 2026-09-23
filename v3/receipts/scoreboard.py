@@ -23,7 +23,7 @@ from v3.receipts.store import Store
 _REPO = Path(__file__).resolve().parents[2]
 DEFINITIONS = {
     "witnesses": "WITNESS_REVIEW receipts: people who examined the methodology and left a reviewable, reviewed receipt; unreceipted relationships are never counted",
-    "pilots": "BYOS pilot engagements with a signed scope (none: counsel review is the blocker)",
+    "pilots": "BYOS pilot engagements with a signed scope recorded in this scoreboard; service availability is not a recorded engagement",
     "replications": "REPLICATION receipts: attempts to reproduce published artifacts; primary population = qualified attempts (failed/inconclusive retained); successful reported separately",
     "audits": "AUDIT_BREAK_ATTEMPT receipts: outsider attempts to break a published check (a found break stays visible); internal test runs are not audits",
     "refusals": "REFUSAL receipts: a real user asked for an unsupported conclusion and the product refused, reviewed separately; automated check-claim telemetry and receipt qualification failures are not counted here",
@@ -74,7 +74,7 @@ def build(store_dir, *, synthetic: bool = False, registration: dict | None = Non
                    if tgt else {"state": "UNBOUND", "note": "no release target manifest supplied; exact-target coverage is UNBOUND (not zero)"}),
         "columns": {
             "witnesses": cat_col("WITNESS_REVIEW", {"note": "receipted: %d · unreceipted relationships not counted" % cat["WITNESS_REVIEW"]["receipted"]}),
-            "pilots": {"count": 0, "state": "PENDING_COUNSEL_REVIEW"},
+            "pilots": {"count": 0, "state": "ZERO"},
             "replications": {"attempts": c["attempts"], "qualified": c["qualified"], "successful": c["successful"], "visible": c["visible"],
                               "windows": c["windows"], "registration": c["registration"], "artifacts": c["artifacts"], "corrected_attempts": c["corrected_attempts"],
                               "program_evidence_legacy": {"source": legacy_source, "entries": len(leg), "reproduced": sum(1 for l in leg if l["outcome"] == "REPRODUCED"),
