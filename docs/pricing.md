@@ -1,54 +1,26 @@
-# Pricing
+# Software and service pricing
 
-YUCLAW is **free and open source** under the [Apache License 2.0](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE).
+YUCLAW software is **free and open source** under the [Apache License 2.0](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE). There is no software subscription, paywall or premium software tier. Running the software may involve your own hardware and third-party service costs.
 
-There is no subscription. There is no paywall. There is no premium tier.
+## Signal Review research services
 
-The full system — the local LLM scoring, the signal aggregator, the
-dashboard, the Telegram channel, the Alpaca paper-trading bridge, the
-on-chain audit anchors — runs on your own hardware (or a cloud machine
-you rent) using free or trial API tiers (Finnhub, EIA, Alpaca paper).
+[Signal Review](https://yuclaw.ca/signal_review.html) is a separate, optional research service. You can use the open-source software without purchasing a service.
 
-Anything anyone offers you that calls itself "YUCLAW Pro", "premium",
-or gates access behind a fee is not us.
+| Service | Fixed fee | Scope |
+|---|---:|---|
+| Founding Pilot A — Signal validation core | CAD 2,500 | Locked protocol and hash before computation; signal decomposition suite; methodology note; reproduction bundle; research memo |
+| Founding Pilot B — Full signal review | CAD 5,000 | Everything in A, plus basket event-study panel, falsification battery, coverage and exclusion anatomy, and 30 days of written questions plus a findings session |
 
----
+See the service page for the detailed deliverables and research limits. Fees are fixed, not performance-linked or based on assets. A service fee does not purchase a favourable result, an elevated research standing or an investment recommendation.
 
-## Supporting the project
+## Request a scope call
 
-YUCLAW is Apache-2.0 licensed and will remain free. Donation channels may be added
-in a future release; for now, the best way to support the project is to
-[star the repo](https://github.com/YuClawLab/yuclaw-brain), contribute
-[issues](https://github.com/YuClawLab/yuclaw-brain/issues) or
-[pull requests](https://github.com/YuClawLab/yuclaw-brain/pulls), and
-share the project with other quant students.
+Open a [Signal Review slot request](https://github.com/YuClawLab/yuclaw-brain/issues/new?title=Signal%20Review%20slot%20request) describing your research question in general terms. **Do not attach datasets or post confidential information in a public issue.**
 
-If you cite YUCLAW in academic work, the related preprint is
-[SSRN #6461418](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6461418).
+Scope, fees, data handling, delivery arrangements and invoicing are agreed in writing before work begins. A request does not reserve a slot. This website has no upload form or payment checkout; do not post payment details, brokerage credentials, access tokens or wallet seeds.
 
----
+## Support the open-source project
 
-## What you will never be asked for
+You can [star the repository](https://github.com/YuClawLab/yuclaw-brain), report reproducible issues, contribute improvements, or share the project. No donation checkout is offered on this page.
 
-- Bank or credit card details.
-- A "paid signal upgrade".
-- Telegram channel subscription fees.
-- Access tokens, brokerage logins, or wallet seeds.
-
-The only payment surface that exists is the donation block above, and it
-is entirely optional.
-
----
-
-## License
-
-MIT. Use it commercially. Fork it. Modify it. The only requirement is
-keeping the copyright and license notice in derivative work. See the
-[LICENSE](https://github.com/YuClawLab/yuclaw-brain/blob/main/LICENSE)
-file for the full text.
-
----
-
-⚠️ Research and educational software. Not financial advice. AI-generated
-signals may contain errors. Past performance does not predict future
-returns. Apache-2.0 Licensed.
+**Research and education only — not investment advice.** Review outputs are research classifications, not buy/sell recommendations. Past results do not predict future performance.
