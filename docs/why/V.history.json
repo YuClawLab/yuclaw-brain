@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "V",
- "build_id": "why-2026-09-22T230334",
- "generated": "2026-09-22T23:03:34.246597+00:00",
+ "build_id": "why-2026-09-23T230224",
+ "generated": "2026-09-23T23:02:24.568338+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 19,
-  "total_available": 19,
+  "returned": 20,
+  "total_available": 20,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-09-10T14:07:12.341986-06:00",
-  "build_id": "why-2026-09-22T230334",
+  "newest_returned_available_as_of": "2026-09-23T10:06:31-06:00",
+  "build_id": "why-2026-09-23T230224",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-22T17:03:34.982066-06:00",
+  "corpus_end": "2026-09-23T17:02:25.291533-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -208,6 +208,16 @@
    "source_hash": "cb55fccd4014c8969906312691d078327bc3be9eb2d940043d225ad641e6a1e7",
    "available_as_of": "2026-09-10T14:07:12.341986-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-09-23",
+   "accession_number": "0001403161-26-000121",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+   "available_as_of": "2026-09-23T10:06:31-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
@@ -310,6 +320,31 @@
     "verified_against": "primary document (EDGAR)"
    },
    "corrected_at": null
+  },
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000086",
+    "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+    "excerpt_sha256": "8e10f7016a9f1d3cf63cd689e31e50be3cb07ecc11387c30f08dce4159080f3e"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-687c528c8e739755",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 24, 2026 VISA INC.",
+   "corrected_sha256": "a778b7162c4f7e50d4ec0829600298b8a9a996e19cb67d29a8d47a179c64b21b",
+   "source_location": {
+    "accession_number": "0001403161-26-000086",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000086/v-20260624.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."

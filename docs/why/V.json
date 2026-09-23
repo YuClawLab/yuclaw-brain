@@ -1,34 +1,44 @@
 {
  "ticker": "V",
- "generated": "2026-09-22T23:03:34.246597+00:00",
- "label": "WEAKENING",
- "score": -0.0632,
+ "generated": "2026-09-23T23:02:24.568338+00:00",
+ "label": "WATCH",
+ "score": 0.143,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0505,
+  "c1": -0.1285,
   "c2": 0.0,
-  "c3": -0.8392039,
+  "c3": 0.33273435,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.19921848,
-  "c7": 0.29044423,
+  "c6": -0.109572016,
+  "c7": 0.37631932,
   "c8": 0.0,
-  "c9": -0.5
+  "c9": -0.42857143
  },
  "evidence_coverage": {
-  "ecs": 79,
-  "events_90d": 15,
-  "recency_days": 12.1,
+  "ecs": 87,
+  "events_90d": 16,
+  "recency_days": 0.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-09-22T23:03:26.887406+00:00",
-  "source_sha256": "3e490f3d698da688a3f6271634c92c2b237ba5a91a057f2f97d52108a2537901",
+  "as_of": "2026-09-23T23:02:17.263932+00:00",
+  "source_sha256": "1cd6c1aa3d35df4dd88c7cd27517c6c3748d1c2bdfaf72c2116f431cf351edda",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "V",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-09-23",
+   "accession_number": "0001403161-26-000121",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+   "available_as_of": "2026-09-23T10:06:31-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "V",
    "evidence_type": "INSIDER_SELL",
@@ -223,22 +233,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 19,
-  "total_available": 19,
+  "returned": 20,
+  "total_available": 20,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-09-10T14:07:12.341986-06:00",
-  "build_id": "why-2026-09-22T230334",
+  "newest_returned_available_as_of": "2026-09-23T10:06:31-06:00",
+  "build_id": "why-2026-09-23T230224",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-22T17:03:34.982066-06:00",
+  "corpus_end": "2026-09-23T17:02:25.291533-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/V.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-22T230334",
+ "build_id": "why-2026-09-23T230224",
  "corrections": [
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000086",
+    "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+    "excerpt_sha256": "8e10f7016a9f1d3cf63cd689e31e50be3cb07ecc11387c30f08dce4159080f3e"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-687c528c8e739755",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 24, 2026 VISA INC.",
+   "corrected_sha256": "a778b7162c4f7e50d4ec0829600298b8a9a996e19cb67d29a8d47a179c64b21b",
+   "source_location": {
+    "accession_number": "0001403161-26-000086",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000086/v-20260624.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "V",
@@ -341,6 +376,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-22",
    "label": "WEAKENING"
@@ -456,13 +495,9 @@
   {
    "date": "2026-08-13",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 19 of 19 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 20 of 20 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
