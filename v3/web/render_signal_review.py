@@ -1,15 +1,14 @@
 """
 Render the Signal Review product page (docs/signal_review.html).
 
-Visual redesign 2026-08-04 ("look like a product, not a policy") — copy
-substantively as approved on 2026-08-04; presentation only. Counsel-armed
-constraints unchanged and mechanical:
+Service copy updated 2026-09-23: request a scope call through the
+existing GitHub contact route. Product boundaries remain mechanical:
   - NO <form>, NO upload element, NO payment integration anywhere —
     enforced by tools/check_no_forms.py; <details> expanders are native
     HTML, no JS, no forms
   - research classifications, never recommendations; full rails
   - EXPLORATORY (CLIENT) ceiling stated: higher standings not for sale
-  - contact = placeholder pattern (counsel decides the delivery channel)
+  - contact = public scope request only; never attach client data
   - tier scope lines MUST match tools/yuclaw_client_deliverable.py
     TIER_PROFILES — the packager's --selftest diffs page promises vs
     produced sections
@@ -51,18 +50,17 @@ TIER_B_ITEMS = TIER_A_ITEMS + [
     "30 days of written questions + a findings session",
 ]
 
+CONTACT_HTML = 'Open a <a href="https://github.com/YuClawLab/yuclaw-brain/issues/new?title=Signal%20Review%20slot%20request" style="color:#00E676">Signal Review slot request</a> for a short scope call. We will discuss your research question and confirm scope, fees, data handling and delivery arrangements before work begins. Keep the request general: <strong>do not attach datasets or post confidential information in public issues.</strong>'
+
 STEPS = [
     ("🔍", "Pre-check your file locally",
      "One command, on your machine. Sends nothing.",
      "<code>pip install yuclaw && yuclaw intake-check your.csv</code> — the "
      "exact intake rules, run on your machine. Your data stays yours until "
      "you engage; this page has no upload box by design."),
-    ("📅", "Request a slot",
-     "Contact + a short scope call.",
-     "Working path today: open a GitHub issue titled \"Signal Review slot "
-     "request\" with <em>no data attached</em>. No other contact channel is "
-     "published and no intake is open; slots are not being scheduled until "
-     "counsel signs off on the delivery path."),
+    ("📅", "Request a scope call",
+     "Agree the scope, fee and delivery arrangements.",
+     CONTACT_HTML),
     ("🔒", "Protocol locked before computation",
      "You receive the spec and its hash.",
      "Your engagement's statistical specification is registered in a "
@@ -374,16 +372,14 @@ It may save you far more than the fee.</div>
 </div>
 
 <div class="card" style="margin-top:26px">
-  <h2>Request a slot</h2>
-  <p style="font-size:13.5px;color:#CBD5E1">Contact + a short scope call. Working path today: open a GitHub
-  issue titled "Signal Review slot request" with <em>no data attached</em>. No other contact channel is published
-  and no intake is open; slots are not being scheduled until counsel signs off on the delivery path.</p>
+  <h2>Request a scope call</h2>
+  <p style="font-size:13.5px;color:#CBD5E1">{CONTACT_HTML}</p>
 </div>
 
 <div class="amber"><strong>Research and education only — not investment advice.</strong> Signal labels and
 review outputs are research classifications, not buy/sell recommendations. YUCLAW is not a registered
 investment adviser. Past results — in-sample or forward-tracked — do not predict future performance.
-Engagement terms are subject to counsel review before any engagement is accepted.</div>
+Scope, fees, data handling and delivery arrangements are agreed in writing before work begins.</div>
 
 <p class="muted" style="margin:16px 0">YUCLAW · <a href="index.html" style="color:#A0AEC0">Home</a> ·
 <a href="https://github.com/YuClawLab/yuclaw-brain" style="color:#A0AEC0">GitHub</a></p>
