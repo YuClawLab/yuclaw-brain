@@ -1,6 +1,13 @@
-# Capability and data-flow brief (factual; for counsel's existing review route) — v7
+# Signal Review capability and data flow
 
-What YUCLAW does: reads public SEC filings and derived public market data; classifies evidence into a locked vocabulary; publishes point-in-time snapshots, a hash-chained ledger, a Validation Lab with forward tracking, and machine-readable surfaces (CLI, REST, MCP). Research and education only; no advice, no execution, no client positions.
-Data flow (BYOS Signal Review, unchanged): a client CSV stays on the client's side (`yuclaw intake-check` never transmits); no upload endpoint exists on the site (no-form gate); analysis runs box-local; deliverables are derived data only (export rule: no raw vendor rows).
-What the receipt program adds (v7): outsiders can verify exact artifact bytes and reproduce published statistics offline (`yuclaw packet verify`), record challenges and decisions locally, and — after a designated review — appear on the public scoreboard under pseudonyms. Nothing about a client's data or decisions is published without explicit permission.
-Blockers (unchanged): counsel's data-versus-advice review of the pilot engagement terms and data-handling one-pager (drafts 2026-07-27; hard blocker for any real engagement); adviser-registration triggers; retention period. No pilot activation, eligibility promise or sovereignty claim beyond these documented facts.
+Updated September 23, 2026. Current service information replaces the earlier v7 candidate's availability wording.
+
+YUCLAW's mission is **Make financial AI accountable to evidence.** Its vision is **Become the Science Trust Layer for Financial AI.**
+
+Signal Review is an optional research service for a signal, screen or systematic hypothesis. It provides a protocol fixed before computation, results reported as measured, and a reproduction bundle. [Founding Pilot A and B](../signal_review.html) have fixed fees of CAD 2,500 and CAD 5,000; the open-source software remains free under Apache-2.0.
+
+Request a scope call through the service page. Scope, fees, data handling, delivery arrangements and invoicing are agreed in writing before work begins. Do not attach datasets or confidential information to public GitHub issues.
+
+The local `yuclaw intake-check` does not transmit the input file. The website has no upload endpoint or payment checkout. Analysis runs on local hardware; client data must not enter the public repository. Deliverables follow the derived-data export rule: no raw vendor rows.
+
+Research and education only; no investment advice, trade execution, predictions or guaranteed outcomes. Client research standing is capped at EXPLORATORY (CLIENT). Service availability does not establish completed engagements, independent security validation or demonstrated human benefit. See the [Evidence Scoreboard](../evidence_scoreboard.html) for recorded evidence and its counting definitions.
