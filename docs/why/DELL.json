@@ -1,8 +1,8 @@
 {
  "ticker": "DELL",
- "generated": "2026-09-23T23:02:24.568338+00:00",
+ "generated": "2026-09-24T23:02:40.012974+00:00",
  "label": "NEUTRAL",
- "score": 0.3388,
+ "score": 0.2555,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
@@ -10,25 +10,35 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.3330579,
+  "c3": -0.2644441,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.13773023,
-  "c7": 0.47714978,
+  "c6": -0.17098553,
+  "c7": 0.5218292,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 93,
-  "events_90d": 1470,
-  "recency_days": 1.1,
+  "ecs": 94,
+  "events_90d": 1471,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-09-23T23:02:17.263932+00:00",
-  "source_sha256": "1cd6c1aa3d35df4dd88c7cd27517c6c3748d1c2bdfaf72c2116f431cf351edda",
+  "as_of": "2026-09-24T23:02:32.592652+00:00",
+  "source_sha256": "535ffc1aec7e26ef6cd9bcd4cceebe04ac45f2d1cf519d5a4c123e50ce8d18b1",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DELL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-24",
+   "accession_number": "0001662205-26-000014",
+   "excerpt": "Radakovich Lynn Vojvodich S 2022 shares @ $565.28 on 2026-09-22 ($1,142,996)",
+   "source_hash": "92b5623b909e44e6fb24154a59440fd40b3ddfa8f0fd41ac4b3cefc8884f2241",
+   "available_as_of": "2026-09-24T14:13:48.197609-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DELL",
    "evidence_type": "INSIDER_SELL",
@@ -1018,38 +1028,32 @@
    "source_hash": "c09336d91119cbcbc2e7ec477f960b27a5be4d5fa7b34fc8b63c83838b9b3e4e",
    "available_as_of": "2026-09-18T14:33:01.753325-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "DELL",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-09-18",
-   "accession_number": "0001193125-26-395616",
-   "excerpt": "SL SPV-2, L.P. S 1373 shares @ $572.61 on 2026-09-16 ($786,194)",
-   "source_hash": "aeba1a65f4a57cf6942a82b0d8eb91019a6645c6280d72a309e43804d2eedac8",
-   "available_as_of": "2026-09-18T14:33:01.753325-06:00",
-   "protocol_id": null
   }
  ],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DELL in the declared corpus",
   "returned": 100,
-  "total_available": 1753,
+  "total_available": 1754,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-09-18T14:33:01.753325-06:00",
-  "newest_returned_available_as_of": "2026-09-22T14:35:03.727576-06:00",
-  "build_id": "why-2026-09-23T230224",
+  "newest_returned_available_as_of": "2026-09-24T14:13:48.197609-06:00",
+  "build_id": "why-2026-09-24T230240",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-23T17:02:24.765475-06:00",
+  "corpus_end": "2026-09-24T17:02:40.218316-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-23T230224",
+ "build_id": "why-2026-09-24T230240",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-24",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-23",
    "label": "NEUTRAL"
@@ -1165,13 +1169,9 @@
   {
    "date": "2026-08-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 1753 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DELL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 1754 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DELL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

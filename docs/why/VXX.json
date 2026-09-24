@@ -1,14 +1,14 @@
 {
  "ticker": "VXX",
- "generated": "2026-09-23T23:02:24.568338+00:00",
+ "generated": "2026-09-24T23:02:40.012974+00:00",
  "label": "WATCH",
- "score": 0.1166,
+ "score": 0.1108,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.385,
+  "c1": -0.3665,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,16 +19,26 @@
   "c9": 0.09090909
  },
  "evidence_coverage": {
-  "ecs": 25,
-  "events_90d": 0,
-  "recency_days": null,
+  "ecs": 59,
+  "events_90d": 1,
+  "recency_days": 0.3,
   "substrate_active": 1,
-  "type_diversity": 0,
-  "as_of": "2026-09-23T23:02:17.263932+00:00",
-  "source_sha256": "1cd6c1aa3d35df4dd88c7cd27517c6c3748d1c2bdfaf72c2116f431cf351edda",
+  "type_diversity": 1,
+  "as_of": "2026-09-24T23:02:32.592652+00:00",
+  "source_sha256": "535ffc1aec7e26ef6cd9bcd4cceebe04ac45f2d1cf519d5a4c123e50ce8d18b1",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "VXX",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-09-24",
+   "accession_number": "0001654954-26-008561",
+   "excerpt": "Mary Mack, a Non-Executive Director of Barclays, has joined the Board Nominations Committees of Barclays PLC and Barclays Bank PLC as an additional member with effect from 23 September 2026.",
+   "source_hash": "760ae31dd84e58be9b6cb4737289387e85ec1bc6582ce10cb07091e62f8343bb",
+   "available_as_of": "2026-09-24T09:23:42-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "VXX",
    "evidence_type": "EXEC_CHANGE",
@@ -43,23 +53,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for VXX in the declared corpus",
-  "returned": 1,
-  "total_available": 1,
+  "returned": 2,
+  "total_available": 2,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-06-05T11:59:27-06:00",
-  "newest_returned_available_as_of": "2026-06-05T11:59:27-06:00",
-  "build_id": "why-2026-09-23T230224",
+  "newest_returned_available_as_of": "2026-09-24T09:23:42-06:00",
+  "build_id": "why-2026-09-24T230240",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-23T17:02:25.312507-06:00",
+  "corpus_end": "2026-09-24T17:02:40.730570-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/VXX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-23T230224",
+ "build_id": "why-2026-09-24T230240",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-24",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-23",
    "label": "WATCH"
@@ -175,13 +189,9 @@
   {
    "date": "2026-08-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 1 of 1 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay VXX --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 2 of 2 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay VXX --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
