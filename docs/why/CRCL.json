@@ -1,34 +1,44 @@
 {
  "ticker": "CRCL",
- "generated": "2026-09-24T23:02:40.012974+00:00",
- "label": "WATCH",
- "score": 0.0765,
+ "generated": "2026-09-25T23:02:32.439313+00:00",
+ "label": "WEAKENING",
+ "score": -0.1377,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.301,
+  "c1": -0.164,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.46211717,
+  "c6": -0.8335797,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 83,
-  "recency_days": 14.1,
+  "ecs": 94,
+  "events_90d": 84,
+  "recency_days": 0.3,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-09-24T23:02:32.592652+00:00",
-  "source_sha256": "535ffc1aec7e26ef6cd9bcd4cceebe04ac45f2d1cf519d5a4c123e50ce8d18b1",
+  "type_diversity": 3,
+  "as_of": "2026-09-25T23:02:25.165177+00:00",
+  "source_sha256": "5a97625928426ad6f05e480259399296693a9a041fb8991ad1c1111ab0d0a986",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "CRCL",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-09-25",
+   "accession_number": "0001876042-26-000279",
+   "excerpt": "Departure of Director On September 25, 2026, P. Sean Neville tendered his resignation to the Board of Directors (the &#8220;Board&#",
+   "source_hash": "09d14c6bd0a8f2b0056eda3039dee9e36f3c0c480b762a598a3b6f0f0e3f29c6",
+   "available_as_of": "2026-09-25T10:05:16-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "CRCL",
    "evidence_type": "INSIDER_SELL",
@@ -1018,36 +1028,26 @@
    "source_hash": "e7762de010b6f6250a06655e1b7d4b25eeaeb5bdc3507d28970a80ffbff1fccf",
    "available_as_of": "2026-04-15T15:09:56-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "CRCL",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-04-15",
-   "accession_number": "0001876042-26-000128",
-   "excerpt": "Tarbert Heath S 556 shares @ $92.79 on 2026-04-13 ($51,591)",
-   "source_hash": "daa76e04b3f598d5883634d4c3b158501e6853e5f587bb54627ab4c68ef696e8",
-   "available_as_of": "2026-04-15T15:09:56-06:00",
-   "protocol_id": null
   }
  ],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for CRCL in the declared corpus",
   "returned": 100,
-  "total_available": 158,
+  "total_available": 159,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-15T15:09:56-06:00",
-  "newest_returned_available_as_of": "2026-09-10T15:10:33.970549-06:00",
-  "build_id": "why-2026-09-24T230240",
+  "newest_returned_available_as_of": "2026-09-25T10:05:16-06:00",
+  "build_id": "why-2026-09-25T230232",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-24T17:02:40.192660-06:00",
+  "corpus_end": "2026-09-25T17:02:32.628578-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CRCL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-24T230240",
+ "build_id": "why-2026-09-25T230232",
  "corrections": [
   {
    "original": {
@@ -1101,6 +1101,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-25",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-24",
    "label": "WATCH"
@@ -1216,13 +1220,9 @@
   {
    "date": "2026-08-17",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 158 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CRCL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 159 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CRCL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

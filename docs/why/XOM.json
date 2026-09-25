@@ -1,34 +1,44 @@
 {
  "ticker": "XOM",
- "generated": "2026-09-24T23:02:40.012974+00:00",
- "label": "WATCH",
- "score": 0.1357,
+ "generated": "2026-09-25T23:02:32.439313+00:00",
+ "label": "WEAKENING",
+ "score": -0.0675,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.058,
+  "c1": -0.0015,
   "c2": 0.0,
-  "c3": 0.3168656,
+  "c3": -0.8428871,
   "c4": 0.6,
-  "c5": -0.1912808,
+  "c5": -0.49228832,
   "c6": 0.0,
-  "c7": 0.0063329944,
+  "c7": -0.029299727,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 51,
-  "events_90d": 3,
-  "recency_days": 27.5,
+  "ecs": 69,
+  "events_90d": 4,
+  "recency_days": 0.2,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-09-24T23:02:32.592652+00:00",
-  "source_sha256": "535ffc1aec7e26ef6cd9bcd4cceebe04ac45f2d1cf519d5a4c123e50ce8d18b1",
+  "as_of": "2026-09-25T23:02:25.165177+00:00",
+  "source_sha256": "5a97625928426ad6f05e480259399296693a9a041fb8991ad1c1111ab0d0a986",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "XOM",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-09-25",
+   "accession_number": "0001193125-26-402986",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of Each Class Trading Symbol Name of Each Exchange on Which Registered Common Stock, par value $0.001 per share XOM New York Stock Exchange",
+   "source_hash": "690a3dc1c813563b88baf73c4a3513afb10ea58c0261f3323514a5699ab491a4",
+   "available_as_of": "2026-09-25T11:20:49-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "XOM",
    "evidence_type": "OTHER_MATERIAL",
@@ -83,23 +93,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for XOM in the declared corpus",
-  "returned": 5,
-  "total_available": 5,
+  "returned": 6,
+  "total_available": 6,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T09:17:21-07:00",
-  "newest_returned_available_as_of": "2026-08-28T05:26:26-06:00",
-  "build_id": "why-2026-09-24T230240",
+  "newest_returned_available_as_of": "2026-09-25T11:20:49-06:00",
+  "build_id": "why-2026-09-25T230232",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-24T17:02:40.839781-06:00",
+  "corpus_end": "2026-09-25T17:02:33.340249-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/XOM.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-24T230240",
+ "build_id": "why-2026-09-25T230232",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-09-25",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-24",
    "label": "WATCH"
@@ -215,13 +229,9 @@
   {
    "date": "2026-08-17",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "BULLISH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 5 of 5 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XOM --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 6 of 6 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay XOM --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

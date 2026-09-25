@@ -1,34 +1,44 @@
 {
  "ticker": "MRVL",
- "generated": "2026-09-24T23:02:40.012974+00:00",
- "label": "WATCH",
- "score": 0.1804,
+ "generated": "2026-09-25T23:02:32.439313+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3561,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.647,
+  "c1": 0.4485,
   "c2": 0.0,
-  "c3": -0.2644441,
+  "c3": 0.54846597,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.18246205,
-  "c7": 0.50533414,
+  "c6": 0.26468366,
+  "c7": 0.6039491,
   "c8": 0.0,
   "c9": -0.46666667
  },
  "evidence_coverage": {
-  "ecs": 87,
-  "events_90d": 15,
-  "recency_days": 8.9,
+  "ecs": 100,
+  "events_90d": 16,
+  "recency_days": 0.3,
   "substrate_active": 1,
-  "type_diversity": 3,
-  "as_of": "2026-09-24T23:02:32.592652+00:00",
-  "source_sha256": "535ffc1aec7e26ef6cd9bcd4cceebe04ac45f2d1cf519d5a4c123e50ce8d18b1",
+  "type_diversity": 4,
+  "as_of": "2026-09-25T23:02:25.165177+00:00",
+  "source_sha256": "5a97625928426ad6f05e480259399296693a9a041fb8991ad1c1111ab0d0a986",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "DIVIDEND_CHANGE",
+   "filing_date": "2026-09-25",
+   "accession_number": "0001628280-26-063592",
+   "excerpt": "On September 25, 2026, the Company announced that its Board of Directors had declared the payment of its quarterly dividend of $0.06 per share to be paid",
+   "source_hash": "bf7eed3008ea5f27c398d36f2128aaf76429439721d2fc2cb697845de67c2b31",
+   "available_as_of": "2026-09-25T10:35:56-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "INSIDER_SELL",
@@ -363,21 +373,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRVL in the declared corpus",
-  "returned": 33,
-  "total_available": 33,
+  "returned": 34,
+  "total_available": 34,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
-  "newest_returned_available_as_of": "2026-09-15T19:43:01.100266-06:00",
-  "build_id": "why-2026-09-24T230240",
+  "newest_returned_available_as_of": "2026-09-25T10:35:56-06:00",
+  "build_id": "why-2026-09-25T230232",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-24T17:02:40.479016-06:00",
+  "corpus_end": "2026-09-25T17:02:32.935206-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-24T230240",
+ "build_id": "why-2026-09-25T230232",
  "corrections": [
   {
    "original": {
@@ -481,6 +491,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-25",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-24",
    "label": "WATCH"
@@ -596,13 +610,9 @@
   {
    "date": "2026-08-17",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 33 of 33 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 34 of 34 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
