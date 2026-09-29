@@ -1,31 +1,31 @@
 {
  "ticker": "SLB",
- "generated": "2026-09-28T23:02:50.811766+00:00",
- "label": "WATCH",
- "score": 0.1501,
+ "generated": "2026-09-29T23:02:16.139850+00:00",
+ "label": "WEAKENING",
+ "score": -0.0879,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.197,
+  "c1": -0.467,
   "c2": 0.0,
-  "c3": 0.5060207,
+  "c3": -0.7283269,
   "c4": 0.6,
-  "c5": -0.2582936,
-  "c6": -0.032530192,
-  "c7": -0.028993947,
+  "c5": -0.49376905,
+  "c6": -0.029465238,
+  "c7": -0.031047227,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 70,
+  "ecs": 69,
   "events_90d": 7,
-  "recency_days": 27.1,
+  "recency_days": 28.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-09-28T23:02:42.840045+00:00",
-  "source_sha256": "f477c1d08eb707d2ffdaa0350e206fcb2c1d29fe6c68be8db3b817e76a56f922",
+  "as_of": "2026-09-29T23:02:08.318252+00:00",
+  "source_sha256": "5214831851329b946ff514ae3ecbf2c70a63b1922696628a1f760b26ec3e718e",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -199,15 +199,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
   "newest_returned_available_as_of": "2026-09-01T15:36:20.085472-06:00",
-  "build_id": "why-2026-09-28T230250",
+  "build_id": "why-2026-09-29T230216",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-28T17:02:51.491358-06:00",
+  "corpus_end": "2026-09-29T17:02:16.810340-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-28T230250",
+ "build_id": "why-2026-09-29T230216",
  "corrections": [
   {
    "original": {
@@ -262,6 +262,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-29",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-28",
    "label": "WATCH"
@@ -377,10 +381,6 @@
   {
    "date": "2026-08-19",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 16 of 16 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
