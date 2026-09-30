@@ -1,31 +1,31 @@
 {
  "ticker": "INTC",
- "generated": "2026-09-29T23:02:16.139850+00:00",
- "label": "BULLISH",
- "score": 0.4488,
+ "generated": "2026-09-30T23:02:04.139263+00:00",
+ "label": "STRONG_BULLISH",
+ "score": 0.5915,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.55,
+  "ceiling": null
  },
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.031118052,
+  "c3": 0.8244455,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.43447676,
+  "c7": 0.47780052,
   "c8": 0.0,
-  "c9": 0.06666667
+  "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 71,
   "events_90d": 5,
-  "recency_days": 46.1,
+  "recency_days": 47.1,
   "substrate_active": 1,
   "type_diversity": 5,
-  "as_of": "2026-09-29T23:02:08.318252+00:00",
-  "source_sha256": "5214831851329b946ff514ae3ecbf2c70a63b1922696628a1f760b26ec3e718e",
+  "as_of": "2026-09-30T23:01:56.192634+00:00",
+  "source_sha256": "0f875bd33924c6257e14f188170498c977513abacd41546dfd261ce3961543e6",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -149,15 +149,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T10:50:37-06:00",
   "newest_returned_available_as_of": "2026-08-14T14:33:47.880102-06:00",
-  "build_id": "why-2026-09-29T230216",
+  "build_id": "why-2026-09-30T230204",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-29T17:02:16.484030-06:00",
+  "corpus_end": "2026-09-30T17:02:04.519566-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/INTC.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-29T230216",
+ "build_id": "why-2026-09-30T230204",
  "corrections": [
   {
    "original": {
@@ -211,6 +211,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-30",
+   "label": "STRONG_BULLISH"
+  },
   {
    "date": "2026-09-29",
    "label": "BULLISH"
@@ -326,10 +330,6 @@
   {
    "date": "2026-08-20",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 11 of 11 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",

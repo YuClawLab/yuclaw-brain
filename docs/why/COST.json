@@ -1,34 +1,54 @@
 {
  "ticker": "COST",
- "generated": "2026-09-29T23:02:16.139850+00:00",
- "label": "WATCH",
- "score": 0.075,
+ "generated": "2026-09-30T23:02:04.139263+00:00",
+ "label": "WEAKENING",
+ "score": -0.0364,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.054,
+  "c1": -0.186,
   "c2": 0.0,
-  "c3": -0.47465265,
+  "c3": -0.7637993,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.40270028,
-  "c7": 0.022484824,
+  "c6": -0.11289261,
+  "c7": 0.101167805,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 74,
-  "events_90d": 3,
-  "recency_days": 5.3,
+  "ecs": 84,
+  "events_90d": 5,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-09-29T23:02:08.318252+00:00",
-  "source_sha256": "5214831851329b946ff514ae3ecbf2c70a63b1922696628a1f760b26ec3e718e",
+  "as_of": "2026-09-30T23:01:56.192634+00:00",
+  "source_sha256": "0f875bd33924c6257e14f188170498c977513abacd41546dfd261ce3961543e6",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "COST",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-30",
+   "accession_number": "0000909832-26-000090",
+   "excerpt": "Frates Caton S 801 shares @ $915.93 on 2026-09-29 ($733,328)",
+   "source_hash": "0821093cf2cccf34394feea927f5b812a7d6c799f41ace01b23738d4356522ea",
+   "available_as_of": "2026-09-30T15:59:16.312725-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "COST",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-09-30",
+   "accession_number": "0000909832-26-000088",
+   "excerpt": "Adamo Claudine S 2200 shares @ $915.93 on 2026-09-29 ($2,015,046)",
+   "source_hash": "3c65afff830d5fefff64916d2cb8652c29a42d60f13a4f4c63ff05c20e329f82",
+   "available_as_of": "2026-09-30T15:53:27.141529-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COST",
    "evidence_type": "OTHER_MATERIAL",
@@ -113,21 +133,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for COST in the declared corpus",
-  "returned": 8,
-  "total_available": 8,
+  "returned": 10,
+  "total_available": 10,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:19:07-07:00",
-  "newest_returned_available_as_of": "2026-09-24T10:17:37-06:00",
-  "build_id": "why-2026-09-29T230216",
+  "newest_returned_available_as_of": "2026-09-30T15:59:16.312725-06:00",
+  "build_id": "why-2026-09-30T230204",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-29T17:02:16.310877-06:00",
+  "corpus_end": "2026-09-30T17:02:04.348069-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/COST.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-29T230216",
+ "build_id": "why-2026-09-30T230204",
  "corrections": [
   {
    "original": {
@@ -156,6 +176,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-09-30",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-29",
    "label": "WATCH"
@@ -271,13 +295,9 @@
   {
    "date": "2026-08-20",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 8 of 8 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 10 of 10 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
