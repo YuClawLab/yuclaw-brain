@@ -1,31 +1,31 @@
 {
  "ticker": "DELL",
- "generated": "2026-09-30T23:02:04.139263+00:00",
+ "generated": "2026-10-01T23:02:39.060240+00:00",
  "label": "NEUTRAL",
- "score": 0.3399,
+ "score": 0.3143,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.8955,
+  "c1": 0.94,
   "c2": 0.0,
-  "c3": 0.8244455,
+  "c3": 0.55514324,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.30887905,
-  "c7": 0.5401392,
+  "c6": -0.34193256,
+  "c7": 0.6295791,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 90,
+  "ecs": 89,
   "events_90d": 1471,
-  "recency_days": 5.1,
+  "recency_days": 6.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-09-30T23:01:56.192634+00:00",
-  "source_sha256": "0f875bd33924c6257e14f188170498c977513abacd41546dfd261ce3961543e6",
+  "as_of": "2026-10-01T23:02:31.368924+00:00",
+  "source_sha256": "d47d7d8c453ef0aa8961601cf1d36e340769219e9cb488949c2e3d81cdc687ee",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1039,17 +1039,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-09-18T14:33:01.753325-06:00",
   "newest_returned_available_as_of": "2026-09-25T14:34:12.413389-06:00",
-  "build_id": "why-2026-09-30T230204",
+  "build_id": "why-2026-10-01T230239",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-09-30T17:02:04.390672-06:00",
+  "corpus_end": "2026-10-01T17:02:39.282091-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-09-30T230204",
+ "build_id": "why-2026-10-01T230239",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-01",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-30",
    "label": "NEUTRAL"
@@ -1165,10 +1169,6 @@
   {
    "date": "2026-08-21",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 1755 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DELL --date D",
