@@ -1,34 +1,44 @@
 {
  "ticker": "V",
- "generated": "2026-10-01T23:02:39.060240+00:00",
- "label": "WATCH",
- "score": 0.1229,
+ "generated": "2026-10-02T23:01:59.619229+00:00",
+ "label": "WEAKENING",
+ "score": -0.0204,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.2575,
+  "c1": -0.161,
   "c2": 0.0,
-  "c3": 0.092920385,
+  "c3": -0.4863756,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.0419491,
-  "c7": 0.4193689,
+  "c6": -0.40711212,
+  "c7": 0.3756165,
   "c8": 0.0,
   "c9": -0.28
  },
  "evidence_coverage": {
-  "ecs": 81,
-  "events_90d": 15,
-  "recency_days": 8.3,
+  "ecs": 87,
+  "events_90d": 16,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-01T23:02:31.368924+00:00",
-  "source_sha256": "d47d7d8c453ef0aa8961601cf1d36e340769219e9cb488949c2e3d81cdc687ee",
+  "as_of": "2026-10-02T23:01:52.360845+00:00",
+  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-02",
+   "accession_number": "0001403161-26-000123",
+   "excerpt": "MCINERNEY RYAN S 5875 shares @ $358.81 on 2026-10-01 ($2,108,009)",
+   "source_hash": "e4e90210e340b5b55d59af7999fa73ec40613971b4b61abea6d929253e6deef1",
+   "available_as_of": "2026-10-02T14:11:57.879140-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "V",
    "evidence_type": "OTHER_MATERIAL",
@@ -233,21 +243,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 20,
-  "total_available": 20,
+  "returned": 21,
+  "total_available": 21,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-09-23T10:06:31-06:00",
-  "build_id": "why-2026-10-01T230239",
+  "newest_returned_available_as_of": "2026-10-02T14:11:57.879140-06:00",
+  "build_id": "why-2026-10-02T230159",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-01T17:02:39.780247-06:00",
+  "corpus_end": "2026-10-02T17:02:00.327006-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/V.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-01T230239",
+ "build_id": "why-2026-10-02T230159",
  "corrections": [
   {
    "original": {
@@ -377,6 +387,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-10-02",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-10-01",
    "label": "WATCH"
   },
@@ -491,13 +505,9 @@
   {
    "date": "2026-08-24",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 20 of 20 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 21 of 21 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
