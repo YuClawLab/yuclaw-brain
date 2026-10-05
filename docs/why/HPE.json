@@ -1,8 +1,8 @@
 {
  "ticker": "HPE",
- "generated": "2026-10-02T23:01:59.619229+00:00",
+ "generated": "2026-10-05T23:01:57.461778+00:00",
  "label": "NEUTRAL",
- "score": 0.2877,
+ "score": 0.2235,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
@@ -10,22 +10,22 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.48854166,
+  "c3": -0.04652017,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.46211717,
-  "c7": 0.76378655,
+  "c6": -0.4232012,
+  "c7": 0.7538436,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 91,
   "events_90d": 10,
-  "recency_days": 1.0,
+  "recency_days": 4.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-02T23:01:52.360845+00:00",
-  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
+  "as_of": "2026-10-05T23:01:49.280891+00:00",
+  "source_sha256": "28476e5964277ebd840707148ea56b3e5419fcecdd697297796d49f31273fa96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -309,15 +309,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
   "newest_returned_available_as_of": "2026-10-01T16:45:52.232473-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:01:59.909754-06:00",
+  "corpus_end": "2026-10-05T17:01:57.773360-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/HPE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-02T230159",
+ "build_id": "why-2026-10-05T230157",
  "corrections": [
   {
    "original": {
@@ -371,6 +371,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-05",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-02",
    "label": "NEUTRAL"
@@ -486,10 +490,6 @@
   {
    "date": "2026-08-25",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 27 of 27 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay HPE --date D",

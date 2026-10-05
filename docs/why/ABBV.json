@@ -1,34 +1,44 @@
 {
  "ticker": "ABBV",
- "generated": "2026-10-02T23:01:59.619229+00:00",
+ "generated": "2026-10-05T23:01:57.461778+00:00",
  "label": "WATCH",
- "score": 0.0732,
+ "score": 0.1976,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.0545,
+  "c1": 0.077,
   "c2": 0.0,
-  "c3": -0.54220784,
+  "c3": 0.14367454,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.042578287,
+  "c7": -0.055183895,
   "c8": 0.0,
   "c9": 0.23809524
  },
  "evidence_coverage": {
-  "ecs": 69,
+  "ecs": 84,
   "events_90d": 7,
-  "recency_days": 29.6,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-02T23:01:52.360845+00:00",
-  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
+  "as_of": "2026-10-05T23:01:49.280891+00:00",
+  "source_sha256": "28476e5964277ebd840707148ea56b3e5419fcecdd697297796d49f31273fa96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-05",
+   "accession_number": "0001551152-26-000030",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160;_____________________________________________________ FORM&#160; 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d)&#160;of the Securities Exchange Act of 1934",
+   "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+   "available_as_of": "2026-10-05T14:07:45-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -163,22 +173,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 13,
-  "total_available": 13,
+  "returned": 14,
+  "total_available": 14,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-09-03T02:47:46-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "newest_returned_available_as_of": "2026-10-05T14:07:45-06:00",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:01:59.634765-06:00",
+  "corpus_end": "2026-10-05T17:01:57.478000-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-02T230159",
+ "build_id": "why-2026-10-05T230157",
  "corrections": [
+  {
+   "original": {
+    "ticker": "ABBV",
+    "accession_number": "0001551152-26-000021",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "char_offset": 606,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "ABBV",
@@ -256,6 +291,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-02",
    "label": "WATCH"
@@ -371,13 +410,9 @@
   {
    "date": "2026-08-25",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 13 of 13 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 14 of 14 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

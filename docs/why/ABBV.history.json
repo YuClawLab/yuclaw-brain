@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "ABBV",
- "build_id": "why-2026-10-02T230159",
- "generated": "2026-10-02T23:01:59.619229+00:00",
+ "build_id": "why-2026-10-05T230157",
+ "generated": "2026-10-05T23:01:57.461778+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 13,
-  "total_available": 13,
+  "returned": 14,
+  "total_available": 14,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-09-03T02:47:46-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "newest_returned_available_as_of": "2026-10-05T14:07:45-06:00",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:01:59.634765-06:00",
+  "corpus_end": "2026-10-05T17:01:57.478000-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -148,6 +148,16 @@
    "source_hash": "2d93639a59b9a9606adf5f8593ddba4e9aebf7349d610e272e61d2516d9479b3",
    "available_as_of": "2026-09-03T02:47:46-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-05",
+   "accession_number": "0001551152-26-000030",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160;_____________________________________________________ FORM&#160; 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d)&#160;of the Securities Exchange Act of 1934",
+   "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+   "available_as_of": "2026-10-05T14:07:45-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
@@ -225,6 +235,31 @@
     "verified_against": "primary document (EDGAR)"
    },
    "corrected_at": null
+  },
+  {
+   "original": {
+    "ticker": "ABBV",
+    "accession_number": "0001551152-26-000021",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "char_offset": 606,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."

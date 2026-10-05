@@ -1,34 +1,44 @@
 {
  "ticker": "AMZN",
- "generated": "2026-10-02T23:01:59.619229+00:00",
+ "generated": "2026-10-05T23:01:57.461778+00:00",
  "label": "WATCH",
- "score": 0.1876,
+ "score": 0.1008,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0665,
+  "c1": -0.07,
   "c2": 0.0,
-  "c3": 0.48854166,
+  "c3": -0.04652017,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.0028585326,
+  "c6": -0.049675684,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.33333334
  },
  "evidence_coverage": {
-  "ecs": 76,
-  "events_90d": 60,
-  "recency_days": 18.3,
+  "ecs": 87,
+  "events_90d": 61,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-02T23:01:52.360845+00:00",
-  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
+  "as_of": "2026-10-05T23:01:49.280891+00:00",
+  "source_sha256": "28476e5964277ebd840707148ea56b3e5419fcecdd697297796d49f31273fa96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AMZN",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-05",
+   "accession_number": "0001936006-26-000026",
+   "excerpt": "Herrington Douglas J S 1000 shares @ $251.50 on 2026-10-01 ($251,500)",
+   "source_hash": "5313957fdb29a1eaff249a1779729c6635684826b21f3670233a2fc75897ba75",
+   "available_as_of": "2026-10-05T14:10:22.395673-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AMZN",
    "evidence_type": "OTHER_MATERIAL",
@@ -1018,36 +1028,26 @@
    "source_hash": "88eb2f862c82c2b7c87c604a95f7afc261d1d9e4031fcc42137c6b0edaa3f15a",
    "available_as_of": "2026-02-18T16:16:06-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "AMZN",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-18",
-   "accession_number": "0001936006-26-000004",
-   "excerpt": "Herrington Douglas J S 2114 shares @ $198.12 on 2026-02-17 ($418,834)",
-   "source_hash": "87d25a2bbe4b88c5857da4fa07db93f6a645941e5517632781d603782b49dc34",
-   "available_as_of": "2026-02-18T16:16:06-07:00",
-   "protocol_id": null
   }
  ],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMZN in the declared corpus",
   "returned": 100,
-  "total_available": 101,
+  "total_available": 102,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:16:06-07:00",
-  "newest_returned_available_as_of": "2026-09-14T10:45:41-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "newest_returned_available_as_of": "2026-10-05T14:10:22.395673-06:00",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:01:59.689208-06:00",
+  "corpus_end": "2026-10-05T17:01:57.532557-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMZN.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-02T230159",
+ "build_id": "why-2026-10-05T230157",
  "corrections": [
   {
    "original": {
@@ -1101,6 +1101,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-02",
    "label": "WATCH"
@@ -1216,13 +1220,9 @@
   {
    "date": "2026-08-25",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 101 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 102 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMZN --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

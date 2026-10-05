@@ -1,8 +1,8 @@
 {
  "ticker": "AMAT",
- "generated": "2026-10-02T23:01:59.619229+00:00",
+ "generated": "2026-10-05T23:01:57.461778+00:00",
  "label": "BULLISH",
- "score": 0.5348,
+ "score": 0.4047,
  "threshold_band": {
   "floor": 0.4,
   "ceiling": 0.55
@@ -10,25 +10,35 @@
  "components": {
   "c1": 1.0,
   "c2": 0.0,
-  "c3": 0.48854166,
+  "c3": -0.04652017,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.010449606,
-  "c7": 0.75106984,
+  "c6": -0.08619559,
+  "c7": 0.7372911,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 81,
-  "events_90d": 37,
-  "recency_days": 22.1,
+  "ecs": 94,
+  "events_90d": 38,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-02T23:01:52.360845+00:00",
-  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
+  "as_of": "2026-10-05T23:01:49.280891+00:00",
+  "source_sha256": "28476e5964277ebd840707148ea56b3e5419fcecdd697297796d49f31273fa96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AMAT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-05",
+   "accession_number": "0001628280-26-065097",
+   "excerpt": "Sanders Adam S 725 shares @ $544.56 on 2026-10-02 ($394,807)",
+   "source_hash": "30bcf8257a167f0b440ea74c4abfe4bfbd258b72900570a2786ddd43ce9ebe33",
+   "available_as_of": "2026-10-05T16:01:44.979885-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AMAT",
    "evidence_type": "INSIDER_SELL",
@@ -463,21 +473,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMAT in the declared corpus",
-  "returned": 43,
-  "total_available": 43,
+  "returned": 44,
+  "total_available": 44,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:48:35-07:00",
-  "newest_returned_available_as_of": "2026-09-10T15:10:26.418938-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "newest_returned_available_as_of": "2026-10-05T16:01:44.979885-06:00",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:01:59.660684-06:00",
+  "corpus_end": "2026-10-05T17:01:57.501747-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMAT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-02T230159",
+ "build_id": "why-2026-10-05T230157",
  "corrections": [
   {
    "original": {
@@ -506,6 +516,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-05",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-10-02",
    "label": "BULLISH"
@@ -621,13 +635,9 @@
   {
    "date": "2026-08-25",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 43 of 43 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 44 of 44 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

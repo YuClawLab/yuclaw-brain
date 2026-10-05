@@ -1,34 +1,44 @@
 {
  "ticker": "PSX",
- "generated": "2026-10-02T23:01:59.619229+00:00",
- "label": "WATCH",
- "score": 0.0907,
+ "generated": "2026-10-05T23:01:57.461778+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2214,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.249,
+  "c1": 0.266,
   "c2": 0.0,
-  "c3": -0.36301532,
+  "c3": 0.45987055,
   "c4": 0.6,
-  "c5": -0.23474532,
-  "c6": -0.221045,
+  "c5": -0.050821405,
+  "c6": -0.16545694,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 16,
-  "recency_days": 15.1,
+  "ecs": 93,
+  "events_90d": 17,
+  "recency_days": 0.4,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-10-02T23:01:52.360845+00:00",
-  "source_sha256": "b632dcbef33e493a4bac62c1b901b0a976a866993ff03ffdfdf82b726d97cf96",
+  "type_diversity": 3,
+  "as_of": "2026-10-05T23:01:49.280891+00:00",
+  "source_sha256": "28476e5964277ebd840707148ea56b3e5419fcecdd697297796d49f31273fa96",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PSX",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-10-05",
+   "accession_number": "0001193125-26-413219",
+   "excerpt": "Item&#8201;5.02 Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrangements of Certain Officers. On September&#160;29, 2026, Richar",
+   "source_hash": "6506b5cca943a0b28aae9ae155f12548c766b79b9e0ec34ac0770d6cb75dba2a",
+   "available_as_of": "2026-10-05T06:30:16-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PSX",
    "evidence_type": "INSIDER_SELL",
@@ -313,21 +323,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PSX in the declared corpus",
-  "returned": 28,
-  "total_available": 28,
+  "returned": 29,
+  "total_available": 29,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T15:17:27-07:00",
-  "newest_returned_available_as_of": "2026-09-17T15:11:58.153876-06:00",
-  "build_id": "why-2026-10-02T230159",
+  "newest_returned_available_as_of": "2026-10-05T06:30:16-06:00",
+  "build_id": "why-2026-10-05T230157",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-02T17:02:00.186481-06:00",
+  "corpus_end": "2026-10-05T17:01:58.086104-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PSX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-02T230159",
+ "build_id": "why-2026-10-05T230157",
  "corrections": [
   {
    "original": {
@@ -432,6 +442,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-05",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-02",
    "label": "WATCH"
@@ -547,13 +561,9 @@
   {
    "date": "2026-08-25",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 28 of 28 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 29 of 29 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
