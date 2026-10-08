@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "PEP",
- "build_id": "why-2026-10-07T230222",
- "generated": "2026-10-07T23:02:22.460166+00:00",
+ "build_id": "why-2026-10-08T230131",
+ "generated": "2026-10-08T23:01:31.993400+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PEP in the declared corpus",
-  "returned": 7,
-  "total_available": 7,
+  "returned": 9,
+  "total_available": 9,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-03-03T14:20:32-07:00",
-  "newest_returned_available_as_of": "2026-09-17T11:10:36-06:00",
-  "build_id": "why-2026-10-07T230222",
+  "newest_returned_available_as_of": "2026-10-07T15:57:44-06:00",
+  "build_id": "why-2026-10-08T230131",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-07T17:02:23.055438-06:00",
+  "corpus_end": "2026-10-08T17:01:32.539004-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -88,9 +88,54 @@
    "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
    "available_as_of": "2026-09-17T11:10:36-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-07",
+   "accession_number": "0000077476-26-000048",
+   "excerpt": "0000077476 pep:ZeroPointSevenFivePercentNotesDue2027Member 2025-12-28 2026-09-05",
+   "source_hash": "45a56fc0c1dcdc2746f3a5e0c80d7620753704f96f675e8445fc005e4353c87c",
+   "available_as_of": "2026-10-07T15:52:53-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "PEP",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-07",
+   "accession_number": "0000077476-26-000050",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 &#160; FORM 8-K CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+   "available_as_of": "2026-10-07T15:57:44-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
+  {
+   "original": {
+    "ticker": "PEP",
+    "accession_number": "0000077476-26-000037",
+    "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+    "excerpt_sha256": "654caf0368307d21f34d0498c078786f41964dbbfa95d9fabccd71bc3c91e0ee"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-a9213d76bff37071",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 9, 2026 PepsiCo, Inc.",
+   "corrected_sha256": "3304778ac8c6a551810b384c4de0ca1f3307946e079df45837e6c11b1e5b78d7",
+   "source_location": {
+    "accession_number": "0000077476-26-000037",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/77476/000007747626000037/pep-20260709.htm",
+    "char_offset": 1390,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "PEP",

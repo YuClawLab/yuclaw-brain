@@ -1,34 +1,44 @@
 {
  "ticker": "AAPL",
- "generated": "2026-10-07T23:02:22.460166+00:00",
- "label": "WATCH",
- "score": 0.1192,
+ "generated": "2026-10-08T23:01:31.993400+00:00",
+ "label": "WEAKENING",
+ "score": -0.0313,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.261,
+  "c1": 0.3825,
   "c2": 0.0,
-  "c3": 0.26568028,
+  "c3": -0.72532564,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": 0.70035654,
+  "c7": 0.42736304,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 21,
-  "recency_days": 2.0,
+  "ecs": 87,
+  "events_90d": 22,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-07T23:02:14.085321+00:00",
-  "source_sha256": "b7deb742311c88c77d06366881db7fe66945c95282a16b4035905eb69e7a1175",
+  "as_of": "2026-10-08T23:01:23.966734+00:00",
+  "source_sha256": "c47fc4a19c490ae4d49ab0b8f7da353d4ab0407ddc64e13d00728eb2b068d282",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-08",
+   "accession_number": "0001140361-26-039158",
+   "excerpt": "Newstead Jennifer S 2399 shares @ $332.01 on 2026-10-06 ($796,492)",
+   "source_hash": "8287961fbf21774f8ef6bf285ee02e8070673eed1034900fc4c3d285496d4439",
+   "available_as_of": "2026-10-08T16:36:17.068690-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -373,21 +383,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 34,
-  "total_available": 34,
+  "returned": 35,
+  "total_available": 35,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-10-05T16:48:24.872892-06:00",
-  "build_id": "why-2026-10-07T230222",
+  "newest_returned_available_as_of": "2026-10-08T16:36:17.068690-06:00",
+  "build_id": "why-2026-10-08T230131",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-07T17:02:22.462690-06:00",
+  "corpus_end": "2026-10-08T17:01:31.997129-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-07T230222",
+ "build_id": "why-2026-10-08T230131",
  "corrections": [
   {
    "original": {
@@ -416,6 +426,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-08",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-07",
    "label": "WATCH"
@@ -531,13 +545,9 @@
   {
    "date": "2026-08-28",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 34 of 34 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 35 of 35 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AAPL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
