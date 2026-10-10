@@ -3,8 +3,8 @@
 Research and education only. Not investment advice.
 Mission: Make financial AI accountable to evidence. Vision: Become the Science Trust Layer for Financial AI.
 
-Software covered: the 9.0 **candidate** on branch `codex/v9-integration` (package version string 8.0.1, brief layer
-`v9.brief/1`), HEAD `70a6c8aa` on 9 October 2026. 9.0 is not a published release; labels and behaviour may still change.
+Software covered: YUCLAW **9.0.0** (brief layer `v9.brief/1`), as frozen for release on branch `codex/v9-integration` in October
+2026. The CHANGELOG entry `[9.0.0]` and the GitHub release state whether it is published; this guide describes the frozen behaviour.
 Every command and every output excerpt in this guide was run against that checkout in a disposable workspace. **All data
 shown is fictional** — the packaged fixture `001_base` describes "Fictional Example Corp (ZZFX)", accession numbers of the
 form `0000000000-26-00000x`, and amounts that were invented for the example. Identifiers such as `brf-4625e1016814`,
@@ -25,7 +25,7 @@ Everything in this guide runs **on your machine**, inside a workspace folder you
 
 | Runs locally (v9) | Provided by the public website and repository |
 |---|---|
-| Composing briefs from templates over the frozen claims of your v8 workspace | The `yuclaw` package (PyPI releases; 9.0 is not released yet) |
+| Composing briefs from templates over the frozen claims of your v8 workspace | The `yuclaw` package (PyPI releases from 9.0.0) |
 | Importing drafts, linking sentences to claims, editing, translating | Documentation, release notes, the source code |
 | Importing provenance records and keeping your own trust roots | Nothing about your workspace, briefs or packets: no brief is sent anywhere |
 | Building verification packets and verifying them in a fresh workspace | |

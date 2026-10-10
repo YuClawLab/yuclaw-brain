@@ -53,8 +53,10 @@ def gate15_decision(path: Path | None = None) -> dict | None:
     if not path.exists():
         return None
     d = json.loads(path.read_text())
-    if d.get("record") != "yuclaw-v9-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner" or d.get("status") != "REMOVED_BY_OWNER" or not str(d.get("applies_to", {}).get("versions", "")).startswith("9."):
-        raise ValueError("gate 15 decision record is not the owner's REMOVED_BY_OWNER decision for 9.x releases")
+    if (d.get("record") != "yuclaw-v9-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner" or d.get("status") != "EXCEPTION_ACCEPTED" or d.get("gate_result") != "MANUAL_REVIEW"
+            or not str(d.get("applies_to", {}).get("versions", "")).startswith("9.0.0") or d.get("applies_to", {}).get("carried_to_later_releases") is not False or not d.get("decision_text_verbatim")
+            or (d.get("study") or {}).get("represented_as_passed") is not False):
+        raise ValueError("gate 15 decision record is not the owner's EXCEPTION_ACCEPTED / MANUAL_REVIEW decision for 9.0.0 only")
     return {**d, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
 
 
@@ -84,13 +86,20 @@ def feature_account(m: dict) -> str:
     return "\n".join(lines)
 
 
+GATE15_ROUTE = "EXCEPTION_9_0_0"
+
+
 def gate15_line(policy: dict | None, decision: dict | None) -> str:
+    """The Gate #15 disclosure for 9.0.0: the owner's explicit one-version exception, verbatim, bound by record hash; the gate
+    stays MANUAL_REVIEW and is never described as passed."""
     if decision is None:
         return ("- Gate #15 (user comprehension test passes): NO owner decision is recorded for 9.x releases; the 8.x removal does not carry over; the gate stands at MANUAL_REVIEW; "
                 "no human comprehension study was run, none is scheduled and none is claimed — not a pass; the automated consumer-posture scaffold check is retained; human benefit PENDING")
     ref = (policy or {}).get("gate15", {}).get("decision_record_sha256") or decision.get("sha256") or ""
-    return (f"- Gate #15 (user comprehension test passes): requirement REMOVED BY OWNER for 9.x releases on {decision.get('decision_utc', 'date not recorded')} (decision record sha256 {ref[:16]}…); "
-            "no human comprehension study was run and none is claimed — not a pass; the automated consumer-posture scaffold check is retained; human benefit PENDING")
+    verbatim = decision["decision_text_verbatim"].replace("\n", "\n  ")
+    return (f"- Gate #15 (user comprehension test passes): MANUAL_REVIEW — requirement NOT satisfied; the owner accepted an explicit release-policy exception for 9.0.0 only on {decision.get('decision_utc', 'date not recorded')} "
+            f"(decision record sha256 {ref[:16]}…); not carried to any later release; no human comprehension study was run, scheduled or recruited and none is claimed — not a pass; the automated consumer-posture scaffold check is retained; human benefit PENDING. "
+            f"The owner's decision, verbatim:\n  {verbatim}")
 
 
 def policy_disclosure(policy: dict | None, decision: dict | None) -> str:
@@ -123,7 +132,7 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
     head, rest = v6_style_public.split("#### Shipped objects", 1)
     objects, tail = rest.split("#### Not in this release", 1)
     objects = objects.split("\n", 1)[1].strip("\n")
-    activations = n8.activation_status(policy).replace("requirement removed by the owner for v8 releases — not a pass", "no owner decision recorded for 9.x — not a pass")
+    activations = n8.activation_status(policy).replace("requirement removed by the owner for v8 releases — not a pass", "explicit owner exception for 9.0.0 only, MANUAL_REVIEW — not a pass")
     parts = [head.rstrip("\n"), "", f"#### New in {version} — research briefs with traceable AI assistance (local, loopback only)", "", feature_account(m), "",
              "#### Evidence totals (public scoreboard at composition)", "", notes_v7.evidence_totals(board), "",
              "#### Activation status (every proposed activation)", "", activations, "",
@@ -152,16 +161,16 @@ def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = 
     if al.get("accepted") is not True:
         problems.append("allocation is not recorded as accepted (a PROPOSED allocation document is not a decision)")
     dec = decision if decision is not None else gate15_decision()
-    if g.get("route") == "NOT_REQUIRED":
+    if g.get("route") == GATE15_ROUTE:
         if dec is None:
-            problems.append("Gate #15 recorded as NOT_REQUIRED but no owner decision record for 9.x exists in the tree (the 8.x record does not apply)")
-        elif g.get("status") != "REMOVED_BY_OWNER" or g.get("decision_record_sha256") != dec["sha256"]:
-            problems.append("Gate #15 NOT_REQUIRED is not bound to the owner's 9.x decision record in the tree")
+            problems.append(f"Gate #15 recorded as {GATE15_ROUTE} but the owner's 9.0.0 exception record is absent from the tree")
+        elif g.get("status") != "MANUAL_REVIEW" or g.get("decision_record_sha256") != dec["sha256"] or g.get("decision_text_sha256") != hashlib.sha256(dec["decision_text_verbatim"].encode()).hexdigest():
+            problems.append("Gate #15 exception is not bound to the owner's 9.0.0 decision record in the tree (status, record sha256 or verbatim text sha256 mismatch)")
         elif gate15_line(policy, dec) not in notes:
-            problems.append("Gate #15 removed-requirement disclosure missing or altered")
+            problems.append("Gate #15 exception disclosure (verbatim owner text) missing or altered")
     else:
-        problems.append(f"Gate #15 route {g.get('route')!r}: a 9.x release needs the owner's recorded decision (NOT_REQUIRED bound to a 9.x decision record) or the study, which was never run; MANUAL_REVIEW is not a publishable state")
-    if re.search(r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|satisfied)\b", notes):
+        problems.append(f"Gate #15 route {g.get('route')!r}: 9.0.0 needs the owner's explicit exception route {GATE15_ROUTE} bound to the tracked 9.0.0 decision record; NOT_REQUIRED (8.x) and routes A/B do not apply; the study was never run")
+    if re.search(r"Gate #15[^\n]*\b(PASSED|GREEN|study complete|(?<!NOT )(?<!not )satisfied)\b", notes):      # "NOT satisfied" is the disclosure itself
         problems.append("Gate #15 is described as passed or complete — it never is")
     m = matrix or capability_matrix()
     for f in m["enabled"]:

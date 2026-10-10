@@ -357,8 +357,10 @@ def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
         d = json.loads(path.read_text())
         if d.get("record") != "yuclaw-v9-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner" or not str(d.get("applies_to", {}).get("versions", "")).startswith("9."):
             raise ValueError("gate 15 decision record is not the owner's v9 requirement decision")
-        if d.get("status") != "REMOVED_BY_OWNER":
-            raise ValueError(f"gate 15 decision record status {d.get('status')!r} is not REMOVED_BY_OWNER (a study result is never recorded here)")
+        if d.get("status") != "EXCEPTION_ACCEPTED" or d.get("gate_result") != "MANUAL_REVIEW" or d.get("applies_to", {}).get("carried_to_later_releases") is not False or not d.get("decision_text_verbatim") or (d.get("study") or {}).get("represented_as_passed") is not False:
+            raise ValueError(f"gate 15 decision record for 9.x must be the owner's EXCEPTION_ACCEPTED / MANUAL_REVIEW decision for one version, never carried (got status {d.get('status')!r}; a study result is never recorded here)")
+        if not version.startswith(str(d["applies_to"]["versions"]).split()[0]):
+            raise ValueError(f"gate 15 exception record applies to {d['applies_to']['versions']}, not to {version}")
         return {**d, "sha256": _sha_bytes(path.read_bytes())}
     path = GATE15_DECISION if path is None else path
     if not version.startswith("8.") or not path.exists():
@@ -379,6 +381,10 @@ def gate15_result(version: str, scaffold_ok: bool, decision: dict | None) -> tup
         return "RED", "consumer-posture scaffold FAILED (automated check retained); the human comprehension study does not exist"
     if decision is None:
         return "MANUAL_REVIEW", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
+    if decision.get("status") == "EXCEPTION_ACCEPTED":                   # 9.0.0: the owner's explicit one-version exception; the gate result stays MANUAL_REVIEW, never a pass
+        return "MANUAL_REVIEW", (f"requirement NOT satisfied; the owner accepted an explicit release-policy exception for {decision['applies_to']['versions']} on {decision['decision_utc']} "
+                                 f"(decision record sha256 {decision['sha256'][:16]}…; verbatim text sha256 {decision.get('decision_text_sha256', '')[:16]}…); not carried to any later release; "
+                                 "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run, scheduled or recruited and none is claimed — NOT PASSED; human benefit PENDING")
     line = "v8 releases" if str(decision.get("record", "")).startswith("yuclaw-v8") else "9.x releases"
     return "REMOVED_BY_OWNER", (f"requirement removed by the owner on {decision['decision_utc']} for {line} (decision record sha256 {decision['sha256'][:16]}…); "
                                 "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING")

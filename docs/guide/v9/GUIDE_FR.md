@@ -4,9 +4,8 @@ Recherche et formation uniquement. Aucun conseil en placement.
 Mission : Make financial AI accountable to evidence. (Rendre l’IA financière redevable envers les éléments probants.)
 Vision : Become the Science Trust Layer for Financial AI. (Devenir la couche de confiance scientifique de l’IA financière.)
 
-Logiciel couvert : le **candidat** 9.0 sur la branche `codex/v9-integration` (chaîne de version du paquet 8.0.1, couche
-`v9.brief/1`), HEAD `70a6c8aa` le 9 octobre 2026. La version 9.0 n’est pas publiée ; libellés et comportements peuvent
-encore changer. Chaque commande et chaque extrait de sortie de ce guide a été exécuté sur ce dépôt dans un espace de
+Logiciel couvert : YUCLAW **9.0.0** (couche `v9.brief/1`), tel que figé pour la publication sur la branche `codex/v9-integration`
+en octobre 2026. L’entrée `[9.0.0]` du CHANGELOG et la publication GitHub indiquent si elle est publiée ; ce guide décrit le comportement figé. Chaque commande et chaque extrait de sortie de ce guide a été exécuté sur ce dépôt dans un espace de
 travail jetable. **Toutes les données montrées sont fictives** : l’exemple fourni `001_base` décrit « Fictional Example
 Corp (ZZFX) », des numéros de dépôt de la forme `0000000000-26-00000x` et des montants inventés pour l’exemple. Les
 identifiants tels que `brf-4625e1016814`, `bpk-a3ff4d970a5e16c3`, les empreintes et les horodatages diffèrent à chaque
@@ -29,7 +28,7 @@ Tout ce que décrit ce guide s’exécute **sur votre machine**, dans un dossier
 
 | S’exécute localement (v9) | Fourni par le site public et le dépôt |
 |---|---|
-| Composer des notes à partir de modèles sur les engagements figés de votre espace v8 | Le paquet `yuclaw` (versions PyPI ; 9.0 n’est pas encore publiée) |
+| Composer des notes à partir de modèles sur les engagements figés de votre espace v8 | Le paquet `yuclaw` (versions PyPI à partir de 9.0.0) |
 | Importer des brouillons, lier des phrases à des engagements, modifier, traduire | La documentation, les notes de version, le code source |
 | Importer des enregistrements de provenance et tenir vos propres racines de confiance | Rien de votre espace, de vos notes ou de vos paquets : aucune note n’est envoyée nulle part |
 | Construire des paquets de vérification et les vérifier dans un espace vierge | |

@@ -3,8 +3,7 @@
 Research and education only. Not investment advice.
 Mission: Make financial AI accountable to evidence. Vision: Become the Science Trust Layer for Financial AI.
 
-Covers the 9.0 **candidate** on branch `codex/v9-integration` (HEAD `70a6c8aa`, 9 October 2026; package version string
-8.0.1; layer identity `v9.brief/1`). Everything below is as implemented in `v9/brief/contracts.py`, `sidecar.py`,
+Covers YUCLAW **9.0.0** as frozen for release (layer identity `v9.brief/1`). Everything below is as implemented in `v9/brief/contracts.py`, `sidecar.py`,
 `packet.py`, `reports.py`, `measure.py`, `reducer.py` and `finance.py`; `yuclaw workbench brief schema --json` prints the
 vocabularies from the running code. All example values are fictional.
 

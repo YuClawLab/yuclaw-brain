@@ -3,8 +3,8 @@
 Research and education only. Not investment advice.
 Mission: Make financial AI accountable to evidence. Vision: Become the Science Trust Layer for Financial AI.
 
-Covers the 9.0 **candidate** on branch `codex/v9-integration` (HEAD `70a6c8aa`, 9 October 2026), beside the released v8
-workbench 8.0.1. 9.0 is not a published release.
+Covers YUCLAW **9.0.0** as frozen for release on branch `codex/v9-integration` (October 2026), beside the released v8
+workbench 8.0.1. The CHANGELOG entry `[9.0.0]` states whether 9.0.0 is published.
 
 ## 1. A v8 workspace needs no migration
 
@@ -48,42 +48,24 @@ commitments.jsonl  exports  imports  private  v9  workspace.json
 An 8.0.1 client (`yuclaw workbench …` without the v9 layer) opened on a workspace that carries `v9/` reads its own data and
 leaves `v9/` untouched: it knows nothing of the directory, and its journal, claims, exports and verifier are unaffected.
 
-How this was verified for this note (no 8.0.1 installation was available offline, so the v8 code of the same checkout —
-version string 8.0.1 — stood in for the released client):
+How this was verified (V9-002 §4.4, 2026-10-10) — with the PUBLISHED 8.0.1 client, not this checkout's v8 code:
 
-1. `tests/test_v9_brief_engine.py`, class `TestA_Compatibility` (acceptance letter A), exists in the checkout and holds the
-   invariant in three tests:
-   - `test_v8_reads_and_exports_agree_with_a_copy_without_the_sidecar` — after v9 activity (create, edit, translate, link,
-     import a signed report, export, retry), a copy of the workspace with `v9/` deleted yields the same v8 events, tip,
-     claim state, status, export canonical digest and `verify-export` result as the original; the v8 `canonical.json`
-     carries no brief material.
-   - `test_v9_never_appends_to_the_v8_journal` — `commitments.jsonl` is byte-identical before and after the v9 activity, no
-     journal side files appear, and every v9 record names the unchanged v8 tip.
-   - `test_v8_reads_leave_the_sidecar_untouched` — v8 reads (`load`, `claim_state`, `events`, `status`, as-of reads) and a
-     v8 `build-export` + `verify-export` leave every file under `v9/` byte-identical; the sidecar's integrity and the
-     brief's `COMPLETE` status are unchanged.
-2. The same invariant was exercised by hand in a disposable workspace: `sha256sum` of every file under `v9/` before and
-   after `yuclaw workbench status --workspace <ws>` was identical ("v9/ unchanged by the v8 read"), and the v8 status
-   reported its own data only:
-
-```
-$ yuclaw workbench status --workspace ~/yuclaw-workspaces/research
-{
- "workspace_id": "ws-9cc3e0f05241",
- "events": 8,
- "tip": "156779eb7ffc7646a41a7ded09d5b0ceaf256ef11f7fc5d87fb6054a87a5c04a",
- "torn_tail": null,
- "integrity": "OK",
- "claims": ["ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base"]
-}
-```
-
-3. `yuclaw workbench brief selftest` includes the check `v8 journal untouched by v9 writes` (every v8 event kind is a v8
-   kind and `v9/brief.jsonl` exists beside it).
-
-To repeat the check yourself: run `yuclaw workbench status --workspace <ws>` (v8) and `yuclaw workbench brief status
---workspace <ws>` (v9) — the first lists events and claims, the second lists records and briefs and quotes the v8
-integrity and tip it is bound to.
+- `yuclaw-8.0.1-py3-none-any.whl` was downloaded from PyPI; its SHA-256 `9a150ac86639cce6fb02e67a45001ed240cc7f7c3f91fc29f788a9f684e024df`
+  equals PyPI's published digest and the frozen 8.0.1 release record; it was installed into a fresh environment in which `v9`
+  is not importable (`yuclaw 8.0.1`).
+- Against a COPY of a workspace that v9 had written (two brief versions, a sidecar, vault objects), that installed 8.0.1 ran
+  `workbench status` (integrity OK), `build-export` and `verify-export` (SUCCESS), served `/`, `/claim/<id>`, `/verify` and
+  `/journal` (all HTTP 200), and its `selftest` (PASS). Afterwards every file under `v9/` and `private/vault/` was byte-identical;
+  the v8 journal had grown only by the `EXPORT_BUILT` event the client itself appended (the original bytes are a prefix).
+- On a copy WITHOUT a sidecar the same v8 reads created no `v9/` directory. The original workspace was never touched.
+- The installed 8.0.1 fixtures journey (`python -m v8.workbench.journey`) passed 7/7 from that environment.
+- Scope: read and verification operations of the published 8.0.1 client (status, export, verification, served pages,
+  self-check, fixtures journey) on a v9-written workspace; not a statement about older clients, and not about 8.0.1 write
+  operations beyond the export it builds. Tool: `tools/yuclaw_v9_compat_801.py`; record: the private 9.0.0 release directory,
+  `compat_published_8.0.1/compat_published_8.0.1.json`.
+- The checkout-level invariants remain in `tests/test_v9_brief_engine.py`, class `TestA_Compatibility` (acceptance letter A):
+  a copy with `v9/` deleted yields the same v8 events, tip, claim state, export digest and `verify-export` result; the v8
+  journal is byte-identical across v9 activity; v8 reads leave every file under `v9/` byte-identical.
 
 ## 4. The downgrade boundary
 

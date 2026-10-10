@@ -273,13 +273,13 @@ stays closed and everything else works. No independent security review has been 
 benefit is PENDING. What has and has not been demonstrated is on the [evidence scoreboard](https://yuclaw.ca/evidence_scoreboard.html),
 under its own as-of time.
 
-## v9 — research briefs with traceable AI assistance (candidate, not released)
+## v9 — research briefs with traceable AI assistance
 
 A **brief** is research text whose individual sentences can be inspected for the exact source passage, the frozen v8 claim
 version and the registered calculation they rest on, how the text was produced, what changed since, and which checks could
 or could not be run. It runs locally beside the v8 workbench; the complete journey needs no API key, model download or hosted
 service. Five independent answers per statement — byte integrity, recorded origin, issuer trust, substantive support, time
-scope — are never merged into a score. 9.0 is a candidate on the branch `codex/v9-integration`; nothing is published.
+scope — are never merged into a score. Introduced in 9.0.0 (see the CHANGELOG for the release state).
 
 ```bash
 yuclaw workbench brief example --workspace ~/yuclaw-workspaces/research   # fictional fixture → the acceptance brief (EN; --lang fr)

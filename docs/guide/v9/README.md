@@ -22,10 +22,10 @@ téléchargement de modèle ni service hébergé n’intervient. Tous les chiffr
 
 | | |
 |---|---|
-| Package version in `pyproject.toml` · Version du paquet | **8.0.1** (the v9 brief layer ships inside the `yuclaw` package; the layer identifies itself as `v9.brief/1`) |
-| Branch · Branche | `codex/v9-integration`, HEAD `70a6c8aa` at the time of writing (9 October 2026) |
-| Status · Statut | **9.0 is a CANDIDATE, not a published release.** · **9.0 est un CANDIDAT, pas une version publiée.** Nothing described here is on PyPI or in a GitHub release yet; labels and behaviour may change before 9.0 is released. |
-| Guide edition · Édition du guide | 1.0 — 9 October 2026 · 9 octobre 2026 |
+| Package version · Version du paquet | **9.0.0** (the v9 brief layer ships inside the `yuclaw` package; the layer identifies itself as `v9.brief/1`) |
+| Branch · Branche | prepared on `codex/v9-integration` for 9.0.0 (October 2026) · préparé sur `codex/v9-integration` pour 9.0.0 (octobre 2026) |
+| Status · Statut | Describes YUCLAW 9.0.0 as frozen for release; the CHANGELOG entry `[9.0.0]` and the GitHub release state whether it is published. · Décrit YUCLAW 9.0.0 tel que figé pour la publication ; l’entrée `[9.0.0]` du CHANGELOG et la publication GitHub indiquent si elle est publiée. |
+| Guide edition · Édition du guide | 1.1 — 10 October 2026 · 10 octobre 2026 (compatibility measured against the published 8.0.1 client; see MIGRATION.md §3) |
 
 ## Documents
 
