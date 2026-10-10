@@ -39,8 +39,10 @@ FORBIDDEN_MEMBERS = ("internal/", "output/", "archive/", "clawhub/", "v8/V8-", "
 REQUIRED_WHEEL = ("v8/__init__.py", "v8/workbench/__init__.py", "v8/workbench/server.py", "v8/workbench/export.py", "v8/workbench/journey.py", "v8/workbench/ingest.py", "v8/workbench/availability.py",
                   "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/manifest.json", "v8/workbench/resources/fixtures/001_base.json", "v8/workbench/resources/fixtures/008_quarterly.json",
                   "v8/workbench/resources/OPERATOR_GUIDE.md", "v8/workbench/resources/DATA_DICTIONARY.md", "v8/workbench/modkinds.py") + tuple(
-                      f"v8/workbench/modules/{m}.py" for m in ("__init__", "core", "authz", "envelope", "sandbox", "sandbox_bootstrap", "shield_worker", "shield", "evolution", "commons", "practice", "modexport", "web", "journey_modules"))      # V8-014: the four modules ship\
-    + ("v9/__init__.py",) + tuple(f"v9/brief/{m}.py" for m in ("__init__", "__main__", "cli", "compose", "contracts", "finance", "i18n", "measure", "packet", "reducer", "reports", "sidecar", "snapshot", "templates", "web"))   # v9: the brief layer ships
+                      f"v8/workbench/modules/{m}.py" for m in ("__init__", "core", "authz", "envelope", "sandbox", "sandbox_bootstrap", "shield_worker", "shield", "evolution", "commons", "practice", "modexport", "web", "journey_modules"))      # V8-014: the four modules ship
+V9_REQUIRED = ("v9/__init__.py",) + tuple(f"v9/brief/{m}.py" for m in ("__init__", "__main__", "cli", "compose", "contracts", "finance", "i18n", "measure", "packet", "reducer", "reports", "resources", "selftest", "sidecar", "snapshot", "templates", "web")) \
+    + ("v9/brief/resources/QUICKSTART_EN.md", "v9/brief/resources/QUICKSTART_FR.md")      # v9: the brief layer and its packaged quick starts ship (9.0 candidate)
+REQUIRED_WHEEL = REQUIRED_WHEEL + V9_REQUIRED
 REQUIRED_SDIST = ("v8/__init__.py", "v8/workbench/server.py", "v8/workbench/modkinds.py", "v8/workbench/modules/shield.py", "v8/workbench/modules/shield_worker.py", "v8/workbench/modules/sandbox_bootstrap.py", "v8/workbench/modules/practice.py", "v8/workbench/resources/CommitmentClaim.v1.json", "v8/workbench/resources/fixtures/008_quarterly.json", "README_PYPI.md", "README.md", "schemas/CommitmentClaim.v1.json")
 _HOME_PATH = re.compile(r"/home/[A-Za-z0-9_.-]+/|/Users/[A-Za-z0-9_.-]+/")
 

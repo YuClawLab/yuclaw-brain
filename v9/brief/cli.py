@@ -125,6 +125,8 @@ def main(argv=None, prog: str = "python3 -m v9.brief") -> int:
     p = sub.add_parser("recover", help="recover a torn sidecar tail (preserves the bytes; records a RECOVERY record)"); ws_arg(p)
     p = sub.add_parser("orphans", help="list prepared vault objects that no record commits; --remove deletes only those"); ws_arg(p); p.add_argument("--remove", action="store_true")
     p = sub.add_parser("schema", help="the v9 record contracts and vocabularies (developer reference)"); p.add_argument("--json", action="store_true")
+    p = sub.add_parser("selftest", help="bounded self-check from the installed package in a temporary fictional workspace: compose, inspect, edit, translate, export, verify in a fresh workspace, hostile inputs refused"); p.add_argument("--json", action="store_true")
+    p = sub.add_parser("guide", help="print the packaged v9 quick start (--lang fr for French)"); p.add_argument("--lang", default="en", choices=contracts.LANGUAGES)
     a = ap.parse_args(argv)
     try:
         return _run(a)
@@ -137,6 +139,12 @@ def main(argv=None, prog: str = "python3 -m v9.brief") -> int:
 
 
 def _run(a) -> int:
+    if a.cmd == "guide":
+        from v9.brief import resources
+        print(resources.guide(a.lang), end=""); return 0
+    if a.cmd == "selftest":
+        from v9.brief import selftest
+        return selftest.main(as_json=a.json)
     if a.cmd == "schema":
         sch = {"schemas": list(contracts.SUPPORTED_SCHEMAS), "roles": list(contracts.ROLES), "support": list(contracts.SUPPORT), "support_methods": list(contracts.SUPPORT_METHODS),
                "execution": list(contracts.EXECUTION), "signal": list(contracts.SIGNAL), "calibration": list(contracts.CALIBRATION), "origin_kinds": list(contracts.ORIGIN_KINDS),
