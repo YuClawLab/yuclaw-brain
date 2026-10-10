@@ -31,6 +31,7 @@ from v3.receipts.contracts import ContractError
 from v8.workbench import NOT_ADVICE, availability, calc, dataset, export, money, schema
 from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.modules import web as modweb
+from v9.brief import web as briefweb
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -68,6 +69,8 @@ ol.steps{list-style:none;padding:0} ol.steps li{border:1px solid #bbb;border-rad
 fieldset{border:1px solid #ddd;margin:.5rem 0;padding:.3rem .6rem} legend{font-size:.85rem;padding:0 .3rem}
 code,pre.excerpt,p,li,h1{overflow-wrap:anywhere} input[type=file]{max-width:100%} th{white-space:nowrap} td{min-width:5rem} td pre.excerpt{min-width:16rem} td p,td li{overflow-wrap:break-word}
 .guide{white-space:pre-wrap;background:#fff;border:1px solid #ccd;padding:.8rem;font-size:.9rem;font-family:inherit}
+.stmts li{margin:.6rem 0;overflow-wrap:anywhere} .stmts li.sel{background:#fff4d6;outline:2px solid #e0b64a;padding:.3rem} .dims{display:inline-flex;flex-wrap:wrap;gap:.3rem .7rem;font-size:.9em;margin-top:.2rem}
+@media (max-width:420px){body{padding:0 .8rem;margin:.8rem auto} .row{grid-template-columns:1fr} textarea,input,select,pre{max-width:100%;box-sizing:border-box} textarea{width:100%} nav{gap:.2rem .6rem}}
 """
 
 
@@ -323,6 +326,8 @@ class Handler(BaseHTTPRequestHandler):
                     return None
                 if modweb.owns(path):
                     return modweb.get(self, path, q, extra)
+                if briefweb.owns(path):                                   # v9 pages: same gate, same shell, same protections
+                    return briefweb.get(self, path, q, extra)
             if torn:
                 # Reads are not served over a torn tail: the durable events are intact, but the workspace needs the
                 # operator's recovery decision first, so every page is the integrity page with the recovery form.
@@ -383,6 +388,8 @@ class Handler(BaseHTTPRequestHandler):
                 return None
             if modweb.owns(path):
                 return modweb.post(self, path)
+            if briefweb.owns(path):
+                return briefweb.post(self, path)
             if path == "/verify":
                 return self.post_verify()
         except StoreIntegrityError as exc:
@@ -486,7 +493,7 @@ class Handler(BaseHTTPRequestHandler):
         return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{"Blocked — " if self._pf_msg else ""}{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
 <a class="skip" href="#main">Skip to the page content</a>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/modules">Modules</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
+<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/modules">Modules</a><a href="/brief">Briefs (v9)</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
 <ol class="steps" aria-label="The seven steps">{steps}</ol>{hint}
 <main id="main" tabindex="-1"><h1>{esc(title)}</h1>
 {a11y((self._blocked() if self._pf_msg else "") + body)}</main>

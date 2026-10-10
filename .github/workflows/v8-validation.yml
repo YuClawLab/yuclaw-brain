@@ -19,7 +19,7 @@ on:
   push:
     # validation-only branches: the v8 integration branch, and the 8.0.1 patch branch (owner order of 2026-09-21). Nothing here
     # publishes, deploys or dispatches anything; a run on these branches starts no other workflow.
-    branches: [codex/v8-integration, codex/v8.0.1-quality-fixes]
+    branches: [codex/v8-integration, codex/v8.0.1-quality-fixes, codex/v9-integration]
   pull_request:
     paths:
       - "v8/**"

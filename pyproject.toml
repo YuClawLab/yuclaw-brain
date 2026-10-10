@@ -54,7 +54,7 @@ Ledger = "https://github.com/YuClawLab/yuclaw-trust"
 # from sdk/ so `pip install yuclaw` is self-contained). The legacy v2.x `yuclaw/`
 # tree is intentionally NOT packaged.
 [tool.hatch.build.targets.wheel]
-packages = ["v3", "v4", "v8"]
+packages = ["v3", "v4", "v8", "v9"]
 # v8/: only the workbench package ships (v8/__init__.py + v8/workbench/ with its packaged resources);
 # the order records (v8/V8-*), scope package and journey evidence are repository documents, never runtime
 # code — a pattern, so a new order record can never ship by omission (V8-005 clean-install finding). v8/policy holds
@@ -76,7 +76,7 @@ exclude = ["v8/V8-*", "v8/scope", "v8/policy"]
 # tools/: the three files the wheel force-includes must ship in the sdist too,
 # or a wheel built FROM the sdist (pip installing the sdist does this) fails on
 # the missing force-include (found by the 5.3.3 build).
-include = ["v3", "v4", "v8/__init__.py", "v8/workbench", "sdk/yuclaw_py", "README.md", "README_PYPI.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas",
+include = ["v3", "v4", "v8/__init__.py", "v8/workbench", "v9/__init__.py", "v9/brief", "sdk/yuclaw_py", "README.md", "README_PYPI.md", "DISCLAIMER.md", "LICENSE", "NOTICE", "docs", "schemas",
            "tools/__init__.py", "tools/check_language.py", "tools/yuclaw_client_intake.py"]
 # Never ship the archived v2.x monolith (buy/sell vocab, retired anchoring framing)
 # or the legacy clawhub stub in the published sdist. `exclude` wins over `include`.
