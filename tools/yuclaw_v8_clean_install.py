@@ -253,6 +253,35 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
         st[form] = {"rc": r.returncode, "result": j.get("result"), "checks": len(j.get("checks", [])), "failed": [c["name"] for c in j.get("checks", []) if not c.get("ok")], "isolation": j.get("isolation")}
     res["selftest"] = st
     res["checks"]["installed_selftest_passes_in_both_entry_forms_with_isolation_required"] = all(x["rc"] == 0 and x["result"] == "PASS" and x["checks"] >= 15 and (x["isolation"] or {}).get("backend") for x in st.values())
+    # 9.0 candidate: the v9 brief layer from THIS installation — both entry forms of its self-check, then the installed CLI journey
+    # (example → export → verify in a FRESH workspace) outside the checkout with no PYTHONPATH; the v9 module must come from the venv
+    v9 = {}
+    for form, cmd in (("yuclaw workbench brief selftest", [exe, "workbench", "brief", "selftest", "--json"]), ("python -m v9.brief selftest", [py, "-m", "v9.brief", "selftest", "--json"])):
+        r = run(cmd, cwd=cwd, env=env, check=False, timeout=900)
+        try:
+            j = json.loads(r.stdout[r.stdout.index("{"):])
+        except ValueError:
+            j = {"result": "NO_JSON", "checks": [], "stderr_tail": r.stderr[-300:]}
+        v9[form] = {"rc": r.returncode, "result": j.get("result"), "checks": len(j.get("checks", [])), "failed": [c["check"] for c in j.get("checks", []) if not c.get("ok")]}
+    v9_mod = run([py, "-c", "import v9.brief, os; print(os.path.dirname(v9.brief.__file__))"], env=env, check=False).stdout.strip()
+    jdir = out / f"journey-{what}-v9"; jdir.mkdir(parents=True, exist_ok=True)
+    jr = {}
+    ex = run([exe, "workbench", "brief", "example", "--workspace", str(jdir / "research"), "--op-id", "clean:example-0001", "--json"], cwd=cwd, env=env, check=False, timeout=600)
+    try:
+        exj = json.loads(ex.stdout); bid = exj["brief_id"]; jr["example"] = {"rc": ex.returncode, "brief": bid, "statements": len(exj["view"]["statements"]), "support": exj["view"].get("support_counts")}
+        xp = run([exe, "workbench", "brief", "export", "--workspace", str(jdir / "research"), "--brief", bid, "--op-id", "clean:export-0001", "--json"], cwd=cwd, env=env, check=False, timeout=600)
+        xj = json.loads(xp.stdout); jr["export"] = {"rc": xp.returncode, "zip_sha256": xj["zip_sha256"], "zip_bytes": xj["zip_bytes"]}
+        vf = run([exe, "workbench", "brief", "verify", xj["zip_path"], "--workspace", str(jdir / "fresh"), "--op-id", "clean:verify-0001", "--json"], cwd=cwd, env=env, check=False, timeout=600)
+        vj = json.loads(vf.stdout); jr["verify"] = {"rc": vf.returncode, "result": vj.get("result"), "outcomes": vj.get("outcome_counts")}
+        tampered = jdir / "tampered.zip"; raw = bytearray(Path(xj["zip_path"]).read_bytes()); i = raw.find(b"Management cut guidance"); raw[i if i > 0 else len(raw) // 2] ^= 1; tampered.write_bytes(bytes(raw))
+        tv = run([exe, "workbench", "brief", "verify", str(tampered), "--json"], cwd=cwd, env=env, check=False, timeout=600)
+        jr["tampered_verify"] = {"rc": tv.returncode, "result": (json.loads(tv.stdout).get("result") if tv.stdout.strip().startswith("{") else None)}
+    except (ValueError, KeyError) as exc:
+        jr["error"] = f"{exc.__class__.__name__}: {exc}"; jr["stderr_tail"] = (ex.stderr or "")[-300:]
+    res["v9"] = {"selftest": v9, "module_dir": v9_mod, "module_inside_venv": v9_mod.startswith(str(v)), "journey": jr}
+    res["checks"]["installed_v9_selftest_passes_in_both_entry_forms"] = all(x["rc"] == 0 and x["result"] == "PASS" and x["checks"] >= 15 for x in v9.values()) and res["v9"]["module_inside_venv"]
+    res["checks"]["installed_v9_journey_example_export_verify_fresh_and_tamper_refused"] = (jr.get("example", {}).get("rc") == 0 and jr.get("export", {}).get("rc") == 0 and jr.get("verify", {}).get("rc") == 0
+                                                                                           and jr.get("verify", {}).get("result") == "SUCCESS" and jr.get("tampered_verify", {}).get("rc") != 0)
     r1 = run([exe, "workbench", "principals", "init", "--workspace", wsdir, "--id", "owner"], cwd=cwd, env=env, check=False); r2 = run([exe, "workbench", "modules", "--workspace", wsdir], cwd=cwd, env=env, check=False)
     r3 = run([exe, "workbench", "status", "--workspace", wsdir], cwd=cwd, env=env, check=False)
     res["checks"]["documented_route_commands_run"] = r1.returncode == 0 and r2.returncode == 0 and r3.returncode == 0 and wsdir.is_dir()
