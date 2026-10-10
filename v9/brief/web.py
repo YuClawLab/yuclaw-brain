@@ -137,13 +137,17 @@ def _inspector(view: dict, s: dict, lang: str) -> str:
 <p class="muted">{esc(view['dimension_note'])}</p></section>"""
 
 
+def _claim_links(claim_ids: list) -> str:
+    return ", ".join('<a href="/claim/%s"><code>%s</code></a>' % (urllib.parse.quote(c, safe=""), esc(c)) for c in claim_ids)
+
+
 def page_brief(h, bid: str, q: dict) -> str:
     lang = _lang(q); ws = h.server.ws; sc = _sc(h)
     view = reducer.brief_view(ws, sc, bid, q.get("version") or None, lang)
     base = f"/brief/{bid}"; vq = {"version": view["version_id"]}
     head = (_lang_switch(base, q) + modweb.err_box(h)
             + f'<p>{esc(view["brief_id"])} · {esc(t("word.version", lang))} <b>{esc(view["version_id"])}</b> ({esc(view["language"])}) · {esc(t("word.parent", lang))} {esc(view["parent_version"] or "—")} · {esc(t("word.created", lang))} {esc(view["recorded_at"])} · snapshot <code>{esc(view["snapshot_digest"][:16])}…</code></p>'
-            + f'<p><b>{esc(view.get("evidence_label") or view.get("status_label", view["status"]))}</b> · {esc(t("brief.claims", lang))}: {", ".join(f"<a href=/claim/{urllib.parse.quote(c, safe='')}><code>{esc(c)}</code></a>" for c in view["claim_ids"])}</p>'
+            + f'<p><b>{esc(view.get("evidence_label") or view.get("status_label", view["status"]))}</b> · {esc(t("brief.claims", lang))}: {_claim_links(view["claim_ids"])}</p>'
             + f'<p class="muted"><i>{esc(view["mission"])} {esc(view["vision"])}</i></p>')
     if view["status"] != "COMPLETE":
         return head + f'<div class="err"><p>{esc(view["status_label"])}: {esc(view["missing_objects"])}</p></div>'

@@ -84,16 +84,18 @@ def brief_view(ws: Workspace, sc: Sidecar, brief_id: str, version_id: str | None
     roots = reports.trust_roots(sc, recs); cals = reports.calibrations(sc, recs)
     bound = reports.records_for_view(sc, p["text_view"]["view_sha256"], recs)
     receipts = []
-    for r in [{"payload": {"record": p["receipt"], "signature": reports.evaluate_signature("receipt", p["receipt"], roots), "origin_label": "recorded with the version"}}] + bound["receipts"]:
-        rec = r["payload"]["record"]; sig = r["payload"]["signature"]
+    for r in [{"payload": {"record": p["receipt"], "origin_label": "recorded with the version"}}] + bound["receipts"]:
+        rec = r["payload"]["record"]; sig = reports.evaluate_signature("receipt", rec, roots)                 # under the receiver's CURRENT roots (a revocation shows at once); the import-time evaluation stays in the record
         receipts.append({"record_id": rec["record_id"], "origin": rec["origin"], "recording_method": rec["recording_method"], "template": rec.get("template"), "provider": rec.get("provider"), "model": rec.get("model"),
                          "settings": rec.get("settings"), "unknown": rec.get("unknown"), "request_id": rec.get("request_id"), "issued_at": rec.get("issued_at"), "observed_at": rec["observed_at"],
                          "raw_output_sha256": rec.get("raw_output_sha256"), "assembled_output_sha256": rec["assembled_output_sha256"], "same_bytes": rec.get("raw_output_sha256") == rec["assembled_output_sha256"],
                          "signature": sig, "label": t("label.generation_record", lang), "note": rec.get("provenance_note") or r["payload"].get("origin_label", "")})
     reps = []
     for r in bound["reports"]:
-        rec = r["payload"]["record"]; sig = r["payload"]["signature"]
-        app = reports.calibration_applicability(rec, cals.get(rec.get("calibration_ref")), p["language"])
+        rec = r["payload"]["record"]; sig = reports.evaluate_signature("report", rec, roots)
+        cal_rec = cals.get(rec.get("calibration_ref"))
+        cal_sig = reports.evaluate_signature("calibration", cal_rec["payload"]["record"], roots) if cal_rec is not None else None
+        app = reports.calibration_applicability(rec, cal_rec, p["language"], cal_sig)
         reps.append({"record_id": rec["record_id"], "detector": rec["detector"], "detector_version": rec.get("detector_version"), "configuration": rec.get("configuration"), "key_scope": rec.get("key_scope"),
                      "execution": rec["execution"], "signal": rec.get("signal"), "calibration_claimed": rec["calibration"], "calibration": app, "failure_reason": rec.get("failure_reason"),
                      "diagnostics": rec.get("diagnostics"), "unknown": rec.get("unknown"), "origin": rec["origin"], "cache_reuse": rec.get("cache_reuse"), "span": rec["span"], "observed_at": rec["observed_at"],

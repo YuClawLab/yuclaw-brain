@@ -177,7 +177,7 @@ def calibrations(sc: Sidecar, recs: list | None = None) -> dict:
     return {r["payload"]["record"]["record_id"]: r for r in sc.records("CALIBRATION_IMPORTED", None, recs)}
 
 
-def calibration_applicability(report: dict, cal_rec: dict | None, language: str | None) -> dict:
+def calibration_applicability(report: dict, cal_rec: dict | None, language: str | None, cal_sig: dict | None = None) -> dict:
     """APPLICABLE only when the report says so AND a calibration record it names is present, in scope for this detector/
     configuration/key/language AND independently authenticated (issuer-signed and trusted by this receiver). An operator's
     imported calibration assertion stays NOT_ESTABLISHED: it does not masquerade as measured calibration."""
@@ -188,7 +188,7 @@ def calibration_applicability(report: dict, cal_rec: dict | None, language: str 
         return {"applicability": claimed, "claimed": claimed, "reason": "as stated by the report"}
     if cal_rec is None:
         return {"applicability": "NOT_ESTABLISHED", "claimed": claimed, "reason": f"calibration_ref {report.get('calibration_ref')} is not an enrolled calibration record here"}
-    cal = cal_rec["payload"]["record"]; sig = cal_rec["payload"]["signature"]
+    cal = cal_rec["payload"]["record"]; sig = cal_sig or cal_rec["payload"]["signature"]      # cal_sig: the evaluation under the receiver's CURRENT roots
     ok, why = contracts.calibration_scope_matches(report, cal, language)
     if not ok:
         return {"applicability": "OUT_OF_SCOPE", "claimed": claimed, "reason": "; ".join(why), "calibration_record": cal["record_id"]}

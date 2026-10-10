@@ -31,7 +31,15 @@ from v3.receipts.contracts import ContractError
 from v8.workbench import NOT_ADVICE, availability, calc, dataset, export, money, schema
 from v8.workbench.sci import adapter as sci_adapter
 from v8.workbench.modules import web as modweb
-from v9.brief import web as briefweb
+
+
+def _briefweb():
+    """The v9 pages, when the v9 package is installed beside this one; None otherwise (the v8 workbench never depends on v9)."""
+    try:
+        from v9.brief import web as briefweb
+        return briefweb
+    except ImportError:
+        return None
 from v8.workbench.store import StoreIntegrityError, Workspace, new_op_id
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -326,7 +334,8 @@ class Handler(BaseHTTPRequestHandler):
                     return None
                 if modweb.owns(path):
                     return modweb.get(self, path, q, extra)
-                if briefweb.owns(path):                                   # v9 pages: same gate, same shell, same protections
+                briefweb = _briefweb()
+                if briefweb is not None and briefweb.owns(path):          # v9 pages: same gate, same shell, same protections
                     return briefweb.get(self, path, q, extra)
             if torn:
                 # Reads are not served over a torn tail: the durable events are intact, but the workspace needs the
@@ -388,7 +397,8 @@ class Handler(BaseHTTPRequestHandler):
                 return None
             if modweb.owns(path):
                 return modweb.post(self, path)
-            if briefweb.owns(path):
+            briefweb = _briefweb()
+            if briefweb is not None and briefweb.owns(path):
                 return briefweb.post(self, path)
             if path == "/verify":
                 return self.post_verify()
@@ -490,10 +500,11 @@ class Handler(BaseHTTPRequestHandler):
         steps = "".join(f'<li><a href="{esc(href(key))}">{esc(lbl)}</a></li>' if href(key) else f"<li>{esc(lbl)}</li>" for key, lbl in STEPS)
         hint = "" if cq else '<p class="muted">Steps 3–7 are sections of a claim\'s page: open a claim from the <a href="/">Workspace</a>.</p>'
         cand = self.server.candidate_commit or "not recorded"
+        briefs = '<a href="/brief">Briefs (v9)</a>' if _briefweb() is not None else ""
         return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{"Blocked — " if self._pf_msg else ""}{esc(title)} — YUCLAW workbench</title><link rel="stylesheet" href="/static/style.css"></head><body>
 <a class="skip" href="#main">Skip to the page content</a>
 <p class="muted"><b>Research &amp; education only. Not investment advice.</b> Local workbench bound to 127.0.0.1. Nothing here publishes.</p>
-<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/modules">Modules</a><a href="/brief">Briefs (v9)</a><a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
+<nav aria-label="Workbench functions"><a href="/">Workspace</a><a href="/source">1 Source</a><a href="/claim/new">2 Typed claim</a><a href="/notes">Research notes</a><a href="/dataset">Dataset coverage</a><a href="/sci">Scientific report</a><a href="/modules">Modules</a>{briefs}<a href="/verify">Verify an export (fresh workspace)</a><a href="/journal">Journal</a><a href="/help">Help</a></nav>
 <ol class="steps" aria-label="The seven steps">{steps}</ol>{hint}
 <main id="main" tabindex="-1"><h1>{esc(title)}</h1>
 {a11y((self._blocked() if self._pf_msg else "") + body)}</main>

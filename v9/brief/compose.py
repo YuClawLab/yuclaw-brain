@@ -114,7 +114,8 @@ def scan_protected_contradictions(text: str, claim: dict) -> list[dict]:
 
 
 def number_set(text: str) -> list[str]:
-    return sorted(re.findall(r"\d+(?:[.,]\d+)?", text))
+    """Digit sequences with their decimal part, decimal comma and point unified (language-independent); signs and spacing ignored."""
+    return sorted(n.replace(",", ".") for n in re.findall(r"\d+(?:[.,]\d+)?", text))
 
 
 # ------------------------------------------------------------------ segmentation of imported prose (scope stated)

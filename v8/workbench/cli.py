@@ -24,7 +24,8 @@ OVERVIEW = ("The v8 workbench is a LOCAL application (it binds 127.0.0.1 only; y
             "Four modules run inside it — SHD Distillation Shield (protected evidence intake), EVO Evolution Evidence Audit (what changed in an AI system, which evidence still applies), "
             "COM Research Commons Guard (a fair, bounded review queue) and PRC Independent Practice (attempt first, then compare). Start: `guide` prints the packaged guide; "
             "`selftest` checks this installation; `serve --workspace DIR` opens http://127.0.0.1:8765. Showing help starts nothing and creates nothing. "
-            "SHD admission needs Linux with Landlock; elsewhere that one route stays closed and everything else works.")
+            "SHD admission needs Linux with Landlock; elsewhere that one route stays closed and everything else works. "
+            "v9 (when installed): `brief …` — research briefs with traceable AI assistance; `brief --help` lists its commands and `brief example --workspace DIR` runs the fictional journey.")
 
 
 def main(argv=None, prog: str = "python3 -m v8.workbench") -> int:
@@ -44,8 +45,6 @@ def main(argv=None, prog: str = "python3 -m v8.workbench") -> int:
     pr.add_argument("action", choices=("init", "add", "rotate", "revoke", "list")); pr.add_argument("--workspace", required=True); pr.add_argument("--id", default="owner")
     pr.add_argument("--caps", default="admin", help="comma separated: admin,submit,review,practice"); pr.add_argument("--expires", default=None); pr.add_argument("--reason", default="revoked by the host operator")
     ms = sub.add_parser("modules", help="module status: principals configured, isolation capability (live probe), budgets and configuration"); ms.add_argument("--workspace", required=True)
-    br = sub.add_parser("brief", help="v9 research briefs with traceable AI assistance: create · show · edit · translate · export · verify … (try: brief example --workspace DIR)", add_help=False)
-    br.add_argument("rest", nargs=argparse.REMAINDER)
     st = sub.add_parser("selftest", help="bounded self-check from the installed package, in a temporary fictional workspace (no pytest, no repository files needed)")
     st.add_argument("--json", action="store_true"); st.add_argument("--require-isolation", action="store_true", help="fail (never skip) when no isolation backend passes its live probe — for a supported Linux host")
     st.add_argument("--dev", action="store_true", help="developers: run the repository's workbench unit tests instead (needs a checkout with tests/ and pytest)")

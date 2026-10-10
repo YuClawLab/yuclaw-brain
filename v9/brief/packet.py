@@ -52,6 +52,10 @@ def _esc(v) -> str:
 
 
 # ------------------------------------------------------------------ readable HTML (static, no scripts, no remote fetches)
+def _trust_words(s: dict) -> str:
+    return ", ".join(f"{r['record_id'][:8]}: {r['signature']['signature']}/{r['signature']['trust']}" for r in (s["issuer_trust"]["receipts"] + s["issuer_trust"]["reports"]))
+
+
 def render_html(view: dict, lang: str) -> str:
     fr = lang == "fr"
     chips = []
@@ -60,7 +64,7 @@ def render_html(view: dict, lang: str) -> str:
         chips.append(f'<li id="s{s["n"]}" class="st {_esc(sup)}"><span class="n">{s["n"]}</span> <span class="txt">{_esc(s["text"])}</span>'
                      f'<dl><dt>{_esc(t("dim.byte_integrity", lang))}</dt><dd>{_esc(s["byte_integrity"]["status"])}</dd>'
                      f'<dt>{_esc(t("dim.recorded_origin", lang))}</dt><dd>{_esc(s["recorded_origin"]["transform"])} · {_esc(s["recorded_origin"]["implementation"])}</dd>'
-                     f'<dt>{_esc(t("dim.issuer_trust", lang))}</dt><dd>{_esc(", ".join(f"{r["record_id"][:8]}: {r["signature"]["signature"]}/{r["signature"]["trust"]}" for r in (s["issuer_trust"]["receipts"] + s["issuer_trust"]["reports"])) or t("label.signature.none", lang))}</dd>'
+                     f'<dt>{_esc(t("dim.issuer_trust", lang))}</dt><dd>{_esc(_trust_words(s) or t("label.signature.none", lang))}</dd>'
                      f'<dt>{_esc(t("dim.substantive_support", lang))}</dt><dd><b>{_esc(sup)}</b> — {_esc(s["substantive_support"]["label"])} <i>{_esc(s["substantive_support"]["method"])}</i><br><small>{_esc(s["substantive_support"]["limits"])}</small></dd>'
                      f'<dt>{_esc(t("dim.time_scope", lang))}</dt><dd>{_esc(s["time_scope"]["label"])}</dd>'
                      f'<dt>{_esc(t("dim.detector", lang))}</dt><dd>{_esc(s["detector"]["label"])}</dd></dl></li>')
@@ -81,17 +85,13 @@ def render_html(view: dict, lang: str) -> str:
 
 # ------------------------------------------------------------------ public views (rights)
 def _public_receipt(rec: dict) -> dict:
-    r = dict(rec)
-    if r.get("prompt_disclosure") != "permitted":
-        r["prompt_text"] = None
-    return r
+    """The record as imported: it never holds prompt text (only a digest), so it travels unchanged and its signed body stays bound."""
+    return dict(rec)
 
 
 def _public_report(rec: dict) -> dict:
-    r = dict(rec)
-    if r.get("disclosure") != "permitted":
-        r["raw_response"] = None
-    return r
+    """The record as imported: raw response bytes live in the vault, never in the record, so the signed body stays bound."""
+    return dict(rec)
 
 
 def _public_view(view: dict) -> dict:
@@ -240,6 +240,8 @@ def verify_packet(zip_path, *, receiver: Sidecar | None = None) -> dict:
         checks.append({"check": "archive-safety", "outcome": "FAILED", "detail": err}); return done("UNSUPPORTED", f"refused: {err}", zip_sha256=zs)
     checks.append({"check": "archive-safety", "outcome": "VERIFIED", "detail": f"{len(members)} members within bounds; no traversal, symlink, oversized or duplicate member"})
     if MANIFEST not in members:
+        if v8export.MANIFEST in members:
+            return done("UNSUPPORTED", f"this is a v8 export ({v8export.MANIFEST} present, no {MANIFEST}); verify it with the v8 verifier (`yuclaw workbench verify-export`), which stays unchanged — this reader never reinterprets it", zip_sha256=zs)
         checks.append({"check": "required-members", "outcome": "FAILED", "detail": f"missing {MANIFEST}"}); return done("MISMATCH", f"incomplete packet: missing {MANIFEST}", zip_sha256=zs)
     try:
         man = json.loads(members[MANIFEST].decode("utf-8"))
