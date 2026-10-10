@@ -263,7 +263,7 @@ def install_and_demonstrate(what: str, art: dict, artifact: Path, out: Path, sou
         except ValueError:
             j = {"result": "NO_JSON", "checks": [], "stderr_tail": r.stderr[-300:]}
         v9[form] = {"rc": r.returncode, "result": j.get("result"), "checks": len(j.get("checks", [])), "failed": [c["check"] for c in j.get("checks", []) if not c.get("ok")]}
-    v9_mod = run([py, "-c", "import v9.brief, os; print(os.path.dirname(v9.brief.__file__))"], env=env, check=False).stdout.strip()
+    v9_mod = run([py, "-c", "import v9.brief, os; print(os.path.dirname(v9.brief.__file__))"], cwd=cwd, env=env, check=False).stdout.strip()   # from the run dir, never the checkout
     jdir = out / f"journey-{what}-v9"; jdir.mkdir(parents=True, exist_ok=True)
     jr = {}
     ex = run([exe, "workbench", "brief", "example", "--workspace", str(jdir / "research"), "--op-id", "clean:example-0001", "--json"], cwd=cwd, env=env, check=False, timeout=600)
