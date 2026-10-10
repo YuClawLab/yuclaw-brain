@@ -69,8 +69,19 @@ def validate(path: str | Path) -> tuple[list[dict], dict]:
              "encoding?) — export as CSV (UTF-8) and re-run"]) from None
     if not lines:
         raise IntakeError(["file is empty (or only comment lines)"])
+    if any("\x00" in ln for ln in lines):
+        # Python 3.10's csv module raises `_csv.Error: line contains NUL` here while 3.11+ reads on; refuse the same
+        # way on every supported runtime instead of leaking a traceback on the declared floor (9.0.0 floor check)
+        raise IntakeError(
+            ["file contains NUL bytes (a binary or UTF-16 export?) — export as "
+             "CSV (UTF-8) and re-run"])
     reader = csv.DictReader(lines)
-    cols = [c.strip().lower() for c in (reader.fieldnames or [])]
+    try:
+        cols = [c.strip().lower() for c in (reader.fieldnames or [])]
+    except csv.Error as exc:
+        raise IntakeError(
+            [f"file is not a parseable CSV ({exc}) — export as CSV (UTF-8) "
+             "and re-run"]) from None
     missing = [c for c in REQUIRED if c not in cols]
     if missing:
         raise IntakeError(
@@ -92,7 +103,13 @@ def validate(path: str | Path) -> tuple[list[dict], dict]:
     bad_date, bad_val, future_rows, after_asof = [], [], [], []
     seen, dup_rows = {}, []
     rows = []
-    for n, raw in enumerate(reader, start=2):   # header = line 1
+    try:
+        parsed = list(enumerate(reader, start=2))   # header = line 1
+    except csv.Error as exc:
+        raise IntakeError(
+            [f"file is not a parseable CSV ({exc}) — export as CSV (UTF-8) "
+             "and re-run"]) from None
+    for n, raw in parsed:
         d_raw = (raw[colmap["date"]] or "").strip()
         tk = (raw[colmap["ticker"]] or "").strip().upper()
         v_raw = (raw[colmap["signal_value"]] or "").strip()
