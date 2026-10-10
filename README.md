@@ -223,6 +223,8 @@ research classifications, not buy/sell recommendations.
 [XLK Evidence Lens](https://yuclaw.ca/xlk_evidence.html) ·
 [Canada Resources](https://yuclaw.ca/canada_resources.html) ·
 [Forward Tracking](https://yuclaw.ca/validation.html) ·
+[📖 User Guide (v8 · 8.0.1, EN)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) ·
+[📖 Guide utilisateur (v8 · 8.0.1, FR)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md) ·
 [📖 Current guide (v8)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) ·
 [Earlier PDF guide (version 5 era, historical)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
 [Guide PDF antérieur (FR, historique)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) ·
@@ -263,7 +265,7 @@ yuclaw workbench guide                                     # the full guide, fro
 ```
 
 In the browser: load a fictional example on the Workspace page, follow its seven steps, build the export, then verify it in a second,
-fresh workspace ([current guide](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md)). `python -m v8.workbench …` is the same program.
+fresh workspace ([current guide](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md); full manuals: [User Guide (EN)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) · [Guide utilisateur (FR)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md)). `python -m v8.workbench …` is the same program.
 
 **Status: experimental, local, owner-operated.** Including the modules activates nothing — no role, approval, budget or study exists
 until you set one up. Protected SHD admission needs **Linux with Landlock**; on macOS, Windows or a kernel without it that one route
@@ -501,7 +503,8 @@ look-ahead-free record.
 | **Validation Lab** | [validation_lab.html](https://yuclaw.ca/validation_lab.html) |
 | **SMH Evidence Lens** | [etf_evidence.html](https://yuclaw.ca/etf_evidence.html) |
 | **XLK Evidence Lens** | [xlk_evidence.html](https://yuclaw.ca/xlk_evidence.html) |
-| **📖 Guides** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the version 5 command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
+| **📖 User Guide · Guide utilisateur** | v8 (software 8.0.1, guide edition 1.1, 21 pages each): [English](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) ([PDF](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.pdf) · [DOCX](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.docx)) · [Français](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md) ([PDF](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.pdf) · [DOCX](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.docx)) · [bilingual index](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/README.md) |
+| **📖 Operator guide** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the version 5 command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |

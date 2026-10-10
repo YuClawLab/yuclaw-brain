@@ -1,0 +1,3170 @@
+{
+  "EN": [
+    {
+      "cover": true,
+      "title": "Version 8\nUser Guide",
+      "subtitle": "English edition • YUCLAW 8.0.1",
+      "blocks": [
+        [
+          "p",
+          "From a financial statement to a claim you can trace, review and reproduce."
+        ],
+        [
+          "gap",
+          20
+        ],
+        [
+          "h",
+          "Mission"
+        ],
+        [
+          "p",
+          "Make financial AI accountable to evidence."
+        ],
+        [
+          "h",
+          "Vision"
+        ],
+        [
+          "p",
+          "Become the Science Trust Layer for Financial AI."
+        ],
+        [
+          "gap",
+          18
+        ],
+        [
+          "p",
+          "A practical manual for researchers, reviewers and local workspace operators. Covers the seven-step workbench, SHD, EVO, COM, PRC, research exports and the public research website."
+        ],
+        [
+          "p",
+          "**Software covered:** 8.0.1. **Guide edition:** 1.1, 9 October 2026. Instructions are tied to this release; later versions may change labels or behavior."
+        ],
+        [
+          "p",
+          "Research and education only. Not investment advice. The workbench records and checks research; it does not place trades or publish your workspace."
+        ],
+        [
+          "link",
+          "yuclaw.ca",
+          "https://yuclaw.ca"
+        ]
+      ]
+    },
+    {
+      "title": "1 Find your way",
+      "blocks": [
+        [
+          "p",
+          "Choose the public website to explore published evidence. Install the local workbench to create your own sources, claims, reviews and reproducible packets. A public ticker page does not automatically populate a local workspace."
+        ],
+        [
+          "table",
+          [
+            "Your task",
+            "Read"
+          ],
+          [
+            [
+              "Understand the product and read public evidence",
+              "This page"
+            ],
+            [
+              "Install and finish a fictional first run",
+              "Pages 3–4"
+            ],
+            [
+              "Register sources and freeze a financial claim",
+              "Pages 5–6"
+            ],
+            [
+              "Compare ranges and interpret outcomes",
+              "Page 7"
+            ],
+            [
+              "Replay history and correct a source time",
+              "Page 8"
+            ],
+            [
+              "Record notes, review and dataset or science records",
+              "Pages 9–10"
+            ],
+            [
+              "Export research and verify it independently of its workspace",
+              "Page 11"
+            ],
+            [
+              "Set up local roles and use the four modules",
+              "Pages 12–17"
+            ],
+            [
+              "Fetch a disclosure with the optional ingestion tool",
+              "Page 18"
+            ],
+            [
+              "Resolve an error or find a command",
+              "Pages 19–20"
+            ],
+            [
+              "Check terminology and source documentation",
+              "Page 21"
+            ]
+          ],
+          [
+            12.8,
+            4.5
+          ]
+        ],
+        [
+          "h",
+          "Reading the public website"
+        ],
+        [
+          "p",
+          "At `https://yuclaw.ca`, start with Explorer or a sector evidence lens, then open a ticker’s evidence and source links. Use Forward Tracking for recorded outcomes, the Evidence Scoreboard for receipt coverage, and Methodology for definitions. Check each artifact’s date, scope and completeness before comparing it with another."
+        ],
+        [
+          "p",
+          "Signal labels are research classifications. A score is not an expected return; evidence coverage is not a probability. A preview or capped list is not a full historical dataset. Read any limitation beside a benchmark score before using it."
+        ],
+        [
+          "h",
+          "What v8 adds to your workflow"
+        ],
+        [
+          "p",
+          "The local source-to-export workbench connects immutable claim versions, exact calculations, time-aware history and review. Four experimental modules add protected bundle intake, evidence reuse audits, bounded review queues and attempt-before-comparison practice. They record decisions and their limits; they do not certify truth or authorize an external deployment."
+        ],
+        [
+          "p",
+          "In this guide, English names such as **Source**, **Build export** and `IN_RANGE` match the product. Examples marked fictional are demonstrations, not observations about a real issuer."
+        ]
+      ]
+    },
+    {
+      "title": "2 Install YUCLAW",
+      "blocks": [
+        [
+          "p",
+          "Use Python 3.10 or newer and a separate virtual environment. Internet access is needed to download the package. The fictional workbench walkthrough then uses packaged data; it does not require your production database or a live filing feed."
+        ],
+        [
+          "h",
+          "macOS or Linux"
+        ],
+        [
+          "code",
+          "python3 -m venv ~/yuclaw-venv\nsource ~/yuclaw-venv/bin/activate\npython -m pip install \"yuclaw==8.0.1\"\npython -m pip show yuclaw\nyuclaw workbench --help"
+        ],
+        [
+          "h",
+          "Windows PowerShell"
+        ],
+        [
+          "p",
+          "Use the environment’s interpreter directly; no PowerShell activation-policy change is required. Adjust the Python launcher selection if more than one version is installed."
+        ],
+        [
+          "code",
+          "py -3 -m venv \"$HOME\\yuclaw-venv\"\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m pip install \"yuclaw==8.0.1\"\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m pip show yuclaw\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m v8.workbench --help"
+        ],
+        [
+          "h",
+          "Check this installation once"
+        ],
+        [
+          "code",
+          "yuclaw workbench selftest\nyuclaw workbench guide"
+        ],
+        [
+          "p",
+          "On Windows, replace `yuclaw workbench` in later commands with the environment’s `python.exe -m v8.workbench` form above. On macOS or Linux, activate the environment in each new terminal, or use its full executable path. Commands continued with a trailing backslash use macOS/Linux syntax; in PowerShell, enter the command on one line and remove those continuation backslashes."
+        ],
+        [
+          "p",
+          "**Expected:** package metadata shows 8.0.1; help lists the workbench commands. The optional selftest creates temporary fictional workspaces, exercises calculations and export verification, checks refusal behavior, then removes its temporary folder. It checks this installation, not the entire development test suite."
+        ],
+        [
+          "h",
+          "Platform distinction"
+        ],
+        [
+          "p",
+          "Core workflows and the other modules are available without SHD admission. Protected SHD intake requires a supported Linux isolation backend that passes the live probe. On macOS and Windows that route stays closed. A closed SHD route is not a failed installation of the core workbench."
+        ],
+        [
+          "p",
+          "These Windows commands are the interpreter equivalent of the shipped CLI. This guide does not claim that every OS, kernel and hardware combination was independently tested."
+        ]
+      ]
+    },
+    {
+      "title": "3 Your first complete workflow",
+      "blocks": [
+        [
+          "h",
+          "Start a research workspace"
+        ],
+        [
+          "p",
+          "In the first terminal, with the virtual environment active:"
+        ],
+        [
+          "code",
+          "yuclaw workbench serve --workspace ~/yuclaw-workspaces/research --port 8765"
+        ],
+        [
+          "p",
+          "In a second terminal, activate the same environment and start a different workspace:"
+        ],
+        [
+          "code",
+          "yuclaw workbench serve --workspace ~/yuclaw-workspaces/fresh --port 8766"
+        ],
+        [
+          "p",
+          "On Windows use quoted absolute workspace paths, for example `\"$HOME\\yuclaw-workspaces\\research\"`. Each directory is created on first use. Keep it outside a published website directory. Use a different workspace directory for each server."
+        ],
+        [
+          "h",
+          "Follow the fictional example"
+        ],
+        [
+          "b",
+          "Open `http://127.0.0.1:8765/`. In **Load a fictional fixture**, select `001_base`, then **Load fixture**."
+        ],
+        [
+          "b",
+          "Open claim `ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base` (the loader appends the fixture identifier to the claim ID, so a loaded demonstration is never mistaken for a hand-made claim). Read steps 1–6: source, typed claim, comparison, calculation, history and adjudication."
+        ],
+        [
+          "b",
+          "Confirm the original range is 110–120 million, the revised range 105–115 million and the disclosed outcome 112 million. Both calculations should be `IN_RANGE`."
+        ],
+        [
+          "b",
+          "Under step 7, choose **Build export**, then download the ZIP. Keep its reported digest with it."
+        ],
+        [
+          "b",
+          "Open `http://127.0.0.1:8766/verify` in the fresh workspace. Select the downloaded ZIP and submit it. Expect `SUCCESS` with recomputed results."
+        ],
+        [
+          "p",
+          "This is a fictional retrospective example, including its future-dated outcome. It demonstrates software behavior. It does not establish real predictive accuracy, and the fresh workspace is not a second independent person."
+        ],
+        [
+          "h",
+          "Stop and resume"
+        ],
+        [
+          "p",
+          "Press **Ctrl+C** in each server terminal to stop it. Restart with the same directory and port to resume. Completed recorded actions remain in the journal. Reload browser forms after a restart; their tokens belong to that server session."
+        ],
+        [
+          "code",
+          "yuclaw workbench status --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "The server binds to `127.0.0.1`. Opening yuclaw.ca does not start it. Closing a browser tab does not stop the terminal process. No filing or outcome arrives automatically in this local workspace."
+        ]
+      ]
+    },
+    {
+      "title": "4 Register a source",
+      "blocks": [
+        [
+          "p",
+          "Open **1 Source** at `/source`. Start with the exact passage you want the claim to cite. Registration preserves the passage and its digest; a paraphrase belongs in your research notes, not in the source excerpt."
+        ],
+        [
+          "table",
+          [
+            "Field or concept",
+            "What to enter"
+          ],
+          [
+            [
+              "Kind and form",
+              "The actual document type, such as a filing and its form. Do not label a press release as a filing merely to pass validation."
+            ],
+            [
+              "Accession or publisher identifier",
+              "The real EDGAR accession, or the supported publisher identifier shown by the form."
+            ],
+            [
+              "URL and filed date",
+              "The source location and stated filing date. A URL alone is not the evidence passage."
+            ],
+            [
+              "Exact excerpt",
+              "The source’s words, with its stated amounts, units and context intact."
+            ],
+            [
+              "Available as of",
+              "When the source became available. Use a supported UTC timestamp, such as 2026-02-10T21:05:00Z."
+            ],
+            [
+              "Observation time",
+              "When this workspace observed the source. It is distinct from the public availability time."
+            ],
+            [
+              "Rights and fictional flag",
+              "Use the applicable rights category. Mark demonstration data as fictional; do not assume reuse rights."
+            ]
+          ],
+          [
+            4.5,
+            12.8
+          ]
+        ],
+        [
+          "p",
+          "Submit the form and confirm the registered source appears in the source table with its passage digest and times. The server stamps its own recording time. Select this registered source when creating the claim."
+        ],
+        [
+          "h",
+          "If you already have an ingestion record"
+        ],
+        [
+          "p",
+          "Use **Register from an ingestion record**. Paste the contents of the tool’s `original.source.json`; use the `retrieved_at` value from its provenance file as the observation time. The optional network ingestion procedure is on page 18."
+        ],
+        [
+          "h",
+          "When the source is incomplete or wrong"
+        ],
+        [
+          "p",
+          "An unknown availability time must remain unknown; it cannot be guessed to obtain a valid registration. If you cited the wrong passage, register the right one and create a `CORRECTED_SOURCE` amendment. If only the availability time is wrong, use the linked correction procedure on page 8. Never edit the stored source or journal by hand."
+        ],
+        [
+          "p",
+          "**Checkpoint:** the passage, document identity, rights and three different times are understandable without relying on your memory. Digest agreement establishes byte consistency; it does not authenticate the publisher or prove the statement true."
+        ]
+      ]
+    },
+    {
+      "title": "5 Create and freeze a typed claim",
+      "blocks": [
+        [
+          "p",
+          "Open **2 Typed claim** at `/claim/new`. A typed claim makes the financial comparison explicit before a result is interpreted. Select the registered source, then complete every comparability field."
+        ],
+        [
+          "table",
+          [
+            "Required information",
+            "Fictional example or rule"
+          ],
+          [
+            [
+              "Claim and issuer identity",
+              "Use a stable new claim ID and the issuer’s correct name and identifiers."
+            ],
+            [
+              "Metric and statement",
+              "Revenue; retain the meaning of the source’s commitment."
+            ],
+            [
+              "Low and high in units",
+              "For USD 110–120 million, enter 110000000 and 120000000, not 110 and 120."
+            ],
+            [
+              "Currency, unit and scale",
+              "USD; USD; millions as stated. Scale describes the source wording; amounts are entered in units."
+            ],
+            [
+              "Accounting basis",
+              "Use the source’s GAAP, IFRS or other supported basis. Do not silently equate adjusted and unadjusted measures."
+            ],
+            [
+              "Fiscal period",
+              "Label, type and exact start/end dates. FY2026 in the fixture is 2026-01-01 through 2026-12-31."
+            ],
+            [
+              "Resolution rule and source",
+              "Choose the supported rule that defines the outcome test; cite the registered passage."
+            ],
+            [
+              "Fictional status",
+              "Mark fictional claims explicitly. Do not use demonstration identifiers for a real company."
+            ]
+          ],
+          [
+            4.8,
+            12.5
+          ]
+        ],
+        [
+          "h",
+          "Freeze deliberately"
+        ],
+        [
+          "p",
+          "Check amount scale, basis, period and source before freezing. A successful freeze creates version `V1` and a digest. **Freezing is one-way.** A later correction or change creates a new record; it does not overwrite this version."
+        ],
+        [
+          "h",
+          "Record a revision or withdrawal"
+        ],
+        [
+          "p",
+          "On the claim page, use **Create an amendment**. Select the amendment type, update the fields supported by the new source, and give a reason. `REVISED` records a changed commitment; `CORRECTED_SOURCE` records a source correction. Earlier versions and their digests remain visible."
+        ],
+        [
+          "p",
+          "Use the withdrawal action when the commitment was withdrawn, with its supporting source and reason. A withdrawal is an event, not a replacement claim, and is not automatically a miss. Check the time relationship to the outcome."
+        ],
+        [
+          "p",
+          "Use plain decimal numbers in numeric fields. French thousands separators or decimal commas are not a substitute for the field’s required numeric syntax."
+        ]
+      ]
+    },
+    {
+      "title": "6 Compare and calculate",
+      "blocks": [
+        [
+          "p",
+          "On a claim page, **3 Comparison** shows original and revised commitments. **4 Calculation** evaluates the disclosed outcome against each applicable range. Register the outcome source first, then use **Record the disclosed outcome**."
+        ],
+        [
+          "p",
+          "Enter the actual amount in units, currency, metric, basis and fiscal period. The recorder’s comparability checkbox is a declaration: the calculator still checks the fields. A result is meaningful only within the supported contract."
+        ],
+        [
+          "h",
+          "Worked fictional example"
+        ],
+        [
+          "table",
+          [
+            "Quantity",
+            "Original",
+            "Revised"
+          ],
+          [
+            [
+              "Range in USD millions",
+              "110–120",
+              "105–115"
+            ],
+            [
+              "Midpoint",
+              "115",
+              "110"
+            ],
+            [
+              "Actual",
+              "112",
+              "112"
+            ],
+            [
+              "Actual minus midpoint",
+              "−3 million",
+              "+2 million"
+            ],
+            [
+              "Containment result",
+              "IN_RANGE",
+              "IN_RANGE"
+            ]
+          ],
+          [
+            7.1,
+            5.1,
+            5.1
+          ]
+        ],
+        [
+          "p",
+          "The rule is inclusive: **low ≤ actual ≤ high**. The midpoint is `(low + high) / 2`; the midpoint difference is `actual − midpoint`. Both ranges contain the same actual value. Their agreement does not establish that the revision improved forecasting accuracy or caused the outcome."
+        ],
+        [
+          "h",
+          "Read unresolved results correctly"
+        ],
+        [
+          "table",
+          [
+            "Result",
+            "Meaning and next action"
+          ],
+          [
+            [
+              "IN_RANGE / OUT_OF_RANGE",
+              "A compatible outcome is inside/outside the specified range. Read the source and rule alongside it."
+            ],
+            [
+              "PENDING_OUTCOME",
+              "No applicable disclosed outcome is recorded. Register it when supported; do not replace missing with zero."
+            ],
+            [
+              "INCOMPARABLE",
+              "The version comparison cannot be made. Read every reason; no comparative delta should be inferred."
+            ],
+            [
+              "INCOMPATIBLE_BASIS / UNIT_MISMATCH",
+              "Check source definitions, accounting basis and amount units."
+            ],
+            [
+              "PERIOD_MISMATCH / METRIC_MISMATCH",
+              "The periods or metrics differ. Correct the supported input through the appropriate recorded action."
+            ],
+            [
+              "WITHDRAWN_BEFORE_OUTCOME",
+              "A time-qualified withdrawal state, not a computed forecasting failure."
+            ]
+          ],
+          [
+            6.4,
+            10.9
+          ]
+        ],
+        [
+          "p",
+          "Unsupported rules and a declared non-comparable outcome also remain unresolved. Never change a definition simply to turn an unresolved result into a pass."
+        ]
+      ]
+    },
+    {
+      "title": "7 Read history without hindsight",
+      "blocks": [
+        [
+          "p",
+          "Use **5 History** on the claim page. Enter a UTC cutoff and select **Replay**. Compare that view with the current view to see what the record could support at each point. Module historical views use their recorded action times."
+        ],
+        [
+          "table",
+          [
+            "Time",
+            "What it answers"
+          ],
+          [
+            [
+              "Availability",
+              "When the source was asserted to be publicly available."
+            ],
+            [
+              "Observation",
+              "When the workspace observed it."
+            ],
+            [
+              "Recording",
+              "When the server recorded the action or correction."
+            ]
+          ],
+          [
+            4.5,
+            12.8
+          ]
+        ],
+        [
+          "p",
+          "A historical filing entered today is not proof that this workspace held it at the filing time. A retrospective record stays labeled accordingly. Later information must not be read as earlier knowledge."
+        ],
+        [
+          "h",
+          "Correct a wrong availability time"
+        ],
+        [
+          "b",
+          "Open **1 Source → Correct a source’s availability time** at `/source#availability`. Select the registered source."
+        ],
+        [
+          "b",
+          "Enter the corrected UTC time, a reason, an evidence reference supporting that time and your actor label. The evidence reference is recorded text; the server does not fetch it."
+        ],
+        [
+          "b",
+          "Submit. Confirm a new `SOURCE_AVAILABILITY_CORRECTED` event links the old and new values. The original passage, digest and observation time remain unchanged."
+        ],
+        [
+          "b",
+          "Review each affected claim’s **corrected view** beside its recorded result. Read **Needs review** when timing, retrospective status or an earlier adjudication is affected."
+        ],
+        [
+          "h",
+          "How cutoffs treat the correction"
+        ],
+        [
+          "p",
+          "For a cutoff before the correction was recorded, the old value remains in force and the correction is shown as later knowledge. At or after its recording time, the corrected view applies. A correction can make a record retrospective; it cannot promote a retrospective record into a contemporaneous one."
+        ],
+        [
+          "p",
+          "If another correction arrived after you opened the form, reload it before deciding again. If your review changes the adjudication, record a further adjudication with **Disputed** and a reason; do not erase the earlier judgment."
+        ],
+        [
+          "p",
+          "**Checkpoint:** the history explains both what changed and when the workspace learned it. Exports carry the correction chain so another workspace can recompute the same views."
+        ]
+      ]
+    },
+    {
+      "title": "8 Add notes and review judgments",
+      "blocks": [
+        [
+          "h",
+          "Research notes"
+        ],
+        [
+          "p",
+          "Use the claim’s **Research notes** section or `/notes`. Record the unresolved question, a possible explanation, the next evidence needed and why. Notes organize inquiry; they do not change frozen claims, computed outcomes or source passages."
+        ],
+        [
+          "p",
+          "A useful note names the exact uncertainty. For example: “The revised statement uses an adjusted basis. Obtain the reconciliation before comparing it with the original GAAP target.” This identifies an action without asserting a causal explanation."
+        ],
+        [
+          "p",
+          "Correct a mistaken note through a correcting note. Keep the earlier text and its place in the history visible. If the financial claim itself changes, use an amendment instead."
+        ],
+        [
+          "h",
+          "Step 6 Adjudication"
+        ],
+        [
+          "b",
+          "Read the sources, exact calculation and any unresolved comparability reasons before selecting a label."
+        ],
+        [
+          "b",
+          "Enter the reviewer label, rule, evidence references, reason and relevant conflicts in the adjudication form."
+        ],
+        [
+          "b",
+          "If your label differs from the computed result, select **Disputed** and give the reason. The system retains the disagreement rather than replacing the calculation."
+        ],
+        [
+          "b",
+          "After submitting, confirm that the reviewer’s label and the computed result are separately visible. Revisit the history if a later amendment or source-time correction affects the review."
+        ],
+        [
+          "h",
+          "Attribution and authentication are different"
+        ],
+        [
+          "p",
+          "A reviewer or actor name in the core research workflow is an attribution label. It does not establish an authenticated person, independence or qualifications. Module actions use local credentials once principals are configured; those credentials still do not prove real-world identity."
+        ],
+        [
+          "h",
+          "A useful review handoff"
+        ],
+        [
+          "p",
+          "Provide the claim ID, version and digest; source references; the applicable period, metric and basis; the calculation; unresolved questions; and the reviewer’s reason. Build the corresponding export on page 11 so a recipient can check the recorded computation."
+        ],
+        [
+          "p",
+          "An adjudication is a documented judgment under a stated rule. It is not an investment recommendation or permission to publish private workspace material."
+        ]
+      ]
+    },
+    {
+      "title": "9 Dataset and scientific replay",
+      "blocks": [
+        [
+          "h",
+          "Inspect dataset coverage"
+        ],
+        [
+          "p",
+          "Open `/dataset`; `/dataset.json` provides the machine-readable view. There is one row per frozen claim, derived from this workspace’s records. Rows retain versions, source lineage, outcomes, review disagreement, rights restrictions, notes and unresolved reasons."
+        ],
+        [
+          "b",
+          "Check counts for fictional and real-source records, retrospective status, missing outcomes, incomparable cases and withheld excerpts."
+        ],
+        [
+          "b",
+          "Read **Coverage gaps and known omissions** before using any aggregate. An empty workspace is not evidence of complete coverage."
+        ],
+        [
+          "b",
+          "Select **Build dataset snapshot export**. Retain its snapshot digest. Earlier snapshots remain available; their comparison identifies what changed."
+        ],
+        [
+          "p",
+          "The snapshot identity depends on records and method, not the moment you clicked the button. It describes this local collection, not a validated market-wide dataset or an automatically sampled population."
+        ],
+        [
+          "h",
+          "Replay a supported science journal"
+        ],
+        [
+          "p",
+          "Open `/sci`. Start with a packaged fictional exploratory example using the page’s example selector. Review the manifest and journal, submit the replay, then open its scientific record, such as `/sci/S1`. The record shows the recomputed report or an explicit refusal."
+        ],
+        [
+          "p",
+          "The supported kernel works with its declared statistical contract, including paired probability forecasts, Brier-score improvement and sequential evidence accounting. Read the manifest’s metric, unit, pairing and error-budget requirements before supplying your own journal. A monetary guidance range is not a pair of probabilities."
+        ],
+        [
+          "table",
+          [
+            "Input or state",
+            "Interpretation"
+          ],
+          [
+            [
+              "Packaged exploratory journal",
+              "Fictional software demonstration. No claim of financial benefit."
+            ],
+            [
+              "Prospective-mode example with a pending unit",
+              "A demonstration of pending-state handling, not a completed experiment."
+            ],
+            [
+              "Monetary amounts used as probabilities",
+              "Refused: outside the supported input contract."
+            ],
+            [
+              "Unsupported metric or missing prediction pair",
+              "Correct the protocol/input definition; do not reinterpret it as a passing result."
+            ]
+          ],
+          [
+            7.0,
+            10.3
+          ]
+        ],
+        [
+          "p",
+          "Scientific replay recomputes what the journal states. It does not establish that observations were honestly collected, that an experiment was registered, or that an AI system improved. Keep fixture and real-research provenance distinct."
+        ]
+      ]
+    },
+    {
+      "title": "10 Export and verify research",
+      "blocks": [
+        [
+          "h",
+          "Create a claim or dataset packet"
+        ],
+        [
+          "p",
+          "On a claim page, step 7 **Build export** creates a rights-filtered research ZIP. For a whole collection, use the dataset snapshot export. Download the completed packet and retain its reported digest and byte identity."
+        ],
+        [
+          "p",
+          "A claim packet contains the supported schema, versions, source references and permitted excerpts, events, methods, results and related research records. Rights restrictions may withhold excerpts. Module records require a separate module packet (page 17)."
+        ],
+        [
+          "h",
+          "Verify in a fresh workspace"
+        ],
+        [
+          "b",
+          "Use the separate fresh server at `http://127.0.0.1:8766/verify`. Select the unchanged downloaded ZIP and submit."
+        ],
+        [
+          "b",
+          "Read the result and the first discrepancy, if any. The verifier re-derives digests and recomputes the supported research content; it does not rely on the sender’s displayed result."
+        ],
+        [
+          "b",
+          "Record what you verified: packet identity, result, software version and time. Do not describe a different file or sibling artifact as covered by this check."
+        ],
+        [
+          "h",
+          "Verify a research ZIP from the command line"
+        ],
+        [
+          "p",
+          "Replace `research-export.zip` with your downloaded file path. This command verifies a claim or dataset research export; use the module verification interface for module trust and checkpoint options."
+        ],
+        [
+          "code",
+          "yuclaw workbench verify-export research-export.zip --json"
+        ],
+        [
+          "table",
+          [
+            "Result",
+            "Exit",
+            "What to do"
+          ],
+          [
+            [
+              "SUCCESS",
+              "0",
+              "Supported content was consistent and recomputed. Read its provenance and limits."
+            ],
+            [
+              "MISMATCH",
+              "1",
+              "Inspect the first discrepancy. Obtain the unchanged packet or have its producer resolve the recorded defect."
+            ],
+            [
+              "UNSUPPORTED",
+              "3",
+              "The format or input is outside this verifier’s contract. Check the packet type and software version."
+            ]
+          ],
+          [
+            3.3,
+            1.3,
+            12.7
+          ]
+        ],
+        [
+          "h",
+          "What verification establishes"
+        ],
+        [
+          "p",
+          "It establishes consistency of the supported packet and its calculations. It does not establish source authenticity, factual truth, independent human review or public-release approval. Research export is separate from publication and is not a workspace backup or a demonstrated restore procedure."
+        ],
+        [
+          "p",
+          "Keep the original ZIP unchanged. If you investigate corruption, work on a separate copy and retain the original identity."
+        ]
+      ]
+    },
+    {
+      "title": "11 Set up local principals",
+      "blocks": [
+        [
+          "p",
+          "The core seven-step workflow can be explored before principal setup. The four modules require local capabilities. Create the first administrator from the host’s command line; browser access cannot enroll itself."
+        ],
+        [
+          "code",
+          "yuclaw workbench principals init --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "The credential is printed once. Store it securely and do not paste it into notes or exports. There is no default password. After setup, every page requires sign-in at `/login`; use **Setup** at `/setup` to manage the workspace."
+        ],
+        [
+          "table",
+          [
+            "Capability",
+            "Purpose"
+          ],
+          [
+            [
+              "admin",
+              "Manage principals, trust, policy, approvals, budgets, overrides and recorded resolutions."
+            ],
+            [
+              "submit",
+              "Submit evidence bundles and review packets within the configured rules."
+            ],
+            [
+              "review",
+              "Review eligible work, run trusted evaluations and curate practice tasks within the module rules."
+            ],
+            [
+              "practice",
+              "Use practice tasks. A practice-only principal is confined to Practice, Modules, Help and its own exports."
+            ]
+          ],
+          [
+            3.2,
+            14.1
+          ]
+        ],
+        [
+          "h",
+          "Enroll only the capabilities needed"
+        ],
+        [
+          "p",
+          "Use Setup or the host CLI. This example creates a practice-only credential; replace the ID with a new local identifier."
+        ],
+        [
+          "code",
+          "yuclaw workbench principals add --workspace ~/yuclaw-workspaces/research \\\n  --id learner1 --caps practice\nyuclaw workbench principals list --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Rotation issues a new credential; revocation is permanent for that principal. Sessions end on sign-out, restart, rotation or revocation. Reload forms after signing in again."
+        ],
+        [
+          "h",
+          "Keep separation meaningful"
+        ],
+        [
+          "p",
+          "Use separate browser profiles for separate principals. A submitter cannot approve its own SHD submission; an EVO reviewer cannot have improved the reviewed lineage; a COM reviewer cannot review a group to which it contributed; a practitioner cannot be its task’s curator."
+        ],
+        [
+          "p",
+          "A local credential identifies which credential acted. It does not establish that two credentials belong to different people. Anyone who controls the operating-system account and workspace directory is the host operator and can administer principals through the CLI. These browser capabilities do not constrain that host operator."
+        ],
+        [
+          "code",
+          "yuclaw workbench modules --workspace ~/yuclaw-workspaces/research"
+        ]
+      ]
+    },
+    {
+      "title": "12 SHD protected evidence intake",
+      "blocks": [
+        [
+          "p",
+          "**SHD — Distillation Shield**, at `/shd`, checks a submitted evidence bundle through an approved, restricted intake path. Start by checking the live isolation status in Setup. An unavailable isolation backend keeps admission closed."
+        ],
+        [
+          "h",
+          "Input contract"
+        ],
+        [
+          "p",
+          "Use a ZIP conforming to `yuclaw.shd-bundle/1`: a `bundle.json` manifest plus the evidence files it lists under `evidence/`. The manifest identifies one purpose, full SHA-256 digests, byte lengths and the typed payload. This is not an arbitrary document-upload form. The bundle limit is 8 MiB and 64 members; further per-member and expansion limits apply."
+        ],
+        [
+          "p",
+          "Supported purposes are `evidence.reference`, `com.packets` and `evo.evaluations`. For bundle construction, follow the versioned schema and worker validation source listed on page 21. Do not invent fields or approvals."
+        ],
+        [
+          "h",
+          "Submit and obtain a decision"
+        ],
+        [
+          "b",
+          "As a submitter, upload the prepared bundle. Record its reported digest. Uploading stores the bytes; it does not admit them."
+        ],
+        [
+          "b",
+          "A different administrator opens `/shd/trust`, chooses the waiting submission, independently checks the expected evidence digests, and records purpose and expiry. Approval is bound to the exact bundle and workspace."
+        ],
+        [
+          "b",
+          "Request a decision. The restricted worker opens and checks the bundle; the approval is checked again when the decision is committed."
+        ],
+        [
+          "b",
+          "Read all four answers: byte integrity, authority approval, factual adjudication and release permission. An admitted bundle may then feed COM or EVO through its offered action while approval remains applicable."
+        ],
+        [
+          "table",
+          [
+            "Refusal",
+            "Next action"
+          ],
+          [
+            [
+              "REFUSED_NO_APPROVAL",
+              "Obtain an applicable approval from a different administrator."
+            ],
+            [
+              "REFUSED_APPROVAL_EXPIRED / REVOKED",
+              "Resolve approval state; an old approval cannot be reused."
+            ],
+            [
+              "REFUSED_SELF_APPROVAL",
+              "Use the required separate approving principal."
+            ],
+            [
+              "REFUSED_BUNDLE_REJECTED",
+              "Read the structural/digest reason; correct the bundle as new bytes."
+            ],
+            [
+              "REFUSED_ISOLATION_UNAVAILABLE",
+              "Use a supported Linux host whose probe passes. Do not bypass the closed route."
+            ]
+          ],
+          [
+            7.7,
+            9.6
+          ]
+        ],
+        [
+          "p",
+          "**ADMITTED does not mean true.** Factual adjudication remains `NOT_ASSESSED` and release permission `NONE`. Protected intake uses a probed bubblewrap or Landlock backend; it is not an independent security certification. Landlock confinement is not a full container."
+        ]
+      ]
+    },
+    {
+      "title": "13 EVO evidence reuse audit",
+      "blocks": [
+        [
+          "p",
+          "**EVO — Evolution Evidence Audit**, at `/evo`, records what changed in an AI system and whether recorded evaluation evidence still applies. It does not modify the system or control its deployment."
+        ],
+        [
+          "h",
+          "Configure what you can actually measure"
+        ],
+        [
+          "p",
+          "An administrator records the JSON configuration on the EVO page. Set existing absolute measurement `roots`, component modes, dependency edges, evaluation protocols and authority lists. Use the schema in the versioned source for exact JSON; a path must remain inside a configured root."
+        ],
+        [
+          "table",
+          [
+            "Component keys",
+            "How to represent them"
+          ],
+          [
+            [
+              "model, agent_code, tool_policy, memory",
+              "Measure accessible files with mode path; use declared for an attributed statement, or unknown when unmeasured."
+            ],
+            [
+              "data, grader, evaluation_data",
+              "Keep evaluation inputs and grader identity explicit. Their changes can invalidate evidence reuse."
+            ],
+            [
+              "runtime",
+              "Use runtime to measure the environment, or another supported mode that accurately describes the evidence."
+            ],
+            [
+              "Any inapplicable component",
+              "Use not_applicable with a justification, not an unexplained omission."
+            ]
+          ],
+          [
+            7.0,
+            10.3
+          ]
+        ],
+        [
+          "p",
+          "A protocol names its component scope, a supported job (`policy_conformance` or `json_wellformed`) and validity days. `depends_on` records relevant dependencies. Authority lists identify grader writers, evidence writers, release authorizers and protected-test readers. A change to those lists stops reuse; earlier test exposure is retained."
+        ],
+        [
+          "h",
+          "Register and evaluate"
+        ],
+        [
+          "b",
+          "Select **Measure and register**, supply a new version ID and its parent where applicable. Read measured, declared, unknown and not-applicable status separately."
+        ],
+        [
+          "b",
+          "A reviewer who did not improve that lineage runs the trusted evaluation. The runner checks the registered identity and executes against a private immutable copy of the supported scope."
+        ],
+        [
+          "b",
+          "If current files differ from the registered version, register their new state as a new version. Do not reuse the old version label for changed bytes."
+        ],
+        [
+          "b",
+          "On the version page, inspect each protocol’s `REUSE` or `REEVALUATE` answer, dependency reasons, open failures, reviews and test exposure. Use a historical cutoff when reviewing an earlier decision."
+        ],
+        [
+          "p",
+          "Open failures remain until an administrator records an evidence-backed resolution. An SHD-imported evaluation is a `DECLARED_IMPORT`, not a trusted local run. Linked financial commitments remain separated by currency."
+        ],
+        [
+          "p",
+          "**Checkpoint:** reuse is justified by the recorded identity and scope. An eligibility line is an evidence assessment; no external release is authorized by EVO."
+        ]
+      ]
+    },
+    {
+      "title": "14 COM bounded review queues",
+      "blocks": [
+        [
+          "p",
+          "**COM — Research Commons Guard**, at `/com`, groups related packets and allocates a recorded review budget. Begin with an administrator’s period budget: review minutes, a separate practice reserve, per-principal packet cap and maximum open tasks."
+        ],
+        [
+          "h",
+          "Submit and group packets"
+        ],
+        [
+          "p",
+          "From a claim page choose **submit a review packet about it**, or use COM directly. Confirm the selected claim version and financial contract. An admitted SHD bundle can provide a separate intake route."
+        ],
+        [
+          "p",
+          "Packets sharing the same claim version, metric, currency, unit, scale, basis, fiscal period and known source roots form one group with one review task. Contributors remain listed. Multiple packets are not automatically multiple independent pieces of evidence."
+        ],
+        [
+          "h",
+          "Handle duplicate sources explicitly"
+        ],
+        [
+          "p",
+          "Identical passage bytes resolve to one source root. A reviewer or administrator may declare a source alias under **Source aliases**, with a reason; retraction preserves both records. This is not semantic similarity detection: a different rendering remains separate unless its relationship is recorded. A dispute on an alias reaches groups resting on the same document."
+        ],
+        [
+          "h",
+          "Work a task"
+        ],
+        [
+          "b",
+          "As a reviewer who did not contribute to the group, take the task with **Take (reserves the cost)**. Its scheduling cost is reserved under the workspace lock."
+        ],
+        [
+          "b",
+          "Use **start**, **pause**, **resume**, **finish** or **release** to record the actual workflow. A lease that expires returns the task with its observed seconds."
+        ],
+        [
+          "b",
+          "Check the reason when a task waits. Small tasks may proceed while one does not fit; an aged task can hold remaining capacity; an oversized task is escalated."
+        ],
+        [
+          "b",
+          "An urgent override changes priority, not available minutes. A budget reduced below recorded use shows the overrun rather than hiding it."
+        ],
+        [
+          "h",
+          "Disputes and appeals"
+        ],
+        [
+          "p",
+          "A reviewer or administrator can record a dispute, withdrawal or source correction. Affected groups are quarantined until an administrator resolves them. Quarantine is a handling state, not a misconduct finding. Any signed-in principal may appeal; the record retains the reason and disposition."
+        ],
+        [
+          "p",
+          "A submitter’s time estimate is only a proposal; the reviewer or administrator sets scheduling cost. The queue comparison shown on the page uses fixed synthetic arrivals. It is a simulation, not evidence of real productivity gains."
+        ]
+      ]
+    },
+    {
+      "title": "15 PRC attempt before comparison",
+      "blocks": [
+        [
+          "p",
+          "**PRC — Independent Practice**, at `/prc`, preserves an initial attempt before revealing a reference comparison. It is an optional local practice workflow. It does not recruit participants, contact anyone or run a study."
+        ],
+        [
+          "h",
+          "Curate a task"
+        ],
+        [
+          "p",
+          "A reviewer freezes the question, optional claim reference, source scope, allowed judgment labels and comparison reference. State the reference provenance: unadjudicated reference, model answer or curator-declared reviewed reference. The declaration does not independently validate the reference."
+        ],
+        [
+          "p",
+          "The server keeps the unrevealed comparison privately; the journal holds a salted digest. Configure the separate practice budget before sessions require it. Use a practitioner other than the task curator."
+        ],
+        [
+          "h",
+          "Complete a session"
+        ],
+        [
+          "b",
+          "Sign in with the practitioner credential. A practice-only credential keeps the browser session within practice routes and its own exports."
+        ],
+        [
+          "b",
+          "Open a session and declare assistance and earlier exposure honestly. Answers are accepted and labeled; disclosure does not erase the attempt."
+        ],
+        [
+          "b",
+          "Read the frozen evidence. Commit a judgment, reasoning and supporting source references. Use `UNRESOLVED` when appropriate and state what would resolve it."
+        ],
+        [
+          "b",
+          "Only after committing, choose **Open the comparison**. Review the reference’s provenance and how it differs from your attempt."
+        ],
+        [
+          "b",
+          "Add a reflection. A reviewer can add later feedback. Both are new records; the original attempt remains unchanged."
+        ],
+        [
+          "h",
+          "Interpret confinement and privacy"
+        ],
+        [
+          "p",
+          "A practitioner with additional capabilities is labeled `NOT_CONFINED`, because other routes may reveal relevant information. The reference is not confidential from the host operator, curator or administrator, and the software cannot prevent outside help or an answer found elsewhere."
+        ],
+        [
+          "p",
+          "A source correction or claim amendment appears as a note on current interpretation. Follow-ups are local due-states, not notifications sent to people. Build a session packet from its page if you want to retain or share the supported record."
+        ],
+        [
+          "p",
+          "**Checkpoint:** an attempt precedes the recorded comparison reveal. That sequence does not prove human authorship, no outside assistance, research originality, comprehension or improved ability. No ranking of people is produced."
+        ]
+      ]
+    },
+    {
+      "title": "16 Export and verify module records",
+      "blocks": [
+        [
+          "p",
+          "Open **Module evidence export and verification** at `/modx`. A claim’s research export does not carry module records. Choose the module scope and practice sessions your principal is allowed to export."
+        ],
+        [
+          "h",
+          "Preview before building"
+        ],
+        [
+          "b",
+          "Choose SHD, EVO or COM scope and any permitted PRC sessions. A practitioner can export its own sessions, with the available option to withhold text."
+        ],
+        [
+          "b",
+          "Select **Preview**. It shows the intended contents without writing an export. Review identities and disclosure before building."
+        ],
+        [
+          "b",
+          "Build and download the packet. Keep its digest and, when applicable, a separately issued checkpoint."
+        ],
+        [
+          "table",
+          [
+            "Included when in scope",
+            "Excluded"
+          ],
+          [
+            [
+              "Supported module events, journal skeleton, selected private objects and derived views",
+              "Credentials, credential hashes and signing private keys"
+            ],
+            [
+              "Attempts, reflections, feedback and comparisons already revealed in the chosen sessions",
+              "Staged bundle bytes, inspection excerpts and unrevealed comparisons"
+            ],
+            [
+              "Principal identifiers and provenance labels",
+              "Any claim that the packet is anonymous"
+            ]
+          ],
+          [
+            8.65,
+            8.65
+          ]
+        ],
+        [
+          "h",
+          "Verify in a fresh workspace"
+        ],
+        [
+          "p",
+          "Use the fresh workspace’s verification page and the module packet workflow. Supply a checkpoint when you have one. The verifier checks journal links and objects, recomputes COM, EVO and SHD views, and evaluates signatures against that receiving workspace’s own trust roots. Verification imports no records into operational module state."
+        ],
+        [
+          "p",
+          "A structurally valid signature from an unknown signer remains unknown. Current authorization is unknown offline; a historical trust snapshot does not prove that approval is still current. Do not enroll a key merely because an untrusted packet asks you to trust it."
+        ],
+        [
+          "h",
+          "Checkpoint purpose"
+        ],
+        [
+          "p",
+          "An administrator can issue a checkpoint on the Practice page. It records a journal sequence and tip with a signature. Keeping that file separately and presenting it to the verifier lets the check detect truncation or alteration relative to that checkpoint. It is not a backup or a restore mechanism."
+        ],
+        [
+          "p",
+          "A valid packet supports reproducibility of recorded operations. It does not make an admitted claim true, make two credentials independent people, or prove that a practice task improved someone’s ability."
+        ]
+      ]
+    },
+    {
+      "title": "17 Optional disclosure ingestion",
+      "blocks": [
+        [
+          "p",
+          "The local server does not fetch filings on its own. The separate ingestion CLI can fetch one disclosure from an allow-listed host and extract a passage. Use it only when you know the document, relevant passage and rights category."
+        ],
+        [
+          "h",
+          "Set your own SEC request identity"
+        ],
+        [
+          "p",
+          "Every `--kind filing` run reaches the SEC. Replace both placeholder values with your own name and contact address before executing. No identity is supplied on your behalf."
+        ],
+        [
+          "code",
+          "export SEC_USER_AGENT=\"Your Name your.address@example.org\""
+        ],
+        [
+          "p",
+          "In PowerShell, the equivalent environment assignment is:"
+        ],
+        [
+          "code",
+          "$env:SEC_USER_AGENT = \"Your Name your.address@example.org\""
+        ],
+        [
+          "p",
+          "A missing or placeholder identity is refused before any request. It is sent in headers to SEC hosts only, not written into source records or exports. Fictional fixtures and offline export verification do not need it."
+        ],
+        [
+          "h",
+          "Fill in a command for one document"
+        ],
+        [
+          "p",
+          "The following is a macOS/Linux shell template, not a ready-to-run real filing. Replace each angle-bracket value. Use the installed environment’s Python; on PowerShell use its full `python.exe` path and place the arguments on one line."
+        ],
+        [
+          "code",
+          "python -m v8.workbench.ingest \\\n  --url '<https URL>' --kind filing --form '8-K EX-99.1' \\\n  --accession '<EDGAR accession>' --cik '<CIK>' \\\n  --pattern '<regex locating the passage>' \\\n  --rights SEC_PUBLIC_FILING \\\n  --out ~/yuclaw-ingest --label original"
+        ],
+        [
+          "h",
+          "Inspect and register the result"
+        ],
+        [
+          "p",
+          "On success, inspect `original.source.json`, `original.provenance.json` and the retained source bytes. Confirm that the selected excerpt contains the intended financial statement in context. On **1 Source → Register from an ingestion record**, paste the source JSON and use the provenance `retrieved_at` as observation time."
+        ],
+        [
+          "p",
+          "On refusal, read `[ingest] REFUSED: …`; exit 2 means no source record was written. Correct the named input. An extraction pattern matching text is not proof that the text supports your claim."
+        ],
+        [
+          "p",
+          "For other source types and supported options, read `python -m v8.workbench.ingest --help` in the installed version. Do not reuse `SEC_PUBLIC_FILING` for material whose rights differ."
+        ]
+      ]
+    },
+    {
+      "title": "18 Troubleshoot without losing history",
+      "blocks": [
+        [
+          "table",
+          [
+            "Symptom",
+            "Action"
+          ],
+          [
+            [
+              "Command not found or wrong version",
+              "Use the intended environment’s executable. Run python -m pip show yuclaw with that same interpreter."
+            ],
+            [
+              "Browser cannot reach 127.0.0.1",
+              "Keep the serve command running. Check its terminal error and port; if occupied, choose another port and use it in the URL."
+            ],
+            [
+              "Sign-in or form fails after restart",
+              "Sign in again and reload the form. Do not reuse a page carrying an old session token."
+            ],
+            [
+              "Operation already recorded, HTTP 409",
+              "The operation ID was already used with different content. Reopen the form; reselect any uploaded file; submit deliberately. No recovery is needed."
+            ],
+            [
+              "Freeze or outcome refused",
+              "Read the listed fields. Check source, UTC time, metric, period, unit, scale, basis and resolution rule."
+            ],
+            [
+              "PENDING_OUTCOME or INCOMPARABLE",
+              "Missing or incompatible evidence is a real state. Supply supported evidence or retain the unresolved result."
+            ],
+            [
+              "SHD isolation unavailable",
+              "Check Setup. macOS/Windows keep admission closed; supported Linux still requires a passing probe."
+            ],
+            [
+              "Stale selection or changed EVO files",
+              "Reload and reselect the current object. Register changed system files as a new EVO version."
+            ],
+            [
+              "Module permission refusal",
+              "Check the signed-in principal, capabilities, current approval, contributor separation and configured budget."
+            ],
+            [
+              "Export MISMATCH or UNSUPPORTED",
+              "Check file identity and packet type. Read the first discrepancy; keep the original packet unchanged."
+            ]
+          ],
+          [
+            6.0,
+            11.3
+          ]
+        ],
+        [
+          "h",
+          "Workspace integrity page"
+        ],
+        [
+          "p",
+          "An interrupted append can leave a final unterminated fragment, a torn tail. When the integrity page identifies that condition, **Run recovery** preserves those bytes separately, removes only the fragment and records a recovery event. Then repeat the interrupted action."
+        ],
+        [
+          "code",
+          "yuclaw workbench recover --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Use recovery for the diagnosed torn-tail condition, not as a general repair command. For `E_HASH`, `E_CHAIN`, `E_SEQ` or `E_CORRUPT_LINE`, stop the server, retain the directory unchanged and investigate. Do not delete journal lines to make the check pass."
+        ],
+        [
+          "p",
+          "Process-interruption handling does not establish survival of every power loss. An interrupted export is not listed as complete; build it again. An integrity error should remain visible until its actual cause is understood."
+        ]
+      ]
+    },
+    {
+      "title": "19 Command and route reference",
+      "blocks": [
+        [
+          "p",
+          "With the environment active, `yuclaw workbench …` and `python -m v8.workbench …` call the same workbench. Replace example paths and identifiers with yours. `--help` starts no server."
+        ],
+        [
+          "h",
+          "Daily commands"
+        ],
+        [
+          "code",
+          "yuclaw workbench --help\nyuclaw workbench guide\nyuclaw workbench selftest --json\nyuclaw workbench serve --workspace ~/yuclaw-workspaces/research --port 8765\nyuclaw workbench status --workspace ~/yuclaw-workspaces/research\nyuclaw workbench modules --workspace ~/yuclaw-workspaces/research\nyuclaw workbench build-export --workspace ~/yuclaw-workspaces/research \\\n  --claim ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base\nyuclaw workbench verify-export research-export.zip --json"
+        ],
+        [
+          "h",
+          "Credential maintenance by the host operator"
+        ],
+        [
+          "code",
+          "yuclaw workbench principals rotate --workspace ~/yuclaw-workspaces/research \\\n  --id learner1\nyuclaw workbench principals revoke --workspace ~/yuclaw-workspaces/research \\\n  --id learner1 --reason \"Access ended\""
+        ],
+        [
+          "p",
+          "These are actions, not status queries. Rotation issues a new credential; revocation cannot be undone. Use `principals list` for inspection."
+        ],
+        [
+          "table",
+          [
+            "Local route",
+            "Purpose"
+          ],
+          [
+            [
+              "/  ·  /source  ·  /claim/new",
+              "Workspace, source registration, new typed claim"
+            ],
+            [
+              "/claim/<claim id>",
+              "Comparison, calculation, history, notes, review and claim export"
+            ],
+            [
+              "/notes  ·  /dataset  ·  /dataset.json",
+              "Research notes and collection coverage"
+            ],
+            [
+              "/sci  ·  /journal  ·  /help",
+              "Science replay, recorded events and packaged guide"
+            ],
+            [
+              "/modules  ·  /setup  ·  /login",
+              "Module overview, setup and local sign-in"
+            ],
+            [
+              "/shd  ·  /shd/trust  ·  /evo",
+              "Evidence intake, trust administration and reuse audit"
+            ],
+            [
+              "/com  ·  /prc  ·  /modx  ·  /verify",
+              "Review queue, practice, module export and packet verification"
+            ]
+          ],
+          [
+            8.0,
+            9.3
+          ]
+        ],
+        [
+          "p",
+          "All routes above are relative to your local server, normally `http://127.0.0.1:8765`. Verification in the fresh example uses port 8766. They are not promised public routes on yuclaw.ca."
+        ],
+        [
+          "p",
+          "The broader YUCLAW package also has public-evidence and integration commands. Consult `yuclaw --help` for the installed release; their backend requirements are separate from this offline local walkthrough."
+        ]
+      ]
+    },
+    {
+      "title": "20 Terms and source documentation",
+      "blocks": [
+        [
+          "table",
+          [
+            "Term",
+            "Meaning in this guide"
+          ],
+          [
+            [
+              "Source / claim / outcome",
+              "The evidence passage; the typed commitment; the separately disclosed result."
+            ],
+            [
+              "Freeze / amendment",
+              "Preserve a claim version; append a new linked version without overwriting it."
+            ],
+            [
+              "Digest",
+              "A hash identifying bytes or canonical content. Equal digests do not establish truth."
+            ],
+            [
+              "Journal",
+              "The ordered digest-linked record of local actions. Host filesystem access remains outside browser-role boundaries."
+            ],
+            [
+              "Retrospective",
+              "Recorded with hindsight or later knowledge; not established as a contemporaneous commitment."
+            ],
+            [
+              "Adjudication",
+              "A recorded judgment with a rule, evidence and reason; distinct from automatic calculation."
+            ],
+            [
+              "Principal",
+              "A local credential with capabilities, not a verified real-world person."
+            ],
+            [
+              "Source root",
+              "The underlying document identity used for grouping; aliases do not add independent corroboration."
+            ],
+            [
+              "Research packet / module packet",
+              "Different export formats and scopes. Verification must match the packet type."
+            ],
+            [
+              "Checkpoint",
+              "A signed journal position used to test continuity; not a restore mechanism."
+            ]
+          ],
+          [
+            4.6,
+            12.7
+          ]
+        ],
+        [
+          "h",
+          "Versioned references"
+        ],
+        [
+          "p",
+          "The instructions are based on the 8.0.1 operator guide, CLI, data dictionary and module implementations, cross-read with the packaged fictional fixture. The public homepage was checked during preparation. Examples are instructional; this document is not a new release or an independent security audit."
+        ],
+        [
+          "link",
+          "YUCLAW 8.0.1 on PyPI",
+          "https://pypi.org/project/yuclaw/8.0.1/"
+        ],
+        [
+          "link",
+          "YUCLAW 8.0.1 release",
+          "https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.1"
+        ],
+        [
+          "link",
+          "Versioned operator guide",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/resources/OPERATOR_GUIDE.md"
+        ],
+        [
+          "link",
+          "Data dictionary and dataset card",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/resources/DATA_DICTIONARY.md"
+        ],
+        [
+          "link",
+          "Workbench CLI and module source",
+          "https://github.com/YuClawLab/yuclaw-brain/tree/v8.0.1/v8/workbench"
+        ],
+        [
+          "link",
+          "SHD bundle validation contract",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/modules/shield_worker.py"
+        ],
+        [
+          "link",
+          "EVO configuration contract",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/modules/evolution.py"
+        ],
+        [
+          "p",
+          "For an issue report, include the software version, OS, exact action, expected result, actual result and a minimal fictional reproduction. Remove credentials and private evidence. Use the repository’s available support channel; sending a report is a separate action you choose."
+        ],
+        [
+          "p",
+          "The English and French guides cover the same release and preserve identical executable command examples. Neither changes the software’s rules, permissions or stored records."
+        ]
+      ]
+    }
+  ],
+  "FR": [
+    {
+      "cover": true,
+      "title": "Version 8\nGuide utilisateur",
+      "subtitle": "Édition française • YUCLAW 8.0.1",
+      "blocks": [
+        [
+          "p",
+          "D’une déclaration financière à un engagement traçable, examinable et reproductible."
+        ],
+        [
+          "gap",
+          20
+        ],
+        [
+          "h",
+          "Mission"
+        ],
+        [
+          "p",
+          "Rendre l’IA financière responsable de ses affirmations au regard des éléments probants.\nTexte officiel : Make financial AI accountable to evidence."
+        ],
+        [
+          "h",
+          "Vision"
+        ],
+        [
+          "p",
+          "Devenir la couche de confiance scientifique de l’IA financière.\nTexte officiel : Become the Science Trust Layer for Financial AI."
+        ],
+        [
+          "gap",
+          12
+        ],
+        [
+          "p",
+          "Un manuel pratique destiné aux chercheurs, aux réviseurs et aux responsables d’espaces de travail locaux. Il couvre le parcours en sept étapes, SHD, EVO, COM, PRC, les exports de recherche et le site public."
+        ],
+        [
+          "p",
+          "**Version du logiciel :** 8.0.1. **Édition du guide :** 1.1, 9 octobre 2026. Ces instructions concernent cette version ; les libellés et comportements peuvent évoluer."
+        ],
+        [
+          "p",
+          "Recherche et formation uniquement. Aucun conseil en placement. L’atelier consigne et vérifie des travaux de recherche ; il ne passe pas d’ordres et ne publie pas votre espace de travail."
+        ],
+        [
+          "link",
+          "yuclaw.ca",
+          "https://yuclaw.ca"
+        ]
+      ]
+    },
+    {
+      "title": "1 Se repérer",
+      "blocks": [
+        [
+          "p",
+          "Consultez le site public pour explorer les éléments probants publiés. Installez l’atelier local pour créer vos sources, engagements, examens et paquets reproductibles. Une page boursière du site public n’alimente pas automatiquement votre espace local."
+        ],
+        [
+          "table",
+          [
+            "Votre objectif",
+            "À consulter"
+          ],
+          [
+            [
+              "Comprendre le produit et lire les données publiques",
+              "Cette page"
+            ],
+            [
+              "Installer le logiciel et suivre un premier exemple fictif",
+              "Pages 3–4"
+            ],
+            [
+              "Enregistrer des sources et figer un engagement financier",
+              "Pages 5–6"
+            ],
+            [
+              "Comparer les fourchettes et interpréter les résultats",
+              "Page 7"
+            ],
+            [
+              "Reconstituer l’historique et corriger une heure de disponibilité",
+              "Page 8"
+            ],
+            [
+              "Consigner des notes, un examen et des données scientifiques",
+              "Pages 9–10"
+            ],
+            [
+              "Exporter et vérifier hors de l’espace d’origine",
+              "Page 11"
+            ],
+            [
+              "Configurer les rôles locaux et utiliser les quatre modules",
+              "Pages 12–17"
+            ],
+            [
+              "Récupérer un document avec l’outil d’ingestion facultatif",
+              "Page 18"
+            ],
+            [
+              "Résoudre une erreur ou trouver une commande",
+              "Pages 19–20"
+            ],
+            [
+              "Consulter les termes et la documentation source",
+              "Page 21"
+            ]
+          ],
+          [
+            12.8,
+            4.5
+          ]
+        ],
+        [
+          "h",
+          "Lire le site public"
+        ],
+        [
+          "p",
+          "Sur `https://yuclaw.ca`, commencez par Explorer ou une vue sectorielle, puis ouvrez les éléments probants et les sources d’un titre. Forward Tracking présente les résultats consignés ; Evidence Scoreboard, la couverture des attestations ; Methodology, les définitions. Vérifiez la date, le périmètre et l’exhaustivité de chaque document avant toute comparaison."
+        ],
+        [
+          "p",
+          "Les signaux sont des classifications de recherche. Un score n’est pas un rendement attendu ; la couverture documentaire n’est pas une probabilité. Un aperçu ou une liste plafonnée ne constitue pas un historique complet. Lisez les limites indiquées à côté des scores de référence."
+        ],
+        [
+          "h",
+          "Ce que la version 8 apporte"
+        ],
+        [
+          "p",
+          "L’atelier local relie les sources aux exports : versions immuables, calculs exacts, historique temporel et examen. Quatre modules expérimentaux ajoutent une admission protégée, un audit de réutilisation des évaluations, une file de révision à capacité limitée et une pratique où la tentative précède la comparaison. Ils ne certifient pas la vérité et n’autorisent aucun déploiement externe."
+        ],
+        [
+          "p",
+          "Les libellés anglais tels que **Source**, **Build export** et `IN_RANGE` correspondent à l’interface. Les exemples fictifs ne décrivent aucun émetteur réel."
+        ]
+      ]
+    },
+    {
+      "title": "2 Installer YUCLAW",
+      "blocks": [
+        [
+          "p",
+          "Utilisez Python 3.10 ou ultérieur et un environnement virtuel distinct. Une connexion Internet est nécessaire pour télécharger le paquet. Le parcours fictif utilise ensuite des données incluses ; il n’exige ni base de production ni flux de dépôts en direct."
+        ],
+        [
+          "h",
+          "macOS ou Linux"
+        ],
+        [
+          "code",
+          "python3 -m venv ~/yuclaw-venv\nsource ~/yuclaw-venv/bin/activate\npython -m pip install \"yuclaw==8.0.1\"\npython -m pip show yuclaw\nyuclaw workbench --help"
+        ],
+        [
+          "h",
+          "Windows PowerShell"
+        ],
+        [
+          "p",
+          "Appelez directement l’interpréteur de l’environnement : aucune modification de la politique d’activation PowerShell n’est nécessaire. Ajustez la sélection du lanceur Python si plusieurs versions sont installées."
+        ],
+        [
+          "code",
+          "py -3 -m venv \"$HOME\\yuclaw-venv\"\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m pip install \"yuclaw==8.0.1\"\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m pip show yuclaw\n& \"$HOME\\yuclaw-venv\\Scripts\\python.exe\" -m v8.workbench --help"
+        ],
+        [
+          "h",
+          "Vérifier cette installation une fois"
+        ],
+        [
+          "code",
+          "yuclaw workbench selftest\nyuclaw workbench guide"
+        ],
+        [
+          "p",
+          "Sous Windows, remplacez `yuclaw workbench` dans les commandes suivantes par la forme `python.exe -m v8.workbench` ci-dessus. Sous macOS ou Linux, activez l’environnement dans chaque terminal, ou utilisez le chemin complet de l’exécutable. Les commandes prolongées par une barre oblique inverse utilisent la syntaxe macOS/Linux ; dans PowerShell, saisissez la commande sur une seule ligne en supprimant ces barres de continuation."
+        ],
+        [
+          "p",
+          "**Résultat attendu :** la version affichée est 8.0.1 et l’aide liste les commandes. Le selftest facultatif crée des espaces fictifs temporaires, contrôle calculs, exports et refus, puis supprime son dossier temporaire. Il vérifie cette installation, pas toute la suite de développement."
+        ],
+        [
+          "h",
+          "Différences entre plateformes"
+        ],
+        [
+          "p",
+          "Les parcours principaux et les autres modules fonctionnent sans admission SHD. Cette admission protégée exige un mécanisme d’isolation Linux pris en charge et une sonde réussie sur l’hôte. Sous macOS et Windows, elle reste fermée ; cela ne signifie pas que l’installation de l’atelier a échoué."
+        ],
+        [
+          "p",
+          "Les commandes Windows sont l’équivalent, via l’interpréteur, de la CLI fournie. Ce guide ne prétend pas que chaque combinaison de système, noyau et matériel a été testée indépendamment."
+        ]
+      ]
+    },
+    {
+      "title": "3 Réaliser un premier parcours",
+      "blocks": [
+        [
+          "h",
+          "Démarrer un espace de recherche"
+        ],
+        [
+          "p",
+          "Dans le premier terminal, avec l’environnement virtuel activé :"
+        ],
+        [
+          "code",
+          "yuclaw workbench serve --workspace ~/yuclaw-workspaces/research --port 8765"
+        ],
+        [
+          "p",
+          "Dans un second terminal, activez le même environnement et démarrez un autre espace :"
+        ],
+        [
+          "code",
+          "yuclaw workbench serve --workspace ~/yuclaw-workspaces/fresh --port 8766"
+        ],
+        [
+          "p",
+          "Sous Windows, utilisez des chemins absolus entre guillemets, par exemple `\"$HOME\\yuclaw-workspaces\\research\"`. Chaque dossier est créé au premier usage. Placez-le hors d’un répertoire web publié. Chaque serveur doit utiliser un dossier distinct."
+        ],
+        [
+          "h",
+          "Suivre l’exemple fictif"
+        ],
+        [
+          "b",
+          "Ouvrez `http://127.0.0.1:8765/`. Dans **Load a fictional fixture**, sélectionnez `001_base`, puis **Load fixture**."
+        ],
+        [
+          "b",
+          "Ouvrez `ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base` (le chargeur ajoute l’identifiant de l’exemple à l’identifiant de l’engagement, afin qu’une démonstration chargée ne soit jamais confondue avec un engagement saisi à la main). Parcourez les étapes 1 à 6 : source, engagement typé, comparaison, calcul, historique et adjudication."
+        ],
+        [
+          "b",
+          "Vérifiez la fourchette initiale de 110–120 millions, la révision de 105–115 millions et le résultat déclaré de 112 millions. Les deux calculs doivent afficher `IN_RANGE`."
+        ],
+        [
+          "b",
+          "À l’étape 7, choisissez **Build export**, puis téléchargez le ZIP. Conservez l’empreinte indiquée avec le fichier."
+        ],
+        [
+          "b",
+          "Ouvrez `http://127.0.0.1:8766/verify` dans l’espace vierge. Sélectionnez le ZIP et soumettez-le. Le résultat attendu est `SUCCESS`, accompagné des valeurs recalculées."
+        ],
+        [
+          "p",
+          "Il s’agit d’un exemple fictif rétrospectif, y compris son résultat daté dans le futur. Il illustre le logiciel sans établir de précision prédictive réelle. Un espace vierge n’est pas une deuxième personne indépendante."
+        ],
+        [
+          "h",
+          "Arrêter et reprendre"
+        ],
+        [
+          "p",
+          "Appuyez sur **Ctrl+C** dans chaque terminal serveur. Relancez la même commande, avec le même dossier et le même port, pour reprendre. Les actions déjà consignées restent dans le journal. Rechargez les formulaires après un redémarrage : leurs jetons dépendent de la session du serveur."
+        ],
+        [
+          "code",
+          "yuclaw workbench status --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Le serveur écoute sur `127.0.0.1`. Ouvrir yuclaw.ca ne le démarre pas. Fermer un onglet n’arrête pas le processus du terminal. Aucun dépôt ni résultat n’arrive automatiquement dans cet espace local."
+        ]
+      ]
+    },
+    {
+      "title": "4 Enregistrer une source",
+      "blocks": [
+        [
+          "p",
+          "Ouvrez **1 Source**, à `/source`. Partez du passage exact que l’engagement citera. L’enregistrement conserve ce passage et son empreinte ; une reformulation appartient aux notes de recherche, pas à l’extrait source."
+        ],
+        [
+          "table",
+          [
+            "Champ ou notion",
+            "Contenu attendu"
+          ],
+          [
+            [
+              "Type et formulaire",
+              "Le vrai type de document et son formulaire. Ne qualifiez pas un communiqué de dépôt réglementaire pour satisfaire la validation."
+            ],
+            [
+              "Identifiant du dépôt ou de l’éditeur",
+              "Le véritable numéro EDGAR, ou l’identifiant d’éditeur pris en charge par le formulaire."
+            ],
+            [
+              "URL et date de dépôt",
+              "L’emplacement du document et sa date déclarée. Une URL ne remplace pas le passage probant."
+            ],
+            [
+              "Extrait exact",
+              "Les mots de la source, avec montants, unités et contexte préservés."
+            ],
+            [
+              "Available as of",
+              "L’heure de disponibilité publique. Utilisez une date UTC conforme, par exemple 2026-02-10T21:05:00Z."
+            ],
+            [
+              "Heure d’observation",
+              "Quand cet espace a observé la source, indépendamment de sa disponibilité publique."
+            ],
+            [
+              "Droits et statut fictif",
+              "Choisissez les droits applicables et signalez les données de démonstration. Ne présumez pas les droits de réutilisation."
+            ]
+          ],
+          [
+            4.5,
+            12.8
+          ]
+        ],
+        [
+          "p",
+          "Soumettez le formulaire et vérifiez la présence de la source, de ses heures et de l’empreinte du passage. Le serveur attribue lui-même l’heure d’enregistrement. Sélectionnez cette source lors de la création de l’engagement."
+        ],
+        [
+          "h",
+          "À partir d’un enregistrement d’ingestion"
+        ],
+        [
+          "p",
+          "Choisissez **Register from an ingestion record**. Collez `original.source.json` et utilisez la valeur `retrieved_at` du fichier de provenance comme heure d’observation. La procédure d’ingestion réseau facultative figure en page 18."
+        ],
+        [
+          "h",
+          "Source incomplète ou incorrecte"
+        ],
+        [
+          "p",
+          "Une disponibilité inconnue ne doit pas être inventée. Si le mauvais passage a été cité, enregistrez le bon et créez un amendement `CORRECTED_SOURCE`. Si seule l’heure est erronée, suivez la correction liée de la page 8. Ne modifiez jamais manuellement une source stockée ou le journal."
+        ],
+        [
+          "p",
+          "**À vérifier :** le passage, l’identité du document, les droits et les trois heures sont compréhensibles sans votre mémoire. Des empreintes concordantes prouvent une cohérence des octets, pas l’authenticité de l’éditeur ni la vérité du texte."
+        ]
+      ]
+    },
+    {
+      "title": "5 Créer et figer un engagement",
+      "blocks": [
+        [
+          "p",
+          "Ouvrez **2 Typed claim**, à `/claim/new`. Un engagement typé explicite la comparaison financière avant toute interprétation. Sélectionnez la source enregistrée et remplissez tous les champs de comparabilité."
+        ],
+        [
+          "table",
+          [
+            "Information requise",
+            "Exemple fictif ou règle"
+          ],
+          [
+            [
+              "Identité de l’engagement et de l’émetteur",
+              "Un nouvel identifiant stable, avec le nom et les identifiants exacts de l’émetteur."
+            ],
+            [
+              "Indicateur et déclaration",
+              "Chiffre d’affaires ; préservez le sens de l’engagement de la source."
+            ],
+            [
+              "Bornes en unités",
+              "Pour 110–120 millions USD, saisissez 110000000 et 120000000, et non 110 et 120."
+            ],
+            [
+              "Devise, unité et échelle",
+              "USD ; USD ; millions dans le texte. L’échelle décrit l’énoncé, mais les montants sont saisis en unités."
+            ],
+            [
+              "Base comptable",
+              "GAAP, IFRS ou autre base prise en charge, selon la source. Ne confondez pas mesures ajustées et non ajustées."
+            ],
+            [
+              "Période comptable",
+              "Libellé, type, début et fin exacts. FY2026 dans l’exemple va du 2026-01-01 au 2026-12-31."
+            ],
+            [
+              "Règle de résolution et source",
+              "La règle prise en charge qui définit le test du résultat, avec le passage enregistré."
+            ],
+            [
+              "Statut fictif",
+              "Signalez explicitement la fiction. N’utilisez pas ses identifiants pour une société réelle."
+            ]
+          ],
+          [
+            4.8,
+            12.5
+          ]
+        ],
+        [
+          "h",
+          "Figer en connaissance de cause"
+        ],
+        [
+          "p",
+          "Vérifiez l’échelle, la base, la période et la source. Le gel crée la version `V1` et son empreinte. **Le gel est irréversible.** Toute correction ou modification ultérieure crée un enregistrement sans écraser cette version."
+        ],
+        [
+          "h",
+          "Réviser ou retirer un engagement"
+        ],
+        [
+          "p",
+          "Dans la page de l’engagement, utilisez **Create an amendment**. Choisissez le type, modifiez les champs justifiés par la nouvelle source et indiquez le motif. `REVISED` décrit un engagement modifié ; `CORRECTED_SOURCE`, une correction de source. Les versions et empreintes antérieures restent visibles."
+        ],
+        [
+          "p",
+          "Utilisez l’action de retrait si l’engagement a été retiré, avec sa source et son motif. Le retrait est un événement, pas un engagement de remplacement ; il ne constitue pas automatiquement un échec. Examinez sa chronologie par rapport au résultat."
+        ],
+        [
+          "p",
+          "Dans les champs numériques, utilisez la syntaxe décimale attendue, sans séparateurs de milliers. La virgule décimale française ne remplace pas le point exigé par un champ numérique."
+        ]
+      ]
+    },
+    {
+      "title": "6 Comparer et calculer",
+      "blocks": [
+        [
+          "p",
+          "**3 Comparison** présente les engagements initial et révisé. **4 Calculation** évalue le résultat déclaré pour chaque fourchette applicable. Enregistrez d’abord sa source, puis utilisez **Record the disclosed outcome**."
+        ],
+        [
+          "p",
+          "Saisissez le montant réalisé en unités, la devise, l’indicateur, la base et la période. La case de comparabilité est une déclaration : le calculateur contrôle quand même les champs. Le résultat n’a de sens que dans le cadre pris en charge."
+        ],
+        [
+          "h",
+          "Exemple fictif détaillé"
+        ],
+        [
+          "table",
+          [
+            "Grandeur",
+            "Initial",
+            "Révisé"
+          ],
+          [
+            [
+              "Fourchette en millions USD",
+              "110–120",
+              "105–115"
+            ],
+            [
+              "Point médian",
+              "115",
+              "110"
+            ],
+            [
+              "Montant réalisé",
+              "112",
+              "112"
+            ],
+            [
+              "Réalisé moins point médian",
+              "−3 millions",
+              "+2 millions"
+            ],
+            [
+              "Résultat d’appartenance",
+              "IN_RANGE",
+              "IN_RANGE"
+            ]
+          ],
+          [
+            7.1,
+            5.1,
+            5.1
+          ]
+        ],
+        [
+          "p",
+          "Les bornes sont incluses : **borne basse ≤ réalisé ≤ borne haute**. Le point médian est `(low + high) / 2` ; l’écart est `actual − midpoint`. Les deux fourchettes contiennent le même montant. Cet accord ne prouve ni une amélioration de précision ni un effet causal de la révision."
+        ],
+        [
+          "h",
+          "Interpréter les états non résolus"
+        ],
+        [
+          "table",
+          [
+            "Résultat",
+            "Sens et action suivante"
+          ],
+          [
+            [
+              "IN_RANGE / OUT_OF_RANGE",
+              "Un résultat compatible se trouve dans/hors de la fourchette. Consultez aussi la source et la règle."
+            ],
+            [
+              "PENDING_OUTCOME",
+              "Aucun résultat déclaré applicable n’est enregistré. Ne remplacez pas une absence par zéro."
+            ],
+            [
+              "INCOMPARABLE",
+              "La comparaison des versions est impossible. Lisez tous les motifs ; n’en déduisez aucun écart comparatif."
+            ],
+            [
+              "INCOMPATIBLE_BASIS / UNIT_MISMATCH",
+              "Vérifiez les définitions, la base comptable et les unités."
+            ],
+            [
+              "PERIOD_MISMATCH / METRIC_MISMATCH",
+              "Périodes ou indicateurs différents. Corrigez les données justifiées au moyen de l’action enregistrée appropriée."
+            ],
+            [
+              "WITHDRAWN_BEFORE_OUTCOME",
+              "Un retrait qualifié dans le temps, pas un échec prédictif calculé."
+            ]
+          ],
+          [
+            6.4,
+            10.9
+          ]
+        ],
+        [
+          "p",
+          "Une règle non prise en charge ou un résultat déclaré non comparable reste également non résolu. Ne changez pas une définition uniquement pour obtenir une réussite."
+        ]
+      ]
+    },
+    {
+      "title": "7 Lire un historique sans recul indu",
+      "blocks": [
+        [
+          "p",
+          "Ouvrez **5 History**, saisissez une date limite UTC et sélectionnez **Replay**. Comparez cette vue avec la vue actuelle pour déterminer ce que les enregistrements étayaient à chaque moment. Les vues historiques des modules utilisent les heures d’action enregistrées."
+        ],
+        [
+          "table",
+          [
+            "Heure",
+            "Question traitée"
+          ],
+          [
+            [
+              "Disponibilité",
+              "Quand la source est déclarée accessible publiquement."
+            ],
+            [
+              "Observation",
+              "Quand l’espace l’a observée."
+            ],
+            [
+              "Enregistrement",
+              "Quand le serveur a consigné l’action ou la correction."
+            ]
+          ],
+          [
+            4.5,
+            12.8
+          ]
+        ],
+        [
+          "p",
+          "Un dépôt ancien saisi aujourd’hui ne prouve pas que cet espace le détenait à sa date de dépôt. Le statut rétrospectif reste explicite. Une information ultérieure ne doit pas être interprétée comme une connaissance antérieure."
+        ],
+        [
+          "h",
+          "Corriger une heure de disponibilité"
+        ],
+        [
+          "b",
+          "Ouvrez **1 Source → Correct a source’s availability time**, à `/source#availability`, et sélectionnez la source."
+        ],
+        [
+          "b",
+          "Saisissez l’heure UTC corrigée, le motif, une référence probante et votre libellé d’acteur. Cette référence est du texte consigné ; le serveur ne la récupère pas."
+        ],
+        [
+          "b",
+          "Soumettez. Vérifiez le nouvel événement `SOURCE_AVAILABILITY_CORRECTED`, qui relie anciennes et nouvelles valeurs. Le passage, son empreinte et l’heure d’observation restent inchangés."
+        ],
+        [
+          "b",
+          "Examinez la **corrected view** de chaque engagement concerné, à côté du résultat enregistré. Consultez **Needs review** si le temps, le statut rétrospectif ou une adjudication antérieure est affecté."
+        ],
+        [
+          "h",
+          "Effet sur les dates limites"
+        ],
+        [
+          "p",
+          "Avant l’heure d’enregistrement de la correction, l’ancienne valeur reste applicable ; la correction apparaît comme une connaissance ultérieure. À partir de cette heure, la vue corrigée s’applique. Une correction peut rendre un enregistrement rétrospectif, mais jamais transformer un enregistrement rétrospectif en engagement contemporain."
+        ],
+        [
+          "p",
+          "Si une autre correction a été consignée depuis l’ouverture du formulaire, rechargez-le. Si votre examen modifie l’adjudication, ajoutez-en une nouvelle avec **Disputed** et un motif, sans effacer le jugement antérieur."
+        ],
+        [
+          "p",
+          "**À vérifier :** l’historique explique ce qui a changé et quand l’espace l’a appris. Les exports transportent la chaîne de corrections pour permettre le même recalcul ailleurs."
+        ]
+      ]
+    },
+    {
+      "title": "8 Consigner des notes et un examen",
+      "blocks": [
+        [
+          "h",
+          "Notes de recherche"
+        ],
+        [
+          "p",
+          "Utilisez **Research notes** sur l’engagement ou `/notes`. Consignez la question non résolue, une explication possible, les éléments supplémentaires nécessaires et leur utilité. Les notes structurent la recherche sans modifier les engagements figés, les calculs ou les passages sources."
+        ],
+        [
+          "p",
+          "Une note utile nomme précisément l’incertitude. Exemple : « La déclaration révisée utilise une base ajustée. Obtenir le rapprochement avant de la comparer à l’objectif GAAP initial. » Elle définit une prochaine action sans affirmer une causalité."
+        ],
+        [
+          "p",
+          "Corrigez une note erronée par une note corrective. Conservez le texte précédent dans son historique. Si l’engagement financier change, créez plutôt un amendement."
+        ],
+        [
+          "h",
+          "Étape 6 Adjudication"
+        ],
+        [
+          "b",
+          "Lisez les sources, le calcul exact et les motifs de non-comparabilité avant de choisir un libellé."
+        ],
+        [
+          "b",
+          "Indiquez le libellé du réviseur, la règle, les références probantes, le motif et les conflits pertinents."
+        ],
+        [
+          "b",
+          "Si votre jugement diffère du calcul, cochez **Disputed** et expliquez pourquoi. Le désaccord reste visible ; il ne remplace pas le calcul."
+        ],
+        [
+          "b",
+          "Après soumission, vérifiez que jugement et résultat calculé sont distincts. Réexaminez l’historique lorsqu’un amendement ou une correction de disponibilité affecte la décision."
+        ],
+        [
+          "h",
+          "Attribution et authentification"
+        ],
+        [
+          "p",
+          "Le nom d’un réviseur ou d’un acteur dans le parcours principal est un libellé d’attribution. Il ne prouve ni identité authentifiée, ni indépendance, ni qualification. Après configuration des comptes locaux, les actions des modules utilisent leurs identifiants ; ceux-ci ne prouvent pas davantage une identité réelle."
+        ],
+        [
+          "h",
+          "Préparer une transmission utile"
+        ],
+        [
+          "p",
+          "Fournissez l’identifiant, la version et l’empreinte de l’engagement ; les sources ; la période, l’indicateur et la base ; le calcul ; les questions ouvertes et le motif du réviseur. Créez l’export correspondant selon la page 11 pour permettre au destinataire de contrôler le calcul enregistré."
+        ],
+        [
+          "p",
+          "Une adjudication est un jugement documenté selon une règle. Ce n’est ni une recommandation de placement ni une permission de publier des données privées."
+        ]
+      ]
+    },
+    {
+      "title": "9 Données et rejeu scientifique",
+      "blocks": [
+        [
+          "h",
+          "Examiner la couverture des données"
+        ],
+        [
+          "p",
+          "Ouvrez `/dataset` ; `/dataset.json` en fournit la vue exploitable par machine. Une ligne par engagement figé est dérivée des enregistrements locaux : versions, filiation des sources, résultats, désaccords, droits, notes et motifs non résolus."
+        ],
+        [
+          "b",
+          "Contrôlez les nombres de données fictives et réelles, les statuts rétrospectifs, les résultats absents, les cas incomparables et les extraits retenus pour raisons de droits."
+        ],
+        [
+          "b",
+          "Lisez **Coverage gaps and known omissions** avant tout agrégat. Un espace vide ne prouve pas une couverture complète."
+        ],
+        [
+          "b",
+          "Choisissez **Build dataset snapshot export**. Conservez l’empreinte de l’instantané. Les précédents restent disponibles ; leur comparaison indique les changements."
+        ],
+        [
+          "p",
+          "L’identité de l’instantané dépend des enregistrements et de la méthode, pas de l’instant du clic. Elle décrit la collection locale, et non un jeu de données validé sur tout le marché ou un échantillon automatique représentatif."
+        ],
+        [
+          "h",
+          "Rejouer un journal scientifique compatible"
+        ],
+        [
+          "p",
+          "Ouvrez `/sci`. Commencez par un exemple exploratoire fictif fourni, via le sélecteur de la page. Examinez manifeste et journal, lancez le rejeu, puis ouvrez l’enregistrement produit, par exemple `/sci/S1`. Il présente le rapport recalculé ou un refus explicite."
+        ],
+        [
+          "p",
+          "Le moteur respecte un contrat statistique défini : prévisions probabilistes appariées, amélioration du score de Brier et comptabilisation séquentielle des éléments probants. Avant votre propre journal, vérifiez indicateur, unité, appariement et budget d’erreur dans le manifeste. Une fourchette monétaire n’est pas une paire de probabilités."
+        ],
+        [
+          "table",
+          [
+            "Entrée ou état",
+            "Interprétation"
+          ],
+          [
+            [
+              "Journal exploratoire fourni",
+              "Démonstration fictive du logiciel ; aucun bénéfice financier établi."
+            ],
+            [
+              "Exemple prospectif avec une unité en attente",
+              "Démonstration du traitement d’un état incomplet, pas une expérience achevée."
+            ],
+            [
+              "Montants utilisés comme probabilités",
+              "Refus : hors du contrat d’entrée pris en charge."
+            ],
+            [
+              "Indicateur inconnu ou paire manquante",
+              "Corriger le protocole ou les entrées sans transformer le refus en réussite."
+            ]
+          ],
+          [
+            7.0,
+            10.3
+          ]
+        ],
+        [
+          "p",
+          "Le rejeu recalcule ce que le journal décrit. Il ne prouve ni collecte honnête, ni enregistrement préalable d’une expérience, ni amélioration d’un système d’IA. Distinguez toujours exemples fictifs et recherche réelle."
+        ]
+      ]
+    },
+    {
+      "title": "10 Exporter et vérifier la recherche",
+      "blocks": [
+        [
+          "h",
+          "Créer un paquet de recherche"
+        ],
+        [
+          "p",
+          "À l’étape 7 d’un engagement, **Build export** crée un ZIP filtré selon les droits. Pour toute la collection, utilisez l’export d’instantané. Téléchargez le paquet complet et conservez son empreinte et son identité en octets."
+        ],
+        [
+          "p",
+          "Le paquet d’engagement comprend schéma, versions, références et extraits autorisés, événements, méthodes, résultats et enregistrements connexes. Certains extraits peuvent être retenus. Les modules nécessitent un autre type de paquet, décrit en page 17."
+        ],
+        [
+          "h",
+          "Vérifier dans un espace vierge"
+        ],
+        [
+          "b",
+          "Ouvrez `http://127.0.0.1:8766/verify` sur le serveur distinct. Sélectionnez le ZIP inchangé et soumettez-le."
+        ],
+        [
+          "b",
+          "Lisez le résultat et la première divergence éventuelle. Le vérificateur redérive les empreintes et recalcule les contenus pris en charge, sans se fier au résultat affiché par l’expéditeur."
+        ],
+        [
+          "b",
+          "Notez l’identité du paquet, le résultat, la version du logiciel et l’heure. Ne présentez pas un autre fichier comme couvert par cette vérification."
+        ],
+        [
+          "h",
+          "Vérification en ligne de commande"
+        ],
+        [
+          "p",
+          "Remplacez `research-export.zip` par le chemin du fichier. Cette commande vérifie un export d’engagement ou de jeu de données ; utilisez l’interface de vérification des modules pour leurs options de confiance et de point de contrôle."
+        ],
+        [
+          "code",
+          "yuclaw workbench verify-export research-export.zip --json"
+        ],
+        [
+          "table",
+          [
+            "Résultat",
+            "Code",
+            "Action"
+          ],
+          [
+            [
+              "SUCCESS",
+              "0",
+              "Contenu compatible, cohérent et recalculé. Lire provenance et limites."
+            ],
+            [
+              "MISMATCH",
+              "1",
+              "Examiner la première divergence ; obtenir le paquet inchangé ou faire résoudre le défaut par son producteur."
+            ],
+            [
+              "UNSUPPORTED",
+              "3",
+              "Format ou entrée hors contrat. Vérifier le type de paquet et la version du logiciel."
+            ]
+          ],
+          [
+            3.3,
+            1.3,
+            12.7
+          ]
+        ],
+        [
+          "h",
+          "Portée de la vérification"
+        ],
+        [
+          "p",
+          "Elle établit la cohérence du paquet pris en charge et de ses calculs. Elle ne prouve ni authenticité des sources, ni vérité factuelle, ni examen humain indépendant, ni autorisation de publication. L’export de recherche n’est pas une sauvegarde de l’espace ni une procédure de restauration démontrée."
+        ],
+        [
+          "p",
+          "Conservez le ZIP original inchangé. Pour examiner une corruption, travaillez sur une copie distincte et gardez l’identité de l’original."
+        ]
+      ]
+    },
+    {
+      "title": "11 Configurer les comptes locaux",
+      "blocks": [
+        [
+          "p",
+          "Le parcours principal peut être exploré avant la configuration des comptes. Les quatre modules exigent des capacités locales. Le premier administrateur est créé depuis la ligne de commande de l’hôte, jamais par auto-inscription dans le navigateur."
+        ],
+        [
+          "code",
+          "yuclaw workbench principals init --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Le secret d’accès n’est affiché qu’une fois. Conservez-le de manière sûre, jamais dans les notes ou exports. Il n’existe aucun mot de passe par défaut. Ensuite, toutes les pages demandent une connexion à `/login` ; **Setup**, à `/setup`, gère la configuration."
+        ],
+        [
+          "table",
+          [
+            "Capacité",
+            "Fonction"
+          ],
+          [
+            [
+              "admin",
+              "Gérer comptes, confiance, politiques, approbations, budgets, dérogations et résolutions consignées."
+            ],
+            [
+              "submit",
+              "Soumettre des lots probants et des paquets de révision selon les règles configurées."
+            ],
+            [
+              "review",
+              "Examiner les travaux admissibles, lancer les évaluations autorisées et préparer les tâches de pratique."
+            ],
+            [
+              "practice",
+              "Pratiquer. Un compte limité à cette capacité n’accède qu’à Practice, Modules, Help et à ses propres exports."
+            ]
+          ],
+          [
+            3.2,
+            14.1
+          ]
+        ],
+        [
+          "h",
+          "Attribuer les seules capacités nécessaires"
+        ],
+        [
+          "p",
+          "Utilisez Setup ou la CLI de l’hôte. Cet exemple crée un compte réservé à la pratique ; remplacez l’identifiant par un nouvel identifiant local."
+        ],
+        [
+          "code",
+          "yuclaw workbench principals add --workspace ~/yuclaw-workspaces/research \\\n  --id learner1 --caps practice\nyuclaw workbench principals list --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Une rotation émet un nouveau secret. La révocation du compte est définitive. Déconnexion, redémarrage, rotation et révocation terminent les sessions. Rechargez les formulaires après reconnexion."
+        ],
+        [
+          "h",
+          "Préserver les séparations de rôle"
+        ],
+        [
+          "p",
+          "Utilisez des profils de navigateur distincts. Le déposant SHD ne peut approuver son lot ; le réviseur EVO ne doit pas avoir amélioré la lignée ; le réviseur COM ne doit pas avoir contribué au groupe ; le praticien ne peut être le préparateur de sa tâche."
+        ],
+        [
+          "p",
+          "Un identifiant local établit quel compte a agi, pas que deux comptes représentent deux personnes. Qui contrôle le compte système et le dossier de travail reste l’opérateur de l’hôte et peut administrer les comptes par la CLI. Les capacités du navigateur ne limitent pas cet opérateur."
+        ],
+        [
+          "code",
+          "yuclaw workbench modules --workspace ~/yuclaw-workspaces/research"
+        ]
+      ]
+    },
+    {
+      "title": "12 SHD admission protégée",
+      "blocks": [
+        [
+          "p",
+          "**SHD — Distillation Shield**, à `/shd`, contrôle un lot probant par une voie approuvée et restreinte. Vérifiez d’abord la sonde d’isolation dans Setup. Si aucun mécanisme n’est disponible, l’admission reste fermée."
+        ],
+        [
+          "h",
+          "Format d’entrée"
+        ],
+        [
+          "p",
+          "Utilisez un ZIP conforme à `yuclaw.shd-bundle/1` : un manifeste `bundle.json` et les fichiers probants listés sous `evidence/`. Le manifeste précise une finalité, les SHA-256 complets, les tailles en octets et la charge utile typée. Ce n’est pas un formulaire de téléversement de documents quelconques. Limites : 8 Mio, 64 membres, plus des plafonds par membre et après décompression."
+        ],
+        [
+          "p",
+          "Finalités prises en charge : `evidence.reference`, `com.packets`, `evo.evaluations`. Pour construire un lot, suivez le schéma et le validateur versionnés cités en page 21. N’inventez ni champ ni approbation."
+        ],
+        [
+          "h",
+          "Soumettre et obtenir une décision"
+        ],
+        [
+          "b",
+          "Comme déposant, téléversez le lot préparé et relevez son empreinte. Le téléversement stocke les octets sans les admettre."
+        ],
+        [
+          "b",
+          "Un autre administrateur ouvre `/shd/trust`, sélectionne le lot, contrôle indépendamment les empreintes attendues et consigne finalité et expiration. L’approbation vise ces octets et cet espace précis."
+        ],
+        [
+          "b",
+          "Demandez une décision. Le processus restreint ouvre et contrôle le lot ; l’approbation est revérifiée au moment de consigner la décision."
+        ],
+        [
+          "b",
+          "Lisez les quatre réponses : intégrité, approbation, adjudication factuelle et permission de publication. Une admission peut alimenter COM ou EVO tant que l’approbation reste applicable."
+        ],
+        [
+          "table",
+          [
+            "Refus",
+            "Action suivante"
+          ],
+          [
+            [
+              "REFUSED_NO_APPROVAL",
+              "Obtenir l’approbation applicable d’un autre administrateur."
+            ],
+            [
+              "REFUSED_APPROVAL_EXPIRED / REVOKED",
+              "Résoudre l’état d’approbation ; l’ancienne ne peut être réutilisée."
+            ],
+            [
+              "REFUSED_SELF_APPROVAL",
+              "Utiliser un compte approbateur distinct."
+            ],
+            [
+              "REFUSED_BUNDLE_REJECTED",
+              "Lire le motif de structure ou d’empreinte ; corriger le lot comme de nouveaux octets."
+            ],
+            [
+              "REFUSED_ISOLATION_UNAVAILABLE",
+              "Utiliser un hôte Linux pris en charge dont la sonde réussit ; ne pas contourner la fermeture."
+            ]
+          ],
+          [
+            7.7,
+            9.6
+          ]
+        ],
+        [
+          "p",
+          "**ADMITTED ne signifie pas vrai.** L’adjudication factuelle reste `NOT_ASSESSED` et la permission de publication `NONE`. L’isolation bubblewrap ou Landlock, vérifiée par sonde, ne constitue pas une certification de sécurité indépendante. Landlock n’est pas un conteneur complet."
+        ]
+      ]
+    },
+    {
+      "title": "13 EVO audit de réutilisation",
+      "blocks": [
+        [
+          "p",
+          "**EVO — Evolution Evidence Audit**, à `/evo`, consigne les changements d’un système d’IA et l’applicabilité de ses évaluations antérieures. Il ne modifie pas le système et ne contrôle pas son déploiement."
+        ],
+        [
+          "h",
+          "Configurer des mesures réelles"
+        ],
+        [
+          "p",
+          "Un administrateur enregistre la configuration JSON : répertoires absolus existants `roots`, modes des composants, dépendances, protocoles et listes d’autorité. Le schéma versionné définit les champs exacts. Tout chemin doit rester dans une racine configurée."
+        ],
+        [
+          "table",
+          [
+            "Clés de composants",
+            "Représentation"
+          ],
+          [
+            [
+              "model, agent_code, tool_policy, memory",
+              "Mode path pour les fichiers mesurables ; declared pour une déclaration attribuée ; unknown si non mesuré."
+            ],
+            [
+              "data, grader, evaluation_data",
+              "Expliciter les données d’évaluation et l’identité du correcteur ; leurs changements peuvent invalider la réutilisation."
+            ],
+            [
+              "runtime",
+              "Mode runtime pour mesurer l’environnement, ou autre mode compatible décrivant fidèlement les éléments disponibles."
+            ],
+            [
+              "Composant non applicable",
+              "not_applicable avec justification, jamais une omission inexpliquée."
+            ]
+          ],
+          [
+            7.0,
+            10.3
+          ]
+        ],
+        [
+          "p",
+          "Chaque protocole indique son périmètre, une tâche compatible (`policy_conformance` ou `json_wellformed`) et sa durée de validité. `depends_on` exprime les dépendances. Les listes d’autorité nomment auteurs du correcteur, producteurs d’éléments probants, autorisateurs de publication et lecteurs des tests protégés. Toute modification arrête la réutilisation ; les expositions antérieures aux tests restent consignées."
+        ],
+        [
+          "h",
+          "Enregistrer et évaluer"
+        ],
+        [
+          "b",
+          "Choisissez **Measure and register**, avec un nouvel identifiant et un parent si nécessaire. Distinguez états mesuré, déclaré, inconnu et non applicable."
+        ],
+        [
+          "b",
+          "Un réviseur n’ayant pas amélioré cette lignée lance l’évaluation autorisée. Le moteur vérifie l’identité et exécute le périmètre compatible sur une copie privée immuable."
+        ],
+        [
+          "b",
+          "Si les fichiers actuels diffèrent, enregistrez une nouvelle version. Ne réutilisez pas l’ancienne étiquette pour de nouveaux octets."
+        ],
+        [
+          "b",
+          "Lisez `REUSE` ou `REEVALUATE` par protocole, les dépendances, échecs ouverts, examens et expositions. Utilisez une date limite pour une décision historique."
+        ],
+        [
+          "p",
+          "Les échecs restent ouverts jusqu’à une résolution administrative étayée. Une évaluation importée par SHD est `DECLARED_IMPORT`, pas une exécution locale autorisée. Les engagements financiers liés restent séparés par devise."
+        ],
+        [
+          "p",
+          "**À vérifier :** la réutilisation repose sur identité et périmètre enregistrés. La ligne d’admissibilité n’autorise aucune publication externe."
+        ]
+      ]
+    },
+    {
+      "title": "14 COM file de révision à capacité limitée",
+      "blocks": [
+        [
+          "p",
+          "**COM — Research Commons Guard**, à `/com`, regroupe les paquets liés et distribue un budget de révision consigné. Un administrateur définit d’abord la période, les minutes de révision, une réserve distincte de pratique, le plafond de paquets par compte et le maximum de tâches ouvertes."
+        ],
+        [
+          "h",
+          "Soumettre et regrouper"
+        ],
+        [
+          "p",
+          "Depuis un engagement, choisissez **submit a review packet about it**, ou utilisez COM. Confirmez la version et le contrat financier sélectionnés. Un lot admis par SHD offre une autre voie d’entrée."
+        ],
+        [
+          "p",
+          "Même version, indicateur, devise, unité, échelle, base, période et racines sources connues : les paquets forment un groupe et une tâche. Tous les contributeurs restent visibles. Plusieurs paquets ne constituent pas automatiquement plusieurs éléments indépendants."
+        ],
+        [
+          "h",
+          "Traiter les doublons explicitement"
+        ],
+        [
+          "p",
+          "Des passages aux octets identiques correspondent à une racine unique. Un réviseur ou administrateur peut déclarer un alias dans **Source aliases**, avec un motif ; la rétractation préserve les deux événements. Il n’y a pas de détection de similarité sémantique : un rendu différent reste distinct tant que le lien n’est pas consigné. Un litige sur un alias affecte les groupes appuyés sur le même document."
+        ],
+        [
+          "h",
+          "Traiter une tâche"
+        ],
+        [
+          "b",
+          "Un réviseur non contributeur prend la tâche avec **Take (reserves the cost)**. Son coût prévisionnel est réservé sous verrou de l’espace."
+        ],
+        [
+          "b",
+          "Utilisez **start**, **pause**, **resume**, **finish** ou **release**. L’expiration d’une réservation remet la tâche en file avec ses secondes observées."
+        ],
+        [
+          "b",
+          "Lisez le motif d’attente : les petites tâches peuvent passer ; une tâche ancienne peut réserver la capacité restante ; une tâche trop grande est signalée pour arbitrage."
+        ],
+        [
+          "b",
+          "Une priorité urgente ne crée pas de minutes. Si le budget est réduit sous l’usage enregistré, le dépassement reste visible."
+        ],
+        [
+          "h",
+          "Litiges et appels"
+        ],
+        [
+          "p",
+          "Un réviseur ou administrateur peut consigner un litige, retrait ou correction de source. Les groupes concernés sont mis en quarantaine jusqu’à résolution administrative. C’est un état de traitement, pas un constat de faute. Tout compte connecté peut faire appel ; motif et décision restent consignés."
+        ],
+        [
+          "p",
+          "L’estimation du déposant est une proposition ; le coût de planification est fixé par le réviseur ou l’administrateur. La comparaison de files affichée utilise des arrivées synthétiques fixes : c’est une simulation, pas la preuve d’un gain de productivité réel."
+        ]
+      ]
+    },
+    {
+      "title": "15 PRC tenter avant de comparer",
+      "blocks": [
+        [
+          "p",
+          "**PRC — Independent Practice**, à `/prc`, conserve une tentative initiale avant de révéler une référence. Ce parcours local facultatif ne recrute personne, ne contacte personne et ne lance aucune étude."
+        ],
+        [
+          "h",
+          "Préparer une tâche"
+        ],
+        [
+          "p",
+          "Un réviseur fige question, engagement éventuel, périmètre des sources, libellés autorisés et référence de comparaison. Indiquez sa provenance : référence non adjugée, réponse de modèle ou référence déclarée examinée par le préparateur. Cette déclaration ne constitue pas une validation indépendante."
+        ],
+        [
+          "p",
+          "Le serveur garde la comparaison non révélée en privé ; le journal ne conserve qu’une empreinte salée. Configurez la réserve de pratique avant les sessions qui la nécessitent. Le praticien doit être distinct du préparateur de la tâche."
+        ],
+        [
+          "h",
+          "Effectuer une session"
+        ],
+        [
+          "b",
+          "Connectez-vous avec le compte du praticien. La seule capacité practice limite les routes accessibles à la pratique et à ses propres exports."
+        ],
+        [
+          "b",
+          "Ouvrez une session et déclarez honnêtement aide reçue et exposition antérieure. Les réponses sont acceptées et étiquetées ; les déclarations n’effacent pas la tentative."
+        ],
+        [
+          "b",
+          "Lisez les éléments figés. Validez un jugement, un raisonnement et les sources utilisées. Choisissez `UNRESOLVED` si nécessaire et indiquez ce qui permettrait de conclure."
+        ],
+        [
+          "b",
+          "Après validation seulement, choisissez **Open the comparison**. Examinez la provenance de la référence et ses différences avec votre tentative."
+        ],
+        [
+          "b",
+          "Ajoutez une réflexion. Un réviseur peut consigner un retour ultérieur. Ce sont de nouveaux enregistrements ; la tentative initiale reste intacte."
+        ],
+        [
+          "h",
+          "Confinement et confidentialité"
+        ],
+        [
+          "p",
+          "Un praticien doté d’autres capacités porte le libellé `NOT_CONFINED` : d’autres routes peuvent lui révéler des informations. La référence n’est pas secrète pour l’opérateur de l’hôte, le préparateur ou l’administrateur. Le logiciel ne peut empêcher une aide extérieure ou une réponse trouvée ailleurs."
+        ],
+        [
+          "p",
+          "Une correction de source ou un amendement apparaît dans l’interprétation actuelle. Les suivis sont des échéances locales, pas des messages envoyés. La page de session permet de créer son paquet pour conserver ou partager le contenu pris en charge."
+        ],
+        [
+          "p",
+          "**À vérifier :** la tentative précède la révélation enregistrée. Cette séquence ne prouve ni rédaction humaine, ni absence d’aide, ni originalité, ni compréhension, ni progrès. Aucun classement de personnes n’est produit."
+        ]
+      ]
+    },
+    {
+      "title": "16 Exporter les enregistrements des modules",
+      "blocks": [
+        [
+          "p",
+          "Ouvrez **Module evidence export and verification**, à `/modx`. L’export d’un engagement ne transporte pas les événements des modules. Sélectionnez les modules et sessions de pratique que votre compte peut exporter."
+        ],
+        [
+          "h",
+          "Prévisualiser avant de créer"
+        ],
+        [
+          "b",
+          "Choisissez SHD, EVO ou COM et les sessions PRC autorisées. Un praticien peut exporter ses propres sessions et utiliser l’option de retrait du texte."
+        ],
+        [
+          "b",
+          "Cliquez sur **Preview** : le contenu prévu est affiché sans créer d’export. Examinez les identifiants et les informations divulguées."
+        ],
+        [
+          "b",
+          "Créez puis téléchargez le paquet. Conservez son empreinte et, le cas échéant, un point de contrôle émis séparément."
+        ],
+        [
+          "table",
+          [
+            "Inclus selon le périmètre",
+            "Exclus"
+          ],
+          [
+            [
+              "Événements compatibles, squelette du journal, objets privés sélectionnés et vues dérivées",
+              "Secrets d’accès, leurs empreintes de stockage et clés privées de signature"
+            ],
+            [
+              "Tentatives, réflexions, retours et comparaisons déjà révélées dans les sessions choisies",
+              "Octets des lots en attente, extraits d’inspection et comparaisons non révélées"
+            ],
+            [
+              "Identifiants des comptes et provenance",
+              "Toute prétention à l’anonymat du paquet"
+            ]
+          ],
+          [
+            8.65,
+            8.65
+          ]
+        ],
+        [
+          "h",
+          "Vérifier dans un espace vierge"
+        ],
+        [
+          "p",
+          "Utilisez la page de vérification et le parcours des paquets de modules. Fournissez un point de contrôle si disponible. Le vérificateur contrôle liens et objets, recalcule COM, EVO et SHD, puis évalue les signatures selon les racines de confiance propres à l’espace destinataire. Il n’importe rien dans l’état opérationnel des modules."
+        ],
+        [
+          "p",
+          "Une signature structurellement valide d’un signataire inconnu reste inconnue. L’autorisation actuelle est inconnue hors ligne ; un instantané ancien de confiance ne prouve pas qu’une approbation est encore valable. N’ajoutez pas une clé à la confiance sur la seule demande d’un paquet non fiable."
+        ],
+        [
+          "h",
+          "Rôle du point de contrôle"
+        ],
+        [
+          "p",
+          "Un administrateur peut émettre un checkpoint depuis Practice. Il signe une position et la dernière empreinte du journal. Conserver ce fichier séparément puis le fournir à la vérification permet de détecter une troncature ou une modification par rapport à cette position. Ce n’est ni une sauvegarde ni un mécanisme de restauration."
+        ],
+        [
+          "p",
+          "Un paquet valide permet de reproduire les opérations consignées. Il ne rend pas une affirmation vraie, ne transforme pas deux comptes en personnes indépendantes et ne prouve aucun progrès issu de la pratique."
+        ]
+      ]
+    },
+    {
+      "title": "17 Ingestion facultative de documents",
+      "blocks": [
+        [
+          "p",
+          "Le serveur local ne récupère pas lui-même les dépôts. La CLI d’ingestion distincte peut télécharger un document depuis un hôte autorisé et en extraire un passage. Utilisez-la lorsque document, passage recherché et droits sont connus."
+        ],
+        [
+          "h",
+          "Définir votre identité de requête SEC"
+        ],
+        [
+          "p",
+          "Chaque exécution `--kind filing` contacte la SEC. Remplacez les deux valeurs fictives par votre nom et votre adresse de contact. Aucune identité n’est fournie à votre place."
+        ],
+        [
+          "code",
+          "export SEC_USER_AGENT=\"Your Name your.address@example.org\""
+        ],
+        [
+          "p",
+          "Affectation équivalente dans PowerShell :"
+        ],
+        [
+          "code",
+          "$env:SEC_USER_AGENT = \"Your Name your.address@example.org\""
+        ],
+        [
+          "p",
+          "Une identité absente ou fictive entraîne un refus avant la requête. Elle est envoyée uniquement dans les en-têtes destinés aux hôtes SEC, jamais dans les sources ou exports. Les exemples fictifs et la vérification hors ligne n’en ont pas besoin."
+        ],
+        [
+          "h",
+          "Compléter la commande pour un document"
+        ],
+        [
+          "p",
+          "Ce modèle macOS/Linux n’est pas une requête réelle prête à exécuter. Remplacez chaque valeur entre chevrons. Utilisez le Python de l’environnement ; sous PowerShell, son chemin complet et tous les arguments sur une ligne."
+        ],
+        [
+          "code",
+          "python -m v8.workbench.ingest \\\n  --url '<https URL>' --kind filing --form '8-K EX-99.1' \\\n  --accession '<EDGAR accession>' --cik '<CIK>' \\\n  --pattern '<regex locating the passage>' \\\n  --rights SEC_PUBLIC_FILING \\\n  --out ~/yuclaw-ingest --label original"
+        ],
+        [
+          "h",
+          "Examiner et enregistrer"
+        ],
+        [
+          "p",
+          "En cas de succès, inspectez `original.source.json`, `original.provenance.json` et les octets conservés. Vérifiez que l’extrait contient la déclaration voulue dans son contexte. Dans **1 Source → Register from an ingestion record**, collez le JSON et utilisez `retrieved_at` comme heure d’observation."
+        ],
+        [
+          "p",
+          "En cas de refus, lisez `[ingest] REFUSED: …`. Le code 2 signifie qu’aucun enregistrement source n’a été écrit. Corrigez le champ indiqué. Trouver du texte avec une expression régulière ne prouve pas qu’il étaye votre engagement."
+        ],
+        [
+          "p",
+          "Pour les autres types de sources et options, consultez `python -m v8.workbench.ingest --help`. N’attribuez pas `SEC_PUBLIC_FILING` à un contenu soumis à d’autres droits."
+        ]
+      ]
+    },
+    {
+      "title": "18 Dépanner en préservant l’historique",
+      "blocks": [
+        [
+          "table",
+          [
+            "Symptôme",
+            "Action"
+          ],
+          [
+            [
+              "Commande absente ou mauvaise version",
+              "Utiliser l’exécutable du bon environnement et python -m pip show yuclaw avec le même interpréteur."
+            ],
+            [
+              "127.0.0.1 inaccessible",
+              "Laisser serve actif. Lire l’erreur du terminal et vérifier le port ; en choisir un autre s’il est occupé, puis adapter l’URL."
+            ],
+            [
+              "Échec après redémarrage",
+              "Se reconnecter et recharger le formulaire ; ne pas réutiliser un ancien jeton."
+            ],
+            [
+              "Operation already recorded, HTTP 409",
+              "Identifiant d’opération déjà utilisé avec un autre contenu. Rouvrir le formulaire, resélectionner le fichier et soumettre. Pas de récupération nécessaire."
+            ],
+            [
+              "Gel ou résultat refusé",
+              "Lire les champs cités : source, heure UTC, indicateur, période, unité, échelle, base et règle."
+            ],
+            [
+              "PENDING_OUTCOME ou INCOMPARABLE",
+              "Un élément absent ou incompatible est un état réel. Fournir des données justifiées ou garder cet état."
+            ],
+            [
+              "Isolation SHD indisponible",
+              "Consulter Setup. Admission fermée sous macOS/Windows ; sous Linux, une sonde réussie reste nécessaire."
+            ],
+            [
+              "Sélection périmée ou fichiers EVO modifiés",
+              "Recharger et sélectionner l’objet actuel ; enregistrer les fichiers modifiés comme nouvelle version EVO."
+            ],
+            [
+              "Permission de module refusée",
+              "Contrôler compte, capacités, approbation, séparation des contributeurs et budget."
+            ],
+            [
+              "Export MISMATCH ou UNSUPPORTED",
+              "Vérifier identité et type ; lire la première divergence sans modifier l’original."
+            ]
+          ],
+          [
+            6.0,
+            11.3
+          ]
+        ],
+        [
+          "h",
+          "Page Workspace integrity"
+        ],
+        [
+          "p",
+          "Une écriture interrompue peut laisser un fragment final sans fin de ligne. Si la page diagnostique ce torn tail, **Run recovery** en conserve les octets séparément, retire uniquement le fragment et consigne la récupération. Répétez ensuite l’action interrompue."
+        ],
+        [
+          "code",
+          "yuclaw workbench recover --workspace ~/yuclaw-workspaces/research"
+        ],
+        [
+          "p",
+          "Cette récupération vise le fragment diagnostiqué, pas toute erreur. Pour `E_HASH`, `E_CHAIN`, `E_SEQ` ou `E_CORRUPT_LINE`, arrêtez le serveur, préservez le dossier et examinez la cause. Ne supprimez pas de lignes pour faire réussir le contrôle."
+        ],
+        [
+          "p",
+          "La gestion des interruptions de processus ne garantit pas la survie à toute panne électrique. Un export interrompu n’est pas marqué complet : recréez-le. Une erreur d’intégrité doit rester visible jusqu’à compréhension de sa cause."
+        ]
+      ]
+    },
+    {
+      "title": "19 Référence des commandes et routes",
+      "blocks": [
+        [
+          "p",
+          "Avec l’environnement activé, `yuclaw workbench …` et `python -m v8.workbench …` appellent le même programme. Adaptez chemins et identifiants. `--help` ne démarre aucun serveur."
+        ],
+        [
+          "h",
+          "Commandes courantes"
+        ],
+        [
+          "code",
+          "yuclaw workbench --help\nyuclaw workbench guide\nyuclaw workbench selftest --json\nyuclaw workbench serve --workspace ~/yuclaw-workspaces/research --port 8765\nyuclaw workbench status --workspace ~/yuclaw-workspaces/research\nyuclaw workbench modules --workspace ~/yuclaw-workspaces/research\nyuclaw workbench build-export --workspace ~/yuclaw-workspaces/research \\\n  --claim ZZFX-FY2026-REV-GUIDE--FIX-COMMIT-001-base\nyuclaw workbench verify-export research-export.zip --json"
+        ],
+        [
+          "h",
+          "Gestion des accès par l’opérateur de l’hôte"
+        ],
+        [
+          "code",
+          "yuclaw workbench principals rotate --workspace ~/yuclaw-workspaces/research \\\n  --id learner1\nyuclaw workbench principals revoke --workspace ~/yuclaw-workspaces/research \\\n  --id learner1 --reason \"Access ended\""
+        ],
+        [
+          "p",
+          "Ces commandes agissent : la rotation émet un nouveau secret et la révocation est définitive. Pour consulter les comptes, utilisez `principals list`."
+        ],
+        [
+          "table",
+          [
+            "Route locale",
+            "Fonction"
+          ],
+          [
+            [
+              "/  ·  /source  ·  /claim/new",
+              "Espace, sources, nouvel engagement typé"
+            ],
+            [
+              "/claim/<claim id>",
+              "Comparaison, calcul, historique, notes, examen et export"
+            ],
+            [
+              "/notes  ·  /dataset  ·  /dataset.json",
+              "Notes et couverture de la collection"
+            ],
+            [
+              "/sci  ·  /journal  ·  /help",
+              "Rejeu scientifique, événements et guide intégré"
+            ],
+            [
+              "/modules  ·  /setup  ·  /login",
+              "Modules, configuration et connexion locale"
+            ],
+            [
+              "/shd  ·  /shd/trust  ·  /evo",
+              "Admission, administration de la confiance et audit de réutilisation"
+            ],
+            [
+              "/com  ·  /prc  ·  /modx  ·  /verify",
+              "Révision, pratique, export des modules et vérification"
+            ]
+          ],
+          [
+            8.0,
+            9.3
+          ]
+        ],
+        [
+          "p",
+          "Ces routes sont relatives au serveur local, normalement `http://127.0.0.1:8765`. L’espace vierge de l’exemple utilise le port 8766. Il ne s’agit pas de routes publiques promises sur yuclaw.ca."
+        ],
+        [
+          "p",
+          "Le paquet YUCLAW comprend aussi des commandes d’accès aux éléments publics et d’intégration. Consultez `yuclaw --help` pour votre version ; leurs services requis sont distincts de ce parcours local hors ligne."
+        ]
+      ]
+    },
+    {
+      "title": "20 Termes et documentation source",
+      "blocks": [
+        [
+          "table",
+          [
+            "Terme",
+            "Sens dans ce guide"
+          ],
+          [
+            [
+              "Source / engagement / résultat",
+              "Le passage probant ; l’engagement typé ; le résultat déclaré séparément."
+            ],
+            [
+              "Gel / amendement",
+              "Préserver une version ; ajouter une version liée sans l’écraser."
+            ],
+            [
+              "Empreinte",
+              "Hachage identifiant des octets ou un contenu canonique ; l’égalité ne prouve pas la vérité."
+            ],
+            [
+              "Journal",
+              "Suite ordonnée d’actions liées par empreintes. L’accès au système de fichiers dépasse les rôles du navigateur."
+            ],
+            [
+              "Rétrospectif",
+              "Consigné avec recul ou connaissance ultérieure, sans contemporanéité établie."
+            ],
+            [
+              "Adjudication",
+              "Jugement enregistré avec règle, éléments et motif, distinct du calcul automatique."
+            ],
+            [
+              "Principal",
+              "Compte local doté de capacités, pas une personne réelle vérifiée."
+            ],
+            [
+              "Racine source",
+              "Identité documentaire utilisée pour regrouper ; un alias n’ajoute pas de corroboration indépendante."
+            ],
+            [
+              "Paquet de recherche ou de modules",
+              "Formats et périmètres différents ; la vérification doit correspondre au type."
+            ],
+            [
+              "Point de contrôle",
+              "Position signée du journal permettant de tester sa continuité, pas de le restaurer."
+            ]
+          ],
+          [
+            4.6,
+            12.7
+          ]
+        ],
+        [
+          "h",
+          "Références versionnées"
+        ],
+        [
+          "p",
+          "Instructions fondées sur le guide opérateur, la CLI, le dictionnaire de données et les modules 8.0.1, recoupés avec l’exemple fictif fourni. La page d’accueil publique a été consultée pendant la préparation. Ce manuel n’est ni une nouvelle version du logiciel ni un audit de sécurité indépendant."
+        ],
+        [
+          "link",
+          "YUCLAW 8.0.1 sur PyPI",
+          "https://pypi.org/project/yuclaw/8.0.1/"
+        ],
+        [
+          "link",
+          "Publication YUCLAW 8.0.1",
+          "https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.1"
+        ],
+        [
+          "link",
+          "Guide opérateur versionné",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/resources/OPERATOR_GUIDE.md"
+        ],
+        [
+          "link",
+          "Dictionnaire de données et fiche du jeu de données",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/resources/DATA_DICTIONARY.md"
+        ],
+        [
+          "link",
+          "Code de la CLI et des modules",
+          "https://github.com/YuClawLab/yuclaw-brain/tree/v8.0.1/v8/workbench"
+        ],
+        [
+          "link",
+          "Contrat de validation des lots SHD",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/modules/shield_worker.py"
+        ],
+        [
+          "link",
+          "Contrat de configuration EVO",
+          "https://github.com/YuClawLab/yuclaw-brain/blob/v8.0.1/v8/workbench/modules/evolution.py"
+        ],
+        [
+          "p",
+          "Pour signaler un problème, indiquez version, système, action exacte, résultat attendu, résultat obtenu et reproduction fictive minimale. Retirez secrets et éléments privés. Utilisez le canal disponible du dépôt ; l’envoi reste une action distincte que vous choisissez."
+        ],
+        [
+          "p",
+          "Les deux éditions couvrent la même version et gardent des exemples de commandes exécutables identiques. Elles ne modifient ni règles, ni permissions, ni enregistrements du logiciel."
+        ]
+      ]
+    }
+  ]
+}

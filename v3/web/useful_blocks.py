@@ -360,6 +360,8 @@ SUNCOR_TRACE_HREF = "trace_su.html"
 # ONE source for the landing generator and for tools/yuclaw_stage_static_surfaces.py
 # (which restages these static fragments on a candidate site without the database).
 GUIDE_URL = "https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md"
+USER_GUIDE_DIR = "https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8"     # the v8 user guides (EN + FR; software 8.0.1); the PDFs are also served by Pages under guide/v8/
+USER_GUIDE_LABEL = "User Guide / Guide utilisateur (v8 \u00b7 8.0.1)"
 GUIDE_MARK, WORKBENCH_MARK, FOOTER_GUIDE_MARK = "STATIC:guide-links", "STATIC:workbench-card", "STATIC:footer-guides"
 
 
@@ -372,6 +374,9 @@ def guide_links_html() -> str:
     (release-manifest rule B4) and are labelled as history with their real scope and length. Until 8.0.0 this line offered the
     version-5-era PDF as "the" guide and called its 12 pages six."""
     return _marked(GUIDE_MARK, '<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
+                   f'\U0001F4D6 {USER_GUIDE_LABEL}: <a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">English</a> '
+                   '(<a href="guide/v8/YUCLAW-v8-User-Guide-EN.pdf">PDF</a>) \u00b7 '
+                   f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Fran\u00e7ais</a> (<a href="guide/v8/YUCLAW-v8-User-Guide-FR.pdf">PDF</a>) \u00b7 '
                    f'<a href="{GUIDE_URL}">\U0001F4D6 Current guide (v8, English)</a>'
                    ' — install, workspaces, roles, the local workbench, the four modules, export and verification; the same text ships in the package '
                    '(<code>yuclaw workbench guide</code>). · <a href="tour.html">5-minute command-line tour</a> · '
@@ -380,7 +385,9 @@ def guide_links_html() -> str:
 
 
 def footer_guide_links_html() -> str:
-    return _marked(FOOTER_GUIDE_MARK, f'<a href="{GUIDE_URL}">\U0001F4D6 Guide (current, v8)</a> \u00b7\n      '
+    return _marked(FOOTER_GUIDE_MARK, f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">\U0001F4D6 User Guide (v8, EN)</a> \u00b7\n      '
+                   f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Guide utilisateur (v8, FR)</a> \u00b7\n      '
+                   f'<a href="{GUIDE_URL}">\U0001F4D6 Guide (current, v8)</a> \u00b7\n      '
                    '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (version 5 era, historical)</a> \u00b7\n      '
                    '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF ant\u00e9rieur (version 5, historique)</a> \u00b7')
 
