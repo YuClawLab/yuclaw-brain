@@ -1,18 +1,43 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 7 of 7 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PEP --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 9 of 9 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PEP --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": -0.4555,
+  "c1": -0.392,
   "c2": 0.0,
-  "c3": -0.5278001,
+  "c3": -0.34528533,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.17780203,
+  "c7": 0.0,
   "c8": 0.0,
-  "c9": -0.2
+  "c9": 0.06666667
  },
  "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 9, 2026 PepsiCo, Inc.",
+   "corrected_sha256": "3304778ac8c6a551810b384c4de0ca1f3307946e079df45837e6c11b1e5b78d7",
+   "correction_id": "exc-a9213d76bff37071",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0000077476-26-000037",
+    "excerpt_sha256": "654caf0368307d21f34d0498c078786f41964dbbfa95d9fabccd71bc3c91e0ee",
+    "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+    "ticker": "PEP"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0000077476-26-000037",
+    "char_offset": 1390,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/77476/000007747626000037/pep-20260709.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
   {
    "corrected_at": "2026-09-15T04:05:28.838883+00:00",
    "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 9, 2026 PepsiCo, Inc.",
@@ -65,16 +90,36 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 72,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 73,
   "events_90d": 4,
   "metric_id": "ecs",
-  "recency_days": 4.2,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 2.0,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000077476-26-000050",
+   "available_as_of": "2026-10-07T15:57:44-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 &#160; FORM 8-K CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "filing_date": "2026-10-07",
+   "protocol_id": null,
+   "source_hash": "a9213d76bff370717ed498f99498ed59b94228e278fe299d5e80eb834a597c7d",
+   "ticker": "PEP"
+  },
+  {
+   "accession_number": "0000077476-26-000048",
+   "available_as_of": "2026-10-07T15:52:53-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "0000077476 pep:ZeroPointSevenFivePercentNotesDue2027Member 2025-12-28 2026-09-05",
+   "filing_date": "2026-10-07",
+   "protocol_id": null,
+   "source_hash": "45a56fc0c1dcdc2746f3a5e0c80d7620753704f96f675e8445fc005e4353c87c",
+   "ticker": "PEP"
+  },
   {
    "accession_number": "0000077476-26-000042",
    "available_as_of": "2026-09-17T11:10:36-06:00",
@@ -147,25 +192,81 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:06.364623-06:00",
+  "corpus_end": "2026-10-09T17:01:18.355356-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-17T11:10:36-06:00",
+  "newest_returned_available_as_of": "2026-10-07T15:57:44-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-03-03T14:20:32-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 7,
+  "returned": 9,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PEP in the declared corpus",
-  "total_available": 7
+  "total_available": 9
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/PEP.history.json",
- "label": "WEAKENING",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-21",
    "label": "WEAKENING"
@@ -228,62 +329,6 @@
   },
   {
    "date": "2026-08-31",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-11",
    "label": "WATCH"
   }
  ],
@@ -392,10 +437,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0384,
+ "score": 0.01,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "PEP",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

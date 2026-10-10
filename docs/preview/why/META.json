@@ -1,14 +1,14 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 172 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay META --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 193 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay META --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": 1.0,
+  "c1": 0.497,
   "c2": 0.0,
-  "c3": 0.68398255,
+  "c3": -0.09678143,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": 0.4365641,
+  "c7": 0.34300065,
   "c8": 0.0,
   "c9": 0.0
  },
@@ -37,44 +37,229 @@
     "verified_against": "primary document (EDGAR)"
    },
    "status": "CONFIRMED"
-  },
-  {
-   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
-   "corrected_excerpt": "On May 4, 2026, Meta Platforms, Inc. (the \u201cCompany\u201d) completed an offering of $3,000,000,000 aggregate principal amount of its 4.550% Sen",
-   "corrected_sha256": "df20d3f44493bf5fd4fc6a96fba40f48317f0cab37db760f276014f80d47321b",
-   "correction_id": "exc-6ab0a7cfe8a442d6",
-   "kind": "display_correction",
-   "original": {
-    "accession_number": "0001193125-26-204128",
-    "excerpt_sha256": "98800bee119396dc2c2c14c2a2d648f84f6389599ef5e110b52f9962a269a883",
-    "source_hash": "6ab0a7cfe8a442d6df60d58b67ed6b961531cfa170625a1cd7371f7d4ee903ac",
-    "ticker": "META"
-   },
-   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
-   "rule_ids": [
-    "entity_inside"
-   ],
-   "source_location": {
-    "accession_number": "0001193125-26-204128",
-    "char_offset": 2046,
-    "document_url": "https://www.sec.gov/Archives/edgar/data/1326801/000119312526204128/d134616d8k.htm",
-    "verified_against": "primary document (EDGAR)"
-   },
-   "status": "CORRECTED"
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 84,
-  "events_90d": 92,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 86,
+  "events_90d": 113,
   "metric_id": "ecs",
-  "recency_days": 4.0,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 2.0,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000950103-26-015324",
+   "available_as_of": "2026-10-07T16:15:43.107473-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 82 shares @ $728.08 on 2026-10-05 ($59,703)",
+   "filing_date": "2026-10-07",
+   "protocol_id": null,
+   "source_hash": "ccffb6a5f6987de4a59a1e1767e55cff267bfb35e0e6f183fd23337bd6ff69eb",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-015324",
+   "available_as_of": "2026-10-07T16:15:43.107473-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 946 shares @ $728.08 on 2026-10-05 ($688,764)",
+   "filing_date": "2026-10-07",
+   "protocol_id": null,
+   "source_hash": "c150d414f007a4408ac2b0b2e9b133bd3d17c5c25adbbab8edd8088c71d9a3f1",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-015324",
+   "available_as_of": "2026-10-07T16:15:43.107473-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 408 shares @ $728.08 on 2026-10-05 ($297,057)",
+   "filing_date": "2026-10-07",
+   "protocol_id": null,
+   "source_hash": "404ef20dd7398239f0ad2bc8e24ffebc2bea69733ded0e47b1c5889a85b2585d",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014886",
+   "available_as_of": "2026-09-30T16:28:24.432349-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 946 shares @ $750.42 on 2026-09-28 ($709,902)",
+   "filing_date": "2026-09-30",
+   "protocol_id": null,
+   "source_hash": "eef45625346ffb0792dbb2a4f3267184216da1484a6a1f808d41d050f182d166",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014886",
+   "available_as_of": "2026-09-30T16:28:24.432349-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 408 shares @ $748.91 on 2026-09-28 ($305,555)",
+   "filing_date": "2026-09-30",
+   "protocol_id": null,
+   "source_hash": "33ccc4ab694123b0967811b39f7b064a07d92c11ec75f4845a172280f90191d4",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014886",
+   "available_as_of": "2026-09-30T16:28:24.432349-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 82 shares @ $748.91 on 2026-09-28 ($61,411)",
+   "filing_date": "2026-09-30",
+   "protocol_id": null,
+   "source_hash": "164368991695d444dd073a6f88eef314c105e36a1bfc3ff72f8885aa34c1c2d2",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 4324 shares @ $778.36 on 2026-09-24 ($3,365,609)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "f9494fc1a5819fb92f2800331b26292e40adf01501102381b3d67bc958dd649f",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 476 shares @ $779.28 on 2026-09-24 ($370,936)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "ee5066385c4a64d09c5e1486cb1715a439cb5d15aa0373f5a41adf468559f4a5",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 600 shares @ $779.33 on 2026-09-24 ($467,596)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "eca19d887dab7d1b46b96823057464990443db8c83ba20e67a6b30f971531d4f",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 4810 shares @ $777.66 on 2026-09-24 ($3,740,552)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "ea1c7c85e726849fdea18d8b39e6dc4ec8fe5e17015c2921210176c2d4363577",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 1769 shares @ $776.56 on 2026-09-24 ($1,373,739)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "9a5e8e09a3866861b0f6bb72b2ea970eb5ee85cff4457e87a46801f962869beb",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 2516 shares @ $776.56 on 2026-09-24 ($1,953,816)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "8f53e2065d3574a6cecfec4fb040ccf6a1efe31590659926df0edb43ec5873c9",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 2093 shares @ $775.39 on 2026-09-24 ($1,622,893)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "511b4c2b5796f79a7684c20ddff4318cf47910dc8e8429331a22c6b851f90bd3",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 2146 shares @ $778.40 on 2026-09-24 ($1,670,445)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "42b628b67bb4764d4074081c7459e5b6c38d9876cee9bfaf222b063fba8fd9ca",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 7607 shares @ $777.63 on 2026-09-24 ($5,915,434)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "369ddf0c02acb1af674d109f482e8ff5f1036e6b66fbd088f77593b0f93af80d",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014647",
+   "available_as_of": "2026-09-28T17:51:50.960242-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Zuckerberg Mark S 1133 shares @ $775.32 on 2026-09-24 ($878,436)",
+   "filing_date": "2026-09-28",
+   "protocol_id": null,
+   "source_hash": "12dc40c6075f2adcefe3ddd2f6b7e24c0fcb86bed066018fea943d7f72b1812d",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014402",
+   "available_as_of": "2026-09-23T16:18:19.007725-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 82 shares @ $680.27 on 2026-09-21 ($55,782)",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "ca94ca59afc100e3d7ffee4fc9f7e5857cbb95afd1e4f75c7b3dad825b3fa739",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014402",
+   "available_as_of": "2026-09-23T16:18:19.007725-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 946 shares @ $680.27 on 2026-09-21 ($643,535)",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "7f5b7dc8c681365f4531594d3a4009eb2fc6b14314773b12b06c30d5a1afce54",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014402",
+   "available_as_of": "2026-09-23T16:18:19.007725-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Olivan Javier S 408 shares @ $680.27 on 2026-09-21 ($277,550)",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "3ec216a705335a8d23f5c1d0efcd4e9584b4b9060c8feef1e8fde1609f65fc23",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014403",
+   "available_as_of": "2026-09-23T16:18:18.345159-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Cox Christopher K S 20000 shares @ $700.50 on 2026-09-21 ($14,009,932)",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "64791f875b5a34dfbac0b69eb7ea8cba2613224a49cf5414fed0357acab9e390",
+   "ticker": "META"
+  },
+  {
+   "accession_number": "0000950103-26-014403",
+   "available_as_of": "2026-09-23T16:18:18.345159-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Cox Christopher K S 20000 shares @ $725.02 on 2026-09-21 ($14,500,328)",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "06b15f182373886acc13ca276214063ba79601c7904fd6058ad71227c6dc5ddd",
+   "ticker": "META"
+  },
   {
    "accession_number": "0000950103-26-014140",
    "available_as_of": "2026-09-17T16:22:08.714122-06:00",
@@ -864,238 +1049,84 @@
    "protocol_id": null,
    "source_hash": "788592e90760b3c3994d4f4d2281207f22c775f16616171c44ac05a7f5430011",
    "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-009164",
-   "available_as_of": "2026-07-16T01:25:39.097801-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 140 shares @ $600.00 on 2026-06-15 ($84,000)",
-   "filing_date": "2026-06-17",
-   "protocol_id": null,
-   "source_hash": "522ae55ca49a985ad261038ea528dbb7555ac4dcf64448b653dc415b52b34c71",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010283",
-   "available_as_of": "2026-07-16T01:25:32.121033-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "KIMMITT ROBERT M S 500 shares @ $607.75 on 2026-07-01 ($303,875)",
-   "filing_date": "2026-07-06",
-   "protocol_id": null,
-   "source_hash": "0279ce1e01477a5009fd47145b04de830e5f05061b736e630b592a2c55c4d6ce",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 376 shares @ $602.63 on 2026-07-06 ($226,588)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "ebb3f64f9bd1ecc9bf1596b9e06f1b52c14bcf6e948c63f458a847ce45ae443a",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 174 shares @ $602.75 on 2026-07-06 ($104,878)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "d0b72634d31ceb4e5653e674e4ded25515c241e9f93678cc04d2ec90457a99bd",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 314 shares @ $601.44 on 2026-07-06 ($188,853)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "a081faffd206e50a1945abf1bb58481b8fb471af8c8bf288a3ef282a5c75157f",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 736 shares @ $600.32 on 2026-07-06 ($441,835)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "9eae3011341750d847db4fe709b41041a4d9683c6edf148120360267a4dd0a3d",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 2076 shares @ $600.40 on 2026-07-06 ($1,246,437)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "7b3eab83b553600f10bf01f214968272adc542dcebe7582c0961841351fb0373",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 816 shares @ $601.45 on 2026-07-06 ($490,779)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "59c919626ffeb6548dae89e2762cbcdac3b6003df3339543253407d5e58d3b5a",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 246 shares @ $600.00 on 2026-07-06 ($147,600)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "4782f51071d29656eee22be2d6b234108891cd29e655c8734ffd8c0c975d7ba5",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010417",
-   "available_as_of": "2026-07-16T01:25:31.597644-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 171 shares @ $600.00 on 2026-07-06 ($102,600)",
-   "filing_date": "2026-07-08",
-   "protocol_id": null,
-   "source_hash": "446a80ba57f9ff0182ab575a11a60c3aefd9cdf633e6a68a3f7c93b3d7b51b42",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010694",
-   "available_as_of": "2026-07-16T01:19:46.784218-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 408 shares @ $661.13 on 2026-07-13 ($269,741)",
-   "filing_date": "2026-07-15",
-   "protocol_id": null,
-   "source_hash": "e33976495b7ddf4191f14604ba79da568d9352bcb5a61876239f183f63334fb7",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010694",
-   "available_as_of": "2026-07-16T01:19:46.784218-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 82 shares @ $661.13 on 2026-07-13 ($54,213)",
-   "filing_date": "2026-07-15",
-   "protocol_id": null,
-   "source_hash": "8d17aa8ef5aeba8836789b90091a480257cd8eb046d2cadf4d610d5eea7373a3",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-010694",
-   "available_as_of": "2026-07-16T01:19:46.784218-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 1534 shares @ $660.98 on 2026-07-13 ($1,013,936)",
-   "filing_date": "2026-07-15",
-   "protocol_id": null,
-   "source_hash": "05e3b20280599758460143e54d8d1e10a50d27ba8f0c46f62a4c8f8905825137",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0001645590-26-000045",
-   "available_as_of": "2026-05-14T05:28:34-06:00",
-   "evidence_type": "M_AND_A_CLOSE",
-   "excerpt": "CASCADE d1 via HPE\u2192META(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
-   "filing_date": "2026-05-14",
-   "protocol_id": null,
-   "source_hash": "699e39193d0e534b4a84758063d2c0993598c3f41e1b835c023c3cf29ce0411e",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-007167",
-   "available_as_of": "2026-05-13T16:12:42-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 408 shares @ $604.57 on 2026-05-11 ($246,665)",
-   "filing_date": "2026-05-13",
-   "protocol_id": null,
-   "source_hash": "ba2700e797f4c3452da64746f6c12d5621196b4b21a48de58c05effd90d60ba3",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-007167",
-   "available_as_of": "2026-05-13T16:12:42-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 926 shares @ $604.57 on 2026-05-11 ($559,832)",
-   "filing_date": "2026-05-13",
-   "protocol_id": null,
-   "source_hash": "6123cf23bccde96a5c8e01065ce1827c493f80c2cfcd151eadd9e1a849cbc9a1",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-006913",
-   "available_as_of": "2026-05-06T16:48:14-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 408 shares @ $607.74 on 2026-05-04 ($247,958)",
-   "filing_date": "2026-05-06",
-   "protocol_id": null,
-   "source_hash": "fbc07cfb19f6b07b14f395a9efb2138c0dd13cb6b81135d9e855cbe395f08726",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-006913",
-   "available_as_of": "2026-05-06T16:48:14-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 926 shares @ $607.74 on 2026-05-04 ($562,767)",
-   "filing_date": "2026-05-06",
-   "protocol_id": null,
-   "source_hash": "de65a30db01d24e34ccb696393f586a35659a981577dd3d1e42fac71e502aa24",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-006874",
-   "available_as_of": "2026-05-05T16:20:13-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Alford Peggy S 409 shares @ $614.53 on 2026-05-01 ($251,343)",
-   "filing_date": "2026-05-05",
-   "protocol_id": null,
-   "source_hash": "07fa01db9fbf4955721f4831b979b21c32627137d63152f11cde870dfb873119",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0001193125-26-204128",
-   "available_as_of": "2026-05-04T14:36:02-06:00",
-   "evidence_type": "OTHER_MATERIAL",
-   "excerpt": "On May&#160;4, 2026, Meta Platforms, Inc. (the &#8220;Company&#8221;) completed an offering of $3,000,000,000 aggregate principal amount of its 4.550% Sen",
-   "filing_date": "2026-05-04",
-   "protocol_id": null,
-   "source_hash": "6ab0a7cfe8a442d6df60d58b67ed6b961531cfa170625a1cd7371f7d4ee903ac",
-   "ticker": "META"
-  },
-  {
-   "accession_number": "0000950103-26-006451",
-   "available_as_of": "2026-04-29T17:32:34-06:00",
-   "evidence_type": "INSIDER_SELL",
-   "excerpt": "Olivan Javier S 408 shares @ $670.84 on 2026-04-27 ($273,703)",
-   "filing_date": "2026-04-29",
-   "protocol_id": null,
-   "source_hash": "dcebc1552a317477eee70fa72d8b1a9525b9bbea0e361e2874cc78810c329e39",
-   "ticker": "META"
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:06.270877-06:00",
+  "corpus_end": "2026-10-09T17:01:18.251086-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-17T16:22:08.714122-06:00",
+  "newest_returned_available_as_of": "2026-10-07T16:15:43.107473-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
-  "oldest_returned_available_as_of": "2026-04-29T17:32:34-06:00",
+  "oldest_returned_available_as_of": "2026-07-16T01:25:39.097801-06:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "returned": 100,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for META in the declared corpus",
-  "total_available": 172
+  "total_available": 193
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/META.history.json",
- "label": "NEUTRAL",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-09-21",
    "label": "NEUTRAL"
@@ -1159,62 +1190,6 @@
   {
    "date": "2026-08-31",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-11",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -1322,10 +1297,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2627,
+ "score": 0.0719,
  "threshold_band": {
-  "ceiling": 0.4,
-  "floor": 0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "META",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

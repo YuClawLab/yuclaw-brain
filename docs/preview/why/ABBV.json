@@ -1,18 +1,43 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 13 of 13 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 14 of 14 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ABBV --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": -0.028,
+  "c1": 0.5095,
   "c2": 0.0,
-  "c3": -0.055366542,
+  "c3": 0.44076717,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.14135051,
+  "c7": 0.0071105044,
   "c8": 0.0,
   "c9": 0.23809524
  },
  "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001551152-26-000021",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "ticker": "ABBV"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "char_offset": 606,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
   {
    "corrected_at": null,
    "corrected_excerpt": null,
@@ -90,16 +115,26 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 73,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 81,
   "events_90d": 7,
   "metric_id": "ecs",
-  "recency_days": 18.6,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 4.1,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001551152-26-000030",
+   "available_as_of": "2026-10-05T14:07:45-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160;_____________________________________________________ FORM&#160; 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d)&#160;of the Securities Exchange Act of 1934",
+   "filing_date": "2026-10-05",
+   "protocol_id": null,
+   "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+   "ticker": "ABBV"
+  },
   {
    "accession_number": "0001104659-26-104940",
    "available_as_of": "2026-09-03T02:47:46-06:00",
@@ -232,25 +267,81 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:05.832251-06:00",
+  "corpus_end": "2026-10-09T17:01:17.782433-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-03T02:47:46-06:00",
+  "newest_returned_available_as_of": "2026-10-05T14:07:45-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 13,
+  "returned": 14,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "total_available": 13
+  "total_available": 14
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/ABBV.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-21",
    "label": "WATCH"
@@ -313,62 +404,6 @@
   },
   {
    "date": "2026-08-31",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-11",
    "label": "WATCH"
   }
  ],
@@ -477,10 +512,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1776,
+ "score": 0.3489,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "ABBV",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

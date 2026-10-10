@@ -1,18 +1,43 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 19 of 19 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 21 of 21 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay V --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": 0.0605,
+  "c1": 0.246,
   "c2": 0.0,
-  "c3": -0.1641228,
+  "c3": 0.12413373,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.21931484,
-  "c7": -0.0642085,
+  "c6": -0.21277133,
+  "c7": -0.080043554,
   "c8": 0.0,
-  "c9": -0.5
+  "c9": -0.28
  },
  "corrections": [
+  {
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): June 24, 2026 VISA INC.",
+   "corrected_sha256": "a778b7162c4f7e50d4ec0829600298b8a9a996e19cb67d29a8d47a179c64b21b",
+   "correction_id": "exc-687c528c8e739755",
+   "kind": "display_correction",
+   "original": {
+    "accession_number": "0001403161-26-000086",
+    "excerpt_sha256": "8e10f7016a9f1d3cf63cd689e31e50be3cb07ecc11387c30f08dce4159080f3e",
+    "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+    "ticker": "V"
+   },
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "source_location": {
+    "accession_number": "0001403161-26-000086",
+    "char_offset": 434,
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000086/v-20260624.htm",
+    "verified_against": "primary document (EDGAR)"
+   },
+   "status": "CORRECTED"
+  },
   {
    "corrected_at": null,
    "corrected_excerpt": null,
@@ -115,16 +140,36 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 80,
-  "events_90d": 15,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 82,
+  "events_90d": 16,
   "metric_id": "ecs",
-  "recency_days": 11.1,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 7.1,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001403161-26-000123",
+   "available_as_of": "2026-10-02T14:11:57.879140-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "MCINERNEY RYAN S 5875 shares @ $358.81 on 2026-10-01 ($2,108,009)",
+   "filing_date": "2026-10-02",
+   "protocol_id": null,
+   "source_hash": "e4e90210e340b5b55d59af7999fa73ec40613971b4b61abea6d929253e6deef1",
+   "ticker": "V"
+  },
+  {
+   "accession_number": "0001403161-26-000121",
+   "available_as_of": "2026-09-23T10:06:31-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "filing_date": "2026-09-23",
+   "protocol_id": null,
+   "source_hash": "687c528c8e73975529dbc1157f5b90150190d39387ed7a4c93ae8a3155eadd27",
+   "ticker": "V"
+  },
   {
    "accession_number": "0001403161-26-000118",
    "available_as_of": "2026-09-10T14:07:12.341986-06:00",
@@ -317,25 +362,81 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:06.540871-06:00",
+  "corpus_end": "2026-10-09T17:01:18.550571-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-10T14:07:12.341986-06:00",
+  "newest_returned_available_as_of": "2026-10-02T14:11:57.879140-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 19,
+  "returned": 21,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "total_available": 19
+  "total_available": 21
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/V.history.json",
- "label": "WEAKENING",
+ "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-21",
    "label": "WEAKENING"
@@ -399,62 +500,6 @@
   {
    "date": "2026-08-31",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-11",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -568,10 +613,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0078,
+ "score": 0.1052,
  "threshold_band": {
-  "ceiling": 0.0,
-  "floor": -0.2
+  "ceiling": 0.2,
+  "floor": 0.0
  },
  "ticker": "V",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

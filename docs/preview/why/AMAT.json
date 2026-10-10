@@ -1,16 +1,16 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 43 of 43 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 44 of 44 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": -0.322,
+  "c1": 0.407,
   "c2": 0.0,
-  "c3": 0.68398255,
+  "c3": -0.09678143,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.14882806,
-  "c7": -0.11938298,
+  "c6": -0.058084127,
+  "c7": 0.35085422,
   "c8": 0.0,
-  "c9": 0.0
+  "c9": -0.13333334
  },
  "corrections": [
   {
@@ -40,16 +40,26 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 86,
-  "events_90d": 37,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 91,
+  "events_90d": 38,
   "metric_id": "ecs",
-  "recency_days": 11.1,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 4.0,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
   "type_diversity": 3
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001628280-26-065097",
+   "available_as_of": "2026-10-05T16:01:44.979885-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Sanders Adam S 725 shares @ $544.56 on 2026-10-02 ($394,807)",
+   "filing_date": "2026-10-05",
+   "protocol_id": null,
+   "source_hash": "30bcf8257a167f0b440ea74c4abfe4bfbd258b72900570a2786ddd43ce9ebe33",
+   "ticker": "AMAT"
+  },
   {
    "accession_number": "0001628280-26-061408",
    "available_as_of": "2026-09-10T15:10:26.418938-06:00",
@@ -482,25 +492,81 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:05.859477-06:00",
+  "corpus_end": "2026-10-09T17:01:17.817271-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-10T15:10:26.418938-06:00",
+  "newest_returned_available_as_of": "2026-10-05T16:01:44.979885-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-02-18T16:48:35-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 43,
+  "returned": 44,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMAT in the declared corpus",
-  "total_available": 43
+  "total_available": 44
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/AMAT.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "WATCH"
+  },
   {
    "date": "2026-09-21",
    "label": "WATCH"
@@ -563,62 +629,6 @@
   },
   {
    "date": "2026-08-31",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-11",
    "label": "WEAKENING"
   }
  ],
@@ -727,10 +737,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1251,
+ "score": 0.2196,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "AMAT",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"

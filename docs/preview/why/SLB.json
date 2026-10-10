@@ -1,16 +1,16 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 16 of 16 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
- "build_id": "why-2026-09-21T230305",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 17 of 17 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay SLB --date D",
+ "build_id": "why-2026-10-09T230117",
  "components": {
-  "c1": -0.167,
+  "c1": -0.71,
   "c2": 0.0,
-  "c3": -0.85134494,
+  "c3": -0.45984918,
   "c4": 0.6,
-  "c5": -0.7291323,
-  "c6": -0.0893447,
-  "c7": -0.009249531,
+  "c5": -0.3434445,
+  "c6": 0.0,
+  "c7": -0.057247855,
   "c8": 0.0,
-  "c9": 0.2
+  "c9": 0.26666668
  },
  "corrections": [
   {
@@ -66,16 +66,26 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-09-21T23:02:58.565756+00:00",
-  "ecs": 72,
-  "events_90d": 7,
+  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "ecs": 91,
+  "events_90d": 8,
   "metric_id": "ecs",
-  "recency_days": 20.1,
-  "source_sha256": "064749602e9f5e6676439a202a7ab934d4c75041ea4be3d9bc7d41425a78b4ee",
+  "recency_days": 3.1,
+  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
   "substrate_active": 1,
-  "type_diversity": 2
+  "type_diversity": 3
  },
  "evidence_objects": [
+  {
+   "accession_number": "0001193125-26-415617",
+   "available_as_of": "2026-10-06T14:26:37-06:00",
+   "evidence_type": "EXEC_CHANGE",
+   "excerpt": "Item&#8201;5.02 Departure of Directors or Certain Officers; Election o",
+   "filing_date": "2026-10-06",
+   "protocol_id": null,
+   "source_hash": "7821356c0156ac9bc249301d236903299a2d30d213baf7bb885528aaed252cc0",
+   "ticker": "SLB"
+  },
   {
    "accession_number": "0000087347-26-000122",
    "available_as_of": "2026-09-01T15:36:20.085472-06:00",
@@ -238,25 +248,81 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-09-21T230305",
+  "build_id": "why-2026-10-09T230117",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-09-21T17:03:06.449791-06:00",
+  "corpus_end": "2026-10-09T17:01:18.447278-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-01T15:36:20.085472-06:00",
+  "newest_returned_available_as_of": "2026-10-06T14:26:37-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 16,
+  "returned": 17,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for SLB in the declared corpus",
-  "total_available": 16
+  "total_available": 17
  },
- "generated": "2026-09-21T23:03:05.813042+00:00",
+ "generated": "2026-10-09T23:01:17.765257+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/SLB.history.json",
  "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-10-09",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-10-08",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-07",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-10-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-10-02",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-10-01",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-30",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-29",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-28",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-25",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-09-24",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-23",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-09-22",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-09-21",
    "label": "WEAKENING"
@@ -319,62 +385,6 @@
   },
   {
    "date": "2026-08-31",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-27",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-26",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-08-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-21",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-20",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-19",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-18",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-17",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-14",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-08-13",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-12",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-11",
    "label": "BULLISH"
   }
  ],
@@ -483,7 +493,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": -0.0819,
+ "score": -0.0768,
  "threshold_band": {
   "ceiling": 0.0,
   "floor": -0.2

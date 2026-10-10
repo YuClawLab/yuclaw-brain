@@ -86,16 +86,16 @@ replay mismatch) · 2 = usage or validation error · 3 = environment unsupported
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript produced from the release-candidate wheel `yuclaw-8.0.1-py3-none-any.whl` (yuclaw 8.0.1, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
+Transcript produced from the release-candidate wheel `yuclaw-9.0.0-py3-none-any.whl` (yuclaw 9.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 
 ```text
 $ yuclaw --version
-yuclaw 8.0.1
+yuclaw 9.0.0
 [exit 0]
 ```
 ```text
 $ yuclaw --help
-yuclaw 8.0.1 — evidence-first financial research CLI (research and education only; not investment advice)
+yuclaw 9.0.0 — evidence-first financial research CLI (research and education only; not investment advice)
 
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
@@ -174,17 +174,17 @@ $ yuclaw check-claim --accession 0001045810-26-000019
 ```
 ```text
 $ yuclaw replay-lab docs/replay/lab_replay_bundle.json
-Replay bundle built 2026-09-21 23:02 UTC from source commit 46832138a830
-Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ f30042a24acb
+Replay bundle built 2026-10-09 23:01 UTC from source commit abfbbc8f47ef
+Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 0803e778baf3
 
-[forward] 83 rebalance periods, window ['2026-05-20', '2026-09-21']
-  spread top_minus_bottom   mean/period -0.00222  t=-0.73 p=0.467  n=83  CI95=(-0.00821,+0.00371)
-  spread top_minus_universe mean/period -0.00159  t=-0.94 p=0.351  n=83  CI95=(-0.00487,+0.00170)
-  IC  1d  mean -0.0003  NW-t=-0.01 (lag 0) p=0.992  T=88 dates
-  IC  5d  mean -0.0316  NW-t=-0.81 (lag 4) p=0.420  T=84 dates
-  IC 20d  mean -0.0442  NW-t=-1.30 (lag 19) p=0.198  T=68 dates
-  market-model vs_universe  alpha/period -0.00172 beta +1.12  t(alpha)=-1.00 p=0.320  R2=0.258  n=83
-  market-model vs_spy       alpha/period -0.00113 beta +1.00  t(alpha)=-0.65 p=0.521  R2=0.210  n=83
+[forward] 97 rebalance periods, window ['2026-05-20', '2026-10-09']
+  spread top_minus_bottom   mean/period -0.00293  t=-1.10 p=0.275  n=97  CI95=(-0.00822,+0.00229)
+  spread top_minus_universe mean/period -0.00194  t=-1.29 p=0.200  n=97  CI95=(-0.00489,+0.00092)
+  IC  1d  mean -0.0085  NW-t=-0.35 (lag 0) p=0.730  T=102 dates
+  IC  5d  mean -0.0395  NW-t=-1.14 (lag 4) p=0.256  T=98 dates
+  IC 20d  mean -0.0681  NW-t=-1.94 (lag 19) p=0.056  T=83 dates
+  market-model vs_universe  alpha/period -0.00206 beta +1.15  t(alpha)=-1.36 p=0.177  R2=0.265  n=97
+  market-model vs_spy       alpha/period -0.00169 beta +1.02  t(alpha)=-1.08 p=0.281  R2=0.214  n=97
 
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
   spread top_minus_bottom   mean/period +0.00553  t=+0.41 p=0.686  n=13  CI95=(-0.01937,+0.03079)
@@ -266,13 +266,13 @@ stays closed and everything else works. No independent security review has been 
 benefit is PENDING. What has and has not been demonstrated is on the [evidence scoreboard](https://yuclaw.ca/evidence_scoreboard.html),
 under its own as-of time.
 
-## v9 — research briefs with traceable AI assistance (candidate, not released)
+## v9 — research briefs with traceable AI assistance
 
 A **brief** is research text whose individual sentences can be inspected for the exact source passage, the frozen v8 claim
 version and the registered calculation they rest on, how the text was produced, what changed since, and which checks could
 or could not be run. It runs locally beside the v8 workbench; the complete journey needs no API key, model download or hosted
 service. Five independent answers per statement — byte integrity, recorded origin, issuer trust, substantive support, time
-scope — are never merged into a score. 9.0 is a candidate on the branch `codex/v9-integration`; nothing is published.
+scope — are never merged into a score. Introduced in 9.0.0 (see the CHANGELOG for the release state).
 
 ```bash
 yuclaw workbench brief example --workspace ~/yuclaw-workspaces/research   # fictional fixture → the acceptance brief (EN; --lang fr)
@@ -370,9 +370,9 @@ mismatch.
 
 ## What is in 6.0.x
 
-Current package version: `8.0.1` — the release notes, the frozen wheel and sdist
+Current package version: `9.0.0` — the release notes, the frozen wheel and sdist
 SHA-256 hashes, and the shipped-object list live on the
-[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v8.0.1)
+[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v9.0.0)
 ([all releases](https://github.com/YuClawLab/yuclaw-brain/releases) ·
 [CHANGELOG](CHANGELOG.md)). 7.0.0 adds the receipt engine, the offline verification packet, structured claim-support limits, local challenges and document-use receipts, and the Evidence Scoreboard. Scientific states are unchanged: Gate #15 stays MANUAL_REVIEW, Phase 6 N_eff stays PENDING, C6 stays DESCRIPTIVE, U350 stays shadow-only. Zero outsider receipts exist at release; the scoreboard shows that as a real zero.
 

@@ -2,7 +2,7 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
-## [9.0.0] — unreleased candidate (branch codex/v9-integration; nothing published)
+## [9.0.0] — 2026-10-10
 
 Research & education only. Not investment advice.
 
