@@ -143,6 +143,10 @@ def import_record(ws: Workspace, sc: Sidecar, *, kind: str, data: bytes, actor: 
             bound = bind_report(sc, rec)
         elif kind == "receipt":
             bound = bind_receipt(sc, rec)
+        if prior is None:
+            dup = next((r for r in sc.records(KINDS[kind]) if r["payload"]["record"]["record_id"] == rec["record_id"]), None)
+            if dup is not None:
+                raise ContractError(f"{kind} refused: this exact record ({rec['record_id'][:16]}…) was already imported as sidecar record {dup['seq']} under op_id {dup['op_id']!r}; importing it again adds no observation (a retry repeats the same op_id)")
         roots = trust_roots(sc)
         sig = evaluate_signature(kind, rec, roots)
         if rec["origin"] == "issuer_signed" and sig["signature"] != "VALID":

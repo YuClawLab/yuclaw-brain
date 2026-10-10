@@ -48,7 +48,8 @@ def _read(path: str) -> bytes:
     return data
 
 
-def _show_text(view: dict, statement: int | None) -> str:
+def _show_text(view: dict, statement: int | None, lang: str = "en") -> str:
+    from v9.brief.i18n import t
     L = [f"{view['brief_id']} {view['version_id']} ({view['language']}) — {view['title']}", f"status {view['status']} · {view.get('evidence_label')} · snapshot {view['snapshot_digest'][:16]}… at v8 tip {view['v8_tip_at_snapshot'][:12]}…"]
     if view["status"] != "COMPLETE":
         L.append(f"INCOMPLETE: missing objects {view['missing_objects']}"); return "\n".join(L)
@@ -63,7 +64,7 @@ def _show_text(view: dict, statement: int | None) -> str:
     s = reducer.statement_text(view, statement)
     ss = s["substantive_support"]
     L += ["", f"Statement {s['n']} [{s['start']}:{s['end']}] role {s['role']}", f"  {s['text']}", "",
-          "1. Sources and calculations", f"   support: {ss['status']} — {ss['label']}", f"   method: {ss['method']} · assessor: {ss['assessor']}", f"   limits: {ss['limits']}", f"   claim: {ss['claim']}"]
+          f"1. {t('area.sources', lang)}", f"   support: {ss['status']} — {ss['label']}", f"   method: {ss['method']} · assessor: {ss['assessor']}", f"   limits: {ss['limits']}", f"   claim: {ss['claim']}"]
     for e in ss["evidence"]:
         L.append(f"   evidence: {e['kind']} {e['ref']} {(e.get('digest') or '')[:16]}")
     if ss["calculation"]:
@@ -75,13 +76,13 @@ def _show_text(view: dict, statement: int | None) -> str:
     if ss["protected"]:
         L.append("   protected slots: " + ", ".join(f"{p['slot']}={p['value']!r}" for p in ss["protected"]))
     ro = s["recorded_origin"]
-    L += ["", "2. How the text was produced", f"   transform: {ro['transform']} · implementation: {ro['implementation']} · renderer: {ro['renderer']} · template: {ro['template']} · deterministic: {ro['deterministic']}",
+    L += ["", f"2. {t('area.origin', lang)}", f"   transform: {ro['transform']} · implementation: {ro['implementation']} · renderer: {ro['renderer']} · template: {ro['template']} · deterministic: {ro['deterministic']}",
           f"   receipts: {ro['receipts']}", f"   explicit unknowns: {ro['unknown']}"]
-    L += ["", "3. Changes", f"   {s['time_scope']['label']} · snapshot {s['time_scope']['snapshot_digest'][:16]}… · review items: {s['time_scope']['review_items']}"]
+    L += ["", f"3. {t('area.changes', lang)}", f"   {s['time_scope']['label']} · snapshot {s['time_scope']['snapshot_digest'][:16]}… · review items: {s['time_scope']['review_items']}"]
     for it in view["review_items"]:
         if it["item_id"] in s["time_scope"]["review_items"]:
             L.append(f"   - {it['reason']} ({it['dependency']}): {it['detail']}")
-    L += ["", "4. Checks", f"   byte integrity: {s['byte_integrity']}", f"   issuer trust: {s['issuer_trust']['receipts'] + s['issuer_trust']['reports'] or 'no signed record on these bytes'}",
+    L += ["", f"4. {t('area.checks', lang)}", f"   byte integrity: {s['byte_integrity']}", f"   issuer trust: {s['issuer_trust']['receipts'] + s['issuer_trust']['reports'] or 'no signed record on these bytes'}",
           f"   detector: {s['detector']}", f"   {view['dimension_note']}"]
     return "\n".join(L)
 
@@ -178,11 +179,17 @@ def _run(a) -> int:
         _out(m, a.json, None if a.json else f"operations {m['operations']} · attempts {m['attempts']} · retries {m['retries']} · outcomes {m['outcomes']} · durations {m['durations']} · missing {m['missing']}\nper task: {json.dumps(m['per_task'], indent=1)}\ndefinitions: {json.dumps(m['definitions'], indent=1)}")
         return 0
     if a.cmd == "list":
-        ws, sc = _open(a.workspace); L = reducer.list_briefs(ws, sc)
+        try:
+            ws, sc = _open(a.workspace, create=False)
+        except StoreIntegrityError as exc:
+            if exc.code != "E_NO_SIDECAR":
+                raise
+            _out([], a.json, "no brief yet (this workspace has no v9 sidecar; a read never creates one)"); return 0
+        L = reducer.list_briefs(ws, sc)
         _out(L, a.json, "\n".join(f"{b['brief_id']}  {b['latest']:4} {','.join(b['languages']):6} {'complete' if b['complete'] else 'INCOMPLETE'}  {b['title']}  claims {b['claim_ids']}" for b in L) or "no brief yet"); return 0
     if a.cmd == "show":
-        ws, sc = _open(a.workspace); view = reducer.brief_view(ws, sc, a.brief, a.version, a.lang)
-        _out(view if a.statement is None else reducer.statement_text(view, a.statement), a.json, _show_text(view, a.statement))
+        ws, sc = _open(a.workspace, create=False); view = reducer.brief_view(ws, sc, a.brief, a.version, a.lang)
+        _out(view if a.statement is None else reducer.statement_text(view, a.statement), a.json, _show_text(view, a.statement, a.lang))
         if a.strict and (view["status"] != "COMPLETE" or view["open_review_items"] or any(s["substantive_support"]["status"] not in ("SUPPORTED", "ATTRIBUTED") for s in view["statements"])):
             return 1
         return 0
@@ -194,7 +201,7 @@ def _run(a) -> int:
         with sc.operation("create_brief", op_id, actor=a.actor) as op:
             rec, dup = compose.create_from_template(ws, sc, claim_id=cid, sections=list(templates.TEMPLATES), lang=a.lang, op_id=op_id, actor=a.actor, brief_id=a.brief_id); op.committed(rec, dup)
         view = reducer.brief_view(ws, sc, rec["brief_id"], None, a.lang)
-        _out({"claim_id": cid, "brief_id": rec["brief_id"], "version_id": rec["payload"]["version_id"], "duplicate": dup, "view": view}, a.json, f"claim {cid}\n" + _show_text(view, None)); return 0
+        _out({"claim_id": cid, "brief_id": rec["brief_id"], "version_id": rec["payload"]["version_id"], "duplicate": dup, "view": view}, a.json, f"claim {cid}\n" + _show_text(view, None, a.lang)); return 0
     if a.cmd == "create":
         with sc.operation("create_brief", op_id, actor=a.actor) as op:
             rec, dup = compose.create_from_template(ws, sc, claim_id=a.claim, sections=[s.strip() for s in a.sections.split(",") if s.strip()], lang=a.lang, op_id=op_id, actor=a.actor, brief_id=a.brief_id); op.committed(rec, dup)
@@ -231,7 +238,8 @@ def _run(a) -> int:
                 rec, dup = compose.resolve_review(ws, sc, brief_id=a.brief, item_id=a.resolve, disposition=a.disposition, note=a.note, actor=a.actor, op_id=op_id); op.committed(rec, dup)
         view = reducer.brief_view(ws, sc, a.brief, a.version, a.lang)
         items = view["review_items"]
-        _out(items, a.json, "\n".join(f"{'resolved' if it['resolved'] else 'OPEN    '} {it['item_id']} {it['reason']} ({it['dependency'] or 'this version'}): {it['detail']}" for it in items) or "no review items"); return 0
+        words = {"open": "OUVERT  " if a.lang == "fr" else "OPEN    ", "resolved": "résolu  " if a.lang == "fr" else "resolved", "this": "cette version" if a.lang == "fr" else "this version", "none": "aucun élément à examiner" if a.lang == "fr" else "no review items"}
+        _out(items, a.json, "\n".join(f"{words['resolved'] if it['resolved'] else words['open']} {it['item_id']} {it['reason']} ({it['dependency'] or words['this']}): {it['detail']}" for it in items) or words["none"]); return 0
     if a.cmd == "import-record":
         raw = _read(a.raw_response) if a.raw_response else None
         with sc.operation(f"import_{a.kind}", op_id, actor=a.actor) as op:

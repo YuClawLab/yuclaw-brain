@@ -42,6 +42,16 @@ def _sc(h) -> Sidecar:
     return Sidecar(h.server.ws)
 
 
+def _sc_read(h) -> Sidecar | None:
+    """A read never creates the sidecar: None when this workspace has no v9 records yet."""
+    try:
+        return Sidecar(h.server.ws, create=False)
+    except StoreIntegrityError as exc:
+        if exc.code == "E_NO_SIDECAR":
+            return None
+        raise
+
+
 def _writer(h) -> dict | None:
     """The principal allowed to create records here: when principals are configured, one holding admin, review or submit;
     before that, the single owner of the workspace (as for the v8 steps)."""
@@ -83,8 +93,8 @@ def _status_cls(s: str) -> str:
 
 # ------------------------------------------------------------------ pages
 def page_index(h, q: dict) -> str:
-    lang = _lang(q); ws = h.server.ws; sc = _sc(h)
-    briefs = reducer.list_briefs(ws, sc)
+    lang = _lang(q); ws = h.server.ws; sc = _sc_read(h)
+    briefs = reducer.list_briefs(ws, sc) if sc is not None else []
     rows = [[f'<a href="/brief/{esc(b["brief_id"])}{_ql(lang)}">{esc(b["brief_id"])}</a>', esc(b["title"]), esc(b["latest"]), esc(", ".join(b["languages"])), esc(", ".join(b["claim_ids"])),
              _chip("COMPLETE" if b["complete"] else "INCOMPLETE", "ok" if b["complete"] else "bad")] for b in briefs]
     claims = sorted(ws.claim_ids(ws.load()["events"]))
@@ -213,7 +223,7 @@ def page_verify(h, q: dict, result: dict | None) -> str:
 
 
 def page_trust(h, q: dict) -> str:
-    lang = _lang(q); sc = _sc(h); roots = reports.trust_roots(sc)
+    lang = _lang(q); sc = _sc_read(h); roots = reports.trust_roots(sc) if sc is not None else {}
     rows = [[esc(k), esc(r["label"]), esc(r.get("issuer") or ""), _chip("REVOKED" if r["revoked"] else "ACTIVE", "bad" if r["revoked"] else "ok"), esc(r["enrolled_at"]),
              "" if r["revoked"] else form(h, "/brief/trust/revoke", f'<input type="hidden" name="key_id" value="{esc(k)}"><input type="hidden" name="ui_lang" value="{lang}">' + field(h, t("form.reason", lang), "reason"), "Revoke")] for k, r in roots.items()]
     enroll = form(h, "/brief/trust/enroll", f'<input type="hidden" name="ui_lang" value="{lang}">' + field(h, "public key (base64, raw Ed25519)", "public_key") + field(h, "label", "label") + field(h, "issuer", "issuer"), "Enroll")
