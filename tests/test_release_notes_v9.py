@@ -59,6 +59,11 @@ class TestNotesV9(unittest.TestCase):
         for f in n9.EXPECTED_FEATURES:
             self.assertIn(n9.FEATURE_LINES[f], text)
         self.assertIn(n9.DETECTOR_NOTE, text); self.assertIn(n9.V8_NOTE, text); self.assertIn("Candidate evidence (candidate abc123def456)", text)
+        self.assertIn("clean install NOT RUN.", text)
+        m2 = dict(m, clean_install_failed_checks=["readme_transcript_exact"]); m2["evidence"] = dict(m2["evidence"], clean_install="FAIL")
+        t2 = n9.feature_account(m2); self.assertIn("clean install FAIL on that pre-freeze candidate (readme transcript exact); the final pair is verified", t2)
+        live = n9.capability_matrix()                                                                   # the tree's newest record: V9-003 names its one failing clean-install check
+        self.assertEqual(live["clean_install_failed_checks"], ["readme_transcript_exact"]); self.assertNotIn("generated", n9.feature_account(live).lower())
         self.assertEqual(n9.check_correspondence(text, None, matrix=m), ["no release-policy record"])
         self.assertEqual(gen.gate15_result("9.0.0", True, None)[0], "MANUAL_REVIEW"); self.assertEqual(gen.gate15_result("9.0.0", False, None)[0], "RED")
 

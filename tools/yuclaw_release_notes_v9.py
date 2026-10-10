@@ -46,6 +46,15 @@ def latest_scorecard(root: Path | None = None) -> Path | None:
     return recs[-1] / "scorecard.json" if recs else None
 
 
+def clean_install_failed_checks(scorecard_path: Path | None) -> list[str]:
+    """The failing check names of the candidate's clean-install record beside its scorecard (empty when none or all passed):
+    the public line names what failed on the pre-freeze candidate instead of a bare FAIL."""
+    if scorecard_path is None or not (scorecard_path.parent / "clean_install_packaging.json").exists():
+        return []
+    rec = _load(scorecard_path.parent / "clean_install_packaging.json")
+    return sorted({k for v in (rec.get("installs") or {}).values() for k, ok in (v.get("checks") or {}).items() if not ok})
+
+
 def gate15_decision(path: Path | None = None) -> dict | None:
     """The owner's recorded 9.x decision (with its sha256) or None. A record claiming anything but REMOVED_BY_OWNER is refused;
     the 8.x record is never read here: a version-specific exception does not travel into v9."""
@@ -63,15 +72,16 @@ def gate15_decision(path: Path | None = None) -> dict | None:
 def capability_matrix(*, scope: dict | None = None, scorecard: dict | None = None) -> dict:
     if scope is None:
         scope = _load(SCOPE_PATH)
+    failed_clean = []
     if scorecard is None:
-        p = latest_scorecard(); scorecard = _load(p) if p else {}
+        p = latest_scorecard(); scorecard = _load(p) if p else {}; failed_clean = clean_install_failed_checks(p)
     enabled = list(scope["enabled_features"])
     if tuple(enabled) != EXPECTED_FEATURES:
         raise ValueError(f"enabled features {enabled} are not the five mandatory features {EXPECTED_FEATURES}")
     runs = scorecard.get("runs") or {}
     demonstrated = bool(runs) and all(r.get("result") == "PASS" for r in runs.values()) and scorecard.get("ui_inspection") == "PASS" and scorecard.get("selftest") == "PASS"
     return {"version": scope["release"], "enabled": enabled, "names": scope["feature_names"], "deferred": list(scope["deferred"]), "excluded": list(scope["excluded_by_owner"]),
-            "backup_disclosure": scope["backup_policy"]["disclosure"], "fixture": scope["fixture"], "evidence": scorecard, "demonstrated": demonstrated, "candidate": scorecard.get("candidate")}
+            "backup_disclosure": scope["backup_policy"]["disclosure"], "fixture": scope["fixture"], "evidence": scorecard, "demonstrated": demonstrated, "candidate": scorecard.get("candidate"), "clean_install_failed_checks": failed_clean}
 
 
 def feature_account(m: dict) -> str:
@@ -79,7 +89,9 @@ def feature_account(m: dict) -> str:
     ev = m["evidence"]; runs = ev.get("runs") or {}
     if runs:
         summary = "; ".join(f"{k}: {v.get('passed')}/{v.get('total')} {v.get('result')}" for k, v in runs.items())
-        lines.append((f"- Candidate evidence (candidate {str(m['candidate'] or 'unrecorded')[:12]}): {summary}; installed self-check {ev.get('selftest')}; browser inspection {ev.get('ui_inspection')}; clean install {ev.get('clean_install', 'NOT RUN')}."
+        failed = m.get("clean_install_failed_checks") or []
+        clean = f"clean install {ev.get('clean_install', 'NOT RUN')}" + (f" on that pre-freeze candidate ({', '.join(x.replace('_', ' ') for x in failed)}); the final pair is verified from fresh installs before any publication" if failed else "")
+        lines.append((f"- Candidate evidence (candidate {str(m['candidate'] or 'unrecorded')[:12]}): {summary}; installed self-check {ev.get('selftest')}; browser inspection {ev.get('ui_inspection')}; {clean}."
                       if m["demonstrated"] else f"- Candidate evidence INCOMPLETE (candidate {str(m['candidate'] or 'unrecorded')[:12]}): {summary}; installed self-check {ev.get('selftest')}; browser inspection {ev.get('ui_inspection')}."))
     else:
         lines.append("- Candidate evidence INCOMPLETE: no scorecard recorded.")

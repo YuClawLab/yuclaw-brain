@@ -598,9 +598,12 @@ def main() -> int:
     repl_line = (f"- Replication · public log {len(repl['replications'])} entry, bundle sha256 "
                  f"{repl_entry['bundle'].split('sha256 ')[1].split(' ')[0] if repl_entry else '—'} · "
                  f"{repl_entry['replication_result'] if repl_entry else 'PENDING_EXTERNAL'} — {g16['disclosure']}")
-    g15_public = ("user-comprehension study: not run — requirement removed by the owner for v8 releases (not a pass)" if g15_dec
+    g15_exception = bool(g15_dec) and g15_dec.get("status") == "EXCEPTION_ACCEPTED"          # 9.0.0: the owner's explicit one-version exception, never the v8 removal
+    g15_public = ("user-comprehension study: not run — explicit owner exception for 9.0.0 only, MANUAL_REVIEW (not a pass)" if g15_exception
+                  else "user-comprehension study: not run — requirement removed by the owner for v8 releases (not a pass)" if g15_dec
                   else "full-form user-comprehension study NOT YET")
-    g15_not_in_release = ("user-comprehension study: not run; requirement removed by the owner for v8 releases (not a pass; human benefit PENDING)" if g15_dec
+    g15_not_in_release = ("user-comprehension study: not run; explicit owner exception for 9.0.0 only — MANUAL_REVIEW (not a pass; human benefit PENDING; not carried to any later release)" if g15_exception
+                          else "user-comprehension study: not run; requirement removed by the owner for v8 releases (not a pass; human benefit PENDING)" if g15_dec
                           else "user-comprehension study NOT YET")
     public = f"""Research & education only. Not investment advice.
 
