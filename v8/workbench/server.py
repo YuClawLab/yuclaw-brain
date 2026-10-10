@@ -166,6 +166,35 @@ class Multipart:
             raise ContractError("multipart body is truncated (closing delimiter missing)")
 
 
+def load_fixture(ws, fid: str, fixtures_dir=None) -> str:
+    """Load one packaged fictional fixture into a workspace exactly as the Workspace page does (the same op_ids, so loading is
+    idempotent) and return the claim id it lands under: `<fixture claim id>--<fixture_id>`. Shared by the page and by v9."""
+    fixtures_dir = Path(fixtures_dir or FIXTURES_DIR)
+    p = fixtures_dir / f"{fid}.json"
+    if not _FIXTURE.match(fid) or not p.is_file():
+        raise ContractError("fixture: unknown fixture id")
+    fx = json.loads(p.read_text()); rec = schema.from_fixture(fx)
+    cid = f"{rec['claim']['claim_id']}--{fx['fixture_id']}"          # fixtures share one claim id; each variant loads under its own suffixed id
+    rec["claim"] = dict(rec["claim"], claim_id=cid)
+    for r in rec["revisions"]:
+        if r.get("claim"):
+            r["claim"] = dict(r["claim"], claim_id=cid)
+    tag = f"fx:{fx['fixture_id']}"
+    ws.register_source(rec["claim"]["source"], op_id=f"{tag}:src:{rec['claim']['source']['accession']}", observed_at=rec["claim"]["source"]["available_as_of"])
+    ws.freeze_claim(rec["claim"], op_id=f"{tag}:freeze", observed_at=rec["claim"]["source"]["available_as_of"])
+    for r in rec["revisions"]:
+        ws.register_source(r["source"], op_id=f"{tag}:src:{r['source']['accession']}", observed_at=r["source"]["available_as_of"])
+        if r["type"] == "WITHDRAWN":
+            ws.amend_claim(cid, "WITHDRAWN", changes=None, reason=r["reason"] or "withdrawn per fixture", source=r["source"], op_id=f"{tag}:{r['revision_id']}", observed_at=r["source"]["available_as_of"])
+        else:
+            c = r["claim"]; ws.amend_claim(cid, r["type"], changes={"range": c["range"], "basis": c["basis"], "unit": c["unit"], "currency": c["currency"], "statement": c["statement"], "fiscal_period": c["fiscal_period"], "metric": c["metric"]},
+                                          reason=r["reason"] or f"{r['type']} per fixture", source=r["source"], op_id=f"{tag}:{r['revision_id']}", observed_at=r["source"]["available_as_of"])
+    if rec["outcome"]:
+        ws.register_source(rec["outcome"]["source"], op_id=f"{tag}:src:{rec['outcome']['source']['accession']}", observed_at=rec["outcome"]["source"]["available_as_of"])
+        ws.record_outcome(cid, rec["outcome"], op_id=f"{tag}:outcome", observed_at=rec["outcome"]["source"]["available_as_of"])
+    return cid
+
+
 class WorkbenchServer(ThreadingHTTPServer):
     daemon_threads = True
     allow_reuse_address = True
@@ -1083,29 +1112,7 @@ class Handler(BaseHTTPRequestHandler):
         return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}?built={r['export_id']}#export")
 
     def post_fixture(self, form, op_id):
-        fid = form.get("fixture", "")
-        p = self.server.fixtures_dir / f"{fid}.json"
-        if not _FIXTURE.match(fid) or not p.is_file():
-            raise ContractError("fixture: unknown fixture id")
-        fx = json.loads(p.read_text()); rec = schema.from_fixture(fx); ws = self.server.ws
-        cid = f"{rec['claim']['claim_id']}--{fx['fixture_id']}"          # fixtures share one claim id; each variant loads under its own suffixed id
-        rec["claim"] = dict(rec["claim"], claim_id=cid)
-        for r in rec["revisions"]:
-            if r.get("claim"):
-                r["claim"] = dict(r["claim"], claim_id=cid)
-        tag = f"fx:{fx['fixture_id']}"
-        ws.register_source(rec["claim"]["source"], op_id=f"{tag}:src:{rec['claim']['source']['accession']}", observed_at=rec["claim"]["source"]["available_as_of"])
-        ws.freeze_claim(rec["claim"], op_id=f"{tag}:freeze", observed_at=rec["claim"]["source"]["available_as_of"])
-        for r in rec["revisions"]:
-            ws.register_source(r["source"], op_id=f"{tag}:src:{r['source']['accession']}", observed_at=r["source"]["available_as_of"])
-            if r["type"] == "WITHDRAWN":
-                ws.amend_claim(cid, "WITHDRAWN", changes=None, reason=r["reason"] or "withdrawn per fixture", source=r["source"], op_id=f"{tag}:{r['revision_id']}", observed_at=r["source"]["available_as_of"])
-            else:
-                c = r["claim"]; ws.amend_claim(cid, r["type"], changes={"range": c["range"], "basis": c["basis"], "unit": c["unit"], "currency": c["currency"], "statement": c["statement"], "fiscal_period": c["fiscal_period"], "metric": c["metric"]},
-                                              reason=r["reason"] or f"{r['type']} per fixture", source=r["source"], op_id=f"{tag}:{r['revision_id']}", observed_at=r["source"]["available_as_of"])
-        if rec["outcome"]:
-            ws.register_source(rec["outcome"]["source"], op_id=f"{tag}:src:{rec['outcome']['source']['accession']}", observed_at=rec["outcome"]["source"]["available_as_of"])
-            ws.record_outcome(cid, rec["outcome"], op_id=f"{tag}:outcome", observed_at=rec["outcome"]["source"]["available_as_of"])
+        cid = load_fixture(self.server.ws, form.get("fixture", ""), self.server.fixtures_dir)
         return self._redirect(f"/claim/{urllib.parse.quote(cid, safe='')}")
 
     def post_verify(self):

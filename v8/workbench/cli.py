@@ -1,4 +1,4 @@
-"""python3 -m v8.workbench … (also reachable as `yuclaw workbench …`, the same function) — serve | verify-export | build-export | status | recover | guide | principals | modules | selftest"""
+"""python3 -m v8.workbench … (also reachable as `yuclaw workbench …`, the same function) — serve | verify-export | build-export | status | recover | guide | principals | modules | selftest | brief (v9)"""
 from __future__ import annotations
 
 import argparse
@@ -28,6 +28,10 @@ OVERVIEW = ("The v8 workbench is a LOCAL application (it binds 127.0.0.1 only; y
 
 
 def main(argv=None, prog: str = "python3 -m v8.workbench") -> int:
+    argv = sys.argv[1:] if argv is None else list(argv)
+    if argv and argv[0] == "brief":                       # v9: the whole remainder belongs to the brief parser (its own --help, its own exit codes)
+        from v9.brief.cli import main as brief_main
+        return brief_main(argv[1:], prog=f"{prog} brief")
     ap = argparse.ArgumentParser(prog=prog, description="YUCLAW v8 source-to-export workbench (local, loopback only). " + NOT_ADVICE, epilog=OVERVIEW)
     sub = ap.add_subparsers(dest="cmd", required=True)
     s = sub.add_parser("serve", help="serve one workspace at http://127.0.0.1:PORT"); s.add_argument("--workspace", required=True); s.add_argument("--port", type=int, default=8765); s.add_argument("--fixtures", default=None); s.add_argument("--candidate", default=None)
@@ -40,6 +44,8 @@ def main(argv=None, prog: str = "python3 -m v8.workbench") -> int:
     pr.add_argument("action", choices=("init", "add", "rotate", "revoke", "list")); pr.add_argument("--workspace", required=True); pr.add_argument("--id", default="owner")
     pr.add_argument("--caps", default="admin", help="comma separated: admin,submit,review,practice"); pr.add_argument("--expires", default=None); pr.add_argument("--reason", default="revoked by the host operator")
     ms = sub.add_parser("modules", help="module status: principals configured, isolation capability (live probe), budgets and configuration"); ms.add_argument("--workspace", required=True)
+    br = sub.add_parser("brief", help="v9 research briefs with traceable AI assistance: create · show · edit · translate · export · verify … (try: brief example --workspace DIR)", add_help=False)
+    br.add_argument("rest", nargs=argparse.REMAINDER)
     st = sub.add_parser("selftest", help="bounded self-check from the installed package, in a temporary fictional workspace (no pytest, no repository files needed)")
     st.add_argument("--json", action="store_true"); st.add_argument("--require-isolation", action="store_true", help="fail (never skip) when no isolation backend passes its live probe — for a supported Linux host")
     st.add_argument("--dev", action="store_true", help="developers: run the repository's workbench unit tests instead (needs a checkout with tests/ and pytest)")

@@ -21,7 +21,8 @@ from v8.workbench.modules.core import ModuleError
 
 ENVELOPE = "yuclaw.signed-record/1"
 DOMAIN = b"YUCLAW-SIGNED-RECORD/1"
-RECORD_TYPES = ("shd.approval", "shd.evaluation", "prc.checkpoint", "module.export")
+RECORD_TYPES = ("shd.approval", "shd.evaluation", "prc.checkpoint", "module.export",
+                "brief.generation_receipt", "brief.detection_report", "brief.calibration_record", "brief.packet")   # v9: additive; a v8 signature still verifies for its own type only
 
 
 def available() -> bool:
