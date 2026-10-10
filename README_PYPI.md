@@ -216,6 +216,8 @@ research classifications, not buy/sell recommendations.
 [XLK Evidence Lens](https://yuclaw.ca/xlk_evidence.html) ·
 [Canada Resources](https://yuclaw.ca/canada_resources.html) ·
 [Forward Tracking](https://yuclaw.ca/validation.html) ·
+[📖 User Guide (v8 · 8.0.1, EN)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) ·
+[📖 Guide utilisateur (v8 · 8.0.1, FR)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md) ·
 [📖 Current guide (v8)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) ·
 [Earlier PDF guide (version 5 era, historical)](https://yuclaw.ca/YUCLAW_User_Guide.pdf) ·
 [Guide PDF antérieur (FR, historique)](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) ·
@@ -256,13 +258,33 @@ yuclaw workbench guide                                     # the full guide, fro
 ```
 
 In the browser: load a fictional example on the Workspace page, follow its seven steps, build the export, then verify it in a second,
-fresh workspace ([current guide](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md)). `python -m v8.workbench …` is the same program.
+fresh workspace ([current guide](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md); full manuals: [User Guide (EN)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) · [Guide utilisateur (FR)](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md)). `python -m v8.workbench …` is the same program.
 
 **Status: experimental, local, owner-operated.** Including the modules activates nothing — no role, approval, budget or study exists
 until you set one up. Protected SHD admission needs **Linux with Landlock**; on macOS, Windows or a kernel without it that one route
 stays closed and everything else works. No independent security review has been performed, and there has been no user study: human
 benefit is PENDING. What has and has not been demonstrated is on the [evidence scoreboard](https://yuclaw.ca/evidence_scoreboard.html),
 under its own as-of time.
+
+## v9 — research briefs with traceable AI assistance (candidate, not released)
+
+A **brief** is research text whose individual sentences can be inspected for the exact source passage, the frozen v8 claim
+version and the registered calculation they rest on, how the text was produced, what changed since, and which checks could
+or could not be run. It runs locally beside the v8 workbench; the complete journey needs no API key, model download or hosted
+service. Five independent answers per statement — byte integrity, recorded origin, issuer trust, substantive support, time
+scope — are never merged into a score. 9.0 is a candidate on the branch `codex/v9-integration`; nothing is published.
+
+```bash
+yuclaw workbench brief example --workspace ~/yuclaw-workspaces/research   # fictional fixture → the acceptance brief (EN; --lang fr)
+yuclaw workbench brief show --workspace ~/yuclaw-workspaces/research --brief brf-… --statement 3
+yuclaw workbench brief export --workspace ~/yuclaw-workspaces/research --brief brf-…
+yuclaw workbench brief verify ~/yuclaw-workspaces/research/exports/bpk-….zip --workspace ~/yuclaw-workspaces/fresh
+yuclaw workbench brief guide --lang fr                                     # packaged quick start, both languages
+```
+
+Guides, schema reference and migration note: [docs/guide/v9/](docs/guide/v9/README.md). Deferred, not in 9.0: live provider
+generation/detection connectors, a local entropy-controlled sampler, detector calibration campaigns. Detector reports can be
+imported and inspected; NOT_DETECTED never proves human authorship, and no detector score is a percentage of AI-written text.
 
 ## v7 — check → reproduce → challenge → document use (outsider verification, offline)
 
@@ -494,7 +516,8 @@ look-ahead-free record.
 | **Validation Lab** | [validation_lab.html](https://yuclaw.ca/validation_lab.html) |
 | **SMH Evidence Lens** | [etf_evidence.html](https://yuclaw.ca/etf_evidence.html) |
 | **XLK Evidence Lens** | [xlk_evidence.html](https://yuclaw.ca/xlk_evidence.html) |
-| **📖 Guides** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the version 5 command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
+| **📖 User Guide · Guide utilisateur** | v8 (software 8.0.1, guide edition 1.1, 21 pages each): [English](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.md) ([PDF](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.pdf) · [DOCX](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-EN.docx)) · [Français](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.md) ([PDF](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.pdf) · [DOCX](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/YUCLAW-v8-User-Guide-FR.docx)) · [bilingual index](https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v8/README.md) |
+| **📖 Operator guide** | [Current guide (v8, English)](https://github.com/YuClawLab/yuclaw-brain/blob/main/v8/workbench/resources/OPERATOR_GUIDE.md) — also `yuclaw workbench guide` · earlier PDF guides (written for the version 5 command line, 12 pages, historical, not updated for v8): [EN](https://yuclaw.ca/YUCLAW_User_Guide.pdf) · [FR](https://yuclaw.ca/YUCLAW_Guide_Utilisateur_FR.pdf) |
 | **Twitter** | [@Vincenzhang2026](https://twitter.com/Vincenzhang2026) |
 | **GitHub** | [YuClawLab](https://github.com/YuClawLab) |
 | **PyPI** | [pypi.org/project/yuclaw](https://pypi.org/project/yuclaw) |

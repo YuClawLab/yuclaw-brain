@@ -273,6 +273,26 @@ stays closed and everything else works. No independent security review has been 
 benefit is PENDING. What has and has not been demonstrated is on the [evidence scoreboard](https://yuclaw.ca/evidence_scoreboard.html),
 under its own as-of time.
 
+## v9 — research briefs with traceable AI assistance (candidate, not released)
+
+A **brief** is research text whose individual sentences can be inspected for the exact source passage, the frozen v8 claim
+version and the registered calculation they rest on, how the text was produced, what changed since, and which checks could
+or could not be run. It runs locally beside the v8 workbench; the complete journey needs no API key, model download or hosted
+service. Five independent answers per statement — byte integrity, recorded origin, issuer trust, substantive support, time
+scope — are never merged into a score. 9.0 is a candidate on the branch `codex/v9-integration`; nothing is published.
+
+```bash
+yuclaw workbench brief example --workspace ~/yuclaw-workspaces/research   # fictional fixture → the acceptance brief (EN; --lang fr)
+yuclaw workbench brief show --workspace ~/yuclaw-workspaces/research --brief brf-… --statement 3
+yuclaw workbench brief export --workspace ~/yuclaw-workspaces/research --brief brf-…
+yuclaw workbench brief verify ~/yuclaw-workspaces/research/exports/bpk-….zip --workspace ~/yuclaw-workspaces/fresh
+yuclaw workbench brief guide --lang fr                                     # packaged quick start, both languages
+```
+
+Guides, schema reference and migration note: [docs/guide/v9/](docs/guide/v9/README.md). Deferred, not in 9.0: live provider
+generation/detection connectors, a local entropy-controlled sampler, detector calibration campaigns. Detector reports can be
+imported and inspected; NOT_DETECTED never proves human authorship, and no detector score is a percentage of AI-written text.
+
 ## v7 — check → reproduce → challenge → document use (outsider verification, offline)
 
 Everything below runs without an account or a hosted service. The outputs below were recorded on the 7.0.0 candidate checkout (operator runs; **not** outsider receipts); the commands are unchanged since, and the manifest digest is different for every later tree.
