@@ -2,6 +2,29 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [9.0.0] — unreleased candidate (branch codex/v9-integration; nothing published)
+
+Research & education only. Not investment advice.
+
+### YUCLAW 9.0.0 — candidate: research briefs with traceable AI assistance
+
+- Briefs: short financial research texts whose individual sentences are bound to an exact UTF-8 byte span, to the specific frozen v8 claim version they use and to a registered calculation; six statement roles describe function, not correctness. `yuclaw workbench brief …` (the same program as `python -m v9.brief …`) and the `/brief` pages of the local workbench.
+- Sentence inspector: four areas — sources and calculations, how the text was produced, changes, checks — and five independent answers per statement (byte integrity · recorded origin · issuer trust · substantive support · time scope) that are never merged into a score or a confidence percentage.
+- Composer: deterministic bilingual templates (guidance change; numerical comparison; explicitly unresolved interpretation) over a stable, digest-identified evidence snapshot; typed amounts, currencies, units, bases, periods, accessions and quotations are protected slots; the relative change is the one rounded quantity and states its rule (−5 / 115 × 100 ≈ −4.35 %, half-even, two decimals, exact fraction kept). Imported drafts are a separate route; their sentences start unassessed and are linked by byte offsets.
+- Revisions: every save is a new immutable version with a parent, a transform record and its own bindings; a parent's checks never carry to a child's bytes; a changed protected fact invalidates the statement and opens a review item; a deterministic re-rendering binds the other language fully, an entered translation records its provenance and is never sent to a provider. A corrected v8 source or an amended claim marks exactly the statements whose recorded dependencies reference it; earlier exports stay valid historical snapshots.
+- Provenance records: generation receipts, detector reports and calibration records are imported through a bounded parser, bound to the exact text view and tested span, and kept apart by origin (operator assertion · connector observation · issuer-signed statement). Signature validity, issuer trust under this workspace's own roots, revocation and payload binding are four separate answers; execution, signal (only when COMPLETED) and calibration applicability (only in an enrolled, authenticated record's own scope) are separate dimensions.
+- Portable verification: a readable static HTML brief (no script), JSON records and a `yuclaw.brief-packet/1` zip that a fresh workspace verifies without the author's database, declaring every check separately (VERIFIED · FAILED · NOT_RECOMPUTABLE · REPORT_ONLY · UNSUPPORTED · NOT_APPLICABLE); rights filtering withholds excerpts, prompts and raw responses whose disclosure is not established; keys, secrets and local paths never travel.
+- Measurements: operation identifiers, attempts, retries, outcomes and durations are recorded from the first run with their definitions and missingness; a methods/limitations appendix is generated from the records.
+- Storage: a separate append-only, digest-chained sidecar (`<workspace>/v9/brief.jsonl`) bound to the v8 workspace identity and journal tip; the v8 journal is never appended to; an 8.0.1 client reads its own data with the sidecar present and untouched. Same operation-identifier rules as v8 (a retry with the same content is a duplicate, different content is a conflict); torn-tail recovery; bounded orphan cleanup that never deletes a referenced object.
+- Documentation: packaged bilingual quick start (`yuclaw workbench brief guide --lang fr`), guides, schema reference and migration note under `docs/guide/v9/`; installed self-check `yuclaw workbench brief selftest`.
+
+### Not changed, not claimed
+- The v8 workbench, its four modules, its export format and the v8 user guides are unchanged. The v8 command surface is unchanged.
+- No live provider generation or detection connector, no local entropy-controlled sampler, no detector calibration campaign: explicitly later work. No watermark endpoint, parameter, key or provider capability is invented. Primary evidence is never altered to carry a watermark.
+- NOT_DETECTED never proves human authorship; a detector score is not a percentage of AI-written text; a watermark establishes neither identity, ownership, responsibility nor factual accuracy; a local receipt is neither legal compliance nor an independently anchored timestamp.
+- Gate #15 (user comprehension test): no owner decision is recorded for 9.x; the 8.x removal does not carry over; no study was run, none is scheduled. Human benefit: PENDING. No independent security review. Backup functionality is cancelled: no backup, restore or drill exists.
+- Fictional fixture only in every example and test; no market data, no historical research record.
+
 ## [8.0.1] — 2026-09-21
 
 Research & education only. Not investment advice.
