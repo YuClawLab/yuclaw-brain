@@ -1,0 +1,27 @@
+{
+ "schema_version": "1.0",
+ "product": "YUCLAW",
+ "release": "9.0.0",
+ "decision_date": "2026-10-10",
+ "status": "CANDIDATE_IMPLEMENTED_NOT_RELEASE_AUTHORIZATION",
+ "mission": "Make financial AI accountable to evidence.",
+ "vision": "Become the Science Trust Layer for Financial AI.",
+ "executor_order": "OWNER ORDER 2 — IMPLEMENT YUCLAW v9 (10 October 2026)",
+ "inherited_release": "8.0.1",
+ "enabled_features": ["F1", "F2", "F3", "F4", "F5"],
+ "feature_names": {
+  "F1": "sentence and claim inspection",
+  "F2": "financial brief composer",
+  "F3": "edits, translations and source corrections",
+  "F4": "provenance records and detector-report import",
+  "F5": "portable verification and measured operations"
+ },
+ "deferred": ["live_provider_generation_or_detection_connectors", "local_entropy_controlled_sampler_or_open_weight_model_integration", "detector_calibration_campaigns_registration_or_sequential_inference_methods"],
+ "excluded_by_owner": ["human_comprehension_study", "backup_or_restore_functionality"],
+ "backup_policy": {"disclosure": "Backup functionality is cancelled: no backup scheduling, restoration feature or drill exists; a packet is a verification artifact, not a backup."},
+ "acceptance_cases": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"],
+ "fixture": {"id": "001_base", "fictional": true, "original_guidance": "110000000-120000000 USD", "revised_guidance": "105000000-115000000 USD", "actual": "112000000 USD",
+             "midpoints": ["115000000", "110000000"], "absolute_change": "-5000000", "relative_change_percent": "-4.35", "rounding": "ROUND_HALF_EVEN, 2 decimals"},
+ "storage": {"sidecar": "yuclaw-brief-sidecar/1 at <workspace>/v9/brief.jsonl; the v8 journal is never appended to", "packet": "yuclaw.brief-packet/1"},
+ "not_claimed": ["an independent security review", "a human effort or comprehension study", "a provider connector", "a watermark detection endpoint, parameter, key or provider capability", "an OpenAI-compatible watermark claim", "distributed atomicity beyond one workspace lock"]
+}

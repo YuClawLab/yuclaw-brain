@@ -80,7 +80,7 @@ class Dispatch(unittest.TestCase):
         self.assertIn("source → typed claim → comparison → calculation → history → adjudication → reproducible export", text.replace("1 Source", "source").replace("2 Typed claim", "typed claim").replace("3 Comparison", "comparison").replace("4 Calculation", "calculation").replace("5 History", "history").replace("6 Adjudication", "adjudication").replace("7 Reproducible export", "reproducible export"))
 
     def test_unknown_versions_have_no_composition_path(self):
-        for v in ("8.0.2", "8.1.0", "9.0.0", "6.0.1", "8.0.0rc1", "8.0.1rc1"):                     # 8.0.1 became a supported PATCH of 8.0.0 (owner order of 2026-09-21); nothing else did
+        for v in ("8.0.2", "8.1.0", "9.0.1", "6.0.1", "8.0.0rc1", "8.0.1rc1"):     # 9.0.0 has its own composer (tools/yuclaw_release_notes_v9.py; tested there)                     # 8.0.1 became a supported PATCH of 8.0.0 (owner order of 2026-09-21); nothing else did
             self.assertIsNone(gen.notes_composer(v), v)
             text, corr = gen.compose_public_notes(v, V6_STYLE.format(v=v), policy=synthetic_policy(), board=BOARD)
             self.assertEqual(text, V6_STYLE.format(v=v)); self.assertEqual(len(corr), 1); self.assertIn("no supported notes composition path", corr[0])

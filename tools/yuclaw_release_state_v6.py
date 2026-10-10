@@ -350,6 +350,16 @@ def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
     """The owner's recorded decision on the Gate #15 requirement for v8 releases, or None when no such decision
     applies (7.x and earlier keep their historical rules). A record that claims anything other than
     REMOVED_BY_OWNER (for example PASSED) is refused loudly: the study was never run and is never reported as passed."""
+    if version.startswith("9."):                       # 9.x: only the owner's OWN 9.x record counts; the 8.x removal never carries over
+        path = (_REPO / "v9" / "policy" / "gate15_release_requirement.json") if path is None else path
+        if not path.exists():
+            return None
+        d = json.loads(path.read_text())
+        if d.get("record") != "yuclaw-v9-release-requirement-decision/1" or d.get("gate") != 15 or d.get("decided_by") != "owner" or not str(d.get("applies_to", {}).get("versions", "")).startswith("9."):
+            raise ValueError("gate 15 decision record is not the owner's v9 requirement decision")
+        if d.get("status") != "REMOVED_BY_OWNER":
+            raise ValueError(f"gate 15 decision record status {d.get('status')!r} is not REMOVED_BY_OWNER (a study result is never recorded here)")
+        return {**d, "sha256": _sha_bytes(path.read_bytes())}
     path = GATE15_DECISION if path is None else path
     if not version.startswith("8.") or not path.exists():
         return None
@@ -369,7 +379,8 @@ def gate15_result(version: str, scaffold_ok: bool, decision: dict | None) -> tup
         return "RED", "consumer-posture scaffold FAILED (automated check retained); the human comprehension study does not exist"
     if decision is None:
         return "MANUAL_REVIEW", "consumer-posture scaffold GREEN (five personas); full-form human comprehension study does not exist"
-    return "REMOVED_BY_OWNER", (f"requirement removed by the owner on {decision['decision_utc']} for v8 releases (decision record sha256 {decision['sha256'][:16]}…); "
+    line = "v8 releases" if str(decision.get("record", "")).startswith("yuclaw-v8") else "9.x releases"
+    return "REMOVED_BY_OWNER", (f"requirement removed by the owner on {decision['decision_utc']} for {line} (decision record sha256 {decision['sha256'][:16]}…); "
                                 "consumer-posture scaffold GREEN (five personas; automated check retained); no human comprehension study was run and none is claimed — NOT PASSED; human benefit PENDING")
 
 
@@ -383,7 +394,7 @@ def canada_heading(version: str) -> str:
     return "Built in Canada" if v >= (8, 0, 1) else "Made in Canada"
 
 
-NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list)
+NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8", "9.0.0": "yuclaw_release_notes_v9"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list)
 
 
 def notes_composer(version: str):
