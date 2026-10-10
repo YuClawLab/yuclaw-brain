@@ -33,7 +33,7 @@ CONNECTOR_NOTE = "- Deferred, not in 9.0 (explicitly later work, not incomplete 
 BENEFIT_NOTE = "- Human benefit: PENDING — no pilot, no user study; the journeys and tests demonstrate behaviour, not benefit."
 REVIEW_NOTE = "- Review: every edit, link, resolution and import in the release evidence was recorded by the automated tests, the installed self-check and the browser inspection as a simulated action; there was no human review and no user study."
 FIXTURE_NOTE = "- Fixtures are clearly fictional demonstration data (issuer, filings, amounts); the fictional guidance example is never market data or a historical research record."
-EXCLUDED_NOTE = "- Excluded by the owner: {excluded}."
+OWNER_EXCLUSIONS_NOTE = "- Excluded by the owner: {excluded}."
 V8_NOTE = "- The v8 workbench, its four modules, its export format and its published guides are unchanged; v9 writes a separate sidecar beside the v8 journal and an 8.0.1 client reads its own data with the sidecar present and untouched."
 
 
@@ -110,7 +110,7 @@ def policy_disclosure(policy: dict | None, decision: dict | None) -> str:
 
 
 def not_in_this_release(m: dict, tail: str) -> str:
-    lines = [f"- {m['backup_disclosure']}", EXCLUDED_NOTE.format(excluded=", ".join(x.replace("_", " ") for x in m["excluded"])), BENEFIT_NOTE, REVIEW_NOTE, FIXTURE_NOTE, DETECTOR_NOTE,
+    lines = [f"- {m['backup_disclosure']}", OWNER_EXCLUSIONS_NOTE.format(excluded=", ".join(x.replace("_", " ") for x in m["excluded"])), BENEFIT_NOTE, REVIEW_NOTE, FIXTURE_NOTE, DETECTOR_NOTE,
              CONNECTOR_NOTE.format(deferred=", ".join(x.replace("_", " ") for x in m["deferred"])), V8_NOTE]
     return "\n".join(lines) + "\n" + tail.strip("\n")
 
