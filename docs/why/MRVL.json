@@ -1,34 +1,44 @@
 {
  "ticker": "MRVL",
- "generated": "2026-10-09T23:01:17.765257+00:00",
- "label": "NEUTRAL",
- "score": 0.2231,
+ "generated": "2026-10-12T23:02:07.345312+00:00",
+ "label": "WATCH",
+ "score": 0.1337,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
   "c1": 0.857,
   "c2": 0.0,
-  "c3": -0.09678143,
+  "c3": -0.6661928,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.16019967,
-  "c7": 0.31100598,
+  "c6": -0.16353105,
+  "c7": 0.40085456,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 94,
-  "events_90d": 16,
-  "recency_days": 7.9,
+  "ecs": 98,
+  "events_90d": 17,
+  "recency_days": 2.9,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-09T23:01:09.501322+00:00",
-  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
+  "as_of": "2026-10-12T23:01:59.701656+00:00",
+  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-09",
+   "accession_number": "0001628280-26-065570",
+   "excerpt": "Scarpulla Justin S 1100 shares @ $273.59 on 2026-10-08 ($300,949)",
+   "source_hash": "f33058afb2ff6de21007b4028be0dd54782f4df2e6e42d4bbe6ff84ed39b9a59",
+   "available_as_of": "2026-10-09T18:14:28.851557-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "INSIDER_SELL",
@@ -383,21 +393,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRVL in the declared corpus",
-  "returned": 35,
-  "total_available": 35,
+  "returned": 36,
+  "total_available": 36,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
-  "newest_returned_available_as_of": "2026-10-01T19:22:51.884016-06:00",
-  "build_id": "why-2026-10-09T230117",
+  "newest_returned_available_as_of": "2026-10-09T18:14:28.851557-06:00",
+  "build_id": "why-2026-10-12T230207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-09T17:01:18.280900-06:00",
+  "corpus_end": "2026-10-12T17:02:07.813729-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-09T230117",
+ "build_id": "why-2026-10-12T230207",
  "corrections": [
   {
    "original": {
@@ -501,6 +511,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-09",
    "label": "NEUTRAL"
@@ -616,13 +630,9 @@
   {
    "date": "2026-09-01",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-08-31",
-   "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 35 of 35 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 36 of 36 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
