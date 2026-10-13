@@ -1,14 +1,14 @@
 {
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 9 of 9 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",
- "build_id": "why-2026-10-09T230117",
+ "build_id": "why-2026-10-12T230207",
  "components": {
-  "c1": 0.365,
+  "c1": 0.5155,
   "c2": 0.0,
-  "c3": 0.44076717,
+  "c3": 0.39991885,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.016617764,
+  "c7": 0.05700036,
   "c8": 0.0,
   "c9": 0.2631579
  },
@@ -65,12 +65,12 @@
   }
  ],
  "evidence_coverage": {
-  "as_of": "2026-10-09T23:01:09.501322+00:00",
-  "ecs": 62,
+  "as_of": "2026-10-12T23:01:59.701656+00:00",
+  "ecs": 61,
   "events_90d": 6,
   "metric_id": "ecs",
-  "recency_days": 46.1,
-  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
+  "recency_days": 49.1,
+  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -167,10 +167,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-09T230117",
+  "build_id": "why-2026-10-12T230207",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-09T17:01:18.008745-06:00",
+  "corpus_end": "2026-10-12T17:02:07.574646-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-08-24T15:07:26.467020-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -181,11 +181,15 @@
   "scope": "accepted evidence objects for DHR in the declared corpus",
   "total_available": 9
  },
- "generated": "2026-10-09T23:01:17.765257+00:00",
+ "generated": "2026-10-12T23:02:07.345312+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/DHR.history.json",
  "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-09",
    "label": "NEUTRAL"
@@ -301,10 +305,6 @@
   {
    "date": "2026-09-01",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-31",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -412,7 +412,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.3484,
+ "score": 0.3814,
  "threshold_band": {
   "ceiling": 0.4,
   "floor": 0.2

@@ -1,8 +1,8 @@
 {
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 1 of 1 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay GLD --date D",
- "build_id": "why-2026-10-09T230117",
+ "build_id": "why-2026-10-12T230207",
  "components": {
-  "c1": -0.2325,
+  "c1": -0.1795,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -14,12 +14,12 @@
  },
  "corrections": [],
  "evidence_coverage": {
-  "as_of": "2026-10-09T23:01:09.501322+00:00",
+  "as_of": "2026-10-12T23:01:59.701656+00:00",
   "ecs": 37,
   "events_90d": 1,
   "metric_id": "ecs",
-  "recency_days": 66.3,
-  "source_sha256": "26e874e21fd2dbc674c1fe31eafe0c4bcf6272af4fd3cb879087d8897f0c25d5",
+  "recency_days": 69.3,
+  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
   "substrate_active": 1,
   "type_diversity": 1
  },
@@ -36,10 +36,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-09T230117",
+  "build_id": "why-2026-10-12T230207",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-09T17:01:18.048700-06:00",
+  "corpus_end": "2026-10-12T17:02:07.608175-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-08-04T10:31:10-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -50,11 +50,15 @@
   "scope": "accepted evidence objects for GLD in the declared corpus",
   "total_available": 1
  },
- "generated": "2026-10-09T23:01:17.765257+00:00",
+ "generated": "2026-10-12T23:02:07.345312+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/GLD.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-10-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-09",
    "label": "WATCH"
@@ -170,10 +174,6 @@
   {
    "date": "2026-09-01",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-08-31",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -282,7 +282,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0882,
+ "score": 0.1066,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0
