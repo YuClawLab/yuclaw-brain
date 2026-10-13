@@ -1,34 +1,44 @@
 {
  "ticker": "DHR",
- "generated": "2026-10-12T23:02:07.345312+00:00",
- "label": "NEUTRAL",
- "score": 0.3814,
+ "generated": "2026-10-13T23:02:14.373979+00:00",
+ "label": "WATCH",
+ "score": 0.1901,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.5155,
+  "c1": 0.567,
   "c2": 0.0,
-  "c3": 0.39991885,
+  "c3": -0.53483295,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.05700036,
+  "c7": 0.01620939,
   "c8": 0.0,
   "c9": 0.2631579
  },
  "evidence_coverage": {
-  "ecs": 61,
-  "events_90d": 6,
-  "recency_days": 49.1,
+  "ecs": 84,
+  "events_90d": 7,
+  "recency_days": 0.4,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-12T23:01:59.701656+00:00",
-  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
+  "as_of": "2026-10-13T23:02:06.331396+00:00",
+  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DHR",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-13",
+   "accession_number": "0000313616-26-000193",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 __________________ FORM 8-K __________________ CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "6c72c66cc13562e4801f9f8737435cb11d342e41cdae72d1149d97cc17158592",
+   "available_as_of": "2026-10-13T06:53:18-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DHR",
    "evidence_type": "INSIDER_SELL",
@@ -123,22 +133,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DHR in the declared corpus",
-  "returned": 9,
-  "total_available": 9,
+  "returned": 10,
+  "total_available": 10,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
-  "newest_returned_available_as_of": "2026-08-24T15:07:26.467020-06:00",
-  "build_id": "why-2026-10-12T230207",
+  "newest_returned_available_as_of": "2026-10-13T06:53:18-06:00",
+  "build_id": "why-2026-10-13T230214",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-12T17:02:07.574646-06:00",
+  "corpus_end": "2026-10-13T17:02:14.606484-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DHR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-12T230207",
+ "build_id": "why-2026-10-13T230214",
  "corrections": [
+  {
+   "original": {
+    "ticker": "DHR",
+    "accession_number": "0000313616-26-000163",
+    "source_hash": "6c72c66cc13562e4801f9f8737435cb11d342e41cdae72d1149d97cc17158592",
+    "excerpt_sha256": "f252fcee1d055126b201e37deaa5f72e9da94764afa68355c57654ce66d51714"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-6c72c66cc13562e4",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 __________________ FORM 8-K __________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "966c589f2d6d53bd734e235bfdecb5ffa5d8ab8153b7e6458e5bec00fa9f96c4",
+   "source_location": {
+    "accession_number": "0000313616-26-000163",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/313616/000031361626000163/dhr-20260721.htm",
+    "char_offset": 910,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "DHR",
@@ -191,6 +226,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-13",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-12",
    "label": "NEUTRAL"
@@ -306,13 +345,9 @@
   {
    "date": "2026-09-02",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-01",
-   "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 9 of 9 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 10 of 10 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay DHR --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

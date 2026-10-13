@@ -1,31 +1,31 @@
 {
  "ticker": "PSX",
- "generated": "2026-10-12T23:02:07.345312+00:00",
+ "generated": "2026-10-13T23:02:14.373979+00:00",
  "label": "NEUTRAL",
- "score": 0.283,
+ "score": 0.349,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.444,
+  "c1": 0.641,
   "c2": 0.0,
-  "c3": 0.71551186,
+  "c3": 0.8518674,
   "c4": 0.6,
-  "c5": 0.02429568,
-  "c6": -0.08330256,
-  "c7": -0.09092557,
+  "c5": 0.07602751,
+  "c6": -0.075480446,
+  "c7": -0.04793457,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 88,
   "events_90d": 17,
-  "recency_days": 7.4,
+  "recency_days": 8.4,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-12T23:01:59.701656+00:00",
-  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
+  "as_of": "2026-10-13T23:02:06.331396+00:00",
+  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -329,15 +329,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T15:17:27-07:00",
   "newest_returned_available_as_of": "2026-10-05T06:30:16-06:00",
-  "build_id": "why-2026-10-12T230207",
+  "build_id": "why-2026-10-13T230214",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-12T17:02:07.914489-06:00",
+  "corpus_end": "2026-10-13T17:02:14.960807-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PSX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-12T230207",
+ "build_id": "why-2026-10-13T230214",
  "corrections": [
   {
    "original": {
@@ -442,6 +442,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-12",
    "label": "NEUTRAL"
@@ -557,10 +561,6 @@
   {
    "date": "2026-09-02",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-01",
-   "label": "BULLISH"
   }
  ],
  "as_of_recipe": "evidence_objects here is a PREVIEW (newest 29 of 29 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
