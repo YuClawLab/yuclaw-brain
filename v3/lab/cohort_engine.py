@@ -55,13 +55,13 @@ def load_snapshots(panel: str) -> dict[date, dict[str, dict[str, Any]]]:
         # trailing signal_time makes intraday re-run days deterministic: the
         # dict overwrite below keeps the LATEST snapshot per (date, ticker)
         cur.execute(
-            "SELECT signal_time::date, ticker, total_score, signal_label "
+            "SELECT signal_time::date, ticker, total_score, signal_label, snapshot_id "
             "FROM signal_snapshots WHERE is_backfill = %s "
             "ORDER BY signal_time::date, ticker, signal_time",
             (is_backfill,),
         )
-        for d, tk, score, label in cur.fetchall():
-            out.setdefault(d, {})[tk] = {"score": float(score), "label": label}
+        for d, tk, score, label, sid in cur.fetchall():
+            out.setdefault(d, {})[tk] = {"score": float(score), "label": label, "snapshot_id": sid}
     return out
 
 

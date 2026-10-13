@@ -2,7 +2,7 @@
  "generated": "2026-10-12T23:02:08.246594+00:00",
  "how": [
   "fetch /ledger/{date}.json for the snapshot's date",
-  "recompute sha256 over its sorted entries \u2014 must equal root_sha256",
+  "recompute sha256(json.dumps(entries, sort_keys=True).encode()) with list order preserved; compare root_sha256",
   "the snapshot's content_hash must appear among entries",
   "offline: the same files ship in the repo and the ledger repo (YuClawLab/yuclaw-trust)"
  ],
@@ -424,5 +424,9 @@
    "root_sha256": "4795c3c2d9aea7902e41ffdeaec9fb4cd191f617204ba7727a69c67426b58d2f"
   }
  ],
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "object_type": "signal_snapshot",
+ "event_hash_proof": "NOT_AVAILABLE: this endpoint does not authenticate event source_hash values",
+ "canonicalization": "sha256(json.dumps(entries, sort_keys=True).encode(utf-8)); list order is preserved; default JSON separators",
+ "external_provenance": "UNVERIFIED without an independently obtained ledger reference"
 }

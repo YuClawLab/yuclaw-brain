@@ -54,7 +54,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-09-10",
    "accession_number": "0001973239-26-000128",
-   "excerpt": "Results of 2026 Annual General Meeting of Arm Holdings plc On September 10, 2026, Arm Holdings plc (the \u201cCompany\u201d) announced the results of its Annual General Meeting held on September 9, 2026 (the \u201cAGM\u201d).",
+   "excerpt": "Results of 2026 Annual General Meeting of Arm Holdings plc On September 10, 2026, Arm Holdings plc (the “Company”) announced the results of its Annual General Meeting held on September 9, 2026 (the “AGM”).",
    "source_hash": "087c9fcdf47787caaaa21257ff735e4af30d5ade1cc7f86b28850d14aa5da586",
    "available_as_of": "2026-09-10T10:09:45-06:00",
    "protocol_id": null
@@ -74,7 +74,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-10",
    "accession_number": "0001973239-26-000117",
-   "excerpt": "NOTICE IS HEREBY GIVEN that the Annual General Meeting of Arm Holdings plc (the \u201cCompany\u201d) will be held on 9 September 2026 at 3:00 p.m. (British Summer Time) to consider, and if thought fit, pass",
+   "excerpt": "NOTICE IS HEREBY GIVEN that the Annual General Meeting of Arm Holdings plc (the “Company”) will be held on 9 September 2026 at 3:00 p.m. (British Summer Time) to consider, and if thought fit, pass",
    "source_hash": "1b2c0a8acd9344d4e2812811ae4afd42df7d25804e36a574adc1173f483ef61a",
    "available_as_of": "2026-08-10T10:01:35-06:00",
    "protocol_id": null
@@ -284,7 +284,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192ARM(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→ARM(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "d469b11ce06caec0007bcbe73617d29f9da3d577a10594a2cde405cddb979afd",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -484,7 +484,7 @@
    "evidence_type": "GUIDANCE_RAISE",
    "filing_date": "2026-03-24",
    "accession_number": "0001973239-26-000052",
-   "excerpt": "During the event, the Company\u2019s Chief Financial Officer, Jason Child, reaffirmed the Company\u2019s fourth quarter 2026 guidance, which was previously provided in the Company\u2019s third quarter fiscal year 2026 earnings release issued on February 4, 2026, as well as provided certain long-range financial expectations.",
+   "excerpt": "During the event, the Company’s Chief Financial Officer, Jason Child, reaffirmed the Company’s fourth quarter 2026 guidance, which was previously provided in the Company’s third quarter fiscal year 2026 earnings release issued on February 4, 2026, as well as provided certain long-range financial expectations.",
    "source_hash": "e6a011052e818aeb684316164b8288600d743394f3b99d14099b0fea30fb3240",
    "available_as_of": "2026-03-24T15:11:56-06:00",
    "protocol_id": null
@@ -631,7 +631,35 @@
    "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 46 of 46 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ARM --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-14T17:02:07.429963-06:00",
+  "window_end_inclusive": "2026-10-12T17:02:07.429963-06:00",
+  "event_objects": 25,
+  "distinct_accessions": 19,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "EARNINGS_BEAT": 1,
+   "INSIDER_SELL": 20,
+   "OTHER_MATERIAL": 3,
+   "PRODUCT_LAUNCH": 1
+  },
+  "largest_type_share": 0.8,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "component_anatomy": {
+  "status": "INCOMPLETE",
+  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
+ },
+ "excerpt_comparison_checks": [
+  {
+   "source_hash": "3d03602a53ead1a66eae46bbebc08d376cba8b9404dd4812e5c3f26a9119d063",
+   "scope": "published excerpt only; not a whole-filing or independent truth check",
+   "status": "UNSUPPORTED_COMPARISON",
+   "reason": "The cited passage does not explicitly establish the classified comparison with expectations. Original classification retained as a historical record."
+  }
+ ]
 }

@@ -33,6 +33,7 @@ from pathlib import Path
 import psycopg2
 
 from v3.web.useful_blocks import VERSION, citation_snippet
+from v3.evidence.research_contract import LAB_LIMITATIONS
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT_DIR = _REPO / "docs" / "packets"
@@ -46,11 +47,7 @@ PACKETS = {
         "zip": "yuclaw_validation_lab_packet.zip",
         "scope_note": ("Scoring universe only (79 tickers). Evidence-tier names are "
                        "excluded from every cohort, decile, and statistic in this packet."),
-        "limitations": [
-            "Forward window is young; no spread, IC, or alpha is significant at 5% with adequate power.",
-            "In-sample replay panel carries parametric look-ahead — educational only.",
-            "Insider-evidence stream: batch coverage 2026-02-18 → 2026-05-15; live from 2026-07-16; the gap is backfilled with ingestion-time available_as_of.",
-        ],
+        "limitations": LAB_LIMITATIONS,
     },
     "open_index": {
         "page_label": "SMH Covered-Constituent Evidence Lens",
@@ -102,6 +99,8 @@ def _metadata(kind: str, data_through: str, built: str, commit: str, ledger: dic
     return {
         "packet": spec["page_label"],
         "version": VERSION,
+        "software_version": VERSION,
+        "limitations_version": "research-contract-2026-10-13",
         "data_through": data_through,
         "build_date": built,
         "source_commit": commit,

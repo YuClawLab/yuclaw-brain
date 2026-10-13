@@ -52,7 +52,7 @@ class DerivedProse(unittest.TestCase):
         self.assertEqual(L.forward_significant(UNRELIABLE["forward"]), [])
         t = L.rigor_reading(UNAVAILABLE); self.assertIn("not evaluable yet", t); self.assertIn("insufficient evidence, not a positive and not a negative finding", t)
         self.assertIn("not evaluable yet", L.ic_not_proven_line(UNAVAILABLE)); self.assertIn("nothing about forward alpha is claimed", L.headline(UNAVAILABLE))
-        self.assertIn("every statistic and every ledger leaf hash", L.reproducibility_line({})); self.assertIn("7,192 leaf hashes", L.reproducibility_line(BUNDLE)); self.assertIn("88 daily roots, source a3b3ed2ebac4", L.reproducibility_line(BUNDLE)); self.assertNotIn("23:02", L.reproducibility_line(BUNDLE))   # no raw build time outside the buildinfo footer
+        self.assertIn("core statistical tables", L.reproducibility_line({})); self.assertIn("7,192 leaf hashes", L.reproducibility_line(BUNDLE)); self.assertIn("88 daily roots, source a3b3ed2ebac4", L.reproducibility_line(BUNDLE)); self.assertNotIn("23:02", L.reproducibility_line(BUNDLE))   # no raw build time outside the buildinfo footer
 
     def test_the_generator_renders_prose_and_table_from_one_dictionary(self):
         from v3.web import render_validation_lab as R

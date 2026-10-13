@@ -24,6 +24,7 @@ from html import escape
 from pathlib import Path
 
 import psycopg2
+from v3.evidence.claim_support import assess
 
 from v3.web.useful_blocks import (footer_stamp_html, freshness_strip, VERSION,
                                   site_header_html, use_in_research_html)
@@ -132,6 +133,7 @@ def render(d: dict) -> str:
     # 3 — event
     ev_rows = ""
     for e in d["events"]:
+        support = assess(e["event_type"], e.get("excerpt") or "")
         ev_rows += f"""
         <div style="background:#0B0E14;border:1px solid #1E232D;border-radius:8px;padding:12px 14px;margin-top:8px">
           <div style="font-size:12px"><code>{escape(e['event_id'])}</code></div>
@@ -140,17 +142,21 @@ def render(d: dict) -> str:
             · extraction confidence {e['confidence']:.1f} · status <code>{escape(e['status'])}</code>
           </div>
           <div style="font-size:12px;color:#A0AEC0;line-height:1.6">
-            <strong style="color:#718096">Verified quote (SourceLock):</strong> “{escape(e['excerpt'] or '')}”
+            <strong style="color:#718096">Source-checked excerpt (SourceLock):</strong> “{escape(e['excerpt'] or '')}”
           </div>
           <div style="font-size:11.5px;color:#718096;line-height:1.6;margin-top:4px">
             Extractor rationale ({escape(e['model'] or '')}): {escape(e['reasoning'] or '—')}
+          </div>
+          <div class="comparison-support" style="margin-top:8px;color:#FBA94B">
+            Comparison support: <strong>{escape(support["status"])}</strong>. {escape(support["reason"])}
+            Extraction confidence is a model output, not a calibrated probability of correctness.
           </div>
         </div>"""
     s3 = _step(3, "Classified evidence event",
                "deterministic schema: type · magnitude · direction · confidence · verified excerpt",
                (ev_rows or "<p style='font-size:12px;color:#718096'>no accepted event for this filing</p>")
                + """<p style="font-size:11px;color:#718096;margin:8px 0 0">The excerpt is
-        SourceLock-verified — it must locate verbatim in the filing text or the event is rejected.
+        SourceLock-checked against the source text (including documented normalization and similarity fallbacks). This checks quotation support; it does not independently establish an earnings surprise.
         Event types are research classifications from a locked vocabulary, not recommendations.</p>""",
                "#7C4DFF")
 

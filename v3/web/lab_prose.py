@@ -108,10 +108,10 @@ def reproducibility_line(bundle: dict | None) -> str:
     """The 'proven' list entry: the leaf count is the published bundle's own count, with the bundle's identity."""
     n = (bundle or {}).get("n_leaves")
     if not n:
-        return "One-command reproducibility — every statistic and every ledger leaf hash re-derive from published data"
+        return "One-command reproducibility — core statistical tables and bundled ledger consistency; external provenance is a separate check"
     # identity WITHOUT a timestamp: the site's stamp rule keeps raw build times inside the buildinfo footer (tools/check_site_walk.py)
     ident = (f" (the published replay bundle: {bundle['daily_roots']} daily roots" if bundle.get("daily_roots") else " (the published replay bundle") + (f", source {bundle['source_commit']}" if bundle.get("source_commit") else "") + ")"
-    return f"One-command reproducibility — every statistic + {n:,} leaf hashes re-derive from published data{ident}"
+    return f"One-command reproducibility — core statistical tables + {n:,} leaf hashes checked for bundled consistency{ident}; external provenance is a separate check"
 
 
 def headline(rig: dict) -> str:
@@ -166,3 +166,15 @@ def stale(html: str, rig: dict, bundle: dict | None) -> list[str]:
         if not m or m.group(1) != frag:
             out.append(name)
     return out
+
+
+def comparative_return(a: float, b: float) -> str:
+    """Direction at the displayed two-decimal percentage precision."""
+    from decimal import Decimal
+    import math
+    if not all(math.isfinite(x) for x in (a,b)):
+        raise ValueError("finite returns required")
+    left, right = (Decimal(f"{x*100:.2f}") for x in (a,b))
+    if left == right:
+        return "matches the universe at displayed precision"
+    return "exceeds the universe" if left > right else "trails the universe"

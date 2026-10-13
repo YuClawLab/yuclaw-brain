@@ -5,15 +5,8 @@ schemas/EvidenceObject.v1.json. Plus the discovery + verification
 endpoints: docs/capabilities.json, docs/evidence/verify.json, and
 per-day ledger-root files docs/ledger/{DATE}.json.
 
-AS-OF DECISION (stated): the client-side reconstruction recipe, not
-@DATE file fan-out. Trailing-30-day per-date files would be ~2,400
-regenerated artifacts per build (~24 MB of daily git churn) for data the
-same JSON already contains: every EvidenceObject carries available_as_of
-and the label_history ribbon carries the per-day classification. Recipe
-(also in llms.txt with a worked example): to reconstruct name X as of
-date D — take why/X.json; evidence = objects with available_as_of <= D;
-classification at D = the label_history entry for the last date <= D.
-Older dates beyond the ribbon: `yuclaw replay X --date D` (CLI path).
+Historical queries require the complete manifest-bound history; the capped
+why JSON is a preview. See AS_OF_RECIPE for the shared public contract.
 """
 from __future__ import annotations
 
@@ -30,6 +23,9 @@ import jsonschema
 
 from v3.evidence import evidence_objects
 from v3.signal.base import SIGNAL_THRESHOLDS
+from v3.evidence.research_contract import AS_OF_RECIPE, EVENT_HASH_SCOPE
+from v3.evidence.research_summary import denominators
+from v3.evidence.claim_support import assess
 
 OUT_DIR = _REPO / "docs" / "why"
 NOT_ADVICE = ("Research and education only — not investment advice. "
@@ -74,7 +70,7 @@ def build_all() -> int:
         hp = OUT_DIR / f"{tk.replace('.', '-')}.history.json"; hp.write_bytes(hb)
         manifest["files"][tk] = {"path": f"why/{tk.replace('.', '-')}.history.json", "sha256": _hl.sha256(hb).hexdigest(), "bytes": len(hb), "count": len(full), "corpus_end": hist_read["read_at"]}
         # the compatibility preview: the newest 100 of the SAME read, declared as a PREVIEW
-        objs = sorted(full, key=lambda o: (o["available_as_of"], o.get("accession_number") or "", o.get("source_hash") or ""), reverse=True)[:100]
+        objs = sorted(full, key=H.sort_key, reverse=True)[:100]
         pub = [dict(o) for o in objs]
         preview_meta = H.collection_metadata(pub, scope=hist_meta["scope"], total_available=hist_read["total"], cap=100, ordering=H.ORDERING_PREVIEW, build_id=build_id, completeness="PREVIEW", corpus_start=hist_read["corpus_start"], corpus_end=hist_read["read_at"])
         doc = {
@@ -85,6 +81,9 @@ def build_all() -> int:
                            for i, v in enumerate(comps, 1)},
             "evidence_coverage": {**ecs.get(tk, {}), **({"as_of": _cov_id["as_of"], "source_sha256": _cov_id["source_sha256"], "metric_id": "ecs"} if _cov_id else {})},
             "evidence_objects": pub,
+            "component_anatomy": _rwp.SNAPSHOT_ANATOMY.get(tk, {"status": "INCOMPLETE"}),
+            "descriptive_denominators_90d": denominators(full, hist_read["read_at"]),
+            "excerpt_comparison_checks": [{"source_hash": o["source_hash"], "scope": "published excerpt only; not a whole-filing or independent truth check", **assess(o["evidence_type"], o["excerpt"])} for o in pub if o["evidence_type"] in ("EARNINGS_BEAT", "EARNINGS_MISS")],
             "evidence_objects_collection": preview_meta,
             "history_url": f"/why/{tk.replace('.', '-')}.history.json",
             "history_manifest_url": "/why/history_manifest.json",
@@ -92,20 +91,8 @@ def build_all() -> int:
             "corrections": annotations_for(pub),
             "label_history": [{"date": d.isoformat(), "label": l}
                               for d, l in hist.get(tk, [])],
-            "as_of_recipe": ("evidence_objects here is a PREVIEW (newest "
-                             f"{len(pub)} of {hist_read['total']} accepted objects; see "
-                             "evidence_objects_collection). Reconstruct evidence as of D "
-                             "ONLY from the complete history file at history_url (same "
-                             "build_id; verify its sha256 in history_manifest_url): objects "
-                             "with available_as_of <= D (the recorded availability, never "
-                             "filing_date or generated timestamps). From this preview alone the "
-                             "result is INCOMPLETE for every D unless returned == total_available. "
-                             "D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. "
-                             "Classification at D = label_history entry for the last date <= D; "
-                             f"older dates: yuclaw replay {tk} --date D"),
-            "verify": ("each object's source_hash is a SHA-256 anchored "
-                       "via the daily ledger root — see "
-                       "/evidence/verify.json"),
+            "as_of_recipe": AS_OF_RECIPE,
+            "verify": EVENT_HASH_SCOPE,
             "not_advice": NOT_ADVICE,
         }
         jsonschema.validate(doc, wa_schema)
@@ -173,10 +160,7 @@ def build_endpoints() -> None:
                                "--accession N alone when the accession maps to one name)",
                 "replay": "yuclaw replay TICKER --date D",
                 "reproduce": "yuclaw replay-lab"},
-        "as_of_recipe": ("evidence as of D = evidence_objects with "
-                         "available_as_of <= D; classification at D = "
-                         "label_history last entry <= D; beyond the "
-                         "ribbon: the replay CLI"),
+        "as_of_recipe": AS_OF_RECIPE,
         "not_advice": NOT_ADVICE}, indent=1))
 
     ledger_src = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
@@ -194,7 +178,7 @@ def build_endpoints() -> None:
                 "date": day, "snapshot_count": e.get("snapshot_count"),
                 "root_sha256": root,
                 "entries": e["entries"],
-                "verify": "recompute sha256 over the sorted entries and "
+                "verify": "recompute sha256(json.dumps(entries, sort_keys=True).encode()) with list order preserved and "
                           "compare; each entry's content_hash matches its "
                           "snapshot object",
                 "not_advice": NOT_ADVICE}, indent=1))
@@ -202,8 +186,12 @@ def build_endpoints() -> None:
     (_REPO / "docs" / "evidence").mkdir(exist_ok=True)
     (_REPO / "docs" / "evidence" / "verify.json").write_text(json.dumps({
         "generated": datetime.now(timezone.utc).isoformat(),
+        "object_type": "signal_snapshot",
+        "event_hash_proof": "NOT_AVAILABLE: this route does not authenticate event source_hash values",
+        "canonicalization": "sha256(json.dumps(entries, sort_keys=True).encode(utf-8)); list order is preserved; default JSON separators",
+        "external_provenance": "UNVERIFIED without an independently obtained ledger reference",
         "how": ["fetch /ledger/{date}.json for the snapshot's date",
-                "recompute sha256 over its sorted entries — must equal "
+                "recompute sha256(json.dumps(entries, sort_keys=True).encode()) — must equal "
                 "root_sha256",
                 "the snapshot's content_hash must appear among entries",
                 "offline: the same files ship in the repo and the ledger "

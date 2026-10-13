@@ -27,6 +27,7 @@ VERSION = _M["version"]
 OUT = _REPO / "docs" / "evidence_index.json"
 
 PAGES = {
+    "research_start.html": "Start research with v9 — English / Français, scope and verification limits",
     "explorer.html": "Universe Explorer — the full 79-name table, client-side filter/sort",
     "sectors.html": "Sector overview — descriptive medians of current classifications (display, not inference)",
     "tour.html": "The 5-minute tour — five commands with build-captured output",

@@ -384,7 +384,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-05",
    "accession_number": "0001876042-26-000246",
-   "excerpt": "On August 5, 2026, Circle Internet Group, Inc. (the \u201cCompany\u201d) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
+   "excerpt": "On August 5, 2026, Circle Internet Group, Inc. (the “Company”) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
    "source_hash": "86d90f7802d3b0126eff026cc8a49a52b03a04a7e22047b67cf50dba15aac812",
    "available_as_of": "2026-08-05T00:12:18-06:00",
    "protocol_id": null
@@ -964,7 +964,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-07-02",
    "accession_number": "0001876042-26-000205",
-   "excerpt": "On June 29, 2026 and June 30, 2026, Circle Internet Group, Inc. (the \u201cCompany\u201d) entered into token purchase agreements (each, a \u201cToken Purchase Agreement\u201d) with certain institutional investors (collectively, the \u201cInvestors\u201d),",
+   "excerpt": "On June 29, 2026 and June 30, 2026, Circle Internet Group, Inc. (the “Company”) entered into token purchase agreements (each, a “Token Purchase Agreement”) with certain institutional investors (collectively, the “Investors”),",
    "source_hash": "d7423d445cef55854bec4f32add344d6ef3dbed0fa2fdd43e1f948119be7b658",
    "available_as_of": "2026-07-02T15:03:03-06:00",
    "protocol_id": null
@@ -974,7 +974,7 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-06-12",
    "accession_number": "0001876042-26-000192",
-   "excerpt": "Departure of Director On June 12, 2026, Rajeev Date tendered his resignation to the Board of Directors (the \u201cBoard\u201d) of Circle Internet Group, Inc.",
+   "excerpt": "Departure of Director On June 12, 2026, Rajeev Date tendered his resignation to the Board of Directors (the “Board”) of Circle Internet Group, Inc.",
    "source_hash": "719af5c4ade611bcf972f11516e652dd651c41fb02f68ecfb97a5a96c9394fd7",
    "available_as_of": "2026-06-12T11:01:31-06:00",
    "protocol_id": null
@@ -984,7 +984,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192CRCL(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→CRCL(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "63e8ab91dbe3b07a55d463ed246c1866af9be7ab7662ab50e128027a4df577c5",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -1004,7 +1004,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-05-11",
    "accession_number": "0001876042-26-000148",
-   "excerpt": "On May 11, 2026, Circle Internet Group, Inc. (the \u201cCompany\u201d) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
+   "excerpt": "On May 11, 2026, Circle Internet Group, Inc. (the “Company”) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
    "source_hash": "5387db8fb095cb9e4ce5d830e1f40099b6dc36f508ace6696dfbe0d5a2496e7f",
    "available_as_of": "2026-05-11T04:27:16-06:00",
    "protocol_id": null
@@ -1089,7 +1089,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On June 29, 2026 and June 30, 2026, Circle Internet Group, Inc. (the \u201cCompany\u201d) entered into token purchase agreements (each, a \u201cToken Purchase Agreement\u201d) with certain institutional investors (collectively, the \u201cInvestors\u201d),",
+   "corrected_excerpt": "On June 29, 2026 and June 30, 2026, Circle Internet Group, Inc. (the “Company”) entered into token purchase agreements (each, a “Token Purchase Agreement”) with certain institutional investors (collectively, the “Investors”),",
    "corrected_sha256": "e1b11d0d177331ff4f430a4f127a74131efa4f3600c866e765bc8c4794cc373c",
    "source_location": {
     "accession_number": "0001876042-26-000205",
@@ -1222,7 +1222,27 @@
    "label": "NEUTRAL"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 169 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CRCL --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-14T17:02:07.517506-06:00",
+  "window_end_inclusive": "2026-10-12T17:02:07.517506-06:00",
+  "event_objects": 93,
+  "distinct_accessions": 41,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "EXEC_CHANGE": 1,
+   "INSIDER_SELL": 90,
+   "OTHER_MATERIAL": 2
+  },
+  "largest_type_share": 0.967741935483871,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "component_anatomy": {
+  "status": "INCOMPLETE",
+  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
+ },
+ "excerpt_comparison_checks": []
 }

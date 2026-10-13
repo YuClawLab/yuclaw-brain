@@ -76,7 +76,11 @@ class Browser(unittest.TestCase):
             pg.get_by_role("button", name="Sector").focus(); pg.keyboard.press("Enter"); first = tickers(); pg.keyboard.press("Enter"); pg.keyboard.press("Enter"); self.assertEqual(tickers(), first)   # ties break by ticker: the same order every time
             pg.focus("#ftk"); pg.keyboard.type("zzzz"); self.assertEqual(tickers(), []); self.assertIn("No name matches these filters", pg.inner_text("#tb")); self.assertIn("0 of", pg.inner_text("#count"))
             pg.focus("#reset"); pg.keyboard.press("Space"); self.assertEqual(len(tickers()), rows_total); self.assertEqual(pg.get_attribute("th:has(button[data-key=score])", "aria-sort"), "descending")
-            pg.focus("#flb"); pg.keyboard.press("ArrowDown"); self.assertLess(len(tickers()), rows_total)                                       # a select operated from the keyboard filters
+            # Native popup arrow handling differs in headless macOS. Standard
+            # type-ahead selection and Tab commit exercise the same real control
+            # entirely from the keyboard, without setting its value in script.
+            pg.focus("#flb"); pg.keyboard.press("b"); pg.keyboard.press("Tab")
+            self.assertLess(len(tickers()), rows_total)                                                                             # keyboard-only selection filters
             pg.click("th button[data-key=score]"); self.assertEqual(pg.get_attribute("th:has(button[data-key=score])", "aria-sort"), "ascending")   # the mouse still works
             br.close()
         self.assertEqual(errors, [])

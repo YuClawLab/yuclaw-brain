@@ -1,7 +1,7 @@
 """
 SourceLock Guard — deterministic validator for LLM-extracted events.
 
-No LLM calls. Eight rules (R1..R8) check that the LLM's JSON output is
+No LLM calls. Structural, excerpt and earnings-comparison rules check that the LLM's JSON output is
 well-formed AND verifiable against the original raw text. A failure
 returns the rule name so rejected_events can be audited.
 
@@ -11,11 +11,12 @@ Public API:
 from __future__ import annotations
 
 import html
+import math
 import re
 from typing import Optional
 
 EVENT_TYPES = {
-    "EARNINGS_BEAT", "EARNINGS_MISS", "GUIDANCE_RAISE", "GUIDANCE_CUT",
+    "EARNINGS_RESULT", "EARNINGS_BEAT", "EARNINGS_MISS", "GUIDANCE_RAISE", "GUIDANCE_CUT",
     "M_AND_A_ANNOUNCE", "M_AND_A_CLOSE", "REGULATORY_ACTION", "EXEC_CHANGE",
     "BUYBACK_ANNOUNCE", "DIVIDEND_CHANGE", "PRODUCT_LAUNCH", "LAWSUIT",
     "PARTNERSHIP", "CONTRACT_WIN", "LAYOFFS", "CAPACITY_CHANGE",
@@ -68,20 +69,22 @@ def _r7_normalize(s: str) -> str:
 
 
 def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional[str]]:
-    """Validate an LLM extraction against R1..R8.
+    """Validate an LLM extraction against the rules listed below.
 
     Returns (True, None) when all rules pass, or (False, "Rx_name") on the
     first failure. A {"no_event": true} sentinel passes immediately.
 
     Rules:
         R1 schema_complete           — required keys all present (or no_event)
-        R2 event_type_in_vocabulary  — event_type in the 19-string set
+        R2 event_type_in_vocabulary  — event_type in the 20-string set
         R3 direction_in              — direction in {-1, 0, 1}
         R4 magnitude_in              — 0.0 <= magnitude <= 1.0
-        R5 confidence_floor          — confidence >= 0.5
+        R5 confidence_floor          — finite 0.5 <= confidence <= 1.0
         R6 excerpt_length            — <= 50 words AND <= 400 chars
         R7 excerpt_verifiable        — substring of raw_text OR Jaccard >= 0.85
         R8 no_advice_language        — advice regex matches neither field
+        R9 excerpt_quality           — optional registered quality gate
+        R10 earnings_comparison      — earnings beat/miss requires an expectations comparison
     """
     # Sentinel: explicit no-event is always valid, no further checks.
     if isinstance(llm_json, dict) and llm_json.get("no_event") is True:
@@ -99,17 +102,17 @@ def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional
         return False, "R2_event_type_in_vocabulary"
 
     # R3
-    if llm_json["direction"] not in (-1, 0, 1):
+    if isinstance(llm_json["direction"], bool) or llm_json["direction"] not in (-1, 0, 1):
         return False, "R3_direction_in"
 
     # R4
     mag = llm_json["magnitude"]
-    if not isinstance(mag, (int, float)) or not 0.0 <= mag <= 1.0:
+    if isinstance(mag, bool) or not isinstance(mag, (int, float)) or not 0.0 <= mag <= 1.0:
         return False, "R4_magnitude_in"
 
     # R5
     conf = llm_json["confidence"]
-    if not isinstance(conf, (int, float)) or conf < 0.5:
+    if isinstance(conf, bool) or not isinstance(conf, (int, float)) or not math.isfinite(conf) or not 0.5 <= conf <= 1.0:
         return False, "R5_confidence_floor"
 
     excerpt = llm_json["raw_excerpt"]
@@ -121,8 +124,8 @@ def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional
         return False, "R6_excerpt_length"
 
     # R7 — most-restrictive-first cascade. Each fallback fires only if the
-    # prior check did not match. Substring is the canonical check; the two
-    # fallbacks below only relax character encoding, never semantics.
+    # prior check did not match. Substring is the canonical check; the substring fallbacks relax character encoding. The legacy Jaccard
+    # fallback measures lexical overlap only; it is not semantic verification.
     raw_lc = raw_text.lower()
     excerpt_lc = excerpt.lower().strip()
     if excerpt_lc not in raw_lc:
@@ -154,5 +157,10 @@ def validate(llm_json: dict, raw_text: str, ticker: str) -> tuple[bool, Optional
     rationale = llm_json.get("rationale", "") or ""
     if _ADVICE_RE.search(excerpt) or _ADVICE_RE.search(rationale):
         return False, "R8_no_advice_language"
+
+    from v3.evidence.claim_support import assess
+    support = assess(llm_json['event_type'], excerpt, llm_json.get('comparison'))
+    if support['status'] in ('UNSUPPORTED_COMPARISON', 'INCOMPLETE', 'INVALID', 'CONTRADICTED'):
+        return False, 'R10_earnings_comparison_support'
 
     return True, None

@@ -85,6 +85,8 @@ Exit-code contract for every command: 0 = success · 1 = ran, negative result (e
 replay mismatch) · 2 = usage or validation error · 3 = environment unsupported. The
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
+**Research with v9:** [English / Français — start here](https://yuclaw.ca/research_start.html).
+
 <!-- CLI-TRANSCRIPT BEGIN -->
 Transcript produced from the release-candidate wheel `yuclaw-9.0.0-py3-none-any.whl` (yuclaw 9.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 
@@ -100,16 +102,16 @@ yuclaw 9.0.0 — evidence-first financial research CLI (research and education o
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
 commands:
-  brief          evidence brief (legacy v3 helper)
-  cascade        supply-chain cascade view for a ticker (deterministic, evidence-backed)
-  challenge      structured challenge bound to an exact artifact + claim id; dispositions keep the original finding (v7)
-  check-claim    Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)
-  decision       document-use receipt bound to an exact packet manifest digest; export needs permission (v7)
-  demo           3-minute guided offline journey — zero config, no backend
-  events         accepted-events export (derived data only)
-  evidencebench  score EvidenceBench predictions against a supplied item set (--items; rubric v1 exact, v2 candidate; stdlib-only) (7.0.1)
-  export         lens events export (--format csv|json; --page builds the evidence packet)
-... (17 more lines)
+  brief            evidence brief (legacy v3 helper)
+  cascade          supply-chain cascade view for a ticker (deterministic, evidence-backed)
+  challenge        structured challenge bound to an exact artifact + claim id; dispositions keep the original finding (v7)
+  check-claim      Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)
+  decision         document-use receipt bound to an exact packet manifest digest; export needs permission (v7)
+  demo             3-minute guided offline journey — zero config, no backend
+  events           accepted-events export (derived data only)
+  evidencebench    score EvidenceBench predictions against a supplied item set (--items; rubric v1 exact, v2 candidate; stdlib-only) (7.0.1)
+  export           lens events export (--format csv|json; --page builds the evidence packet)
+... (18 more lines)
 [exit 0]
 ```
 ```text
@@ -178,17 +180,17 @@ Replay bundle built 2026-10-12 23:02 UTC from source commit e2d79251ad36
 Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 54d204583c83
 
 [forward] 98 rebalance periods, window ['2026-05-20', '2026-10-12']
-  spread top_minus_bottom   mean/period -0.00281  t=-1.06 p=0.292  n=98  CI95=(-0.00797,+0.00222)
-  spread top_minus_universe mean/period -0.00186  t=-1.25 p=0.216  n=98  CI95=(-0.00475,+0.00102)
-  IC  1d  mean -0.0093  NW-t=-0.38 (lag 0) p=0.704  T=103 dates
-  IC  5d  mean -0.0422  NW-t=-1.22 (lag 4) p=0.224  T=99 dates
-  IC 20d  mean -0.0720  NW-t=-1.98 (lag 19) p=0.051  T=84 dates
-  market-model vs_universe  alpha/period -0.00197 beta +1.14  t(alpha)=-1.31 p=0.192  R2=0.262  n=98
-  market-model vs_spy       alpha/period -0.00162 beta +1.01  t(alpha)=-1.05 p=0.297  R2=0.213  n=98
-
+  spread top_minus_bottom   mean/period -0.00281  p=0.29164589139953445  n=98  CI95=(-0.007968809127066035, 0.002219730596511054)
+  spread top_minus_universe mean/period -0.00186  p=0.21589541436612958  n=98  CI95=(-0.004745724495384156, 0.0010167692252488613)
+  IC  1d mean -0.009274271579997335 NW-p=0.7039031555889981 T=103 dates
+  IC  5d mean -0.04223373219861134 NW-p=0.22352736565548859 T=99 dates
+  IC 20d mean -0.0719541771437324 NW-p=0.05063154475974262 T=84 dates
+  market-model vs_universe alpha/period -0.00197 beta 1.14 p=0.19237240924573562 n=98
+  market-model vs_spy alpha/period -0.00162 beta 1.01 p=0.29650040796637145 n=98
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
-  spread top_minus_bottom   mean/period +0.00553  t=+0.41 p=0.686  n=13  CI95=(-0.01937,+0.03079)
-... (11 more lines)
+  spread top_minus_bottom   mean/period +0.00553  p=0.6857184046492126  n=13  CI95=(-0.019365001701843236, 0.030789287070102277)
+  spread top_minus_universe mean/period +0.00586  p=0.4960746770292235  n=13  CI95=(-0.009809033927242129, 0.02165172551022834)
+... (12 more lines)
 [exit 0]
 ```
 <!-- CLI-TRANSCRIPT END -->

@@ -203,7 +203,7 @@ yuclaw replay-lab            # fetches the published bundle and verifies it</pre
 curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
 python3 replay_lab.py lab_replay_bundle.json</pre>
       <p style="font-size:11.5px;color:#718096;margin-top:10px">
-        Both paths rebuild the decile cohorts from bundled scores, recompute every statistic
+        Both paths rebuild the decile cohorts from bundled scores, recompute the core expected statistical tables
         (bootstrap CI with the published seed, Fama-MacBeth IC with Newey-West correction,
         market-model alpha), and recompute every sha-256 leaf and daily root against the public
         <a href="https://github.com/YuClawLab/yuclaw-trust">yuclaw-trust</a> ledger.

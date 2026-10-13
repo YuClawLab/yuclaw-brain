@@ -1,7 +1,7 @@
 {
  "name": "YUCLAW Evidence API",
  "former_name": "YUCLAW Ground Truth API",
- "former_name_status": "deprecated compatibility alias: kept so that clients which matched the earlier service name keep resolving it; it is not a product claim and not current positioning \u2014 the current name is the `name` field",
+ "former_name_status": "deprecated compatibility alias: kept so that clients which matched the earlier service name keep resolving it; it is not a product claim and not current positioning — the current name is the `name` field",
  "version": "v9.0.0",
  "generated": "2026-10-12T23:02:08.219765+00:00",
  "base_url": "https://yuclaw.ca",
@@ -58,9 +58,9 @@
   "ledger_day": "GET /evidence/verify.json and read days[].date; the latest date is the representative",
   "evidence_changes_day": "GET /c6_posture_current.json and read as_of; that date is the latest daily file; earlier days are one file per UTC day back to 2026-07-29; a 404 means no block for that day"
  },
- "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is uppercase (why/NVDA.json \u2014 why/nvda.json is a 404); the CLI uppercases ticker arguments for you",
+ "endpoint_case": "JSON endpoints are case-sensitive: {TICKER} is uppercase (why/NVDA.json — why/nvda.json is a 404); the CLI uppercases ticker arguments for you",
  "formats": {
-  "evidencebench": "JSONL \u2014 one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
+  "evidencebench": "JSONL — one item per line: {item_id, template (T1|T2|T3), question, key}; /evidencebench/meta.json carries the item-set hash and scoring rule"
  },
  "cli": {
   "install": "pip install yuclaw",
@@ -69,6 +69,6 @@
   "replay": "yuclaw replay TICKER --date D",
   "reproduce": "yuclaw replay-lab"
  },
- "as_of_recipe": "evidence as of D = evidence_objects with available_as_of <= D; classification at D = label_history last entry <= D; beyond the ribbon: the replay CLI",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

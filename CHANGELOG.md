@@ -2,6 +2,19 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+Research and education only. Not investment advice.
+
+- Replay verification now rejects missing daily roots, changed core expected statistics and forward scores that do not match ledger leaves. Numerical reproduction, bundle integrity and externally pinned provenance have separate outcomes. Existing anchor gaps remain disclosed.
+- A complete-history research export validates the manifest and UTC cutoff, produces CSV and exact JSON, and reports descriptive units. A capped preview is refused as a complete source.
+- Current research pages correct the earnings-comparison example, the cohort direction, the event-hash claim and the SEC-source scope. Earlier packets retain their bytes and receive a hash-bound limitations correction.
+- Future snapshots preserve nominal component weights. The Why generators expose stored confidences and effective contributions where available, and mark missing historical inputs rather than reconstructing them without evidence. Event counts, distinct filings and event-family concentration are reported separately.
+- Prospective SourceLock admission rejects unsupported earnings-beat/miss comparisons and non-finite confidence. This changes future admission criteria and requires a deployment record before a new evaluation window. Historical classifications and results are preserved.
+- English/French researcher onboarding links to the published v9 workflow. Mobile tables have focusable scroll regions. The viewport gate validates HTTP status and served bytes, opens disclosure panels, and tests actual keyboard scrolling.
+
+These are development changes, not a new published release. The 9.0.0 release-policy exception is not extended. No historical return series, ledger root, registry chain, mission or vision is revised. No human study or backup feature is introduced.
+
 ## [9.0.0] — 2026-10-13
 
 Research & education only. Not investment advice.

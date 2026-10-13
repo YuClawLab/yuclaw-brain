@@ -10,7 +10,7 @@ hashes, per-period DERIVED returns (close[exit]/close[entry] - 1, computed
 in-house), and derived 1/5/20-day track-record returns. NO raw vendor OHLCV
 rows (Finnhub/Polygon/yfinance ToS) are exported. Users who want to extend the
 analysis to raw prices supply their own licensed price feed; the bundled
-derived returns are sufficient to reproduce every table on the page.
+derived returns are sufficient to reproduce the core expected tables; scope is reported by the verifier.
 
 Regenerated daily by cron/refresh_v3_pages.sh alongside the page renders.
 """
@@ -75,6 +75,7 @@ def _panel_inputs(panel: str) -> dict:
             "entry": d0.isoformat(), "exit": d1.isoformat(),
             "scores": {tk: float(v["score"]) for tk, v in sorted(day.items())},
             "labels": {tk: v["label"] for tk, v in sorted(day.items())},
+            "snapshot_ids": {tk: v["snapshot_id"] for tk, v in sorted(day.items())},
             "period_returns": {tk: r for tk, r in sorted(rets.items()) if r is not None},
             "spy_ret": spy_ret,
         })
@@ -85,7 +86,7 @@ def _panel_inputs(panel: str) -> dict:
             # derived multi-horizon returns for the IC replication
             cur.execute(
                 """SELECT signal_date, ticker, total_score,
-                          return_1d, return_5d, return_20d
+                          return_1d, return_5d, return_20d, snapshot_id
                    FROM track_record WHERE is_backfill = %s
                    ORDER BY signal_date, ticker""",
                 (is_backfill,),
@@ -94,13 +95,15 @@ def _panel_inputs(panel: str) -> dict:
                 {"date": d.isoformat(), "ticker": tk, "score": float(s),
                  "r1": float(r1) if r1 is not None else None,
                  "r5": float(r5) if r5 is not None else None,
-                 "r20": float(r20) if r20 is not None else None}
-                for d, tk, s, r1, r5, r20 in cur.fetchall()
+                 "r20": float(r20) if r20 is not None else None, "snapshot_id": sid}
+                for d, tk, s, r1, r5, r20, sid in cur.fetchall()
             ]
 
     pres = compute_panel(panel)
     return {
         "rebalances": rebalances,
+        "trading_dates": [d.isoformat() for d in trade_dates],
+        "observation_units": {"ic_rows": len(ic_rows), "distinct_issuer_dates": len({(r["date"], r["ticker"]) for r in ic_rows}), "ic_unit": "signal snapshot", "cohort_unit": "latest snapshot per issuer/signal date", "independent_observations": None},
         "window": ([pres.get("first_entry_date"), pres.get("last_exit_date")]
                    if pres.get("evaluable") else None),
         "ic_rows": ic_rows,
@@ -161,6 +164,7 @@ def main() -> int:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     bundle = {
         "artifact": "YUCLAW Validation Lab replay bundle",
+        "schema": "lab-replay/2",
         "disclaimer": ("Hypothetical research illustration. Not investment advice. "
                        "Research classifications, not recommendations. "
                        "Derived data only — no raw vendor market data."),

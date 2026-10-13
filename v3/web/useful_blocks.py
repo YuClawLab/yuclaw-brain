@@ -116,6 +116,7 @@ def load_packet_manifest(kind: str) -> dict | None:
 # Fully inline-styled so it renders identically regardless of page CSS.
 # ---------------------------------------------------------------------------
 _NAV_CHIPS = (
+    ("Start here · EN/FR", "research_start.html"),
     ("Validation Lab", "validation_lab.html"),
     ("SMH Evidence Lens", "etf_evidence.html"),
     ("XLK Evidence Lens", "xlk_evidence.html"),
@@ -193,6 +194,23 @@ def wrap_tables(html: str, label: str = "data table") -> str:
 
 
 TABLE_WRAP_CSS = ".table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%;margin:0 0 6px}.table-wrap:focus{outline:2px solid #00E676;outline-offset:2px}.table-wrap table{min-width:560px}pre{overflow-x:auto;max-width:100%}body{overflow-wrap:anywhere}"
+
+
+def responsive_research_page(html: str) -> str:
+    """Apply the shared table treatment without altering canonical mission text."""
+    protected = []
+
+    def keep(match):
+        protected.append(match.group(0))
+        return f'<!-- preserved-mission-{len(protected)-1} -->'
+
+    html = re.sub(r'<!-- mv-html:begin -->.*?<!-- mv-html:end -->', keep, html, flags=re.S)
+    html = wrap_tables(html, 'Research data table')
+    for i, content in enumerate(protected):
+        html = html.replace(f'<!-- preserved-mission-{i} -->', content)
+    html = re.sub(r'<style id="research-responsive">.*?</style>\n?', '', html, flags=re.S)
+    css = TABLE_WRAP_CSS + 'pre,.table-wrap{box-sizing:border-box}img,svg{max-width:100%}.card,.panel,section{min-width:0}'
+    return html.replace('</head>', f'<style id="research-responsive">{css}</style>\n</head>', 1)
 
 
 def updated_strip() -> str:
@@ -302,7 +320,7 @@ C6_APPROVED_SENTENCE = (
 # Part H — proven / not proven / accruing (single source, four pages)
 # ---------------------------------------------------------------------------
 STATUS_PROVEN = [
-    "Replay works — one command reproduces every Lab statistic and evidence-ledger root from published data",
+    "Replay checks the core expected tables and bundled ledger consistency; external provenance requires a separately acquired ledger",
     "Ledger anchored daily — sha-256 daily roots committed to a public git repository before pages update",
     "Evidence traces to filings — every accepted event carries a source URL, accession number, and verified excerpt",
     "Coverage measured — SEC-filer weight per lens is stated as measured, never rounded up",
@@ -374,10 +392,11 @@ def guide_links_html() -> str:
     (release-manifest rule B4) and are labelled as history with their real scope and length. Until 8.0.0 this line offered the
     version-5-era PDF as "the" guide and called its 12 pages six."""
     return _marked(GUIDE_MARK, '<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
+                   '<a href="research_start.html">Start here / Bien commencer</a> · <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_EN.md">v9 English</a> · <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_FR.md">v9 Français</a><br>'
                    f'\U0001F4D6 {USER_GUIDE_LABEL}: <a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">English</a> '
                    '(<a href="guide/v8/YUCLAW-v8-User-Guide-EN.pdf">PDF</a>) \u00b7 '
                    f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Fran\u00e7ais</a> (<a href="guide/v8/YUCLAW-v8-User-Guide-FR.pdf">PDF</a>) \u00b7 '
-                   f'<a href="{GUIDE_URL}">\U0001F4D6 Current guide (v8, English)</a>'
+                   f'<a href="{GUIDE_URL}">\U0001F4D6 Workbench foundation guide (v8, English)</a>'
                    ' — install, workspaces, roles, the local workbench, the four modules, export and verification; the same text ships in the package '
                    '(<code>yuclaw workbench guide</code>). · <a href="tour.html">5-minute command-line tour</a> · '
                    'Earlier PDF guides — historical: written for the version 5 command line, 12 pages, not updated for v8: '
@@ -385,9 +404,9 @@ def guide_links_html() -> str:
 
 
 def footer_guide_links_html() -> str:
-    return _marked(FOOTER_GUIDE_MARK, f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">\U0001F4D6 User Guide (v8, EN)</a> \u00b7\n      '
+    return _marked(FOOTER_GUIDE_MARK, '<a href="research_start.html">Start here / Bien commencer (v9)</a> · ' + f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">\U0001F4D6 User Guide (v8, EN)</a> \u00b7\n      '
                    f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Guide utilisateur (v8, FR)</a> \u00b7\n      '
-                   f'<a href="{GUIDE_URL}">\U0001F4D6 Guide (current, v8)</a> \u00b7\n      '
+                   f'<a href="{GUIDE_URL}">\U0001F4D6 Workbench foundation guide (v8)</a> \u00b7\n      '
                    '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (version 5 era, historical)</a> \u00b7\n      '
                    '<a href="YUCLAW_Guide_Utilisateur_FR.pdf">Guide PDF ant\u00e9rieur (version 5, historique)</a> \u00b7')
 
@@ -401,7 +420,8 @@ def workbench_card_html() -> str:
            "yuclaw workbench guide                                     # the full guide, from the package")
     return _marked(WORKBENCH_MARK, f"""
     <div class="card" id="workbench">
-      <div class="card-title">The local workbench and its four modules (v8)</div>
+      <div class="card-title">Research briefs (v9), built on the local workbench (v8)</div>
+      <p>Version 9 adds sentence inspection, brief composition, tracked edits and translations, imported provenance records, portable verification and operation counts. <a href="research_start.html">Start with the English or French guide</a>. It does not include live model-generation or watermark-detection connectors.</p>
       <p style="font-size:13px;color:#A0AEC0;line-height:1.7">
         This website is the <strong style="color:#E2E8F0">research-content site</strong>: evidence, labs and records you can read and re-compute.
         The v8 <strong style="color:#E2E8F0">workbench</strong> is a different thing: an application that runs <strong style="color:#E2E8F0">on your own computer</strong>
@@ -441,7 +461,7 @@ def use_in_research_html(packet_href: str | None = None,
             <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code>.<br>
             No install: <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/tools/replay_lab.py">tools/replay_lab.py</a>
             (stdlib only) against the published bundle.<br>
-            Exit 0 = every statistic and evidence-ledger root reproduced. <a href="replication.html">How to report a replication →</a>
+            Exit 0 = core tables reproduced and bundled ledger consistency checked; external provenance is separate. <a href="replication.html">How to report a replication →</a>
           </p>
         </div>
         <div style="flex:1;min-width:240px">

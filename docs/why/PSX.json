@@ -234,7 +234,7 @@
    "evidence_type": "GUIDANCE_CUT",
    "filing_date": "2026-04-06",
    "accession_number": "0001534701-26-000015",
-   "excerpt": "On April 6, 2026, Phillips 66 (the \u201cCompany\u201d) issued guidance providing preliminary first-quarter 2026 financial information.",
+   "excerpt": "On April 6, 2026, Phillips 66 (the “Company”) issued guidance providing preliminary first-quarter 2026 financial information.",
    "source_hash": "d4c403e24fbc09896eb43bf180e731a0414ffb47bc1252e0358cca38aa91c4d2",
    "available_as_of": "2026-04-06T14:15:26-06:00",
    "protocol_id": null
@@ -355,7 +355,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. On August 20, 2026, Phillips 66 Company (the \u201cCompany\u201d), a wholly owned subsidiary of Phillips 66 (\u201cPhillips 66\u201d), amended the Company\u2019s accounts receivable securitization program.",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. On August 20, 2026, Phillips 66 Company (the “Company”), a wholly owned subsidiary of Phillips 66 (“Phillips 66”), amended the Company’s accounts receivable securitization program.",
    "corrected_sha256": "e008488f4816059eb14dafb5ee6f4d47e2875aa6d30140136f558e41fea32e20",
    "source_location": {
     "accession_number": "0001193125-26-361266",
@@ -405,7 +405,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Term Loan Agreement On March 18, 2026 (the \u201cTerm Loan Closing Date\u201d), Phillips 66 Company (the \u201cCompany\u201d), a wholly owned subsidiary o",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Term Loan Agreement On March 18, 2026 (the “Term Loan Closing Date”), Phillips 66 Company (the “Company”), a wholly owned subsidiary o",
    "corrected_sha256": "ce3ebd6fa0a4c6486dafa683069ea05c88f4f235c6392b938600cbfb91682b6b",
    "source_location": {
     "accession_number": "0001193125-26-114070",
@@ -430,7 +430,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On March 6, 2026, the Board of Directors (the \u201cBoard\u201d) of Phillips 66 (the \u201cCompany\u201d), increased the size of the Board from 14 directors to 16 directors, and appointed Kevin O.",
+   "corrected_excerpt": "On March 6, 2026, the Board of Directors (the “Board”) of Phillips 66 (the “Company”), increased the size of the Board from 14 directors to 16 directors, and appointed Kevin O.",
    "corrected_sha256": "6e302787e32963fb766186c219836c4836b642c159bd593be5f9a0294be36744",
    "source_location": {
     "accession_number": "0001193125-26-097469",
@@ -563,7 +563,27 @@
    "label": "BULLISH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 29 of 29 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-14T17:02:07.914489-06:00",
+  "window_end_inclusive": "2026-10-12T17:02:07.914489-06:00",
+  "event_objects": 17,
+  "distinct_accessions": 11,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "EXEC_CHANGE": 1,
+   "INSIDER_SELL": 13,
+   "OTHER_MATERIAL": 3
+  },
+  "largest_type_share": 0.7647058823529411,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "component_anatomy": {
+  "status": "INCOMPLETE",
+  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
+ },
+ "excerpt_comparison_checks": []
 }

@@ -22,7 +22,7 @@ from typing import Any, Optional
 
 import psycopg2
 
-from v3.signal.composite import compute
+from v3.signal.composite import compute, COMPONENT_WEIGHTS
 from v3.sources.edgar_poll import DB_DSN
 
 UNIVERSE_PATH = Path(__file__).resolve().parent.parent / "universe.json"
@@ -99,6 +99,7 @@ def _trimmed_anatomy(components: dict[str, Any]) -> dict[str, Any]:
         eids = [e for e in eids if not (e in seen or seen.add(e))]
         out[cid] = {
             "score": c.get("score"),
+            "nominal_weight": COMPONENT_WEIGHTS.get(cid),
             "confidence": c.get("confidence"),
             "rationale": c.get("rationale", "") or "",
             "evidence_ids": eids,

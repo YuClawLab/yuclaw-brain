@@ -224,7 +224,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-10",
    "accession_number": "0001819994-26-000061",
-   "excerpt": "On August 10, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
+   "excerpt": "On August 10, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
    "source_hash": "27263f2233e740f6113c51ef23363a416ac748fdcc169e22fdc36c50ffd2a64c",
    "available_as_of": "2026-08-10T10:08:45-06:00",
    "protocol_id": null
@@ -944,7 +944,7 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-06-05",
    "accession_number": "0001819994-26-000056",
-   "excerpt": "(b)-(c) On June 3, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) appointed A",
+   "excerpt": "(b)-(c) On June 3, 2026, Rocket Lab Corporation (the “Company”) appointed A",
    "source_hash": "e06cbbc75593188bed7c5024b035aeedcf64998c10c3fcbd1d6b3502f1c56b8c",
    "available_as_of": "2026-06-05T14:15:29-06:00",
    "protocol_id": null
@@ -994,7 +994,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192RKLB(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→RKLB(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "70560d9ecd0186c20b5137a303a6645aa60a412d919cf8a461b91400f8c13e99",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -1004,7 +1004,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-05-07",
    "accession_number": "0001819994-26-000027",
-   "excerpt": "On May 7, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
+   "excerpt": "On May 7, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
    "source_hash": "80dbb3e04fa58b3f22e383f183df5a33423cabd3a096ab6f0a2d07958be3ec63",
    "available_as_of": "2026-05-07T14:09:52-06:00",
    "protocol_id": null
@@ -1024,7 +1024,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-03-17",
    "accession_number": "0001628280-26-018789",
-   "excerpt": "On March 17, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) entered into an equity distribution agreement (the \u201cEquity Distribution Agreement\u201d) with BofA Securities, Inc., BTIG, LLC, Cantor Fitzgerald & Co., Citizens JMP Securities, LLC, Deuts",
+   "excerpt": "On March 17, 2026, Rocket Lab Corporation (the “Company”) entered into an equity distribution agreement (the “Equity Distribution Agreement”) with BofA Securities, Inc., BTIG, LLC, Cantor Fitzgerald & Co., Citizens JMP Securities, LLC, Deuts",
    "source_hash": "4e5ad96dcd3ae8739ec182dac812ab66bb4c068580d167a7585fc0714ca04b53",
    "available_as_of": "2026-03-17T14:26:06-06:00",
    "protocol_id": null
@@ -1064,7 +1064,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 7.01. Regulation FD Disclosure. On August 13, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing the entry into the Equity Distribution Agreement (as defined below).",
+   "corrected_excerpt": "Item 7.01. Regulation FD Disclosure. On August 13, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing the entry into the Equity Distribution Agreement (as defined below).",
    "corrected_sha256": "c4fced334a63a940604fe15310f74af94fa1a4b0abb0be5244ab4b5127452f15",
    "source_location": {
     "accession_number": "0001753926-26-001463",
@@ -1197,7 +1197,26 @@
    "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 131 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay RKLB --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-14T17:02:07.945950-06:00",
+  "window_end_inclusive": "2026-10-12T17:02:07.945950-06:00",
+  "event_objects": 90,
+  "distinct_accessions": 24,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_SELL": 85,
+   "OTHER_MATERIAL": 5
+  },
+  "largest_type_share": 0.9444444444444444,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "component_anatomy": {
+  "status": "INCOMPLETE",
+  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
+ },
+ "excerpt_comparison_checks": []
 }

@@ -100,6 +100,7 @@
 - /lane.html — YUCLAW's Lane — scope statement
 - /methodology.html — Methodology — styled render of the canonical methodology/backfill.md (raw .md stays served for machines)
 - /replication.html — Replication — how to reproduce, honestly-empty log
+- /research_start.html — Start research with v9 — English / Français, scope and verification limits
 - /sectors.html — Sector overview — descriptive medians of current classifications (display, not inference)
 - /signal_review.html — Signal Review — bring-your-signal research review service (five-step no-upload flow, fixed tiers, EXPLORATORY (CLIENT) ceiling)
 - /todays_evidence.html — Today's Evidence Changes
@@ -125,3 +126,11 @@ the events export of the relevant packet.
 - Preserve the disclaimers and the frozen implication line when quoting
   inference. Past results — in-sample or forward-tracked — do not predict
   future performance.
+
+## Research interpretation contract
+
+Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.
+
+source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion proof: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.
+
+Exit 0 checks the core expected statistical tables and bundled signal-ledger consistency. External provenance is UNVERIFIED unless a separately acquired ledger and its independently obtained SHA-256 are supplied. Historical in-sample inputs and vendor-derived returns are not independently authenticated. Use --require-external-ledger to require full external coverage of forward inputs.

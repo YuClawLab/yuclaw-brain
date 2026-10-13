@@ -173,7 +173,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>YUCLAW {VERSION} — Evidence-First Financial AI</title>
-  <meta name="description" content="Open-source evidence-first financial research platform. Composite signals tied to SEC filings, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
+  <meta name="description" content="Open-source evidence-first financial research platform. Accepted filing events link to SEC sources; composite classifications also use market inputs, time-machine replay, hash-anchored Verified Research Ledger. Agent Research API · MCP · LangChain/LlamaIndex. Research only — not investment advice.">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
     *{{margin:0;padding:0;box-sizing:border-box}}
@@ -262,7 +262,7 @@ def render(rows: list[dict[str, Any]], as_of: datetime | None) -> str:
 
     <div class="hero-min">
       <h1>Evidence-First Financial AI</h1>
-      <p class="tagline">Every signal traces to a real SEC filing.</p>
+      <p class="tagline">Accepted filing events link to SEC sources. Composite classifications also use market inputs; some names have no direct filing evidence in our corpus.</p>
       <div class="features">Agent Research API <span>·</span> MCP <span>·</span> LangChain/LlamaIndex <span>·</span> pip install yuclaw</div>
       <p class="hero-links" style="margin:14px 0 0"><a href="#about" style="color:#A0AEC0;text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:#1E232D;white-space:nowrap">About YUCLAW</a></p>
     </div>

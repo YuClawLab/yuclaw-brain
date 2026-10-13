@@ -4,8 +4,9 @@ Recherche et formation uniquement. Aucun conseil en placement.
 Mission : Make financial AI accountable to evidence. (Rendre l’IA financière redevable envers les éléments probants.)
 Vision : Become the Science Trust Layer for Financial AI. (Devenir la couche de confiance scientifique de l’IA financière.)
 
-Logiciel couvert : YUCLAW **9.0.0** (couche `v9.brief/1`), tel que figé pour la publication sur la branche `codex/v9-integration`
-en octobre 2026. L’entrée `[9.0.0]` du CHANGELOG et la publication GitHub indiquent si elle est publiée ; ce guide décrit le comportement figé. Chaque commande et chaque extrait de sortie de ce guide a été exécuté sur ce dépôt dans un espace de
+Logiciel couvert : YUCLAW **9.0.0** (couche `v9.brief/1`), publiée le 13 octobre 2026.
+[Commencer en français ou en anglais](https://yuclaw.ca/research_start.html) pour le parcours de recherche public et ses limites.
+Chaque commande et chaque extrait de sortie de ce guide a été exécuté sur ce dépôt dans un espace de
 travail jetable. **Toutes les données montrées sont fictives** : l’exemple fourni `001_base` décrit « Fictional Example
 Corp (ZZFX) », des numéros de dépôt de la forme `0000000000-26-00000x` et des montants inventés pour l’exemple. Les
 identifiants tels que `brf-4625e1016814`, `bpk-a3ff4d970a5e16c3`, les empreintes et les horodatages diffèrent à chaque
@@ -55,7 +56,7 @@ yuclaw workbench brief --help
 yuclaw workbench brief selftest          # checks this installation in a temporary fictional workspace
 ```
 
-Tant que 9.0 n’est pas publiée, les mêmes commandes s’exécutent depuis un dépôt cloné de la branche avec
+Pour le développement, les mêmes commandes s’exécutent également depuis un dépôt cloné avec
 `cd <checkout> && PYTHONPATH=. python3 -m v9.brief …`.
 
 `selftest` crée un espace temporaire, exécute le parcours complet puis le supprime. Fin attendue (17 vérifications) :

@@ -1,0 +1,18 @@
+{
+ "schema": "packet-limitations-correction/1",
+ "issued": "2026-10-13",
+ "applies_to_sha256": {
+  "yuclaw_validation_lab_packet.zip": "b9eee2cc2f9d3f712aa94fbda87a1738b524887b030717b4ddc4e1bf65b192aa"
+ },
+ "lab_limitations": [
+  "Forward statistical estimates are exploratory; fixed-sample p-values are not anytime-valid under repeated inspection. Read current uncertainty and power in the statistical tables.",
+  "In-sample results are a historical reconstruction with later scoring design and approximated market inputs, not a contemporaneous forward record. The declared Llama 3.1 pretraining cutoff predates the filings; see the canonical look-ahead statement.",
+  "Price-return definitions, missing prices and corporate-action exclusions limit interpretation; these results are not a total-return investment performance claim.",
+  "IC rows are signal snapshots; repeated issuer/date observations may occur. Snapshot count, distinct issuer/date count and independent information count differ.",
+  "The selected universe includes equities and funds with overlapping exposures; it does not represent independent randomly sampled firms.",
+  "Insider evidence: batch coverage 2026-02-18 to 2026-05-15; live from 2026-07-16; the gap is backfilled with ingestion-time available_as_of."
+ ],
+ "replay_scope": "Exit 0 checks the core expected statistical tables and bundled signal-ledger consistency. External provenance is UNVERIFIED unless a separately acquired ledger and its independently obtained SHA-256 are supplied. Historical in-sample inputs and vendor-derived returns are not independently authenticated. Use --require-external-ledger to require full external coverage of forward inputs.",
+ "canonical_lookahead": "/methodology/lookahead_statement.txt",
+ "note": "Correction of interpretation for this exact historical Lab packet; original archives and measured values are retained."
+}

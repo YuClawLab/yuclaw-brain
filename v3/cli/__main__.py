@@ -24,6 +24,7 @@ COMMANDS: dict[str, str] = {
     "replay-lab": "v3.lab.replay_check:main",
     # usefulness build (2026-07-16): derived-data exports + lens summaries
     "events": "v3.cli.events:main",
+    "research-export": "v3.cli.research_export:main",
     # 5.2: Signal Review client-side pre-check (local-only, never transmits)
     "intake-check": "v3.cli.intake_check:main",
     # 5.3: Evidence Passport — deterministic claim check
@@ -55,9 +56,10 @@ DESCRIPTIONS: dict[str, str] = {
     "keys": "manage API keys for the REST server",
     "demo": "3-minute guided offline journey — zero config, no backend",
     "verify": "Verified Research Ledger integrity check for a ticker/date",
-    "workbench": "v8 LOCAL workbench: source → typed claim → export, with the SHD/EVO/COM/PRC modules (try: yuclaw workbench guide · selftest · serve --workspace DIR)",
-    "replay-lab": "reproduce the Validation Lab from the public bundle (exit 0 = reproduced)",
+    "workbench": "v8/v9 LOCAL workbench: source → typed claim → export, with the SHD/EVO/COM/PRC modules (try: yuclaw workbench guide · selftest · serve --workspace DIR)",
+    "replay-lab": "reproduce the Validation Lab from the public bundle (exit 0 = internal reproduction; external provenance is separate)",
     "events": "accepted-events export (derived data only)",
+    "research-export": "offline point-in-time CSV/JSON export from complete, manifest-matched public history",
     "intake-check": "client-side pre-check of a signal CSV for Signal Review (never transmits)",
     "check-claim": "Evidence Passport — deterministic claim check (--text, --ticker/--type/--date-range, --accession)",
     "packet": "offline verification packet — build from public artifacts, or verify exact bytes + replay the frozen bundle (v7)",
@@ -75,7 +77,7 @@ DESCRIPTIONS: dict[str, str] = {
 }
 EXIT_CODES = ("Exit codes: 0 = success · 1 = operation ran, negative result "
               "(e.g. verify mismatch, replay-lab mismatch) · "
-              "2 = usage/validation error · 3 = environment unsupported")
+              "2 = usage/validation error · 3 = environment unsupported · 4 = required external verification incomplete")
 
 
 def help_text() -> str:

@@ -3,8 +3,8 @@
 Research and education only. Not investment advice.
 Mission: Make financial AI accountable to evidence. Vision: Become the Science Trust Layer for Financial AI.
 
-Software covered: YUCLAW **9.0.0** (brief layer `v9.brief/1`), as frozen for release on branch `codex/v9-integration` in October
-2026. The CHANGELOG entry `[9.0.0]` and the GitHub release state whether it is published; this guide describes the frozen behaviour.
+Software covered: YUCLAW **9.0.0** (brief layer `v9.brief/1`), released 13 October 2026.
+[Start here in English or French](https://yuclaw.ca/research_start.html) for the public research workflow and its limits.
 Every command and every output excerpt in this guide was run against that checkout in a disposable workspace. **All data
 shown is fictional** — the packaged fixture `001_base` describes "Fictional Example Corp (ZZFX)", accession numbers of the
 form `0000000000-26-00000x`, and amounts that were invented for the example. Identifiers such as `brf-4625e1016814`,
@@ -50,7 +50,7 @@ yuclaw workbench brief --help
 yuclaw workbench brief selftest          # checks this installation in a temporary fictional workspace
 ```
 
-Until 9.0 is released, the same commands run from a checkout of the branch with `cd <checkout> && PYTHONPATH=. python3 -m v9.brief …`.
+For development, the same commands also run from a checkout with `cd <checkout> && PYTHONPATH=. python3 -m v9.brief …`.
 
 `selftest` creates a temporary workspace, runs the complete journey and deletes it. Expected ending (17 checks):
 

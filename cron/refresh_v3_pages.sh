@@ -94,6 +94,9 @@ if [ "$(date +%u)" = "5" ]; then
     /usr/bin/python3 tools/yuclaw_evidencebench.py selfscore || exit 40
 fi
 /usr/bin/python3 -m v3.web.render_evidencebench || exit 41
+# Research contracts and accessible tables, after the public page generators.
+# Complete histories and original release artifacts remain unchanged.
+/usr/bin/python3 tools/stage_research_corrections.py || exit 80
 
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
@@ -226,7 +229,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/c6_posture_current.json registry/c6_posture_state.json \
                  docs/trace_su.html docs/replication.html docs/lane.html \
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
-                 docs/signal_review.html docs/schemas \
+                 docs/signal_review.html docs/research_start.html docs/schemas \
                  docs/explorer.html docs/explorer_data.json docs/why \
                  docs/sectors.html docs/tour.html docs/methodology.html \
                  docs/capabilities.json docs/evidence docs/ledger \

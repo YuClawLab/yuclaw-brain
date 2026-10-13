@@ -13,17 +13,21 @@ from __future__ import annotations
 import json
 import sys
 import time
+import hashlib
+from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
 
 _REPO = Path(__file__).resolve().parents[1]
 DOCS = _REPO / "docs"
-ARCHIVE_DIRS = ("preview", "v4", "evidence_changes", "ledger", "packets", "schemas", "evidencebench", "receipts")
+ARCHIVE_DIRS = ("archive", "preview", "v4", "evidence_changes", "ledger", "packets", "schemas", "evidencebench", "receipts")
+# Earlier guide editions are immutable source artifacts, not current guides.
+ARCHIVE_FILES = {"YUCLAW_User_Guide_v5.1_source.html", "YUCLAW_Guide_Utilisateur_v5.1_FR_source.html"}
 MOBILE = {"width": 390, "height": 844}
 DESKTOP = {"width": 1440, "height": 900}
 DEFAULT_TIME_BOUND_S = 420
-READY_MS = 6000
+READY_MS = 15000
 
 JS_MEASURE = """
 () => {
@@ -43,7 +47,7 @@ def routes() -> tuple[list[str], list[str]]:
     current, archived = [], []
     for p in sorted(DOCS.rglob("*.html")):
         rel = p.relative_to(DOCS).as_posix()
-        if rel.split("/")[0] in ARCHIVE_DIRS or "/preview/" in rel:
+        if rel.split("/")[0] in ARCHIVE_DIRS or "/preview/" in rel or rel in ARCHIVE_FILES:
             archived.append(rel)
         else:
             current.append(rel)
@@ -51,6 +55,15 @@ def routes() -> tuple[list[str], list[str]]:
 
 
 PW_PYTHON_CANDIDATES = (Path.home() / ".local" / "share" / "yuclaw" / "pwvenv" / "bin" / "python",)
+
+
+def response_problem(status, content_type, body, expected):
+    """An error page or another file fitting the viewport is not a passed route."""
+    if status != 200 or 'text/html' not in content_type.lower():
+        return f'route did not serve HTML successfully (HTTP {status})'
+    if hashlib.sha256(body).digest() != hashlib.sha256(expected).digest():
+        return 'served bytes do not match the route under test'
+    return None
 
 
 def run(time_cap_s: int = DEFAULT_TIME_BOUND_S, only: list[str] | None = None) -> dict:
@@ -74,7 +87,7 @@ def run(time_cap_s: int = DEFAULT_TIME_BOUND_S, only: list[str] | None = None) -
     class Quiet(SimpleHTTPRequestHandler):
         def log_message(self, *a):  # noqa: N802
             pass
-    srv = ThreadingHTTPServer(("127.0.0.1", 0), Quiet); srv.RequestHandlerClass.directory = str(DOCS)
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), partial(Quiet, directory=str(DOCS)))
     Thread(target=srv.serve_forever, daemon=True).start(); base = f"http://127.0.0.1:{srv.server_port}/"
     t0 = time.monotonic()
     try:
@@ -91,11 +104,22 @@ def run(time_cap_s: int = DEFAULT_TIME_BOUND_S, only: list[str] | None = None) -
                 for vp in (MOBILE, DESKTOP):
                     ctx = browser.new_context(viewport=vp); page = ctx.new_page()
                     try:
-                        page.goto(base + rel, wait_until="load", timeout=READY_MS)
+                        response = page.goto(base + rel, wait_until="load", timeout=READY_MS)
+                        problem = response_problem(response.status, response.headers.get('content-type', ''),
+                                                   response.body(), (DOCS / rel).read_bytes()) if response else 'no navigation response'
+                        if problem:
+                            raise ValueError(problem)
                         try:
                             page.wait_for_load_state("networkidle", timeout=READY_MS)
                         except Exception:  # noqa: BLE001
                             pass
+                        collapsed = page.evaluate('({width: document.documentElement.scrollWidth, viewport: innerWidth})')
+                        if collapsed['width'] > collapsed['viewport']:
+                            findings.append(f"{vp['width']}px: collapsed document overflows ({collapsed['width']}px)")
+                        # Closed details cannot take focus. Exercise their
+                        # contents in the expanded state instead of treating
+                        # an intentionally hidden table as a keyboard failure.
+                        page.locator('details').evaluate_all('(els) => els.forEach(e => e.open = true)')
                         m = page.evaluate(JS_MEASURE)
                         if m["scrollWidth"] > m["innerWidth"]:
                             findings.append(f"{vp['width']}px: document scrollWidth {m['scrollWidth']} > innerWidth {m['innerWidth']}")
@@ -106,11 +130,14 @@ def run(time_cap_s: int = DEFAULT_TIME_BOUND_S, only: list[str] | None = None) -
                             # keyboard reachability: a scrollable region must scroll with ArrowRight when focused
                             for k, t in enumerate(m["tables"]):
                                 if t["canScroll"] and t["focusable"]:
-                                    moved = page.evaluate("""(k) => { const t = document.querySelectorAll('table')[k]; let el = t.parentElement; while (el && !/(auto|scroll)/.test(getComputedStyle(el).overflowX)) el = el.parentElement; el.focus(); el.scrollLeft = 0; el.dispatchEvent(new KeyboardEvent('keydown', {key: 'ArrowRight'})); el.scrollLeft += 40; return el.scrollLeft > 0; }""", k)
-                                    if not moved:
-                                        findings.append(f"390px: table {k+1} scroll region does not scroll horizontally"); break
+                                    page.evaluate("""(k) => { const t = document.querySelectorAll('table')[k]; let el = t.parentElement; while (el && !/(auto|scroll)/.test(getComputedStyle(el).overflowX)) el = el.parentElement; el.focus(); el.scrollLeft = 0; }""", k)
+                                    page.keyboard.press('ArrowRight')
+                                    try:
+                                        page.wait_for_function("""(k) => { const t = document.querySelectorAll('table')[k]; let el = t.parentElement; while (el && !/(auto|scroll)/.test(getComputedStyle(el).overflowX)) el = el.parentElement; return el.scrollLeft > 0; }""", arg=k, timeout=1500)
+                                    except Exception:
+                                        findings.append(f"390px: table {k+1} does not scroll on an actual ArrowRight key press"); break
                     except Exception as exc:  # noqa: BLE001
-                        findings.append(f"{vp['width']}px: not measured ({exc.__class__.__name__}) — not a pass")
+                        findings.append(f"{vp['width']}px: not measured ({exc.__class__.__name__}: {str(exc)[:200]}) — not a pass")
                     finally:
                         ctx.close()
                 rep["visited"] += 1

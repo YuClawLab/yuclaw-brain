@@ -11,6 +11,8 @@ the freshness stamp at the top of the page is the visible contract.
 
 from __future__ import annotations
 
+from v3.web.lab_prose import comparative_return
+
 import json
 import sys
 from datetime import date, datetime, timedelta, timezone
@@ -640,7 +642,7 @@ def status_cards_html(fwd_n: int, ledger: dict) -> str:
          f"git-anchored daily · evidence-ledger root {escape((ledger.get('root') or '')[:8])}…",
          "#00E676", f"ledger:docs/ledger/{escape(ledger.get('date') or '')}.json"),
         ("Reproducibility", "ONE-COMMAND VERIFY",
-         "stdlib script reproduces every statistic + evidence-ledger roots",
+         "stdlib script checks core expected tables and bundled ledger consistency",
          "#00E676", ""),
     ]
     tiles = "".join(
@@ -662,8 +664,8 @@ def honest_reading_html(rig: dict | None = None) -> str:
       <div class="panel-title">Honest reading</div>
       <p style="font-size:14px;color:#E2E8F0;line-height:1.7;max-width:860px">
         {head} What is running:
-        the point-in-time infrastructure is live, every daily signal set is anchored to a public,
-        git-committed ledger, and every statistic on this page reproduces from published derived
+        the point-in-time infrastructure is live, daily signal sets have a public,
+        git-committed ledger, and core tables can be reproduced from published derived
         data with one command. The <strong>evidence-risk channel (C6)</strong> is the next
         out-of-sample test target — its in-sample sign is known and its forward test is defined
         below. Everything here is research and education, not investment advice; research
@@ -841,7 +843,7 @@ def panel4_html(q: dict) -> str:
       </table>
       <p style="font-size:12px;color:#A0AEC0;margin:10px 0">
         Honest result: over its first {q['evaluable_periods']} periods the qualified pool
-        <strong style="color:#E2E8F0">trails the universe</strong>
+        <strong style="color:#E2E8F0">{comparative_return(m["qualified_ew"]["cumulative_return"], m["universe_ew"]["cumulative_return"])}</strong>
         ({_pct(m['qualified_ew']['cumulative_return'])} vs {_pct(m['universe_ew']['cumulative_return'])}).
         The cohort is too young and (at the decile level) too small for inference; it accrues as
         evidence coverage grows. Criteria will NOT be loosened to fatten n.
@@ -909,7 +911,7 @@ def render() -> str:
           A {n_td}-trading-day out-of-sample window is far too short for any statistical
           inference — this is a directional illustration shown for transparency as the
           forward record accrues, not evidence of skill. In this early window the top-decile
-          cohort trails the equal-weight universe; that is what the data shows and it is shown unblended.
+          cohort {comparative_return(fwd["metrics"]["top_decile"]["cumulative_return"], fwd["metrics"]["universe_ew"]["cumulative_return"])}; the results are shown unblended.
         </p>
       </div>
       {fwd_primary_svg}

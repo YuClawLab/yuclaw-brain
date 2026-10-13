@@ -27,7 +27,7 @@ class EntryPoints(unittest.TestCase):
                 self.assertNotIn(wrong, t, (where, wrong))
 
     def test_the_current_guide_is_primary_and_the_earlier_pdfs_are_labelled_history_with_their_real_length(self):
-        g = text(U.guide_links_html()); self.assertTrue(g.index("Current guide (v8, English)") < g.index("Earlier PDF guides")); self.assertIn("12 pages", g); self.assertIn("not updated for v8", g); self.assertNotIn("six pages", g)
+        g = text(U.guide_links_html()); self.assertTrue(g.index("v9 English") < g.index("Earlier PDF guides")); self.assertIn("12 pages", g); self.assertIn("not updated for v8", g); self.assertNotIn("six pages", g)
         page = (REPO / "docs" / "index.html").read_text(encoding="utf-8"); self.assertNotIn("six pages", page); self.assertIn(U.GUIDE_URL, page); self.assertIn("historical", text(page))
         for fn in ("YUCLAW_User_Guide.pdf", "YUCLAW_Guide_Utilisateur_FR.pdf", "v8/workbench/resources/OPERATOR_GUIDE.md"):
             self.assertTrue((REPO / "docs" / fn).exists() or (REPO / fn).exists(), fn)                                     # advertised, versionless addresses still resolve; the current guide exists

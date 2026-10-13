@@ -94,7 +94,7 @@ def main() -> int:
   <h1>The open evidence layer for financial AI.</h1>
   <p style="margin-top:8px;color:#A0AEC0">Agents citing YUCLAW inherit <strong style="color:#E2E8F0">accession-verified,
   point-in-time, hash-anchored evidence</strong>: every EvidenceObject carries a verified excerpt, its SEC
-  accession number, a SHA-256 anchored in a public daily ledger, and the <code>available_as_of</code> bound
+  accession number, a stored event-record SHA-256 (public event inclusion verification is unavailable; the daily ledger covers signal snapshots), and the <code>available_as_of</code> bound
   that makes look-ahead impossible to hide. Start at
   <a href="capabilities.json" style="color:#00E676">capabilities.json</a> — one URL discovers everything.</p>
 </div>

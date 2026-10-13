@@ -419,7 +419,7 @@ def render() -> str:
         </p>
         <p>
           Backfill-era events (before forward Day 0 = 2026-05-18) were extracted retrospectively and carry the
-          same parametric look-ahead disclosure as the in-sample panel of the Validation Lab; live-era events
+          same historical-reconstruction limitations as the in-sample panel of the Validation Lab; live-era events
           are detected in real time. The two eras are never blended. Derived statistics only — no raw prices.
           Constituent weights are issuer fund disclosures as of {escape(SMH_AS_OF)}.
         </p>

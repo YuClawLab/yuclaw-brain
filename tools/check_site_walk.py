@@ -195,7 +195,7 @@ def main(argv: list[str] | None = None) -> int:
     # Walking all 79 nightly is redundant — they share one template. We
     # pin the template hash (drift = a reviewed gate edit) and spot-walk
     # 5 random pages for the invariants every page must carry.
-    WHY_TEMPLATE_PIN = "6d694ee7e60a96af"  # 2026-09-15: data-ecs binding + excerpt-corrections card (QA-01/QA-05)
+    WHY_TEMPLATE_PIN = "9141944e2393c20d"  # 2026-10-13: confidence-weighted anatomy, provenance and missing-input status
     why_dir = DOCS / "why"
     if why_dir.exists():
         import random

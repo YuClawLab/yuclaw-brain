@@ -63,6 +63,7 @@ def _threshold_context(score: float, label: str) -> str:
 
 
 COVERAGE_IDENTITY: dict | None = None
+SNAPSHOT_ANATOMY: dict = {}
 
 
 def _corrections_card(tk: str) -> str:
@@ -83,10 +84,14 @@ def _load_all():
                 total_score, signal_time, c1_price_momentum,
                 c2_volume_confirm, c3_sector_velocity, c4_macro_regime,
                 c5_oil_rates_fx, c6_event_impact, c7_peer_correlation,
-                c8_cascade_effect, c9_model_trust
+                c8_cascade_effect, c9_model_trust, component_anatomy
                 FROM signal_snapshots WHERE is_backfill = false
                 ORDER BY ticker, signal_time DESC""")
-            snaps = {r[0]: r for r in cur.fetchall()}
+            rows = cur.fetchall()
+            snaps = {r[0]: r[:13] for r in rows}
+            global SNAPSHOT_ANATOMY
+            from v3.evidence.research_summary import composite_anatomy
+            SNAPSHOT_ANATOMY = {r[0]: composite_anatomy(r[13], float(r[2]), COMPONENT_WEIGHTS) for r in rows}
             cur.execute("""SELECT ticker, signal_time::date, signal_label
                 FROM (SELECT DISTINCT ON (ticker, signal_time::date)
                         ticker, signal_time, signal_label
@@ -157,6 +162,11 @@ def _page(tk, snap, hist, events, ecs, stories, stamp) -> str:
           <div class="cval">{v:+.3f}</div>
           {note_html}
         </div>""")
+    anatomy = SNAPSHOT_ANATOMY.get(tk)
+    anatomy_html = "<p>Stored confidences are unavailable in this render: composite reconstruction INCOMPLETE.</p>"
+    if anatomy:
+        ar = "".join("<tr>" + "".join(f"<td>{escape(format(row[k], '.6g') if isinstance(row.get(k), float) else str(row.get(k)))}</td>" for k in ("id", "confidence", "nominal_weight", "effective_weight", "contribution", "input_status")) + "</tr>" for row in anatomy["components"])
+        anatomy_html = f'''<p>{escape(anatomy['status'])} · {escape(anatomy['weight_provenance'])}</p><p>{escape(anatomy['formula'])}</p><div role="region" tabindex="0" aria-label="Component confidence and contributions" style="overflow-x:auto;max-width:100%"><table><tr><th scope="col">Component</th><th>Confidence input</th><th>Nominal weight</th><th>Effective weight</th><th>Contribution</th><th>Input status</th></tr>{ar}</table></div><p>{escape(anatomy['note'])}</p>'''
     e = ecs.get(tk, {})
     ev_rows = "".join(f"""
         <div class="ev">
@@ -235,7 +245,8 @@ Signal labels are research classifications, not buy/sell recommendations.
 {''.join(comp_rows)}
 <p class="muted" style="margin-top:8px">Weights are the published composite weights; component scores are
 the current snapshot's stored values. C6 event impact carries the highest single weight by design —
-evidence is meant to correct price-only signals, not echo them.</p></div>
+evidence is meant to correct price-only signals, not echo them.</p>
+{anatomy_html}</div>
 
 {_corrections_card(tk)}
 <div class="card"><h2>Evidence coverage — the four terms</h2>

@@ -404,7 +404,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-06-18",
    "accession_number": "0001193125-26-275783",
-   "excerpt": "On June 18, 2026, NVIDIA Corporation (the \u201cCompany\u201d) completed an offering of $3,500,000,000 aggregate principal amount of its 4.250% Notes due",
+   "excerpt": "On June 18, 2026, NVIDIA Corporation (the “Company”) completed an offering of $3,500,000,000 aggregate principal amount of its 4.250% Notes due",
    "source_hash": "cea389801e37d6f777fa6cb7a27d9234b9d7f1686485db4c76631f31c0be9a46",
    "available_as_of": "2026-06-18T14:00:24-06:00",
    "protocol_id": null
@@ -414,7 +414,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192NVDA(supply,w=0.15) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→NVDA(supply,w=0.15) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "a7ddc2f1d84eb5ae72a2e40e1bf657452ac10c961c151a75f1894c1a5c6260fc",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -951,7 +951,28 @@
    "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 78 of 78 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay NVDA --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-14T17:02:07.865613-06:00",
+  "window_end_inclusive": "2026-10-12T17:02:07.865613-06:00",
+  "event_objects": 36,
+  "distinct_accessions": 14,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_SELL": 32,
+   "M_AND_A_ANNOUNCE": 1,
+   "OTHER_MATERIAL": 2,
+   "PARTNERSHIP": 1
+  },
+  "largest_type_share": 0.8888888888888888,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "component_anatomy": {
+  "status": "INCOMPLETE",
+  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
+ },
+ "excerpt_comparison_checks": []
 }
