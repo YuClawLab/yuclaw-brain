@@ -350,8 +350,8 @@ def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
     """The owner's recorded decision on the Gate #15 requirement for v8 releases, or None when no such decision
     applies (7.x and earlier keep their historical rules). A record that claims anything other than
     REMOVED_BY_OWNER (for example PASSED) is refused loudly: the study was never run and is never reported as passed."""
-    if version.startswith("9."):                       # 9.x: only the owner's OWN 9.x record counts; the 8.x removal never carries over
-        path = (_REPO / "v9" / "policy" / "gate15_release_requirement.json") if path is None else path
+    if version.startswith("9."):                       # 9.x: only the owner's OWN record FOR THIS VERSION counts; the 8.x removal and another 9.x version's exception never carry over
+        path = ((_REPO / "v9" / "policy" / "gate15_release_requirement.json") if version == "9.0.0" else (_REPO / "v9" / "policy" / f"gate15_release_requirement_{version}.json")) if path is None else path
         if not path.exists():
             return None
         d = json.loads(path.read_text())
@@ -359,7 +359,7 @@ def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
             raise ValueError("gate 15 decision record is not the owner's v9 requirement decision")
         if d.get("status") != "EXCEPTION_ACCEPTED" or d.get("gate_result") != "MANUAL_REVIEW" or d.get("applies_to", {}).get("carried_to_later_releases") is not False or not d.get("decision_text_verbatim") or (d.get("study") or {}).get("represented_as_passed") is not False:
             raise ValueError(f"gate 15 decision record for 9.x must be the owner's EXCEPTION_ACCEPTED / MANUAL_REVIEW decision for one version, never carried (got status {d.get('status')!r}; a study result is never recorded here)")
-        if not version.startswith(str(d["applies_to"]["versions"]).split()[0]):
+        if str(d["applies_to"]["versions"]) != f"{version} only":
             raise ValueError(f"gate 15 exception record applies to {d['applies_to']['versions']}, not to {version}")
         return {**d, "sha256": _sha_bytes(path.read_bytes())}
     path = GATE15_DECISION if path is None else path
@@ -400,7 +400,7 @@ def canada_heading(version: str) -> str:
     return "Built in Canada" if v >= (8, 0, 1) else "Made in Canada"
 
 
-NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8", "9.0.0": "yuclaw_release_notes_v9"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list)
+NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8", "9.0.0": "yuclaw_release_notes_v9", "9.0.1": "yuclaw_release_notes_v9"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list; 9.0.1 = the 9.0.0 scope + a tracked patch change list)
 
 
 def notes_composer(version: str):
@@ -641,7 +641,7 @@ Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — wit
     patch_changes = None
     if a.patch:
         pc = _REPO / "docs" / "methodology" / f"release_notes_{VERSION}_changes.md"
-        if (VERSION.startswith("7.") or VERSION == "8.0.1") and pc.exists():
+        if (VERSION.startswith("7.") or VERSION in ("8.0.1", "9.0.1")) and pc.exists():
             patch_changes = pc.read_text()                     # tracked, source-bound patch change list
         else:
             public = _patch_public(VERSION, tip, len(lines), g16, ev)
