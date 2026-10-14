@@ -346,6 +346,20 @@ Gate #16: {g16['result']} — {g16['disclosure']}.
 GATE15_DECISION = _REPO / "v8" / "policy" / "gate15_release_requirement.json"
 
 
+def chain_relation(base_bytes: bytes, candidate_bytes: bytes) -> dict:
+    """Gate 5 ('no v1 historical silent rewrite') on the protocol chain: the candidate chain must be byte-identical to the base
+    chain OR extend it append-only — the base bytes are a byte PREFIX of the candidate bytes (every historical line, including its
+    line_hash and prev_hash, untouched) and the appended lines are complete JSON lines. A registration appended through the
+    registry (2026-10-14: the SourceLock R10 addendum) is the documented append-only process, not a rewrite; any edited, reordered
+    or removed historical byte fails. The chain's hash links are verified separately by Registry.verify_chain on load (gate 2)."""
+    identical = base_bytes == candidate_bytes
+    prefix = candidate_bytes.startswith(base_bytes) and (not base_bytes or base_bytes.endswith(b"\n") or candidate_bytes[len(base_bytes):len(base_bytes) + 1] == b"\n")
+    tail = candidate_bytes[len(base_bytes):] if prefix else b""
+    lines = [l for l in tail.split(b"\n") if l.strip()]
+    well_formed = all(l.startswith(b"{") and l.rstrip().endswith(b"}") for l in lines)
+    return {"identical": identical, "append_only": identical or (prefix and well_formed), "appended_lines": len(lines) if prefix else None}
+
+
 def gate15_requirement(version: str, path: Path | None = None) -> dict | None:
     """The owner's recorded decision on the Gate #15 requirement for v8 releases, or None when no such decision
     applies (7.x and earlier keep their historical rules). A record that claims anything other than
@@ -508,6 +522,8 @@ def main() -> int:
     reg_same = ev["restage"]["trees_before"]["registry_tree_sha256_over_manifest"] == ev["restage"]["trees_after"]["registry_tree_sha256_over_manifest"]
     out_same = ev["restage"]["trees_before"]["output_tree_sha256_over_manifest"] == ev["restage"]["trees_after"]["output_tree_sha256_over_manifest"]
     chain_same = _git_rc("diff", "--quiet", base, "HEAD", "--", "registry/protocols.jsonl") == 0
+    chain_rel = chain_relation(subprocess.run(["git", "-C", str(_REPO), "show", f"{base}:registry/protocols.jsonl"], capture_output=True, check=True).stdout,
+                               (_REPO / "registry" / "protocols.jsonl").read_bytes())                   # 2026-10-14: a registered APPEND is not a rewrite
     geo_same = _git_rc("diff", "--quiet", base, "HEAD", "--", "output/oie/evidence_geometry.json") == 0
     p6_same = _git_rc("diff", "--quiet", base, "HEAD", "--", "output/oie/layered_dependency_first_read.json") == 0
     # ---- gate 6
@@ -533,8 +549,8 @@ def main() -> int:
         2: (G(True), f"Registry.verify_chain on load: {len(lines)} lines, tip {tip[:16]}"),
         3: (G(ok("check_evidence_changes.py") and not missing), f"docs/ledger {len(blocks)} blocks {blocks[0]}..{blocks[-1]}; sessions without a block: {len(missing)}; evidence-changes gate rc={checks['check_evidence_changes.py']['rc']}"),
         4: (G(ok("check_evidence_changes.py") and ok("check_u350_isolation.py")), "as_of endpoint hash + twice-run identity (evidence-changes gate); u350 isolation proven by attempted writes"),
-        5: (G(live_same and reg_same and out_same and chain_same and geo_same and p6_same),
-            f"chain file byte-identical to base {base[:8]}: {chain_same}; v1 evidence_geometry.json identical to base: {geo_same} (last changed {geo_last}); Phase-6 canonical artifact identical to base: {p6_same}; 02A restage left live/registry/output trees byte-identical: {live_same and reg_same and out_same}; chain append-only"),
+        5: (G(live_same and reg_same and out_same and chain_rel["append_only"] and geo_same and p6_same),
+            f"chain file byte-identical to base {base[:8]}: {chain_same}; base chain is a byte prefix of the candidate chain (append-only, +{chain_rel['appended_lines']} registered line(s), chain verified): {chain_rel['append_only']}; v1 evidence_geometry.json identical to base: {geo_same} (last changed {geo_last}); Phase-6 canonical artifact identical to base: {p6_same}; 02A restage left live/registry/output trees byte-identical: {live_same and reg_same and out_same}"),
         6: (G(g6_ok), "the registered structural first-read computation reproduced byte-identically from frozen inputs (fresh NO-WRITE replays this session)"),
         7: (G(ok("check_truncation_ledger.py")), checks["check_truncation_ledger.py"]["last"]),
         8: (G(ok("check_discovery_ledger.py")), checks["check_discovery_ledger.py"]["last"]),

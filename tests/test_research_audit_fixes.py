@@ -60,6 +60,13 @@ def test_invalid_json_refused(tmp_path):
         assert R.main([str(p)]) == 1
 
 
+def test_verifier_sums_are_correctly_rounded_on_every_runtime():
+    # the builtin sum() changed its summation algorithm in Python 3.12; the printed full-precision statistics must not depend on
+    # the runtime, so every floating-point sum in the verifier is math.fsum (correctly rounded): 1e16 + 1 - 1e16 is exactly 1
+    assert R.mean([1e16, 1.0, -1e16]) == 1.0 / 3
+    assert R.pearson([1e16, 1e16 + 2.0, 1e16 + 4.0], [1.0, 2.0, 3.0]) == 1.0
+
+
 def test_standalone_verifier_is_identical():
     assert (ROOT / 'tools/replay_lab.py').read_text().split('\n', 1)[1] == (ROOT / 'v3/lab/replay_check.py').read_text()
 

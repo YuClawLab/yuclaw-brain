@@ -29,8 +29,13 @@ SUPPORTED_PYTHON = ("3.10", "3.11", "3.12", "3.13")
 TOL = 1e-9
 
 
-# ---------- stats (verbatim re-implementations of v3/lab/stats.py) ----------
-def mean(xs): return sum(xs) / len(xs)
+# ---------- stats (re-implementations of v3/lab/stats.py; floating-point sums use math.fsum, which is correctly rounded on
+# every Python version — the builtin sum() changed its summation algorithm in 3.12, and the printed full-precision statistics
+# must be byte-identical on every supported runtime; the producer's values are compared within TOL, never bit for bit) ----------
+fsum = math.fsum
+
+
+def mean(xs): return fsum(xs) / len(xs)
 
 
 def stdev(xs):
@@ -38,7 +43,7 @@ def stdev(xs):
     if n < 2:
         return 0.0
     m = mean(xs)
-    return math.sqrt(sum((x - m) ** 2 for x in xs) / (n - 1))
+    return math.sqrt(fsum((x - m) ** 2 for x in xs) / (n - 1))
 
 
 def _betacf(a, b, x):
@@ -87,6 +92,13 @@ def t_pvalue_two_sided(t, df):
     return min(1.0, _betai(df / 2.0, 0.5, df / (df + t * t)))
 
 
+def _p(x):
+    """p-values are printed at six significant digits: they pass through lgamma/exp, whose last bits differ between interpreter
+    BUILDS (not versions) of the same platform, and the transcript must be byte-identical on every supported runtime; the
+    verification itself compares within TOL and is unaffected by the display precision."""
+    return "None" if x is None else format(x, ".6g")
+
+
 def one_sample_t(xs):
     n = len(xs)
     if n < 2: return {"mean": mean(xs) if n else None, "t": None, "p": None, "n": n}
@@ -102,7 +114,7 @@ def bootstrap_ci_mean(xs, iters=10_000, alpha=0.05, seed=20260518):
     rng = random.Random(seed)
     means = []
     for _ in range(iters):
-        means.append(sum(rng.choice(xs) for _ in range(n)) / n)
+        means.append(fsum(rng.choice(xs) for _ in range(n)) / n)
     means.sort()
     return (means[int((alpha / 2) * iters)],
             means[min(iters - 1, int((1 - alpha / 2) * iters))])
@@ -114,9 +126,9 @@ def newey_west_t(xs, lag):
     lag = max(0, min(lag, n - 2))
     m = mean(xs)
     e = [x - m for x in xs]
-    s = sum(v * v for v in e) / n
+    s = fsum(v * v for v in e) / n
     for l in range(1, lag + 1):
-        gl = sum(e[i] * e[i - l] for i in range(l, n)) / n
+        gl = fsum(e[i] * e[i - l] for i in range(l, n)) / n
         s += 2.0 * (1.0 - l / (lag + 1.0)) * gl
     if s <= 0: return {"mean": m, "t": None, "p": None, "n": n, "lag": lag}
     t = m / math.sqrt(s / n)
@@ -142,10 +154,10 @@ def pearson(xs, ys):
     n = len(xs)
     if n < 2: return None
     mx, my = mean(xs), mean(ys)
-    sxx = sum((x - mx) ** 2 for x in xs)
-    syy = sum((y - my) ** 2 for y in ys)
+    sxx = fsum((x - mx) ** 2 for x in xs)
+    syy = fsum((y - my) ** 2 for y in ys)
     if sxx == 0 or syy == 0: return None
-    return sum((xs[i] - mx) * (ys[i] - my) for i in range(n)) / math.sqrt(sxx * syy)
+    return fsum((xs[i] - mx) * (ys[i] - my) for i in range(n)) / math.sqrt(sxx * syy)
 
 
 def spearman(xs, ys):
@@ -157,13 +169,13 @@ def ols(y, x):
     n = len(y)
     if n < 3 or len(x) != n: return None
     mx, my = mean(x), mean(y)
-    sxx = sum((xi - mx) ** 2 for xi in x)
+    sxx = fsum((xi - mx) ** 2 for xi in x)
     if sxx == 0: return None
-    beta = sum((x[i] - mx) * (y[i] - my) for i in range(n)) / sxx
+    beta = fsum((x[i] - mx) * (y[i] - my) for i in range(n)) / sxx
     alpha = my - beta * mx
     resid = [y[i] - alpha - beta * x[i] for i in range(n)]
-    sse = sum(r * r for r in resid)
-    sst = sum((yi - my) ** 2 for yi in y)
+    sse = fsum(r * r for r in resid)
+    sst = fsum((yi - my) ** 2 for yi in y)
     df = n - 2
     s2 = sse / df
     se_alpha = math.sqrt(s2 * (1.0 / n + mx * mx / sxx))
@@ -417,7 +429,7 @@ def _run(path, ledger_path=None, ledger_sha256=None, require_external=False):
                 _same(f'{panel}.{key}.ci95',ci,e['ci95'])
             else:
                 for i in range(2):check(f'{panel}.{key}.ci95[{i}]',ci[i],e['ci95'][i],1e-9)
-            print(f"  spread {key:18s} mean/period {t['mean']:+.5f}  p={t['p']}  n={t['n']}  CI95={ci}")
+            print(f"  spread {key:18s} mean/period {t['mean']:+.5f}  p={_p(t['p'])}  n={t['n']}  CI95={ci}")
         units = p.get('observation_units')
         if units:
             _same(f'{panel}.ic_rows', len(p['ic_rows']), units['ic_rows'])
@@ -459,7 +471,7 @@ def _run(path, ledger_path=None, ledger_sha256=None, require_external=False):
                 if key not in e:continue
                 if key in ('date_range','t_reliable'):_same(f'{panel}.ic{h}.{key}',value,e[key])
                 else:check(f'{panel}.ic{h}.{key}',value,e[key],1e-9)
-            print(f"  IC {h:2d}d mean {got['mean_ic']} NW-p={got.get('nw_p_value')} T={len(ics)} dates")
+            print(f"  IC {h:2d}d mean {got['mean_ic']} NW-p={_p(got.get('nw_p_value'))} T={len(ics)} dates")
         mm=exp['market_model'];ppy=mm['periods_per_year']
         check(f'{panel}.annualization',ppy,252/mm['avg_holding_td'],1e-9)
         # Legacy bundles lack a calendar; keep that dependency explicit.
@@ -479,7 +491,7 @@ def _run(path, ledger_path=None, ledger_sha256=None, require_external=False):
                  'n_periods':r['n'],'mde_alpha_annualized':(1+mde)**ppy-1 if mde is not None else None}
             _same(f'{panel}.mm.{key}.fields',set(got),set(e))
             for k,v in got.items():check(f'{panel}.mm.{key}.{k}',v,e[k],1e-8)
-            print(f"  market-model {key} alpha/period {r['alpha']:+.5f} beta {r['beta']:.2f} p={r['p_alpha']} n={r['n']}")
+            print(f"  market-model {key} alpha/period {r['alpha']:+.5f} beta {r['beta']:.2f} p={_p(r['p_alpha'])} n={r['n']}")
     external_complete=_ledger_checks(bundle,ledger_path,ledger_sha256)
     if FAILURES:
         print('\nREPRODUCTION FAILED:')

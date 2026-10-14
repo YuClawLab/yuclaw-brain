@@ -180,16 +180,16 @@ Replay bundle built 2026-10-14 06:17 UTC from source commit 29bf6cb0eca0
 Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 21257caa2e5e
 
 [forward] 99 rebalance periods, window ['2026-05-20', '2026-10-13']
-  spread top_minus_bottom   mean/period -0.00289  p=0.2737145443151655  n=99  CI95=(-0.008015306348353903, 0.0022382706348159915)
-  spread top_minus_universe mean/period -0.00187  p=0.21160477543220313  n=99  CI95=(-0.004824905339572747, 0.0010345822500365772)
-  IC  1d mean -0.008227524877853758 NW-p=0.7337431980689686 T=104 dates
-  IC  5d mean -0.04464760271772919 NW-p=0.19875043607920817 T=100 dates
-  IC 20d mean -0.07534243603683494 NW-p=0.046879373490996794 T=85 dates
-  market-model vs_universe alpha/period -0.00196 beta 1.12 p=0.19312480534179677 n=99
-  market-model vs_spy alpha/period -0.00168 beta 1.00 p=0.27875916217706964 n=99
+  spread top_minus_bottom   mean/period -0.00289  p=0.273715  n=99  CI95=(-0.008015306348353903, 0.0022382706348159915)
+  spread top_minus_universe mean/period -0.00187  p=0.211605  n=99  CI95=(-0.004824905339572747, 0.0010345822500365772)
+  IC  1d mean -0.008227524877853758 NW-p=0.733743 T=104 dates
+  IC  5d mean -0.04464760271772919 NW-p=0.19875 T=100 dates
+  IC 20d mean -0.07534243603683494 NW-p=0.0468794 T=85 dates
+  market-model vs_universe alpha/period -0.00196 beta 1.12 p=0.193125 n=99
+  market-model vs_spy alpha/period -0.00168 beta 1.00 p=0.278759 n=99
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
-  spread top_minus_bottom   mean/period +0.00553  p=0.6857184046492131  n=13  CI95=(-0.019365001701843236, 0.030789287070102277)
-  spread top_minus_universe mean/period +0.00586  p=0.4960746770292245  n=13  CI95=(-0.009809033927242129, 0.02165172551022834)
+  spread top_minus_bottom   mean/period +0.00553  p=0.685718  n=13  CI95=(-0.019365001701843236, 0.030789287070102277)
+  spread top_minus_universe mean/period +0.00586  p=0.496075  n=13  CI95=(-0.009809033927242129, 0.02165172551022834)
 ... (12 more lines)
 [exit 0]
 ```
