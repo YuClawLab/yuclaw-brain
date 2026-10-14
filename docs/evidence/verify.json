@@ -1,5 +1,9 @@
 {
- "generated": "2026-10-13T23:02:15.271736+00:00",
+ "generated": "2026-10-14T06:25:15.201764+00:00",
+ "object_type": "signal_snapshot",
+ "event_hash_proof": "NOT_AVAILABLE: this endpoint does not authenticate event source_hash values",
+ "canonicalization": "sha256(json.dumps(entries, sort_keys=True).encode(utf-8)); list order is preserved; default JSON separators",
+ "external_provenance": "UNVERIFIED without an independently obtained ledger reference",
  "how": [
   "fetch /ledger/{date}.json for the snapshot's date",
   "recompute sha256(json.dumps(entries, sort_keys=True).encode()) with list order preserved; compare root_sha256",
@@ -428,9 +432,5 @@
    "root_sha256": "c3b2d20587534291a59dc8418e97107e1f8c2d819a7422befd1acf3dc2dbf8bc"
   }
  ],
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
- "object_type": "signal_snapshot",
- "event_hash_proof": "NOT_AVAILABLE: this endpoint does not authenticate event source_hash values",
- "canonicalization": "sha256(json.dumps(entries, sort_keys=True).encode(utf-8)); list order is preserved; default JSON separators",
- "external_provenance": "UNVERIFIED without an independently obtained ledger reference"
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

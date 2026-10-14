@@ -1,6 +1,6 @@
 {
  "ticker": "PG",
- "generated": "2026-10-13T23:02:14.373979+00:00",
+ "generated": "2026-10-14T06:25:14.313040+00:00",
  "label": "WATCH",
  "score": 0.1357,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 19,
-  "recency_days": 0.4,
+  "recency_days": 0.7,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-13T23:02:06.331396+00:00",
-  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
+  "as_of": "2026-10-14T06:17:26.591829+00:00",
+  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -250,6 +250,141 @@
    "protocol_id": null
   }
  ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.6358333333333334,
+  "reconstructed_score": 0.135654325216914,
+  "stored_score": 0.1357,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": 0.26749999999999996,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.16985583224115333,
+    "contribution": 0.04543643512450851,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": 0.047534408346763056,
+    "confidence": 0.8,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.096,
+    "effective_weight": 0.1509829619921363,
+    "contribution": 0.0071768857687380125,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.20052424639580602,
+    "contribution": 0.1203145478374836,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.015,
+    "effective_weight": 0.023591087811271297,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": -0.12166402167271877,
+    "confidence": 0.8,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.22647444298820443,
+    "contribution": -0.027553791540033814,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": 0.07153191036670074,
+    "confidence": 1.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1,
+    "effective_weight": 0.15727391874180865,
+    "contribution": 0.011250103858458833,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": -0.2941176470588235,
+    "confidence": 0.5666666666666667,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.04533333333333333,
+    "effective_weight": 0.07129750982961991,
+    "contribution": -0.020969855832241147,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T00:25:14.894459-06:00",
+  "window_end_inclusive": "2026-10-14T00:25:14.894459-06:00",
+  "event_objects": 19,
+  "distinct_accessions": 19,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_SELL": 15,
+   "OTHER_MATERIAL": 4
+  },
+  "largest_type_share": 0.7894736842105263,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PG in the declared corpus",
@@ -259,15 +394,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-23T08:05:12-07:00",
   "newest_returned_available_as_of": "2026-10-13T08:01:56-06:00",
-  "build_id": "why-2026-10-13T230214",
+  "build_id": "why-2026-10-14T062514",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-13T17:02:14.947698-06:00",
+  "corpus_end": "2026-10-14T00:25:14.894459-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PG.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-13T230214",
+ "build_id": "why-2026-10-14T062514",
  "corrections": [],
  "label_history": [
   {
@@ -391,7 +526,7 @@
    "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 22 of 22 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PG --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

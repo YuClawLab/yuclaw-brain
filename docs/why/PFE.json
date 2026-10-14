@@ -1,6 +1,6 @@
 {
  "ticker": "PFE",
- "generated": "2026-10-13T23:02:14.373979+00:00",
+ "generated": "2026-10-14T06:25:14.313040+00:00",
  "label": "WATCH",
  "score": 0.1074,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 69,
   "events_90d": 7,
-  "recency_days": 62.1,
+  "recency_days": 62.4,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-13T23:02:06.331396+00:00",
-  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
+  "as_of": "2026-10-14T06:17:26.591829+00:00",
+  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -110,6 +110,142 @@
    "protocol_id": null
   }
  ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.47583333333333333,
+  "reconstructed_score": 0.10739241597139433,
+  "stored_score": 0.1074,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": 0.11699999999999998,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.22697022767075306,
+    "contribution": 0.026555516637478103,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": -0.5348329485463984,
+    "confidence": 0.8,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.096,
+    "effective_weight": 0.20175131348511385,
+    "contribution": -0.1079032498643522,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.2679509632224168,
+    "contribution": 0.16077057793345007,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.015,
+    "effective_weight": 0.03152364273204904,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": 0.05308854326842736,
+    "confidence": 1.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1,
+    "effective_weight": 0.21015761821366025,
+    "contribution": 0.01115696180772554,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": 0.2727272727272727,
+    "confidence": 0.36666666666666664,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.029333333333333333,
+    "effective_weight": 0.061646234676007,
+    "contribution": 0.016812609457092818,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T00:25:14.882846-06:00",
+  "window_end_inclusive": "2026-10-14T00:25:14.882846-06:00",
+  "event_objects": 7,
+  "distinct_accessions": 7,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_BUY": 3,
+   "INSIDER_SELL": 2,
+   "OTHER_MATERIAL": 2
+  },
+  "largest_type_share": 0.42857142857142855,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PFE in the declared corpus",
@@ -119,15 +255,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-06-18T11:17:22-06:00",
   "newest_returned_available_as_of": "2026-08-12T14:08:09.837133-06:00",
-  "build_id": "why-2026-10-13T230214",
+  "build_id": "why-2026-10-14T062514",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-13T17:02:14.933847-06:00",
+  "corpus_end": "2026-10-14T00:25:14.882846-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PFE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-13T230214",
+ "build_id": "why-2026-10-14T062514",
  "corrections": [
   {
    "original": {
@@ -329,25 +465,5 @@
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
  "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object.",
- "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-14T17:02:07.891035-06:00",
-  "window_end_inclusive": "2026-10-12T17:02:07.891035-06:00",
-  "event_objects": 7,
-  "distinct_accessions": 7,
-  "objects_without_accession": 0,
-  "by_event_type": {
-   "INSIDER_BUY": 3,
-   "INSIDER_SELL": 2,
-   "OTHER_MATERIAL": 2
-  },
-  "largest_type_share": 0.42857142857142855,
-  "independent_information_count": null,
-  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
- },
- "component_anatomy": {
-  "status": "INCOMPLETE",
-  "reason": "This historical public snapshot does not expose stored per-component confidences or historical weights; they have not been reconstructed or assumed."
- },
- "excerpt_comparison_checks": []
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }
