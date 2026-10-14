@@ -1,34 +1,44 @@
 {
  "ticker": "COST",
- "generated": "2026-10-13T23:02:14.373979+00:00",
- "label": "WATCH",
- "score": 0.1675,
+ "generated": "2026-10-14T23:02:06.294517+00:00",
+ "label": "BULLISH",
+ "score": 0.4513,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.4,
+  "ceiling": 0.55
  },
  "components": {
-  "c1": 0.2755,
+  "c1": 0.3435,
   "c2": 0.0,
-  "c3": 0.04753441,
+  "c3": 0.77570343,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.044299696,
-  "c7": 0.069549605,
+  "c6": 0.5861487,
+  "c7": 0.13767168,
   "c8": 0.0,
   "c9": -0.125
  },
  "evidence_coverage": {
-  "ecs": 73,
+  "ecs": 84,
   "events_90d": 5,
-  "recency_days": 6.9,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-10-13T23:02:06.331396+00:00",
-  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
+  "type_diversity": 3,
+  "as_of": "2026-10-14T23:01:58.118106+00:00",
+  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "COST",
+   "evidence_type": "DIVIDEND_CHANGE",
+   "filing_date": "2026-10-14",
+   "accession_number": "0000909832-26-000096",
+   "excerpt": "The Board of Directors declared a quarterly cash dividend on the Company's common stock of $1.47 per share.",
+   "source_hash": "434f61daa82e364346745bf85d12e0eb6faae331c5f7f721af8c82c5438cea6f",
+   "available_as_of": "2026-10-14T14:16:05-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COST",
    "evidence_type": "OTHER_MATERIAL",
@@ -143,21 +153,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for COST in the declared corpus",
-  "returned": 11,
-  "total_available": 11,
+  "returned": 12,
+  "total_available": 12,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:19:07-07:00",
-  "newest_returned_available_as_of": "2026-10-06T19:13:15-06:00",
-  "build_id": "why-2026-10-13T230214",
+  "newest_returned_available_as_of": "2026-10-14T14:16:05-06:00",
+  "build_id": "why-2026-10-14T230206",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-13T17:02:14.539202-06:00",
+  "corpus_end": "2026-10-14T17:02:06.451612-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/COST.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-13T230214",
+ "build_id": "why-2026-10-14T230206",
  "corrections": [
   {
    "original": {
@@ -186,6 +196,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -301,13 +315,9 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 11 of 11 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 12 of 12 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay COST --date D",
  "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
