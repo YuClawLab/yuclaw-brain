@@ -176,7 +176,37 @@ def test_malformed_export_inputs_are_refused():
             prepare(bad, b'{}', 'DELL', '2026-08-01')
 
 
+def _legacy_shape(b):
+    # The bundle in the tree is schema-less (legacy) on a tree without a database export and lab-replay/2 after a live export
+    # (Spark, 2026-10-14); the cases below are stated on an explicit legacy shape so they hold for both.
+    b = copy.deepcopy(b); b.pop('schema', None)
+    for p in b['panels'].values():
+        p.pop('trading_dates', None); p.pop('observation_units', None)
+        for rb in p['rebalances']:
+            rb.pop('snapshot_ids', None)
+        for row in p.get('ic_rows', []):
+            row.pop('snapshot_id', None)
+    return b
+
+
 def test_new_replay_schema_cannot_silently_omit_identity_fields(bundle, tmp_path):
-    b = copy.deepcopy(bundle)
-    b['schema'] = 'lab-replay/2'
-    assert run_bundle(b, tmp_path) == 1
+    legacy = _legacy_shape(bundle)
+    assert run_bundle(legacy, tmp_path) == 0            # legacy compatibility: a schema-less bundle without identity fields still reproduces
+    b = copy.deepcopy(legacy); b['schema'] = 'lab-replay/2'
+    assert run_bundle(b, tmp_path) == 1                 # the new schema cannot silently omit the identity fields
+
+
+def test_a_live_v2_bundle_is_refused_when_any_identity_field_is_dropped(bundle, tmp_path):
+    if bundle.get('schema') != 'lab-replay/2':
+        pytest.skip('the tree carries a legacy bundle (no live export on this host)')
+    assert run_bundle(bundle, tmp_path) == 0
+    for drop in ('trading_dates', 'observation_units', 'snapshot_ids', 'ic_snapshot_id'):
+        b = copy.deepcopy(bundle)
+        for p in b['panels'].values():
+            if drop == 'snapshot_ids':
+                p['rebalances'][0].pop('snapshot_ids')
+            elif drop == 'ic_snapshot_id':
+                p['ic_rows'][0].pop('snapshot_id')
+            else:
+                p.pop(drop)
+        assert run_bundle(b, tmp_path) == 1, drop
