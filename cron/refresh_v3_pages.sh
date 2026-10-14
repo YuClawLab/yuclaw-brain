@@ -94,10 +94,6 @@ if [ "$(date +%u)" = "5" ]; then
     /usr/bin/python3 tools/yuclaw_evidencebench.py selfscore || exit 40
 fi
 /usr/bin/python3 -m v3.web.render_evidencebench || exit 41
-# Research contracts and accessible tables, after the public page generators.
-# Complete histories and original release artifacts remain unchanged.
-/usr/bin/python3 tools/stage_research_corrections.py || exit 80
-
 # Synthesis-layer snapshot archive (2026-07-22): per-lens LensSnapshot JSON to
 # output/synthesis/ — the delta baseline for research briefs. Box-local only
 # (not committed); previews under docs/preview are owner-gated, not rebuilt here.
@@ -139,6 +135,10 @@ print('[registry] chain OK')" || exit 19
 # summary of the trailing 7-day window, not a Friday-only page (a mid-week
 # note drifted from the store on 09-02/09-03). Producer failure = exit 23.
 /usr/bin/python3 tools/yuclaw_weekly_note.py || exit 23
+# Research contracts and accessible tables (2026-10-13), staged AFTER the last page generator — the weekly note above is the
+# last page written by this chain, and a page generated after the staging would ship without its responsive table regions.
+# Complete histories, ledger day files and original release artifacts remain unchanged; a repeated pass changes nothing.
+/usr/bin/python3 tools/stage_research_corrections.py || exit 80
 # Note-reconciliation gate (P0.4, 2026-08-01): the published note must agree
 # with the registry and the evidence store — hard gate whenever a note exists.
 # Scheduled path REQUIRES note contract v3 (window + as_of = generated at; live

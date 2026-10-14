@@ -165,24 +165,7 @@ def build_endpoints() -> None:
 
     ledger_src = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
     led_dir = _REPO / "docs" / "ledger"
-    led_dir.mkdir(exist_ok=True)
-    roots = []
-    if ledger_src.exists():
-        import hashlib
-        for line in ledger_src.read_text().splitlines():
-            e = json.loads(line)
-            day = e["date"]
-            root = hashlib.sha256(json.dumps(
-                e["entries"], sort_keys=True).encode()).hexdigest()
-            (led_dir / f"{day}.json").write_text(json.dumps({
-                "date": day, "snapshot_count": e.get("snapshot_count"),
-                "root_sha256": root,
-                "entries": e["entries"],
-                "verify": "recompute sha256(json.dumps(entries, sort_keys=True).encode()) with list order preserved and "
-                          "compare; each entry's content_hash matches its "
-                          "snapshot object",
-                "not_advice": NOT_ADVICE}, indent=1))
-            roots.append({"date": day, "root_sha256": root})
+    roots = write_ledger_days(ledger_src, led_dir) if ledger_src.exists() else []
     (_REPO / "docs" / "evidence").mkdir(exist_ok=True)
     (_REPO / "docs" / "evidence" / "verify.json").write_text(json.dumps({
         "generated": datetime.now(timezone.utc).isoformat(),
@@ -197,6 +180,42 @@ def build_endpoints() -> None:
                 "offline: the same files ship in the repo and the ledger "
                 "repo (YuClawLab/yuclaw-trust)"],
         "days": roots, "not_advice": NOT_ADVICE}, indent=1))
+
+
+LEDGER_DAY_VERIFY = ("recompute sha256(json.dumps(entries, sort_keys=True).encode()) with list order preserved and "
+                     "compare; each entry's content_hash matches its snapshot object")
+
+
+def write_ledger_days(ledger_src: Path, led_dir: Path) -> list[dict]:
+    """Per-day public ledger files docs/ledger/{DATE}.json from the trust ledger. A day file that ALREADY exists with the same
+    root_sha256 and the same entries is left byte-for-byte untouched (2026-10-14): published day files are externally
+    pinned by their file hash (`yuclaw replay-lab --require-external-ledger` takes an independently obtained ledger and its
+    SHA-256), so a prose-only change to the verify sentence must never rewrite history. New days, and a day whose entries or
+    root differ from the stored file, are written with the current verify sentence. Returns the [{date, root_sha256}] list."""
+    import hashlib
+    led_dir.mkdir(exist_ok=True)
+    roots = []
+    for line in ledger_src.read_text().splitlines():
+        e = json.loads(line)
+        day = e["date"]
+        root = hashlib.sha256(json.dumps(e["entries"], sort_keys=True).encode()).hexdigest()
+        target = led_dir / f"{day}.json"
+        keep = False
+        if target.exists():
+            try:
+                old = json.loads(target.read_text())
+                keep = old.get("root_sha256") == root and old.get("entries") == e["entries"] and old.get("date") == day
+            except (ValueError, OSError):
+                keep = False
+        if not keep:
+            target.write_text(json.dumps({
+                "date": day, "snapshot_count": e.get("snapshot_count"),
+                "root_sha256": root,
+                "entries": e["entries"],
+                "verify": LEDGER_DAY_VERIFY,
+                "not_advice": NOT_ADVICE}, indent=1))
+        roots.append({"date": day, "root_sha256": root})
+    return roots
 
 
 def main() -> int:
