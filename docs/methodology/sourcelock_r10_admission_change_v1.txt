@@ -1,0 +1,49 @@
+SOURCELOCK R10 — EARNINGS-COMPARISON ADMISSION RULE
+PROSPECTIVE DEPLOYMENT RECORD v1 (Science Trust addendum; registered 2026-10-14)
+
+Parent registration: SCIENCE TRUST PROTOCOL v1 (umbrella governance, protocol_id be8b34040c2e).
+Class: methodological admission change, prospective only. No statistical endpoint; no run is ever
+recorded against this entry. Research and education only. Not investment advice.
+
+1. WHAT CHANGES
+SourceLock Guard is the deterministic validator applied to every model-extracted filing event before
+the event can be accepted. From the deployment date (section 5) it enforces rule R10
+(earnings_comparison_support): an extraction classified EARNINGS_BEAT or EARNINGS_MISS is admitted
+only when the cited excerpt itself states the comparison in the classified direction against an
+expectations benchmark (expectations, consensus, estimates, forecast) within one sentence, with no
+negation and no opposite-direction term in that sentence. When the extraction also carries a
+structured comparison object, that object must be complete (actual, expected, metric, period,
+currency, basis, both text spans, benchmark source, benchmark publication time earlier than the
+result publication time, both timezone-aware), its values must be finite, and it must not contradict
+the classified direction. Rule R5 additionally refuses a non-finite confidence or a confidence outside
+[0.5, 1.0]; rules R3, R4 and R5 refuse boolean values. The neutral event type EARNINGS_RESULT is added
+to the vocabulary for an earnings result stated without an expectations comparison.
+
+2. WHAT THE RULE IS NOT
+The check is lexical and structural. It is not factual entailment, not an independent verification of
+analyst expectations, not a check of the benchmark's authenticity and not source authentication. An
+admitted event is at most "textual comparison stated" or "structure consistent"; neither is a truth
+claim about the comparison.
+
+3. SCOPE IN TIME AND WHAT IS PRESERVED
+The rule applies to extractions admitted on or after the deployment date. No previously accepted event
+is reclassified, relabelled or removed; no previously reported estimate, table, ledger root, registry
+chain line, packet or public statistic is modified. Previously accepted EARNINGS_BEAT or EARNINGS_MISS
+events whose excerpt does not state the comparison are flagged descriptively on the current Why
+surfaces (excerpt_comparison_checks: UNSUPPORTED_COMPARISON) and retained as historical records.
+
+4. EXPECTED EFFECT ON REGISTERED COUNTS
+Fewer EARNINGS_BEAT and EARNINGS_MISS admissions after the deployment date, and a possible shift of
+such extractions to EARNINGS_RESULT or to no event. Per-type accepted-event counts that feed Evidence
+Coverage v1, Evidence Lifecycle v1, the completeness profile and the anytime observer are affected
+prospectively from the deployment date. Any registered read that pools accepted events of these two
+types across the deployment date must disclose this rule change and its date.
+
+5. DEPLOYMENT
+The rule is deployed in the production extraction path when the release carrying this record is
+published and the production checkout moves to that release; the deployment date is that release's
+push-to-main timestamp in the release journal, not this registration date. Until then the production
+extractor runs the prior rule set (R1 to R9). This registration precedes any new evaluation window
+that could be affected; it does not open, close or re-date any enrolled window.
+
+Method hash = SHA-256 of this file as registered in the protocol chain.
