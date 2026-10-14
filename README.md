@@ -95,16 +95,16 @@ transcript below is generated from the release-candidate wheel and regenerated e
 **Research with v9:** [English / Français — start here](https://yuclaw.ca/research_start.html).
 
 <!-- CLI-TRANSCRIPT BEGIN -->
-Transcript produced from the release-candidate wheel `yuclaw-9.0.0-py3-none-any.whl` (yuclaw 9.0.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
+Transcript produced from the release-candidate wheel `yuclaw-9.0.1-py3-none-any.whl` (yuclaw 9.0.1, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 
 ```text
 $ yuclaw --version
-yuclaw 9.0.0
+yuclaw 9.0.1
 [exit 0]
 ```
 ```text
 $ yuclaw --help
-yuclaw 9.0.0 — evidence-first financial research CLI (research and education only; not investment advice)
+yuclaw 9.0.1 — evidence-first financial research CLI (research and education only; not investment advice)
 
 usage: yuclaw <command> [args]   ·   yuclaw <command> --help
 
@@ -183,20 +183,20 @@ $ yuclaw check-claim --accession 0001045810-26-000019
 ```
 ```text
 $ yuclaw replay-lab docs/replay/lab_replay_bundle.json
-Replay bundle built 2026-10-12 23:02 UTC from source commit e2d79251ad36
-Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 54d204583c83
+Replay bundle built 2026-10-14 06:17 UTC from source commit 29bf6cb0eca0
+Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 21257caa2e5e
 
-[forward] 98 rebalance periods, window ['2026-05-20', '2026-10-12']
-  spread top_minus_bottom   mean/period -0.00281  p=0.29164589139953445  n=98  CI95=(-0.007968809127066035, 0.002219730596511054)
-  spread top_minus_universe mean/period -0.00186  p=0.21589541436612958  n=98  CI95=(-0.004745724495384156, 0.0010167692252488613)
-  IC  1d mean -0.009274271579997335 NW-p=0.7039031555889981 T=103 dates
-  IC  5d mean -0.04223373219861134 NW-p=0.22352736565548859 T=99 dates
-  IC 20d mean -0.0719541771437324 NW-p=0.05063154475974262 T=84 dates
-  market-model vs_universe alpha/period -0.00197 beta 1.14 p=0.19237240924573562 n=98
-  market-model vs_spy alpha/period -0.00162 beta 1.01 p=0.29650040796637145 n=98
+[forward] 99 rebalance periods, window ['2026-05-20', '2026-10-13']
+  spread top_minus_bottom   mean/period -0.00289  p=0.2737145443151655  n=99  CI95=(-0.008015306348353903, 0.0022382706348159915)
+  spread top_minus_universe mean/period -0.00187  p=0.21160477543220313  n=99  CI95=(-0.004824905339572747, 0.0010345822500365772)
+  IC  1d mean -0.008227524877853758 NW-p=0.7337431980689686 T=104 dates
+  IC  5d mean -0.04464760271772919 NW-p=0.19875043607920817 T=100 dates
+  IC 20d mean -0.07534243603683494 NW-p=0.046879373490996794 T=85 dates
+  market-model vs_universe alpha/period -0.00196 beta 1.12 p=0.19312480534179677 n=99
+  market-model vs_spy alpha/period -0.00168 beta 1.00 p=0.27875916217706964 n=99
 [in_sample] 13 rebalance periods, window ['2026-02-18', '2026-05-18']
-  spread top_minus_bottom   mean/period +0.00553  p=0.6857184046492126  n=13  CI95=(-0.019365001701843236, 0.030789287070102277)
-  spread top_minus_universe mean/period +0.00586  p=0.4960746770292235  n=13  CI95=(-0.009809033927242129, 0.02165172551022834)
+  spread top_minus_bottom   mean/period +0.00553  p=0.6857184046492131  n=13  CI95=(-0.019365001701843236, 0.030789287070102277)
+  spread top_minus_universe mean/period +0.00586  p=0.4960746770292245  n=13  CI95=(-0.009809033927242129, 0.02165172551022834)
 ... (12 more lines)
 [exit 0]
 ```
@@ -379,9 +379,9 @@ mismatch.
 
 ## What is in 6.0.x
 
-Current package version: `9.0.0` — the release notes, the frozen wheel and sdist
+Current package version: `9.0.1` — the release notes, the frozen wheel and sdist
 SHA-256 hashes, and the shipped-object list live on the
-[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v9.0.0)
+[GitHub Release for this version](https://github.com/YuClawLab/yuclaw-brain/releases/tag/v9.0.1)
 ([all releases](https://github.com/YuClawLab/yuclaw-brain/releases) ·
 [CHANGELOG](CHANGELOG.md)). 7.0.0 adds the receipt engine, the offline verification packet, structured claim-support limits, local challenges and document-use receipts, and the Evidence Scoreboard. Scientific states are unchanged: Gate #15 stays MANUAL_REVIEW, Phase 6 N_eff stays PENDING, C6 stays DESCRIPTIVE, U350 stays shadow-only. Zero outsider receipts exist at release; the scoreboard shows that as a real zero.
 

@@ -2,7 +2,7 @@
 
 All notable changes to YUCLAW. Format follows [keepachangelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [9.0.1] — 2026-10-14
 
 Research and education only. Not investment advice.
 
@@ -16,7 +16,7 @@ Research and education only. Not investment advice.
 - Prospective SourceLock R10 is registered as a dated addendum under the Science Trust umbrella protocol (`docs/methodology/sourcelock_r10_admission_change_v1.txt`: applies from the 9.0.1 deployment date; lexical and structural, not entailment; no historical event reclassified). The research-start page states the change in English and French.
 - Release tooling: the 9.x notes composer accepts 9.0.1 as a corrective patch of 9.0.0 with a tracked change list; Gate #15 binds to a decision record for exactly the released version — the 9.0.0-only exception is not carried. The published 9.0.0 bytes, tag and records are unchanged.
 
-These are development changes, not a new published release. The 9.0.0 release-policy exception is not extended. No historical return series, ledger root, registry chain, mission or vision is revised. No human study or backup feature is introduced.
+9.0.1 is a corrective release of 9.0.0 (scope unchanged). The 9.0.0 release-policy exception is not extended to it: Gate #15 needs the owner's own decision for 9.0.1. No historical return series, ledger root, registry chain, mission or vision is revised. No human study or backup feature is introduced.
 
 ## [9.0.0] — 2026-10-13
 

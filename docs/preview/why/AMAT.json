@@ -1,14 +1,134 @@
 {
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 44 of 44 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay AMAT --date D",
- "build_id": "why-2026-10-12T230207",
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "build_id": "why-2026-10-14T062514",
+ "component_anatomy": {
+  "components": [
+   {
+    "active": true,
+    "confidence": 0.9,
+    "contribution": 0.01632,
+    "effective_weight": 0.192,
+    "id": "c1",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.12,
+    "score": 0.085,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.108
+   },
+   {
+    "active": true,
+    "confidence": 0.0,
+    "contribution": 0.0,
+    "effective_weight": 0.0,
+    "id": "c2",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.08,
+    "score": 0.0,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.0
+   },
+   {
+    "active": true,
+    "confidence": 0.8,
+    "contribution": 0.02991273427516518,
+    "effective_weight": 0.17066666666666666,
+    "id": "c3",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.12,
+    "score": 0.17526992739354597,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.096
+   },
+   {
+    "active": true,
+    "confidence": 0.85,
+    "contribution": 0.136,
+    "effective_weight": 0.22666666666666668,
+    "id": "c4",
+    "input_status": "FROZEN_2026-05-18",
+    "nominal_weight": 0.15,
+    "score": 0.6,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.1275
+   },
+   {
+    "active": true,
+    "confidence": 0.3,
+    "contribution": 0.0,
+    "effective_weight": 0.026666666666666665,
+    "id": "c5",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.05,
+    "score": 0.0,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.015
+   },
+   {
+    "active": true,
+    "confidence": 0.2,
+    "contribution": -0.0022784356259498684,
+    "effective_weight": 0.064,
+    "id": "c6",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.18,
+    "score": -0.03560055665546669,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.036
+   },
+   {
+    "active": true,
+    "confidence": 1.0,
+    "contribution": 0.04686812573386111,
+    "effective_weight": 0.17777777777777778,
+    "id": "c7",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.1,
+    "score": 0.26363320725296874,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.1
+   },
+   {
+    "active": true,
+    "confidence": 0.0,
+    "contribution": 0.0,
+    "effective_weight": 0.0,
+    "id": "c8",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.12,
+    "score": 0.0,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.0
+   },
+   {
+    "active": true,
+    "confidence": 1.0,
+    "contribution": -0.01896296296296296,
+    "effective_weight": 0.14222222222222222,
+    "id": "c9",
+    "input_status": "NOT_ASSESSED",
+    "nominal_weight": 0.08,
+    "score": -0.1333333333333333,
+    "weight_source": "CURRENT_CONFIG",
+    "weight_times_confidence": 0.08
+   }
+  ],
+  "denominator": 0.5625,
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "missing_components": [],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed.",
+  "reconstructed_score": 0.20785946142011347,
+  "status": "RECONCILED",
+  "stored_score": 0.2079,
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY"
+ },
  "components": {
-  "c1": 0.4795,
+  "c1": 0.085,
   "c2": 0.0,
-  "c3": -0.6661928,
+  "c3": 0.17526993,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.0393026,
-  "c7": 0.43545708,
+  "c6": -0.035600558,
+  "c7": 0.26363322,
   "c8": 0.0,
   "c9": -0.13333334
  },
@@ -39,13 +159,28 @@
    "status": "CONFIRMED"
   }
  ],
+ "descriptive_denominators_90d": {
+  "by_event_type": {
+   "EXEC_CHANGE": 1,
+   "INSIDER_SELL": 36,
+   "OTHER_MATERIAL": 1
+  },
+  "distinct_accessions": 15,
+  "event_objects": 38,
+  "independent_information_count": null,
+  "largest_type_share": 0.9473684210526315,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
+  "objects_without_accession": 0,
+  "window_end_inclusive": "2026-10-14T00:25:14.356882-06:00",
+  "window_start_exclusive": "2026-07-16T00:25:14.356882-06:00"
+ },
  "evidence_coverage": {
-  "as_of": "2026-10-12T23:01:59.701656+00:00",
-  "ecs": 89,
+  "as_of": "2026-10-14T06:17:26.591829+00:00",
+  "ecs": 88,
   "events_90d": 38,
   "metric_id": "ecs",
-  "recency_days": 7.0,
-  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
+  "recency_days": 8.3,
+  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -492,10 +627,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-12T230207",
+  "build_id": "why-2026-10-14T062514",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-12T17:02:07.388303-06:00",
+  "corpus_end": "2026-10-14T00:25:14.356882-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-10-05T16:01:44.979885-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -506,11 +641,16 @@
   "scope": "accepted evidence objects for AMAT in the declared corpus",
   "total_available": 44
  },
- "generated": "2026-10-12T23:02:07.345312+00:00",
+ "excerpt_comparison_checks": [],
+ "generated": "2026-10-14T06:25:14.313040+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/AMAT.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-12",
    "label": "WATCH"
@@ -626,10 +766,6 @@
   {
    "date": "2026-09-02",
    "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-09-01",
-   "label": "NEGATIVE_EVENT"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -731,17 +867,17 @@
   }
  },
  "science_trust_meta": {
-  "anchor": "ac51ddfe97eb709a368f15f2aa6af9ab759ea4d319f48f45eeb121736d82d0c3",
+  "anchor": "9a51541430a03d145005250e8256495e30520a3b6b5d82c952eb147e62d64644",
   "derivation_protocol": "ad599b80d2db",
   "renderer_version": "1.0.0",
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1703,
+ "score": 0.2079,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "AMAT",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json"
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks."
 }
