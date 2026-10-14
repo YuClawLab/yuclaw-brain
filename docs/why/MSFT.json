@@ -1,31 +1,31 @@
 {
  "ticker": "MSFT",
- "generated": "2026-10-12T23:02:07.345312+00:00",
+ "generated": "2026-10-13T23:02:14.373979+00:00",
  "label": "WATCH",
- "score": 0.0409,
+ "score": 0.1303,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4945,
+  "c1": 0.4825,
   "c2": 0.0,
-  "c3": -0.6661928,
+  "c3": 0.17526993,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.27569178,
-  "c7": 0.4341055,
+  "c6": -0.2508613,
+  "c7": 0.23416276,
   "c8": 0.0,
   "c9": -0.15384616
  },
  "evidence_coverage": {
   "ecs": 79,
   "events_90d": 23,
-  "recency_days": 27.0,
+  "recency_days": 28.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-12T23:01:59.701656+00:00",
-  "source_sha256": "065141ce41905729291aa5662b77f5207571042136190b07562d2f8ecf976c35",
+  "as_of": "2026-10-13T23:02:06.331396+00:00",
+  "source_sha256": "59795fa13be25ed573f4bd5342ee4ba762c1390688737e16b7cd3b1cd0bd5c47",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -309,17 +309,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "newest_returned_available_as_of": "2026-09-15T16:07:38.132528-06:00",
-  "build_id": "why-2026-10-12T230207",
+  "build_id": "why-2026-10-13T230214",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-12T17:02:07.838206-06:00",
+  "corpus_end": "2026-10-13T17:02:14.875878-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-12T230207",
+ "build_id": "why-2026-10-13T230214",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-13",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-12",
    "label": "WATCH"
@@ -435,10 +439,6 @@
   {
    "date": "2026-09-02",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-01",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

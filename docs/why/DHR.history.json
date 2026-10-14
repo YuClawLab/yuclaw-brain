@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "DHR",
- "build_id": "why-2026-10-12T230207",
- "generated": "2026-10-12T23:02:07.345312+00:00",
+ "build_id": "why-2026-10-13T230214",
+ "generated": "2026-10-13T23:02:14.373979+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DHR in the declared corpus",
-  "returned": 9,
-  "total_available": 9,
+  "returned": 10,
+  "total_available": 10,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
-  "newest_returned_available_as_of": "2026-08-24T15:07:26.467020-06:00",
-  "build_id": "why-2026-10-12T230207",
+  "newest_returned_available_as_of": "2026-10-13T06:53:18-06:00",
+  "build_id": "why-2026-10-13T230214",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-12T17:02:07.574646-06:00",
+  "corpus_end": "2026-10-13T17:02:14.606484-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -108,6 +108,16 @@
    "source_hash": "d0ba6f22a82cbc7afe09ae6ccef74b38b607c9c62d71fd66d4c22620edd65f9e",
    "available_as_of": "2026-08-24T15:07:26.467020-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-13",
+   "accession_number": "0000313616-26-000193",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 __________________ FORM 8-K __________________ CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "6c72c66cc13562e4801f9f8737435cb11d342e41cdae72d1149d97cc17158592",
+   "available_as_of": "2026-10-13T06:53:18-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
@@ -135,6 +145,31 @@
     "verified_against": "primary document (EDGAR)"
    },
    "corrected_at": null
+  },
+  {
+   "original": {
+    "ticker": "DHR",
+    "accession_number": "0000313616-26-000163",
+    "source_hash": "6c72c66cc13562e4801f9f8737435cb11d342e41cdae72d1149d97cc17158592",
+    "excerpt_sha256": "f252fcee1d055126b201e37deaa5f72e9da94764afa68355c57654ce66d51714"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-6c72c66cc13562e4",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 __________________ FORM 8-K __________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "corrected_sha256": "966c589f2d6d53bd734e235bfdecb5ffa5d8ab8153b7e6458e5bec00fa9f96c4",
+   "source_location": {
+    "accession_number": "0000313616-26-000163",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/313616/000031361626000163/dhr-20260721.htm",
+    "char_offset": 910,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
   },
   {
    "original": {
