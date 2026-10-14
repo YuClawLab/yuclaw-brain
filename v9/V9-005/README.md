@@ -20,8 +20,8 @@ independent security review is claimed; no human study was run, scheduled, recru
   nightly gate battery (every gate GREEN; gate 4's production write probe NOT RUN — it needs the owner's per-run authorization).
 - **Version surfaces:** `v9/V9-005/apply_version_surfaces_9.0.1.py` (release_kind patch; the `[Unreleased]` CHANGELOG entry became
   `[9.0.1] — 2026-10-14`; README transcript regenerated from a wheel of this tree in the one transcript environment; previews and research
-  contracts restaged; G2 GREEN: 9.0.1 on 10 surfaces + 99 badge pages). Candidate SOURCE commit (last commit touching a packaged path):
-  `7ce7570fc717a1e73a81a07818f889a7945c55a7`. The commit that adds this record changes no packaged path.
+  contracts restaged; G2 GREEN: 9.0.1 on 10 surfaces + 99 badge pages). Candidate SOURCE commit (last commit touching a packaged path): the verifier-arithmetic commit that follows the first record commit
+  (the private record names it; `v3/lab/replay_check.py` is packaged). The commit that adds this record text changes no packaged path.
 
 ## Changes beyond the supplied patch, and why
 
@@ -33,6 +33,8 @@ independent security review is claimed; no human study was run, scheduled, recru
 | `tools/yuclaw_release_notes_v9.py`, `tools/yuclaw_release_state_v6.py`, tests, `docs/methodology/release_notes_9.0.1_changes.md` | the 9.x composer refused any version but 9.0.0; 9.0.1 now composes as a corrective PATCH of 9.0.0 with a tracked change list, and Gate #15 binds to a decision record for exactly the released version (`v9/policy/gate15_release_requirement_<version>.json`) — the 9.0.0-only exception is never read for 9.0.1 |
 | `tests/test_research_audit_fixes.py`: the replay-schema identity cases stated on an explicit legacy shape; a live lab-replay/2 drop test added | the Mac test assumed a schema-less tree bundle; after the live export the tree carries a lab-replay/2 bundle |
 | `docs/evidence_changes/2026-09-02.json` removed | the generator's own 30-day archive window (the nightly would prune it the same night); no archive file was edited |
+| `v3/lab/replay_check.py` + its standalone mirror `tools/replay_lab.py`: floating-point sums via `math.fsum`; p-values printed at six significant digits | the publisher's complete verification rehearsal STOPPED on the declared minimum runtime: the README transcript's full-precision statistics (introduced by the patch) differed in the last digits between Python 3.10 and 3.12 because the builtin sum changed its algorithm in 3.12; correctly rounded sums print identically on every supported runtime, and the last bits of `math.lgamma` differ between interpreter builds so p-values (through the incomplete beta) are displayed at the verification tolerance; the producer's values are compared within tolerance, never bit for bit |
+| `tools/yuclaw_release_state_v6.py` gate 5: a registered append to the protocol chain (base bytes a byte prefix of the candidate chain, chain verified) is accepted; any edited, reordered or removed historical byte still fails (`tests/test_release_state_gate5_append_only.py`) | the gate was coded as byte-identity to base main and reported the appended R10 addendum — the registry's documented append-only process — as a rewrite |
 
 Registry, ledger (entries and roots), bundle, packet and archive bytes are preserved; the hash-bound packet correction
 (`docs/packets/corrections.json`, applies to the packet of base `478c50ce`) keeps its original target and is never retargeted.
