@@ -414,7 +414,7 @@ def canada_heading(version: str) -> str:
     return "Built in Canada" if v >= (8, 0, 1) else "Made in Canada"
 
 
-NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8", "9.0.0": "yuclaw_release_notes_v9", "9.0.1": "yuclaw_release_notes_v9"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list; 9.0.1 = the 9.0.0 scope + a tracked patch change list)
+NOTES_COMPOSERS = {"7.": "v3.release.notes_v7", "8.0.0": "yuclaw_release_notes_v8", "8.0.1": "yuclaw_release_notes_v8", "9.0.0": "yuclaw_release_notes_v9", "9.1.0": "yuclaw_release_notes_v9"}   # prefix or exact version → composer module (V8-008 TB-1; 8.0.1 = the 8.0.0 scope + a tracked patch change list; 9.0.1 = the 9.0.0 scope + a tracked patch change list)
 
 
 def notes_composer(version: str):
@@ -444,6 +444,7 @@ def main() -> int:
     ap.add_argument("--evidence", required=True)
     ap.add_argument("--public", action="store_true", help="print the Tier-2 public notes to stdout")
     ap.add_argument("--patch", action="store_true", help="patch-release notes (copy/CLI class, no methodology change)")
+    ap.add_argument("--minor", action="store_true", help="minor-release notes: the tracked change list docs/methodology/release_notes_<v>_changes.md (adds functionality and/or a prospective rule change; the prior feature scope kept) — described as a minor release, never as a patch")
     ap.add_argument("--release-policy", help="private release-policy record (allocation; Gate #15 route for 7.x, NOT_REQUIRED for v8 releases per the owner's recorded decision); the 7.x and 8.0.0 public notes are composed from it and bound to it")
     ap.add_argument("--allow-production-write-probe", action="store_true",
                     help="run the declared production write probe(s) (gate 4: check_u350_isolation.py) with a write-capable session — ONLY under the "
@@ -655,9 +656,15 @@ Financial AI normally gives you an answer. YUCLAW gives you the evidence, what t
 Built in Canada — from Lake Ontario to Lake Louise and Kananaskis Lake — with gratitude to the country whose land and light frame this work.
 """
     patch_changes = None
+    assert not (a.patch and a.minor), "--patch and --minor are exclusive"
+    if a.minor:
+        pc = _REPO / "docs" / "methodology" / f"release_notes_{VERSION}_changes.md"
+        assert pc.exists(), f"minor release {VERSION}: the tracked change list {pc.name} is missing"
+        assert ev["release"].get("release_kind") == "minor", "the evidence record must declare release_kind minor"
+        patch_changes = pc.read_text()                         # tracked, source-bound change list of the minor release
     if a.patch:
         pc = _REPO / "docs" / "methodology" / f"release_notes_{VERSION}_changes.md"
-        if (VERSION.startswith("7.") or VERSION in ("8.0.1", "9.0.1")) and pc.exists():
+        if (VERSION.startswith("7.") or VERSION in ("8.0.1",)) and pc.exists():
             patch_changes = pc.read_text()                     # tracked, source-bound patch change list
         else:
             public = _patch_public(VERSION, tip, len(lines), g16, ev)

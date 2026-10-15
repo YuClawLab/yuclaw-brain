@@ -62,3 +62,8 @@ its three tampering controls and the hosted CI run are recorded in the private r
 Missing historical external anchors, unrecorded historical confidence inputs, the absence of independent event-level authentication and
 limited empirical reliability evidence are disclosed, not repaired. This candidate establishes no predictive alpha, no causal
 identification, no broad agent reliability and no human comprehension; ETF assignment still requires its registered addendum.
+
+## Superseded on 2026-10-15
+
+The owner renumbered this never-published candidate **9.1.0** (a minor release of the 9.0 line: `research-export` adds functionality;
+SourceLock R10 changes prospective admission). This record is kept unchanged as history; the current record is `v9/V9-006/README.md`.

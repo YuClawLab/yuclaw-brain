@@ -1,5 +1,6 @@
 """The 9.x notes composer and the release-state generator's 9.x handling: 9.0.0 composes and is bound to a recorded
-policy; 9.0.1 composes as a corrective PATCH of 9.0.0 (scope unchanged + a tracked change list); without a policy the notes
+policy; 9.1.0 composes as a MINOR release of the 9.0 line (feature scope F1–F5 kept + a tracked change list that adds functionality
+and a prospective rule change; never described as a patch); without a policy the notes
 say NOT RECORDED; Gate #15 is MANUAL_REVIEW unless the owner records a decision FOR THAT VERSION (the 8.x removal and the
 9.0.0-only exception never carry over; a record claiming a pass is refused); correspondence fails on altered feature lines,
 missing never-claims or a banned word; other versions have no 9.x path."""
@@ -44,16 +45,17 @@ def decision_file(tmp: pathlib.Path, status="EXCEPTION_ACCEPTED", record="yuclaw
 
 
 class TestNotesV9(unittest.TestCase):
-    def test_generator_routes_9_0_0_and_its_patch_to_the_v9_composer_and_nothing_else(self):
-        self.assertIs(gen.notes_composer("9.0.0"), n9); self.assertIs(gen.notes_composer("9.0.1"), n9)
-        for v in ("9.0.2", "9.1.0", "8.0.2", "9.0.0rc1", "9.0.1rc1"):
+    def test_generator_routes_9_0_0_and_its_minor_9_1_0_to_the_v9_composer_and_nothing_else(self):
+        self.assertIs(gen.notes_composer("9.0.0"), n9); self.assertIs(gen.notes_composer("9.1.0"), n9)
+        for v in ("9.0.1", "9.0.2", "9.1.1", "9.2.0", "8.0.2", "9.0.0rc1", "9.1.0rc1"):                 # 9.0.1 was never published: no composition path
             self.assertIsNone(gen.notes_composer(v), v)
-        with self.assertRaises(ValueError):                                                              # a patch needs its tracked change list
-            n9.compose(V6_STYLE.format(v="9.0.1"), version="9.0.1", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()))
+        self.assertEqual(n9.PATCH_OF, {}); self.assertEqual(n9.MINOR_OF, {"9.1.0": "9.0.0"})           # the 9.x line has no patch; 9.1.0 is a minor release
+        with self.assertRaises(ValueError):                                                              # a minor release needs its tracked change list
+            n9.compose(V6_STYLE.format(v="9.1.0"), version="9.1.0", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()))
         with self.assertRaises(ValueError):                                                              # the major release has no change list
             n9.compose(V6_STYLE.format(v="9.0.0"), version="9.0.0", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()), patch_changes="- x")
         with self.assertRaises(ValueError):
-            n9.compose(V6_STYLE.format(v="9.1.0"), version="9.1.0", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()))
+            n9.compose(V6_STYLE.format(v="9.0.1"), version="9.0.1", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()), patch_changes="- x")
 
     def test_no_policy_means_a_draft_that_says_so_and_gate15_manual_review(self):
         m = n9.capability_matrix(scorecard=scorecard())
@@ -79,7 +81,7 @@ class TestNotesV9(unittest.TestCase):
         with self.assertRaises(ValueError):
             gen.gate15_requirement("9.0.0", decision_file(tmp, status="PASSED"))
         with self.assertRaises(ValueError):
-            gen.gate15_requirement("9.0.1", decision_file(tmp))                                       # 9.0.0 only: a later version cannot inherit it
+            gen.gate15_requirement("9.1.0", decision_file(tmp))                                       # 9.0.0 only: a later version cannot inherit it
         m = n9.capability_matrix(scorecard=scorecard())
         text = n9.compose(V6_STYLE.format(v="9.0.0"), version="9.0.0", policy=policy(route="NOT_REQUIRED"), board=BOARD, matrix=m)
         probs = n9.check_correspondence(text, policy(route="NOT_REQUIRED"), matrix=m, decision=n9.gate15_decision(decision_file(tmp)))
@@ -115,52 +117,57 @@ class TestNotesV9(unittest.TestCase):
         live = n9.gate15_decision(); self.assertEqual(gen.gate15_requirement("9.0.0")["sha256"], live["sha256"]); self.assertEqual(gen.gate15_result("9.0.0", True, live)[0], "MANUAL_REVIEW")
 
 
-class TestPatch901(unittest.TestCase):
-    """9.0.1 = the 9.0.0 scope and capability account, unchanged, plus a TRACKED patch change list; Gate #15 binds to a 9.0.1 record only."""
-    CHANGES = "- Replay verification refuses a missing daily root.\n- Ledger day files keep their bytes."
+class TestMinor910(unittest.TestCase):
+    """9.1.0 = the 9.0.0 feature scope (F1–F5) and capability account kept, plus a TRACKED change list that ADDS functionality (research-export)
+    and a prospective admission rule (SourceLock R10); described as a minor release, never as a patch; Gate #15 binds to the owner's 9.1.0 record only."""
+    CHANGES = "- Point-in-time research export: the new `research-export` command.\n- Prospective SourceLock R10 admission rule (registered addendum)."
+    TEXT910 = TEXT.replace("9.0.0", "9.1.0")
 
     def compose(self, pol, changes=CHANGES):
-        return n9.compose(V6_STYLE.format(v="9.0.1"), version="9.0.1", policy=pol, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()), patch_changes=changes)
+        return n9.compose(V6_STYLE.format(v="9.1.0"), version="9.1.0", policy=pol, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard()), patch_changes=changes)
 
-    def test_patch_notes_keep_the_scope_and_carry_the_change_list(self):
-        pol = policy(version="9.0.1", route="EXCEPTION_9_0_1"); text = self.compose(pol)
-        self.assertIn("#### Changed in 9.0.1 — corrective release:", text); self.assertIn("scope unchanged", text); self.assertIn(self.CHANGES, text)
-        self.assertIn("#### In the 9.0 line since 9.0.0 — research briefs with traceable AI assistance (local, loopback only; scope unchanged)", text); self.assertNotIn("#### New in 9.0.1", text)
-        self.assertIn(n9.PATCH_SCOPE_NOTE.format(version="9.0.1", scope_version="9.0.0"), text)
+    def test_minor_notes_keep_the_feature_scope_add_functionality_and_never_say_patch(self):
+        pol = policy(version="9.1.0", route="EXCEPTION_9_1_0"); text = self.compose(pol)
+        self.assertIn("#### Changed in 9.1.0 — minor release: adds the point-in-time `research-export` command and the prospective SourceLock R10 evidence-admission rule", text)
+        self.assertIn("feature scope F1–F5 kept", text); self.assertIn(self.CHANGES, text); self.assertNotIn("patch", text.lower()); self.assertNotIn("scope unchanged", text)
+        self.assertIn("#### In the 9.0 line since 9.0.0 — research briefs with traceable AI assistance (local, loopback only; feature scope F1–F5 kept)", text); self.assertNotIn("#### New in 9.1.0", text)
+        self.assertIn(n9.MINOR_SCOPE_NOTE.format(version="9.1.0", scope_version="9.0.0"), text)
         for f in n9.EXPECTED_FEATURES:
             self.assertIn(n9.FEATURE_LINES[f], text)
-        self.assertIn("NO owner decision is recorded for 9.0.1; the 8.x removal and the 9.0.0-only exception do not carry over", text)   # the tree has no 9.0.1 record
         for missing in ("", "   \n"):
             with self.assertRaises(ValueError):
                 self.compose(pol, missing)
-        self.assertEqual(n9.gate15_route("9.0.1"), "EXCEPTION_9_0_1"); self.assertEqual(n9.gate15_route("9.0.0"), n9.GATE15_ROUTE)
-        self.assertEqual(n9.gate15_decision_path("9.0.0"), n9.GATE15_DECISION); self.assertEqual(n9.gate15_decision_path("9.0.1").name, "gate15_release_requirement_9.0.1.json")
+        self.assertEqual(n9.gate15_route("9.1.0"), "EXCEPTION_9_1_0"); self.assertEqual(n9.gate15_route("9.0.0"), n9.GATE15_ROUTE)
+        self.assertEqual(n9.gate15_decision_path("9.0.0"), n9.GATE15_DECISION); self.assertEqual(n9.gate15_decision_path("9.1.0").name, "gate15_release_requirement_9.1.0.json")
 
-    def test_the_9_0_0_exception_is_never_read_for_9_0_1_and_a_9_0_1_record_binds_strictly(self):
+    def test_the_owner_9_1_0_record_in_the_tree_binds_and_the_9_0_0_exception_is_never_read_for_9_1_0(self):
         tmp = pathlib.Path(tempfile.mkdtemp())
-        self.assertIsNone(n9.gate15_decision(version="9.0.1"))                                            # no 9.0.1 record in the tree → no decision
-        self.assertIsNone(gen.gate15_requirement("9.0.1"))
-        with self.assertRaises(ValueError):                                                               # the 9.0.0-only record, read for 9.0.1, is refused
-            n9.gate15_decision(decision_file(tmp), version="9.0.1")
+        live = n9.gate15_decision(version="9.1.0")                                                        # the owner's tracked 9.1.0-only record (2026-10-15)
+        self.assertIsNotNone(live); self.assertEqual(live["applies_to"]["versions"], "9.1.0 only"); self.assertFalse(live["applies_to"]["carried_to_later_releases"])
+        self.assertEqual(live["status"], "EXCEPTION_ACCEPTED"); self.assertEqual(live["gate_result"], "MANUAL_REVIEW"); self.assertFalse(live["study"]["represented_as_passed"])
+        self.assertIn("For 9.1.0 only, I accept an explicit release-policy exception for Gate #15.", live["decision_text_verbatim"])
+        self.assertEqual(hashlib.sha256(live["decision_text_verbatim"].encode()).hexdigest(), live["decision_text_sha256"])
+        self.assertEqual(gen.gate15_requirement("9.1.0")["sha256"], live["sha256"]); self.assertEqual(gen.gate15_result("9.1.0", True, live)[0], "MANUAL_REVIEW")
+        with self.assertRaises(ValueError):                                                               # the 9.0.0-only record, read for 9.1.0, is refused
+            n9.gate15_decision(decision_file(tmp), version="9.1.0")
         with self.assertRaises(ValueError):
-            n9.gate15_decision(n9.GATE15_DECISION, version="9.0.1")
-        pol = policy(version="9.0.1", route="EXCEPTION_9_0_1"); text = self.compose(pol)
-        probs = n9.check_correspondence(text, pol, matrix=n9.capability_matrix(scorecard=scorecard()))
-        self.assertTrue(any("9.0.1 exception record is absent" in p for p in probs), probs)              # unpublishable until the owner decides for 9.0.1
-        probs0 = n9.check_correspondence(text, policy(version="9.0.1", route="EXCEPTION_9_0_0"), matrix=n9.capability_matrix(scorecard=scorecard()))
-        self.assertTrue(any("nor does another version's exception" in p for p in probs0), probs0)   # the 9.0.0 route word does not fit 9.0.1
-        self.assertTrue(any("policy record is for version '9.0.0', not 9.0.1" in p for p in n9.check_correspondence(text, policy(version="9.0.0", route="EXCEPTION_9_0_1"), matrix=n9.capability_matrix(scorecard=scorecard()))))
-        dec = n9.gate15_decision(decision_file(tmp, versions="9.0.1 only", text=TEXT.replace("9.0.0", "9.0.1")), version="9.0.1")
-        self.assertEqual(gen.gate15_requirement("9.0.1", tmp / "gate15.json")["sha256"], dec["sha256"]); self.assertEqual(gen.gate15_result("9.0.1", True, dec)[0], "MANUAL_REVIEW")
-        pol = policy(version="9.0.1", route="EXCEPTION_9_0_1", sha=dec["sha256"], text=TEXT.replace("9.0.0", "9.0.1"))
-        bound = self.compose(pol).replace(n9.gate15_line(pol, None, "9.0.1"), n9.gate15_line(pol, dec, "9.0.1"))
-        self.assertEqual(n9.check_correspondence(bound, pol, matrix=n9.capability_matrix(scorecard=scorecard()), decision=dec), [])
-        self.assertIn("explicit release-policy exception for 9.0.1 only", bound); self.assertNotIn("scope unchanged", n9.compose(V6_STYLE.format(v="9.0.0"), version="9.0.0", policy=None, board=BOARD, matrix=n9.capability_matrix(scorecard=scorecard())))
-        self.assertTrue(any("scope is unchanged" in p for p in n9.check_correspondence(bound.replace("scope unchanged", "scope"), pol, matrix=n9.capability_matrix(scorecard=scorecard()), decision=dec)))
+            n9.gate15_decision(n9.GATE15_DECISION, version="9.1.0")
+        with self.assertRaises(ValueError):                                                               # the 9.1.0 record, read for 9.0.0, is refused as well
+            n9.gate15_decision(n9.gate15_decision_path("9.1.0"), version="9.0.0")
+        pol = policy(version="9.1.0", route="EXCEPTION_9_1_0", sha=live["sha256"], text=live["decision_text_verbatim"]); text = self.compose(pol)
+        self.assertIn("explicit release-policy exception for 9.1.0 only", text); self.assertIn("For 9.1.0 only, I accept", text)
+        self.assertEqual(n9.check_correspondence(text, pol, matrix=n9.capability_matrix(scorecard=scorecard())), [])
+        probs0 = n9.check_correspondence(text, policy(version="9.1.0", route="EXCEPTION_9_0_0"), matrix=n9.capability_matrix(scorecard=scorecard()))
+        self.assertTrue(any("nor does another version's exception" in p for p in probs0), probs0)   # the 9.0.0 route word does not fit 9.1.0
+        self.assertTrue(any("policy record is for version '9.0.0', not 9.1.0" in p for p in n9.check_correspondence(text, policy(version="9.0.0", route="EXCEPTION_9_1_0"), matrix=n9.capability_matrix(scorecard=scorecard()))))
+        wrong_sha = policy(version="9.1.0", route="EXCEPTION_9_1_0", sha="0" * 64, text=live["decision_text_verbatim"])
+        self.assertTrue(any("not bound to the owner's 9.1.0 decision record" in p for p in n9.check_correspondence(text, wrong_sha, matrix=n9.capability_matrix(scorecard=scorecard()))))
+        self.assertTrue(any("minor release" in p for p in n9.check_correspondence(text.replace("minor release: adds", "release:"), pol, matrix=n9.capability_matrix(scorecard=scorecard()))))
 
     def test_the_tracked_change_list_exists_and_respects_the_public_rules(self):
-        t = (R / "docs" / "methodology" / "release_notes_9.0.1_changes.md").read_text()
-        self.assertTrue(t.startswith("- ")); self.assertIn("research-export", t); self.assertIn("not present in the published 9.0.0", t); self.assertIn("R10", t)
+        t = (R / "docs" / "methodology" / "release_notes_9.1.0_changes.md").read_text()
+        self.assertTrue(t.startswith("- ")); self.assertIn("research-export", t); self.assertIn("not present in the published 9.0.0", t); self.assertIn("R10", t); self.assertIn("minor release", t)
+        self.assertNotIn("9.0.1 is", t)
         for banned in ("docs/", "registry/", "output/", "tools/", "check_", ".py", "seed", "bootstrap", "generated"):
             self.assertNotIn(banned, t, banned)
         import re

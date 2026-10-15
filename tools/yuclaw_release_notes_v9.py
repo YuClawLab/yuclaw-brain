@@ -6,9 +6,10 @@ interface, mirrored: compose() and check_correspondence()). Inputs are read from
                                                self-check, the browser inspection, the clean-install record when present)
   * the owner's Gate #15 decision for 9.x    — v9/policy/gate15_release_requirement.json, IF the owner records one; the
                                                8.x removal is NOT carried over (no version-specific exception travels)
-Version support: 9.0.0 (the major release) and its corrective patch 9.0.1 (SUPPORTED_VERSIONS). A patch release keeps the
-9.0.0 scope file and capability account unchanged — it adds a TRACKED patch change list (docs/methodology/release_notes_<v>_changes.md)
-and states that the scope is unchanged. Gate #15 never travels between versions: each version needs the owner's OWN decision
+Version support: 9.0.0 (the major release) and 9.1.0, a MINOR release of the 9.0 line (SUPPORTED_VERSIONS). A minor release keeps
+the 9.0.0 feature scope file (F1–F5) and ADDS functionality and/or a prospective rule change, both named in a TRACKED change list
+(docs/methodology/release_notes_<v>_changes.md); it is described as a minor release, never as a patch (a patch is defect repairs
+only — no methodology, registration or functionality change — and the 9.x line has none). Gate #15 never travels between versions: each version needs the owner's OWN decision
 record (v9/policy/gate15_release_requirement.json for 9.0.0; v9/policy/gate15_release_requirement_<v>.json for a later version);
 without it the notes say so and cannot correspond. Nothing here authorizes publication; an empty correspondence list means the
 notes match the RECORDED policy, no more."""
@@ -20,8 +21,10 @@ import re
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[1]
-SUPPORTED_VERSIONS = ("9.0.0", "9.0.1")
-PATCH_OF = {"9.0.1": "9.0.0"}                      # patch release → the release whose frozen scope it keeps
+SUPPORTED_VERSIONS = ("9.0.0", "9.1.0")
+PATCH_OF = {}                                      # patch release → the release whose frozen scope it keeps (defect repairs only; the 9.x line has none)
+MINOR_OF = {"9.1.0": "9.0.0"}                      # minor release → the release whose feature scope (F1–F5) it keeps while adding functionality / a prospective rule
+CHANGE_LIST_OF = {**PATCH_OF, **MINOR_OF}          # every version that carries a tracked change list
 SCOPE_PATH = _REPO / "v9" / "scope" / "v9.0.0-scope.json"
 GATE15_DECISION = _REPO / "v9" / "policy" / "gate15_release_requirement.json"          # the owner's 9.0.0-only decision
 
@@ -112,6 +115,9 @@ def feature_account(m: dict) -> str:
 
 GATE15_ROUTE = "EXCEPTION_9_0_0"                                       # the 9.0.0 route word (kept for the published 9.0.0 record)
 PATCH_SCOPE_NOTE = "- {version} keeps the frozen {scope_version} scope: every statement below is that scope's own wording and applies to {version} unchanged."
+MINOR_SCOPE_NOTE = "- {version} keeps the frozen {scope_version} feature scope (F1–F5): every statement below is that scope's own wording; what {version} adds or changes is listed under Changed above."
+MINOR_HEADER = ("#### Changed in {version} — minor release: adds the point-in-time `research-export` command and the prospective SourceLock R10 evidence-admission rule, "
+                "and corrects research verification and public evidence text (9.0.0 feature scope F1–F5 kept; no statistic, threshold or historical result changed)")
 
 
 def gate15_route(version: str) -> str:
@@ -149,11 +155,11 @@ def not_in_this_release(m: dict, tail: str) -> str:
 def compose(v6_style_public: str, *, version: str, policy: dict | None, board: dict | None, matrix: dict | None = None, patch_changes: str | None = None) -> str:
     if version not in SUPPORTED_VERSIONS:
         raise ValueError(f"version {version} has no 9.x notes composition path (supported: {', '.join(SUPPORTED_VERSIONS)})")
-    scope_version = PATCH_OF.get(version, version)
-    if version in PATCH_OF and not (patch_changes or "").strip():
-        raise ValueError(f"{version} is a patch release: its tracked patch change list is required")
-    if version not in PATCH_OF and patch_changes:
-        raise ValueError(f"{version} is a major release: there is no patch change list")
+    scope_version = CHANGE_LIST_OF.get(version, version)
+    if version in CHANGE_LIST_OF and not (patch_changes or "").strip():
+        raise ValueError(f"{version} carries a tracked change list ({'patch' if version in PATCH_OF else 'minor'} release): the list is required")
+    if version not in CHANGE_LIST_OF and patch_changes:
+        raise ValueError(f"{version} is a major release: there is no change list")
     import sys
     if str(_REPO) not in sys.path:
         sys.path.insert(0, str(_REPO))
@@ -170,6 +176,9 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
     if version in PATCH_OF:
         new = [f"#### Changed in {version} — corrective release: research-verification and public-evidence corrections (scope unchanged; one prospective evidence-admission rule registered; no statistic, threshold or historical result changed)", "", patch_changes.strip("\n"), "",
                f"#### In the 9.0 line since {scope_version} — research briefs with traceable AI assistance (local, loopback only; scope unchanged)", "", feature_account(m), ""]
+    elif version in MINOR_OF:
+        new = [MINOR_HEADER.format(version=version), "", patch_changes.strip("\n"), "",
+               f"#### In the 9.0 line since {scope_version} — research briefs with traceable AI assistance (local, loopback only; feature scope F1–F5 kept)", "", feature_account(m), ""]
     else:
         new = [f"#### New in {version} — research briefs with traceable AI assistance (local, loopback only)", "", feature_account(m), ""]
     parts = [head.rstrip("\n"), "", *new,
@@ -177,7 +186,7 @@ def compose(v6_style_public: str, *, version: str, policy: dict | None, board: d
              "#### Activation status (every proposed activation)", "", activations, "",
              "#### Release policy (recorded; the publisher refuses notes that do not match the record)", "", policy_disclosure(policy, dec, version), "",
              "#### Continuing objects (unchanged from 8.0.1) — name · receipt · status", "", objects, "",
-             "#### Not in this release", "", *([PATCH_SCOPE_NOTE.format(version=version, scope_version=scope_version)] if version in PATCH_OF else []), not_in_this_release(m, tail), ""]
+             "#### Not in this release", "", *([PATCH_SCOPE_NOTE.format(version=version, scope_version=scope_version)] if version in PATCH_OF else [MINOR_SCOPE_NOTE.format(version=version, scope_version=scope_version)] if version in MINOR_OF else []), not_in_this_release(m, tail), ""]
     return "\n".join(parts)
 
 
@@ -199,6 +208,8 @@ def check_correspondence(notes: str, policy: dict | None, matrix: dict | None = 
         problems.append(f"policy record is for version {policy.get('version')!r}, not {notes_version}")
     if notes_version in PATCH_OF and "scope unchanged" not in notes:
         problems.append("a patch release must state that the scope is unchanged")
+    if notes_version in MINOR_OF and ("minor release: adds" not in notes or "feature scope F1–F5 kept" not in notes):
+        problems.append("a minor release must describe itself as a minor release that adds functionality while keeping the prior feature scope")
     if al.get("accepted") is not True:
         problems.append("allocation is not recorded as accepted (a PROPOSED allocation document is not a decision)")
     v = notes_version if notes_version in SUPPORTED_VERSIONS else "9.0.0"; route = gate15_route(v)
