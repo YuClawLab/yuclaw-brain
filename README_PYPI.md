@@ -176,7 +176,7 @@ $ yuclaw check-claim --accession 0001045810-26-000019
 ```
 ```text
 $ yuclaw replay-lab docs/replay/lab_replay_bundle.json
-Replay bundle built 2026-10-15 01:41 UTC from source commit 436db234af9a
+Replay bundle built 2026-10-15 02:45 UTC from source commit eda1549ff47e
 Ledger repo: https://github.com/YuClawLab/yuclaw-trust @ 925c9ab7cbf6
 
 [forward] 100 rebalance periods, window ['2026-05-20', '2026-10-14']
