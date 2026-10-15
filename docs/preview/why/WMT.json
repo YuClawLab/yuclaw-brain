@@ -1,17 +1,17 @@
 {
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-15T014130",
  "component_anatomy": {
   "components": [
    {
     "active": true,
     "confidence": 0.9,
-    "contribution": 0.03661146496815287,
+    "contribution": 0.049605095541401266,
     "effective_weight": 0.15286624203821655,
     "id": "c1",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.2395,
+    "score": 0.32449999999999996,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.108
    },
@@ -30,12 +30,12 @@
    {
     "active": true,
     "confidence": 0.8,
-    "contribution": 0.0064590278857597355,
+    "contribution": 0.10540343620056139,
     "effective_weight": 0.13588110403397027,
     "id": "c3",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.047534408346763056,
+    "score": 0.7757034132885064,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.096
    },
@@ -66,24 +66,24 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": -0.014346032574179348,
+    "contribution": -0.012996011445772983,
     "effective_weight": 0.25477707006369427,
     "id": "c6",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.18,
-    "score": -0.05630817785365394,
+    "score": -0.05100934492465896,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.18
    },
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.01110571328541938,
+    "contribution": 0.020135348384313183,
     "effective_weight": 0.14154281670205238,
     "id": "c7",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.1,
-    "score": 0.07846186436148792,
+    "score": 0.14225623633517262,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.1
    },
@@ -116,19 +116,19 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "missing_components": [],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed.",
-  "reconstructed_score": 0.08771882654934701,
+  "reconstructed_score": 0.21003652166469725,
   "status": "RECONCILED",
-  "stored_score": 0.0877,
+  "stored_score": 0.21,
   "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY"
  },
  "components": {
-  "c1": 0.2395,
+  "c1": 0.3245,
   "c2": 0.0,
-  "c3": 0.04753441,
+  "c3": 0.77570343,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.056308176,
-  "c7": 0.07846186,
+  "c6": -0.051009346,
+  "c7": 0.14225623,
   "c8": 0.0,
   "c9": -0.53333336
  },
@@ -161,25 +161,25 @@
  ],
  "descriptive_denominators_90d": {
   "by_event_type": {
-   "INSIDER_SELL": 34,
+   "INSIDER_SELL": 11,
    "OTHER_MATERIAL": 2
   },
-  "distinct_accessions": 23,
-  "event_objects": 36,
+  "distinct_accessions": 10,
+  "event_objects": 13,
   "independent_information_count": null,
-  "largest_type_share": 0.9444444444444444,
+  "largest_type_share": 0.8461538461538461,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
   "objects_without_accession": 0,
-  "window_end_inclusive": "2026-10-14T00:25:15.082530-06:00",
-  "window_start_exclusive": "2026-07-16T00:25:15.082530-06:00"
+  "window_end_inclusive": "2026-10-14T19:41:31.685301-06:00",
+  "window_start_exclusive": "2026-07-16T19:41:31.685301-06:00"
  },
  "evidence_coverage": {
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "ecs": 80,
-  "events_90d": 36,
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "ecs": 79,
+  "events_90d": 13,
   "metric_id": "ecs",
-  "recency_days": 11.4,
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "recency_days": 12.2,
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "substrate_active": 1,
   "type_diversity": 2
  },
@@ -906,10 +906,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-15T014130",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-14T00:25:15.082530-06:00",
+  "corpus_end": "2026-10-14T19:41:31.685301-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-10-02T15:39:32.209677-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -921,11 +921,15 @@
   "total_available": 72
  },
  "excerpt_comparison_checks": [],
- "generated": "2026-10-14T06:25:14.313040+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/WMT.history.json",
- "label": "WATCH",
+ "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -1041,10 +1045,6 @@
   {
    "date": "2026-09-03",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -1152,10 +1152,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.0877,
+ "score": 0.21,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.4,
+  "floor": 0.2
  },
  "ticker": "WMT",
  "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks."

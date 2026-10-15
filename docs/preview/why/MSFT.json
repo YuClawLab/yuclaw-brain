@@ -1,17 +1,17 @@
 {
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-15T014130",
  "component_anatomy": {
   "components": [
    {
     "active": true,
     "confidence": 0.9,
-    "contribution": 0.07279627473806752,
+    "contribution": 0.04224447031431897,
     "effective_weight": 0.1508731082654249,
     "id": "c1",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.4825,
+    "score": 0.27999999999999997,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.108
    },
@@ -30,12 +30,12 @@
    {
     "active": true,
     "confidence": 0.8,
-    "contribution": 0.02350534998339522,
+    "contribution": -0.10438057291887351,
     "effective_weight": 0.13410942956926658,
     "id": "c3",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.17526992739354597,
+    "score": -0.7783238900808364,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.096
    },
@@ -66,24 +66,24 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": -0.06308037007337529,
+    "contribution": -0.11620175316433307,
     "effective_weight": 0.25145518044237486,
     "id": "c6",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.18,
-    "score": -0.2508612865418027,
+    "score": -0.46211715726000974,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.18
    },
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.03271191056957469,
+    "contribution": 0.0314988734334493,
     "effective_weight": 0.13969732246798605,
     "id": "c7",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.1,
-    "score": 0.23416275982720544,
+    "score": 0.2254794356611079,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.1
    },
@@ -116,49 +116,79 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "missing_components": [],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed.",
-  "reconstructed_score": 0.13028033492715987,
+  "reconstructed_score": -0.08249181262594056,
   "status": "RECONCILED",
-  "stored_score": 0.1303,
+  "stored_score": -0.0825,
   "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY"
  },
  "components": {
-  "c1": 0.4825,
+  "c1": 0.28,
   "c2": 0.0,
-  "c3": 0.17526993,
+  "c3": -0.7783239,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.2508613,
-  "c7": 0.23416276,
+  "c6": -0.46211717,
+  "c7": 0.22547944,
   "c8": 0.0,
   "c9": -0.15384616
  },
  "corrections": [],
  "descriptive_denominators_90d": {
   "by_event_type": {
-   "INSIDER_SELL": 20,
+   "INSIDER_SELL": 19,
    "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 2
   },
-  "distinct_accessions": 11,
-  "event_objects": 23,
+  "distinct_accessions": 8,
+  "event_objects": 22,
   "independent_information_count": null,
-  "largest_type_share": 0.8695652173913043,
+  "largest_type_share": 0.8636363636363636,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
   "objects_without_accession": 0,
-  "window_end_inclusive": "2026-10-14T00:25:14.829320-06:00",
-  "window_start_exclusive": "2026-07-16T00:25:14.829320-06:00"
+  "window_end_inclusive": "2026-10-14T19:41:31.397602-06:00",
+  "window_start_exclusive": "2026-07-16T19:41:31.397602-06:00"
  },
  "evidence_coverage": {
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "ecs": 78,
-  "events_90d": 23,
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "ecs": 94,
+  "events_90d": 22,
   "metric_id": "ecs",
-  "recency_days": 28.3,
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "recency_days": 0.1,
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "substrate_active": 1,
   "type_diversity": 3
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000789019-26-000226",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Hood Amy S 991 shares @ $546.51 on 2026-10-13 ($541,590)",
+   "filing_date": "2026-10-14",
+   "protocol_id": null,
+   "source_hash": "48020866ae087c311410c28f91a597087cce765d2c399ca1660aaeefc5b679fe",
+   "ticker": "MSFT"
+  },
+  {
+   "accession_number": "0000789019-26-000226",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Hood Amy S 3387 shares @ $544.80 on 2026-10-13 ($1,845,238)",
+   "filing_date": "2026-10-14",
+   "protocol_id": null,
+   "source_hash": "46d1a46eca88e5a3ea4b002d35cf2b22c4de012bcc550461694c5a931b8de74f",
+   "ticker": "MSFT"
+  },
+  {
+   "accession_number": "0000789019-26-000226",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "evidence_type": "INSIDER_SELL",
+   "excerpt": "Hood Amy S 2927 shares @ $545.77 on 2026-10-13 ($1,597,475)",
+   "filing_date": "2026-10-14",
+   "protocol_id": null,
+   "source_hash": "2da212b4f20c617f161f217b328329042f7357116b4e99bd34be7563b13c8ec9",
+   "ticker": "MSFT"
+  },
   {
    "accession_number": "0000789019-26-000212",
    "available_as_of": "2026-09-15T16:07:38.132528-06:00",
@@ -431,26 +461,30 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-15T014130",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-14T00:25:14.829320-06:00",
+  "corpus_end": "2026-10-14T19:41:31.397602-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-09-15T16:07:38.132528-06:00",
+  "newest_returned_available_as_of": "2026-10-14T16:10:10.391884-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 27,
+  "returned": 30,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MSFT in the declared corpus",
-  "total_available": 27
+  "total_available": 30
  },
  "excerpt_comparison_checks": [],
- "generated": "2026-10-14T06:25:14.313040+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/MSFT.history.json",
- "label": "WATCH",
+ "label": "WEAKENING",
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -566,10 +600,6 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WEAKENING"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -677,10 +707,10 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1303,
+ "score": -0.0825,
  "threshold_band": {
-  "ceiling": 0.2,
-  "floor": 0.0
+  "ceiling": 0.0,
+  "floor": -0.2
  },
  "ticker": "MSFT",
  "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks."

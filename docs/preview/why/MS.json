@@ -1,17 +1,17 @@
 {
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-15T014130",
  "component_anatomy": {
   "components": [
    {
     "active": true,
     "confidence": 0.9,
-    "contribution": -0.12444523597506676,
-    "effective_weight": 0.1923419412288513,
+    "contribution": -0.10971715481171547,
+    "effective_weight": 0.1807531380753138,
     "id": "c1",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": -0.6469999999999999,
+    "score": -0.607,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.108
    },
@@ -30,20 +30,20 @@
    {
     "active": true,
     "confidence": 0.8,
-    "contribution": -0.007692863186554187,
-    "effective_weight": 0.1709706144256456,
+    "contribution": -0.011257963570509394,
+    "effective_weight": 0.1606694560669456,
     "id": "c3",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": -0.04499523624218933,
+    "score": -0.07006909618103503,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.096
    },
    {
     "active": true,
     "confidence": 0.85,
-    "contribution": 0.13624220837043632,
-    "effective_weight": 0.22707034728406056,
+    "contribution": 0.1280334728033473,
+    "effective_weight": 0.21338912133891214,
     "id": "c4",
     "input_status": "FROZEN_2026-05-18",
     "nominal_weight": 0.15,
@@ -54,8 +54,8 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.04936045905479042,
-    "effective_weight": 0.08904719501335709,
+    "contribution": 0.04638643976445994,
+    "effective_weight": 0.08368200836820083,
     "id": "c5",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.05,
@@ -65,25 +65,25 @@
    },
    {
     "active": true,
-    "confidence": 0.0,
+    "confidence": 0.2,
     "contribution": 0.0,
-    "effective_weight": 0.0,
+    "effective_weight": 0.060251046025104595,
     "id": "c6",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.18,
     "score": 0.0,
     "weight_source": "CURRENT_CONFIG",
-    "weight_times_confidence": 0.0
+    "weight_times_confidence": 0.036
    },
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.03574276845444141,
-    "effective_weight": 0.17809439002671418,
+    "contribution": 0.03298689247984159,
+    "effective_weight": 0.16736401673640167,
     "id": "c7",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.1,
-    "score": 0.2006956448716885,
+    "score": 0.19709668256705348,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.1
    },
@@ -102,8 +102,8 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.028495102404274258,
-    "effective_weight": 0.14247551202137132,
+    "contribution": 0.02677824267782426,
+    "effective_weight": 0.13389121338912133,
     "id": "c9",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.08,
@@ -112,23 +112,23 @@
     "weight_times_confidence": 0.08
    }
   ],
-  "denominator": 0.5615,
+  "denominator": 0.5975,
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "missing_components": [],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed.",
-  "reconstructed_score": 0.11770243912232145,
+  "reconstructed_score": 0.11320992934324821,
   "status": "RECONCILED",
-  "stored_score": 0.1177,
+  "stored_score": 0.1132,
   "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY"
  },
  "components": {
-  "c1": -0.647,
+  "c1": -0.607,
   "c2": 0.0,
-  "c3": -0.044995237,
+  "c3": -0.0700691,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": 0.20069565,
+  "c7": 0.19709668,
   "c8": 0.0,
   "c9": 0.2
  },
@@ -187,28 +187,38 @@
  "descriptive_denominators_90d": {
   "by_event_type": {
    "INSIDER_SELL": 5,
-   "OTHER_MATERIAL": 1
+   "OTHER_MATERIAL": 2
   },
-  "distinct_accessions": 4,
-  "event_objects": 6,
+  "distinct_accessions": 5,
+  "event_objects": 7,
   "independent_information_count": null,
-  "largest_type_share": 0.8333333333333334,
+  "largest_type_share": 0.7142857142857143,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
   "objects_without_accession": 0,
-  "window_end_inclusive": "2026-10-14T00:25:14.816134-06:00",
-  "window_start_exclusive": "2026-07-16T00:25:14.816134-06:00"
+  "window_end_inclusive": "2026-10-14T19:41:31.384479-06:00",
+  "window_start_exclusive": "2026-07-16T19:41:31.384479-06:00"
  },
  "evidence_coverage": {
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "ecs": 59,
-  "events_90d": 6,
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "ecs": 84,
+  "events_90d": 7,
   "metric_id": "ecs",
-  "recency_days": 70.6,
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "recency_days": 0.6,
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "substrate_active": 1,
   "type_diversity": 2
  },
  "evidence_objects": [
+  {
+   "accession_number": "0000895421-26-000288",
+   "available_as_of": "2026-10-14T05:39:21-06:00",
+   "evidence_type": "OTHER_MATERIAL",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant To Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "filing_date": "2026-10-14",
+   "protocol_id": null,
+   "source_hash": "fed6b6a9517d18f73caea05af33ab6c4e7a5363433af71c7fb1870cc2555f9e4",
+   "ticker": "MS"
+  },
   {
    "accession_number": "0000895421-26-000212",
    "available_as_of": "2026-08-04T10:04:32-06:00",
@@ -411,26 +421,30 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-15T014130",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-14T00:25:14.816134-06:00",
+  "corpus_end": "2026-10-14T19:41:31.384479-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "newest_returned_available_as_of": "2026-08-04T10:04:32-06:00",
+  "newest_returned_available_as_of": "2026-10-14T05:39:21-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
   "oldest_returned_available_as_of": "2026-04-17T14:36:55-06:00",
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "returned": 20,
+  "returned": 21,
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MS in the declared corpus",
-  "total_available": 20
+  "total_available": 21
  },
  "excerpt_comparison_checks": [],
- "generated": "2026-10-14T06:25:14.313040+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/MS.history.json",
  "label": "WATCH",
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -546,10 +560,6 @@
   {
    "date": "2026-09-03",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "NEUTRAL"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -657,7 +667,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.1177,
+ "score": 0.1132,
  "threshold_band": {
   "ceiling": 0.2,
   "floor": 0.0

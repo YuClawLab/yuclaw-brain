@@ -1,17 +1,17 @@
 {
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-15T014130",
  "component_anatomy": {
   "components": [
    {
     "active": true,
     "confidence": 0.9,
-    "contribution": 0.01580713266761769,
+    "contribution": 0.042984308131241086,
     "effective_weight": 0.18487874465049928,
     "id": "c1",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.08549999999999999,
+    "score": 0.2325,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.108
    },
@@ -30,12 +30,12 @@
    {
     "active": true,
     "confidence": 0.8,
-    "contribution": 0.1399930387036156,
+    "contribution": 0.06293169935266311,
     "effective_weight": 0.1643366619115549,
     "id": "c3",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.12,
-    "score": 0.8518673622502998,
+    "score": 0.3829437608178546,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.096
    },
@@ -54,12 +54,12 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.006507347518895908,
+    "contribution": -0.010931719369749942,
     "effective_weight": 0.08559201141226819,
     "id": "c5",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.05,
-    "score": 0.07602751017910053,
+    "score": -0.12771892130324516,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.05
    },
@@ -78,12 +78,12 @@
    {
     "active": true,
     "confidence": 1.0,
-    "contribution": 0.0154806630522331,
+    "contribution": 0.037420629826674046,
     "effective_weight": 0.17118402282453637,
     "id": "c7",
     "input_status": "NOT_ASSESSED",
     "nominal_weight": 0.1,
-    "score": 0.09043287333012837,
+    "score": 0.21859884590415424,
     "weight_source": "CURRENT_CONFIG",
     "weight_times_confidence": 0.1
    },
@@ -116,19 +116,19 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "missing_components": [],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed.",
-  "reconstructed_score": 0.28591942302652773,
+  "reconstructed_score": 0.24053615902499376,
   "status": "RECONCILED",
-  "stored_score": 0.2859,
+  "stored_score": 0.2405,
   "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY"
  },
  "components": {
-  "c1": 0.0855,
+  "c1": 0.2325,
   "c2": 0.0,
-  "c3": 0.8518674,
+  "c3": 0.38294375,
   "c4": 0.6,
-  "c5": 0.07602751,
+  "c5": -0.12771893,
   "c6": 0.0,
-  "c7": 0.090432875,
+  "c7": 0.21859884,
   "c8": 0.0,
   "c9": -0.2
  },
@@ -136,25 +136,25 @@
  "descriptive_denominators_90d": {
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 21,
+   "INSIDER_SELL": 14,
    "OTHER_MATERIAL": 1
   },
-  "distinct_accessions": 9,
-  "event_objects": 23,
+  "distinct_accessions": 8,
+  "event_objects": 16,
   "independent_information_count": null,
-  "largest_type_share": 0.9130434782608695,
+  "largest_type_share": 0.875,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
   "objects_without_accession": 0,
-  "window_end_inclusive": "2026-10-14T00:25:14.498829-06:00",
-  "window_start_exclusive": "2026-07-16T00:25:14.498829-06:00"
+  "window_end_inclusive": "2026-10-14T19:41:31.067310-06:00",
+  "window_start_exclusive": "2026-07-16T19:41:31.067310-06:00"
  },
  "evidence_coverage": {
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
   "ecs": 87,
-  "events_90d": 23,
+  "events_90d": 16,
   "metric_id": "ecs",
-  "recency_days": 8.7,
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "recency_days": 9.5,
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -711,10 +711,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-15T014130",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-14T00:25:14.498829-06:00",
+  "corpus_end": "2026-10-14T19:41:31.067310-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-10-05T07:01:20-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -726,11 +726,15 @@
   "total_available": 55
  },
  "excerpt_comparison_checks": [],
- "generated": "2026-10-14T06:25:14.313040+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/CVX.history.json",
  "label": "NEUTRAL",
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-13",
    "label": "NEUTRAL"
@@ -846,10 +850,6 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WATCH"
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object.",
@@ -957,7 +957,7 @@
   "staged": true,
   "surface": "preview"
  },
- "score": 0.2859,
+ "score": 0.2405,
  "threshold_band": {
   "ceiling": 0.4,
   "floor": 0.2
