@@ -1,6 +1,6 @@
 {
  "ticker": "ARM",
- "generated": "2026-10-14T23:02:06.294517+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "label": "WEAKENING",
  "score": -0.0218,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 84,
   "events_90d": 7,
-  "recency_days": 21.1,
+  "recency_days": 21.2,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-14T23:01:58.118106+00:00",
-  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -54,7 +54,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-09-10",
    "accession_number": "0001973239-26-000128",
-   "excerpt": "Results of 2026 Annual General Meeting of Arm Holdings plc On September 10, 2026, Arm Holdings plc (the \u201cCompany\u201d) announced the results of its Annual General Meeting held on September 9, 2026 (the \u201cAGM\u201d).",
+   "excerpt": "Results of 2026 Annual General Meeting of Arm Holdings plc On September 10, 2026, Arm Holdings plc (the “Company”) announced the results of its Annual General Meeting held on September 9, 2026 (the “AGM”).",
    "source_hash": "087c9fcdf47787caaaa21257ff735e4af30d5ade1cc7f86b28850d14aa5da586",
    "available_as_of": "2026-09-10T10:09:45-06:00",
    "protocol_id": null
@@ -74,7 +74,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-10",
    "accession_number": "0001973239-26-000117",
-   "excerpt": "NOTICE IS HEREBY GIVEN that the Annual General Meeting of Arm Holdings plc (the \u201cCompany\u201d) will be held on 9 September 2026 at 3:00 p.m. (British Summer Time) to consider, and if thought fit, pass",
+   "excerpt": "NOTICE IS HEREBY GIVEN that the Annual General Meeting of Arm Holdings plc (the “Company”) will be held on 9 September 2026 at 3:00 p.m. (British Summer Time) to consider, and if thought fit, pass",
    "source_hash": "1b2c0a8acd9344d4e2812811ae4afd42df7d25804e36a574adc1173f483ef61a",
    "available_as_of": "2026-08-10T10:01:35-06:00",
    "protocol_id": null
@@ -284,7 +284,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192ARM(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→ARM(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "d469b11ce06caec0007bcbe73617d29f9da3d577a10594a2cde405cddb979afd",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -484,10 +484,154 @@
    "evidence_type": "GUIDANCE_RAISE",
    "filing_date": "2026-03-24",
    "accession_number": "0001973239-26-000052",
-   "excerpt": "During the event, the Company\u2019s Chief Financial Officer, Jason Child, reaffirmed the Company\u2019s fourth quarter 2026 guidance, which was previously provided in the Company\u2019s third quarter fiscal year 2026 earnings release issued on February 4, 2026, as well as provided certain long-range financial expectations.",
+   "excerpt": "During the event, the Company’s Chief Financial Officer, Jason Child, reaffirmed the Company’s fourth quarter 2026 guidance, which was previously provided in the Company’s third quarter fiscal year 2026 earnings release issued on February 4, 2026, as well as provided certain long-range financial expectations.",
    "source_hash": "e6a011052e818aeb684316164b8288600d743394f3b99d14099b0fea30fb3240",
    "available_as_of": "2026-03-24T15:11:56-06:00",
    "protocol_id": null
+  }
+ ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.5985,
+  "reconstructed_score": -0.021833290904011437,
+  "stored_score": -0.0218,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": -0.020999999999999998,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.18045112781954886,
+    "contribution": -0.0037894736842105257,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": -0.7783238900808364,
+    "confidence": 0.8,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.096,
+    "effective_weight": 0.16040100250626566,
+    "contribution": -0.12484393224354266,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.21303258145363407,
+    "contribution": 0.12781954887218044,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.015,
+    "effective_weight": 0.02506265664160401,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": -0.02408818684382269,
+    "confidence": 0.4,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12030075187969923,
+    "contribution": -0.002897826988730549,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": -0.055124483722019925,
+    "confidence": 1.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1,
+    "effective_weight": 0.1670843776106934,
+    "contribution": -0.009210440053804498,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": -0.06666666666666665,
+    "confidence": 1.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.08,
+    "effective_weight": 0.1336675020885547,
+    "contribution": -0.008911166805903646,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T19:41:30.961572-06:00",
+  "window_end_inclusive": "2026-10-14T19:41:30.961572-06:00",
+  "event_objects": 7,
+  "distinct_accessions": 7,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "EARNINGS_BEAT": 1,
+   "INSIDER_SELL": 2,
+   "OTHER_MATERIAL": 3,
+   "PRODUCT_LAUNCH": 1
+  },
+  "largest_type_share": 0.42857142857142855,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [
+  {
+   "source_hash": "3d03602a53ead1a66eae46bbebc08d376cba8b9404dd4812e5c3f26a9119d063",
+   "scope": "published excerpt only; not a whole-filing or independent truth check",
+   "status": "UNSUPPORTED_COMPARISON",
+   "reason": "The cited passage does not explicitly establish the classified comparison with expectations. Original classification retained as a historical record."
   }
  ],
  "evidence_objects_collection": {
@@ -499,15 +643,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-24T15:11:56-06:00",
   "newest_returned_available_as_of": "2026-09-23T15:08:01.721097-06:00",
-  "build_id": "why-2026-10-14T230206",
+  "build_id": "why-2026-10-15T014130",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T17:02:06.378295-06:00",
+  "corpus_end": "2026-10-14T19:41:30.961572-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ARM.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T230206",
+ "build_id": "why-2026-10-15T014130",
  "corrections": [],
  "label_history": [
   {
@@ -631,7 +775,7 @@
    "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 46 of 46 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay ARM --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

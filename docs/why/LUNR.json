@@ -1,6 +1,6 @@
 {
  "ticker": "LUNR",
- "generated": "2026-10-14T23:02:06.294517+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "label": "WEAKENING",
  "score": -0.031,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 81,
   "events_90d": 11,
-  "recency_days": 22.1,
+  "recency_days": 22.2,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-14T23:01:58.118106+00:00",
-  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -84,7 +84,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-13",
    "accession_number": "0001628280-26-056476",
-   "excerpt": "On August\u00a013, 2026, the Company issued a press release announcing its financial results for the fiscal quarter ended June\u00a030, 2026.",
+   "excerpt": "On August 13, 2026, the Company issued a press release announcing its financial results for the fiscal quarter ended June 30, 2026.",
    "source_hash": "7c0e313f5a9470edf6349a41f5abc1a8cdd880a2a0559979154a9f65ba12385b",
    "available_as_of": "2026-08-13T01:35:43-06:00",
    "protocol_id": null
@@ -334,7 +334,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-06-08",
    "accession_number": "0001628280-26-041526",
-   "excerpt": "The Annual Meeting of Stockholders of Intuitive Machines Inc. (the \u201cCompany\u201d) was held on June 4, 2026.",
+   "excerpt": "The Annual Meeting of Stockholders of Intuitive Machines Inc. (the “Company”) was held on June 4, 2026.",
    "source_hash": "b7adbd0a11f826b37543a767d1a03c33f15cef38347fc62106d7d83d70457921",
    "available_as_of": "2026-06-08T14:04:33-06:00",
    "protocol_id": null
@@ -354,7 +354,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192LUNR(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→LUNR(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "d3849257a7df45b195193623236454b269c0552c430eefdb61d6d05cda6a3328",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -570,6 +570,142 @@
    "protocol_id": null
   }
  ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.4385,
+  "reconstructed_score": -0.03101334801865416,
+  "stored_score": -0.031,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": -1.0,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.24629418472063855,
+    "contribution": -0.24629418472063855,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.08209806157354617,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.29076396807297605,
+    "contribution": 0.17445838084378562,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.015,
+    "effective_weight": 0.03420752565564424,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": -0.04767620054879405,
+    "confidence": 0.4,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.16419612314709234,
+    "contribution": -0.007828247296495259,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": 0.2666666666666666,
+    "confidence": 1.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.08,
+    "effective_weight": 0.18244013683010263,
+    "contribution": 0.048650703154694025,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T19:41:31.309983-06:00",
+  "window_end_inclusive": "2026-10-14T19:41:31.309983-06:00",
+  "event_objects": 11,
+  "distinct_accessions": 9,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_SELL": 8,
+   "M_AND_A_ANNOUNCE": 1,
+   "OTHER_MATERIAL": 2
+  },
+  "largest_type_share": 0.7272727272727273,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for LUNR in the declared corpus",
@@ -579,15 +715,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T06:49:24-07:00",
   "newest_returned_available_as_of": "2026-09-22T14:35:20.191740-06:00",
-  "build_id": "why-2026-10-14T230206",
+  "build_id": "why-2026-10-15T014130",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T17:02:06.713364-06:00",
+  "corpus_end": "2026-10-14T19:41:31.309983-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LUNR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T230206",
+ "build_id": "why-2026-10-15T014130",
  "corrections": [
   {
    "original": {
@@ -629,7 +765,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On August 3, 2026, Intuitive Machines, LLC (\u201cBuyer\u201d), a wholly owned subsidiary of Intuitive Machines, Inc. (the \u201cCompany\u201d), entered into a Membership Interest Pu",
+   "corrected_excerpt": "On August 3, 2026, Intuitive Machines, LLC (“Buyer”), a wholly owned subsidiary of Intuitive Machines, Inc. (the “Company”), entered into a Membership Interest Pu",
    "corrected_sha256": "ae17b6e4f547911691cd5ad00a20daaecca2c4a3710261906465b96de9f45a06",
    "source_location": {
     "accession_number": "0001193125-26-330778",
@@ -655,7 +791,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Sales Agreement In connection with Intuitive Machines, Inc.\u2019s (the \u201cCompany\u201d) Registration Statement on Form S-3 (File No.",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Sales Agreement In connection with Intuitive Machines, Inc.’s (the “Company”) Registration Statement on Form S-3 (File No.",
    "corrected_sha256": "89035c7608d935cdea54350a7f20c3eceb70fe559a743ca46bd370cee0850fe3",
    "source_location": {
     "accession_number": "0001193125-26-254475",
@@ -680,7 +816,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On March 19, 2026, Intuitive Machines, Inc. (the \u201cCompany\u201d) issued a press release announcing its financial results for the fiscal quarter ended December 31, 2025.",
+   "corrected_excerpt": "On March 19, 2026, Intuitive Machines, Inc. (the “Company”) issued a press release announcing its financial results for the fiscal quarter ended December 31, 2025.",
    "corrected_sha256": "11f24c238d13e956007facd78a310823ae0178c60857431bd52217fc546b02e5",
    "source_location": {
     "accession_number": "0001628280-26-019633",
@@ -705,7 +841,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry Into a Material Definitive Agreement. On February 27, 2026 (the \u201c Closing Date \u201d), Intuitive Machines, Inc. (the \u201c Company",
+   "corrected_excerpt": "Item 1.01 Entry Into a Material Definitive Agreement. On February 27, 2026 (the “ Closing Date ”), Intuitive Machines, Inc. (the “ Company",
    "corrected_sha256": "5970c47c0f360b39cd0a4ad3345c4ad3be2ffb516a6ffd03fa4fd25145804902",
    "source_location": {
     "accession_number": "0001193125-26-082954",
@@ -863,7 +999,7 @@
    "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 54 of 54 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay LUNR --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

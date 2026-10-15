@@ -1,6 +1,6 @@
 {
  "ticker": "RKLB",
- "generated": "2026-10-14T23:02:06.294517+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "label": "WATCH",
  "score": 0.0006,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 21,
-  "recency_days": 0.1,
+  "recency_days": 0.2,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-14T23:01:58.118106+00:00",
-  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -34,7 +34,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-10-14",
    "accession_number": "0001819994-26-000067",
-   "excerpt": "On October 14, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release and made available a presentation, providing an update relating to the development of its Neutron rocket.",
+   "excerpt": "On October 14, 2026, Rocket Lab Corporation (the “Company”) issued a press release and made available a presentation, providing an update relating to the development of its Neutron rocket.",
    "source_hash": "9ee293b019d292ef28291312dd38b8f466de7924e6520cbdab13a29cdd25a64f",
    "available_as_of": "2026-10-14T14:41:32-06:00",
    "protocol_id": null
@@ -234,7 +234,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-08-10",
    "accession_number": "0001819994-26-000061",
-   "excerpt": "On August 10, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
+   "excerpt": "On August 10, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing its financial results for the second quarter ended June 30, 2026.",
    "source_hash": "27263f2233e740f6113c51ef23363a416ac748fdcc169e22fdc36c50ffd2a64c",
    "available_as_of": "2026-08-10T10:08:45-06:00",
    "protocol_id": null
@@ -954,7 +954,7 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-06-05",
    "accession_number": "0001819994-26-000056",
-   "excerpt": "(b)-(c) On June 3, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) appointed A",
+   "excerpt": "(b)-(c) On June 3, 2026, Rocket Lab Corporation (the “Company”) appointed A",
    "source_hash": "e06cbbc75593188bed7c5024b035aeedcf64998c10c3fcbd1d6b3502f1c56b8c",
    "available_as_of": "2026-06-05T14:15:29-06:00",
    "protocol_id": null
@@ -1004,7 +1004,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE\u2192RKLB(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE→RKLB(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "70560d9ecd0186c20b5137a303a6645aa60a412d919cf8a461b91400f8c13e99",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -1014,7 +1014,7 @@
    "evidence_type": "OTHER_MATERIAL",
    "filing_date": "2026-05-07",
    "accession_number": "0001819994-26-000027",
-   "excerpt": "On May 7, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
+   "excerpt": "On May 7, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing its financial results for the first quarter ended March 31, 2026.",
    "source_hash": "80dbb3e04fa58b3f22e383f183df5a33423cabd3a096ab6f0a2d07958be3ec63",
    "available_as_of": "2026-05-07T14:09:52-06:00",
    "protocol_id": null
@@ -1030,6 +1030,141 @@
    "protocol_id": null
   }
  ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.5465,
+  "reconstructed_score": 0.0005658702437100829,
+  "stored_score": 0.0006,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": -0.26949999999999996,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.19762122598353157,
+    "contribution": -0.05325892040256175,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.06587374199451052,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.2333028362305581,
+    "contribution": 0.13998170173833485,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": 0.0,
+    "confidence": 0.3,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.015,
+    "effective_weight": 0.027447392497712716,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": -0.02454491802858763,
+    "confidence": 1.0,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.32936870997255263,
+    "contribution": -0.008084327987457958,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": -0.5333333333333333,
+    "confidence": 1.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.08,
+    "effective_weight": 0.1463860933211345,
+    "contribution": -0.07807258310460506,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T19:41:31.523855-06:00",
+  "window_end_inclusive": "2026-10-14T19:41:31.523855-06:00",
+  "event_objects": 21,
+  "distinct_accessions": 14,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "INSIDER_SELL": 15,
+   "OTHER_MATERIAL": 6
+  },
+  "largest_type_share": 0.7142857142857143,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for RKLB in the declared corpus",
@@ -1039,15 +1174,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-30T15:33:45-06:00",
   "newest_returned_available_as_of": "2026-10-14T14:41:32-06:00",
-  "build_id": "why-2026-10-14T230206",
+  "build_id": "why-2026-10-15T014130",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T17:02:06.918706-06:00",
+  "corpus_end": "2026-10-14T19:41:31.523855-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/RKLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T230206",
+ "build_id": "why-2026-10-15T014130",
  "corrections": [
   {
    "original": {
@@ -1064,7 +1199,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 7.01. Regulation FD Disclosure. On August 13, 2026, Rocket Lab Corporation (the \u201cCompany\u201d) issued a press release announcing the entry into the Equity Distribution Agreement (as defined below).",
+   "corrected_excerpt": "Item 7.01. Regulation FD Disclosure. On August 13, 2026, Rocket Lab Corporation (the “Company”) issued a press release announcing the entry into the Equity Distribution Agreement (as defined below).",
    "corrected_sha256": "c4fced334a63a940604fe15310f74af94fa1a4b0abb0be5244ab4b5127452f15",
    "source_location": {
     "accession_number": "0001753926-26-001463",
@@ -1197,7 +1332,7 @@
    "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 100 of 132 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay RKLB --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }

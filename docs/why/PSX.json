@@ -1,6 +1,6 @@
 {
  "ticker": "PSX",
- "generated": "2026-10-14T23:02:06.294517+00:00",
+ "generated": "2026-10-15T01:41:30.864747+00:00",
  "label": "NEUTRAL",
  "score": 0.3081,
  "threshold_band": {
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 16,
-  "recency_days": 9.4,
+  "recency_days": 9.5,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-14T23:01:58.118106+00:00",
-  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
+  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -234,7 +234,7 @@
    "evidence_type": "GUIDANCE_CUT",
    "filing_date": "2026-04-06",
    "accession_number": "0001534701-26-000015",
-   "excerpt": "On April 6, 2026, Phillips 66 (the \u201cCompany\u201d) issued guidance providing preliminary first-quarter 2026 financial information.",
+   "excerpt": "On April 6, 2026, Phillips 66 (the “Company”) issued guidance providing preliminary first-quarter 2026 financial information.",
    "source_hash": "d4c403e24fbc09896eb43bf180e731a0414ffb47bc1252e0358cca38aa91c4d2",
    "available_as_of": "2026-04-06T14:15:26-06:00",
    "protocol_id": null
@@ -320,6 +320,142 @@
    "protocol_id": null
   }
  ],
+ "component_anatomy": {
+  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
+  "status": "RECONCILED",
+  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "denominator": 0.6335,
+  "reconstructed_score": 0.3081066789633114,
+  "stored_score": 0.3081,
+  "missing_components": [],
+  "components": [
+   {
+    "id": "c1",
+    "score": 0.7825,
+    "confidence": 0.9,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.17048145224940806,
+    "contribution": 0.1334017363851618,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c2",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c3",
+    "score": 0.3829437608178546,
+    "confidence": 0.8,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.096,
+    "effective_weight": 0.1515390686661405,
+    "contribution": 0.05803094086584695,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c4",
+    "score": 0.6,
+    "confidence": 0.85,
+    "nominal_weight": 0.15,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1275,
+    "effective_weight": 0.20126282557221786,
+    "contribution": 0.12075769534333071,
+    "input_status": "FROZEN_2026-05-18"
+   },
+   {
+    "id": "c5",
+    "score": -0.12771892130324516,
+    "confidence": 1.0,
+    "nominal_weight": 0.05,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.05,
+    "effective_weight": 0.07892659826361485,
+    "contribution": -0.010080419992363471,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c6",
+    "score": -0.06838779007670237,
+    "confidence": 0.4,
+    "nominal_weight": 0.18,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.11365430149960537,
+    "contribution": -0.007772566512269251,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c7",
+    "score": 0.08722847035428528,
+    "confidence": 1.0,
+    "nominal_weight": 0.1,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.1,
+    "effective_weight": 0.1578531965272297,
+    "contribution": 0.013769292873604625,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c8",
+    "score": 0.0,
+    "confidence": 0.0,
+    "nominal_weight": 0.12,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   },
+   {
+    "id": "c9",
+    "score": 0.0,
+    "confidence": 1.0,
+    "nominal_weight": 0.08,
+    "weight_source": "CURRENT_CONFIG",
+    "active": true,
+    "weight_times_confidence": 0.08,
+    "effective_weight": 0.12628255722178375,
+    "contribution": 0.0,
+    "input_status": "NOT_ASSESSED"
+   }
+  ],
+  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
+ },
+ "descriptive_denominators_90d": {
+  "window_start_exclusive": "2026-07-16T19:41:31.486788-06:00",
+  "window_end_inclusive": "2026-10-14T19:41:31.486788-06:00",
+  "event_objects": 16,
+  "distinct_accessions": 10,
+  "objects_without_accession": 0,
+  "by_event_type": {
+   "EXEC_CHANGE": 1,
+   "INSIDER_SELL": 12,
+   "OTHER_MATERIAL": 3
+  },
+  "largest_type_share": 0.75,
+  "independent_information_count": null,
+  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
+ },
+ "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PSX in the declared corpus",
@@ -329,15 +465,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T15:17:27-07:00",
   "newest_returned_available_as_of": "2026-10-05T06:30:16-06:00",
-  "build_id": "why-2026-10-14T230206",
+  "build_id": "why-2026-10-15T014130",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T17:02:06.886237-06:00",
+  "corpus_end": "2026-10-14T19:41:31.486788-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PSX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T230206",
+ "build_id": "why-2026-10-15T014130",
  "corrections": [
   {
    "original": {
@@ -355,7 +491,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. On August 20, 2026, Phillips 66 Company (the \u201cCompany\u201d), a wholly owned subsidiary of Phillips 66 (\u201cPhillips 66\u201d), amended the Company\u2019s accounts receivable securitization program.",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. On August 20, 2026, Phillips 66 Company (the “Company”), a wholly owned subsidiary of Phillips 66 (“Phillips 66”), amended the Company’s accounts receivable securitization program.",
    "corrected_sha256": "e008488f4816059eb14dafb5ee6f4d47e2875aa6d30140136f558e41fea32e20",
    "source_location": {
     "accession_number": "0001193125-26-361266",
@@ -405,7 +541,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Term Loan Agreement On March 18, 2026 (the \u201cTerm Loan Closing Date\u201d), Phillips 66 Company (the \u201cCompany\u201d), a wholly owned subsidiary o",
+   "corrected_excerpt": "Item 1.01 Entry into a Material Definitive Agreement. Term Loan Agreement On March 18, 2026 (the “Term Loan Closing Date”), Phillips 66 Company (the “Company”), a wholly owned subsidiary o",
    "corrected_sha256": "ce3ebd6fa0a4c6486dafa683069ea05c88f4f235c6392b938600cbfb91682b6b",
    "source_location": {
     "accession_number": "0001193125-26-114070",
@@ -430,7 +566,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On March 6, 2026, the Board of Directors (the \u201cBoard\u201d) of Phillips 66 (the \u201cCompany\u201d), increased the size of the Board from 14 directors to 16 directors, and appointed Kevin O.",
+   "corrected_excerpt": "On March 6, 2026, the Board of Directors (the “Board”) of Phillips 66 (the “Company”), increased the size of the Board from 14 directors to 16 directors, and appointed Kevin O.",
    "corrected_sha256": "6e302787e32963fb766186c219836c4836b642c159bd593be5f9a0294be36744",
    "source_location": {
     "accession_number": "0001193125-26-097469",
@@ -563,7 +699,7 @@
    "label": "WATCH"
   }
  ],
- "as_of_recipe": "evidence_objects here is a PREVIEW (newest 29 of 29 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay PSX --date D",
- "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
- "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
+ "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
+ "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
 }
