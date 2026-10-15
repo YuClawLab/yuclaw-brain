@@ -1,31 +1,31 @@
 {
  "ticker": "MRVL",
- "generated": "2026-10-14T06:25:14.313040+00:00",
- "label": "NEUTRAL",
- "score": 0.2035,
+ "generated": "2026-10-14T23:02:06.294517+00:00",
+ "label": "WATCH",
+ "score": 0.0533,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.691,
+  "c1": 0.6045,
   "c2": 0.0,
-  "c3": 0.17526993,
+  "c3": -0.7783239,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.14835277,
-  "c7": 0.21837007,
+  "c6": -0.1345448,
+  "c7": 0.20062324,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 97,
-  "events_90d": 17,
-  "recency_days": 4.3,
+  "ecs": 96,
+  "events_90d": 10,
+  "recency_days": 4.9,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "as_of": "2026-10-14T23:01:58.118106+00:00",
+  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -244,7 +244,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE→MRVL(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE\u2192MRVL(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "4b484fc5032a7d38e6cad682ca5b22d30db1b36067ad86a409afa70aafcaecba",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -364,7 +364,7 @@
    "evidence_type": "DIVIDEND_CHANGE",
    "filing_date": "2026-03-19",
    "accession_number": "0001628280-26-019851",
-   "excerpt": "On March 19, 2026, Marvell Technology, Inc. (the “Company”) announced that its Board of Directors had declared the pa",
+   "excerpt": "On March 19, 2026, Marvell Technology, Inc. (the \u201cCompany\u201d) announced that its Board of Directors had declared the pa",
    "source_hash": "df57a6a16bcb5ab9ffc9980813ebb8f30fb1e302687eeaec848541e13217d315",
    "available_as_of": "2026-03-19T14:45:03-06:00",
    "protocol_id": null
@@ -390,143 +390,6 @@
    "protocol_id": null
   }
  ],
- "component_anatomy": {
-  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
-  "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.6705,
-  "reconstructed_score": 0.2034722146135179,
-  "stored_score": 0.2035,
-  "missing_components": [],
-  "components": [
-   {
-    "id": "c1",
-    "score": 0.691,
-    "confidence": 0.9,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1610738255033557,
-    "contribution": 0.11130201342281877,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c2",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c3",
-    "score": 0.17526992739354597,
-    "confidence": 0.8,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.096,
-    "effective_weight": 0.14317673378076062,
-    "contribution": 0.025094575734198973,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c4",
-    "score": 0.6,
-    "confidence": 0.85,
-    "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19015659955257272,
-    "contribution": 0.11409395973154363,
-    "input_status": "FROZEN_2026-05-18"
-   },
-   {
-    "id": "c5",
-    "score": 0.0,
-    "confidence": 0.3,
-    "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.015,
-    "effective_weight": 0.02237136465324385,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c6",
-    "score": -0.14835277290239102,
-    "confidence": 0.8,
-    "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.144,
-    "effective_weight": 0.21476510067114093,
-    "contribution": -0.03186099820722491,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c7",
-    "score": 0.21837006166527653,
-    "confidence": 1.0,
-    "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1,
-    "effective_weight": 0.14914243102162567,
-    "contribution": 0.03256824185910165,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c8",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c9",
-    "score": -0.4,
-    "confidence": 1.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.08,
-    "effective_weight": 0.11931394481730052,
-    "contribution": -0.04772557792692021,
-    "input_status": "NOT_ASSESSED"
-   }
-  ],
-  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
- },
- "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T00:25:14.802839-06:00",
-  "window_end_inclusive": "2026-10-14T00:25:14.802839-06:00",
-  "event_objects": 17,
-  "distinct_accessions": 17,
-  "objects_without_accession": 0,
-  "by_event_type": {
-   "DIVIDEND_CHANGE": 1,
-   "INSIDER_SELL": 14,
-   "OTHER_MATERIAL": 1,
-   "PARTNERSHIP": 1
-  },
-  "largest_type_share": 0.8235294117647058,
-  "independent_information_count": null,
-  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
- },
- "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRVL in the declared corpus",
@@ -536,15 +399,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
   "newest_returned_available_as_of": "2026-10-09T18:14:28.851557-06:00",
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-14T230206",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T00:25:14.802839-06:00",
+  "corpus_end": "2026-10-14T17:02:06.779261-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-14T230206",
  "corrections": [
   {
    "original": {
@@ -586,7 +449,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On July 29, 2026, Marvell Technology, Inc. (the “Company”) and Google LLC (“Google”) entered into a commercial agreement relating to the Company’s development of custom semiconductor products to Google (the “Custom Products”).",
+   "corrected_excerpt": "On July 29, 2026, Marvell Technology, Inc. (the \u201cCompany\u201d) and Google LLC (\u201cGoogle\u201d) entered into a commercial agreement relating to the Company\u2019s development of custom semiconductor products to Google (the \u201cCustom Products\u201d).",
    "corrected_sha256": "bbca9b16f13565c00abfd0d7d1dd3537000a6ac00d03bc0f6061f88c12ab0a22",
    "source_location": {
     "accession_number": "0001193125-26-356217",
@@ -648,6 +511,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-13",
    "label": "NEUTRAL"
@@ -763,13 +630,9 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 36 of 36 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MRVL --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

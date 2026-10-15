@@ -1,31 +1,31 @@
 {
  "ticker": "CVX",
- "generated": "2026-10-14T06:25:14.313040+00:00",
+ "generated": "2026-10-14T23:02:06.294517+00:00",
  "label": "NEUTRAL",
- "score": 0.2859,
+ "score": 0.2405,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.0855,
+  "c1": 0.2325,
   "c2": 0.0,
-  "c3": 0.8518674,
+  "c3": 0.38294375,
   "c4": 0.6,
-  "c5": 0.07602751,
+  "c5": -0.12771893,
   "c6": 0.0,
-  "c7": 0.090432875,
+  "c7": 0.21859884,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
   "ecs": 87,
-  "events_90d": 23,
-  "recency_days": 8.7,
+  "events_90d": 16,
+  "recency_days": 9.4,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "as_of": "2026-10-14T23:01:58.118106+00:00",
+  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -34,7 +34,7 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-10-05",
    "accession_number": "0000093410-26-000188",
-   "excerpt": "(b) On September 30, 2026, the Board of Directors (the “Board”) of Chevron Corporation (“Chevron”) approved certain officer elections. Mark A. Nelson, currently Chevron’s Vice Chairm",
+   "excerpt": "(b) On September 30, 2026, the Board of Directors (the \u201cBoard\u201d) of Chevron Corporation (\u201cChevron\u201d) approved certain officer elections. Mark A. Nelson, currently Chevron\u2019s Vice Chairm",
    "source_hash": "643a37b03603910774145d885808c61a74d10d96433e3ecf5b2dfa3dafdef150",
    "available_as_of": "2026-10-05T07:01:20-06:00",
    "protocol_id": null
@@ -324,7 +324,7 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-03-25",
    "accession_number": "0000093410-26-000103",
-   "excerpt": "On March 25, 2026, the Board of Directors (the “Board”) of Chevron Corporation (“Chevron”) approved and adopted amended and restated By-Laws of Chevron (the “By-Laws”), effective March 25, 2026.",
+   "excerpt": "On March 25, 2026, the Board of Directors (the \u201cBoard\u201d) of Chevron Corporation (\u201cChevron\u201d) approved and adopted amended and restated By-Laws of Chevron (the \u201cBy-Laws\u201d), effective March 25, 2026.",
    "source_hash": "8912fad0ca142f65668e249be4c7bdaf92116f096745ee08c6ca7ffcaca92a24",
    "available_as_of": "2026-03-25T14:36:44-06:00",
    "protocol_id": null
@@ -580,142 +580,6 @@
    "protocol_id": null
   }
  ],
- "component_anatomy": {
-  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
-  "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.5841666666666667,
-  "reconstructed_score": 0.28591942302652773,
-  "stored_score": 0.2859,
-  "missing_components": [],
-  "components": [
-   {
-    "id": "c1",
-    "score": 0.08549999999999999,
-    "confidence": 0.9,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.18487874465049928,
-    "contribution": 0.01580713266761769,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c2",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c3",
-    "score": 0.8518673622502998,
-    "confidence": 0.8,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.096,
-    "effective_weight": 0.1643366619115549,
-    "contribution": 0.1399930387036156,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c4",
-    "score": 0.6,
-    "confidence": 0.85,
-    "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21825962910128385,
-    "contribution": 0.1309557774607703,
-    "input_status": "FROZEN_2026-05-18"
-   },
-   {
-    "id": "c5",
-    "score": 0.07602751017910053,
-    "confidence": 1.0,
-    "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.05,
-    "effective_weight": 0.08559201141226819,
-    "contribution": 0.006507347518895908,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c6",
-    "score": 0.0,
-    "confidence": 0.2,
-    "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06162624821683309,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c7",
-    "score": 0.09043287333012837,
-    "confidence": 1.0,
-    "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1,
-    "effective_weight": 0.17118402282453637,
-    "contribution": 0.0154806630522331,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c8",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c9",
-    "score": -0.19999999999999996,
-    "confidence": 0.8333333333333334,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.06666666666666667,
-    "effective_weight": 0.11412268188302424,
-    "contribution": -0.022824536376604844,
-    "input_status": "NOT_ASSESSED"
-   }
-  ],
-  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
- },
- "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T00:25:14.498829-06:00",
-  "window_end_inclusive": "2026-10-14T00:25:14.498829-06:00",
-  "event_objects": 23,
-  "distinct_accessions": 9,
-  "objects_without_accession": 0,
-  "by_event_type": {
-   "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 21,
-   "OTHER_MATERIAL": 1
-  },
-  "largest_type_share": 0.9130434782608695,
-  "independent_information_count": null,
-  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
- },
- "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for CVX in the declared corpus",
@@ -725,17 +589,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T14:44:53-07:00",
   "newest_returned_available_as_of": "2026-10-05T07:01:20-06:00",
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-14T230206",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T00:25:14.498829-06:00",
+  "corpus_end": "2026-10-14T17:02:06.477700-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CVX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-14T230206",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-13",
    "label": "NEUTRAL"
@@ -851,13 +719,9 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 55 of 55 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay CVX --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

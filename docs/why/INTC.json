@@ -1,31 +1,31 @@
 {
  "ticker": "INTC",
- "generated": "2026-10-14T06:25:14.313040+00:00",
- "label": "WATCH",
- "score": 0.1139,
+ "generated": "2026-10-14T23:02:06.294517+00:00",
+ "label": "WEAKENING",
+ "score": -0.0014,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0065,
+  "c1": 0.048,
   "c2": 0.0,
-  "c3": 0.17526993,
+  "c3": -0.7783239,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.060064897,
+  "c7": 0.24292627,
   "c8": 0.0,
-  "c9": -0.33333334
+  "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 69,
-  "events_90d": 5,
-  "recency_days": 60.4,
+  "ecs": 66,
+  "events_90d": 4,
+  "recency_days": 61.1,
   "substrate_active": 1,
-  "type_diversity": 5,
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "type_diversity": 4,
+  "as_of": "2026-10-14T23:01:58.118106+00:00",
+  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -44,7 +44,7 @@
    "evidence_type": "PRODUCT_LAUNCH",
    "filing_date": "2026-08-12",
    "accession_number": "0001193125-26-346806",
-   "excerpt": "Copies of the Company’s press releases related to the announcement of the launch",
+   "excerpt": "Copies of the Company\u2019s press releases related to the announcement of the launch",
    "source_hash": "e3ae418ff27649265440d1636daec8a14b5f70bf9183df31f67b041cf45ea5d1",
    "available_as_of": "2026-08-12T10:05:07-06:00",
    "protocol_id": null
@@ -94,7 +94,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE→INTC(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE\u2192INTC(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "73fcc568dd215ee131d756ea7aaf6c1c5ec84faf77adba97fc16ca472676037b",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -124,7 +124,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-04-08",
    "accession_number": "0000050863-26-000072",
-   "excerpt": "On April 8, 2026, Intel Corporation (\"Intel\") repurchased from Apollo-managed funds and affiliates their 49% equity interest in the parties’ joint venture related to Intel’s Fab 34 in Ireland.",
+   "excerpt": "On April 8, 2026, Intel Corporation (\"Intel\") repurchased from Apollo-managed funds and affiliates their 49% equity interest in the parties\u2019 joint venture related to Intel\u2019s Fab 34 in Ireland.",
    "source_hash": "ab7a601209d89fe5ae0b8a2b21d66cc752ba19680abe825ba2d69e39c3d759d6",
    "available_as_of": "2026-04-08T14:05:34-06:00",
    "protocol_id": null
@@ -134,155 +134,10 @@
    "evidence_type": "EXEC_CHANGE",
    "filing_date": "2026-04-03",
    "accession_number": "0000050863-26-000069",
-   "excerpt": "On March 30,2026, Intel Corporation determined that April Miller Boise, Intel’s Executive Vice President and Chief Legal Officer, will separate",
+   "excerpt": "On March 30,2026, Intel Corporation determined that April Miller Boise, Intel\u2019s Executive Vice President and Chief Legal Officer, will separate",
    "source_hash": "4ab14426f5250c6f1772a39d8d7082290cd88566e5ade9e226a6452a4bf60fb5",
    "available_as_of": "2026-04-03T10:50:37-06:00",
    "protocol_id": null
-  }
- ],
- "component_anatomy": {
-  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
-  "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.5265,
-  "reconstructed_score": 0.11386658434927623,
-  "stored_score": 0.1139,
-  "missing_components": [],
-  "components": [
-   {
-    "id": "c1",
-    "score": -0.0065,
-    "confidence": 0.9,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.20512820512820515,
-    "contribution": -0.0013333333333333335,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c2",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c3",
-    "score": 0.17526992739354597,
-    "confidence": 0.8,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.096,
-    "effective_weight": 0.18233618233618235,
-    "contribution": 0.03195804943927904,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c4",
-    "score": 0.6,
-    "confidence": 0.85,
-    "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1275,
-    "effective_weight": 0.24216524216524218,
-    "contribution": 0.1452991452991453,
-    "input_status": "FROZEN_2026-05-18"
-   },
-   {
-    "id": "c5",
-    "score": 0.0,
-    "confidence": 0.3,
-    "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.015,
-    "effective_weight": 0.02849002849002849,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c7",
-    "score": -0.060064897032198146,
-    "confidence": 1.0,
-    "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1,
-    "effective_weight": 0.1899335232668566,
-    "contribution": -0.011408337517986353,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c8",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c9",
-    "score": -0.33333333333333337,
-    "confidence": 1.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.08,
-    "effective_weight": 0.1519468186134853,
-    "contribution": -0.05064893953782844,
-    "input_status": "NOT_ASSESSED"
-   }
-  ],
-  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
- },
- "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T00:25:14.647733-06:00",
-  "window_end_inclusive": "2026-10-14T00:25:14.647733-06:00",
-  "event_objects": 5,
-  "distinct_accessions": 5,
-  "objects_without_accession": 0,
-  "by_event_type": {
-   "EARNINGS_BEAT": 1,
-   "INSIDER_BUY": 1,
-   "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 1,
-   "PRODUCT_LAUNCH": 1
-  },
-  "largest_type_share": 0.2,
-  "independent_information_count": null,
-  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
- },
- "excerpt_comparison_checks": [
-  {
-   "source_hash": "4143d250c031dbf8c8c5520a5202f255143692738bcaac6a5bebc182d89bc531",
-   "scope": "published excerpt only; not a whole-filing or independent truth check",
-   "status": "UNSUPPORTED_COMPARISON",
-   "reason": "The cited passage does not explicitly establish the classified comparison with expectations. Original classification retained as a historical record."
   }
  ],
  "evidence_objects_collection": {
@@ -294,15 +149,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T10:50:37-06:00",
   "newest_returned_available_as_of": "2026-08-14T14:33:47.880102-06:00",
-  "build_id": "why-2026-10-14T062514",
+  "build_id": "why-2026-10-14T230206",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T00:25:14.647733-06:00",
+  "corpus_end": "2026-10-14T17:02:06.620126-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/INTC.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-14T230206",
  "corrections": [
   {
    "original": {
@@ -344,7 +199,7 @@
    "kind": "display_correction",
    "status": "CORRECTED",
    "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
-   "corrected_excerpt": "On July 23, 2026, Intel Corporation (“Intel” or the \"Company\") issued a press release announcing the financial results of its second quarter ended June 27, 2026 and forward-looking statements relating to its third quarter of 2026.",
+   "corrected_excerpt": "On July 23, 2026, Intel Corporation (\u201cIntel\u201d or the \"Company\") issued a press release announcing the financial results of its second quarter ended June 27, 2026 and forward-looking statements relating to its third quarter of 2026.",
    "corrected_sha256": "edb70a24ff12b587cfc61462a7e85a941d189ef723f7de46dcdf9cd437a4aec3",
    "source_location": {
     "accession_number": "0000050863-26-000155",
@@ -356,6 +211,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -471,13 +330,9 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WATCH"
   }
  ],
- "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 11 of 11 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay INTC --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }

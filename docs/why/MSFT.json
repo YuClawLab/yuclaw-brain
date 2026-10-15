@@ -1,34 +1,64 @@
 {
  "ticker": "MSFT",
- "generated": "2026-10-14T06:25:14.313040+00:00",
- "label": "WATCH",
- "score": 0.1303,
+ "generated": "2026-10-14T23:02:06.294517+00:00",
+ "label": "WEAKENING",
+ "score": -0.0825,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.4825,
+  "c1": 0.28,
   "c2": 0.0,
-  "c3": 0.17526993,
+  "c3": -0.7783239,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.2508613,
-  "c7": 0.23416276,
+  "c6": -0.46211717,
+  "c7": 0.22547944,
   "c8": 0.0,
   "c9": -0.15384616
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 23,
-  "recency_days": 28.3,
+  "ecs": 94,
+  "events_90d": 22,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-14T06:17:26.591829+00:00",
-  "source_sha256": "5027ceed5ad7bf313b5fd056b89cf29fa31c75a444d5ebc94fdee81510078a13",
+  "as_of": "2026-10-14T23:01:58.118106+00:00",
+  "source_sha256": "979b9a3ab3cbd40011b1b99d043362db0f906ca996685e7113a399014202195d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MSFT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-14",
+   "accession_number": "0000789019-26-000226",
+   "excerpt": "Hood Amy S 991 shares @ $546.51 on 2026-10-13 ($541,590)",
+   "source_hash": "48020866ae087c311410c28f91a597087cce765d2c399ca1660aaeefc5b679fe",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MSFT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-14",
+   "accession_number": "0000789019-26-000226",
+   "excerpt": "Hood Amy S 3387 shares @ $544.80 on 2026-10-13 ($1,845,238)",
+   "source_hash": "46d1a46eca88e5a3ea4b002d35cf2b22c4de012bcc550461694c5a931b8de74f",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MSFT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-14",
+   "accession_number": "0000789019-26-000226",
+   "excerpt": "Hood Amy S 2927 shares @ $545.77 on 2026-10-13 ($1,597,475)",
+   "source_hash": "2da212b4f20c617f161f217b328329042f7357116b4e99bd34be7563b13c8ec9",
+   "available_as_of": "2026-10-14T16:10:10.391884-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MSFT",
    "evidence_type": "INSIDER_SELL",
@@ -274,7 +304,7 @@
    "evidence_type": "M_AND_A_CLOSE",
    "filing_date": "2026-05-14",
    "accession_number": "0001645590-26-000045",
-   "excerpt": "CASCADE d1 via HPE→MSFT(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
+   "excerpt": "CASCADE d1 via HPE\u2192MSFT(cohort,w=0.08) from HPE: On May 13, 2026, the Company closed on the sale and disposition of 13.8% of the total issued share capital of H3C Technologies Co., Limited (\"H3C\"), held by certain HPE subsidiaries",
    "source_hash": "89374a953ae1f6396f71b41b86047082561251a28afb09abc6ad06b8cdaa5c9c",
    "available_as_of": "2026-05-14T05:28:34-06:00",
    "protocol_id": null
@@ -300,162 +330,30 @@
    "protocol_id": null
   }
  ],
- "component_anatomy": {
-  "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
-  "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.7158333333333333,
-  "reconstructed_score": 0.13028033492715987,
-  "stored_score": 0.1303,
-  "missing_components": [],
-  "components": [
-   {
-    "id": "c1",
-    "score": 0.4825,
-    "confidence": 0.9,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1508731082654249,
-    "contribution": 0.07279627473806752,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c2",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c3",
-    "score": 0.17526992739354597,
-    "confidence": 0.8,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.096,
-    "effective_weight": 0.13410942956926658,
-    "contribution": 0.02350534998339522,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c4",
-    "score": 0.6,
-    "confidence": 0.85,
-    "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1275,
-    "effective_weight": 0.1781140861466822,
-    "contribution": 0.10686845168800932,
-    "input_status": "FROZEN_2026-05-18"
-   },
-   {
-    "id": "c5",
-    "score": -0.564899552846225,
-    "confidence": 0.7,
-    "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.04889406286379511,
-    "contribution": -0.02762023424859307,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c6",
-    "score": -0.2508612865418027,
-    "confidence": 1.0,
-    "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.18,
-    "effective_weight": 0.25145518044237486,
-    "contribution": -0.06308037007337529,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c7",
-    "score": 0.23416275982720544,
-    "confidence": 1.0,
-    "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.1,
-    "effective_weight": 0.13969732246798605,
-    "contribution": 0.03271191056957469,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c8",
-    "score": 0.0,
-    "confidence": 0.0,
-    "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
-    "input_status": "NOT_ASSESSED"
-   },
-   {
-    "id": "c9",
-    "score": -0.15384615384615385,
-    "confidence": 0.8666666666666667,
-    "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
-    "active": true,
-    "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.09685681024447033,
-    "contribution": -0.014901047729918513,
-    "input_status": "NOT_ASSESSED"
-   }
-  ],
-  "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
- },
- "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T00:25:14.829320-06:00",
-  "window_end_inclusive": "2026-10-14T00:25:14.829320-06:00",
-  "event_objects": 23,
-  "distinct_accessions": 11,
-  "objects_without_accession": 0,
-  "by_event_type": {
-   "INSIDER_SELL": 20,
-   "M_AND_A_ANNOUNCE": 1,
-   "OTHER_MATERIAL": 2
-  },
-  "largest_type_share": 0.8695652173913043,
-  "independent_information_count": null,
-  "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
- },
- "excerpt_comparison_checks": [],
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MSFT in the declared corpus",
-  "returned": 27,
-  "total_available": 27,
+  "returned": 30,
+  "total_available": 30,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
-  "newest_returned_available_as_of": "2026-09-15T16:07:38.132528-06:00",
-  "build_id": "why-2026-10-14T062514",
+  "newest_returned_available_as_of": "2026-10-14T16:10:10.391884-06:00",
+  "build_id": "why-2026-10-14T230206",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T00:25:14.829320-06:00",
+  "corpus_end": "2026-10-14T17:02:06.805544-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-14T062514",
+ "build_id": "why-2026-10-14T230206",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-14",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-13",
    "label": "WATCH"
@@ -571,13 +469,9 @@
   {
    "date": "2026-09-03",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-02",
-   "label": "WEAKENING"
   }
  ],
- "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "verify": "source_hash identifies the original stored event record; it is not a digest of the displayed excerpt or the original SEC file. Public event inclusion verification: NOT_AVAILABLE. /evidence/verify.json describes SIGNAL snapshot ledger checks and does not authenticate this event hash. Quote occurrence, semantic support, arithmetic and external provenance are separate checks.",
- "not_advice": "Research and education only — not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established — no buy, sell, or alpha conclusion is supported by this object."
+ "as_of_recipe": "evidence_objects here is a PREVIEW (newest 30 of 30 accepted objects; see evidence_objects_collection). Reconstruct evidence as of D ONLY from the complete history file at history_url (same build_id; verify its sha256 in history_manifest_url): objects with available_as_of <= D (the recorded availability, never filing_date or generated timestamps). From this preview alone the result is INCOMPLETE for every D unless returned == total_available. D before collection.corpus_start or after corpus_end is OUT_OF_RANGE. Classification at D = label_history entry for the last date <= D; older dates: yuclaw replay MSFT --date D",
+ "verify": "each object's source_hash is a SHA-256 anchored via the daily ledger root \u2014 see /evidence/verify.json",
+ "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."
 }
