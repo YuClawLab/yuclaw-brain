@@ -1,31 +1,31 @@
 {
  "ticker": "CVX",
- "generated": "2026-10-15T02:45:20.664509+00:00",
- "label": "NEUTRAL",
- "score": 0.2405,
+ "generated": "2026-10-15T23:01:18.478508+00:00",
+ "label": "WEAKENING",
+ "score": -0.0795,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.2325,
+  "c1": 0.0355,
   "c2": 0.0,
-  "c3": 0.38294375,
+  "c3": -0.8882935,
   "c4": 0.6,
-  "c5": -0.12771893,
+  "c5": -0.6119515,
   "c6": 0.0,
-  "c7": 0.21859884,
+  "c7": 0.024116682,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 16,
-  "recency_days": 9.6,
+  "recency_days": 10.4,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T02:45:12.577700+00:00",
-  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
+  "as_of": "2026-10-15T23:01:10.559052+00:00",
+  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -583,22 +583,22 @@
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "weight_provenance": "RECORDED",
   "denominator": 0.5841666666666667,
-  "reconstructed_score": 0.24053615902499376,
-  "stored_score": 0.2405,
+  "reconstructed_score": -0.07953451994108242,
+  "stored_score": -0.0795,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.2325,
+    "score": 0.0355,
     "confidence": 0.9,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.18487874465049928,
-    "contribution": 0.042984308131241086,
+    "contribution": 0.006563195435092724,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -606,7 +606,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -615,14 +615,14 @@
    },
    {
     "id": "c3",
-    "score": 0.3829437608178546,
+    "score": -0.8882934931389981,
     "confidence": 0.8,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1643366619115549,
-    "contribution": 0.06293169935266311,
+    "contribution": -0.14597918746021765,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -630,7 +630,7 @@
     "score": 0.6,
     "confidence": 0.85,
     "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
     "effective_weight": 0.21825962910128385,
@@ -639,14 +639,14 @@
    },
    {
     "id": "c5",
-    "score": -0.12771892130324516,
+    "score": -0.6119515000337175,
     "confidence": 1.0,
     "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
     "effective_weight": 0.08559201141226819,
-    "contribution": -0.010931719369749942,
+    "contribution": -0.05237815977464058,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -654,7 +654,7 @@
     "score": 0.0,
     "confidence": 0.2,
     "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
     "effective_weight": 0.06162624821683309,
@@ -663,14 +663,14 @@
    },
    {
     "id": "c7",
-    "score": 0.21859884590415424,
+    "score": 0.02411668277447378,
     "confidence": 1.0,
     "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.17118402282453637,
-    "contribution": 0.037420629826674046,
+    "contribution": 0.004128390774517623,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -678,7 +678,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -690,7 +690,7 @@
     "score": -0.19999999999999996,
     "confidence": 0.8333333333333334,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06666666666666667,
     "effective_weight": 0.11412268188302424,
@@ -701,8 +701,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T20:45:20.861073-06:00",
-  "window_end_inclusive": "2026-10-14T20:45:20.861073-06:00",
+  "window_start_exclusive": "2026-07-17T17:01:18.676334-06:00",
+  "window_end_inclusive": "2026-10-15T17:01:18.676334-06:00",
   "event_objects": 16,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -725,17 +725,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T14:44:53-07:00",
   "newest_returned_available_as_of": "2026-10-05T07:01:20-06:00",
-  "build_id": "why-2026-10-15T024520",
+  "build_id": "why-2026-10-15T230118",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T20:45:20.861073-06:00",
+  "corpus_end": "2026-10-15T17:01:18.676334-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CVX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T024520",
+ "build_id": "why-2026-10-15T230118",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-15",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-14",
    "label": "NEUTRAL"
@@ -850,10 +854,6 @@
   },
   {
    "date": "2026-09-04",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-03",
    "label": "WATCH"
   }
  ],

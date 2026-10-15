@@ -1,31 +1,31 @@
 {
  "ticker": "MU",
- "generated": "2026-10-15T02:45:20.664509+00:00",
- "label": "WEAKENING",
- "score": -0.0756,
+ "generated": "2026-10-15T23:01:18.478508+00:00",
+ "label": "WATCH",
+ "score": 0.0006,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0535,
+  "c1": 0.0195,
   "c2": 0.0,
-  "c3": -0.7783239,
+  "c3": -0.70494604,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.096864104,
-  "c7": -0.055659857,
+  "c6": 0.08778156,
+  "c7": 0.25796723,
   "c8": 0.0,
   "c9": -0.53333336
  },
  "evidence_coverage": {
   "ecs": 89,
   "events_90d": 70,
-  "recency_days": 5.6,
+  "recency_days": 6.4,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T02:45:12.577700+00:00",
-  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
+  "as_of": "2026-10-15T23:01:10.559052+00:00",
+  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1033,22 +1033,22 @@
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "weight_provenance": "RECORDED",
   "denominator": 0.5985,
-  "reconstructed_score": -0.07561492096388703,
-  "stored_score": -0.0756,
+  "reconstructed_score": 0.0006374382505998041,
+  "stored_score": 0.0006,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.053500000000000006,
+    "score": 0.0195,
     "confidence": 0.9,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.18045112781954886,
-    "contribution": -0.009654135338345865,
+    "contribution": 0.003518796992481203,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1056,7 +1056,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7783238900808364,
+    "score": -0.7049460547829833,
     "confidence": 0.8,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.16040100250626566,
-    "contribution": -0.12484393224354266,
+    "contribution": -0.1130740539000274,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1080,7 +1080,7 @@
     "score": 0.6,
     "confidence": 0.85,
     "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
     "effective_weight": 0.21303258145363407,
@@ -1092,7 +1092,7 @@
     "score": 0.0,
     "confidence": 0.3,
     "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
     "effective_weight": 0.02506265664160401,
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": 0.0968641032018306,
+    "score": 0.08778156094212851,
     "confidence": 0.4,
     "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.072,
     "effective_weight": 0.12030075187969923,
-    "contribution": 0.011652824445333002,
+    "contribution": 0.010560187782511698,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.05565985512991234,
+    "score": 0.25796722330983796,
     "confidence": 1.0,
     "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1670843776106934,
-    "contribution": -0.009299892252282763,
+    "contribution": 0.04310229295068303,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1128,7 +1128,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -1140,7 +1140,7 @@
     "score": -0.5333333333333333,
     "confidence": 1.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.1336675020885547,
@@ -1151,8 +1151,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T20:45:21.216780-06:00",
-  "window_end_inclusive": "2026-10-14T20:45:21.216780-06:00",
+  "window_start_exclusive": "2026-07-17T17:01:19.020478-06:00",
+  "window_end_inclusive": "2026-10-15T17:01:19.020478-06:00",
   "event_objects": 70,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -1175,17 +1175,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:26:50.142146-06:00",
   "newest_returned_available_as_of": "2026-10-09T06:21:00-06:00",
-  "build_id": "why-2026-10-15T024520",
+  "build_id": "why-2026-10-15T230118",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T20:45:21.216780-06:00",
+  "corpus_end": "2026-10-15T17:01:19.020478-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MU.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T024520",
+ "build_id": "why-2026-10-15T230118",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-15",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-14",
    "label": "WEAKENING"
@@ -1300,10 +1304,6 @@
   },
   {
    "date": "2026-09-04",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-03",
    "label": "WATCH"
   }
  ],

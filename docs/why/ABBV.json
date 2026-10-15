@@ -1,34 +1,44 @@
 {
  "ticker": "ABBV",
- "generated": "2026-10-15T02:45:20.664509+00:00",
- "label": "BULLISH",
- "score": 0.4184,
+ "generated": "2026-10-15T23:01:18.478508+00:00",
+ "label": "NEUTRAL",
+ "score": 0.352,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.4145,
+  "c1": 0.387,
   "c2": 0.0,
-  "c3": 0.82087934,
+  "c3": 0.5145273,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.119294286,
+  "c7": 0.21215285,
   "c8": 0.0,
   "c9": 0.23809524
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 7,
-  "recency_days": 9.3,
+  "ecs": 87,
+  "events_90d": 8,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-15T02:45:12.577700+00:00",
-  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
+  "as_of": "2026-10-15T23:01:10.559052+00:00",
+  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-15",
+   "accession_number": "0001104659-26-116227",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock, $0.01 Par Value ABBV New York Stock Exchange",
+   "source_hash": "2d93639a59b9a9606adf5f8593ddba4e9aebf7349d610e272e61d2516d9479b3",
+   "available_as_of": "2026-10-15T14:00:53-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -173,22 +183,22 @@
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.5385,
-  "reconstructed_score": 0.418446011670473,
-  "stored_score": 0.4184,
+  "weight_provenance": "RECORDED",
+  "denominator": 0.5745,
+  "reconstructed_score": 0.35202653123802763,
+  "stored_score": 0.352,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.4144999999999999,
+    "score": 0.38699999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20055710306406685,
-    "contribution": 0.0831309192200557,
+    "effective_weight": 0.18798955613577023,
+    "contribution": 0.07275195822454307,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -196,7 +206,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -205,14 +215,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8208793249044498,
+    "score": 0.5145273233749804,
     "confidence": 0.8,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17827298050139276,
-    "contribution": 0.14634060388268744,
+    "effective_weight": 0.1671018276762402,
+    "contribution": 0.0859784561253231,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -220,11 +230,11 @@
     "score": 0.6,
     "confidence": 0.85,
     "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.23676880222841226,
-    "contribution": 0.14206128133704735,
+    "effective_weight": 0.22193211488250653,
+    "contribution": 0.13315926892950392,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -232,35 +242,35 @@
     "score": 0.0,
     "confidence": 0.3,
     "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027855153203342618,
+    "effective_weight": 0.02610966057441253,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.2,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06685236768802229,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12532637075718014,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.11929428760389207,
+    "score": 0.2121528581891543,
     "confidence": 1.0,
     "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18570102135561747,
-    "contribution": 0.022153071049933536,
+    "effective_weight": 0.1740644038294169,
+    "contribution": 0.03692826078140197,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -268,7 +278,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -280,27 +290,27 @@
     "score": 0.23809523809523814,
     "confidence": 0.7,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.10399257195914577,
-    "contribution": 0.024760136180748998,
+    "effective_weight": 0.09747606614447345,
+    "contribution": 0.023208587177255588,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T20:45:20.681165-06:00",
-  "window_end_inclusive": "2026-10-14T20:45:20.681165-06:00",
-  "event_objects": 7,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-07-17T17:01:18.496571-06:00",
+  "window_end_inclusive": "2026-10-15T17:01:18.496571-06:00",
+  "event_objects": 8,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 6
+   "OTHER_MATERIAL": 7
   },
-  "largest_type_share": 0.8571428571428571,
+  "largest_type_share": 0.875,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -308,21 +318,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 14,
-  "total_available": 14,
+  "returned": 15,
+  "total_available": 15,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-10-05T14:07:45-06:00",
-  "build_id": "why-2026-10-15T024520",
+  "newest_returned_available_as_of": "2026-10-15T14:00:53-06:00",
+  "build_id": "why-2026-10-15T230118",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T20:45:20.681165-06:00",
+  "corpus_end": "2026-10-15T17:01:18.496571-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T024520",
+ "build_id": "why-2026-10-15T230118",
  "corrections": [
   {
    "original": {
@@ -426,6 +436,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-15",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-14",
    "label": "BULLISH"
@@ -540,10 +554,6 @@
   },
   {
    "date": "2026-09-04",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-03",
    "label": "WATCH"
   }
  ],

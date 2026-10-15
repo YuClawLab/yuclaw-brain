@@ -1,31 +1,31 @@
 {
  "ticker": "MSFT",
- "generated": "2026-10-15T02:45:20.664509+00:00",
+ "generated": "2026-10-15T23:01:18.478508+00:00",
  "label": "WEAKENING",
- "score": -0.0825,
+ "score": -0.0056,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.28,
+  "c1": 0.4255,
   "c2": 0.0,
-  "c3": -0.7783239,
+  "c3": -0.70494604,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": 0.22547944,
+  "c7": 0.21942717,
   "c8": 0.0,
   "c9": -0.15384616
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 22,
-  "recency_days": 0.2,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T02:45:12.577700+00:00",
-  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
+  "as_of": "2026-10-15T23:01:10.559052+00:00",
+  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -333,22 +333,22 @@
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
-  "denominator": 0.7158333333333333,
-  "reconstructed_score": -0.08249181262594056,
-  "stored_score": -0.0825,
+  "weight_provenance": "RECORDED",
+  "denominator": 0.6438333333333334,
+  "reconstructed_score": -0.005630197556107396,
+  "stored_score": -0.0056,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.27999999999999997,
+    "score": 0.42549999999999993,
     "confidence": 0.9,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1508731082654249,
-    "contribution": 0.04224447031431897,
+    "effective_weight": 0.16774527569246697,
+    "contribution": 0.07137561480714469,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -356,7 +356,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -365,14 +365,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7783238900808364,
+    "score": -0.7049460547829833,
     "confidence": 0.8,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.13410942956926658,
-    "contribution": -0.10438057291887351,
+    "effective_weight": 0.14910691172663731,
+    "contribution": -0.10511232916256753,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -380,11 +380,11 @@
     "score": 0.6,
     "confidence": 0.85,
     "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.1781140861466822,
-    "contribution": 0.10686845168800932,
+    "effective_weight": 0.1980326171369402,
+    "contribution": 0.11881957028216411,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -392,35 +392,35 @@
     "score": -0.564899552846225,
     "confidence": 0.7,
     "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.04889406286379511,
-    "contribution": -0.02762023424859307,
+    "effective_weight": 0.054361894900336515,
+    "contribution": -0.030709010121073573,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": -0.46211715726000974,
-    "confidence": 1.0,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.18,
-    "effective_weight": 0.25145518044237486,
-    "contribution": -0.11620175316433307,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.16774527569246697,
+    "contribution": -0.07751796994679945,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.2254794356611079,
+    "score": 0.21942716399658185,
     "confidence": 1.0,
     "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.13969732246798605,
-    "contribution": 0.0314988734334493,
+    "effective_weight": 0.15531969971524723,
+    "contribution": 0.0340813612213174,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -428,7 +428,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -440,19 +440,19 @@
     "score": -0.15384615384615385,
     "confidence": 0.8666666666666667,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.09685681024447033,
-    "contribution": -0.014901047729918513,
+    "effective_weight": 0.10768832513590475,
+    "contribution": -0.016567434636293038,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T20:45:21.202693-06:00",
-  "window_end_inclusive": "2026-10-14T20:45:21.202693-06:00",
+  "window_start_exclusive": "2026-07-17T17:01:19.007684-06:00",
+  "window_end_inclusive": "2026-10-15T17:01:19.007684-06:00",
   "event_objects": 22,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -475,17 +475,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "newest_returned_available_as_of": "2026-10-14T16:10:10.391884-06:00",
-  "build_id": "why-2026-10-15T024520",
+  "build_id": "why-2026-10-15T230118",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T20:45:21.202693-06:00",
+  "corpus_end": "2026-10-15T17:01:19.007684-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T024520",
+ "build_id": "why-2026-10-15T230118",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-15",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-14",
    "label": "WEAKENING"
@@ -600,10 +604,6 @@
   },
   {
    "date": "2026-09-04",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-03",
    "label": "WATCH"
   }
  ],

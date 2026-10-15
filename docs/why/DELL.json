@@ -1,31 +1,31 @@
 {
  "ticker": "DELL",
- "generated": "2026-10-15T02:45:20.664509+00:00",
- "label": "WEAKENING",
- "score": -0.1699,
+ "generated": "2026-10-15T23:01:18.478508+00:00",
+ "label": "NEGATIVE_EVENT",
+ "score": -0.2218,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": -0.4,
+  "ceiling": -0.2
  },
  "components": {
-  "c1": -0.2465,
+  "c1": -0.645,
   "c2": 0.0,
-  "c3": -0.7783239,
+  "c3": -0.70494604,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.43035308,
-  "c7": -0.07039585,
+  "c6": -0.46211717,
+  "c7": -0.0202054,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 693,
-  "recency_days": 0.3,
+  "recency_days": 1.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T02:45:12.577700+00:00",
-  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
+  "as_of": "2026-10-15T23:01:10.559052+00:00",
+  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1033,22 +1033,22 @@
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
-  "weight_provenance": "CURRENT_CONFIG_RECONCILIATION_ONLY",
+  "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.16986680386792874,
-  "stored_score": -0.1699,
+  "reconstructed_score": -0.22180200475763537,
+  "stored_score": -0.2218,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.24649999999999997,
+    "score": -0.645,
     "confidence": 0.9,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.037681528662420374,
+    "contribution": -0.09859872611464968,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1056,7 +1056,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7783238900808364,
+    "score": -0.7049460547829833,
     "confidence": 0.8,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.10575950948019856,
+    "contribution": -0.09578884820830347,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1080,7 +1080,7 @@
     "score": 0.6,
     "confidence": 0.85,
     "nominal_weight": 0.15,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
     "effective_weight": 0.18046709129511676,
@@ -1092,7 +1092,7 @@
     "score": 0.0,
     "confidence": 0.3,
     "nominal_weight": 0.05,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
     "effective_weight": 0.021231422505307854,
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.4303530646683224,
+    "score": -0.46211715726000974,
     "confidence": 1.0,
     "nominal_weight": 0.18,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.10964409290912673,
+    "contribution": -0.11773685535286872,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.07039585177966663,
+    "score": -0.0202054012863456,
     "confidence": 1.0,
     "nominal_weight": 0.1,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": -0.009964027145034202,
+    "contribution": -0.002859929410664629,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1128,7 +1128,7 @@
     "score": 0.0,
     "confidence": 0.0,
     "nominal_weight": 0.12,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.0,
     "effective_weight": 0.0,
@@ -1140,7 +1140,7 @@
     "score": -0.1333333333333333,
     "confidence": 1.0,
     "nominal_weight": 0.08,
-    "weight_source": "CURRENT_CONFIG",
+    "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11323425336164189,
@@ -1151,8 +1151,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-16T20:45:20.875682-06:00",
-  "window_end_inclusive": "2026-10-14T20:45:20.875682-06:00",
+  "window_start_exclusive": "2026-07-17T17:01:18.689836-06:00",
+  "window_end_inclusive": "2026-10-15T17:01:18.689836-06:00",
   "event_objects": 693,
   "distinct_accessions": 67,
   "objects_without_accession": 0,
@@ -1175,17 +1175,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-09-22T14:35:03.727576-06:00",
   "newest_returned_available_as_of": "2026-10-14T14:36:56.133645-06:00",
-  "build_id": "why-2026-10-15T024520",
+  "build_id": "why-2026-10-15T230118",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-14T20:45:20.875682-06:00",
+  "corpus_end": "2026-10-15T17:01:18.689836-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T024520",
+ "build_id": "why-2026-10-15T230118",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-15",
+   "label": "NEGATIVE_EVENT"
+  },
   {
    "date": "2026-10-14",
    "label": "WEAKENING"
@@ -1300,10 +1304,6 @@
   },
   {
    "date": "2026-09-04",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-03",
    "label": "NEUTRAL"
   }
  ],
