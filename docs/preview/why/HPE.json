@@ -1,6 +1,6 @@
 {
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
- "build_id": "why-2026-10-15T014130",
+ "build_id": "why-2026-10-15T024520",
  "component_anatomy": {
   "components": [
    {
@@ -196,16 +196,16 @@
   "largest_type_share": 0.7,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption.",
   "objects_without_accession": 0,
-  "window_end_inclusive": "2026-10-14T19:41:31.186236-06:00",
-  "window_start_exclusive": "2026-07-16T19:41:31.186236-06:00"
+  "window_end_inclusive": "2026-10-14T20:45:20.981302-06:00",
+  "window_start_exclusive": "2026-07-16T20:45:20.981302-06:00"
  },
  "evidence_coverage": {
-  "as_of": "2026-10-15T01:41:22.868189+00:00",
+  "as_of": "2026-10-15T02:45:12.577700+00:00",
   "ecs": 88,
   "events_90d": 10,
   "metric_id": "ecs",
   "recency_days": 7.2,
-  "source_sha256": "baa0af9a6642aaa5ce065ea41d8fdcd39272422cedf4738cf56d6c3f517903f5",
+  "source_sha256": "20dee0ae8ee0d3f073e46b292aba7d20fee76ffebc728393c4c797698c092f12",
   "substrate_active": 1,
   "type_diversity": 3
  },
@@ -502,10 +502,10 @@
   }
  ],
  "evidence_objects_collection": {
-  "build_id": "why-2026-10-15T014130",
+  "build_id": "why-2026-10-15T024520",
   "cap": 100,
   "completeness": "PREVIEW",
-  "corpus_end": "2026-10-14T19:41:31.186236-06:00",
+  "corpus_end": "2026-10-14T20:45:20.981302-06:00",
   "corpus_start": "2026-01-02T12:32:35-07:00",
   "newest_returned_available_as_of": "2026-10-07T14:53:33.968533-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available",
@@ -517,7 +517,7 @@
   "total_available": 29
  },
  "excerpt_comparison_checks": [],
- "generated": "2026-10-15T01:41:30.864747+00:00",
+ "generated": "2026-10-15T02:45:20.664509+00:00",
  "history_manifest_url": "/why/history_manifest.json",
  "history_url": "/why/HPE.history.json",
  "label": "WEAKENING",
