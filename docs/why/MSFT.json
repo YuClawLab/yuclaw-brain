@@ -1,31 +1,31 @@
 {
  "ticker": "MSFT",
- "generated": "2026-10-15T23:01:18.478508+00:00",
+ "generated": "2026-10-16T23:02:05.105160+00:00",
  "label": "WEAKENING",
- "score": -0.0056,
+ "score": -0.0542,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.4255,
+  "c1": 0.395,
   "c2": 0.0,
-  "c3": -0.70494604,
+  "c3": -0.70758784,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": 0.21942717,
+  "c7": -0.03275634,
   "c8": 0.0,
-  "c9": -0.15384616
+  "c9": -0.18518518
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 92,
   "events_90d": 22,
-  "recency_days": 1.0,
+  "recency_days": 2.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T23:01:10.559052+00:00",
-  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
+  "as_of": "2026-10-16T23:01:56.964086+00:00",
+  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -334,21 +334,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6438333333333334,
-  "reconstructed_score": -0.005630197556107396,
-  "stored_score": -0.0056,
+  "denominator": 0.6465,
+  "reconstructed_score": -0.05422666037277621,
+  "stored_score": -0.0542,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.42549999999999993,
+    "score": 0.39499999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16774527569246697,
-    "contribution": 0.07137561480714469,
+    "effective_weight": 0.16705336426914155,
+    "contribution": 0.0659860788863109,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -365,14 +365,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7049460547829833,
+    "score": -0.7075878248163646,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14910691172663731,
-    "contribution": -0.10511232916256753,
+    "effective_weight": 0.14849187935034805,
+    "contribution": -0.10507104591240683,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -383,8 +383,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.1980326171369402,
-    "contribution": 0.11881957028216411,
+    "effective_weight": 0.19721577726218098,
+    "contribution": 0.11832946635730858,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -395,8 +395,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.054361894900336515,
-    "contribution": -0.030709010121073573,
+    "effective_weight": 0.05413766434648105,
+    "contribution": -0.03058234238146616,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -407,20 +407,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16774527569246697,
-    "contribution": -0.07751796994679945,
+    "effective_weight": 0.16705336426914155,
+    "contribution": -0.07719822580677657,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.21942716399658185,
+    "score": -0.032756340815965325,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.15531969971524723,
-    "contribution": 0.0340813612213174,
+    "effective_weight": 0.1546790409899459,
+    "contribution": -0.005066719383753338,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -437,22 +437,22 @@
    },
    {
     "id": "c9",
-    "score": -0.15384615384615385,
-    "confidence": 0.8666666666666667,
+    "score": -0.18518518518518523,
+    "confidence": 0.9,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.10768832513590475,
-    "contribution": -0.016567434636293038,
+    "weight_times_confidence": 0.07200000000000001,
+    "effective_weight": 0.11136890951276104,
+    "contribution": -0.02062387213199279,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-17T17:01:19.007684-06:00",
-  "window_end_inclusive": "2026-10-15T17:01:19.007684-06:00",
+  "window_start_exclusive": "2026-07-18T17:02:05.606478-06:00",
+  "window_end_inclusive": "2026-10-16T17:02:05.606478-06:00",
   "event_objects": 22,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -475,17 +475,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "newest_returned_available_as_of": "2026-10-14T16:10:10.391884-06:00",
-  "build_id": "why-2026-10-15T230118",
+  "build_id": "why-2026-10-16T230205",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-15T17:01:19.007684-06:00",
+  "corpus_end": "2026-10-16T17:02:05.606478-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T230118",
+ "build_id": "why-2026-10-16T230205",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-16",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-15",
    "label": "WEAKENING"
@@ -600,10 +604,6 @@
   },
   {
    "date": "2026-09-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-04",
    "label": "WATCH"
   }
  ],

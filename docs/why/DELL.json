@@ -1,31 +1,31 @@
 {
  "ticker": "DELL",
- "generated": "2026-10-15T23:01:18.478508+00:00",
+ "generated": "2026-10-16T23:02:05.105160+00:00",
  "label": "NEGATIVE_EVENT",
- "score": -0.2218,
+ "score": -0.2697,
  "threshold_band": {
   "floor": -0.4,
   "ceiling": -0.2
  },
  "components": {
-  "c1": -0.645,
+  "c1": -0.9905,
   "c2": 0.0,
-  "c3": -0.70494604,
+  "c3": -0.70758784,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": -0.0202054,
+  "c7": 0.01733523,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 92,
   "events_90d": 693,
-  "recency_days": 1.1,
+  "recency_days": 2.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-15T23:01:10.559052+00:00",
-  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
+  "as_of": "2026-10-16T23:01:56.964086+00:00",
+  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.22180200475763537,
-  "stored_score": -0.2218,
+  "reconstructed_score": -0.2696626513035415,
+  "stored_score": -0.2697,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.645,
+    "score": -0.9904999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.09859872611464968,
+    "contribution": -0.1514140127388535,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7049460547829833,
+    "score": -0.7075878248163646,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.09578884820830347,
+    "contribution": -0.09614781483704317,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1113,14 +1113,14 @@
    },
    {
     "id": "c7",
-    "score": -0.0202054012863456,
+    "score": 0.017335230098873593,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": -0.002859929410664629,
+    "contribution": 0.002453677296372766,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,8 +1151,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-17T17:01:18.689836-06:00",
-  "window_end_inclusive": "2026-10-15T17:01:18.689836-06:00",
+  "window_start_exclusive": "2026-07-18T17:02:05.305934-06:00",
+  "window_end_inclusive": "2026-10-16T17:02:05.305934-06:00",
   "event_objects": 693,
   "distinct_accessions": 67,
   "objects_without_accession": 0,
@@ -1175,17 +1175,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-09-22T14:35:03.727576-06:00",
   "newest_returned_available_as_of": "2026-10-14T14:36:56.133645-06:00",
-  "build_id": "why-2026-10-15T230118",
+  "build_id": "why-2026-10-16T230205",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-15T17:01:18.689836-06:00",
+  "corpus_end": "2026-10-16T17:02:05.305934-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T230118",
+ "build_id": "why-2026-10-16T230205",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-16",
+   "label": "NEGATIVE_EVENT"
+  },
   {
    "date": "2026-10-15",
    "label": "NEGATIVE_EVENT"
@@ -1300,10 +1304,6 @@
   },
   {
    "date": "2026-09-07",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-04",
    "label": "NEUTRAL"
   }
  ],

@@ -1,34 +1,44 @@
 {
  "ticker": "PG",
- "generated": "2026-10-15T23:01:18.478508+00:00",
- "label": "WATCH",
- "score": 0.1548,
+ "generated": "2026-10-16T23:02:05.105160+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2614,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.355,
+  "c1": 0.4195,
   "c2": 0.0,
-  "c3": -0.08605409,
+  "c3": 0.5509034,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.09996718,
-  "c7": 0.19562335,
+  "c6": -0.09059703,
+  "c7": 0.30534783,
   "c8": 0.0,
   "c9": -0.29411766
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 19,
-  "recency_days": 2.4,
+  "ecs": 87,
+  "events_90d": 20,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-15T23:01:10.559052+00:00",
-  "source_sha256": "2f1459de5116b3c1ece76ce6c6eedff6646e1abf442e19a52a904d59c0c0fe7b",
+  "as_of": "2026-10-16T23:01:56.964086+00:00",
+  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PG",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-16",
+   "accession_number": "0000080424-26-000245",
+   "excerpt": "The Procter & Gamble Company (Exact name of registrant as specified in its charter)",
+   "source_hash": "f87b1780facd9649b1e9df81cb939535fdc1ce306043533d13efab697982ad2c",
+   "available_as_of": "2026-10-16T14:25:47-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PG",
    "evidence_type": "OTHER_MATERIAL",
@@ -254,21 +264,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6358333333333334,
-  "reconstructed_score": 0.15477724951048527,
-  "stored_score": 0.1548,
+  "denominator": 0.6718333333333333,
+  "reconstructed_score": 0.2613545636331629,
+  "stored_score": 0.2614,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.3549999999999999,
+    "score": 0.4195,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16985583224115333,
-    "contribution": 0.06029882044560942,
+    "effective_weight": 0.1607541552964525,
+    "contribution": 0.06743636814686182,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -285,14 +295,14 @@
    },
    {
     "id": "c3",
-    "score": -0.08605408732202452,
+    "score": 0.550903382631651,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1509829619921363,
-    "contribution": -0.012992700995409206,
+    "effective_weight": 0.14289258248573555,
+    "contribution": 0.07872000704436392,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -303,8 +313,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.20052424639580602,
-    "contribution": 0.1203145478374836,
+    "effective_weight": 0.18977921111386756,
+    "contribution": 0.11386752666832053,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -315,32 +325,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.023591087811271297,
+    "effective_weight": 0.02232696601339618,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.09996718363949797,
-    "confidence": 0.8,
+    "score": -0.09059703412343784,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.144,
-    "effective_weight": 0.22647444298820443,
-    "contribution": -0.022640012231854845,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.2679235921607542,
+    "contribution": -0.02427308282146189,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.19562334640752294,
+    "score": 0.30534782410460215,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.15727391874180865,
-    "contribution": 0.030766450286897448,
+    "effective_weight": 0.1488464400893079,
+    "contribution": 0.04544993660698619,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -363,24 +373,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.04533333333333333,
-    "effective_weight": 0.07129750982961991,
-    "contribution": -0.020969855832241147,
+    "effective_weight": 0.06747705284048623,
+    "contribution": -0.019846192011907713,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-17T17:01:19.074299-06:00",
-  "window_end_inclusive": "2026-10-15T17:01:19.074299-06:00",
-  "event_objects": 19,
-  "distinct_accessions": 19,
+  "window_start_exclusive": "2026-07-18T17:02:05.677900-06:00",
+  "window_end_inclusive": "2026-10-16T17:02:05.677900-06:00",
+  "event_objects": 20,
+  "distinct_accessions": 20,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 15,
-   "OTHER_MATERIAL": 4
+   "OTHER_MATERIAL": 5
   },
-  "largest_type_share": 0.7894736842105263,
+  "largest_type_share": 0.75,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -388,23 +398,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PG in the declared corpus",
-  "returned": 22,
-  "total_available": 22,
+  "returned": 23,
+  "total_available": 23,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-23T08:05:12-07:00",
-  "newest_returned_available_as_of": "2026-10-13T08:01:56-06:00",
-  "build_id": "why-2026-10-15T230118",
+  "newest_returned_available_as_of": "2026-10-16T14:25:47-06:00",
+  "build_id": "why-2026-10-16T230205",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-15T17:01:19.074299-06:00",
+  "corpus_end": "2026-10-16T17:02:05.677900-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PG.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-15T230118",
+ "build_id": "why-2026-10-16T230205",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-16",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-15",
    "label": "WATCH"
@@ -519,10 +533,6 @@
   },
   {
    "date": "2026-09-07",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-04",
    "label": "WEAKENING"
   }
  ],
