@@ -1,14 +1,14 @@
 {
  "ticker": "VIXY",
- "generated": "2026-10-16T23:02:05.105160+00:00",
+ "generated": "2026-10-19T23:03:10.786174+00:00",
  "label": "NEUTRAL",
- "score": 0.2365,
+ "score": 0.234,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.017,
+  "c1": 0.009,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 37,
   "events_90d": 1,
-  "recency_days": 70.3,
+  "recency_days": 73.3,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-10-16T23:01:56.964086+00:00",
-  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
+  "as_of": "2026-10-19T23:03:02.449493+00:00",
+  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -45,20 +45,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.34249999999999997,
-  "reconstructed_score": 0.2365041362530414,
-  "stored_score": 0.2365,
+  "reconstructed_score": 0.23398150851581512,
+  "stored_score": 0.234,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.017,
+    "score": 0.009,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.3153284671532847,
-    "contribution": 0.0053605839416058405,
+    "contribution": 0.0028379562043795623,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -161,8 +161,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-18T17:02:05.853531-06:00",
-  "window_end_inclusive": "2026-10-16T17:02:05.853531-06:00",
+  "window_start_exclusive": "2026-07-21T17:03:11.597187-06:00",
+  "window_end_inclusive": "2026-10-19T17:03:11.597187-06:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -183,17 +183,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-07T09:46:28-06:00",
   "newest_returned_available_as_of": "2026-08-07T09:46:28-06:00",
-  "build_id": "why-2026-10-16T230205",
+  "build_id": "why-2026-10-19T230310",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-16T17:02:05.853531-06:00",
+  "corpus_end": "2026-10-19T17:03:11.597187-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/VIXY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-16T230205",
+ "build_id": "why-2026-10-19T230310",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-19",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-16",
    "label": "NEUTRAL"
@@ -308,10 +312,6 @@
   },
   {
    "date": "2026-09-08",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-07",
    "label": "WATCH"
   }
  ],

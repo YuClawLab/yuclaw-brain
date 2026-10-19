@@ -1,31 +1,31 @@
 {
  "ticker": "ARM",
- "generated": "2026-10-16T23:02:05.105160+00:00",
- "label": "WEAKENING",
- "score": -0.0569,
+ "generated": "2026-10-19T23:03:10.786174+00:00",
+ "label": "WATCH",
+ "score": 0.0994,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.3315,
+  "c1": -0.6955,
   "c2": 0.0,
-  "c3": -0.70758784,
+  "c3": 0.60515213,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.01976166,
-  "c7": -0.000972221,
+  "c6": -0.04714181,
+  "c7": 0.034732018,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 83,
+  "ecs": 82,
   "events_90d": 7,
-  "recency_days": 23.1,
+  "recency_days": 26.1,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-16T23:01:56.964086+00:00",
-  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
+  "as_of": "2026-10-19T23:03:02.449493+00:00",
+  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -494,21 +494,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5985,
-  "reconstructed_score": -0.056948748678780366,
-  "stored_score": -0.0569,
+  "denominator": 0.5625,
+  "reconstructed_score": 0.09941932257474612,
+  "stored_score": 0.0994,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.33149999999999996,
+    "score": -0.6955,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18045112781954886,
-    "contribution": -0.05981954887218044,
+    "effective_weight": 0.192,
+    "contribution": -0.13353600000000002,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -525,14 +525,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7075878248163646,
+    "score": 0.6051521419559888,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16040100250626566,
-    "contribution": -0.11349779646177277,
+    "effective_weight": 0.17066666666666666,
+    "contribution": 0.10327929889382208,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -543,8 +543,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21303258145363407,
-    "contribution": 0.12781954887218044,
+    "effective_weight": 0.22666666666666668,
+    "contribution": 0.136,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -555,32 +555,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02506265664160401,
+    "effective_weight": 0.026666666666666665,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.0197616592896016,
-    "confidence": 0.4,
+    "score": -0.04714180959907677,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12030075187969923,
-    "contribution": -0.0023773424709295156,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.064,
+    "contribution": -0.003017075814340913,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0009722209969440112,
+    "score": 0.03473201799419871,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1670843776106934,
-    "contribution": -0.00016244294017443795,
+    "effective_weight": 0.17777777777777778,
+    "contribution": 0.006174580976746438,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -603,16 +603,16 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1336675020885547,
-    "contribution": -0.008911166805903646,
+    "effective_weight": 0.14222222222222222,
+    "contribution": -0.00948148148148148,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-18T17:02:05.187731-06:00",
-  "window_end_inclusive": "2026-10-16T17:02:05.187731-06:00",
+  "window_start_exclusive": "2026-07-21T17:03:10.898052-06:00",
+  "window_end_inclusive": "2026-10-19T17:03:10.898052-06:00",
   "event_objects": 7,
   "distinct_accessions": 7,
   "objects_without_accession": 0,
@@ -643,17 +643,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-24T15:11:56-06:00",
   "newest_returned_available_as_of": "2026-09-23T15:08:01.721097-06:00",
-  "build_id": "why-2026-10-16T230205",
+  "build_id": "why-2026-10-19T230310",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-16T17:02:05.187731-06:00",
+  "corpus_end": "2026-10-19T17:03:10.898052-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ARM.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-16T230205",
+ "build_id": "why-2026-10-19T230310",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-19",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-16",
    "label": "WEAKENING"
@@ -768,10 +772,6 @@
   },
   {
    "date": "2026-09-08",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-07",
    "label": "WATCH"
   }
  ],

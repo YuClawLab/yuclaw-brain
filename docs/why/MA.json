@@ -1,34 +1,44 @@
 {
  "ticker": "MA",
- "generated": "2026-10-16T23:02:05.105160+00:00",
- "label": "NEUTRAL",
- "score": 0.2216,
+ "generated": "2026-10-19T23:03:10.786174+00:00",
+ "label": "WATCH",
+ "score": 0.0119,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4375,
+  "c1": 0.448,
   "c2": 0.0,
-  "c3": 0.3700833,
+  "c3": -0.44752216,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.06378127,
-  "c7": -0.06034,
+  "c6": -0.46211717,
+  "c7": -0.08453419,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 85,
-  "events_90d": 34,
-  "recency_days": 3.1,
+  "ecs": 87,
+  "events_90d": 35,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-16T23:01:56.964086+00:00",
-  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
+  "as_of": "2026-10-19T23:03:02.449493+00:00",
+  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MA",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-19",
+   "accession_number": "0001141391-26-000118",
+   "excerpt": "Ling Hai S 4317 shares @ $620.00 on 2026-10-16 ($2,676,540)",
+   "source_hash": "64bc96a84496498ab411a3973746be761513e8f99ab1a3ae827090458a4450f0",
+   "available_as_of": "2026-10-19T14:14:43.764009-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MA",
    "evidence_type": "INSIDER_SELL",
@@ -704,21 +714,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5985,
-  "reconstructed_score": 0.22164034377117373,
-  "stored_score": 0.2216,
+  "denominator": 0.6345000000000001,
+  "reconstructed_score": 0.011914581143582677,
+  "stored_score": 0.0119,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.43749999999999994,
+    "score": 0.44800000000000006,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18045112781954886,
-    "contribution": 0.07894736842105261,
+    "effective_weight": 0.17021276595744678,
+    "contribution": 0.07625531914893617,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -735,14 +745,14 @@
    },
    {
     "id": "c3",
-    "score": 0.370083303409211,
+    "score": -0.44752215139850293,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16040100250626566,
-    "contribution": 0.059361732877667925,
+    "effective_weight": 0.15130023640661938,
+    "contribution": -0.0677102073037924,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -753,8 +763,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21303258145363407,
-    "contribution": 0.12781954887218044,
+    "effective_weight": 0.20094562647754136,
+    "contribution": 0.1205673758865248,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -765,32 +775,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02506265664160401,
+    "effective_weight": 0.023640661938534275,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.0637812721366781,
-    "confidence": 0.4,
+    "score": -0.46211715726000974,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12030075187969923,
-    "contribution": -0.007672934993886086,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.17021276595744678,
+    "contribution": -0.07865823953361867,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0603399978639595,
+    "score": -0.0845341874605946,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1670843776106934,
-    "contribution": -0.010081870988130242,
+    "effective_weight": 0.15760441292356187,
+    "contribution": -0.013322960986697337,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -813,24 +823,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1336675020885547,
-    "contribution": -0.026733500417710936,
+    "effective_weight": 0.12608353033884948,
+    "contribution": -0.02521670606776989,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-18T17:02:05.531477-06:00",
-  "window_end_inclusive": "2026-10-16T17:02:05.531477-06:00",
-  "event_objects": 34,
-  "distinct_accessions": 11,
+  "window_start_exclusive": "2026-07-21T17:03:11.270271-06:00",
+  "window_end_inclusive": "2026-10-19T17:03:11.270271-06:00",
+  "event_objects": 35,
+  "distinct_accessions": 12,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 32,
+   "INSIDER_SELL": 33,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9411764705882353,
+  "largest_type_share": 0.9428571428571428,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -838,21 +848,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MA in the declared corpus",
-  "returned": 67,
-  "total_available": 67,
+  "returned": 68,
+  "total_available": 68,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:06:16-07:00",
-  "newest_returned_available_as_of": "2026-10-13T14:10:52.954386-06:00",
-  "build_id": "why-2026-10-16T230205",
+  "newest_returned_available_as_of": "2026-10-19T14:14:43.764009-06:00",
+  "build_id": "why-2026-10-19T230310",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-16T17:02:05.531477-06:00",
+  "corpus_end": "2026-10-19T17:03:11.270271-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-16T230205",
+ "build_id": "why-2026-10-19T230310",
  "corrections": [
   {
    "original": {
@@ -906,6 +916,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-19",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-16",
    "label": "NEUTRAL"
@@ -1020,10 +1034,6 @@
   },
   {
    "date": "2026-09-08",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-07",
    "label": "WEAKENING"
   }
  ],

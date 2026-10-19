@@ -1,31 +1,31 @@
 {
  "ticker": "HPE",
- "generated": "2026-10-16T23:02:05.105160+00:00",
+ "generated": "2026-10-19T23:03:10.786174+00:00",
  "label": "WEAKENING",
- "score": -0.1542,
+ "score": -0.0112,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1365,
+  "c1": -0.4235,
   "c2": 0.0,
-  "c3": -0.70758784,
+  "c3": 0.60515213,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.01733523,
+  "c7": 0.07734814,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 85,
   "events_90d": 10,
-  "recency_days": 9.1,
+  "recency_days": 12.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-16T23:01:56.964086+00:00",
-  "source_sha256": "06783acb37cf2b8dadf1aa83708b65781dedcbe74aae6fca3aedc7797b4a100e",
+  "as_of": "2026-10-19T23:03:02.449493+00:00",
+  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -325,20 +325,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.1542127810511235,
-  "stored_score": -0.1542,
+  "reconstructed_score": -0.011214439605020119,
+  "stored_score": -0.0112,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.1365,
+    "score": -0.42350000000000004,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.020866242038216562,
+    "contribution": -0.06473885350318472,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -355,14 +355,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7075878248163646,
+    "score": 0.6051521419559888,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.09614781483704317,
+    "contribution": 0.08222874115750166,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -403,14 +403,14 @@
    },
    {
     "id": "c7",
-    "score": 0.017335230098873593,
+    "score": 0.0773481443141346,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.002453677296372766,
+    "contribution": 0.010948074212899448,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -441,8 +441,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-18T17:02:05.402779-06:00",
-  "window_end_inclusive": "2026-10-16T17:02:05.402779-06:00",
+  "window_start_exclusive": "2026-07-21T17:03:11.124678-06:00",
+  "window_end_inclusive": "2026-10-19T17:03:11.124678-06:00",
   "event_objects": 10,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -465,15 +465,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
   "newest_returned_available_as_of": "2026-10-07T14:53:33.968533-06:00",
-  "build_id": "why-2026-10-16T230205",
+  "build_id": "why-2026-10-19T230310",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-16T17:02:05.402779-06:00",
+  "corpus_end": "2026-10-19T17:03:11.124678-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/HPE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-16T230205",
+ "build_id": "why-2026-10-19T230310",
  "corrections": [
   {
    "original": {
@@ -527,6 +527,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-19",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-16",
    "label": "WEAKENING"
@@ -641,10 +645,6 @@
   },
   {
    "date": "2026-09-08",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-07",
    "label": "NEUTRAL"
   }
  ],
