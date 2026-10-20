@@ -1,16 +1,16 @@
 {
  "ticker": "GOOGL",
- "generated": "2026-10-19T23:03:10.786174+00:00",
- "label": "WATCH",
- "score": 0.0849,
+ "generated": "2026-10-20T23:02:13.900029+00:00",
+ "label": "WEAKENING",
+ "score": -0.0195,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0455,
+  "c1": -0.1325,
   "c2": 0.0,
-  "c3": -0.14504234,
+  "c3": -0.5324627,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": 0.0,
@@ -20,12 +20,12 @@
  },
  "evidence_coverage": {
   "ecs": 65,
-  "events_90d": 10,
-  "recency_days": 70.3,
+  "events_90d": 8,
+  "recency_days": 71.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-19T23:03:02.449493+00:00",
-  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
+  "as_of": "2026-10-20T23:02:05.083796+00:00",
+  "source_sha256": "0eb685835f6465f5f380bfe9dd2e03f66377e7aafbadaa424c9d2fd929dec04f",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -745,20 +745,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.4465,
-  "reconstructed_score": 0.08486103125109849,
-  "stored_score": 0.0849,
+  "reconstructed_score": -0.019480192579343192,
+  "stored_score": -0.0195,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0455,
+    "score": -0.13249999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.24188129899216124,
-    "contribution": -0.011005599104143336,
+    "contribution": -0.03204927211646136,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -775,14 +775,14 @@
    },
    {
     "id": "c3",
-    "score": -0.14504234579965258,
+    "score": -0.5324627253860299,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.21500559910414332,
-    "contribution": -0.03118491645412463,
+    "contribution": -0.1144824672722483,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -861,16 +861,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-21T17:03:11.096284-06:00",
-  "window_end_inclusive": "2026-10-19T17:03:11.096284-06:00",
-  "event_objects": 10,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-07-22T17:02:14.217586-06:00",
+  "window_end_inclusive": "2026-10-20T17:02:14.217586-06:00",
+  "event_objects": 8,
+  "distinct_accessions": 5,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 7,
-   "OTHER_MATERIAL": 3
+   "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.7,
+  "largest_type_share": 0.875,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -884,15 +884,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T18:48:14-07:00",
   "newest_returned_available_as_of": "2026-08-10T10:10:48-06:00",
-  "build_id": "why-2026-10-19T230310",
+  "build_id": "why-2026-10-20T230213",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-19T17:03:11.096284-06:00",
+  "corpus_end": "2026-10-20T17:02:14.217586-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GOOGL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-19T230310",
+ "build_id": "why-2026-10-20T230213",
  "corrections": [
   {
    "original": {
@@ -946,6 +946,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-20",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-19",
    "label": "WATCH"
@@ -1060,10 +1064,6 @@
   },
   {
    "date": "2026-09-09",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-08",
    "label": "WATCH"
   }
  ],

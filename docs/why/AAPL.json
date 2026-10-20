@@ -1,31 +1,31 @@
 {
  "ticker": "AAPL",
- "generated": "2026-10-19T23:03:10.786174+00:00",
- "label": "WATCH",
- "score": 0.0353,
+ "generated": "2026-10-20T23:02:13.900029+00:00",
+ "label": "WEAKENING",
+ "score": -0.1428,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.088,
+  "c1": 0.05,
   "c2": 0.0,
-  "c3": 0.60515213,
+  "c3": -0.66563016,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": -0.048541326,
+  "c7": -0.080900826,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 27,
-  "recency_days": 0.0,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-19T23:03:02.449493+00:00",
-  "source_sha256": "e7bcd25d6a65bc07a7b831f4a0f6d328e0dae9e00ff3d9673ea5c670fb2f1efc",
+  "as_of": "2026-10-20T23:02:05.083796+00:00",
+  "source_sha256": "0eb685835f6465f5f380bfe9dd2e03f66377e7aafbadaa424c9d2fd929dec04f",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -445,20 +445,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.03527217279195373,
-  "stored_score": 0.0353,
+  "reconstructed_score": -0.14275267380467585,
+  "stored_score": -0.1428,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.088,
+    "score": 0.049999999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.013081899518238127,
+    "contribution": 0.0074328974535443895,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -475,14 +475,14 @@
    },
    {
     "id": "c3",
-    "score": 0.6051521419559888,
+    "score": -0.665630163228358,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.07996504559913961,
+    "contribution": -0.08795663547133155,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -523,14 +523,14 @@
    },
    {
     "id": "c7",
-    "score": -0.04854132771334256,
+    "score": -0.0809008252608834,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": -0.006681531688003105,
+    "contribution": -0.011135695149467776,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -561,8 +561,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-21T17:03:10.788882-06:00",
-  "window_end_inclusive": "2026-10-19T17:03:10.788882-06:00",
+  "window_start_exclusive": "2026-07-22T17:02:13.903167-06:00",
+  "window_end_inclusive": "2026-10-20T17:02:13.903167-06:00",
   "event_objects": 27,
   "distinct_accessions": 17,
   "objects_without_accession": 0,
@@ -584,15 +584,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
   "newest_returned_available_as_of": "2026-10-19T16:34:08.594688-06:00",
-  "build_id": "why-2026-10-19T230310",
+  "build_id": "why-2026-10-20T230213",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-19T17:03:10.788882-06:00",
+  "corpus_end": "2026-10-20T17:02:13.903167-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-19T230310",
+ "build_id": "why-2026-10-20T230213",
  "corrections": [
   {
    "original": {
@@ -621,6 +621,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-20",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-19",
    "label": "WATCH"
@@ -735,10 +739,6 @@
   },
   {
    "date": "2026-09-09",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-08",
    "label": "WATCH"
   }
  ],
