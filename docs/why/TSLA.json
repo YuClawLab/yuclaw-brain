@@ -1,34 +1,44 @@
 {
  "ticker": "TSLA",
- "generated": "2026-10-20T23:02:13.900029+00:00",
+ "generated": "2026-10-21T23:01:48.029200+00:00",
  "label": "WATCH",
- "score": 0.1505,
+ "score": 0.1995,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.1295,
+  "c1": 0.149,
   "c2": 0.0,
-  "c3": -0.13075858,
+  "c3": -0.13698865,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.06450486,
+  "c6": 0.42576948,
   "c7": 0.0,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 57,
-  "events_90d": 2,
-  "recency_days": 18.4,
+  "ecs": 72,
+  "events_90d": 3,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-20T23:02:05.083796+00:00",
-  "source_sha256": "0eb685835f6465f5f380bfe9dd2e03f66377e7aafbadaa424c9d2fd929dec04f",
+  "as_of": "2026-10-21T23:01:39.385818+00:00",
+  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "TSLA",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0001628280-26-066738",
+   "excerpt": "On October 21, 2026, Tesla, Inc. released its financial results for the quarter ended September 30, 2026 by posting its Third Quarter 2026 Update on its website.",
+   "source_hash": "52262c0534297fbfc39160ef91d0a7d58b94b3de1acf1a5fca9044a94171b1f4",
+   "available_as_of": "2026-10-21T14:41:42-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "TSLA",
    "evidence_type": "OTHER_MATERIAL",
@@ -484,21 +494,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4625,
-  "reconstructed_score": 0.15046201933959003,
-  "stored_score": 0.1505,
+  "denominator": 0.4985,
+  "reconstructed_score": 0.19945802248386635,
+  "stored_score": 0.1995,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.12949999999999998,
+    "score": 0.149,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.2335135135135135,
-    "contribution": 0.030239999999999993,
+    "effective_weight": 0.21664994984954863,
+    "contribution": 0.032280842527582745,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -515,14 +525,14 @@
    },
    {
     "id": "c3",
-    "score": -0.13075858845835955,
+    "score": -0.13698865598048932,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.20756756756756756,
-    "contribution": -0.027141242144870306,
+    "effective_weight": 0.1925777331995988,
+    "contribution": -0.0263809648427823,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -533,8 +543,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2756756756756757,
-    "contribution": 0.1654054054054054,
+    "effective_weight": 0.25576730190571717,
+    "contribution": 0.1534603811434303,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -545,20 +555,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.03243243243243243,
+    "effective_weight": 0.03009027081243731,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0645048639785993,
-    "confidence": 0.2,
+    "score": 0.42576947012501404,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.07783783783783783,
-    "contribution": 0.005020919142117999,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.14443329989969908,
+    "contribution": 0.06149528956670212,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -593,24 +603,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.17297297297297295,
-    "contribution": -0.023063063063063056,
+    "effective_weight": 0.160481444332999,
+    "contribution": -0.02139752591106653,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-22T17:02:14.680758-06:00",
-  "window_end_inclusive": "2026-10-20T17:02:14.680758-06:00",
-  "event_objects": 2,
-  "distinct_accessions": 2,
+  "window_start_exclusive": "2026-07-23T17:01:48.737573-06:00",
+  "window_end_inclusive": "2026-10-21T17:01:48.737573-06:00",
+  "event_objects": 3,
+  "distinct_accessions": 3,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 1
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.5,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -618,23 +628,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for TSLA in the declared corpus",
-  "returned": 45,
-  "total_available": 45,
+  "returned": 46,
+  "total_available": 46,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T17:00:21-07:00",
-  "newest_returned_available_as_of": "2026-10-02T07:04:26-06:00",
-  "build_id": "why-2026-10-20T230213",
+  "newest_returned_available_as_of": "2026-10-21T14:41:42-06:00",
+  "build_id": "why-2026-10-21T230148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-20T17:02:14.680758-06:00",
+  "corpus_end": "2026-10-21T17:01:48.737573-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/TSLA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-20T230213",
+ "build_id": "why-2026-10-21T230148",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-21",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-20",
    "label": "WATCH"
@@ -750,10 +764,6 @@
   {
    "date": "2026-09-10",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-09",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

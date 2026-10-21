@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "JNJ",
- "build_id": "why-2026-10-20T230213",
- "generated": "2026-10-20T23:02:13.900029+00:00",
+ "build_id": "why-2026-10-21T230148",
+ "generated": "2026-10-21T23:01:48.029200+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for JNJ in the declared corpus",
-  "returned": 31,
-  "total_available": 31,
+  "returned": 32,
+  "total_available": 32,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-02-18T19:11:31-07:00",
-  "newest_returned_available_as_of": "2026-09-04T07:10:18.206938-06:00",
-  "build_id": "why-2026-10-20T230213",
+  "newest_returned_available_as_of": "2026-10-21T14:18:47-06:00",
+  "build_id": "why-2026-10-21T230148",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-20T17:02:14.297919-06:00",
+  "corpus_end": "2026-10-21T17:01:48.400709-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -328,9 +328,44 @@
    "source_hash": "b39712690d34b076def9ce87130135cf9423dc4f4a7ef26fe09eae27ea797422",
    "available_as_of": "2026-09-04T07:10:18.206938-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "JNJ",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0000200406-26-000197",
+   "excerpt": "0000200406 us-gaap:RetainedEarningsMember 2025-12-28 0000200406 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2025-12-28",
+   "source_hash": "6ac03398bc8f98592eb31763283fb015d56a1dbd948376da82adf13305c3c257",
+   "available_as_of": "2026-10-21T14:18:47-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
+  {
+   "original": {
+    "ticker": "JNJ",
+    "accession_number": "0000200406-26-000153",
+    "source_hash": "6ac03398bc8f98592eb31763283fb015d56a1dbd948376da82adf13305c3c257",
+    "excerpt_sha256": "316835cce77a7d83628894092cd8a653cdec7c72b907b639bbcd7daf2607d389"
+   },
+   "rule_ids": [
+    "xbrl_context"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-6ac03398bc8f9859",
+   "kind": "quality_flag",
+   "status": "CONFIRMED",
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "source_location": {
+    "accession_number": "0000200406-26-000153",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/200406/000020040626000153/jnj-20260628.htm",
+    "char_offset": 1772,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": null
+  },
   {
    "original": {
     "ticker": "JNJ",

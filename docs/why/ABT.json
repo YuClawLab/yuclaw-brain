@@ -1,34 +1,54 @@
 {
  "ticker": "ABT",
- "generated": "2026-10-20T23:02:13.900029+00:00",
- "label": "NEUTRAL",
- "score": 0.256,
+ "generated": "2026-10-21T23:01:48.029200+00:00",
+ "label": "WATCH",
+ "score": 0.0937,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.008,
+  "c1": -0.12,
   "c2": 0.0,
-  "c3": 0.6021115,
+  "c3": -0.5061905,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": -0.07464791,
+  "c6": 0.5960047,
+  "c7": -0.06704821,
   "c8": 0.0,
   "c9": 0.04761905
  },
  "evidence_coverage": {
-  "ecs": 57,
-  "events_90d": 5,
-  "recency_days": 54.1,
+  "ecs": 84,
+  "events_90d": 7,
+  "recency_days": 0.4,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-20T23:02:05.083796+00:00",
-  "source_sha256": "0eb685835f6465f5f380bfe9dd2e03f66377e7aafbadaa424c9d2fd929dec04f",
+  "as_of": "2026-10-21T23:01:39.385818+00:00",
+  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABT",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0001104659-26-117587",
+   "excerpt": "CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "b12620524f2a933eaf64b3f67743c9dd915b6299f29fa48683bfc93cc7b5fc38",
+   "available_as_of": "2026-10-21T07:19:51-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "ABT",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0001628280-26-066601",
+   "excerpt": "On October 21, 2026, Abbott Laboratories announced its results of operations for the third quarter 2026.",
+   "source_hash": "c8c424fb1333819046efbabd316457c5ef7ad55e669a591ab5c5a03152f9db01",
+   "available_as_of": "2026-10-21T05:36:13-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABT",
    "evidence_type": "INSIDER_SELL",
@@ -184,21 +204,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5025,
-  "reconstructed_score": 0.25600116064938966,
-  "stored_score": 0.256,
+  "denominator": 0.5745,
+  "reconstructed_score": 0.09368129030944651,
+  "stored_score": 0.0937,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.008,
+    "score": -0.12,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.21492537313432838,
-    "contribution": -0.0017194029850746272,
+    "effective_weight": 0.18798955613577023,
+    "contribution": -0.022558746736292427,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -215,14 +235,14 @@
    },
    {
     "id": "c3",
-    "score": 0.6021115417639024,
+    "score": -0.5061904518115891,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.19104477611940301,
-    "contribution": 0.1150302646951933,
+    "effective_weight": 0.1671018276762402,
+    "contribution": -0.08458534964997833,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -233,8 +253,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2537313432835821,
-    "contribution": 0.15223880597014924,
+    "effective_weight": 0.22193211488250653,
+    "contribution": 0.13315926892950392,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -245,32 +265,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02985074626865672,
+    "effective_weight": 0.02610966057441253,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
+    "score": 0.5960047024881281,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12532637075718014,
+    "contribution": 0.07469510631705,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.07464791449683002,
+    "score": -0.06704820589122319,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.19900497512437815,
-    "contribution": -0.014855306367528364,
+    "effective_weight": 0.1740644038294169,
+    "contribution": -0.011670705986287763,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -293,24 +313,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.11144278606965174,
-    "contribution": 0.005306799336650089,
+    "effective_weight": 0.09747606614447345,
+    "contribution": 0.004641717435451121,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-22T17:02:13.942898-06:00",
-  "window_end_inclusive": "2026-10-20T17:02:13.942898-06:00",
-  "event_objects": 5,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-07-23T17:01:48.060370-06:00",
+  "window_end_inclusive": "2026-10-21T17:01:48.060370-06:00",
+  "event_objects": 7,
+  "distinct_accessions": 6,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 3,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 4
   },
-  "largest_type_share": 0.6,
+  "largest_type_share": 0.5714285714285714,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -325,21 +345,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABT in the declared corpus",
-  "returned": 15,
-  "total_available": 15,
+  "returned": 17,
+  "total_available": 17,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T17:55:24-07:00",
-  "newest_returned_available_as_of": "2026-08-27T15:15:58.746227-06:00",
-  "build_id": "why-2026-10-20T230213",
+  "newest_returned_available_as_of": "2026-10-21T07:19:51-06:00",
+  "build_id": "why-2026-10-21T230148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-20T17:02:13.942898-06:00",
+  "corpus_end": "2026-10-21T17:01:48.060370-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-20T230213",
+ "build_id": "why-2026-10-21T230148",
  "corrections": [
   {
    "original": {
@@ -368,6 +388,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-21",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-20",
    "label": "NEUTRAL"
@@ -482,10 +506,6 @@
   },
   {
    "date": "2026-09-10",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-09",
    "label": "WATCH"
   }
  ],

@@ -1,34 +1,54 @@
 {
  "ticker": "MU",
- "generated": "2026-10-20T23:02:13.900029+00:00",
- "label": "NEGATIVE_EVENT",
- "score": -0.215,
+ "generated": "2026-10-21T23:01:48.029200+00:00",
+ "label": "WATCH",
+ "score": 0.0112,
  "threshold_band": {
-  "floor": -0.4,
-  "ceiling": -0.2
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.5895,
+  "c1": -0.624,
   "c2": 0.0,
-  "c3": -0.66563016,
+  "c3": 0.8343835,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.4189011,
-  "c7": 0.17240225,
+  "c6": -0.42306194,
+  "c7": 0.375234,
   "c8": 0.0,
   "c9": -0.53333336
  },
  "evidence_coverage": {
-  "ecs": 90,
-  "events_90d": 96,
-  "recency_days": 4.9,
+  "ecs": 93,
+  "events_90d": 98,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-20T23:02:05.083796+00:00",
-  "source_sha256": "0eb685835f6465f5f380bfe9dd2e03f66377e7aafbadaa424c9d2fd929dec04f",
+  "as_of": "2026-10-21T23:01:39.385818+00:00",
+  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MU",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-20",
+   "accession_number": "0001568238-26-000003",
+   "excerpt": "Deboer Scott J S 100 shares @ $901.00 on 2026-10-16 ($90,100)",
+   "source_hash": "c87f591e537534f755fa1bc673ca3672b661ba2f30ed84f9865b7d45ae0b6b4c",
+   "available_as_of": "2026-10-20T17:08:27.789836-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MU",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-20",
+   "accession_number": "0001568238-26-000003",
+   "excerpt": "Deboer Scott J S 28444 shares @ $900.00 on 2026-10-16 ($25,599,600)",
+   "source_hash": "1084ae73e1ca7bcaec21b2d49ca8274acc26c46d5c7b978447c7dd04ec366abf",
+   "available_as_of": "2026-10-20T17:08:27.789836-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MU",
    "evidence_type": "INSIDER_SELL",
@@ -1008,26 +1028,6 @@
    "source_hash": "f5fcf969c419e3af7407a5202bc7735ecce0d21c3f7fa689966680ccce8da217",
    "available_as_of": "2026-07-16T01:26:50.142146-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "MU",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-06-02",
-   "accession_number": "0001242654-26-000009",
-   "excerpt": "MEHROTRA SANJAY S 789 shares @ $951.20 on 2026-05-29 ($750,497)",
-   "source_hash": "f24c19006e4ca8b832eca17f33a19c9a90b12cc37714401e2fce36aa39023ceb",
-   "available_as_of": "2026-07-16T01:26:50.142146-06:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "MU",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-06-02",
-   "accession_number": "0001242654-26-000009",
-   "excerpt": "MEHROTRA SANJAY S 2267 shares @ $966.65 on 2026-05-29 ($2,191,396)",
-   "source_hash": "cbfa8deae9b39a3363e052367616d78dff1b27e328bc837ce047b195c581d31d",
-   "available_as_of": "2026-07-16T01:26:50.142146-06:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.21499664533950288,
-  "stored_score": -0.215,
+  "reconstructed_score": 0.011202263509397556,
+  "stored_score": 0.0112,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.5894999999999999,
+    "score": -0.624,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.09011464968152864,
+    "contribution": -0.09538853503184713,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.665630163228358,
+    "score": 0.8343834772127924,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.09044656145778113,
+    "contribution": 0.11337694807137731,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.4189010713744195,
+    "score": -0.4230619304901189,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.10672638761131707,
+    "contribution": -0.10778647910576278,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.1724022525162574,
+    "score": 0.3752339951184937,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.02440230042692957,
+    "contribution": 0.05311167659143577,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,17 +1151,17 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-22T17:02:14.486411-06:00",
-  "window_end_inclusive": "2026-10-20T17:02:14.486411-06:00",
-  "event_objects": 96,
-  "distinct_accessions": 9,
+  "window_start_exclusive": "2026-07-23T17:01:48.568186-06:00",
+  "window_end_inclusive": "2026-10-21T17:01:48.568186-06:00",
+  "event_objects": 98,
+  "distinct_accessions": 10,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 93,
+   "INSIDER_SELL": 95,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.96875,
+  "largest_type_share": 0.9693877551020408,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1170,22 +1170,26 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MU in the declared corpus",
   "returned": 100,
-  "total_available": 262,
+  "total_available": 264,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:26:50.142146-06:00",
-  "newest_returned_available_as_of": "2026-10-15T18:15:21.320998-06:00",
-  "build_id": "why-2026-10-20T230213",
+  "newest_returned_available_as_of": "2026-10-20T17:08:27.789836-06:00",
+  "build_id": "why-2026-10-21T230148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-20T17:02:14.486411-06:00",
+  "corpus_end": "2026-10-21T17:01:48.568186-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MU.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-20T230213",
+ "build_id": "why-2026-10-21T230148",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-21",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-20",
    "label": "NEGATIVE_EVENT"
@@ -1301,10 +1305,6 @@
   {
    "date": "2026-09-10",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-09",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
