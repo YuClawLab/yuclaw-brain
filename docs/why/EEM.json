@@ -1,14 +1,14 @@
 {
  "ticker": "EEM",
- "generated": "2026-10-21T23:01:48.029200+00:00",
- "label": "WATCH",
- "score": 0.0362,
+ "generated": "2026-10-22T23:01:08.608546+00:00",
+ "label": "WEAKENING",
+ "score": -0.0167,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.382,
+  "c1": -0.534,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -24,8 +24,8 @@
   "recency_days": null,
   "substrate_active": 0,
   "type_diversity": 0,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [],
@@ -34,20 +34,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3105,
-  "reconstructed_score": 0.03621256038647343,
-  "stored_score": 0.0362,
+  "reconstructed_score": -0.01665700483091785,
+  "stored_score": -0.0167,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.38199999999999995,
+    "score": -0.5339999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.34782608695652173,
-    "contribution": -0.1328695652173913,
+    "contribution": -0.18573913043478257,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -150,8 +150,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.309443-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.309443-06:00",
+  "window_start_exclusive": "2026-07-24T17:01:08.923742-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:08.923742-06:00",
   "event_objects": 0,
   "distinct_accessions": 0,
   "objects_without_accession": 0,
@@ -170,17 +170,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": null,
   "newest_returned_available_as_of": null,
-  "build_id": "why-2026-10-21T230148",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.309443-06:00",
+  "corpus_end": "2026-10-22T17:01:08.923742-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/EEM.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-21",
    "label": "WATCH"
@@ -295,10 +299,6 @@
   },
   {
    "date": "2026-09-11",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-10",
    "label": "NEUTRAL"
   }
  ],

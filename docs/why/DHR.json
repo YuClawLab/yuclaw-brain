@@ -1,31 +1,31 @@
 {
  "ticker": "DHR",
- "generated": "2026-10-21T23:01:48.029200+00:00",
- "label": "WATCH",
- "score": 0.1677,
+ "generated": "2026-10-22T23:01:08.608546+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2846,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.4175,
+  "c1": 0.196,
   "c2": 0.0,
-  "c3": -0.5061905,
+  "c3": 0.40947956,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.15180975,
+  "c7": 0.2002914,
   "c8": 0.0,
-  "c9": 0.2631579
+  "c9": 0.3
  },
  "evidence_coverage": {
-  "ecs": 84,
+  "ecs": 83,
   "events_90d": 7,
-  "recency_days": 1.1,
+  "recency_days": 2.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -154,21 +154,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6051666666666666,
-  "reconstructed_score": 0.1677389562673735,
-  "stored_score": 0.1677,
+  "denominator": 0.6078333333333333,
+  "reconstructed_score": 0.2846293018772598,
+  "stored_score": 0.2846,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.4174999999999999,
+    "score": 0.19599999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1784632332690719,
-    "contribution": 0.07450839988983751,
+    "effective_weight": 0.17768028516588977,
+    "contribution": 0.03482533589251439,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -185,14 +185,14 @@
    },
    {
     "id": "c3",
-    "score": -0.5061904518115891,
+    "score": 0.4094795574432378,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1586339851280639,
-    "contribution": -0.08029900860464756,
+    "effective_weight": 0.1579380312585687,
+    "contribution": 0.06467239514321496,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -203,8 +203,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2106857614982099,
-    "contribution": 0.12641145689892594,
+    "effective_weight": 0.20976144776528655,
+    "contribution": 0.12585686865917192,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -215,7 +215,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.024786560176259985,
+    "effective_weight": 0.024677817384151358,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -227,20 +227,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1784632332690719,
+    "effective_weight": 0.17768028516588977,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.1518097507505141,
+    "score": 0.2002913980984361,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1652437345083999,
-    "contribution": 0.025085610148804314,
+    "effective_weight": 0.16451878256100905,
+    "contribution": 0.03295169697259711,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -257,22 +257,22 @@
    },
    {
     "id": "c9",
-    "score": 0.26315789473684204,
-    "confidence": 0.6333333333333333,
+    "score": 0.30000000000000004,
+    "confidence": 0.6666666666666666,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.050666666666666665,
-    "effective_weight": 0.08372349215092262,
-    "contribution": 0.022032497934453315,
+    "weight_times_confidence": 0.05333333333333333,
+    "effective_weight": 0.08774335069920482,
+    "contribution": 0.026323005209761448,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.289208-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.289208-06:00",
+  "window_start_exclusive": "2026-07-24T17:01:08.899553-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:08.899553-06:00",
   "event_objects": 7,
   "distinct_accessions": 5,
   "objects_without_accession": 0,
@@ -294,15 +294,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
   "newest_returned_available_as_of": "2026-10-20T15:43:14-06:00",
-  "build_id": "why-2026-10-21T230148",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.289208-06:00",
+  "corpus_end": "2026-10-22T17:01:08.899553-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DHR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [
   {
    "original": {
@@ -406,6 +406,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-21",
    "label": "WATCH"
@@ -521,10 +525,6 @@
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

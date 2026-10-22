@@ -1,31 +1,31 @@
 {
  "ticker": "TMO",
- "generated": "2026-10-21T23:01:48.029200+00:00",
+ "generated": "2026-10-22T23:01:08.608546+00:00",
  "label": "NEUTRAL",
- "score": 0.2026,
+ "score": 0.3481,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.2675,
+  "c1": 0.137,
   "c2": 0.0,
-  "c3": -0.5061905,
+  "c3": 0.40947956,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.16578335,
+  "c7": 0.20557857,
   "c8": 0.0,
-  "c9": 0.5833333
+  "c9": 0.6
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 68,
-  "recency_days": 0.5,
+  "recency_days": 1.5,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1034,21 +1034,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5465,
-  "reconstructed_score": 0.20257526942925524,
-  "stored_score": 0.2026,
+  "denominator": 0.5491666666666667,
+  "reconstructed_score": 0.34809813796359773,
+  "stored_score": 0.3481,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.26749999999999996,
+    "score": 0.13699999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19762122598353157,
-    "contribution": 0.05286367795059469,
+    "effective_weight": 0.19666160849772382,
+    "contribution": 0.02694264036418816,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.5061904518115891,
+    "score": 0.4094795574432378,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1756633119853614,
-    "contribution": -0.08891909126059021,
+    "effective_weight": 0.1748103186646434,
+    "contribution": 0.07158125192330954,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1083,8 +1083,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2333028362305581,
-    "contribution": 0.13998170173833485,
+    "effective_weight": 0.2321699544764795,
+    "contribution": 0.1393019726858877,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -1095,7 +1095,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027447392497712716,
+    "effective_weight": 0.02731411229135053,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -1107,20 +1107,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.06587374199451052,
+    "effective_weight": 0.06555386949924126,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.1657833478366721,
+    "score": 0.205578565837916,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18298261665141813,
-    "contribution": 0.03033547078438648,
+    "effective_weight": 0.18209408194233687,
+    "contribution": 0.037434640213277574,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,22 +1137,22 @@
    },
    {
     "id": "c9",
-    "score": 0.5833333333333333,
-    "confidence": 0.8,
+    "score": 0.6000000000000001,
+    "confidence": 0.8333333333333334,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.064,
-    "effective_weight": 0.1171088746569076,
-    "contribution": 0.06831351021652943,
+    "weight_times_confidence": 0.06666666666666667,
+    "effective_weight": 0.12139605462822457,
+    "contribution": 0.07283763277693475,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.722821-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.722821-06:00",
+  "window_start_exclusive": "2026-07-24T17:01:09.430155-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:09.430155-06:00",
   "event_objects": 68,
   "distinct_accessions": 12,
   "objects_without_accession": 0,
@@ -1174,17 +1174,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:53:11-07:00",
   "newest_returned_available_as_of": "2026-10-21T04:03:16-06:00",
-  "build_id": "why-2026-10-21T230148",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.722821-06:00",
+  "corpus_end": "2026-10-22T17:01:09.430155-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/TMO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-21",
    "label": "NEUTRAL"
@@ -1300,10 +1304,6 @@
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

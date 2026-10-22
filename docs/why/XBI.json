@@ -1,16 +1,16 @@
 {
  "ticker": "XBI",
- "generated": "2026-10-21T23:01:48.029200+00:00",
+ "generated": "2026-10-22T23:01:08.608546+00:00",
  "label": "WEAKENING",
- "score": -0.0379,
+ "score": -0.0259,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.172,
+  "c1": -0.316,
   "c2": 0.0,
-  "c3": -0.38294905,
+  "c3": -0.16761272,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
@@ -24,8 +24,8 @@
   "recency_days": null,
   "substrate_active": 0,
   "type_diversity": 0,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [],
@@ -34,20 +34,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.4265,
-  "reconstructed_score": -0.03791897564317781,
-  "stored_score": -0.0379,
+  "reconstructed_score": -0.02591360862445931,
+  "stored_score": -0.0259,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.172,
+    "score": -0.316,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.2532239155920281,
-    "contribution": -0.04355451348182883,
+    "contribution": -0.08001875732708089,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -64,14 +64,14 @@
    },
    {
     "id": "c3",
-    "score": -0.38294906019252084,
+    "score": -0.167612716093735,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.2250879249706917,
-    "contribution": -0.08619720932821102,
+    "contribution": -0.03772759846424047,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -150,8 +150,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.825032-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.825032-06:00",
+  "window_start_exclusive": "2026-07-24T17:01:09.546195-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:09.546195-06:00",
   "event_objects": 0,
   "distinct_accessions": 0,
   "objects_without_accession": 0,
@@ -170,17 +170,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": null,
   "newest_returned_available_as_of": null,
-  "build_id": "why-2026-10-21T230148",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.825032-06:00",
+  "corpus_end": "2026-10-22T17:01:09.546195-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/XBI.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-21",
    "label": "WEAKENING"
@@ -296,10 +300,6 @@
   {
    "date": "2026-09-11",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-10",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

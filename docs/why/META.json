@@ -1,34 +1,44 @@
 {
  "ticker": "META",
- "generated": "2026-10-21T23:01:48.029200+00:00",
- "label": "NEUTRAL",
- "score": 0.2505,
+ "generated": "2026-10-22T23:01:08.608546+00:00",
+ "label": "WATCH",
+ "score": 0.0241,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.295,
+  "c1": -0.5955,
   "c2": 0.0,
-  "c3": 0.8343835,
+  "c3": -0.72256505,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": 0.2082266,
-  "c7": 0.39540994,
+  "c6": 0.14326434,
+  "c7": 0.6332967,
   "c8": 0.0,
-  "c9": 0.0
+  "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 94,
-  "events_90d": 77,
-  "recency_days": 0.0,
+  "ecs": 93,
+  "events_90d": 78,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "META",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0001628280-26-066773",
+   "excerpt": "0001326801 us-gaap:CommonStockIncludingAdditionalPaidInCapitalMember 2026-09-30 0001326801 us-gaap:AccumulatedOtherComprehensiveIncomeMember 2026-09-30 0001326801 us-gaap:RetainedEarningsMember 2026-09-30",
+   "source_hash": "675914925dc7c92defbb95196d1e06a3a5b059c114fffeca6eac1dfa52fdde14",
+   "available_as_of": "2026-10-21T18:00:08-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "META",
    "evidence_type": "INSIDER_SELL",
@@ -1018,16 +1028,6 @@
    "source_hash": "1bbe433fdcf0158c812e1595cebf0153c4ec373897d16dc1ca0512bade1224f8",
    "available_as_of": "2026-07-16T01:25:41.475152-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "META",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-05-29",
-   "accession_number": "0000950103-26-008089",
-   "excerpt": "Mahoney Curtis J. S 2079 shares @ $609.92 on 2026-05-27 ($1,268,024)",
-   "source_hash": "4dba3391f21972826d5e5bcae753f454508364448e2d5f5471d390ba0b5d92a2",
-   "available_as_of": "2026-07-16T01:25:40.871396-06:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.2505039406005764,
-  "stored_score": 0.2505,
+  "reconstructed_score": 0.024086521477279292,
+  "stored_score": 0.0241,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.295,
+    "score": -0.5954999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": -0.0438540949759119,
+    "contribution": -0.08852580867171368,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8343834772127924,
+    "score": -0.7225650673204961,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.11025576574319074,
+    "contribution": -0.09548003642500706,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": 0.2082266018037749,
+    "score": 0.14326434486443335,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": 0.05159089927691601,
+    "contribution": 0.03549563947088506,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.3954099505882909,
+    "score": 0.6332967325669757,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.054426696570996684,
+    "contribution": 0.08717091983027883,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,31 +1137,31 @@
    },
    {
     "id": "c9",
-    "score": 0.0,
+    "score": 0.06666666666666665,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11011699931176876,
-    "contribution": 0.0,
+    "contribution": 0.007341133287451249,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.502142-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.502142-06:00",
-  "event_objects": 77,
-  "distinct_accessions": 24,
+  "window_start_exclusive": "2026-07-24T17:01:09.163825-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:09.163825-06:00",
+  "event_objects": 78,
+  "distinct_accessions": 25,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 74,
    "M_AND_A_ANNOUNCE": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.961038961038961,
+  "largest_type_share": 0.9487179487179487,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1170,20 +1170,20 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for META in the declared corpus",
   "returned": 100,
-  "total_available": 200,
+  "total_available": 201,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "oldest_returned_available_as_of": "2026-07-16T01:25:40.871396-06:00",
-  "newest_returned_available_as_of": "2026-10-21T16:10:46.696618-06:00",
-  "build_id": "why-2026-10-21T230148",
+  "oldest_returned_available_as_of": "2026-07-16T01:25:41.475152-06:00",
+  "newest_returned_available_as_of": "2026-10-21T18:00:08-06:00",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.502142-06:00",
+  "corpus_end": "2026-10-22T17:01:09.163825-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/META.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [
   {
    "original": {
@@ -1212,6 +1212,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-21",
    "label": "NEUTRAL"
@@ -1327,10 +1331,6 @@
   {
    "date": "2026-09-11",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-10",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

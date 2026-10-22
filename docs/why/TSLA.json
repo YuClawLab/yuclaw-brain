@@ -1,34 +1,44 @@
 {
  "ticker": "TSLA",
- "generated": "2026-10-21T23:01:48.029200+00:00",
- "label": "WATCH",
- "score": 0.1995,
+ "generated": "2026-10-22T23:01:08.608546+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2562,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.149,
+  "c1": -0.057,
   "c2": 0.0,
-  "c3": -0.13698865,
+  "c3": -0.08239092,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.42576948,
+  "c6": 0.78841776,
   "c7": 0.0,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 72,
-  "events_90d": 3,
-  "recency_days": 0.1,
+  "ecs": 74,
+  "events_90d": 4,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-21T23:01:39.385818+00:00",
-  "source_sha256": "d0f480a2d3165c91e1b9549bc28a227ce30f7a37634835495da3810fa80b4c15",
+  "as_of": "2026-10-22T23:01:00.040593+00:00",
+  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "TSLA",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-21",
+   "accession_number": "0001628280-26-066775",
+   "excerpt": "0001318605 tsla:AutomotiveRevenuesMember 2026-07-01 2026-09-30 0001318605 tsla:AutomotiveRevenuesMember 2025-07-01 2025-09-30",
+   "source_hash": "5ce08f5df2f1920d0a68207f279374e22ae2603baef01f07ac2a7184e5adddaa",
+   "available_as_of": "2026-10-21T18:12:41-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "TSLA",
    "evidence_type": "OTHER_MATERIAL",
@@ -494,21 +504,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4985,
-  "reconstructed_score": 0.19945802248386635,
-  "stored_score": 0.1995,
+  "denominator": 0.5345,
+  "reconstructed_score": 0.25615888657152486,
+  "stored_score": 0.2562,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.149,
+    "score": -0.05699999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.21664994984954863,
-    "contribution": 0.032280842527582745,
+    "effective_weight": 0.20205799812909261,
+    "contribution": -0.011517305893358276,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -525,14 +535,14 @@
    },
    {
     "id": "c3",
-    "score": -0.13698865598048932,
+    "score": -0.08239092001064453,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1925777331995988,
-    "contribution": -0.0263809648427823,
+    "effective_weight": 0.17960710944808234,
+    "contribution": -0.01479799498788003,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -543,8 +553,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.25576730190571717,
-    "contribution": 0.1534603811434303,
+    "effective_weight": 0.23854069223573435,
+    "contribution": 0.1431244153414406,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -555,20 +565,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.03009027081243731,
+    "effective_weight": 0.02806361085126286,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.42576947012501404,
-    "confidence": 0.4,
+    "score": 0.7884177764830423,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.14443329989969908,
-    "contribution": 0.06149528956670212,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.20205799812909261,
+    "contribution": 0.15930611760555394,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -603,24 +613,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.160481444332999,
-    "contribution": -0.02139752591106653,
+    "effective_weight": 0.1496725912067353,
+    "contribution": -0.019956345494231368,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-23T17:01:48.737573-06:00",
-  "window_end_inclusive": "2026-10-21T17:01:48.737573-06:00",
-  "event_objects": 3,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-07-24T17:01:09.445311-06:00",
+  "window_end_inclusive": "2026-10-22T17:01:09.445311-06:00",
+  "event_objects": 4,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 0.75,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -628,23 +638,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for TSLA in the declared corpus",
-  "returned": 46,
-  "total_available": 46,
+  "returned": 47,
+  "total_available": 47,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T17:00:21-07:00",
-  "newest_returned_available_as_of": "2026-10-21T14:41:42-06:00",
-  "build_id": "why-2026-10-21T230148",
+  "newest_returned_available_as_of": "2026-10-21T18:12:41-06:00",
+  "build_id": "why-2026-10-22T230108",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-21T17:01:48.737573-06:00",
+  "corpus_end": "2026-10-22T17:01:09.445311-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/TSLA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-21T230148",
+ "build_id": "why-2026-10-22T230108",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-22",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-21",
    "label": "WATCH"
@@ -759,10 +773,6 @@
   },
   {
    "date": "2026-09-11",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-10",
    "label": "NEUTRAL"
   }
  ],
