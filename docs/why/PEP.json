@@ -1,34 +1,44 @@
 {
  "ticker": "PEP",
- "generated": "2026-10-22T23:01:08.608546+00:00",
- "label": "BULLISH",
- "score": 0.4688,
+ "generated": "2026-10-23T23:01:04.308011+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2109,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.291,
+  "c1": 0.2145,
   "c2": 0.0,
-  "c3": 0.76840377,
+  "c3": -0.64419335,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.46211717,
-  "c7": 0.60984004,
+  "c6": 0.30384508,
+  "c7": 0.5111855,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 89,
-  "events_90d": 8,
-  "recency_days": 6.1,
+  "ecs": 94,
+  "events_90d": 9,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-22T23:01:00.040593+00:00",
-  "source_sha256": "d2584fe94b84f470fdb0a855c6e9926dfaeb56d452d6c22596c20223da8dbc4c",
+  "as_of": "2026-10-23T23:00:55.787235+00:00",
+  "source_sha256": "b08f8203977fd40488e916fb57022990fc1b6766bb2c82bd257bca409e77b98e",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PEP",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-23",
+   "accession_number": "0001630253-26-000007",
+   "excerpt": "Laguarta Ramon S 30000 shares @ $135.13 on 2026-10-21 ($4,053,891)",
+   "source_hash": "ba1fc5b2156051a5fdaa320a206986c84f1a408e99b03e6aa2bffcd80226db43",
+   "available_as_of": "2026-10-23T14:04:09.356981-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PEP",
    "evidence_type": "OTHER_MATERIAL",
@@ -165,20 +175,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.46878017205621014,
-  "stored_score": 0.4688,
+  "reconstructed_score": 0.210852706763974,
+  "stored_score": 0.2109,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.291,
+    "score": 0.2145,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": 0.044484076433121016,
+    "contribution": 0.032789808917197454,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -195,14 +205,14 @@
    },
    {
     "id": "c3",
-    "score": 0.7684037975067456,
+    "score": -0.6441933426964508,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.10441155634911192,
+    "contribution": -0.0875337026169275,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -231,26 +241,26 @@
    },
    {
     "id": "c6",
-    "score": 0.46211715726000974,
+    "score": 0.30384507916515185,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": 0.11773685535286872,
+    "contribution": 0.07741275902296862,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6098400535692982,
+    "score": 0.5111855064454626,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.08631847891992897,
+    "contribution": 0.07235463643955592,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -281,17 +291,17 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-24T17:01:09.274062-06:00",
-  "window_end_inclusive": "2026-10-22T17:01:09.274062-06:00",
-  "event_objects": 8,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-07-25T17:01:04.920380-06:00",
+  "window_end_inclusive": "2026-10-23T17:01:04.920380-06:00",
+  "event_objects": 9,
+  "distinct_accessions": 7,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_BUY": 3,
-   "INSIDER_SELL": 1,
+   "INSIDER_SELL": 2,
    "OTHER_MATERIAL": 4
   },
-  "largest_type_share": 0.5,
+  "largest_type_share": 0.4444444444444444,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -299,21 +309,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PEP in the declared corpus",
-  "returned": 13,
-  "total_available": 13,
+  "returned": 14,
+  "total_available": 14,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T14:20:32-07:00",
-  "newest_returned_available_as_of": "2026-10-16T14:30:20-06:00",
-  "build_id": "why-2026-10-22T230108",
+  "newest_returned_available_as_of": "2026-10-23T14:04:09.356981-06:00",
+  "build_id": "why-2026-10-23T230104",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-22T17:01:09.274062-06:00",
+  "corpus_end": "2026-10-23T17:01:04.920380-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PEP.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-22T230108",
+ "build_id": "why-2026-10-23T230104",
  "corrections": [
   {
    "original": {
@@ -392,6 +402,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-23",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-22",
    "label": "BULLISH"
@@ -507,10 +521,6 @@
   {
    "date": "2026-09-14",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-11",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
