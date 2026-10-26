@@ -1,34 +1,44 @@
 {
  "ticker": "DELL",
- "generated": "2026-10-23T23:01:04.308011+00:00",
+ "generated": "2026-10-26T23:01:12.772149+00:00",
  "label": "WATCH",
- "score": 0.0056,
+ "score": 0.0428,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.8495,
+  "c1": -0.643,
   "c2": 0.0,
-  "c3": 0.54586583,
+  "c3": 0.68011105,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.6066048,
+  "c7": 0.5706457,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 98,
-  "events_90d": 693,
-  "recency_days": 2.1,
+  "ecs": 100,
+  "events_90d": 694,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-23T23:00:55.787235+00:00",
-  "source_sha256": "b08f8203977fd40488e916fb57022990fc1b6766bb2c82bd257bca409e77b98e",
+  "as_of": "2026-10-26T23:01:04.799793+00:00",
+  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DELL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-26",
+   "accession_number": "0001662205-26-000021",
+   "excerpt": "Radakovich Lynn Vojvodich S 2022 shares @ $460.00 on 2026-10-22 ($930,120)",
+   "source_hash": "e4eecda7b471e0cf762ed9387469b3fa252678d2cc10be63a349322bf583d50d",
+   "available_as_of": "2026-10-26T14:10:28.274708-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DELL",
    "evidence_type": "EXEC_CHANGE",
@@ -1018,16 +1028,6 @@
    "source_hash": "92b5623b909e44e6fb24154a59440fd40b3ddfa8f0fd41ac4b3cefc8884f2241",
    "available_as_of": "2026-09-24T14:13:48.197609-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "DELL",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-09-22",
-   "accession_number": "0001193125-26-397994",
-   "excerpt": "Silver Lake Partners IV, L.P. S 3949 shares @ $569.40 on 2026-09-21 ($2,248,561)",
-   "source_hash": "b115adcdfd923175f6719fde7fe5ca88ce02651a6fd07c379d42e7815b03b971",
-   "available_as_of": "2026-09-22T14:35:03.727576-06:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.005619039036716721,
-  "stored_score": 0.0056,
+  "reconstructed_score": 0.04278858829072592,
+  "stored_score": 0.0428,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.8494999999999999,
+    "score": -0.6429999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.12985987261146495,
+    "contribution": -0.09829299363057323,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5458658583745926,
+    "score": 0.680111025221486,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.0741728554903905,
+    "contribution": 0.09241423697277093,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1113,14 +1113,14 @@
    },
    {
     "id": "c7",
-    "score": 0.6066048364894788,
+    "score": 0.5706456751293694,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.08586055718180875,
+    "contribution": 0.08077079619665525,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,32 +1137,32 @@
    },
    {
     "id": "c9",
-    "score": -0.1333333333333333,
+    "score": -0.19999999999999996,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11323425336164189,
-    "contribution": -0.015097900448218916,
+    "contribution": -0.022646850672328373,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-25T17:01:04.545089-06:00",
-  "window_end_inclusive": "2026-10-23T17:01:04.545089-06:00",
-  "event_objects": 693,
-  "distinct_accessions": 67,
+  "window_start_exclusive": "2026-07-28T17:01:12.987529-06:00",
+  "window_end_inclusive": "2026-10-26T17:01:12.987529-06:00",
+  "event_objects": 694,
+  "distinct_accessions": 68,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 688,
+   "INSIDER_SELL": 689,
    "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.9927849927849928,
+  "largest_type_share": 0.9927953890489913,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1171,22 +1171,26 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DELL in the declared corpus",
   "returned": 100,
-  "total_available": 1852,
+  "total_available": 1853,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "oldest_returned_available_as_of": "2026-09-22T14:35:03.727576-06:00",
-  "newest_returned_available_as_of": "2026-10-21T14:37:17-06:00",
-  "build_id": "why-2026-10-23T230104",
+  "oldest_returned_available_as_of": "2026-09-24T14:13:48.197609-06:00",
+  "newest_returned_available_as_of": "2026-10-26T14:10:28.274708-06:00",
+  "build_id": "why-2026-10-26T230112",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-23T17:01:04.545089-06:00",
+  "corpus_end": "2026-10-26T17:01:12.987529-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-23T230104",
+ "build_id": "why-2026-10-26T230112",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-26",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-23",
    "label": "WATCH"
@@ -1302,10 +1306,6 @@
   {
    "date": "2026-09-15",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-14",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

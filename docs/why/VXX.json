@@ -1,14 +1,14 @@
 {
  "ticker": "VXX",
- "generated": "2026-10-23T23:01:04.308011+00:00",
+ "generated": "2026-10-26T23:01:12.772149+00:00",
  "label": "NEUTRAL",
- "score": 0.3143,
+ "score": 0.3029,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.3515,
+  "c1": 0.2105,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,13 +19,13 @@
   "c9": 0.09090909
  },
  "evidence_coverage": {
-  "ecs": 44,
+  "ecs": 43,
   "events_90d": 1,
-  "recency_days": 29.3,
+  "recency_days": 32.3,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-10-23T23:00:55.787235+00:00",
-  "source_sha256": "b08f8203977fd40488e916fb57022990fc1b6766bb2c82bd257bca409e77b98e",
+  "as_of": "2026-10-26T23:01:04.799793+00:00",
+  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -54,21 +54,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.38116666666666665,
-  "reconstructed_score": 0.31428596414516835,
-  "stored_score": 0.3143,
+  "denominator": 0.3451666666666667,
+  "reconstructed_score": 0.3029473684210526,
+  "stored_score": 0.3029,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.3515,
+    "score": 0.2105,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.28334062090074336,
-    "contribution": 0.09959422824661128,
+    "effective_weight": 0.312892322549493,
+    "contribution": 0.06586383389666828,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -91,7 +91,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.0944468736335811,
+    "effective_weight": 0.10429744084983099,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -103,8 +103,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.3344993441189331,
-    "contribution": 0.20069960647135987,
+    "effective_weight": 0.36938676967648476,
+    "contribution": 0.22163206180589085,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -115,19 +115,19 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.03935286401399213,
+    "effective_weight": 0.04345726702076291,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.2,
+    "confidence": 0.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.0944468736335811,
+    "weight_times_confidence": 0.0,
+    "effective_weight": 0.0,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -163,16 +163,16 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.058666666666666666,
-    "effective_weight": 0.15391342369916922,
-    "contribution": 0.01399212942719719,
+    "effective_weight": 0.1699661999034283,
+    "contribution": 0.015451472718493467,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-25T17:01:05.136717-06:00",
-  "window_end_inclusive": "2026-10-23T17:01:05.136717-06:00",
+  "window_start_exclusive": "2026-07-28T17:01:13.555288-06:00",
+  "window_end_inclusive": "2026-10-26T17:01:13.555288-06:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -193,17 +193,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-06-05T11:59:27-06:00",
   "newest_returned_available_as_of": "2026-09-24T09:23:42-06:00",
-  "build_id": "why-2026-10-23T230104",
+  "build_id": "why-2026-10-26T230112",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-23T17:01:05.136717-06:00",
+  "corpus_end": "2026-10-26T17:01:13.555288-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/VXX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-23T230104",
+ "build_id": "why-2026-10-26T230112",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-26",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-23",
    "label": "NEUTRAL"
@@ -318,10 +322,6 @@
   },
   {
    "date": "2026-09-15",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-14",
    "label": "WATCH"
   }
  ],

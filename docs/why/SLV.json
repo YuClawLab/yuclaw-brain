@@ -1,14 +1,14 @@
 {
  "ticker": "SLV",
- "generated": "2026-10-23T23:01:04.308011+00:00",
+ "generated": "2026-10-26T23:01:12.772149+00:00",
  "label": "WEAKENING",
- "score": -0.045,
+ "score": -0.0349,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.8115,
+  "c1": -0.7775,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 36,
   "events_90d": 1,
-  "recency_days": 79.1,
+  "recency_days": 82.1,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-10-23T23:00:55.787235+00:00",
-  "source_sha256": "b08f8203977fd40488e916fb57022990fc1b6766bb2c82bd257bca409e77b98e",
+  "as_of": "2026-10-26T23:01:04.799793+00:00",
+  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -45,20 +45,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3665,
-  "reconstructed_score": -0.044953160527512484,
-  "stored_score": -0.045,
+  "reconstructed_score": -0.03493406093678943,
+  "stored_score": -0.0349,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.8115,
+    "score": -0.7775,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.2946793997271487,
-    "contribution": -0.23913233287858116,
+    "contribution": -0.2291132332878581,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -161,8 +161,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-25T17:01:05.025851-06:00",
-  "window_end_inclusive": "2026-10-23T17:01:05.025851-06:00",
+  "window_start_exclusive": "2026-07-28T17:01:13.449815-06:00",
+  "window_end_inclusive": "2026-10-26T17:01:13.449815-06:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -183,17 +183,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-05T13:38:33-06:00",
   "newest_returned_available_as_of": "2026-08-05T13:38:33-06:00",
-  "build_id": "why-2026-10-23T230104",
+  "build_id": "why-2026-10-26T230112",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-23T17:01:05.025851-06:00",
+  "corpus_end": "2026-10-26T17:01:13.449815-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-23T230104",
+ "build_id": "why-2026-10-26T230112",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-26",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-23",
    "label": "WEAKENING"
@@ -308,10 +312,6 @@
   },
   {
    "date": "2026-09-15",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-14",
    "label": "WATCH"
   }
  ],

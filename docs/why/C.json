@@ -1,34 +1,44 @@
 {
  "ticker": "C",
- "generated": "2026-10-23T23:01:04.308011+00:00",
+ "generated": "2026-10-26T23:01:12.772149+00:00",
  "label": "WATCH",
- "score": 0.0364,
+ "score": 0.0711,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.4285,
+  "c1": -0.4185,
   "c2": 0.0,
-  "c3": -0.3996405,
+  "c3": -0.20930508,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.031682793,
+  "c7": -0.01786691,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 47,
-  "events_90d": 2,
-  "recency_days": 29.3,
+  "ecs": 66,
+  "events_90d": 3,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-10-23T23:00:55.787235+00:00",
-  "source_sha256": "b08f8203977fd40488e916fb57022990fc1b6766bb2c82bd257bca409e77b98e",
+  "as_of": "2026-10-26T23:01:04.799793+00:00",
+  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "C",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-26",
+   "accession_number": "0001193125-26-431962",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "0bc42ac45ad6fec83ddfef85acf8464fbed45ad8297ea7d4d543e1d379d22fa6",
+   "available_as_of": "2026-10-26T14:16:09-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "C",
    "evidence_type": "OTHER_MATERIAL",
@@ -105,20 +115,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5975,
-  "reconstructed_score": 0.036380692588502656,
-  "stored_score": 0.0364,
+  "reconstructed_score": 0.07108159498730994,
+  "stored_score": 0.0711,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.4285,
+    "score": -0.4185,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1807531380753138,
-    "contribution": -0.07745271966527195,
+    "contribution": -0.07564518828451881,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -135,14 +145,14 @@
    },
    {
     "id": "c3",
-    "score": -0.39964049924457873,
+    "score": -0.20930507481055535,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1606694560669456,
-    "contribution": -0.06421002163594905,
+    "contribution": -0.03362893252186329,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -183,14 +193,14 @@
    },
    {
     "id": "c7",
-    "score": -0.03168279343488263,
+    "score": -0.017866909058671554,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.16736401673640167,
-    "contribution": -0.005302559570691654,
+    "contribution": -0.0029902776667232725,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -221,13 +231,13 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-25T17:01:04.472123-06:00",
-  "window_end_inclusive": "2026-10-23T17:01:04.472123-06:00",
-  "event_objects": 2,
-  "distinct_accessions": 2,
+  "window_start_exclusive": "2026-07-28T17:01:12.917980-06:00",
+  "window_end_inclusive": "2026-10-26T17:01:12.917980-06:00",
+  "event_objects": 3,
+  "distinct_accessions": 3,
   "objects_without_accession": 0,
   "by_event_type": {
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
   "largest_type_share": 1.0,
   "independent_information_count": null,
@@ -237,21 +247,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for C in the declared corpus",
-  "returned": 7,
-  "total_available": 7,
+  "returned": 8,
+  "total_available": 8,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-24T14:09:46-07:00",
-  "newest_returned_available_as_of": "2026-09-24T10:06:47-06:00",
-  "build_id": "why-2026-10-23T230104",
+  "newest_returned_available_as_of": "2026-10-26T14:16:09-06:00",
+  "build_id": "why-2026-10-26T230112",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-23T17:01:04.472123-06:00",
+  "corpus_end": "2026-10-26T17:01:12.917980-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/C.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-23T230104",
+ "build_id": "why-2026-10-26T230112",
  "corrections": [
   {
    "original": {
@@ -280,6 +290,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-26",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-23",
    "label": "WATCH"
@@ -394,10 +408,6 @@
   },
   {
    "date": "2026-09-15",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-14",
    "label": "NEUTRAL"
   }
  ],
