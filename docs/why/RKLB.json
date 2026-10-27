@@ -1,8 +1,8 @@
 {
  "ticker": "RKLB",
- "generated": "2026-10-26T23:01:12.772149+00:00",
+ "generated": "2026-10-27T23:01:25.288612+00:00",
  "label": "WEAKENING",
- "score": -0.1088,
+ "score": -0.1083,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -13,7 +13,7 @@
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.018923145,
+  "c6": -0.017139498,
   "c7": 0.0,
   "c8": 0.0,
   "c9": -0.26666668
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 79,
   "events_90d": 21,
-  "recency_days": 12.1,
+  "recency_days": 13.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-26T23:01:04.799793+00:00",
-  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
+  "as_of": "2026-10-27T23:01:16.645031+00:00",
+  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,8 +1035,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5105,
-  "reconstructed_score": -0.10883107987862649,
-  "stored_score": -0.1088,
+  "reconstructed_score": -0.10832795505481159,
+  "stored_score": -0.1083,
   "missing_components": [],
   "components": [
    {
@@ -1101,14 +1101,14 @@
    },
    {
     "id": "c6",
-    "score": -0.01892314544934361,
+    "score": -0.017139498070472037,
     "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.144,
     "effective_weight": 0.2820763956904995,
-    "contribution": -0.005337772663477924,
+    "contribution": -0.004834647839663023,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,8 +1151,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-28T17:01:13.422640-06:00",
-  "window_end_inclusive": "2026-10-26T17:01:13.422640-06:00",
+  "window_start_exclusive": "2026-07-29T17:01:25.957415-06:00",
+  "window_end_inclusive": "2026-10-27T17:01:25.957415-06:00",
   "event_objects": 21,
   "distinct_accessions": 14,
   "objects_without_accession": 0,
@@ -1174,15 +1174,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-30T15:33:45-06:00",
   "newest_returned_available_as_of": "2026-10-14T14:41:32-06:00",
-  "build_id": "why-2026-10-26T230112",
+  "build_id": "why-2026-10-27T230125",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-26T17:01:13.422640-06:00",
+  "corpus_end": "2026-10-27T17:01:25.957415-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/RKLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-26T230112",
+ "build_id": "why-2026-10-27T230125",
  "corrections": [
   {
    "original": {
@@ -1211,6 +1211,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-27",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-26",
    "label": "WEAKENING"
@@ -1325,10 +1329,6 @@
   },
   {
    "date": "2026-09-16",
-   "label": "NEGATIVE_EVENT"
-  },
-  {
-   "date": "2026-09-15",
    "label": "NEGATIVE_EVENT"
   }
  ],

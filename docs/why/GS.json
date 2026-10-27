@@ -1,34 +1,64 @@
 {
  "ticker": "GS",
- "generated": "2026-10-26T23:01:12.772149+00:00",
- "label": "WATCH",
- "score": 0.0922,
+ "generated": "2026-10-27T23:01:25.288612+00:00",
+ "label": "WEAKENING",
+ "score": -0.0384,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1625,
+  "c1": -0.1265,
   "c2": 0.0,
-  "c3": -0.20930508,
+  "c3": -0.36148012,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.043968495,
-  "c7": -0.0010205744,
+  "c6": -0.46211717,
+  "c7": 0.02672832,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
   "ecs": 94,
-  "events_90d": 13,
+  "events_90d": 16,
   "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-26T23:01:04.799793+00:00",
-  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
+  "as_of": "2026-10-27T23:01:16.645031+00:00",
+  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GS",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-27",
+   "accession_number": "0001693709-26-000011",
+   "excerpt": "SOLOMON DAVID M S 437 shares @ $912.11 on 2026-10-27 ($398,592)",
+   "source_hash": "f4d4893d7868803fce084c4c89bf37ff8f2111a0ce427c1cc8a1255976dc7f4f",
+   "available_as_of": "2026-10-27T15:15:01.149251-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "GS",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-27",
+   "accession_number": "0001693709-26-000011",
+   "excerpt": "SOLOMON DAVID M S 9181 shares @ $910.46 on 2026-10-27 ($8,358,933)",
+   "source_hash": "d0b3bd56b4f3927a3377aeac4c9257721a47d1aae207fc762212712847dd1272",
+   "available_as_of": "2026-10-27T15:15:01.149251-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "GS",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-27",
+   "accession_number": "0001693709-26-000011",
+   "excerpt": "SOLOMON DAVID M S 2382 shares @ $911.49 on 2026-10-27 ($2,171,169)",
+   "source_hash": "b478eaa3dccb118752a326a076cb5c21ab20ba3ab9b998250e8bb4e7d32eebfe",
+   "available_as_of": "2026-10-27T15:15:01.149251-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GS",
    "evidence_type": "INSIDER_SELL",
@@ -494,21 +524,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6401666666666667,
-  "reconstructed_score": 0.09224986555902413,
-  "stored_score": 0.0922,
+  "denominator": 0.7121666666666666,
+  "reconstructed_score": -0.03836618343292475,
+  "stored_score": -0.0384,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.1625,
+    "score": -0.1265,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16870606612861233,
-    "contribution": -0.027414735745899504,
+    "effective_weight": 0.15164989468757314,
+    "contribution": -0.019183711677978003,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -525,14 +555,14 @@
    },
    {
     "id": "c3",
-    "score": -0.20930507481055535,
+    "score": -0.3614801225696086,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14996094766987764,
-    "contribution": -0.031387587370705516,
+    "effective_weight": 0.13479990638895392,
+    "contribution": -0.04872748668385083,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -543,8 +573,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19916688362405624,
-    "contribution": 0.11950013017443374,
+    "effective_weight": 0.17903112567282942,
+    "contribution": 0.10741867540369765,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -555,32 +585,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.07810466024472794,
-    "contribution": 0.0432948155572999,
+    "effective_weight": 0.07020828457758016,
+    "contribution": 0.03891771274411161,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.043968495755829555,
-    "confidence": 0.6,
+    "score": -0.46211715726000974,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.16870606612861233,
-    "contribution": -0.007417751952558591,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.25274982447928857,
+    "contribution": -0.11680003038633525,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0010205743378663176,
+    "score": 0.026728320127381234,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.15620932048945588,
-    "contribution": -0.00015942322382707383,
+    "effective_weight": 0.14041656915516032,
+    "contribution": 0.0037530990115676906,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -603,25 +633,25 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.050666666666666665,
-    "effective_weight": 0.07914605571465765,
-    "contribution": -0.004165581879718828,
+    "effective_weight": 0.07114439503861456,
+    "contribution": -0.003744441844137612,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-28T17:01:13.076063-06:00",
-  "window_end_inclusive": "2026-10-26T17:01:13.076063-06:00",
-  "event_objects": 13,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-07-29T17:01:25.614956-06:00",
+  "window_end_inclusive": "2026-10-27T17:01:25.614956-06:00",
+  "event_objects": 16,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_BUY": 2,
-   "INSIDER_SELL": 8,
+   "INSIDER_SELL": 11,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.6153846153846154,
+  "largest_type_share": 0.6875,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -629,21 +659,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GS in the declared corpus",
-  "returned": 46,
-  "total_available": 46,
+  "returned": 49,
+  "total_available": 49,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-09T19:58:33-06:00",
-  "newest_returned_available_as_of": "2026-10-26T14:10:34.931725-06:00",
-  "build_id": "why-2026-10-26T230112",
+  "newest_returned_available_as_of": "2026-10-27T15:15:01.149251-06:00",
+  "build_id": "why-2026-10-27T230125",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-26T17:01:13.076063-06:00",
+  "corpus_end": "2026-10-27T17:01:25.614956-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GS.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-26T230112",
+ "build_id": "why-2026-10-27T230125",
  "corrections": [
   {
    "original": {
@@ -697,6 +727,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-27",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-26",
    "label": "WATCH"
@@ -811,10 +845,6 @@
   },
   {
    "date": "2026-09-16",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-15",
    "label": "WATCH"
   }
  ],

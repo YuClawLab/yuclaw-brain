@@ -1,8 +1,8 @@
 {
  "ticker": "INTC",
- "generated": "2026-10-26T23:01:12.772149+00:00",
+ "generated": "2026-10-27T23:01:25.288612+00:00",
  "label": "WATCH",
- "score": 0.1118,
+ "score": 0.0691,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -10,22 +10,22 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.68011105,
+  "c3": 0.5220862,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.51717675,
+  "c7": 0.44431618,
   "c8": 0.0,
   "c9": -0.33333334
  },
  "evidence_coverage": {
   "ecs": 46,
   "events_90d": 2,
-  "recency_days": 73.1,
+  "recency_days": 74.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-26T23:01:04.799793+00:00",
-  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
+  "as_of": "2026-10-27T23:01:16.645031+00:00",
+  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -145,8 +145,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5265,
-  "reconstructed_score": 0.11176004926674522,
-  "stored_score": 0.1118,
+  "reconstructed_score": 0.06910774334417787,
+  "stored_score": 0.0691,
   "missing_components": [],
   "components": [
    {
@@ -175,14 +175,14 @@
    },
    {
     "id": "c3",
-    "score": 0.680111025221486,
+    "score": 0.5220862006495761,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.18233618233618235,
-    "contribution": 0.12400884790363279,
+    "contribution": 0.0951952046768458,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -223,14 +223,14 @@
    },
    {
     "id": "c7",
-    "score": 0.5171767418434537,
+    "score": 0.4443161827501701,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1899335232668566,
-    "contribution": 0.09822920073000072,
+    "contribution": 0.08439053803422035,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -261,8 +261,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-28T17:01:13.117014-06:00",
-  "window_end_inclusive": "2026-10-26T17:01:13.117014-06:00",
+  "window_start_exclusive": "2026-07-29T17:01:25.657712-06:00",
+  "window_end_inclusive": "2026-10-27T17:01:25.657712-06:00",
   "event_objects": 2,
   "distinct_accessions": 2,
   "objects_without_accession": 0,
@@ -291,15 +291,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T10:50:37-06:00",
   "newest_returned_available_as_of": "2026-08-14T14:33:47.880102-06:00",
-  "build_id": "why-2026-10-26T230112",
+  "build_id": "why-2026-10-27T230125",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-26T17:01:13.117014-06:00",
+  "corpus_end": "2026-10-27T17:01:25.657712-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/INTC.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-26T230112",
+ "build_id": "why-2026-10-27T230125",
  "corrections": [
   {
    "original": {
@@ -353,6 +353,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-27",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-26",
    "label": "WATCH"
@@ -468,10 +472,6 @@
   {
    "date": "2026-09-16",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-15",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

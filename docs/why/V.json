@@ -1,34 +1,44 @@
 {
  "ticker": "V",
- "generated": "2026-10-26T23:01:12.772149+00:00",
+ "generated": "2026-10-27T23:01:25.288612+00:00",
  "label": "WATCH",
- "score": 0.1496,
+ "score": 0.1091,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4915,
+  "c1": 0.4695,
   "c2": 0.0,
-  "c3": -0.20930508,
+  "c3": -0.36148012,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.038686894,
-  "c7": -0.041916206,
+  "c6": -0.03504276,
+  "c7": -0.045201324,
   "c8": 0.0,
   "c9": -0.30769232
  },
  "evidence_coverage": {
-  "ecs": 74,
-  "events_90d": 9,
-  "recency_days": 24.1,
+  "ecs": 87,
+  "events_90d": 10,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-26T23:01:04.799793+00:00",
-  "source_sha256": "948ed6ac81df047a6093d8dc97f2d33b5011c08b383fab3357b8981da4048e5a",
+  "as_of": "2026-10-27T23:01:16.645031+00:00",
+  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "V",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-27",
+   "accession_number": "0001403161-26-000126",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 &#160; &#160; FORM 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "3aa13b24d203223d69275004042e748e3ad159e64303aa0b8f2a4f2d14860bda",
+   "available_as_of": "2026-10-27T14:05:22-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "V",
    "evidence_type": "INSIDER_SELL",
@@ -244,21 +254,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5518333333333334,
-  "reconstructed_score": 0.14963037834164739,
-  "stored_score": 0.1496,
+  "denominator": 0.5878333333333333,
+  "reconstructed_score": 0.10909106436548686,
+  "stored_score": 0.1091,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.4915,
+    "score": 0.46950000000000003,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19571126547870732,
-    "contribution": 0.09619208698278464,
+    "effective_weight": 0.1837255457896229,
+    "contribution": 0.08625914374822796,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -275,14 +285,14 @@
    },
    {
     "id": "c3",
-    "score": -0.20930507481055535,
+    "score": -0.3614801225696086,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17396556931440652,
-    "contribution": -0.03641187649981271,
+    "effective_weight": 0.1633115962574426,
+    "contribution": -0.05903389583217878,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -293,8 +303,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.23104802174569614,
-    "contribution": 0.13862881304741767,
+    "effective_weight": 0.21689821377941595,
+    "contribution": 0.13013892826764956,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -305,32 +315,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027182120205376015,
+    "effective_weight": 0.025517436915225403,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.03868689526175447,
-    "confidence": 0.2,
+    "score": -0.035042757787921146,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06523708849290244,
-    "contribution": -0.0025238204097067247,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12248369719308193,
+    "contribution": -0.004292166533706247,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0419162080723109,
+    "score": -0.04520132336408556,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18121413470250677,
-    "contribution": -0.007595809375834049,
+    "effective_weight": 0.1701162461015027,
+    "contribution": -0.007689479449518383,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -353,24 +363,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.1256418000604047,
-    "contribution": -0.03865901540320145,
+    "effective_weight": 0.11794726396370855,
+    "contribution": -0.03629146583498725,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-28T17:01:13.534128-06:00",
-  "window_end_inclusive": "2026-10-26T17:01:13.534128-06:00",
-  "event_objects": 9,
-  "distinct_accessions": 8,
+  "window_start_exclusive": "2026-07-29T17:01:26.072463-06:00",
+  "window_end_inclusive": "2026-10-27T17:01:26.072463-06:00",
+  "event_objects": 10,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 8,
-   "OTHER_MATERIAL": 1
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.8888888888888888,
+  "largest_type_share": 0.8,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -378,22 +388,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 21,
-  "total_available": 21,
+  "returned": 22,
+  "total_available": 22,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-10-02T14:11:57.879140-06:00",
-  "build_id": "why-2026-10-26T230112",
+  "newest_returned_available_as_of": "2026-10-27T14:05:22-06:00",
+  "build_id": "why-2026-10-27T230125",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-26T17:01:13.534128-06:00",
+  "corpus_end": "2026-10-27T17:01:26.072463-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/V.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-26T230112",
+ "build_id": "why-2026-10-27T230125",
  "corrections": [
+  {
+   "original": {
+    "ticker": "V",
+    "accession_number": "0001403161-26-000103",
+    "source_hash": "3aa13b24d203223d69275004042e748e3ad159e64303aa0b8f2a4f2d14860bda",
+    "excerpt_sha256": "b254b2bf94298c806755ba9da4984743a353ba0042fa6a080b53cd752678900c"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-3aa13b24d203223d",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 28, 2026 VISA INC.",
+   "corrected_sha256": "7fc9eac7a952f92c740aca1e3ac8ad52b049289f2c491999888a6e3752ce7dec",
+   "source_location": {
+    "accession_number": "0001403161-26-000103",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1403161/000140316126000103/v-20260728.htm",
+    "char_offset": 434,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "V",
@@ -522,6 +557,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-10-27",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-10-26",
    "label": "WATCH"
   },
@@ -635,10 +674,6 @@
   },
   {
    "date": "2026-09-16",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-15",
    "label": "WEAKENING"
   }
  ],
