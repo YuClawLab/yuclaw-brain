@@ -1,34 +1,64 @@
 {
  "ticker": "MSFT",
- "generated": "2026-10-27T23:01:25.288612+00:00",
- "label": "WATCH",
- "score": 0.1264,
+ "generated": "2026-10-28T23:01:34.019151+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3458,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.147,
+  "c1": 0.214,
   "c2": 0.0,
-  "c3": 0.5220862,
+  "c3": 0.3520969,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.21575406,
-  "c7": -0.113402724,
+  "c6": 0.8410246,
+  "c7": -0.08436714,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 79,
-  "events_90d": 20,
-  "recency_days": 13.0,
+  "ecs": 100,
+  "events_90d": 23,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-10-27T23:01:16.645031+00:00",
-  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
+  "type_diversity": 4,
+  "as_of": "2026-10-28T23:01:25.365091+00:00",
+  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MSFT",
+   "evidence_type": "M_AND_A_ANNOUNCE",
+   "filing_date": "2026-10-28",
+   "accession_number": "0001193125-26-436149",
+   "excerpt": "msft:ActivisionBlizzardIncMember us-gaap:TechnologyBasedIntangibleAssetsMember 2023-10-13 2023-10-13",
+   "source_hash": "d090b9985a6ae25bfd0370b8a6d455c1162921a037a3e15ce9ddf980fa326525",
+   "available_as_of": "2026-10-28T14:11:03-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MSFT",
+   "evidence_type": "BUYBACK_ANNOUNCE",
+   "filing_date": "2026-10-28",
+   "accession_number": "0001193125-26-436133",
+   "excerpt": "0000789019 msft:ShareRepurchaseProgramTwentyTwentyFourMember 2025-07-01 2025-09-30",
+   "source_hash": "91e1e2d70691e6d7a98db6eefb2bf033a0929dd59fb0780bd38af027b843c831",
+   "available_as_of": "2026-10-28T14:07:39-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MSFT",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-28",
+   "accession_number": "0001193125-26-436122",
+   "excerpt": "Item 2.02. Results of Operations and Financial Condition On October 28, 2",
+   "source_hash": "aeb14743359232b0363d02c7d5c27af800df6bcb94c9eb54e6a1b46283ec96af",
+   "available_as_of": "2026-10-28T14:04:44-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MSFT",
    "evidence_type": "INSIDER_SELL",
@@ -334,21 +364,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6545,
-  "reconstructed_score": 0.126432003092499,
-  "stored_score": 0.1264,
+  "denominator": 0.7265,
+  "reconstructed_score": 0.3458447286598539,
+  "stored_score": 0.3458,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.147,
+    "score": 0.21400000000000002,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1650114591291062,
-    "contribution": 0.02425668449197861,
+    "effective_weight": 0.1486579490708878,
+    "contribution": 0.03181280110117,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -365,14 +395,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5220862006495761,
+    "score": 0.3520968750746152,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1466768525592055,
-    "contribution": 0.07657796067587366,
+    "effective_weight": 0.1321403991741225,
+    "contribution": 0.046526221620320794,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -383,8 +413,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19480519480519481,
-    "contribution": 0.11688311688311688,
+    "effective_weight": 0.17549896765313144,
+    "contribution": 0.10529938059187886,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -395,32 +425,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.053475935828877004,
-    "contribution": -0.03020853223776604,
+    "effective_weight": 0.04817618719889882,
+    "contribution": -0.02721470660649397,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.21575406683622425,
-    "confidence": 0.6,
+    "score": 0.8410245933496747,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1650114591291062,
-    "contribution": -0.03560189338168406,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.24776324845147968,
+    "contribution": 0.20837498527590012,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.11340272337055288,
+    "score": -0.08436713755769462,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.15278838808250575,
-    "contribution": -0.017326619307953078,
+    "effective_weight": 0.13764624913971094,
+    "contribution": -0.011612820035470697,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -443,24 +473,26 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.12223071046600459,
-    "contribution": -0.008148714031066972,
+    "effective_weight": 0.11011699931176876,
+    "contribution": -0.007341133287451249,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-29T17:01:25.844405-06:00",
-  "window_end_inclusive": "2026-10-27T17:01:25.844405-06:00",
-  "event_objects": 20,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-07-30T17:01:34.549304-06:00",
+  "window_end_inclusive": "2026-10-28T17:01:34.549304-06:00",
+  "event_objects": 23,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
+   "BUYBACK_ANNOUNCE": 1,
    "INSIDER_SELL": 19,
-   "OTHER_MATERIAL": 1
+   "M_AND_A_ANNOUNCE": 1,
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.95,
+  "largest_type_share": 0.8260869565217391,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -468,23 +500,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MSFT in the declared corpus",
-  "returned": 30,
-  "total_available": 30,
+  "returned": 33,
+  "total_available": 33,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
-  "newest_returned_available_as_of": "2026-10-14T16:10:10.391884-06:00",
-  "build_id": "why-2026-10-27T230125",
+  "newest_returned_available_as_of": "2026-10-28T14:11:03-06:00",
+  "build_id": "why-2026-10-28T230134",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-27T17:01:25.844405-06:00",
+  "corpus_end": "2026-10-28T17:01:34.549304-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-27T230125",
+ "build_id": "why-2026-10-28T230134",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-28",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-27",
    "label": "WATCH"
@@ -599,10 +635,6 @@
   },
   {
    "date": "2026-09-17",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-16",
    "label": "WATCH"
   }
  ],

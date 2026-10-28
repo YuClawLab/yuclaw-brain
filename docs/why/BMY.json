@@ -1,31 +1,31 @@
 {
  "ticker": "BMY",
- "generated": "2026-10-27T23:01:25.288612+00:00",
+ "generated": "2026-10-28T23:01:34.019151+00:00",
  "label": "WATCH",
- "score": 0.068,
+ "score": 0.0867,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.104,
+  "c1": -0.259,
   "c2": 0.0,
-  "c3": -0.27596942,
+  "c3": -0.009378697,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.051382955,
+  "c7": -0.047408603,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 52,
-  "events_90d": 3,
-  "recency_days": 47.1,
+  "ecs": 39,
+  "events_90d": 1,
+  "recency_days": 48.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-10-27T23:01:16.645031+00:00",
-  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
+  "type_diversity": 1,
+  "as_of": "2026-10-28T23:01:25.365091+00:00",
+  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -85,20 +85,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.4945,
-  "reconstructed_score": 0.068021515641268,
-  "stored_score": 0.068,
+  "reconstructed_score": 0.08672757295583824,
+  "stored_score": 0.0867,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.104,
+    "score": -0.25899999999999995,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.21840242669362994,
-    "contribution": -0.022713852376137513,
+    "contribution": -0.056566228513650146,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -115,14 +115,14 @@
    },
    {
     "id": "c3",
-    "score": -0.27596942598400476,
+    "score": -0.009378696894395102,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.19413549039433772,
-    "contribution": -0.05357545984724865,
+    "contribution": -0.0018207379208532454,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -163,14 +163,14 @@
    },
    {
     "id": "c7",
-    "score": -0.051382956209285145,
+    "score": -0.047408602714760634,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.20222446916076847,
-    "contribution": -0.0103908910433337,
+    "contribution": -0.009587179517646236,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -201,16 +201,15 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-29T17:01:25.432179-06:00",
-  "window_end_inclusive": "2026-10-27T17:01:25.432179-06:00",
-  "event_objects": 3,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-07-30T17:01:34.147150-06:00",
+  "window_end_inclusive": "2026-10-28T17:01:34.147150-06:00",
+  "event_objects": 1,
+  "distinct_accessions": 1,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 2
+   "INSIDER_SELL": 1
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 1.0,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -224,15 +223,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-02T14:29:24-06:00",
   "newest_returned_available_as_of": "2026-09-10T14:41:30.839281-06:00",
-  "build_id": "why-2026-10-27T230125",
+  "build_id": "why-2026-10-28T230134",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-27T17:01:25.432179-06:00",
+  "corpus_end": "2026-10-28T17:01:34.147150-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/BMY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-27T230125",
+ "build_id": "why-2026-10-28T230134",
  "corrections": [
   {
    "original": {
@@ -261,6 +260,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-28",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-27",
    "label": "WATCH"
@@ -375,10 +378,6 @@
   },
   {
    "date": "2026-09-17",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-16",
    "label": "WATCH"
   }
  ],

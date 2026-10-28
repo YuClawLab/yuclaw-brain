@@ -1,34 +1,44 @@
 {
  "ticker": "GOOGL",
- "generated": "2026-10-27T23:01:25.288612+00:00",
+ "generated": "2026-10-28T23:01:34.019151+00:00",
  "label": "WEAKENING",
- "score": -0.0337,
+ "score": -0.0311,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.3395,
+  "c1": -0.2605,
   "c2": 0.0,
-  "c3": -0.36578214,
+  "c3": -0.50962317,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.0
+  "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 49,
-  "events_90d": 3,
-  "recency_days": 78.3,
+  "ecs": 62,
+  "events_90d": 2,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-10-27T23:01:16.645031+00:00",
-  "source_sha256": "d4c178be917996a9f5c472ad15773f2dca9421fe7fff6af593d588a3347960ec",
+  "type_diversity": 1,
+  "as_of": "2026-10-28T23:01:25.365091+00:00",
+  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GOOGL",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-28",
+   "accession_number": "0001652044-26-000080",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+   "available_as_of": "2026-10-28T14:01:33-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GOOGL",
    "evidence_type": "OTHER_MATERIAL",
@@ -744,21 +754,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4465,
-  "reconstructed_score": -0.033712363281988275,
-  "stored_score": -0.0337,
+  "denominator": 0.4825,
+  "reconstructed_score": -0.031079747520739484,
+  "stored_score": -0.0311,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.33949999999999997,
+    "score": -0.2605,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.24188129899216124,
-    "contribution": -0.08211870100783873,
+    "effective_weight": 0.22383419689119172,
+    "contribution": -0.058308808290155445,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -775,14 +785,14 @@
    },
    {
     "id": "c3",
-    "score": -0.3657821443311448,
+    "score": -0.509623199609086,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.21500559910414332,
-    "contribution": -0.07864520908351601,
+    "effective_weight": 0.1989637305699482,
+    "contribution": -0.10139653297921712,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -793,8 +803,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2855543113101904,
-    "contribution": 0.1713325867861142,
+    "effective_weight": 0.26424870466321243,
+    "contribution": 0.15854922279792746,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -805,19 +815,19 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.07838745800671891,
-    "contribution": -0.044281039976747746,
+    "effective_weight": 0.07253886010362694,
+    "contribution": -0.040977169636513724,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.0,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.07461139896373056,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -847,30 +857,29 @@
    },
    {
     "id": "c9",
-    "score": 0.0,
+    "score": 0.06666666666666665,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1791713325867861,
-    "contribution": 0.0,
+    "effective_weight": 0.16580310880829016,
+    "contribution": 0.011053540587219341,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-29T17:01:25.600713-06:00",
-  "window_end_inclusive": "2026-10-27T17:01:25.600713-06:00",
-  "event_objects": 3,
+  "window_start_exclusive": "2026-07-30T17:01:34.303471-06:00",
+  "window_end_inclusive": "2026-10-28T17:01:34.303471-06:00",
+  "event_objects": 2,
   "distinct_accessions": 2,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 2,
-   "OTHER_MATERIAL": 1
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 1.0,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -878,22 +887,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GOOGL in the declared corpus",
-  "returned": 71,
-  "total_available": 71,
+  "returned": 72,
+  "total_available": 72,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T18:48:14-07:00",
-  "newest_returned_available_as_of": "2026-08-10T10:10:48-06:00",
-  "build_id": "why-2026-10-27T230125",
+  "newest_returned_available_as_of": "2026-10-28T14:01:33-06:00",
+  "build_id": "why-2026-10-28T230134",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-27T17:01:25.600713-06:00",
+  "corpus_end": "2026-10-28T17:01:34.303471-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GOOGL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-27T230125",
+ "build_id": "why-2026-10-28T230134",
  "corrections": [
+  {
+   "original": {
+    "ticker": "GOOGL",
+    "accession_number": "0001652044-26-000059",
+    "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+    "excerpt_sha256": "5498fa7da7243d3f509cf17d15560a7acbede520c85b8f484a07e57f0a6f2ceb"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-dc69265b191a2f44",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported) June 2, 2026 ___________________________________________________________",
+   "corrected_sha256": "241ba0a6fcc1c826488a0400ccf29596a90b3ca693d3fb1ae3e76416bb538ad0",
+   "source_location": {
+    "accession_number": "0001652044-26-000059",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000059/goog-20260602.htm",
+    "char_offset": 1839,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "GOOGL",
@@ -946,6 +980,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-28",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-27",
    "label": "WEAKENING"
@@ -1061,10 +1099,6 @@
   {
    "date": "2026-09-17",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-16",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

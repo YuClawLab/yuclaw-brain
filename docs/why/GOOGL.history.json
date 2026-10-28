@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "GOOGL",
- "build_id": "why-2026-10-27T230125",
- "generated": "2026-10-27T23:01:25.288612+00:00",
+ "build_id": "why-2026-10-28T230134",
+ "generated": "2026-10-28T23:01:34.019151+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GOOGL in the declared corpus",
-  "returned": 71,
-  "total_available": 71,
+  "returned": 72,
+  "total_available": 72,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-02-19T18:48:14-07:00",
-  "newest_returned_available_as_of": "2026-08-10T10:10:48-06:00",
-  "build_id": "why-2026-10-27T230125",
+  "newest_returned_available_as_of": "2026-10-28T14:01:33-06:00",
+  "build_id": "why-2026-10-28T230134",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-27T17:01:25.600713-06:00",
+  "corpus_end": "2026-10-28T17:01:34.303471-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -728,9 +728,44 @@
    "source_hash": "bef1d8e78c08299ff202bbde37c56a5ff76484217fc5bf1d3cf043ac7cbea2c1",
    "available_as_of": "2026-08-10T10:10:48-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "GOOGL",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-28",
+   "accession_number": "0001652044-26-000080",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section&#160;13 or 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+   "available_as_of": "2026-10-28T14:01:33-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
+  {
+   "original": {
+    "ticker": "GOOGL",
+    "accession_number": "0001652044-26-000059",
+    "source_hash": "dc69265b191a2f44a1760861e4fc817ac01b0c972978ca2ed182182f4cad3244",
+    "excerpt_sha256": "5498fa7da7243d3f509cf17d15560a7acbede520c85b8f484a07e57f0a6f2ceb"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-dc69265b191a2f44",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _________________________________________________ FORM 8-K _____________________________________________________________ CURRENT REPORT Pursuant to Section 13 or 15(d) of The Securities Exchange Act of 1934 Date of Report (Date of earliest event reported) June 2, 2026 ___________________________________________________________",
+   "corrected_sha256": "241ba0a6fcc1c826488a0400ccf29596a90b3ca693d3fb1ae3e76416bb538ad0",
+   "source_location": {
+    "accession_number": "0001652044-26-000059",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000059/goog-20260602.htm",
+    "char_offset": 1839,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "GOOGL",
