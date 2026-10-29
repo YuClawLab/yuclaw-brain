@@ -1,34 +1,54 @@
 {
  "ticker": "BMY",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "WATCH",
- "score": 0.0867,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "NEUTRAL",
+ "score": 0.308,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.259,
+  "c1": -0.117,
   "c2": 0.0,
-  "c3": -0.009378697,
+  "c3": 0.744145,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": -0.047408603,
+  "c6": 0.60272443,
+  "c7": -0.04213906,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 39,
-  "events_90d": 1,
-  "recency_days": 48.1,
+  "ecs": 72,
+  "events_90d": 3,
+  "recency_days": 0.3,
   "substrate_active": 1,
-  "type_diversity": 1,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "type_diversity": 2,
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "BMY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000014272-26-000024",
+   "excerpt": "bmy:NetProductSalesMember 2026-07-01 2026-09-30 0000014272 bmy:NetProductSalesMember 2025-07-01 2025-09-30",
+   "source_hash": "d04a66b2001159f0ccdc20a3aab33ef6af7a8cdf3f24b7b6904bf75bee21a762",
+   "available_as_of": "2026-10-29T09:16:34-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "BMY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000014272-26-000022",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; _____________________________ FORM 8-K _____________________________ CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "c89c7ef9801b6829b58d8dcdd0d3830ee6e088230612e028b684e702dfb602ec",
+   "available_as_of": "2026-10-29T05:05:52-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "BMY",
    "evidence_type": "INSIDER_SELL",
@@ -84,21 +104,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4945,
-  "reconstructed_score": 0.08672757295583824,
-  "stored_score": 0.0867,
+  "denominator": 0.5665,
+  "reconstructed_score": 0.3080038337037562,
+  "stored_score": 0.308,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.25899999999999995,
+    "score": -0.11699999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.21840242669362994,
-    "contribution": -0.056566228513650146,
+    "effective_weight": 0.1906443071491615,
+    "contribution": -0.022305383936451893,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -115,14 +135,14 @@
    },
    {
     "id": "c3",
-    "score": -0.009378696894395102,
+    "score": 0.7441449874084796,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.19413549039433772,
-    "contribution": -0.0018207379208532454,
+    "effective_weight": 0.16946160635481025,
+    "contribution": 0.12610400492712098,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -133,8 +153,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.25783619817997977,
-    "contribution": 0.15470171890798787,
+    "effective_weight": 0.22506619593998234,
+    "contribution": 0.1350397175639894,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -145,32 +165,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.030333670374115267,
+    "effective_weight": 0.026478375992939097,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
+    "score": 0.6027244335678521,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12709620476610767,
+    "contribution": 0.076603988026276,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.047408602714760634,
+    "score": -0.04213906214921482,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.20222446916076847,
-    "contribution": -0.009587179517646236,
+    "effective_weight": 0.176522506619594,
+    "contribution": -0.007438492877178256,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -193,7 +213,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.048,
-    "effective_weight": 0.09706774519716886,
+    "effective_weight": 0.08473080317740513,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    }
@@ -201,15 +221,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.147150-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.147150-06:00",
-  "event_objects": 1,
-  "distinct_accessions": 1,
+  "window_start_exclusive": "2026-07-31T17:01:43.155801-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.155801-06:00",
+  "event_objects": 3,
+  "distinct_accessions": 3,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 1
+   "INSIDER_SELL": 1,
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 1.0,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -217,22 +238,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for BMY in the declared corpus",
-  "returned": 5,
-  "total_available": 5,
+  "returned": 7,
+  "total_available": 7,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-02T14:29:24-06:00",
-  "newest_returned_available_as_of": "2026-09-10T14:41:30.839281-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T09:16:34-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.147150-06:00",
+  "corpus_end": "2026-10-29T17:01:43.155801-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/BMY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
+  {
+   "original": {
+    "ticker": "BMY",
+    "accession_number": "0000014272-26-000018",
+    "source_hash": "c89c7ef9801b6829b58d8dcdd0d3830ee6e088230612e028b684e702dfb602ec",
+    "excerpt_sha256": "6e35aff588e8b17a784a5658df1b4c09a6d5aed1b048dbce24d9f254b339eb21"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-c89c7ef9801b6829",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________ FORM 8-K _____________________________ CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "corrected_sha256": "35478285f8f27dea1b5141b6cd1b25c02a796afbf328f6e0c271ccc18209680a",
+   "source_location": {
+    "accession_number": "0000014272-26-000018",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000018/bmy-20260730.htm",
+    "char_offset": 575,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "BMY",
@@ -260,6 +306,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-28",
    "label": "WATCH"
@@ -374,10 +424,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-17",
    "label": "WATCH"
   }
  ],

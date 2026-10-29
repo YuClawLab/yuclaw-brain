@@ -1,31 +1,31 @@
 {
  "ticker": "UNH",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "NEUTRAL",
- "score": 0.2537,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "BULLISH",
+ "score": 0.4513,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.4,
+  "ceiling": 0.55
  },
  "components": {
-  "c1": 0.3875,
+  "c1": 0.4795,
   "c2": 0.0,
-  "c3": -0.009378697,
+  "c3": 0.744145,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.080202274,
+  "c7": 0.2342497,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
   "ecs": 50,
   "events_90d": 3,
-  "recency_days": 64.1,
+  "recency_days": 65.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -85,20 +85,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.4945,
-  "reconstructed_score": 0.2537307842996742,
-  "stored_score": 0.2537,
+  "reconstructed_score": 0.4512616554006002,
+  "stored_score": 0.4513,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.38749999999999996,
+    "score": 0.4795,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.21840242669362994,
-    "contribution": 0.08463094034378159,
+    "contribution": 0.10472396359959556,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -115,14 +115,14 @@
    },
    {
     "id": "c3",
-    "score": -0.009378696894395102,
+    "score": 0.7441449874084796,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.19413549039433772,
-    "contribution": -0.0018207379208532454,
+    "contribution": 0.14446495205503346,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -163,14 +163,14 @@
    },
    {
     "id": "c7",
-    "score": 0.08020227738050842,
+    "score": 0.23424969804382748,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.20222446916076847,
-    "contribution": 0.016218862968758022,
+    "contribution": 0.047371020837983314,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -201,8 +201,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.747974-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.747974-06:00",
+  "window_start_exclusive": "2026-07-31T17:01:43.785263-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.785263-06:00",
   "event_objects": 3,
   "distinct_accessions": 3,
   "objects_without_accession": 0,
@@ -224,15 +224,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-27T14:50:58-06:00",
   "newest_returned_available_as_of": "2026-08-25T14:42:23.376493-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.747974-06:00",
+  "corpus_end": "2026-10-29T17:01:43.785263-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/UNH.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
   {
    "original": {
@@ -261,6 +261,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "BULLISH"
+  },
   {
    "date": "2026-10-28",
    "label": "NEUTRAL"
@@ -375,10 +379,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-17",
    "label": "WATCH"
   }
  ],

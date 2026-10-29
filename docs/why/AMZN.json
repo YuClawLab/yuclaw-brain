@@ -1,34 +1,44 @@
 {
  "ticker": "AMZN",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "NEUTRAL",
- "score": 0.2183,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "WATCH",
+ "score": 0.0932,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.1715,
+  "c1": -0.0585,
   "c2": 0.0,
-  "c3": 0.3520969,
+  "c3": -0.7808526,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.005097988,
-  "c7": -0.08378037,
+  "c6": -0.004617375,
+  "c7": 0.5585023,
   "c8": 0.0,
   "c9": 0.33333334
  },
  "evidence_coverage": {
-  "ecs": 74,
-  "events_90d": 29,
-  "recency_days": 23.1,
+  "ecs": 87,
+  "events_90d": 30,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AMZN",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0001018724-26-000038",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; _________________________&#160; FORM 8-K _________________________&#160; CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "4de04bf3aac81906412518d22f4556d362a7e1123b10a2d5f5b77cf07c33222b",
+   "available_as_of": "2026-10-29T14:05:27-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AMZN",
    "evidence_type": "INSIDER_SELL",
@@ -1018,37 +1028,27 @@
    "source_hash": "f4e17763404bdf50b9fbfc63d3aedfe71f8089b6fc078a65e6026a4ec27fcb9e",
    "available_as_of": "2026-02-18T16:16:06-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "AMZN",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-18",
-   "accession_number": "0001936006-26-000004",
-   "excerpt": "Herrington Douglas J S 732 shares @ $200.08 on 2026-02-17 ($146,459)",
-   "source_hash": "88eb2f862c82c2b7c87c604a95f7afc261d1d9e4031fcc42137c6b0edaa3f15a",
-   "available_as_of": "2026-02-18T16:16:06-07:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5825,
-  "reconstructed_score": 0.21829513713521714,
-  "stored_score": 0.2183,
+  "denominator": 0.6185,
+  "reconstructed_score": 0.09318206414256132,
+  "stored_score": 0.0932,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.1715,
+    "score": -0.05849999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1854077253218884,
-    "contribution": 0.03179742489270386,
+    "effective_weight": 0.17461600646725947,
+    "contribution": -0.010215036378334678,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.3520968750746152,
+    "score": -0.7808526412969437,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1648068669527897,
-    "contribution": 0.05802798284491512,
+    "effective_weight": 0.15521422797089732,
+    "contribution": -0.12119943987794111,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1083,8 +1083,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21888412017167383,
-    "contribution": 0.1313304721030043,
+    "effective_weight": 0.206143896523848,
+    "contribution": 0.1236863379143088,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -1095,32 +1095,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.06008583690987124,
-    "contribution": -0.033942462402777464,
+    "effective_weight": 0.05658852061438964,
+    "contribution": -0.03196682999129809,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.005097988208912342,
-    "confidence": 0.2,
+    "score": -0.004617374828620951,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06180257510729613,
-    "contribution": -0.00031506879917741505,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.11641067097817298,
+    "contribution": -0.0005375117019574913,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.08378037367427024,
+    "score": 0.5585022890729268,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.17167381974248927,
-    "contribution": -0.014382896768115064,
+    "effective_weight": 0.16168148746968472,
+    "contribution": 0.09029948085253464,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1143,24 +1143,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.13733905579399142,
-    "contribution": 0.0457796852646638,
+    "effective_weight": 0.12934518997574776,
+    "contribution": 0.043115063325249246,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.088988-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.088988-06:00",
-  "event_objects": 29,
-  "distinct_accessions": 13,
+  "window_start_exclusive": "2026-07-31T17:01:43.100691-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.100691-06:00",
+  "event_objects": 30,
+  "distinct_accessions": 14,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 27,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.9310344827586207,
+  "largest_type_share": 0.9,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1169,20 +1169,20 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMZN in the declared corpus",
   "returned": 100,
-  "total_available": 102,
+  "total_available": 103,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:16:06-07:00",
-  "newest_returned_available_as_of": "2026-10-05T14:10:22.395673-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T14:05:27-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.088988-06:00",
+  "corpus_end": "2026-10-29T17:01:43.100691-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMZN.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
   {
    "original": {
@@ -1236,6 +1236,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-28",
    "label": "NEUTRAL"
@@ -1350,10 +1354,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-17",
    "label": "WATCH"
   }
  ],

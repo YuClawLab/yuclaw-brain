@@ -1,31 +1,31 @@
 {
  "ticker": "HPE",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "WATCH",
- "score": 0.0242,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "WEAKENING",
+ "score": -0.098,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.1835,
+  "c1": -0.213,
   "c2": 0.0,
-  "c3": 0.3520969,
+  "c3": -0.7808526,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.4547096,
-  "c7": 0.3510858,
+  "c6": -0.41725805,
+  "c7": 0.5398082,
   "c8": 0.0,
   "c9": -0.33333334
  },
  "evidence_coverage": {
-  "ecs": 84,
+  "ecs": 83,
   "events_90d": 10,
-  "recency_days": 5.1,
+  "recency_days": 6.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -345,20 +345,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.024171959111133807,
-  "stored_score": 0.0242,
+  "reconstructed_score": -0.09802993154745616,
+  "stored_score": -0.098,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.18349999999999997,
+    "score": -0.213,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": -0.028050955414012733,
+    "contribution": -0.032560509554140124,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -375,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": 0.3520968750746152,
+    "score": -0.7808526412969437,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.04784331211204962,
+    "contribution": -0.10610311898727047,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -411,26 +411,26 @@
    },
    {
     "id": "c6",
-    "score": -0.4547095917053562,
+    "score": -0.41725805355586404,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.11584957750454934,
+    "contribution": -0.10630778434544307,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.3510858227848376,
+    "score": 0.53980823232951,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.04969367626112351,
+    "contribution": 0.07640597768287474,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -461,8 +461,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.329842-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.329842-06:00",
+  "window_start_exclusive": "2026-07-31T17:01:43.348996-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.348996-06:00",
   "event_objects": 10,
   "distinct_accessions": 7,
   "objects_without_accession": 0,
@@ -484,15 +484,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
   "newest_returned_available_as_of": "2026-10-23T14:51:50.043266-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.329842-06:00",
+  "corpus_end": "2026-10-29T17:01:43.348996-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/HPE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
   {
    "original": {
@@ -546,6 +546,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-28",
    "label": "WATCH"
@@ -660,10 +664,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-17",
    "label": "NEUTRAL"
   }
  ],

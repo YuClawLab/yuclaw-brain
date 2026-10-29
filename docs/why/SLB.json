@@ -1,34 +1,44 @@
 {
  "ticker": "SLB",
- "generated": "2026-10-28T23:01:34.019151+00:00",
+ "generated": "2026-10-29T23:01:42.986889+00:00",
  "label": "NEUTRAL",
- "score": 0.3299,
+ "score": 0.3142,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.2195,
+  "c1": 0.395,
   "c2": 0.0,
-  "c3": 0.029057495,
+  "c3": -0.171183,
   "c4": 0.6,
-  "c5": -0.19537152,
-  "c6": 0.40802908,
-  "c7": 0.6758855,
+  "c5": -0.18862492,
+  "c6": 0.27783066,
+  "c7": 0.7236822,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
   "ecs": 100,
-  "events_90d": 8,
-  "recency_days": 0.0,
+  "events_90d": 9,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "SLB",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000087347-26-000128",
+   "excerpt": "Guild Howard S 10047 shares @ $53.65 on 2026-10-29 ($539,022)",
+   "source_hash": "3b4c7acf9828cbd200eecac8ebc6e9f228b176c18e5be67b62b392ebca616fdb",
+   "available_as_of": "2026-10-29T15:20:37.348890-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "SLB",
    "evidence_type": "INSIDER_SELL",
@@ -224,21 +234,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6695,
-  "reconstructed_score": 0.32992177621800983,
-  "stored_score": 0.3299,
+  "denominator": 0.7055,
+  "reconstructed_score": 0.3142041457877627,
+  "stored_score": 0.3142,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.21949999999999997,
+    "score": 0.39499999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16131441374159822,
-    "contribution": 0.0354085138162808,
+    "effective_weight": 0.15308291991495393,
+    "contribution": 0.0604677533664068,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -255,14 +265,14 @@
    },
    {
     "id": "c3",
-    "score": 0.0290574952418193,
+    "score": -0.1711830050252977,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14339058999253174,
-    "contribution": 0.004166571386429653,
+    "effective_weight": 0.13607370659107015,
+    "contribution": -0.02329350599919005,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -273,44 +283,44 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19044062733383121,
-    "contribution": 0.11426437640029873,
+    "effective_weight": 0.18072289156626506,
+    "contribution": 0.10843373493975904,
     "input_status": "FROZEN_2026-05-18"
    },
    {
     "id": "c5",
-    "score": -0.195371528407704,
+    "score": -0.1886249119625771,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.07468259895444362,
-    "contribution": -0.014590853503189248,
+    "effective_weight": 0.07087172218284904,
+    "contribution": -0.013368172357376123,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.40802906592885774,
-    "confidence": 0.6,
+    "score": 0.2778306500348557,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.16131441374159822,
-    "contribution": 0.06582096955984561,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.20411055988660523,
+    "contribution": 0.056708169532273874,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.675885469348115,
+    "score": 0.7236822532880478,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.14936519790888725,
-    "contribution": 0.10095376689292235,
+    "effective_weight": 0.14174344436569808,
+    "contribution": 0.10257721520737743,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -333,26 +343,26 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.11949215832710978,
-    "contribution": 0.02389843166542195,
+    "effective_weight": 0.11339475549255847,
+    "contribution": 0.022678951098511688,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.684892-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.684892-06:00",
-  "event_objects": 8,
-  "distinct_accessions": 8,
+  "window_start_exclusive": "2026-07-31T17:01:43.702508-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.702508-06:00",
+  "event_objects": 9,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 5,
+   "INSIDER_SELL": 6,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.625,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -360,21 +370,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for SLB in the declared corpus",
-  "returned": 19,
-  "total_available": 19,
+  "returned": 20,
+  "total_available": 20,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
-  "newest_returned_available_as_of": "2026-10-28T15:59:30.497939-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T15:20:37.348890-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.684892-06:00",
+  "corpus_end": "2026-10-29T17:01:43.702508-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
   {
    "original": {
@@ -429,6 +439,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-28",
    "label": "NEUTRAL"
@@ -543,10 +557,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-17",
    "label": "WATCH"
   }
  ],

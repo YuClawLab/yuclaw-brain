@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "BMY",
- "build_id": "why-2026-10-28T230134",
- "generated": "2026-10-28T23:01:34.019151+00:00",
+ "build_id": "why-2026-10-29T230142",
+ "generated": "2026-10-29T23:01:42.986889+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for BMY in the declared corpus",
-  "returned": 5,
-  "total_available": 5,
+  "returned": 7,
+  "total_available": 7,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-04-02T14:29:24-06:00",
-  "newest_returned_available_as_of": "2026-09-10T14:41:30.839281-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T09:16:34-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.147150-06:00",
+  "corpus_end": "2026-10-29T17:01:43.155801-06:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -68,9 +68,54 @@
    "source_hash": "5255e62f6a36f7476b353244eaccd6916a8501b0a0798fe9de383ba84a86d21a",
    "available_as_of": "2026-09-10T14:41:30.839281-06:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "BMY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000014272-26-000022",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160; _____________________________ FORM 8-K _____________________________ CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "c89c7ef9801b6829b58d8dcdd0d3830ee6e088230612e028b684e702dfb602ec",
+   "available_as_of": "2026-10-29T05:05:52-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "BMY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000014272-26-000024",
+   "excerpt": "bmy:NetProductSalesMember 2026-07-01 2026-09-30 0000014272 bmy:NetProductSalesMember 2025-07-01 2025-09-30",
+   "source_hash": "d04a66b2001159f0ccdc20a3aab33ef6af7a8cdf3f24b7b6904bf75bee21a762",
+   "available_as_of": "2026-10-29T09:16:34-06:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
+  {
+   "original": {
+    "ticker": "BMY",
+    "accession_number": "0000014272-26-000018",
+    "source_hash": "c89c7ef9801b6829b58d8dcdd0d3830ee6e088230612e028b684e702dfb602ec",
+    "excerpt_sha256": "6e35aff588e8b17a784a5658df1b4c09a6d5aed1b048dbce24d9f254b339eb21"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-c89c7ef9801b6829",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________ FORM 8-K _____________________________ CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "corrected_sha256": "35478285f8f27dea1b5141b6cd1b25c02a796afbf328f6e0c271ccc18209680a",
+   "source_location": {
+    "accession_number": "0000014272-26-000018",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427226000018/bmy-20260730.htm",
+    "char_offset": 575,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "BMY",

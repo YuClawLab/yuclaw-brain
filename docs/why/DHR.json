@@ -1,34 +1,74 @@
 {
  "ticker": "DHR",
- "generated": "2026-10-28T23:01:34.019151+00:00",
+ "generated": "2026-10-29T23:01:42.986889+00:00",
  "label": "WATCH",
- "score": 0.1888,
+ "score": 0.1904,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.148,
+  "c1": 0.2405,
   "c2": 0.0,
-  "c3": -0.009378697,
+  "c3": 0.744145,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.10340547,
+  "c6": -0.46211717,
+  "c7": 0.2590163,
   "c8": 0.0,
   "c9": 0.23809524
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 7,
-  "recency_days": 8.1,
+  "ecs": 87,
+  "events_90d": 11,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000313616-26-000204",
+   "excerpt": "McGrew Matthew S 15603 shares @ $236.09 on 2026-10-28 ($3,683,773)",
+   "source_hash": "e1f367c6ca047fc6dc8bee9a1504f66d3fe109ac41281fd32eb803e17cc42930",
+   "available_as_of": "2026-10-29T15:02:51.982718-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000313616-26-000204",
+   "excerpt": "McGrew Matthew S 14151 shares @ $235.35 on 2026-10-28 ($3,330,470)",
+   "source_hash": "b4b658eb746ba70260ce78d98cfecdf8a36c508fc12073b4c94f7caea3a18925",
+   "available_as_of": "2026-10-29T15:02:51.982718-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000313616-26-000205",
+   "excerpt": "Bouda Christopher S 4345 shares @ $234.54 on 2026-10-28 ($1,019,063)",
+   "source_hash": "7f61ec8f539fdfc3964d0acea8a22b4d00407998f9292d578a72b31ea7428e43",
+   "available_as_of": "2026-10-29T15:02:51.233449-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000313616-26-000205",
+   "excerpt": "Bouda Christopher S 3253 shares @ $234.58 on 2026-10-28 ($763,094)",
+   "source_hash": "661088e9a7ca8652c2373eaca36ae1dc91429cc50c5c6739ea75d8f7a695eb13",
+   "available_as_of": "2026-10-29T15:02:51.233449-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DHR",
    "evidence_type": "OTHER_MATERIAL",
@@ -154,21 +194,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6105,
-  "reconstructed_score": 0.18879201566689108,
-  "stored_score": 0.1888,
+  "denominator": 0.6825,
+  "reconstructed_score": 0.19042607294732034,
+  "stored_score": 0.1904,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.148,
+    "score": 0.24049999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1769041769041769,
-    "contribution": 0.026181818181818178,
+    "effective_weight": 0.15824175824175823,
+    "contribution": 0.03805714285714285,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -185,14 +225,14 @@
    },
    {
     "id": "c3",
-    "score": -0.009378696894395102,
+    "score": 0.7441449874084796,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.15724815724815724,
-    "contribution": -0.001474782804032645,
+    "effective_weight": 0.14065934065934066,
+    "contribution": 0.10467094328383009,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -203,8 +243,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.20884520884520882,
-    "contribution": 0.1253071253071253,
+    "effective_weight": 0.18681318681318682,
+    "contribution": 0.11208791208791209,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -215,32 +255,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02457002457002457,
+    "effective_weight": 0.021978021978021976,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.6,
+    "score": -0.46211715726000974,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1769041769041769,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.26373626373626374,
+    "contribution": -0.12187705246417839,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.1034054713316562,
+    "score": 0.25901630968800515,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1638001638001638,
-    "contribution": 0.016937833141958427,
+    "effective_weight": 0.14652014652014653,
+    "contribution": 0.037951107646594165,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -263,24 +303,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.09172809172809171,
-    "contribution": 0.021840021840021838,
+    "effective_weight": 0.08205128205128204,
+    "contribution": 0.019536019536019536,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.260759-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.260759-06:00",
-  "event_objects": 7,
-  "distinct_accessions": 5,
+  "window_start_exclusive": "2026-07-31T17:01:43.271233-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.271233-06:00",
+  "event_objects": 11,
+  "distinct_accessions": 7,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 3,
+   "INSIDER_SELL": 7,
    "OTHER_MATERIAL": 4
   },
-  "largest_type_share": 0.5714285714285714,
+  "largest_type_share": 0.6363636363636364,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -288,21 +328,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DHR in the declared corpus",
-  "returned": 12,
-  "total_available": 12,
+  "returned": 16,
+  "total_available": 16,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
-  "newest_returned_available_as_of": "2026-10-20T15:43:14-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T15:02:51.982718-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.260759-06:00",
+  "corpus_end": "2026-10-29T17:01:43.271233-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DHR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [
   {
    "original": {
@@ -406,6 +446,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "WATCH"
+  },
   {
    "date": "2026-10-28",
    "label": "WATCH"
@@ -520,10 +564,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-17",
    "label": "WATCH"
   }
  ],

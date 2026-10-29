@@ -1,34 +1,44 @@
 {
  "ticker": "BAC",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "WATCH",
- "score": 0.1587,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2034,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.4165,
+  "c1": -0.3475,
   "c2": 0.0,
-  "c3": 0.101418056,
+  "c3": 0.39873636,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.009366693,
-  "c7": -0.036441628,
+  "c6": 0.02241532,
+  "c7": -0.0649018,
   "c8": 0.0,
   "c9": 0.5
  },
  "evidence_coverage": {
-  "ecs": 77,
-  "events_90d": 4,
-  "recency_days": 5.0,
+  "ecs": 84,
+  "events_90d": 5,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "BAC",
+   "evidence_type": "INSIDER_BUY",
+   "filing_date": "2026-10-29",
+   "accession_number": "0000070858-26-000543",
+   "excerpt": "BANK OF AMERICA CORP /DE/ P 3070 shares @ $22.98 on 2026-10-27 ($70,549)",
+   "source_hash": "0885a27405cc3511effbe31a5124d3ad1de5738c6403ce46d2af365fc7dad73f",
+   "available_as_of": "2026-10-29T13:59:02.394726-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "BAC",
    "evidence_type": "INSIDER_BUY",
@@ -144,21 +154,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6175,
-  "reconstructed_score": 0.15870489136286695,
-  "stored_score": 0.1587,
+  "denominator": 0.6535,
+  "reconstructed_score": 0.2033592369007003,
+  "stored_score": 0.2034,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.4165,
+    "score": -0.34750000000000003,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1748987854251012,
-    "contribution": -0.07284534412955465,
+    "effective_weight": 0.16526396327467482,
+    "contribution": -0.05742922723794951,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -175,14 +185,14 @@
    },
    {
     "id": "c3",
-    "score": 0.10141805754571497,
+    "score": 0.39873634393291285,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1554655870445344,
-    "contribution": 0.01576701785326095,
+    "effective_weight": 0.14690130068859986,
+    "contribution": 0.0585748875555618,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -193,8 +203,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.20647773279352225,
-    "contribution": 0.12388663967611334,
+    "effective_weight": 0.19510328997704668,
+    "contribution": 0.117061973986228,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -205,32 +215,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.08097165991902834,
-    "contribution": 0.04488404495427501,
+    "effective_weight": 0.07651109410864576,
+    "contribution": 0.042411473235294296,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.009366692957684013,
-    "confidence": 0.4,
+    "score": 0.0224153203059814,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.1165991902834008,
-    "contribution": 0.0010921488144991884,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.16526396327467482,
+    "contribution": 0.0037044446718377828,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.03644162760036352,
+    "score": -0.06490180055262809,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.16194331983805668,
-    "contribution": -0.005901478153905023,
+    "effective_weight": 0.15302218821729152,
+    "contribution": -0.009931415539805371,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -253,25 +263,25 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.064,
-    "effective_weight": 0.10364372469635627,
-    "contribution": 0.051821862348178135,
+    "effective_weight": 0.09793420045906658,
+    "contribution": 0.04896710022953329,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.132628-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.132628-06:00",
-  "event_objects": 4,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-07-31T17:01:43.143561-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.143561-06:00",
+  "event_objects": 5,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_BUY": 2,
+   "INSIDER_BUY": 3,
    "INSIDER_SELL": 1,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.5,
+  "largest_type_share": 0.6,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -279,23 +289,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for BAC in the declared corpus",
-  "returned": 11,
-  "total_available": 11,
+  "returned": 12,
+  "total_available": 12,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T16:35:18-07:00",
-  "newest_returned_available_as_of": "2026-10-23T16:13:53.203801-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T13:59:02.394726-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.132628-06:00",
+  "corpus_end": "2026-10-29T17:01:43.143561-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/BAC.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-28",
    "label": "WATCH"
@@ -411,10 +425,6 @@
   {
    "date": "2026-09-18",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-17",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

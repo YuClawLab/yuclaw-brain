@@ -1,34 +1,44 @@
 {
  "ticker": "MRK",
- "generated": "2026-10-28T23:01:34.019151+00:00",
- "label": "WATCH",
- "score": 0.0684,
+ "generated": "2026-10-29T23:01:42.986889+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2305,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.261,
+  "c1": -0.099,
   "c2": 0.0,
-  "c3": -0.009378697,
+  "c3": 0.744145,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": -0.047471445,
+  "c7": -0.041885126,
   "c8": 0.0,
   "c9": -0.33333334
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 19,
-  "recency_days": 15.3,
+  "ecs": 93,
+  "events_90d": 20,
+  "recency_days": 0.5,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-28T23:01:25.365091+00:00",
-  "source_sha256": "505a7b6986a832ffc021d590569d5aac58cf304d86b5064f880d6aebbff7a16a",
+  "as_of": "2026-10-29T23:01:33.992857+00:00",
+  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRK",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-29",
+   "accession_number": "0001104659-26-119825",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "882e29fa94477790417a5fb6d8ad431bf6244af66c3dc74baacff07de0952a21",
+   "available_as_of": "2026-10-29T04:43:01-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRK",
    "evidence_type": "OTHER_MATERIAL",
@@ -234,21 +244,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5065,
-  "reconstructed_score": 0.06843929030344177,
-  "stored_score": 0.0684,
+  "denominator": 0.5425,
+  "reconstructed_score": 0.23052056432416193,
+  "stored_score": 0.2305,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.26099999999999995,
+    "score": -0.09899999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.21322803553800593,
-    "contribution": -0.05565251727541954,
+    "effective_weight": 0.19907834101382488,
+    "contribution": -0.019708755760368662,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -265,14 +275,14 @@
    },
    {
     "id": "c3",
-    "score": -0.009378696894395102,
+    "score": 0.7441449874084796,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.18953603158933863,
-    "contribution": -0.0017776009908429021,
+    "effective_weight": 0.17695852534562212,
+    "contribution": 0.1316827996151411,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -283,8 +293,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.25172754195459035,
-    "contribution": 0.1510365251727542,
+    "effective_weight": 0.2350230414746544,
+    "contribution": 0.14101382488479264,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -295,32 +305,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.029615004935834157,
+    "effective_weight": 0.027649769585253454,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.2,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.07107601184600197,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.13271889400921658,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.047471445594448144,
+    "score": -0.04188512645356199,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1974333662388944,
-    "contribution": -0.00937244730393843,
+    "effective_weight": 0.18433179723502305,
+    "contribution": -0.007720760636601288,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -343,25 +353,25 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.024,
-    "effective_weight": 0.04738400789733466,
-    "contribution": -0.015794669299111556,
+    "effective_weight": 0.04423963133640553,
+    "contribution": -0.014746543778801845,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-30T17:01:34.507261-06:00",
-  "window_end_inclusive": "2026-10-28T17:01:34.507261-06:00",
-  "event_objects": 19,
-  "distinct_accessions": 10,
+  "window_start_exclusive": "2026-07-31T17:01:43.521709-06:00",
+  "window_end_inclusive": "2026-10-29T17:01:43.521709-06:00",
+  "event_objects": 20,
+  "distinct_accessions": 11,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 16,
    "M_AND_A_ANNOUNCE": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.8421052631578947,
+  "largest_type_share": 0.8,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -369,23 +379,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRK in the declared corpus",
-  "returned": 20,
-  "total_available": 20,
+  "returned": 21,
+  "total_available": 21,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-05-28T14:15:25-06:00",
-  "newest_returned_available_as_of": "2026-10-13T10:36:57-06:00",
-  "build_id": "why-2026-10-28T230134",
+  "newest_returned_available_as_of": "2026-10-29T04:43:01-06:00",
+  "build_id": "why-2026-10-29T230142",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-28T17:01:34.507261-06:00",
+  "corpus_end": "2026-10-29T17:01:43.521709-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRK.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-28T230134",
+ "build_id": "why-2026-10-29T230142",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-29",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-28",
    "label": "WATCH"
@@ -500,10 +514,6 @@
   },
   {
    "date": "2026-09-18",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-17",
    "label": "NEUTRAL"
   }
  ],
