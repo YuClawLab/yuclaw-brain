@@ -172,7 +172,8 @@ def test_responsive_tables_preserve_canonical_text_and_are_idempotent():
 def test_current_routes_keep_historical_guides_separate():
     from tools.check_viewport import routes
     current, archived = routes()
-    assert 'research_start.html' in current and 'why/DELL.html' in current
+    assert 'why/DELL.html' in current
+    assert 'research_start.html' not in current and 'research_start.html' not in archived  # removed 2026-10-28
     assert 'YUCLAW_User_Guide_v5.1_source.html' in archived
     assert 'archive/YUCLAW_User_Guide_v5.0_source.html' in archived
 

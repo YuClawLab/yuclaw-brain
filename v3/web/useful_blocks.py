@@ -116,7 +116,6 @@ def load_packet_manifest(kind: str) -> dict | None:
 # Fully inline-styled so it renders identically regardless of page CSS.
 # ---------------------------------------------------------------------------
 _NAV_CHIPS = (
-    ("Start here · EN/FR", "research_start.html"),
     ("Validation Lab", "validation_lab.html"),
     ("SMH Evidence Lens", "etf_evidence.html"),
     ("XLK Evidence Lens", "xlk_evidence.html"),
@@ -392,7 +391,7 @@ def guide_links_html() -> str:
     (release-manifest rule B4) and are labelled as history with their real scope and length. Until 8.0.0 this line offered the
     version-5-era PDF as "the" guide and called its 12 pages six."""
     return _marked(GUIDE_MARK, '<p style="font-size:12px;color:#A0AEC0;margin:10px 0 0">'
-                   '<a href="research_start.html">Start here / Bien commencer</a> · <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_EN.md">v9 English</a> · <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_FR.md">v9 Français</a><br>'
+                   '<a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_EN.md">v9 English</a> · <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/docs/guide/v9/GUIDE_FR.md">v9 Français</a><br>'
                    f'\U0001F4D6 {USER_GUIDE_LABEL}: <a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">English</a> '
                    '(<a href="guide/v8/YUCLAW-v8-User-Guide-EN.pdf">PDF</a>) \u00b7 '
                    f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Fran\u00e7ais</a> (<a href="guide/v8/YUCLAW-v8-User-Guide-FR.pdf">PDF</a>) \u00b7 '
@@ -404,7 +403,7 @@ def guide_links_html() -> str:
 
 
 def footer_guide_links_html() -> str:
-    return _marked(FOOTER_GUIDE_MARK, '<a href="research_start.html">Start here / Bien commencer (v9)</a> · ' + f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">\U0001F4D6 User Guide (v8, EN)</a> \u00b7\n      '
+    return _marked(FOOTER_GUIDE_MARK, f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-EN.md">\U0001F4D6 User Guide (v8, EN)</a> \u00b7\n      '
                    f'<a href="{USER_GUIDE_DIR}/YUCLAW-v8-User-Guide-FR.md">Guide utilisateur (v8, FR)</a> \u00b7\n      '
                    f'<a href="{GUIDE_URL}">\U0001F4D6 Workbench foundation guide (v8)</a> \u00b7\n      '
                    '<a href="YUCLAW_User_Guide.pdf">Earlier PDF guide (version 5 era, historical)</a> \u00b7\n      '
@@ -421,7 +420,7 @@ def workbench_card_html() -> str:
     return _marked(WORKBENCH_MARK, f"""
     <div class="card" id="workbench">
       <div class="card-title">Research briefs (v9), built on the local workbench (v8)</div>
-      <p>Version 9 adds sentence inspection, brief composition, tracked edits and translations, imported provenance records, portable verification and operation counts. <a href="research_start.html">Start with the English or French guide</a>. It does not include live model-generation or watermark-detection connectors.</p>
+      <p>Version 9 adds sentence inspection, brief composition, tracked edits and translations, imported provenance records, portable verification and operation counts. It does not include live model-generation or watermark-detection connectors.</p>
       <p style="font-size:13px;color:#A0AEC0;line-height:1.7">
         This website is the <strong style="color:#E2E8F0">research-content site</strong>: evidence, labs and records you can read and re-compute.
         The v8 <strong style="color:#E2E8F0">workbench</strong> is a different thing: an application that runs <strong style="color:#E2E8F0">on your own computer</strong>

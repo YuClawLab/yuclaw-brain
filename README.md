@@ -92,8 +92,6 @@ Exit-code contract for every command: 0 = success · 1 = ran, negative result (e
 replay mismatch) · 2 = usage or validation error · 3 = environment unsupported. The
 transcript below is generated from the release-candidate wheel and regenerated every release:
 
-**Research with v9:** [English / Français — start here](https://yuclaw.ca/research_start.html).
-
 <!-- CLI-TRANSCRIPT BEGIN -->
 Transcript produced from the release-candidate wheel `yuclaw-9.1.0-py3-none-any.whl` (yuclaw 9.1.0, Python 3.12) by `tools/cli_transcript.py`; the `replay-lab` run uses the documented local-bundle path. Every command ran with `YUCLAW_CORPUS=snapshot`: `check-claim` answers from the corpus snapshot bundled in the wheel and never looks for a research node (without that setting, a host that reaches a research node answers from it and its passport has no `corpus` block). No date: release verification compares this block byte-for-byte with a fresh transcript of the final artifact, made the same way.
 

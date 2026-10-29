@@ -229,7 +229,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/c6_posture_current.json registry/c6_posture_state.json \
                  docs/trace_su.html docs/replication.html docs/lane.html \
                  docs/evidence_index.json docs/llms.txt docs/weekly_note.html \
-                 docs/signal_review.html docs/research_start.html docs/schemas \
+                 docs/signal_review.html docs/schemas \
                  docs/explorer.html docs/explorer_data.json docs/why \
                  docs/sectors.html docs/tour.html docs/methodology.html \
                  docs/capabilities.json docs/evidence docs/ledger \

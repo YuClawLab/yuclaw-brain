@@ -5,7 +5,6 @@ Mission : Make financial AI accountable to evidence. (Rendre l’IA financière 
 Vision : Become the Science Trust Layer for Financial AI. (Devenir la couche de confiance scientifique de l’IA financière.)
 
 Logiciel couvert : YUCLAW **9.0.0** (couche `v9.brief/1`), publiée le 13 octobre 2026.
-[Commencer en français ou en anglais](https://yuclaw.ca/research_start.html) pour le parcours de recherche public et ses limites.
 Chaque commande et chaque extrait de sortie de ce guide a été exécuté sur ce dépôt dans un espace de
 travail jetable. **Toutes les données montrées sont fictives** : l’exemple fourni `001_base` décrit « Fictional Example
 Corp (ZZFX) », des numéros de dépôt de la forme `0000000000-26-00000x` et des montants inventés pour l’exemple. Les

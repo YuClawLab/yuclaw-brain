@@ -4,7 +4,6 @@ Research and education only. Not investment advice.
 Mission: Make financial AI accountable to evidence. Vision: Become the Science Trust Layer for Financial AI.
 
 Software covered: YUCLAW **9.0.0** (brief layer `v9.brief/1`), released 13 October 2026.
-[Start here in English or French](https://yuclaw.ca/research_start.html) for the public research workflow and its limits.
 Every command and every output excerpt in this guide was run against that checkout in a disposable workspace. **All data
 shown is fictional** — the packaged fixture `001_base` describes "Fictional Example Corp (ZZFX)", accession numbers of the
 form `0000000000-26-00000x`, and amounts that were invented for the example. Identifiers such as `brf-4625e1016814`,

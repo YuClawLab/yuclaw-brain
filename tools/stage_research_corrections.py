@@ -18,7 +18,7 @@ from v3.evidence.research_contract import AS_OF_RECIPE, EVENT_HASH_SCOPE, LAB_LI
 from v3.evidence.research_summary import denominators
 from v3.evidence.claim_support import assess
 from v3.web import lab_prose as L
-from v3.web.useful_blocks import responsive_research_page, site_header_html
+from v3.web.useful_blocks import responsive_research_page
 from tools.check_viewport import routes
 
 DOCS = ROOT / 'docs'
@@ -38,8 +38,8 @@ def write_json(path, obj):
     path.write_text(json.dumps(obj, ensure_ascii=False, indent=1) + '\n')
 
 
-def card(title, paragraphs, guide_href='research_start.html'):
-    return '<section style="margin:24px auto;padding:20px;max-width:1000px;border:1px solid #64748b;border-radius:8px"><h2>' + escape(title) + '</h2>' + ''.join('<p>' + escape(p) + '</p>' for p in paragraphs) + f'<p><a href="{escape(guide_href)}">Research guide / Guide de recherche</a></p></section>'
+def card(title, paragraphs):
+    return '<section style="margin:24px auto;padding:20px;max-width:1000px;border:1px solid #64748b;border-radius:8px"><h2>' + escape(title) + '</h2>' + ''.join('<p>' + escape(p) + '</p>' for p in paragraphs) + '</section>'
 
 
 def main():
@@ -113,15 +113,6 @@ def main():
     for rel in routes()[0]:
         path = DOCS / rel
         html = path.read_text()
-        first_nav = re.search(r'<a href="validation_lab\.html"[^>]*>', html)
-        if first_nav and 'href="research_start.html"' not in html[:first_nav.start()]:
-            # Add the new entry to existing snapshots without regenerating data.
-            chip = re.search(r'<a href="research_start\.html".*?</a>', site_header_html(), re.S).group(0)
-            html = html[:first_nav.start()] + chip + '\n' + html[first_nav.start():]
-        if rel == 'research_start.html':
-            header = '<!-- research-header begin -->' + '\n'.join(line.rstrip() for line in site_header_html(active='research_start.html').splitlines()) + '<!-- research-header end -->'
-            html = re.sub(r'<!-- research-header begin -->.*?<!-- research-header end -->', '', html, flags=re.S)
-            html = html.replace('<body>', '<body>' + header, 1)
         path.write_text(responsive_research_page(html))
 
     # Existing published packets are immutable evidence: attach corrections by
