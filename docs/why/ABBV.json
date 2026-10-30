@@ -1,34 +1,44 @@
 {
  "ticker": "ABBV",
- "generated": "2026-10-29T23:01:42.986889+00:00",
- "label": "BULLISH",
- "score": 0.4215,
+ "generated": "2026-10-30T23:02:38.818142+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3933,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.522,
+  "c1": 0.6365,
   "c2": 0.0,
-  "c3": 0.744145,
+  "c3": 0.38383567,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.2297884,
+  "c7": 0.43038604,
   "c8": 0.0,
   "c9": 0.27272728
  },
  "evidence_coverage": {
-  "ecs": 75,
-  "events_90d": 7,
-  "recency_days": 14.1,
+  "ecs": 87,
+  "events_90d": 8,
+  "recency_days": 0.5,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-29T23:01:33.992857+00:00",
-  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
+  "as_of": "2026-10-30T23:02:29.808123+00:00",
+  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-30",
+   "accession_number": "0001551152-26-000033",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 &#160;_____________________________________________________ FORM&#160; 8-K &#160; CURRENT REPORT Pursuant to Section&#160;13 or 15(d)&#160;of the Securities Exchange Act of 1934",
+   "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+   "available_as_of": "2026-10-30T05:51:51-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -184,21 +194,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5771666666666667,
-  "reconstructed_score": 0.42152946720988443,
-  "stored_score": 0.4215,
+  "denominator": 0.6131666666666666,
+  "reconstructed_score": 0.39325168734914623,
+  "stored_score": 0.3933,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.5219999999999999,
+    "score": 0.6365,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18712099335835977,
-    "contribution": 0.09767715853306379,
+    "effective_weight": 0.1761348192443599,
+    "contribution": 0.11210981244903506,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -215,14 +225,14 @@
    },
    {
     "id": "c3",
-    "score": 0.7441449874084796,
+    "score": 0.3838356641184524,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1663297718740976,
-    "contribution": 0.12377346599690563,
+    "effective_weight": 0.15656428377276435,
+    "contribution": 0.06009495583914884,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -233,8 +243,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.22090672827028587,
-    "contribution": 0.1325440369621715,
+    "effective_weight": 0.20793693938570265,
+    "contribution": 0.12476216363142159,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -245,32 +255,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.025989026855327748,
+    "effective_weight": 0.02446316933949443,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.4,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12474732890557318,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.1761348192443599,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.2297883870009096,
+    "score": 0.4303860253754673,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.17326017903551832,
-    "contribution": 0.039813177072060564,
+    "effective_weight": 0.16308779559662953,
+    "contribution": 0.07019070813408002,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -293,24 +303,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.058666666666666666,
-    "effective_weight": 0.10164597170083742,
-    "contribution": 0.02772162864568293,
+    "effective_weight": 0.09567817341668933,
+    "contribution": 0.026094047295460724,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-31T17:01:43.014197-06:00",
-  "window_end_inclusive": "2026-10-29T17:01:43.014197-06:00",
-  "event_objects": 7,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-08-01T17:02:38.835528-06:00",
+  "window_end_inclusive": "2026-10-30T17:02:38.835528-06:00",
+  "event_objects": 8,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 6
+   "OTHER_MATERIAL": 7
   },
-  "largest_type_share": 0.8571428571428571,
+  "largest_type_share": 0.875,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -318,22 +328,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 15,
-  "total_available": 15,
+  "returned": 16,
+  "total_available": 16,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-10-15T14:00:53-06:00",
-  "build_id": "why-2026-10-29T230142",
+  "newest_returned_available_as_of": "2026-10-30T05:51:51-06:00",
+  "build_id": "why-2026-10-30T230238",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-29T17:01:43.014197-06:00",
+  "corpus_end": "2026-10-30T17:02:38.835528-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-29T230142",
+ "build_id": "why-2026-10-30T230238",
  "corrections": [
+  {
+   "original": {
+    "ticker": "ABBV",
+    "accession_number": "0001551152-26-000021",
+    "source_hash": "ea92b1cb37394a80e84f55a2078840afe5b77dbfb3d2cd3e3cb7aaf32e17ba1c",
+    "excerpt_sha256": "8d424facad1d9a5f47fab76a3c4bcf5365673ebd5e411180e72093ea587f0c7d"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-ea92b1cb37394a80",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 _____________________________________________________ FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): July 6, 2026 ABBVIE INC.",
+   "corrected_sha256": "f3c6ffe176dadd822dd52641933c4b69ac27dddb0d5fc7eeb7616f5ff8ed6055",
+   "source_location": {
+    "accession_number": "0001551152-26-000021",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000021/abbv-20260706.htm",
+    "char_offset": 606,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "ABBV",
@@ -436,6 +471,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-10-30",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-29",
    "label": "BULLISH"
@@ -551,10 +590,6 @@
   {
    "date": "2026-09-21",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-18",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

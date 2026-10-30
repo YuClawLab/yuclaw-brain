@@ -1,34 +1,54 @@
 {
  "ticker": "TMO",
- "generated": "2026-10-29T23:01:42.986889+00:00",
- "label": "BULLISH",
- "score": 0.4284,
+ "generated": "2026-10-30T23:02:38.818142+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2854,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.2175,
+  "c1": 0.1625,
   "c2": 0.0,
-  "c3": 0.744145,
+  "c3": 0.38383567,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.2613699,
+  "c6": -0.37685195,
+  "c7": 0.48583394,
   "c8": 0.0,
   "c9": 0.5555556
  },
  "evidence_coverage": {
-  "ecs": 81,
-  "events_90d": 67,
-  "recency_days": 8.5,
+  "ecs": 87,
+  "events_90d": 69,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-29T23:01:33.992857+00:00",
-  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
+  "as_of": "2026-10-30T23:02:29.808123+00:00",
+  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "TMO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-10-30",
+   "accession_number": "0000097745-26-000182",
+   "excerpt": "Britt Lisa P. S 2831 shares @ $706.45 on 2026-10-28 ($1,999,960)",
+   "source_hash": "88c2f30385c79ef83648e6c12589400d613fbed66571acf7256164f2b294ea54",
+   "available_as_of": "2026-10-30T14:48:18.726679-06:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "TMO",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-10-30",
+   "accession_number": "0000097745-26-000181",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "ab1ba178c91b0e512d7854bd1d2147c272136921c278388d7813df98262852a7",
+   "available_as_of": "2026-10-30T14:16:11-06:00",
+   "protocol_id": null
+  },
   {
    "ticker": "TMO",
    "evidence_type": "OTHER_MATERIAL",
@@ -1008,47 +1028,27 @@
    "source_hash": "4557495ea34223b9c200ac593786f32b46c37b5983f320598f7146c950279a68",
    "available_as_of": "2026-03-05T14:53:11-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "TMO",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-03-05",
-   "accession_number": "0000097745-26-000055",
-   "excerpt": "CASPER MARC N S 119 shares @ $515.77 on 2026-03-04 ($61,377)",
-   "source_hash": "33a1ff20e8fb3afd1d2c4b347a9238fd7be5ce59ca41313c31eae996020b5bb4",
-   "available_as_of": "2026-03-05T14:53:11-07:00",
-   "protocol_id": null
-  },
-  {
-   "ticker": "TMO",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-03-05",
-   "accession_number": "0000097745-26-000055",
-   "excerpt": "CASPER MARC N S 815 shares @ $513.63 on 2026-03-04 ($418,608)",
-   "source_hash": "2e9da827aa68b0bcf5a8b368669462607a62f4eb545a4ad0d4c47a954fa15a44",
-   "available_as_of": "2026-03-05T14:53:11-07:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5545,
-  "reconstructed_score": 0.42843085804174147,
-  "stored_score": 0.4284,
+  "denominator": 0.6265000000000001,
+  "reconstructed_score": 0.28536569214525015,
+  "stored_score": 0.2854,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.21749999999999997,
+    "score": 0.1625,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19477006311992787,
-    "contribution": 0.04236248872858431,
+    "effective_weight": 0.17238627294493214,
+    "contribution": 0.028012769353551473,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.7441449874084796,
+    "score": 0.3838356641184524,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17312894499549145,
-    "contribution": 0.12883303659371334,
+    "effective_weight": 0.15323224261771748,
+    "contribution": 0.05881599960953141,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1083,8 +1083,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.22993688007213706,
-    "contribution": 0.13796212804328223,
+    "effective_weight": 0.203511572226656,
+    "contribution": 0.12210694333599359,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -1095,32 +1095,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027051397655545536,
+    "effective_weight": 0.023942537909018353,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.2,
+    "score": -0.3768519605728027,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06492335437330929,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.17238627294493214,
+    "contribution": -0.06496410493513596,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.26136991992931596,
+    "score": 0.48583394115490475,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18034265103697025,
-    "contribution": 0.04713614426137348,
+    "effective_weight": 0.1596169193934557,
+    "contribution": 0.07754731702392734,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1143,24 +1143,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.07200000000000001,
-    "effective_weight": 0.1298467087466186,
-    "contribution": 0.07213706041478812,
+    "effective_weight": 0.11492418196328812,
+    "contribution": 0.0638467677573823,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-31T17:01:43.757286-06:00",
-  "window_end_inclusive": "2026-10-29T17:01:43.757286-06:00",
-  "event_objects": 67,
-  "distinct_accessions": 11,
+  "window_start_exclusive": "2026-08-01T17:02:39.558610-06:00",
+  "window_end_inclusive": "2026-10-30T17:02:39.558610-06:00",
+  "event_objects": 69,
+  "distinct_accessions": 13,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 66,
-   "OTHER_MATERIAL": 1
+   "INSIDER_SELL": 67,
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9850746268656716,
+  "largest_type_share": 0.9710144927536232,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1169,22 +1169,26 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for TMO in the declared corpus",
   "returned": 100,
-  "total_available": 101,
+  "total_available": 103,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:53:11-07:00",
-  "newest_returned_available_as_of": "2026-10-21T04:03:16-06:00",
-  "build_id": "why-2026-10-29T230142",
+  "newest_returned_available_as_of": "2026-10-30T14:48:18.726679-06:00",
+  "build_id": "why-2026-10-30T230238",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-29T17:01:43.757286-06:00",
+  "corpus_end": "2026-10-30T17:02:39.558610-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/TMO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-29T230142",
+ "build_id": "why-2026-10-30T230238",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-10-30",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-29",
    "label": "BULLISH"
@@ -1299,10 +1303,6 @@
   },
   {
    "date": "2026-09-21",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-18",
    "label": "WATCH"
   }
  ],

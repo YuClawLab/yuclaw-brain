@@ -1,14 +1,14 @@
 {
  "ticker": "LUNR",
- "generated": "2026-10-29T23:01:42.986889+00:00",
+ "generated": "2026-10-30T23:02:38.818142+00:00",
  "label": "WEAKENING",
- "score": -0.0529,
+ "score": -0.0714,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.9865,
+  "c1": -1.0,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -16,16 +16,16 @@
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.13333334
+  "c9": 0.06666667
  },
  "evidence_coverage": {
   "ecs": 76,
   "events_90d": 9,
-  "recency_days": 37.1,
+  "recency_days": 38.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-29T23:01:33.992857+00:00",
-  "source_sha256": "b35bf79dac5b0441840d15fa8929fb6a02d92079cf92b8b13fc0f001a8603f69",
+  "as_of": "2026-10-30T23:02:29.808123+00:00",
+  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -575,20 +575,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3665,
-  "reconstructed_score": -0.052865848112778474,
-  "stored_score": -0.0529,
+  "reconstructed_score": -0.07139608913142335,
+  "stored_score": -0.0714,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.9864999999999999,
+    "score": -1.0,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.2946793997271487,
-    "contribution": -0.29070122783083213,
+    "contribution": -0.2946793997271487,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -677,22 +677,22 @@
    },
    {
     "id": "c9",
-    "score": 0.1333333333333333,
+    "score": 0.06666666666666665,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.21828103683492497,
-    "contribution": 0.029104138244656658,
+    "contribution": 0.014552069122328329,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-07-31T17:01:43.467701-06:00",
-  "window_end_inclusive": "2026-10-29T17:01:43.467701-06:00",
+  "window_start_exclusive": "2026-08-01T17:02:39.274669-06:00",
+  "window_end_inclusive": "2026-10-30T17:02:39.274669-06:00",
   "event_objects": 9,
   "distinct_accessions": 7,
   "objects_without_accession": 0,
@@ -715,15 +715,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T06:49:24-07:00",
   "newest_returned_available_as_of": "2026-09-22T14:35:20.191740-06:00",
-  "build_id": "why-2026-10-29T230142",
+  "build_id": "why-2026-10-30T230238",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-29T17:01:43.467701-06:00",
+  "corpus_end": "2026-10-30T17:02:39.274669-06:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LUNR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-29T230142",
+ "build_id": "why-2026-10-30T230238",
  "corrections": [
   {
    "original": {
@@ -879,6 +879,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-10-30",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-10-29",
    "label": "WEAKENING"
   },
@@ -993,10 +997,6 @@
   {
    "date": "2026-09-21",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-18",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
