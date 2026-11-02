@@ -1,0 +1,215 @@
+{
+  "schema": "scoreboard-notes/1",
+  "edition": "2026-11-02",
+  "scope": "Four selected public issuer documents. These dated notes are separate from the automated corpus counts and do not change them. Research interpretation is explicitly labelled.",
+  "notes": [
+    {
+      "ticker": "AMZN",
+      "company": "Amazon",
+      "category": "Cloud economics",
+      "period": "Q3 2026",
+      "period_end": "2026-09-30",
+      "published": "2026-10-29",
+      "title": "AWS growth: follow the operating economics.",
+      "metric": "$45.984bn",
+      "metric_label": "AWS quarterly net sales",
+      "secondary": "38.7% reported operating margin",
+      "summary": "AWS reported $17.773bn in operating income on $45.984bn in net sales. The segment grew 39.3% year over year.",
+      "implication": "Research implication: compare cloud operating profit with the capital required to deliver that growth.",
+      "question": "How much incremental cash investment supports AWS growth, and when does that capacity begin earning revenue?",
+      "caution": "The $184bn annualized revenue run rate is an extrapolation, not full-year realized revenue. Segment profit is not free cash flow.",
+      "locator": "Segment Information: AWS, three months ended September 30, 2026; Supplemental Financial Information: AWS margin.",
+      "facts": [
+        {
+          "label": "Net sales",
+          "value": 45984,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Operating income",
+          "value": 17773,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Operating margin",
+          "value": 38.7,
+          "unit": "percent",
+          "basis": "reported"
+        }
+      ],
+      "calculation": "17,773 \u00f7 45,984 \u00d7 100 = 38.6504%; reported margin rounds to 38.7%.",
+      "source": {
+        "url": "https://ir.aboutamazon.com/news-release/news-release-details/2026/Amazon-com-Announces-Third-Quarter-Results/",
+        "retrieved_at": "2026-11-02T02:34:19.874733+00:00",
+        "sha256": "f05bc34219323e842a8c682f606d79d3547f9b697d68f3946fc2ab1991ab6950",
+        "bytes": 637305
+      },
+      "status": "Source-linked research note",
+      "independent_review": "Not established"
+    },
+    {
+      "ticker": "CVX",
+      "company": "Chevron",
+      "category": "Cash flow quality",
+      "period": "Q3 2026",
+      "period_end": "2026-09-30",
+      "published": "2026-10-30",
+      "title": "Two cash-flow numbers. A $2.240bn bridge.",
+      "metric": "$12.003bn",
+      "metric_label": "Free cash flow, company definition",
+      "secondary": "$14.243bn adjusted free cash flow",
+      "summary": "Operating cash flow of $16.014bn less $4.011bn of capital expenditures gives $12.003bn. Adjustments add $2.240bn.",
+      "implication": "Research implication: separate operating cash generation from working-capital adjustments, asset proceeds and affiliate repayments.",
+      "question": "Which adjustments are repeatable enough to include in a forward cash model?",
+      "caution": "Both free-cash-flow measures are company-defined non-GAAP figures. Quarterly results are unaudited; adjusted cash flow is not interchangeable with the ordinary measure.",
+      "locator": "Attachment 3, Consolidated Statement of Cash Flows: Reconciliation of Non-GAAP Measures; Q3 2026 column.",
+      "facts": [
+        {
+          "label": "Operating cash flow",
+          "value": 16014,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Capital expenditures",
+          "value": 4011,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Free cash flow",
+          "value": 12003,
+          "unit": "USD millions",
+          "basis": "reported non-GAAP"
+        },
+        {
+          "label": "Working-capital adjustment",
+          "value": 538,
+          "unit": "USD millions",
+          "basis": "derived from subtracting (538)"
+        },
+        {
+          "label": "Asset proceeds / capital returned",
+          "value": 710,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Affiliate loan repayments, net",
+          "value": 992,
+          "unit": "USD millions",
+          "basis": "reported"
+        },
+        {
+          "label": "Adjusted free cash flow",
+          "value": 14243,
+          "unit": "USD millions",
+          "basis": "reported non-GAAP"
+        }
+      ],
+      "calculation": "16,014 \u2212 4,011 = 12,003; 12,003 + 538 + 710 + 992 = 14,243 (USD millions).",
+      "source": {
+        "url": "https://www.sec.gov/Archives/edgar/data/93410/000009341026000196/a09302026ex9918-k.htm",
+        "retrieved_at": "2026-11-02T02:34:29.591966+00:00",
+        "sha256": "2501d95d035e96a5f61e2b7065ff44a8e17572f2bc3f6d1577901376d5b1e707",
+        "bytes": 583122
+      },
+      "status": "Source-linked research note",
+      "independent_review": "Not established"
+    },
+    {
+      "ticker": "GOOGL",
+      "company": "Alphabet",
+      "category": "Infrastructure commitments",
+      "period": "30 Sep 2026 balance date",
+      "period_end": "2026-09-30",
+      "published": null,
+      "title": "Future infrastructure costs need their own timeline.",
+      "metric": "$130.5bn",
+      "metric_label": "Future payments on uncommenced leases",
+      "secondary": "Lease commencements span 2026\u20132031",
+      "summary": "Alphabet disclosed $130.5bn of future payments for leases that had not commenced, primarily for data centers and energy infrastructure.",
+      "implication": "Research implication: map future lease commencements separately from current lease liabilities and contingent backstops.",
+      "question": "When do these commitments become cash payments, and which obligations overlap across the notes?",
+      "caution": "These future payments were not yet recorded as lease liabilities. The separately disclosed $75.7bn of backstop support is contingent; adding the categories does not establish total debt.",
+      "locator": "Form 10-Q: Note 4, Leases; Liquidity and Capital Resources, Contingent Commitments.",
+      "facts": [
+        {
+          "label": "Uncommenced lease payments",
+          "value": 130.5,
+          "unit": "USD billions",
+          "basis": "reported commitment"
+        },
+        {
+          "label": "Backstop financial support",
+          "value": 75.7,
+          "unit": "USD billions",
+          "basis": "reported contingent commitment"
+        }
+      ],
+      "calculation": "No aggregate debt total is computed from these categories.",
+      "source": {
+        "url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204426000084/goog-20260930.htm",
+        "retrieved_at": "2026-11-02T02:34:32.172465+00:00",
+        "sha256": "a0bfcc3af2b58672cd98586a3036ff19a1cf0842dd58db57962fef17a9c739f3",
+        "bytes": 2530713
+      },
+      "status": "Source-linked research note",
+      "independent_review": "Not established"
+    },
+    {
+      "ticker": "XOM",
+      "company": "ExxonMobil",
+      "category": "Cash generation",
+      "period": "Q3 2026",
+      "period_end": "2026-09-30",
+      "published": "2026-10-30",
+      "title": "Separate cash generated from cash distributed.",
+      "metric": "$25.7bn",
+      "metric_label": "Reported operating cash flow",
+      "secondary": "$19.1bn reported free cash flow",
+      "summary": "ExxonMobil reported $9.4bn of shareholder distributions: $4.3bn in dividends and $5.1bn in repurchases.",
+      "implication": "Research implication: test whether operating cash generation can sustain investment and distributions across commodity-price scenarios.",
+      "question": "How sensitive is cash remaining after investment to prices, working capital and one-time items?",
+      "caution": "The release rounds these figures to billions. Free cash flow follows ExxonMobil\u2019s definition. Announced 2027 repurchases are a future plan, not Q3 cash paid.",
+      "locator": "Exhibit 99.1: opening results summary, cash-flow and shareholder-distribution paragraphs.",
+      "facts": [
+        {
+          "label": "Operating cash flow",
+          "value": 25.7,
+          "unit": "USD billions",
+          "basis": "reported rounded"
+        },
+        {
+          "label": "Free cash flow",
+          "value": 19.1,
+          "unit": "USD billions",
+          "basis": "reported non-GAAP rounded"
+        },
+        {
+          "label": "Dividends",
+          "value": 4.3,
+          "unit": "USD billions",
+          "basis": "reported rounded"
+        },
+        {
+          "label": "Repurchases",
+          "value": 5.1,
+          "unit": "USD billions",
+          "basis": "reported rounded"
+        }
+      ],
+      "calculation": "4.3 + 5.1 = 9.4 (USD billions, rounded).",
+      "source": {
+        "url": "https://www.sec.gov/Archives/edgar/data/2115436/000211543626000018/livef8k3q26991.htm",
+        "retrieved_at": "2026-11-02T02:34:22.280387+00:00",
+        "sha256": "b872a5601f27a28996c11853a2b06984aeb10589b7f012f50992368eefd13a44",
+        "bytes": 706664
+      },
+      "status": "Source-linked research note",
+      "independent_review": "Not established"
+    }
+  ]
+}

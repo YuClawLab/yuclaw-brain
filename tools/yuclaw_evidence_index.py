@@ -54,7 +54,7 @@ PAGES = {
     "canada_resources.html": "Canada Resources Evidence",
     "todays_evidence.html": "Today's Evidence Changes",
     "replication.html": "Replication — how to reproduce, honestly-empty log",
-    "evidence_scoreboard.html": "Evidence Scoreboard — receipts, challenges and dispositions with counting definitions; zero/pending are real states (v7)",
+    "evidence_scoreboard.html": "Evidence Scoreboard — sourced financial research notes, searchable filing coverage and receipt-based validation; corpus counts are not performance measures",
     "lane.html": "YUCLAW's Lane — scope statement",
     "trace_su.html": "Suncor evidence trace (worked example)",
 }

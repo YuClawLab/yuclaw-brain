@@ -1,11 +1,12 @@
 """
 Render the Evidence Scoreboard page (docs/evidence_scoreboard.html) — v7.
 
-Reads ONLY the derived, non-synthetic scoreboard file docs/receipts/scoreboard.json (produced by
+Receipt counts read ONLY the derived, non-synthetic scoreboard file docs/receipts/scoreboard.json (produced by
 `yuclaw receipts --store <private store> scoreboard --out docs/receipts/scoreboard.json` in the daily
 chain). Production never consumes demonstration fixtures: a synthetic board is refused by
 load_public and the page then shows the explicit PENDING state. Zero and pending are real states.
-No composite score, no financial statistic.
+The research view separately reads public coverage/history artifacts and dated issuer-source notes.
+No composite trust score is computed; issuer financial figures never change receipt counts.
 
 CLI: python3 -m v3.web.render_scoreboard
 """
@@ -40,7 +41,7 @@ def _lineage_cell(r: dict) -> str:
     return head + "; first observed " + escape(r["first_observed_at"])
 
 
-def render(board: dict | None, status: str = "OK") -> str:
+def _receipt_register(board: dict | None, status: str = "OK") -> str:
     """board=None renders the explicit unavailable state: PENDING when no board exists yet, UNAVAILABLE when the
     file is invalid or synthetic (never a measured zero)."""
     if board is None:
@@ -84,62 +85,33 @@ def render(board: dict | None, status: str = "OK") -> str:
                      "".join(f"<tr><td class='mono'>{escape(c['challenge_id'])}</td><td class='mono'>{escape(c['artifact']['artifact_type'])} {escape(c['artifact']['sha256'][:12])}…</td><td>{escape(c.get('criterion', 'general'))}</td><td>{escape(c['disposition'])}</td><td>{'yes' if c['adverse'] is True else 'no'}</td></tr>" for c in chal) + "</tbody></table>")
         hist = ("<p class='muted'>History: compare two published scoreboard files with <code>yuclaw receipts --store &lt;any private dir&gt; history a.json b.json</code> — "
                 "the comparison lists receipts added, supersessions (rendered CORRECTED inside their original window), disposition changes, per-window movement and absolute movement (never a multiplier from a zero baseline).</p>")
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>YUCLAW · Evidence Scoreboard</title>
-  <meta name="description" content="Derived evidence scoreboard: witnesses, pilots, replications, audits, refusals, packet uses and challenges — with counting definitions and real zero/pending states. Research only — not investment advice.">
-  <style>
-    *{{margin:0;padding:0;box-sizing:border-box}}
-    body{{background:#0B0E14;font-family:Inter,sans-serif;color:#E2E8F0;line-height:1.6}}
-    .container{{max-width:960px;margin:0 auto;padding:24px}}
-    .panel{{background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:22px;margin-bottom:20px}}
-    .panel-title{{font-size:13px;font-weight:700;color:#FFF;margin-bottom:10px}}
-    .disclaimer{{background:#1E232D;border-left:3px solid #FBA94B;border-radius:6px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#A0AEC0}}
-    .disclaimer strong{{color:#FBA94B}}
-    table{{width:100%;border-collapse:collapse;font-size:13px}} th,td{{text-align:left;padding:8px 10px;border-bottom:1px solid #1E232D;vertical-align:top}} th{{color:#A0AEC0;font-weight:600}}
-    .mono{{font-family:JetBrains Mono,monospace;font-size:12px;color:#A0AEC0}} .muted{{color:#718096;font-size:13px}}
-    .state{{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:700;font-family:JetBrains Mono,monospace}}
-    .zero{{background:#1E232D;color:#A0AEC0}} .pend{{background:#FBA94B20;color:#FBA94B}} .obs{{background:#00E67620;color:#00E676}}
-    .wrap{{overflow-x:auto}} a{{color:#00E676}} code{{background:#1E232D;padding:2px 6px;border-radius:4px;color:#00E676;font-family:JetBrains Mono,monospace;font-size:12px}}
-    .mono{{word-break:break-word}}
-    @media (max-width:640px){{
-      .container{{padding:12px}}
-      table.defs thead{{display:none}} table.defs tr{{display:block;border-bottom:1px solid #1E232D;padding:8px 0}}
-      table.defs td{{display:block;border:none;padding:2px 0}} table.defs td::before{{content:attr(data-label) ": ";color:#718096;font-size:11px;font-family:JetBrains Mono,monospace}}
-    }}
-  </style>
-</head>
-<body>
-  <div class="container">
-    {site_header_html(subtitle="Evidence Scoreboard", active="evidence_scoreboard.html")}
-    <h1 style="font-size:22px;font-weight:800;color:#FFF;margin-bottom:6px">Evidence Scoreboard</h1>
-    <p class="muted" style="margin-bottom:14px;font-family:JetBrains Mono,monospace">{escape(stamp)}</p>
-    <div class="disclaimer"><strong>Disclaimer —</strong> {escape(DISCLAIMER)}</div>
-    <div class="panel"><div class="panel-title">What is counted (each column shows its own definition; zero and pending are real states)</div>
-      <div class="wrap"><table class="defs"><thead><tr><th>column</th><th>state</th><th>counts</th><th>counting definition</th></tr></thead><tbody>{rows}</tbody></table></div>
-      <p class="muted" style="margin-top:8px">Primary replication population = qualified attempts, including qualified failed and inconclusive outcomes; the successful cohort is reported separately. Program evidence (any release, legacy prefix-bound) is separate from exact-release evidence (verified wheel/sdist bytes). A site or endpoint check is never a package reproduction.</p>
+    return f"""
+    <p class="muted">{stamp}</p>
+    <p class="muted">{escape(DISCLAIMER)}</p>
+    <div class="panel"><div class="panel-title">What is counted</div>
+      <div class="wrap" tabindex="0" role="region" aria-label="Receipt counting definitions"><table class="defs"><thead><tr><th scope="col">Column</th><th scope="col">State</th><th scope="col">Counts</th><th scope="col">Counting definition</th></tr></thead><tbody>{rows}</tbody></table></div>
+      <p class="muted">Primary replication population = qualified attempts, including qualified failed and inconclusive outcomes; the successful cohort is reported separately. Program evidence (any release, legacy prefix-bound) is separate from exact-release evidence (verified wheel/sdist bytes). A site or endpoint check is never a package reproduction.</p>
     </div>
     <div class="panel"><div class="panel-title">Public receipts</div><div class="wrap">{receipts_html}</div></div>
     <div class="panel"><div class="panel-title">Challenges (adverse and unresolved findings are never hidden)</div><div class="wrap">{chal_html}</div>{hist}</div>
-    <div class="panel"><div class="panel-title">How to add evidence</div>
-      <p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Why a receipt counted or not: <code>yuclaw receipts --store &lt;private&gt; explain &lt;receipt id&gt;</code>. Receipts are reviewed under a designated reviewer before they count; owner-operated checks and synthetic fixtures contribute zero outsiders; a site or endpoint check is never a package reproduction; program totals are distinct from a release's exact-target totals.</p>
-    </div>
-    <p style="font-size:12px;color:#718096">Research and education only. Not investment advice.</p>
-{footer_stamp_html(freshness_strip(board['source_timestamp'][:10] if board else None))}
-{build_footer()}
-  </div>
-</body>
-</html>
-"""
+    <div class="panel"><div class="panel-title">How to add evidence</div><p class="muted">Check → reproduce → challenge → document use: <code>yuclaw packet build</code> · <code>yuclaw packet verify</code> · <code>yuclaw challenge</code> · <code>yuclaw decision</code>. Explain a count with <code>yuclaw receipts --store &lt;private&gt; explain &lt;receipt id&gt;</code>. Receipts require review before they count. Owner-operated checks and synthetic fixtures contribute zero outsiders.</p></div>
+    """
+
+
+def render(board: dict | None, status: str = "OK", *, research=None, notes=None) -> str:
+    from v3.web.scoreboard_page import present
+    return present(board, status, _receipt_register(board, status), research, notes)
 
 
 def main(argv: list[str] | None = None) -> int:
     info = inspect_public(SRC)
     board = info["board"]
-    OUT.write_text(render(board, info["status"]))
+    from v3.web.scoreboard_research import load_research
+    from v3.web.scoreboard_page import load_notes
+    research = load_research(_REPO / "docs")
+    notes = load_notes(_REPO / "docs")
+    (_REPO / "docs/evidence/scoreboard_research.json").write_text(json.dumps({"research": research, "notes": notes}, indent=2) + "\n")
+    OUT.write_text(render(board, info["status"], research=research, notes=notes))
     print(f"[render_scoreboard] wrote {OUT} ({info['status'] + ': ' + info['reason'] if board is None else board['source_timestamp']})")
     return 0
 

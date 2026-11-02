@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YUCLAW · Evidence Scoreboard</title>
+<meta name="description" content="Source-linked financial research, company filing coverage and independent validation status. Explore the evidence, compare definitions and identify what still needs checking.">
+<style>%%CSS%%</style></head>
+<body class="scoreboard-page"><a class="skip" href="#main">Skip to research</a>
+<div class="top-shell"><div class="shell">%%HEADER%%</div></div>
+<main class="shell" id="main">
+<section class="hero">
+<div><p class="eyebrow">YUCLAW RESEARCH / EVIDENCE SCOREBOARD</p>
+<h1>Better questions.<br><span>Traceable evidence.</span></h1>
+<p class="lede">Understand the financial numbers, open the source, and see where the evidence stops.</p>
+<nav class="section-nav" aria-label="On this page"><a class="primary" href="#research">Read research notes <span aria-hidden="true">↗</span></a><a href="#coverage">Explore coverage</a><a href="#validation">Validation status</a></nav></div>
+<aside class="edition"><span class="eyebrow">PUBLIC RESEARCH SNAPSHOT</span><strong>%%CUTOFF_LABEL%%</strong><p>90-day evidence window<br>%%WINDOW_LABEL%%</p><a href="#method">Scope &amp; calculation notes <span aria-hidden="true">↗</span></a></aside>
+</section>
+<div class="research-notice">Research and education only. Not investment advice. Company figures are dated and source-linked; coverage counts measure the published corpus.</div>
+<section class="metrics" aria-label="Evidence inventory">%%METRICS%%</section>
+<section class="section" id="research">
+<div class="section-heading"><div><p class="eyebrow">01 / RESEARCH NOTES</p><h2>Numbers worth understanding.</h2></div><p>Selected issuer reports · Edition %%NOTES_DATE%%<br>Financial definitions and the next question to investigate.</p></div>
+<div class="notes-grid">%%NOTES%%</div>
+<p class="fine">These selected notes use separately checked public documents. They do not increase corpus counts or constitute independent validation. Each note keeps its own reporting period and source date.</p>
+</section>
+<section class="section" id="coverage">
+<div class="section-heading"><div><p class="eyebrow">02 / EXPLORE THE CORPUS</p><h2>Find the evidence behind a name.</h2></div><a class="text-link" href="evidence/scoreboard_research.json" download>Download source data ↓</a></div>
+<div class="filters" id="filters" hidden><div class="search-field"><label for="query">Company or ticker</label><input id="query" type="search" placeholder="Search Amazon, AMD, XOM…" autocomplete="off"></div><div><label for="sector">Sector / instrument</label><select id="sector"><option value="">All sectors &amp; instruments</option>%%SECTOR_OPTIONS%%</select></div><div><label for="scope">Evidence view</label><select id="scope"><option value="all">All tracked names</option><option value="direct">With direct records</option><option value="none">No direct records</option><option value="recent">Records within 7 days</option><option value="unavailable">Data unavailable</option></select></div><button class="quiet" id="reset">Reset</button></div>
+<div class="coverage-layout"><div class="table-card"><div class="table-caption"><span id="result-count" role="status" aria-live="polite">%%ROW_COUNT%% tracked names · alphabetical</span><span id="sort-wrap" hidden><label for="sort">Sort</label><select id="sort"><option value="ticker">Alphabetical</option><option value="filings">Most filings</option><option value="recent">Most recent</option></select></span><button id="csv" class="text-button" hidden>Export filtered CSV ↓</button></div>
+<div class="table-scroll" role="region" aria-label="Company evidence coverage" tabindex="0"><table class="coverage-table"><thead><tr><th scope="col">Company / instrument</th><th scope="col" class="num">Filings <small>90 days</small></th><th scope="col" class="num">Events <small>90 days</small></th><th scope="col">Latest recorded <small>UTC · in this corpus</small></th><th scope="col">Evidence</th></tr></thead><tbody id="company-rows">%%COMPANY_ROWS%%</tbody></table></div>
+<div class="table-foot">One filing can contain many event records. Funds and macro instruments may have no direct issuer events. Select a name to inspect its sources.</div></div>
+<aside class="detail-card" id="company-detail" aria-label="Selected company evidence">%%INITIAL_DETAIL%%</aside></div>
+</section>
+<section class="section" id="method"><div class="section-heading"><div><p class="eyebrow">03 / KNOW THE LIMITS</p><h2>Coverage has a shape.</h2></div><p>More records do not mean more independent information.</p></div>
+<div class="quality-grid"><article class="quality-card"><h3>Coverage by sector</h3><p>Names with direct records / tracked names.</p><div class="sector-chart">%%SECTOR_CHART%%</div></article>
+<article class="quality-card"><h3>Event mix</h3>%%EVENT_MIX%%<p>Insider transaction rows can dominate event volume. Use distinct filings and the underlying document to judge relevance.</p><h3 class="spaced">What these counts mean</h3><ul class="definition-list"><li><strong>Same window.</strong> All counts use the snapshot cutoff shown above and the preceding 90 days.</li><li><strong>Full published histories.</strong> Counts use manifest-matched histories, not the capped preview.</li><li><strong>Corpus coverage.</strong> A missing record here does not mean that no SEC filing exists.</li><li><strong>Separate evidence.</strong> File integrity does not establish a claim’s accuracy or investment usefulness.</li></ul>
+<div class="source-links"><a href="coverage.json">Coverage JSON ↗</a><a href="why/history_manifest.json">History manifest ↗</a><a href="methodology.html">Methodology ↗</a></div></article></div></section>
+<section class="section validation-section" id="validation"><div class="section-heading"><div><p class="eyebrow">04 / INDEPENDENT VALIDATION</p><h2>What has been demonstrated?</h2></div><a class="text-link" href="receipts/scoreboard.json">Receipt data ↗</a></div>
+<p class="validation-intro">Public data availability and independent validation answer different questions. The counters below come from reviewed receipt records.</p>
+<div class="validation-metrics">%%VALIDATION%%</div>
+<details class="audit"><summary>Full receipt register, definitions &amp; release evidence <span>Expand technical detail</span></summary><div class="audit-body">%%AUDIT%%</div></details>
+</section>
+<footer class="page-footer"><div><strong>YUCLAW</strong><p>Open financial research. Sources you can inspect.</p></div><div><a href="explorer.html">Universe Explorer ↗</a><a href="validation_lab.html">Validation Lab ↗</a><a href="evidence_index.json">Open data index ↗</a></div></footer>
+%%STAMP%%%%BUILD%%
+</main><script id="scoreboard-data" type="application/json">%%DATA%%</script><script id="scoreboard-interactions">%%JS%%</script></body></html>
