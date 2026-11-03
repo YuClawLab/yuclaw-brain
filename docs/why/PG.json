@@ -1,20 +1,20 @@
 {
  "ticker": "PG",
- "generated": "2026-10-30T23:02:38.818142+00:00",
+ "generated": "2026-11-03T00:01:48.589398+00:00",
  "label": "NEUTRAL",
- "score": 0.2442,
+ "score": 0.2604,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.5605,
+  "c1": 0.681,
   "c2": 0.0,
-  "c3": 0.5977853,
+  "c3": 0.47634962,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.66141975,
+  "c7": 0.75665075,
   "c8": 0.0,
   "c9": -0.29411766
  },
@@ -24,11 +24,21 @@
   "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-30T23:02:29.808123+00:00",
-  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
+  "as_of": "2026-11-03T00:01:39.438612+00:00",
+  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PG",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-02",
+   "accession_number": "0001628280-26-068909",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, DC 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "3f71191af8abfb35a10cec048d05b2e83e4714fb85517401b6bb0f328efd8156",
+   "available_as_of": "2026-11-02T14:33:15-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PG",
    "evidence_type": "OTHER_MATERIAL",
@@ -335,20 +345,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6718333333333333,
-  "reconstructed_score": 0.2441810097417911,
-  "stored_score": 0.2442,
+  "reconstructed_score": 0.26037442302528224,
+  "stored_score": 0.2604,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.5605,
+    "score": 0.6809999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1607541552964525,
-    "contribution": 0.09010270404366164,
+    "contribution": 0.10947357975688415,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -365,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5977852896593311,
+    "score": 0.47634960999163284,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.14289258248573555,
-    "contribution": 0.08541908381140528,
+    "contribution": 0.06806682593777735,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -413,14 +423,14 @@
    },
    {
     "id": "c7",
-    "score": 0.6614197554436593,
+    "score": 0.7566507561675708,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1488464400893079,
-    "contribution": 0.0984499760025293,
+    "contribution": 0.11262477144642584,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -451,8 +461,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-01T17:02:39.440635-06:00",
-  "window_end_inclusive": "2026-10-30T17:02:39.440635-06:00",
+  "window_start_exclusive": "2026-08-04T17:01:49.245335-07:00",
+  "window_end_inclusive": "2026-11-02T17:01:49.245335-07:00",
   "event_objects": 25,
   "distinct_accessions": 25,
   "objects_without_accession": 0,
@@ -468,23 +478,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PG in the declared corpus",
-  "returned": 30,
-  "total_available": 30,
+  "returned": 31,
+  "total_available": 31,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-23T08:05:12-07:00",
-  "newest_returned_available_as_of": "2026-10-30T14:23:07-06:00",
-  "build_id": "why-2026-10-30T230238",
+  "newest_returned_available_as_of": "2026-11-02T14:33:15-07:00",
+  "build_id": "why-2026-11-03T000148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-30T17:02:39.440635-06:00",
+  "corpus_end": "2026-11-02T17:01:49.245335-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PG.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-30T230238",
+ "build_id": "why-2026-11-03T000148",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-02",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-30",
    "label": "NEUTRAL"
@@ -599,10 +613,6 @@
   },
   {
    "date": "2026-09-22",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-21",
    "label": "WATCH"
   }
  ],

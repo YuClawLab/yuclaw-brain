@@ -1,34 +1,44 @@
 {
  "ticker": "GS",
- "generated": "2026-10-30T23:02:38.818142+00:00",
- "label": "WATCH",
- "score": 0.015,
+ "generated": "2026-11-03T00:01:48.589398+00:00",
+ "label": "NEUTRAL",
+ "score": 0.3064,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.0325,
+  "c1": 0.0115,
   "c2": 0.0,
-  "c3": 0.044449735,
+  "c3": 0.54285765,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.46211717,
-  "c7": -0.08432622,
+  "c6": 0.20972596,
+  "c7": 0.25532475,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
-  "ecs": 93,
+  "ecs": 94,
   "events_90d": 18,
-  "recency_days": 1.1,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-10-30T23:02:29.808123+00:00",
-  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
+  "as_of": "2026-11-03T00:01:39.438612+00:00",
+  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GS",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-02",
+   "accession_number": "0000886982-26-000532",
+   "excerpt": "http://www.goldmansachs.com/20260930#MarketMakingNet http://fasb.org/us-gaap/2026#InterestAndDividendIncomeOperating",
+   "source_hash": "d05c15d7da95e18f81253829f1f1fc89603bc8748279689093eef175551d3adc",
+   "available_as_of": "2026-11-02T14:35:36-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GS",
    "evidence_type": "INSIDER_SELL",
@@ -545,20 +555,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7121666666666666,
-  "reconstructed_score": 0.015014315685993441,
-  "stored_score": 0.015,
+  "reconstructed_score": 0.3063731024759649,
+  "stored_score": 0.3064,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0325,
+    "score": 0.0115,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15164989468757314,
-    "contribution": -0.004928621577346128,
+    "contribution": 0.0017439737889070911,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -575,14 +585,14 @@
    },
    {
     "id": "c3",
-    "score": 0.044449735262825946,
+    "score": 0.5428576440684114,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13479990638895392,
-    "contribution": 0.005991820152442722,
+    "contribution": 0.07317715960294993,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -611,26 +621,26 @@
    },
    {
     "id": "c6",
-    "score": -0.46211715726000974,
+    "score": 0.20972595444169337,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25274982447928857,
-    "contribution": -0.11680003038633525,
+    "contribution": 0.05300819817388927,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.08432622216652698,
+    "score": 0.2553247442396252,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14041656915516032,
-    "contribution": -0.011840798806439548,
+    "contribution": 0.035851824606546956,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -661,8 +671,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-01T17:02:39.132826-06:00",
-  "window_end_inclusive": "2026-10-30T17:02:39.132826-06:00",
+  "window_start_exclusive": "2026-08-04T17:01:48.926853-07:00",
+  "window_end_inclusive": "2026-11-02T17:01:48.926853-07:00",
   "event_objects": 18,
   "distinct_accessions": 9,
   "objects_without_accession": 0,
@@ -679,21 +689,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GS in the declared corpus",
-  "returned": 51,
-  "total_available": 51,
+  "returned": 52,
+  "total_available": 52,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-09T19:58:33-06:00",
-  "newest_returned_available_as_of": "2026-10-29T14:05:06.333460-06:00",
-  "build_id": "why-2026-10-30T230238",
+  "newest_returned_available_as_of": "2026-11-02T14:35:36-07:00",
+  "build_id": "why-2026-11-03T000148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-30T17:02:39.132826-06:00",
+  "corpus_end": "2026-11-02T17:01:48.926853-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GS.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-30T230238",
+ "build_id": "why-2026-11-03T000148",
  "corrections": [
   {
    "original": {
@@ -747,6 +757,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-02",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-30",
    "label": "WATCH"
@@ -861,10 +875,6 @@
   },
   {
    "date": "2026-09-22",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-21",
    "label": "WATCH"
   }
  ],

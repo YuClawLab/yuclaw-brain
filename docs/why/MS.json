@@ -1,31 +1,31 @@
 {
  "ticker": "MS",
- "generated": "2026-10-30T23:02:38.818142+00:00",
- "label": "WATCH",
- "score": 0.1755,
+ "generated": "2026-11-03T00:01:48.589398+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2629,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": -0.1005,
+  "c1": -0.0605,
   "c2": 0.0,
-  "c3": 0.044449735,
+  "c3": 0.54285765,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": 0.0,
-  "c7": -0.08746124,
+  "c7": -0.08712263,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 52,
-  "events_90d": 2,
-  "recency_days": 16.5,
+  "ecs": 47,
+  "events_90d": 1,
+  "recency_days": 19.5,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-10-30T23:02:29.808123+00:00",
-  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
+  "as_of": "2026-11-03T00:01:39.438612+00:00",
+  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -245,20 +245,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5975,
-  "reconstructed_score": 0.17553631462408717,
-  "stored_score": 0.1755,
+  "reconstructed_score": 0.2629020396405723,
+  "stored_score": 0.2629,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.10049999999999998,
+    "score": -0.0605,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1807531380753138,
-    "contribution": -0.01816569037656903,
+    "contribution": -0.010935564853556484,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -275,14 +275,14 @@
    },
    {
     "id": "c3",
-    "score": 0.044449735262825946,
+    "score": 0.5428576440684114,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1606694560669456,
-    "contribution": 0.007141714786997976,
+    "contribution": 0.08722064239425523,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -323,14 +323,14 @@
    },
    {
     "id": "c7",
-    "score": -0.08746124356604018,
+    "score": -0.08712262904590357,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.16736401673640167,
-    "contribution": -0.014637865031973252,
+    "contribution": -0.014581193145757919,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -361,13 +361,13 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-01T17:02:39.355589-06:00",
-  "window_end_inclusive": "2026-10-30T17:02:39.355589-06:00",
-  "event_objects": 2,
-  "distinct_accessions": 2,
+  "window_start_exclusive": "2026-08-04T17:01:49.154034-07:00",
+  "window_end_inclusive": "2026-11-02T17:01:49.154034-07:00",
+  "event_objects": 1,
+  "distinct_accessions": 1,
   "objects_without_accession": 0,
   "by_event_type": {
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 1
   },
   "largest_type_share": 1.0,
   "independent_information_count": null,
@@ -383,15 +383,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-17T14:36:55-06:00",
   "newest_returned_available_as_of": "2026-10-14T05:39:21-06:00",
-  "build_id": "why-2026-10-30T230238",
+  "build_id": "why-2026-11-03T000148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-30T17:02:39.355589-06:00",
+  "corpus_end": "2026-11-02T17:01:49.154034-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MS.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-30T230238",
+ "build_id": "why-2026-11-03T000148",
  "corrections": [
   {
    "original": {
@@ -445,6 +445,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-02",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-10-30",
    "label": "WATCH"
@@ -559,10 +563,6 @@
   },
   {
    "date": "2026-09-22",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-21",
    "label": "WATCH"
   }
  ],

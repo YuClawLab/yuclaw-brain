@@ -1,34 +1,44 @@
 {
  "ticker": "AAPL",
- "generated": "2026-10-30T23:02:38.818142+00:00",
+ "generated": "2026-11-03T00:01:48.589398+00:00",
  "label": "WEAKENING",
- "score": -0.1741,
+ "score": -0.1589,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.1745,
+  "c1": 0.121,
   "c2": 0.0,
-  "c3": -0.8305537,
+  "c3": -0.729761,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": -0.07147449,
+  "c7": 0.0,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 27,
-  "recency_days": 1.0,
+  "ecs": 87,
+  "events_90d": 28,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 1,
-  "as_of": "2026-10-30T23:02:29.808123+00:00",
-  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
+  "type_diversity": 2,
+  "as_of": "2026-11-03T00:01:39.438612+00:00",
+  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-02",
+   "accession_number": "0000320193-26-000024",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading symbol(s) Name of each exchange on which registered Common Stock, $0.00001 par value per share AAPL The Nasdaq Stock Market LLC",
+   "source_hash": "c740c0b7fa2986533e64acb4ec404a493ffbffdfb996363d435ce6b536c35dd1",
+   "available_as_of": "2026-11-02T14:30:23-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -465,20 +475,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": -0.17410485788937888,
-  "stored_score": -0.1741,
+  "reconstructed_score": -0.15890107511241602,
+  "stored_score": -0.1589,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.1745,
+    "score": 0.121,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.025940812112869922,
+    "contribution": 0.017987611837577425,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -495,14 +505,14 @@
    },
    {
     "id": "c3",
-    "score": -0.8305537195518856,
+    "score": -0.7297610251328189,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": -0.10974970003713837,
+    "contribution": -0.09643091316276754,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -543,14 +553,14 @@
    },
    {
     "id": "c7",
-    "score": -0.07147449523233096,
+    "score": 0.0,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": -0.009838196177884508,
+    "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -581,15 +591,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-01T17:02:38.820422-06:00",
-  "window_end_inclusive": "2026-10-30T17:02:38.820422-06:00",
-  "event_objects": 27,
-  "distinct_accessions": 17,
+  "window_start_exclusive": "2026-08-04T17:01:48.591564-07:00",
+  "window_end_inclusive": "2026-11-02T17:01:48.591564-07:00",
+  "event_objects": 28,
+  "distinct_accessions": 18,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 27
+   "INSIDER_SELL": 27,
+   "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 1.0,
+  "largest_type_share": 0.9642857142857143,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -597,21 +608,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 43,
-  "total_available": 43,
+  "returned": 44,
+  "total_available": 44,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-10-29T16:35:47.058502-06:00",
-  "build_id": "why-2026-10-30T230238",
+  "newest_returned_available_as_of": "2026-11-02T14:30:23-07:00",
+  "build_id": "why-2026-11-03T000148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-30T17:02:38.820422-06:00",
+  "corpus_end": "2026-11-02T17:01:48.591564-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-30T230238",
+ "build_id": "why-2026-11-03T000148",
  "corrections": [
   {
    "original": {
@@ -640,6 +651,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-02",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-10-30",
    "label": "WEAKENING"
@@ -754,10 +769,6 @@
   },
   {
    "date": "2026-09-22",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-21",
    "label": "NEUTRAL"
   }
  ],

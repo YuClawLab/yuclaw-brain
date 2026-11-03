@@ -1,34 +1,44 @@
 {
  "ticker": "ABBV",
- "generated": "2026-10-30T23:02:38.818142+00:00",
+ "generated": "2026-11-03T00:01:48.589398+00:00",
  "label": "NEUTRAL",
- "score": 0.3933,
+ "score": 0.3104,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.6365,
+  "c1": 0.556,
   "c2": 0.0,
-  "c3": 0.38383567,
+  "c3": -0.03260753,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.43038604,
+  "c7": 0.52067053,
   "c8": 0.0,
   "c9": 0.27272728
  },
  "evidence_coverage": {
   "ecs": 87,
   "events_90d": 8,
-  "recency_days": 0.5,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-10-30T23:02:29.808123+00:00",
-  "source_sha256": "a2581285daae1ebbf29631006f09c276dbcd06365376ee61c14ced8e229888b8",
+  "as_of": "2026-11-03T00:01:39.438612+00:00",
+  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-02",
+   "accession_number": "0001104659-26-121322",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock, $0.01 Par Value ABBV New York Stock Exchange",
+   "source_hash": "2d93639a59b9a9606adf5f8593ddba4e9aebf7349d610e272e61d2516d9479b3",
+   "available_as_of": "2026-11-02T14:05:38-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -194,21 +204,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6131666666666666,
-  "reconstructed_score": 0.39325168734914623,
-  "stored_score": 0.3933,
+  "denominator": 0.6491666666666667,
+  "reconstructed_score": 0.3103744268525233,
+  "stored_score": 0.3104,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.6365,
+    "score": 0.5559999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1761348192443599,
-    "contribution": 0.11210981244903506,
+    "effective_weight": 0.1663671373555841,
+    "contribution": 0.09250012836970474,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -225,14 +235,14 @@
    },
    {
     "id": "c3",
-    "score": 0.3838356641184524,
+    "score": -0.0326075297278229,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.15656428377276435,
-    "contribution": 0.06009495583914884,
+    "effective_weight": 0.1478818998716303,
+    "contribution": -0.004822063446271115,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -243,8 +253,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.20793693938570265,
-    "contribution": 0.12476216363142159,
+    "effective_weight": 0.196405648267009,
+    "contribution": 0.11784338896020538,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -255,32 +265,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02446316933949443,
+    "effective_weight": 0.023106546854942234,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.6,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1761348192443599,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.22182284980744543,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.4303860253754673,
+    "score": 0.5206705495230073,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.16308779559662953,
-    "contribution": 0.07019070813408002,
+    "effective_weight": 0.1540436456996149,
+    "contribution": 0.08020598965694593,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -303,16 +313,16 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.058666666666666666,
-    "effective_weight": 0.09567817341668933,
-    "contribution": 0.026094047295460724,
+    "effective_weight": 0.09037227214377407,
+    "contribution": 0.02464698331193838,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-01T17:02:38.835528-06:00",
-  "window_end_inclusive": "2026-10-30T17:02:38.835528-06:00",
+  "window_start_exclusive": "2026-08-04T17:01:48.616547-07:00",
+  "window_end_inclusive": "2026-11-02T17:01:48.616547-07:00",
   "event_objects": 8,
   "distinct_accessions": 8,
   "objects_without_accession": 0,
@@ -328,21 +338,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 16,
-  "total_available": 16,
+  "returned": 17,
+  "total_available": 17,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-10-30T05:51:51-06:00",
-  "build_id": "why-2026-10-30T230238",
+  "newest_returned_available_as_of": "2026-11-02T14:05:38-07:00",
+  "build_id": "why-2026-11-03T000148",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-10-30T17:02:38.835528-06:00",
+  "corpus_end": "2026-11-02T17:01:48.616547-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-10-30T230238",
+ "build_id": "why-2026-11-03T000148",
  "corrections": [
   {
    "original": {
@@ -472,6 +482,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-02",
+   "label": "NEUTRAL"
+  },
+  {
    "date": "2026-10-30",
    "label": "NEUTRAL"
   },
@@ -585,10 +599,6 @@
   },
   {
    "date": "2026-09-22",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-21",
    "label": "WATCH"
   }
  ],
