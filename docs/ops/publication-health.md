@@ -30,9 +30,9 @@ The push helper refuses a branch mismatch before pulling or pushing.
 `tools/check_public_freshness.py` checks served page build stamps and public JSON
 data clocks against the last weekday run, allowing two hours for completion.
 The production health monitor runs it every 30 minutes. The existing GitHub
-heartbeat workflow also runs it independently of Spark; a failed check fails the
-public-site job and records the endpoints in the job summary. GitHub scheduling
-and account notification settings govern delivery of Actions notifications.
+heartbeat workflow checks machine liveness only; it does not verify website
+freshness. An attempted website-check job was not deployed because the current
+publishing credential does not grant workflow-edit permission.
 After deployment, `--against-build docs` requires exact served bytes as well.
 Each generated page also displays an overdue warning if the next scheduled
 completion is missed (requires JavaScript and the visitor's clock).
