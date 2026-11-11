@@ -61,9 +61,9 @@
       <pre>pip install yuclaw
 yuclaw replay-lab            # fetches the published bundle and verifies it</pre>
       <p style="font-size:12px;color:#A0AEC0;margin:12px 0 8px">Path B — standalone (Python ≥ 3.10 standard library only, no installs):</p>
-      <pre>curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
-curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
-python3 replay_lab.py lab_replay_bundle.json</pre>
+      <pre>curl -fSLO https://yuclaw.ca/replay/lab_replay_bundle_v3.json
+curl -fSLO https://yuclaw.ca/replay/replay_lab.py
+python3 replay_lab.py lab_replay_bundle_v3.json</pre>
       <p style="font-size:11.5px;color:#718096;margin-top:10px">
         Both paths rebuild the decile cohorts from bundled scores, recompute the core expected statistical tables
         (bootstrap CI with the published seed, Fama-MacBeth IC with Newey-West correction,
@@ -140,12 +140,12 @@ python3 replay_lab.py lab_replay_bundle.json</pre>
     </div>
 
     <div class="footer">
-      YUCLAW Independent Replication · source commit <code>7b589fe49c34</code> ·
+      YUCLAW Independent Replication · source commit <code>910df00f484a</code> ·
       <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> · research &amp; education only
     </div>
   </div>
 <div class="card" style="background:#151A23;border:1px solid #1E232D;border-radius:12px;padding:20px;margin:16px 0"><div style="font-size:14px;font-weight:700;color:#FFF;margin-bottom:8px">For researchers</div><p style="font-size:13px;color:#A0AEC0">The evidence layer is citable as a dataset: weekly snapshot tags (dataset-YYYY-MM-DD) freeze the EvidenceBench items, the 79 why/{TICKER} anatomy documents, and the per-day evidence-ledger roots at a commit; CITATION.cff at the repository root carries the citation record, and every EvidenceBench release prints its item-set hash so a cited item set is byte-reproducible. Derived events and verified excerpts only — no raw vendor market data.</p></div>
-<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-04; generated at 2026-11-03 00:01 UTC.</div>
-<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-11-03 00:01 UTC · daily evidence block root f2ca1a8d3312 (block 2026-10-30)</footer>
+<div class="ftr-stamp" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#718096;margin:18px 0 0;line-height:1.6">Data through 2026-09-04; generated at 2026-11-11 05:13 UTC.</div>
+<footer class="buildinfo" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#4A5568;margin:18px 0 6px">build 2026-11-11 05:13 UTC · daily evidence block root a2b463bea277 (block 2026-11-11)</footer><script data-public-freshness-deadline="1794448800000">(function(){function check(){if(Date.now()<=1794448800000||document.getElementById("public-update-overdue"))return;var n=document.createElement("div");n.id="public-update-overdue";n.setAttribute("role","status");n.style.cssText="padding:14px 20px;background:#fff3cd;color:#493600;border-bottom:2px solid #b8860b;font:16px/1.5 sans-serif";n.textContent="Scheduled website update overdue. This page is a saved snapshot. Check its displayed data dates before using it.";document.body.prepend(n);}check();setInterval(check,60000);})();</script>
 </body>
 </html>

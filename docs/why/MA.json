@@ -1,34 +1,54 @@
 {
  "ticker": "MA",
- "generated": "2026-11-03T00:01:48.589398+00:00",
- "label": "NEUTRAL",
- "score": 0.2972,
+ "generated": "2026-11-11T05:13:30.793736+00:00",
+ "label": "WATCH",
+ "score": 0.1642,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.9825,
+  "c1": 0.5915,
   "c2": 0.0,
-  "c3": 0.54285765,
+  "c3": 0.70816797,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.14260557,
-  "c7": 0.16934559,
+  "c6": -0.46211717,
+  "c7": 0.06849816,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 33,
-  "recency_days": 4.4,
+  "ecs": 82,
+  "events_90d": 21,
+  "recency_days": 7.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MA",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001141391-26-000126",
+   "excerpt": "Ling Hai S 4318 shares @ $642.43 on 2026-10-30 ($2,774,013)",
+   "source_hash": "a4403f84098d8339d655de2100d97949f6cd7211e15290222538065cb91af17b",
+   "available_as_of": "2026-11-03T14:18:49.761153-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MA",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001141391-26-000126",
+   "excerpt": "Ling Hai S 4317 shares @ $641.00 on 2026-11-02 ($2,767,197)",
+   "source_hash": "69535ab2006b0015887202ffdef20273f57a8cb45a41a468a9bae34b06cb9e1e",
+   "available_as_of": "2026-11-03T14:18:49.761153-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MA",
    "evidence_type": "OTHER_MATERIAL",
@@ -735,20 +755,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.2972256046435877,
-  "stored_score": 0.2972,
+  "reconstructed_score": 0.16423899698607042,
+  "stored_score": 0.1642,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.9824999999999998,
+    "score": 0.5915,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": 0.15019108280254773,
+    "contribution": 0.09042038216560509,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -765,14 +785,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5428576440684114,
+    "score": 0.708167957666044,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.07376409600929582,
+    "contribution": 0.09622664392914398,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -801,26 +821,26 @@
    },
    {
     "id": "c6",
-    "score": -0.1426055696534349,
+    "score": -0.46211715726000974,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.03633262921106622,
+    "contribution": -0.11773685535286872,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.16934558387745552,
+    "score": 0.06849815741520275,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.023969650938068722,
+    "contribution": 0.009695422139448373,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -851,16 +871,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.081685-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.081685-07:00",
-  "event_objects": 33,
-  "distinct_accessions": 11,
+  "window_start_exclusive": "2026-08-12T22:13:31.257391-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.257391-07:00",
+  "event_objects": 21,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 31,
+   "INSIDER_SELL": 19,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9393939393939394,
+  "largest_type_share": 0.9047619047619048,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -868,21 +888,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MA in the declared corpus",
-  "returned": 70,
-  "total_available": 70,
+  "returned": 72,
+  "total_available": 72,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:06:16-07:00",
-  "newest_returned_available_as_of": "2026-10-29T08:19:30-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-03T14:18:49.761153-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.081685-07:00",
+  "corpus_end": "2026-11-10T22:13:31.257391-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -936,6 +956,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "NEUTRAL"
@@ -1031,30 +1075,6 @@
   {
    "date": "2026-09-30",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

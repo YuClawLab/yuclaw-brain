@@ -1,31 +1,31 @@
 {
  "ticker": "JNJ",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "NEUTRAL",
- "score": 0.2302,
+ "score": 0.3483,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.23,
+  "c1": 0.37,
   "c2": 0.0,
-  "c3": -0.03260753,
+  "c3": 0.54848003,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.5549843,
+  "c7": 0.49779493,
   "c8": 0.0,
   "c9": -0.3846154
  },
  "evidence_coverage": {
-  "ecs": 79,
-  "events_90d": 10,
-  "recency_days": 12.2,
+  "ecs": 69,
+  "events_90d": 6,
+  "recency_days": 20.4,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -355,20 +355,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5518333333333334,
-  "reconstructed_score": 0.23021704365848925,
-  "stored_score": 0.2302,
+  "reconstructed_score": 0.3483423302307958,
+  "stored_score": 0.3483,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.22999999999999998,
+    "score": 0.37000000000000005,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.19571126547870732,
-    "contribution": 0.04501359106010268,
+    "contribution": 0.07241316822712172,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -385,14 +385,14 @@
    },
    {
     "id": "c3",
-    "score": -0.0326075297278229,
+    "score": 0.5484800207377994,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.17396556931440652,
-    "contribution": -0.0056725874730371465,
+    "contribution": 0.09541663906522878,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -433,14 +433,14 @@
    },
    {
     "id": "c7",
-    "score": 0.5549842811274734,
+    "score": 0.4977949390819874,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.18121413470250677,
-    "contribution": 0.10057099627800786,
+    "contribution": 0.09020747914502943,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -471,16 +471,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.993680-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.993680-07:00",
-  "event_objects": 10,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-08-12T22:13:31.166118-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.166118-07:00",
+  "event_objects": 6,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 9,
+   "INSIDER_SELL": 5,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.9,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -494,15 +494,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T19:11:31-07:00",
   "newest_returned_available_as_of": "2026-10-21T14:18:47-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.993680-07:00",
+  "corpus_end": "2026-11-10T22:13:31.166118-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/JNJ.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -556,6 +556,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "NEUTRAL"
@@ -651,30 +675,6 @@
   {
    "date": "2026-09-30",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

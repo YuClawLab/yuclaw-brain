@@ -1,8 +1,8 @@
 {
  "ticker": "ARM",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WEAKENING",
- "score": -0.0509,
+ "score": -0.0399,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -10,25 +10,35 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.729761,
+  "c3": -0.79978484,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.8009628,
+  "c6": 0.37372038,
+  "c7": 0.7238869,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 66,
+  "ecs": 80,
   "events_90d": 5,
-  "recency_days": 40.1,
+  "recency_days": 6.3,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ARM",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-04",
+   "accession_number": "0001973239-26-000142",
+   "excerpt": "Quarterly report for the three and six months ended September 30, 2026 . Incorporation by Reference This Report on Form 6-K shall be deemed to be incorporated by reference into the registration statements on Form S-8 of Arm Holdings plc",
+   "source_hash": "317bacca43d6522794aa41a796399465da918ac646003c9e1154fccb1b0729ac",
+   "available_as_of": "2026-11-04T14:05:52-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ARM",
    "evidence_type": "INSIDER_SELL",
@@ -494,9 +504,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5265,
-  "reconstructed_score": -0.05089099392143869,
-  "stored_score": -0.0509,
+  "denominator": 0.5625,
+  "reconstructed_score": -0.03988750361056865,
+  "stored_score": -0.0399,
   "missing_components": [],
   "components": [
    {
@@ -507,8 +517,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20512820512820515,
-    "contribution": -0.20512820512820515,
+    "effective_weight": 0.192,
+    "contribution": -0.192,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -525,14 +535,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7297610251328189,
+    "score": -0.7997848187425155,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.18233618233618235,
-    "contribution": -0.133061839340457,
+    "effective_weight": 0.17066666666666666,
+    "contribution": -0.1364966090653893,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -543,8 +553,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.24216524216524218,
-    "contribution": 0.1452991452991453,
+    "effective_weight": 0.22666666666666668,
+    "contribution": 0.136,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -555,32 +565,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02849002849002849,
+    "effective_weight": 0.026666666666666665,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
+    "score": 0.3737203710590945,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.064,
+    "contribution": 0.023918103747782048,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.8009628344644647,
+    "score": 0.723886884602092,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1899335232668566,
-    "contribution": 0.15212969315564384,
+    "effective_weight": 0.17777777777777778,
+    "contribution": 0.1286910017070386,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -597,22 +607,22 @@
    },
    {
     "id": "c9",
-    "score": -0.06666666666666665,
+    "score": 0.0,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1519468186134853,
-    "contribution": -0.010129787907565685,
+    "effective_weight": 0.14222222222222222,
+    "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.701687-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.701687-07:00",
+  "window_start_exclusive": "2026-08-12T22:13:30.884137-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:30.884137-07:00",
   "event_objects": 5,
   "distinct_accessions": 5,
   "objects_without_accession": 0,
@@ -636,23 +646,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ARM in the declared corpus",
-  "returned": 46,
-  "total_available": 46,
+  "returned": 47,
+  "total_available": 47,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-24T15:11:56-06:00",
-  "newest_returned_available_as_of": "2026-09-23T15:08:01.721097-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-04T14:05:52-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.701687-07:00",
+  "corpus_end": "2026-11-10T22:13:30.884137-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ARM.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "WEAKENING"
@@ -747,30 +781,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-22",
    "label": "BULLISH"
   }
  ],

@@ -1,34 +1,104 @@
 {
  "ticker": "V",
- "generated": "2026-11-03T00:01:48.589398+00:00",
- "label": "NEUTRAL",
- "score": 0.374,
+ "generated": "2026-11-11T05:13:30.793736+00:00",
+ "label": "WATCH",
+ "score": 0.1443,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.9125,
+  "c1": 0.487,
   "c2": 0.0,
-  "c3": 0.54285765,
+  "c3": 0.70816797,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.04961918,
-  "c7": 0.17579584,
+  "c6": -0.46211717,
+  "c7": 0.07869315,
   "c8": 0.0,
   "c9": -0.30769232
  },
  "evidence_coverage": {
   "ecs": 87,
-  "events_90d": 9,
-  "recency_days": 0.1,
+  "events_90d": 16,
+  "recency_days": 0.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-10",
+   "accession_number": "0001403161-26-000138",
+   "excerpt": "ROTTENBERG JULIE B S 1867 shares @ $423.00 on 2026-11-09 ($789,741)",
+   "source_hash": "feb1ad3de947766cc3f0a450a163ce96291a6503131da6c16bfaa130f8b7e5d9",
+   "available_as_of": "2026-11-10T14:10:21.411772-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001403161-26-000136",
+   "excerpt": "Taneja Rajat S 7620 shares @ $425.39 on 2026-11-04 ($3,241,460)",
+   "source_hash": "f3b609ff3dd7b687c566f867ff279008438d6518c532874585e681dd0189fca0",
+   "available_as_of": "2026-11-05T14:33:47.209918-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001403161-26-000136",
+   "excerpt": "Taneja Rajat S 7014 shares @ $426.72 on 2026-11-04 ($2,993,004)",
+   "source_hash": "c42f567dc19718f9d7f4fcd87feb2ee57aa25003a5a37191917758d898827ab2",
+   "available_as_of": "2026-11-05T14:33:47.209918-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001403161-26-000136",
+   "excerpt": "Taneja Rajat S 19783 shares @ $427.36 on 2026-11-04 ($8,454,534)",
+   "source_hash": "41b1c3332cf46599a29c378e1938b02cc7f4387c273282e4a057021ffef1231e",
+   "available_as_of": "2026-11-05T14:33:47.209918-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001403161-26-000134",
+   "excerpt": "0001403161 us-gaap:CommonClassAMember 2025-10-01 2026-09-30 0001403161 v:A2028NotesMember 2025-10-01 2026-09-30",
+   "source_hash": "2afc0fae699b3979d28d4580486822b57bf1fa6c6f99060fc8db3f3881fb2061",
+   "available_as_of": "2026-11-05T14:07:24-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001403161-26-000129",
+   "excerpt": "MCINERNEY RYAN S 5875 shares @ $416.22 on 2026-11-02 ($2,445,292)",
+   "source_hash": "4273e3498d01cf08d07645dc9883a1459b667a160686f3af97f0f1f50d9d5188",
+   "available_as_of": "2026-11-03T15:00:18.532084-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001403161-26-000130",
+   "excerpt": "Taneja Rajat S 34418 shares @ $425.43 on 2026-11-02 ($14,642,402)",
+   "source_hash": "20445e11645b56e57eeab05d9b1a10de26d5ce181d6c6c64507378face92ea61",
+   "available_as_of": "2026-11-03T15:00:17.961468-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "V",
    "evidence_type": "INSIDER_SELL",
@@ -264,21 +334,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5878333333333333,
-  "reconstructed_score": 0.3739801593830281,
-  "stored_score": 0.374,
+  "denominator": 0.6958333333333333,
+  "reconstructed_score": 0.14433775012566158,
+  "stored_score": 0.1443,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.9125,
+    "score": 0.487,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1837255457896229,
-    "contribution": 0.1676495605330309,
+    "effective_weight": 0.15520958083832337,
+    "contribution": 0.07558706586826348,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -295,14 +365,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5428576440684114,
+    "score": 0.708167957666044,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1633115962574426,
-    "contribution": 0.08865494839336688,
+    "effective_weight": 0.13796407185628742,
+    "contribution": 0.0977017349977584,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -313,8 +383,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21689821377941595,
-    "contribution": 0.13013892826764956,
+    "effective_weight": 0.18323353293413175,
+    "contribution": 0.10994011976047904,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -325,32 +395,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.025517436915225403,
+    "effective_weight": 0.02155688622754491,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.04961917805081189,
-    "confidence": 0.4,
+    "score": -0.46211715726000974,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12248369719308193,
-    "contribution": -0.00607754037934526,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.25868263473053893,
+    "contribution": -0.11954168379420611,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.17579584013080965,
+    "score": 0.07869315499967702,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1701162461015027,
-    "contribution": 0.029905728403313236,
+    "effective_weight": 0.14371257485029942,
+    "contribution": 0.011309195928097298,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -373,24 +443,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.11794726396370855,
-    "contribution": -0.03629146583498725,
+    "effective_weight": 0.09964071856287426,
+    "contribution": -0.030658682634730546,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.421526-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.421526-07:00",
-  "event_objects": 9,
-  "distinct_accessions": 9,
+  "window_start_exclusive": "2026-08-12T22:13:31.568615-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.568615-07:00",
+  "event_objects": 16,
+  "distinct_accessions": 14,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 7,
-   "OTHER_MATERIAL": 2
+   "INSIDER_SELL": 13,
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.7777777777777778,
+  "largest_type_share": 0.8125,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -398,21 +468,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 23,
-  "total_available": 23,
+  "returned": 30,
+  "total_available": 30,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-11-02T14:08:35.052663-07:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-10T14:10:21.411772-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.421526-07:00",
+  "corpus_end": "2026-11-10T22:13:31.568615-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/V.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -567,6 +637,30 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-11-02",
    "label": "NEUTRAL"
   },
@@ -661,30 +755,6 @@
   {
    "date": "2026-09-30",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

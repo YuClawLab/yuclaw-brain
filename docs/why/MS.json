@@ -1,34 +1,54 @@
 {
  "ticker": "MS",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "NEUTRAL",
- "score": 0.2629,
+ "score": 0.2497,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": -0.0605,
+  "c1": -0.0645,
   "c2": 0.0,
-  "c3": 0.54285765,
+  "c3": 0.70816797,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": 0.0,
-  "c7": -0.08712263,
+  "c6": -0.08960921,
+  "c7": -0.04392446,
   "c8": 0.0,
   "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 47,
-  "events_90d": 1,
-  "recency_days": 19.5,
+  "ecs": 72,
+  "events_90d": 3,
+  "recency_days": 0.3,
   "substrate_active": 1,
-  "type_diversity": 1,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "type_diversity": 2,
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MS",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-10",
+   "accession_number": "0001628280-26-072728",
+   "excerpt": "Miscik Judith A S 2480 shares @ $183.21 on 2026-11-06 ($454,348)",
+   "source_hash": "da5eeabe4979fdde0c7b1a0c8db31f8803903a46b51dca3d46153ad4ad6738eb",
+   "available_as_of": "2026-11-10T14:15:57.294800-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "MS",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0000895421-26-000293",
+   "excerpt": "0000895421 2026-01-01 2026-09-30 0000895421 us-gaap:CommonClassAMember 2026-01-01 2026-09-30",
+   "source_hash": "3d751c2a3131355ebd4a6e164d526c5a568717f42e53c8d955ee94dab2d015a9",
+   "available_as_of": "2026-11-05T14:21:51-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MS",
    "evidence_type": "OTHER_MATERIAL",
@@ -244,21 +264,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5975,
-  "reconstructed_score": 0.2629020396405723,
-  "stored_score": 0.2629,
+  "denominator": 0.6695,
+  "reconstructed_score": 0.24968451223867716,
+  "stored_score": 0.2497,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0605,
+    "score": -0.0645,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1807531380753138,
-    "contribution": -0.010935564853556484,
+    "effective_weight": 0.16131441374159822,
+    "contribution": -0.010404779686333085,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -275,14 +295,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5428576440684114,
+    "score": 0.708167957666044,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1606694560669456,
-    "contribution": 0.08722064239425523,
+    "effective_weight": 0.14339058999253174,
+    "contribution": 0.10154462126354029,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -293,8 +313,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21338912133891214,
-    "contribution": 0.1280334728033473,
+    "effective_weight": 0.19044062733383121,
+    "contribution": 0.11426437640029873,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -305,32 +325,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.08368200836820083,
-    "contribution": 0.04638643976445994,
+    "effective_weight": 0.07468259895444362,
+    "contribution": 0.04139790554035074,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.2,
+    "score": -0.0896092133276404,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.060251046025104595,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.16131441374159822,
+    "contribution": -0.01445525771379412,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.08712262904590357,
+    "score": -0.043924457120255125,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.16736401673640167,
-    "contribution": -0.014581193145757919,
+    "effective_weight": 0.14936519790888725,
+    "contribution": -0.006560785230807338,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -353,23 +373,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.13389121338912133,
-    "contribution": 0.02677824267782426,
+    "effective_weight": 0.11949215832710978,
+    "contribution": 0.02389843166542195,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.154034-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.154034-07:00",
-  "event_objects": 1,
-  "distinct_accessions": 1,
+  "window_start_exclusive": "2026-08-12T22:13:31.324072-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.324072-07:00",
+  "event_objects": 3,
+  "distinct_accessions": 3,
   "objects_without_accession": 0,
   "by_event_type": {
-   "OTHER_MATERIAL": 1
+   "INSIDER_SELL": 1,
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 1.0,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -377,21 +398,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MS in the declared corpus",
-  "returned": 21,
-  "total_available": 21,
+  "returned": 23,
+  "total_available": 23,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-17T14:36:55-06:00",
-  "newest_returned_available_as_of": "2026-10-14T05:39:21-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-10T14:15:57.294800-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.154034-07:00",
+  "corpus_end": "2026-11-10T22:13:31.324072-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MS.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -445,6 +466,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "NEUTRAL"
@@ -539,30 +584,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-22",
    "label": "WATCH"
   }
  ],

@@ -1,34 +1,74 @@
 {
  "ticker": "KO",
- "generated": "2026-11-03T00:01:48.589398+00:00",
- "label": "BULLISH",
- "score": 0.4644,
+ "generated": "2026-11-11T05:13:30.793736+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2356,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.565,
+  "c1": 0.503,
   "c2": 0.0,
-  "c3": 0.47634962,
+  "c3": 0.42393747,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.77270234,
+  "c6": -0.46211717,
+  "c7": 0.68993586,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 56,
-  "events_90d": 7,
-  "recency_days": 70.3,
+  "ecs": 80,
+  "events_90d": 8,
+  "recency_days": 1.5,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-09",
+   "accession_number": "0000021344-26-000171",
+   "excerpt": "QUAN NANCY S 20585 shares @ $95.62 on 2026-11-05 ($1,968,406)",
+   "source_hash": "8b341f069e1f1bcfb75abfa48f52b26cc07d7700c6155f20fd093b642f23a1c1",
+   "available_as_of": "2026-11-09T10:13:03.372649-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-04",
+   "accession_number": "0000021344-26-000169",
+   "excerpt": "Perez Beatriz R S 10000 shares @ $94.84 on 2026-11-02 ($948,414)",
+   "source_hash": "e4d6a1340422207e38a6301521224bb835c0230fa06a20561b7341e41d25820a",
+   "available_as_of": "2026-11-04T10:02:29.964236-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-04",
+   "accession_number": "0000021344-26-000169",
+   "excerpt": "Perez Beatriz R S 30681 shares @ $94.84 on 2026-11-02 ($2,909,829)",
+   "source_hash": "ca9b60d604e7f51c4e42e6e00a857b4d08ab99d45f24fa3d74e1800c94257b22",
+   "available_as_of": "2026-11-04T10:02:29.964236-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-04",
+   "accession_number": "0000021344-26-000169",
+   "excerpt": "Perez Beatriz R S 26867 shares @ $95.02 on 2026-11-02 ($2,552,808)",
+   "source_hash": "1b92c123a3ad47f917daa295513fb4c8f3373deba7395bbbf2c3feba5dbd1682",
+   "available_as_of": "2026-11-04T10:02:29.964236-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "KO",
    "evidence_type": "INSIDER_SELL",
@@ -424,21 +464,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5265,
-  "reconstructed_score": 0.4644250657995843,
-  "stored_score": 0.4644,
+  "denominator": 0.6705,
+  "reconstructed_score": 0.23560135912264438,
+  "stored_score": 0.2356,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.565,
+    "score": 0.503,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20512820512820515,
-    "contribution": 0.1158974358974359,
+    "effective_weight": 0.1610738255033557,
+    "contribution": 0.08102013422818792,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -455,14 +495,14 @@
    },
    {
     "id": "c3",
-    "score": 0.47634960999163284,
+    "score": 0.4239374600161163,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.18233618233618235,
-    "contribution": 0.08685576934320371,
+    "effective_weight": 0.14317673378076062,
+    "contribution": 0.060697980852419335,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -473,8 +513,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.24216524216524218,
-    "contribution": 0.1452991452991453,
+    "effective_weight": 0.19015659955257272,
+    "contribution": 0.11409395973154363,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -485,32 +525,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02849002849002849,
+    "effective_weight": 0.02237136465324385,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
+    "score": -0.46211715726000974,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.21476510067114093,
+    "contribution": -0.09924663780080746,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.7727023458428437,
+    "score": 0.6899358577562728,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1899335232668566,
-    "contribution": 0.14676207898249644,
+    "effective_weight": 0.14914243102162567,
+    "contribution": 0.10289871107476105,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -533,21 +573,21 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1519468186134853,
-    "contribution": -0.030389363722697054,
+    "effective_weight": 0.11931394481730052,
+    "contribution": -0.0238627889634601,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.019066-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.019066-07:00",
-  "event_objects": 7,
+  "window_start_exclusive": "2026-08-12T22:13:31.195521-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.195521-07:00",
+  "event_objects": 8,
   "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 7
+   "INSIDER_SELL": 8
   },
   "largest_type_share": 1.0,
   "independent_information_count": null,
@@ -557,21 +597,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for KO in the declared corpus",
-  "returned": 39,
-  "total_available": 39,
+  "returned": 43,
+  "total_available": 43,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T10:00:14-07:00",
-  "newest_returned_available_as_of": "2026-08-24T10:09:24.003782-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-09T10:13:03.372649-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.019066-07:00",
+  "corpus_end": "2026-11-10T22:13:31.195521-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/KO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -625,6 +665,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-02",
    "label": "BULLISH"
@@ -720,30 +784,6 @@
   {
    "date": "2026-09-30",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

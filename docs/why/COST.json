@@ -1,34 +1,44 @@
 {
  "ticker": "COST",
- "generated": "2026-11-03T00:01:48.589398+00:00",
- "label": "BULLISH",
- "score": 0.4565,
+ "generated": "2026-11-11T05:13:30.793736+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2683,
  "threshold_band": {
-  "floor": 0.4,
-  "ceiling": 0.55
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.6865,
+  "c1": 0.6295,
   "c2": 0.0,
-  "c3": 0.47634962,
+  "c3": 0.42393747,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.1626036,
-  "c7": 0.75586593,
+  "c6": -0.5632936,
+  "c7": 0.6671928,
   "c8": 0.0,
-  "c9": -0.05263158
+  "c9": 0.04761905
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 7,
-  "recency_days": 17.1,
+  "ecs": 100,
+  "events_90d": 8,
+  "recency_days": 0.3,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "COST",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-11-10",
+   "accession_number": "0000909832-26-000134",
+   "excerpt": "On November 7, 2026, Helena B. Foulkes notified the Board of Directors (the “Board”) of Costco Wholesale Corporation (the “Company”) of her decision to resign from the Board and all committees of the Board of which she is a member, effective November 7,",
+   "source_hash": "ee6808014688b1fe1d842f32526280c114a4c8a1a86da029d7e2e3807aa6d10c",
+   "available_as_of": "2026-11-10T14:16:20-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COST",
    "evidence_type": "EXEC_CHANGE",
@@ -174,21 +184,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6411666666666667,
-  "reconstructed_score": 0.4565215662246057,
-  "stored_score": 0.4565,
+  "denominator": 0.6465,
+  "reconstructed_score": 0.26829957155009865,
+  "stored_score": 0.2683,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.6865,
+    "score": 0.6295000000000001,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16844294255263842,
-    "contribution": 0.11563608006238628,
+    "effective_weight": 0.16705336426914155,
+    "contribution": 0.10516009280742462,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -205,14 +215,14 @@
    },
    {
     "id": "c3",
-    "score": 0.47634960999163284,
+    "score": 0.4239374600161163,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1497270600467897,
-    "contribution": 0.07132242665848207,
+    "effective_weight": 0.14849187935034805,
+    "contribution": 0.06295127016480614,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -223,8 +233,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19885625162464257,
-    "contribution": 0.11931375097478554,
+    "effective_weight": 0.19721577726218098,
+    "contribution": 0.11832946635730858,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -235,32 +245,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02339485313231089,
+    "effective_weight": 0.02320185614849188,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.16260360703833962,
+    "score": -0.5632935681148148,
     "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.144,
-    "effective_weight": 0.22459059007018453,
-    "contribution": 0.036519240052281104,
+    "effective_weight": 0.22273781902552203,
+    "contribution": -0.1254667808329982,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.7558659557162536,
+    "score": 0.6671928398745824,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1559656875487393,
-    "contribution": 0.11788915347797042,
+    "effective_weight": 0.1546790409899459,
+    "contribution": 0.10320074862715894,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -277,32 +287,32 @@
    },
    {
     "id": "c9",
-    "score": -0.052631578947368474,
-    "confidence": 0.6333333333333333,
+    "score": 0.04761904761904767,
+    "confidence": 0.7,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.050666666666666665,
-    "effective_weight": 0.07902261502469457,
-    "contribution": -0.004159085001299718,
+    "weight_times_confidence": 0.055999999999999994,
+    "effective_weight": 0.08662026295436968,
+    "contribution": 0.004124774426398561,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.785495-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.785495-07:00",
-  "event_objects": 7,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-08-12T22:13:30.967367-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:30.967367-07:00",
+  "event_objects": 8,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
-   "EXEC_CHANGE": 1,
+   "EXEC_CHANGE": 2,
    "INSIDER_SELL": 3,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.42857142857142855,
+  "largest_type_share": 0.375,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -310,21 +320,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for COST in the declared corpus",
-  "returned": 14,
-  "total_available": 14,
+  "returned": 15,
+  "total_available": 15,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:19:07-07:00",
-  "newest_returned_available_as_of": "2026-10-16T14:52:57-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-10T14:16:20-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.785495-07:00",
+  "corpus_end": "2026-11-10T22:13:30.967367-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/COST.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -353,6 +363,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-02",
    "label": "BULLISH"
@@ -448,30 +482,6 @@
   {
    "date": "2026-09-30",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,34 +1,44 @@
 {
  "ticker": "SLB",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WATCH",
- "score": 0.109,
+ "score": 0.1793,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.375,
+  "c1": 0.097,
   "c2": 0.0,
-  "c3": -0.84852993,
+  "c3": 0.6566645,
   "c4": 0.6,
-  "c5": -0.76366967,
-  "c6": 0.025427647,
-  "c7": 0.5752494,
+  "c5": -0.17516813,
+  "c6": -0.107909255,
+  "c7": -0.04846224,
   "c8": 0.0,
-  "c9": 0.26666668
+  "c9": 0.2
  },
  "evidence_coverage": {
-  "ecs": 98,
-  "events_90d": 10,
-  "recency_days": 3.1,
+  "ecs": 94,
+  "events_90d": 11,
+  "recency_days": 8.2,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "SLB",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-02",
+   "accession_number": "0000087347-26-000132",
+   "excerpt": "Le Peuch Olivier S 25000 shares @ $52.90 on 2026-11-02 ($1,322,500)",
+   "source_hash": "73fc4f498a148f6ba6e874a11efa6db250b22dc7a8770fe9afd2ae23bddcc2c1",
+   "available_as_of": "2026-11-02T17:08:07.976069-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "SLB",
    "evidence_type": "INSIDER_SELL",
@@ -245,20 +255,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7415,
-  "reconstructed_score": 0.10895871978630325,
-  "stored_score": 0.109,
+  "reconstructed_score": 0.1793492873827482,
+  "stored_score": 0.1793,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.37499999999999994,
+    "score": 0.097,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1456507080242751,
-    "contribution": 0.054619015509103155,
+    "contribution": 0.014128118678354685,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -275,14 +285,14 @@
    },
    {
     "id": "c3",
-    "score": -0.8485299226794443,
+    "score": 0.6566645079699325,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1294672960215779,
-    "contribution": -0.1098568746827062,
+    "contribution": 0.08501657824020704,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -299,38 +309,38 @@
    },
    {
     "id": "c5",
-    "score": -0.7636696986302025,
+    "score": -0.1751681260567607,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
     "effective_weight": 0.06743088334457181,
-    "contribution": -0.0514949223621175,
+    "contribution": -0.01181174147382068,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.02542764725926025,
+    "score": -0.10790925486416879,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.2427511800404585,
-    "contribution": 0.006172591377837956,
+    "contribution": -0.02619509895556356,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.5752493839028048,
+    "score": -0.0484622399241731,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13486176668914363,
-    "contribution": 0.07757914819997368,
+    "contribution": -0.006535703293887135,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -347,32 +357,32 @@
    },
    {
     "id": "c9",
-    "score": 0.2666666666666666,
+    "score": 0.19999999999999996,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.1078894133513149,
-    "contribution": 0.0287705102270173,
+    "contribution": 0.021577882670262973,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.311612-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.311612-07:00",
-  "event_objects": 10,
-  "distinct_accessions": 10,
+  "window_start_exclusive": "2026-08-12T22:13:31.470184-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.470184-07:00",
+  "event_objects": 11,
+  "distinct_accessions": 11,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 7,
+   "INSIDER_SELL": 8,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.7,
+  "largest_type_share": 0.7272727272727273,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -380,21 +390,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for SLB in the declared corpus",
-  "returned": 21,
-  "total_available": 21,
+  "returned": 22,
+  "total_available": 22,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
-  "newest_returned_available_as_of": "2026-10-30T16:09:06.525501-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-02T17:08:07.976069-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.311612-07:00",
+  "corpus_end": "2026-11-10T22:13:31.470184-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -449,6 +459,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "WATCH"
@@ -544,30 +578,6 @@
   {
    "date": "2026-09-30",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

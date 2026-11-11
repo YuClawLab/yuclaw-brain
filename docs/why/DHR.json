@@ -1,34 +1,54 @@
 {
  "ticker": "DHR",
- "generated": "2026-11-03T00:01:48.589398+00:00",
- "label": "WATCH",
- "score": 0.1447,
+ "generated": "2026-11-11T05:13:30.793736+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2185,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.3825,
+  "c1": 0.371,
   "c2": 0.0,
-  "c3": -0.03260753,
+  "c3": 0.54848003,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.5391546,
+  "c7": 0.4976835,
   "c8": 0.0,
   "c9": 0.23809524
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 10,
-  "recency_days": 4.1,
+  "ecs": 87,
+  "events_90d": 12,
+  "recency_days": 0.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-10",
+   "accession_number": "0000313616-26-000222",
+   "excerpt": "Milosevich Gregory M S 2100 shares @ $230.62 on 2026-11-09 ($484,302)",
+   "source_hash": "175c30a2e2806c98637518fe0b2f9231963fdd1be763c8ce6e7524311b7281c0",
+   "available_as_of": "2026-11-10T15:02:11.582782-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-10",
+   "accession_number": "0000313616-26-000223",
+   "excerpt": "McGrew Matthew S 17385 shares @ $235.69 on 2026-11-09 ($4,097,452)",
+   "source_hash": "3ee40054291230a809eaa21a3d70358d8163d59d8375d900f600d9bdeaa098ee",
+   "available_as_of": "2026-11-10T15:02:10.790139-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DHR",
    "evidence_type": "INSIDER_SELL",
@@ -195,20 +215,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6825,
-  "reconstructed_score": 0.14468480754375035,
-  "stored_score": 0.1447,
+  "reconstructed_score": 0.2185240679811199,
+  "stored_score": 0.2185,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.38249999999999995,
+    "score": 0.371,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15824175824175823,
-    "contribution": 0.060527472527472516,
+    "contribution": 0.05870769230769231,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -225,14 +245,14 @@
    },
    {
     "id": "c3",
-    "score": -0.0326075297278229,
+    "score": 0.5484800207377994,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.14065934065934066,
-    "contribution": -0.00458655363204542,
+    "contribution": 0.07714883808180036,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -273,14 +293,14 @@
    },
    {
     "id": "c7",
-    "score": 0.5391545897594903,
+    "score": 0.49768349379754,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14652014652014653,
-    "contribution": 0.07899700948857001,
+    "contribution": 0.072920658431874,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -311,16 +331,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.862696-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.862696-07:00",
-  "event_objects": 10,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-08-12T22:13:31.040068-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.040068-07:00",
+  "event_objects": 12,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 7,
+   "INSIDER_SELL": 9,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.7,
+  "largest_type_share": 0.75,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -328,21 +348,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DHR in the declared corpus",
-  "returned": 16,
-  "total_available": 16,
+  "returned": 18,
+  "total_available": 18,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
-  "newest_returned_available_as_of": "2026-10-29T15:02:51.982718-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-10T15:02:11.582782-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.862696-07:00",
+  "corpus_end": "2026-11-10T22:13:31.040068-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DHR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -447,6 +467,30 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-11-02",
    "label": "WATCH"
   },
@@ -540,30 +584,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-22",
    "label": "WATCH"
   }
  ],

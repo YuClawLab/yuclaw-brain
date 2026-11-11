@@ -1,34 +1,54 @@
 {
  "ticker": "AAPL",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WEAKENING",
- "score": -0.1589,
+ "score": -0.1196,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.121,
+  "c1": 0.1765,
   "c2": 0.0,
-  "c3": -0.729761,
+  "c3": -0.79978484,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.46211717,
-  "c7": 0.0,
+  "c6": -0.1981644,
+  "c7": -0.07578429,
   "c8": 0.0,
-  "c9": -0.4
+  "c9": -0.53333336
  },
  "evidence_coverage": {
-  "ecs": 87,
-  "events_90d": 28,
-  "recency_days": 0.1,
+  "ecs": 83,
+  "events_90d": 30,
+  "recency_days": 5.2,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001140361-26-042149",
+   "excerpt": "Newstead Jennifer S 2399 shares @ $325.75 on 2026-11-03 ($781,474)",
+   "source_hash": "903da596969a25819c82a980fddda97ea782ba5900679c9501005fb7651b51ed",
+   "available_as_of": "2026-11-05T16:35:18.555527-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "AAPL",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0000320193-26-000026",
+   "excerpt": "0000320193 us-gaap:CommonStockMember 2025-09-28 2026-09-26 0000320193 aapl:A1.625NotesDue2026Member 2025-09-28 2026-09-26",
+   "source_hash": "3fd515458bca8687be81c40511f34d2f6f54ddedcb9247ad3314f8e7662ff345",
+   "available_as_of": "2026-11-03T06:05:15-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "OTHER_MATERIAL",
@@ -475,20 +495,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": -0.15890107511241602,
-  "stored_score": -0.1589,
+  "reconstructed_score": -0.11961942699885429,
+  "stored_score": -0.1196,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.121,
+    "score": 0.1765,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.017987611837577425,
+    "contribution": 0.026238128011011698,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -505,14 +525,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7297610251328189,
+    "score": -0.7997848187425155,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": -0.09643091316276754,
+    "contribution": -0.10568388520203922,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -541,26 +561,26 @@
    },
    {
     "id": "c6",
-    "score": -0.46211715726000974,
+    "score": -0.1981643975234253,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.1144956480479033,
+    "contribution": -0.0490978548578342,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.0,
+    "score": -0.0757842854488506,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.0,
+    "contribution": -0.01043142263576746,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -577,30 +597,30 @@
    },
    {
     "id": "c9",
-    "score": -0.4,
+    "score": -0.5333333333333333,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11011699931176876,
-    "contribution": -0.04404679972470751,
+    "contribution": -0.05872906629961,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.591564-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.591564-07:00",
-  "event_objects": 28,
-  "distinct_accessions": 18,
+  "window_start_exclusive": "2026-08-12T22:13:30.795788-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:30.795788-07:00",
+  "event_objects": 30,
+  "distinct_accessions": 20,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 27,
-   "OTHER_MATERIAL": 1
+   "INSIDER_SELL": 28,
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9642857142857143,
+  "largest_type_share": 0.9333333333333333,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -608,21 +628,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 44,
-  "total_available": 44,
+  "returned": 46,
+  "total_available": 46,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-11-02T14:30:23-07:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-05T16:35:18.555527-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.591564-07:00",
+  "corpus_end": "2026-11-10T22:13:30.795788-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -651,6 +671,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "WEAKENING"
@@ -745,30 +789,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-22",
    "label": "NEUTRAL"
   }
  ],

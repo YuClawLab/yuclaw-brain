@@ -1,34 +1,44 @@
 {
  "ticker": "PFE",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "NEUTRAL",
- "score": 0.3772,
+ "score": 0.3869,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.4535,
+  "c1": 0.191,
   "c2": 0.0,
-  "c3": -0.03260753,
+  "c3": 0.54848003,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.5316514,
+  "c7": 0.51747775,
   "c8": 0.0,
-  "c9": 0.2
+  "c9": 0.05882353
  },
  "evidence_coverage": {
-  "ecs": 52,
-  "events_90d": 4,
-  "recency_days": 82.2,
+  "ecs": 54,
+  "events_90d": 1,
+  "recency_days": 7.7,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "type_diversity": 1,
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PFE",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0000078003-26-000125",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C.&#160;&#160;20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934",
+   "source_hash": "ad6936e8d9cfc8cb6d1fc76e6a475794d288ea9c98a7802c66043a3c5855ad28",
+   "available_as_of": "2026-11-03T06:07:34-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PFE",
    "evidence_type": "INSIDER_BUY",
@@ -114,21 +124,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4865,
-  "reconstructed_score": 0.37721031278080475,
-  "stored_score": 0.3772,
+  "denominator": 0.5278333333333334,
+  "reconstructed_score": 0.3868579511102402,
+  "stored_score": 0.3869,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.4535,
+    "score": 0.19099999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.22199383350462487,
-    "contribution": 0.10067420349434739,
+    "effective_weight": 0.20461004104831068,
+    "contribution": 0.039080517840227334,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -145,14 +155,14 @@
    },
    {
     "id": "c3",
-    "score": -0.0326075297278229,
+    "score": 0.5484800207377994,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.19732785200411102,
-    "contribution": -0.006434373800351488,
+    "effective_weight": 0.18187559204294285,
+    "contribution": 0.09975512849541285,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -163,8 +173,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2620760534429599,
-    "contribution": 0.15724563206577594,
+    "effective_weight": 0.24155352068203345,
+    "contribution": 0.14493211240922008,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -175,32 +185,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.030832476875642344,
+    "effective_weight": 0.028418061256709818,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.0,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.06820334701610356,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.531651400217325,
+    "score": 0.5174777320352637,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.20554984583761562,
-    "contribution": 0.10928086335402365,
+    "effective_weight": 0.18945374171139878,
+    "contribution": 0.09803809258640928,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -217,30 +227,29 @@
    },
    {
     "id": "c9",
-    "score": 0.19999999999999996,
-    "confidence": 0.5,
+    "score": 0.05882352941176472,
+    "confidence": 0.5666666666666667,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.04,
-    "effective_weight": 0.08221993833504625,
-    "contribution": 0.016443987667009247,
+    "weight_times_confidence": 0.04533333333333333,
+    "effective_weight": 0.08588569624250078,
+    "contribution": 0.005052099778970635,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.232250-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.232250-07:00",
-  "event_objects": 4,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-08-12T22:13:31.393392-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.393392-07:00",
+  "event_objects": 1,
+  "distinct_accessions": 1,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_BUY": 3,
-   "INSIDER_SELL": 1
+   "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.75,
+  "largest_type_share": 1.0,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -248,22 +257,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PFE in the declared corpus",
-  "returned": 8,
-  "total_available": 8,
+  "returned": 9,
+  "total_available": 9,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-06-18T11:17:22-06:00",
-  "newest_returned_available_as_of": "2026-08-12T14:08:09.837133-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-03T06:07:34-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.232250-07:00",
+  "corpus_end": "2026-11-10T22:13:31.393392-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PFE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
+  {
+   "original": {
+    "ticker": "PFE",
+    "accession_number": "0000078003-26-000087",
+    "source_hash": "ad6936e8d9cfc8cb6d1fc76e6a475794d288ea9c98a7802c66043a3c5855ad28",
+    "excerpt_sha256": "f99034470291843a3a2a901997386cde2bb67ed50429d0762be153bff6919b71"
+   },
+   "rule_ids": [
+    "entity_inside"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-ad6936e8d9cfc8cb",
+   "kind": "display_correction",
+   "status": "CORRECTED",
+   "reason": "HTML entity fragment / dangling tail in the stored excerpt; display text decoded and completed to the clause boundary from the primary document",
+   "corrected_excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 Date of report (Date of earliest event reported): June 18, 2026 PFIZER INC .",
+   "corrected_sha256": "7fdb50127228f5207c84bb8dbb7119e05f12c59dea17b9de799dafd75e507c06",
+   "source_location": {
+    "accession_number": "0000078003-26-000087",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/78003/000007800326000087/pfe-20260618.htm",
+    "char_offset": 424,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
   {
    "original": {
     "ticker": "PFE",
@@ -341,6 +375,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-02",
    "label": "NEUTRAL"
@@ -435,30 +493,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-22",
    "label": "WATCH"
   }
  ],

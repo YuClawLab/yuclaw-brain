@@ -1,8 +1,8 @@
 {
  "ticker": "MU",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WEAKENING",
- "score": -0.1946,
+ "score": -0.112,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -10,25 +10,35 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.729761,
+  "c3": -0.79978484,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.44274676,
-  "c7": 0.8109431,
+  "c6": -0.21212956,
+  "c7": 0.72648245,
   "c8": 0.0,
-  "c9": -0.46666667
+  "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 85,
-  "events_90d": 59,
-  "recency_days": 13.0,
+  "ecs": 90,
+  "events_90d": 60,
+  "recency_days": 5.3,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MU",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-11-05",
+   "accession_number": "0001104659-26-123389",
+   "excerpt": "Item 5.02. Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrangements of Certain Officers.",
+   "source_hash": "d58ee37d93011792d3925341fc88db3da24d40f47de8aef23c2a4408cd4f1f89",
+   "available_as_of": "2026-11-05T14:33:48-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MU",
    "evidence_type": "INSIDER_SELL",
@@ -1018,16 +1028,6 @@
    "source_hash": "ffe4214a0ee429b8280d8452bd795aba07c3d6c40d43bceace03baca2a362d10",
    "available_as_of": "2026-07-16T01:26:50.142146-06:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "MU",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-06-02",
-   "accession_number": "0001242654-26-000009",
-   "excerpt": "MEHROTRA SANJAY S 2765 shares @ $965.63 on 2026-05-29 ($2,669,967)",
-   "source_hash": "f5fcf969c419e3af7407a5202bc7735ecce0d21c3f7fa689966680ccce8da217",
-   "available_as_of": "2026-07-16T01:26:50.142146-06:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,8 +1035,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.1946079198566501,
-  "stored_score": -0.1946,
+  "reconstructed_score": -0.11202795585372619,
+  "stored_score": -0.112,
   "missing_components": [],
   "components": [
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7297610251328189,
+    "score": -0.7997848187425155,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.09916073377600937,
+    "contribution": -0.10867564416034181,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.4427467644522472,
+    "score": -0.2121295622112291,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.11280172342732413,
+    "contribution": -0.05404574833407111,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.8109431396876515,
+    "score": 0.726482463199785,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.11478317617659611,
+    "contribution": 0.10282837412594269,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,31 +1137,31 @@
    },
    {
     "id": "c9",
-    "score": -0.4666666666666667,
+    "score": -0.06666666666666665,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11323425336164189,
-    "contribution": -0.05284265156876622,
+    "contribution": -0.007548950224109458,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.183976-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.183976-07:00",
-  "event_objects": 59,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-08-12T22:13:31.349984-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.349984-07:00",
+  "event_objects": 60,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
-   "EXEC_CHANGE": 1,
+   "EXEC_CHANGE": 2,
    "INSIDER_SELL": 56,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9491525423728814,
+  "largest_type_share": 0.9333333333333333,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1170,22 +1170,46 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MU in the declared corpus",
   "returned": 100,
-  "total_available": 264,
+  "total_available": 265,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:26:50.142146-06:00",
-  "newest_returned_available_as_of": "2026-10-20T17:08:27.789836-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-05T14:33:48-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.183976-07:00",
+  "corpus_end": "2026-11-10T22:13:31.349984-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MU.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "WEAKENING"
@@ -1281,30 +1305,6 @@
   {
    "date": "2026-09-30",
    "label": "BULLISH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,8 +1,8 @@
 {
  "ticker": "LRCX",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WEAKENING",
- "score": -0.1527,
+ "score": -0.1352,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -10,25 +10,45 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.729761,
+  "c3": -0.79978484,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.45221022,
-  "c7": 0.800468,
+  "c6": -0.2335293,
+  "c7": 0.72567964,
   "c8": 0.0,
-  "c9": -0.46666667
+  "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 88,
+  "ecs": 90,
   "events_90d": 11,
-  "recency_days": 7.3,
+  "recency_days": 5.3,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "LRCX",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-05",
+   "accession_number": "0000707549-26-000057",
+   "excerpt": "Submission of Matters to a Vote of Security Holders",
+   "source_hash": "3b68a1a352682b7064a985b75058dadf9e616cb1b515f2137fd6a7f09401e260",
+   "available_as_of": "2026-11-05T14:17:56-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "LRCX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001405693-26-000013",
+   "excerpt": "Mayer Bethany S 719 shares @ $242.59 on 2026-11-02 ($174,422)",
+   "source_hash": "2ac720ed48068f35e41bf95d8d334ae7da1a278add202667db13bbd3f608b37b",
+   "available_as_of": "2026-11-03T13:02:57.182776-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "LRCX",
    "evidence_type": "INSIDER_SELL",
@@ -664,9 +684,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5985,
-  "reconstructed_score": -0.1527196740693091,
-  "stored_score": -0.1527,
+  "denominator": 0.6705,
+  "reconstructed_score": -0.13523181075195972,
+  "stored_score": -0.1352,
   "missing_components": [],
   "components": [
    {
@@ -677,8 +697,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18045112781954886,
-    "contribution": -0.18045112781954886,
+    "effective_weight": 0.1610738255033557,
+    "contribution": -0.1610738255033557,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -695,14 +715,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7297610251328189,
+    "score": -0.7997848187425155,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16040100250626566,
-    "contribution": -0.11705440002130428,
+    "effective_weight": 0.14317673378076062,
+    "contribution": -0.11451057807499103,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -713,8 +733,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21303258145363407,
-    "contribution": 0.12781954887218044,
+    "effective_weight": 0.19015659955257272,
+    "contribution": 0.11409395973154363,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -725,32 +745,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02506265664160401,
+    "effective_weight": 0.02237136465324385,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.45221021210866374,
-    "confidence": 0.4,
+    "score": -0.23352930204858924,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12030075187969923,
-    "contribution": -0.05440122852435052,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.21476510067114093,
+    "contribution": -0.05015394406412654,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.8004680208742623,
+    "score": 0.7256796631842266,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1670843776106934,
-    "contribution": 0.13374570106503963,
+    "effective_weight": 0.14914243102162567,
+    "contribution": 0.10822962911025007,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -767,22 +787,22 @@
    },
    {
     "id": "c9",
-    "score": -0.4666666666666667,
+    "score": -0.2666666666666667,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1336675020885547,
-    "contribution": -0.06237816764132553,
+    "effective_weight": 0.11931394481730052,
+    "contribution": -0.031817051951280144,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.053462-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.053462-07:00",
+  "window_start_exclusive": "2026-08-12T22:13:31.229533-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.229533-07:00",
   "event_objects": 11,
   "distinct_accessions": 9,
   "objects_without_accession": 0,
@@ -799,23 +819,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for LRCX in the declared corpus",
-  "returned": 63,
-  "total_available": 63,
+  "returned": 65,
+  "total_available": 65,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-03T13:15:02-07:00",
-  "newest_returned_available_as_of": "2026-10-26T11:51:06.406044-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-05T14:17:56-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.053462-07:00",
+  "corpus_end": "2026-11-10T22:13:31.229533-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LRCX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-02",
    "label": "WEAKENING"
@@ -911,30 +955,6 @@
   {
    "date": "2026-09-30",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-09-22",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,34 +1,44 @@
 {
  "ticker": "AMZN",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "WATCH",
- "score": 0.1468,
+ "score": 0.0235,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0525,
+  "c1": 0.161,
   "c2": 0.0,
-  "c3": -0.729761,
+  "c3": -0.79978484,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.0030944836,
-  "c7": 0.83369756,
+  "c6": -0.026715497,
+  "c7": -0.07575942,
   "c8": 0.0,
   "c9": 0.33333334
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 30,
-  "recency_days": 4.2,
+  "ecs": 83,
+  "events_90d": 29,
+  "recency_days": 6.3,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AMZN",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-04",
+   "accession_number": "0001936006-26-000028",
+   "excerpt": "Herrington Douglas J S 1000 shares @ $243.47 on 2026-11-02 ($243,470)",
+   "source_hash": "851f613cbf763ade30d71fe3ca5a08a926a6da19bc41437fc00c5d19ddefff0b",
+   "available_as_of": "2026-11-04T15:33:31.785370-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AMZN",
    "evidence_type": "OTHER_MATERIAL",
@@ -1018,16 +1028,6 @@
    "source_hash": "1576a4276d82050f3325899dde95dbf47fc330ec25204eae2bfe25d3babd9afe",
    "available_as_of": "2026-02-24T15:11:58-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "AMZN",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-18",
-   "accession_number": "0001936006-26-000004",
-   "excerpt": "Herrington Douglas J S 1138 shares @ $198.85 on 2026-02-17 ($226,296)",
-   "source_hash": "f4e17763404bdf50b9fbfc63d3aedfe71f8089b6fc078a65e6026a4ec27fcb9e",
-   "available_as_of": "2026-02-18T16:16:06-07:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6185,
-  "reconstructed_score": 0.14683117088927983,
-  "stored_score": 0.1468,
+  "reconstructed_score": 0.02345090015819401,
+  "stored_score": 0.0235,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0525,
+    "score": 0.16099999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.17461600646725947,
-    "contribution": -0.009167340339531121,
+    "contribution": 0.02811317704122877,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7297610251328189,
+    "score": -0.7997848187425155,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.15521422797089732,
-    "contribution": -0.11326929411924108,
+    "contribution": -0.12413798318396359,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.003094483560808139,
+    "score": -0.02671549678975698,
     "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.072,
     "effective_weight": 0.11641067097817298,
-    "contribution": -0.0003602309076446014,
+    "contribution": -0.0031099689068108363,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.8336975810709958,
+    "score": -0.07575942201061804,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.16168148746968472,
-    "contribution": 0.13479346500743666,
+    "contribution": -0.012248896040520298,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,16 +1151,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:48.685785-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:48.685785-07:00",
-  "event_objects": 30,
-  "distinct_accessions": 14,
+  "window_start_exclusive": "2026-08-12T22:13:30.870518-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:30.870518-07:00",
+  "event_objects": 29,
+  "distinct_accessions": 13,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 27,
+   "INSIDER_SELL": 26,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.9,
+  "largest_type_share": 0.896551724137931,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1169,20 +1169,20 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMZN in the declared corpus",
   "returned": 100,
-  "total_available": 103,
+  "total_available": 104,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
-  "oldest_returned_available_as_of": "2026-02-18T16:16:06-07:00",
-  "newest_returned_available_as_of": "2026-10-29T14:05:27-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "oldest_returned_available_as_of": "2026-02-24T15:11:58-07:00",
+  "newest_returned_available_as_of": "2026-11-04T15:33:31.785370-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.685785-07:00",
+  "corpus_end": "2026-11-10T22:13:30.870518-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMZN.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [
   {
    "original": {
@@ -1236,6 +1236,30 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "WEAKENING"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-02",
    "label": "WATCH"
@@ -1330,30 +1354,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
    "label": "WATCH"
   }
  ],

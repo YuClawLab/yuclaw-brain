@@ -1,21 +1,21 @@
 {
  "schema": "WhyHistory.v1",
  "ticker": "ABBV",
- "build_id": "why-2026-11-03T000148",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "build_id": "why-2026-11-11T051330",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 17,
-  "total_available": 17,
+  "returned": 18,
+  "total_available": 18,
   "cap": null,
   "ordering": "available_as_of ASC, accession_number ASC, source_hash ASC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-11-02T14:05:38-07:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-03T11:43:40-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "COMPLETE",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:48.616547-07:00",
+  "corpus_end": "2026-11-10T22:13:30.810191-07:00",
   "note": "COMPLETE for the declared scope and build; not a claim to hold every SEC filing ever made"
  },
  "evidence_objects": [
@@ -188,6 +188,16 @@
    "source_hash": "2d93639a59b9a9606adf5f8593ddba4e9aebf7349d610e272e61d2516d9479b3",
    "available_as_of": "2026-11-02T14:05:38-07:00",
    "protocol_id": null
+  },
+  {
+   "ticker": "ABBV",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001551152-26-000037",
+   "excerpt": "http://fasb.org/us-gaap/2026#CostOfGoodsAndServicesSold http://fasb.org/us-gaap/2026#InterestIncomeExpenseNonoperatingNet",
+   "source_hash": "c973077e0fd2d12ef05cd24a187e8d60e0bb4fccc965786f02dc1b0324b9f29b",
+   "available_as_of": "2026-11-03T11:43:40-07:00",
+   "protocol_id": null
   }
  ],
  "corrections": [
@@ -315,6 +325,31 @@
     "verified_against": "primary document (EDGAR)"
    },
    "corrected_at": "2026-09-15T04:05:28.838883+00:00"
+  },
+  {
+   "original": {
+    "ticker": "ABBV",
+    "accession_number": "0001551152-26-000026",
+    "source_hash": "c973077e0fd2d12ef05cd24a187e8d60e0bb4fccc965786f02dc1b0324b9f29b",
+    "excerpt_sha256": "b004c906b0e025057c8fca1a4bcf64c0528d451f1a366dad6a04f72c0aa5a0a7"
+   },
+   "rule_ids": [
+    "taxonomy_url"
+   ],
+   "recorded_at": "2026-09-15T04:05:28.838883+00:00",
+   "correction_id": "exc-c973077e0fd2d12e",
+   "kind": "quality_flag",
+   "status": "CONFIRMED",
+   "reason": "verified against the primary document: the excerpt is XBRL context/taxonomy data at its source location, not event-bearing prose; no corrected text exists for this object",
+   "corrected_excerpt": null,
+   "corrected_sha256": null,
+   "source_location": {
+    "accession_number": "0001551152-26-000026",
+    "document_url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115226000026/abbv-20260630.htm",
+    "char_offset": 52,
+    "verified_against": "primary document (EDGAR)"
+   },
+   "corrected_at": null
   }
  ],
  "not_advice": "Research and education only \u2014 not investment advice. Signal labels are research classifications, not buy/sell recommendations. Investment implication: none established \u2014 no buy, sell, or alpha conclusion is supported by this object."

@@ -1,14 +1,14 @@
 {
  "ticker": "VIXY",
- "generated": "2026-11-03T00:01:48.589398+00:00",
+ "generated": "2026-11-11T05:13:30.793736+00:00",
  "label": "NEUTRAL",
- "score": 0.3557,
+ "score": 0.3719,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.395,
+  "c1": 0.5705,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,16 +19,26 @@
   "c9": 0.04761905
  },
  "evidence_coverage": {
-  "ecs": 36,
+  "ecs": 54,
   "events_90d": 1,
-  "recency_days": 87.3,
+  "recency_days": 7.3,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-03T00:01:39.438612+00:00",
-  "source_sha256": "a6ee50429ab3379a73469c494a5e331cfca7ed93aa98bff055a904df92761076",
+  "as_of": "2026-11-11T05:13:22.157172+00:00",
+  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "VIXY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-03",
+   "accession_number": "0001193125-26-445531",
+   "excerpt": "ProShares VIX Mid-Term Futures ETF &#160; VIXM &#160; Cboe BZX",
+   "source_hash": "4cace40a8770b315420a2555d793b664e5ab49d1bd1a8335a098cf70305c47d3",
+   "available_as_of": "2026-11-03T14:43:49-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "VIXY",
    "evidence_type": "OTHER_MATERIAL",
@@ -44,21 +54,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.34249999999999997,
-  "reconstructed_score": 0.355698296836983,
-  "stored_score": 0.3557,
+  "denominator": 0.3785,
+  "reconstructed_score": 0.37194363716424483,
+  "stored_score": 0.3719,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.39499999999999996,
+    "score": 0.5705,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.3153284671532847,
-    "contribution": 0.12455474452554745,
+    "effective_weight": 0.285336856010568,
+    "contribution": 0.16278467635402905,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -81,7 +91,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.10510948905109489,
+    "effective_weight": 0.095112285336856,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -93,8 +103,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.3722627737226278,
-    "contribution": 0.22335766423357667,
+    "effective_weight": 0.3368560105680317,
+    "contribution": 0.202113606340819,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -105,19 +115,19 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.043795620437956206,
+    "effective_weight": 0.03963011889035667,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.0,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.095112285336856,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -153,16 +163,16 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.1635036496350365,
-    "contribution": 0.00778588807785889,
+    "effective_weight": 0.14795244385733156,
+    "contribution": 0.007045354469396748,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-04T17:01:49.434984-07:00",
-  "window_end_inclusive": "2026-11-02T17:01:49.434984-07:00",
+  "window_start_exclusive": "2026-08-12T22:13:31.581512-07:00",
+  "window_end_inclusive": "2026-11-10T22:13:31.581512-07:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -177,23 +187,47 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for VIXY in the declared corpus",
-  "returned": 1,
-  "total_available": 1,
+  "returned": 2,
+  "total_available": 2,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-07T09:46:28-06:00",
-  "newest_returned_available_as_of": "2026-08-07T09:46:28-06:00",
-  "build_id": "why-2026-11-03T000148",
+  "newest_returned_available_as_of": "2026-11-03T14:43:49-07:00",
+  "build_id": "why-2026-11-11T051330",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-02T17:01:49.434984-07:00",
+  "corpus_end": "2026-11-10T22:13:31.581512-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/VIXY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-03T000148",
+ "build_id": "why-2026-11-11T051330",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-10",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-09",
+   "label": "NEUTRAL"
+  },
+  {
+   "date": "2026-11-06",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-11-05",
+   "label": "BULLISH"
+  },
+  {
+   "date": "2026-11-04",
+   "label": "WATCH"
+  },
+  {
+   "date": "2026-11-03",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-02",
    "label": "NEUTRAL"
@@ -288,30 +322,6 @@
   },
   {
    "date": "2026-09-30",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-29",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-28",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-25",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-24",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-23",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-22",
    "label": "WATCH"
   }
  ],
