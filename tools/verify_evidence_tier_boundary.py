@@ -51,7 +51,7 @@ def main() -> int:
             n_snap = cur.fetchone()[0]
 
     # 3. Lab replay bundle (if present) must only carry scoring-universe tickers
-    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle.json"
+    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"
     if bundle.exists():
         try:
             data = json.loads(bundle.read_text())
@@ -70,7 +70,7 @@ def main() -> int:
             walk(data)
             leak = found & ev
             if leak:
-                fails.append(f"lab_replay_bundle.json contains evidence-tier tickers: {sorted(leak)}")
+                fails.append(f"lab_replay_bundle_v3.json contains evidence-tier tickers: {sorted(leak)}")
         except Exception as e:
             fails.append(f"could not parse lab replay bundle: {e}")
 

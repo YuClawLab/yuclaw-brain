@@ -1,4 +1,4 @@
-"""Export the Validation Lab replay bundle to docs/replay/lab_replay_bundle.json.
+"""Export the Validation Lab replay bundle to docs/replay/lab_replay_bundle_v3.json.
 
 The bundle is the reproducibility artifact for the Lab: everything needed to
 recompute the page's core tables OFF this box, plus the expected outputs and
@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+from v3.lab.replay_check import DATE_BASIS, ANALYSIS_ZONE
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -30,7 +31,7 @@ from v3.lab.rigor import compute_rigor
 from v3.lab.stats import BOOTSTRAP_SEED
 
 _REPO = Path(__file__).resolve().parents[2]
-OUT = _REPO / "docs" / "replay" / "lab_replay_bundle.json"
+OUT = _REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"
 TRUST_REPO = Path.home() / "yuclaw-trust"
 
 
@@ -130,16 +131,18 @@ def _ledger_leaves() -> dict[str, list[dict]]:
         with cn.cursor() as cur:
             cur.execute(
                 f"""SELECT (signal_time AT TIME ZONE 'UTC')::date, ticker,
-                           snapshot_id, total_score, {cols}
+                           snapshot_id, total_score, signal_time, (signal_time AT TIME ZONE 'America/Edmonton')::date, {cols}
                     FROM signal_snapshots WHERE is_backfill = false
                     ORDER BY 1, ticker""")
             for row in cur.fetchall():
                 d, tk, sid, score = row[0], row[1], row[2], float(row[3])
+                if row[4].astimezone(ANALYSIS_ZONE).date() != row[5]:
+                    raise ValueError("database analytical calendar differs from the pinned replay calendar")
                 comps = {cid: (float(v) if v is not None else 0.0)
-                         for cid, v in zip(_COMPONENT_COLS, row[4:])}
+                         for cid, v in zip(_COMPONENT_COLS, row[6:])}
                 out.setdefault(d.isoformat(), []).append(
                     {"ticker": tk, "snapshot_id": sid, "total_score": score,
-                     "components": comps})
+                     "components": comps, "signal_time_utc": row[4].astimezone(timezone.utc).isoformat()})
     return out
 
 
@@ -164,7 +167,7 @@ def main() -> int:
     built = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     bundle = {
         "artifact": "YUCLAW Validation Lab replay bundle",
-        "schema": "lab-replay/2",
+        "schema": "lab-replay/3",
         "disclaimer": ("Hypothetical research illustration. Not investment advice. "
                        "Research classifications, not recommendations. "
                        "Derived data only — no raw vendor market data."),
@@ -173,6 +176,7 @@ def main() -> int:
         "ledger_commit": _git_head(TRUST_REPO),
         "ledger_repo": "https://github.com/YuClawLab/yuclaw-trust",
         "methodology": {
+            "date_basis": dict(DATE_BASIS),
             "decile_fraction": DECILE_FRACTION,
             "min_universe_for_deciles": MIN_UNIVERSE_FOR_DECILES,
             "forward_day0": FORWARD_DAY0.isoformat(),
@@ -186,6 +190,7 @@ def main() -> int:
         "expected": compute_rigor(),   # what tools/replay_lab.py must reproduce
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
+    (OUT.parent / "replay_lab.py").write_bytes((_REPO / "tools" / "replay_lab.py").read_bytes())
     OUT.write_text(json.dumps(bundle, indent=1, default=str))
     print(f"[replay_export] wrote {OUT} ({OUT.stat().st_size} bytes)")
     return 0

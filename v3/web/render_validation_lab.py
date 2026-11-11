@@ -41,7 +41,7 @@ from v3.web.oie_v51_blocks import (baselines_block as _baselines,
 from v3.web import lab_prose
 
 OUT = _REPO / "docs" / "validation_lab.html"
-REPLAY_BUNDLE = _REPO / "docs" / "replay" / "lab_replay_bundle.json"     # exported earlier in the same refresh; `expected` IS compute_rigor()
+REPLAY_BUNDLE = _REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"     # exported earlier in the same refresh; `expected` IS compute_rigor()
 UNIVERSE_PATH = _REPO / "v3" / "universe.json"
 TRUST_LEDGER = Path.home() / "yuclaw-trust" / "verified_research_ledger.jsonl"
 
@@ -532,9 +532,13 @@ pip install yuclaw
 yuclaw replay-lab
 
 # or fully standalone (stdlib only, nothing to install)
-curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
-curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
-python3 replay_lab.py lab_replay_bundle.json</pre>
+curl -fSLO https://yuclaw.ca/replay/lab_replay_bundle_v3.json
+curl -fSLO https://yuclaw.ca/replay/replay_lab.py
+python3 replay_lab.py lab_replay_bundle_v3.json</pre>
+      <p>Current website data uses replay format 3, which checks Edmonton analysis dates separately from UTC ledger dates.
+      Use the verifier above with this bundle. Released v9.1.0 clients retain the
+      <a href="replay/lab_replay_bundle.json">last verified format 2 snapshot (3 November 2026)</a>;
+      that compatibility file is historical and does not represent current data.</p>
       <p style="font-size:12px;color:#A0AEC0;line-height:1.65;margin-top:10px">
         The script (Python ≥3.10, standard library only; <code>pip install yuclaw</code> optionally adds the full
         SDK) rebuilds the decile cohorts from the bundled composite scores, re-derives every cohort period

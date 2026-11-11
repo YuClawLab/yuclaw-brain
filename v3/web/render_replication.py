@@ -199,9 +199,9 @@ def render() -> str:
       <pre>pip install yuclaw
 yuclaw replay-lab            # fetches the published bundle and verifies it</pre>
       <p style="font-size:12px;color:#A0AEC0;margin:12px 0 8px">Path B — standalone (Python ≥ 3.10 standard library only, no installs):</p>
-      <pre>curl -sO https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json
-curl -sO https://raw.githubusercontent.com/YuClawLab/yuclaw-brain/main/tools/replay_lab.py
-python3 replay_lab.py lab_replay_bundle.json</pre>
+      <pre>curl -fSLO https://yuclaw.ca/replay/lab_replay_bundle_v3.json
+curl -fSLO https://yuclaw.ca/replay/replay_lab.py
+python3 replay_lab.py lab_replay_bundle_v3.json</pre>
       <p style="font-size:11.5px;color:#718096;margin-top:10px">
         Both paths rebuild the decile cohorts from bundled scores, recompute the core expected statistical tables
         (bootstrap CI with the published seed, Fama-MacBeth IC with Newey-West correction,

@@ -157,16 +157,16 @@ def p2_replicator() -> list[str]:
         f.append("P2: no 'python3 replay_lab.py …' command found in "
                  "replication.html — docs and tests have diverged")
         return f
-    bundle = DOCS / "replay" / "lab_replay_bundle.json"
+    bundle = DOCS / "replay" / "lab_replay_bundle_v3.json"
     if not bundle.exists():
-        f.append("P2: docs/replay/lab_replay_bundle.json missing")
+        f.append("P2: docs/replay/lab_replay_bundle_v3.json missing")
         return f
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         venv.create(tdp / "venv", with_pip=False)   # zero installs
         py = tdp / "venv" / "bin" / "python3"
         (tdp / "replay_lab.py").write_text(text)
-        (tdp / "lab_replay_bundle.json").write_text(bundle.read_text())
+        (tdp / "lab_replay_bundle_v3.json").write_text(bundle.read_text())
         cmd = cmds[0].split()
         cmd[0] = str(py)                            # python3 -> venv python
         r = subprocess.run(cmd, cwd=td, capture_output=True, text=True,

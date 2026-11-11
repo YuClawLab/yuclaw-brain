@@ -23,7 +23,7 @@ from v3.web import lab_prose  # noqa: E402
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true"); ap.add_argument("--restage", action="store_true")
-    ap.add_argument("--page", default=str(_REPO / "docs" / "validation_lab.html")); ap.add_argument("--bundle", default=str(_REPO / "docs" / "replay" / "lab_replay_bundle.json"))
+    ap.add_argument("--page", default=str(_REPO / "docs" / "validation_lab.html")); ap.add_argument("--bundle", default=str(_REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"))
     a = ap.parse_args(argv)
     page = Path(a.page); b = json.loads(Path(a.bundle).read_text(encoding="utf-8")); rig, ident = b["expected"], lab_prose.bundle_identity(b); html = page.read_text(encoding="utf-8")
     if a.restage:

@@ -24,6 +24,14 @@ TS=$(date -u +"%Y-%m-%d %H:%M UTC")
 # v3 development tree; main holds the launch-published code.
 cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 
+# Failures before git push must remain visible. Local file mtimes are not deployment evidence.
+exec 9>/tmp/yuclaw_pages_refresh.lock
+flock -n 9 || { echo '[refresh_v3_pages] another refresh is running'; exit 75; }
+trap 'rc=$?; if ((rc != 0)); then printf "[refresh_v3_pages] FAILED rc=%s at=%s\n" "$rc" "$(date -u +%FT%TZ)" | tee /tmp/yuclaw_refresh_failed.marker; fi' EXIT
+[[ $(/usr/bin/git branch --show-current) == main ]] || { echo '[refresh_v3_pages] refusing non-main checkout'; exit 81; }
+/usr/bin/git diff --cached --quiet || { echo '[refresh_v3_pages] refusing pre-existing staged changes'; exit 82; }
+
+
 # Traffic archiver FIRST and non-fatal (2026-08-06): GitHub only retains a
 # rolling 14-day traffic window, so this must run before any gate below can
 # abort the chain — and a GitHub hiccup must never block the page pipeline.
@@ -224,7 +232,7 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
                  docs/coverage.json \
                  docs/etf_evidence.html docs/xlk_evidence.html \
                  docs/canada_resources.html \
-                 docs/replay/lab_replay_bundle.json \
+                 docs/replay/lab_replay_bundle_v3.json docs/replay/replay_lab.py \
                  docs/packets docs/todays_evidence.html docs/evidence_changes \
                  docs/c6_posture_current.json registry/c6_posture_state.json \
                  docs/trace_su.html docs/replication.html docs/lane.html \
@@ -244,10 +252,12 @@ cd "$REPO_DIR" || { echo "[refresh_v3_pages] cd $REPO_DIR failed"; exit 1; }
 
 if /usr/bin/git diff --cached --quiet; then
     echo "[refresh_v3_pages] no page changes at $TS — skip commit"
+    /usr/bin/python3 tools/check_public_freshness.py --against-build docs --out internal/status/public_site_health.json || exit 83
+    rm -f /tmp/yuclaw_refresh_failed.marker
     exit 0
 fi
 
-/usr/bin/git commit -m "auto: v3.0 page refresh $TS" || exit 4
+/usr/bin/git commit --signoff -m "auto: v3.0 page refresh $TS" || exit 4
 # Push-race fix (order of 2026-07-27; the race fired Fri Jul 24 and hid an
 # undeployed build until Sunday): rebase immediately before push, retry once
 # after re-rebase, and on double failure alarm loudly (marker + Telegram)
@@ -268,3 +278,6 @@ echo "[refresh_v3_pages] pushed at $TS"
 # means the site is stale — surfaced in the pipeline log + health monitor.
 /usr/bin/python3 tools/deploy_verify.py --timeout 900 || exit 15
 echo "[refresh_v3_pages] deploy-verified at $(date -u +'%Y-%m-%d %H:%M UTC')"
+
+/usr/bin/python3 tools/check_public_freshness.py --against-build docs --out internal/status/public_site_health.json || exit 83
+rm -f /tmp/yuclaw_refresh_failed.marker

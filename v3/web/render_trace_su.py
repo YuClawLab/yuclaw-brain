@@ -26,7 +26,7 @@ from pathlib import Path
 import psycopg2
 from v3.evidence.claim_support import assess
 
-from v3.web.useful_blocks import (footer_stamp_html, freshness_strip, VERSION,
+from v3.web.useful_blocks import (footer_stamp_html, freshness_strip, build_footer, VERSION,
                                   site_header_html, use_in_research_html)
 
 _REPO = Path(__file__).resolve().parents[2]
@@ -240,6 +240,7 @@ def render(d: dict) -> str:
       rebuilt {escape(built)} · <a href="https://github.com/YuClawLab/yuclaw-brain">YuClawLab</a> ·
       research &amp; education only
     </div>
+    {build_footer()}
   </div>
 </body>
 </html>

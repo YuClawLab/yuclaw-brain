@@ -159,9 +159,9 @@ def build_lab_packet(built: str, commit: str, ledger: dict) -> tuple[Path, list[
     data_through = str(ledger.get("date") or built[:10])
     files: dict[str, bytes] = {}
 
-    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle.json"
+    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"
     if bundle.exists():
-        files["lab_replay_bundle.json"] = bundle.read_bytes()
+        files["lab_replay_bundle_v3.json"] = bundle.read_bytes()
 
     files["cohort_summary.json"] = _json_bytes(compute_all())
     files["statistical_tests.json"] = _json_bytes(compute_rigor())

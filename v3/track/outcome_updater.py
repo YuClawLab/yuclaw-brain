@@ -205,7 +205,7 @@ def run(ticker_filter: Optional[str], dry_run: bool) -> dict:
             params: list[Any] = []
             sql = """
                 SELECT snapshot_id, ticker,
-                       signal_time::date AS signal_date,
+                       (signal_time AT TIME ZONE 'America/Edmonton')::date AS signal_date,
                        signal_label, total_score, is_backfill
                 FROM signal_snapshots
             """

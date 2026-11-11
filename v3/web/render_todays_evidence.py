@@ -129,7 +129,7 @@ def _ledger_tip() -> dict:
 
 def _replay_status() -> dict:
     """Run the standalone stdlib verifier against the local published bundle."""
-    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle.json"
+    bundle = _REPO / "docs" / "replay" / "lab_replay_bundle_v3.json"
     if not bundle.exists():
         return {"status": "bundle missing", "exit": None}
     try:

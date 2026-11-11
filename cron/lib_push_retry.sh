@@ -12,6 +12,12 @@
 
 push_with_retry() {
     local remote="$1" branch="$2" marker="$3" alert_hook="${4:-}"
+    local current
+    current=$(/usr/bin/git symbolic-ref --quiet --short HEAD) || return 23
+    if [ "$current" != "$branch" ]; then
+        echo "[push_with_retry] refusing branch mismatch: checked out $current, requested $branch" | tee "$marker"
+        return 23
+    fi
     local ts
     ts=$(date -u +"%Y-%m-%d %H:%M UTC")
 

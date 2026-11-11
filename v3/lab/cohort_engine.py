@@ -55,9 +55,9 @@ def load_snapshots(panel: str) -> dict[date, dict[str, dict[str, Any]]]:
         # trailing signal_time makes intraday re-run days deterministic: the
         # dict overwrite below keeps the LATEST snapshot per (date, ticker)
         cur.execute(
-            "SELECT signal_time::date, ticker, total_score, signal_label, snapshot_id "
+            "SELECT (signal_time AT TIME ZONE 'America/Edmonton')::date, ticker, total_score, signal_label, snapshot_id "
             "FROM signal_snapshots WHERE is_backfill = %s "
-            "ORDER BY signal_time::date, ticker, signal_time",
+            "ORDER BY (signal_time AT TIME ZONE 'America/Edmonton')::date, ticker, signal_time",
             (is_backfill,),
         )
         for d, tk, score, label, sid in cur.fetchall():
@@ -329,12 +329,12 @@ def current_top_decile() -> dict[str, Any]:
                     AND e.llm_confidence >= 0.7) AS strong_count
         FROM signal_snapshots s
         WHERE s.is_backfill = false
-          AND s.signal_time::date = (SELECT max(signal_time::date)
+          AND (s.signal_time AT TIME ZONE 'America/Edmonton')::date = (SELECT max((signal_time AT TIME ZONE 'America/Edmonton')::date)
                                      FROM signal_snapshots WHERE is_backfill = false)
         ORDER BY s.total_score DESC
     """
     with _connect() as cn, cn.cursor() as cur:
-        cur.execute("SELECT max(signal_time::date) FROM signal_snapshots "
+        cur.execute("SELECT max((signal_time AT TIME ZONE 'America/Edmonton')::date) FROM signal_snapshots "
                     "WHERE is_backfill = false")
         as_of = cur.fetchone()[0]
         cur.execute(q)

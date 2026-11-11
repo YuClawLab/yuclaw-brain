@@ -231,6 +231,27 @@ def footer_stamp_html(stamp: str) -> str:
             f'margin:18px 0 0;line-height:1.6">{escape(stamp)}</div>')
 
 
+def update_due_warning(generated_at=None) -> str:
+    """A saved page warns on its own if a later scheduled publication is missed."""
+    from datetime import datetime, timedelta, timezone
+    from v3.lab.replay_check import ANALYSIS_ZONE
+    now = (generated_at or datetime.now(timezone.utc)).astimezone(ANALYSIS_ZONE)
+    for offset in range(8):
+        day = now + timedelta(days=offset)
+        due = day.replace(hour=19, minute=0, second=0, microsecond=0)
+        if due.weekday() < 5 and due > now:
+            deadline = int(due.timestamp() * 1000)
+            break
+    return ('<script data-public-freshness-deadline="' + str(deadline) + '">'
+            '(function(){function check(){if(Date.now()<=' + str(deadline) +
+            '||document.getElementById("public-update-overdue"))return;'
+            'var n=document.createElement("div");n.id="public-update-overdue";'
+            'n.setAttribute("role","status");'
+            'n.style.cssText="padding:14px 20px;background:#fff3cd;color:#493600;border-bottom:2px solid #b8860b;font:16px/1.5 sans-serif";'
+            'n.textContent="Scheduled website update overdue. This page is a saved snapshot. Check its displayed data dates before using it.";'
+            'document.body.prepend(n);}check();setInterval(check,60000);})();</script>')
+
+
 def build_footer() -> str:
     """The demoted raw build timestamp + daily evidence block root, small
     mono, for auditors' ledger cross-reference. The ONLY place a raw build
@@ -260,7 +281,7 @@ def build_footer() -> str:
             f'Mono\',monospace;font-size:10px;color:#4A5568;'
             f'margin:18px 0 6px">build '
             f'{datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")} UTC · '
-            f'daily evidence block root {root} (block {block_date})</footer>')
+            f'daily evidence block root {root} (block {block_date})</footer>' + update_due_warning())
 
 
 def site_header_html(subtitle: str = "", active: str = "") -> str:
@@ -457,8 +478,8 @@ def use_in_research_html(packet_href: str | None = None,
         <div style="flex:1;min-width:240px">
           <div style="font-size:12px;color:#E2E8F0;font-weight:700;margin-bottom:4px">1 · Verify the record</div>
           <p style="font-size:12px;color:#A0AEC0;line-height:1.6;margin:0">
-            <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code>.<br>
-            No install: <a href="https://github.com/YuClawLab/yuclaw-brain/blob/main/tools/replay_lab.py">tools/replay_lab.py</a>
+            <code>pip install yuclaw</code> then <code>yuclaw replay-lab</code> for the legacy published bundle. The current website bundle uses explicit timezone binding; use the standalone verifier below.<br>
+            Current data: <a href="https://yuclaw.ca/replay/replay_lab.py">download the current standalone verifier</a>
             (stdlib only) against the published bundle.<br>
             Exit 0 = core tables reproduced and bundled ledger consistency checked; external provenance is separate. <a href="replication.html">How to report a replication →</a>
           </p>

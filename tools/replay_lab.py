@@ -17,6 +17,8 @@ is separate. Exit 4 = required external coverage incomplete. Non-zero on mismatc
 
 from __future__ import annotations
 
+import base64
+import io
 import hashlib
 import json
 import math
@@ -24,6 +26,53 @@ import random
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+# The production analytical calendar is pinned for independent replay. Host tzdata
+# can differ (including future-rule revisions); it must not silently change dates.
+# Source: Spark /usr/share/zoneinfo/America/Edmonton, captured 2026-11-11.
+ANALYSIS_ZONE_SHA256 = 'f939087dcdd096f6827f4a7c08e678dd8d47441025fa7011522f8975778ad6f1'
+_ANALYSIS_TZIF = base64.b64decode(
+    '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'
+    '0hAAAAAAXb6JAAAAAABeZLQQAAAAAF+eawAAAAAAYE3QkAAAAABhh4eAAAAAAGItspAAAAAAY2dpgAAAAABkDZSQAAAAAGVHS4AA'
+    'AAAAZe12kAAAAABnJy2AAAAAAGfNWJAAAAAAaQcPgAAAAABprTqQAAAAAGrm8YAAAAAAa5ZXEAAAAABs0A4AAAAAAG12ORAAAAAA'
+    'bq/wAAAAAABvVhsQAAAAAHCP0gAAAAAAcTX9EAAAAAByb7QAAAAAAHMV3xAAAAAAdE+WAAAAAAB0/vuQAAAAAHY4soAAAAAAdt7d'
+    'kAAAAAB4GJSAAAAAAHi+v5AAAAAAefh2gAAAAAB6nqGQAAAAAHvYWIAAAAAAfH6DkAAAAAB9uDqAAAAAAH5eZZAAAAAAf5gcgAIB'
+    'AgECAQIBAgECAQIDBAIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIB'
+    'AgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAgECAQIBAv//'
+    'laAAAP//q6ABBP//nZAACP//q6ABDP//q6ABEExNVABNRFQATVNUAE1XVABNUFQAAAAAAAEAAAAAAQpNU1Q3TURULE0zLjIuMCxN'
+    'MTEuMS4wCg=='
+)
+if hashlib.sha256(_ANALYSIS_TZIF).hexdigest() != ANALYSIS_ZONE_SHA256:
+    raise RuntimeError("analytical timezone definition corrupted")
+ANALYSIS_ZONE = ZoneInfo.from_file(io.BytesIO(_ANALYSIS_TZIF), key="America/Edmonton")
+DATE_BASIS = {"analysis_timezone": "America/Edmonton", "ledger_timezone": "UTC",
+              "snapshot_id_scheme": "ticker|utc-isoformat|v3.0",
+              "analysis_timezone_sha256": ANALYSIS_ZONE_SHA256}
 
 STDLIB_ONLY = True
 SUPPORTED_PYTHON = ("3.10", "3.11", "3.12", "3.13")
@@ -288,6 +337,9 @@ def _ledger_checks(bundle, ledger_path=None, ledger_sha256=None):
             _same(f"external ledger {block['date']} root", actual, block['daily_root'])
             _same(f"external ledger {block['date']} count", len(hashes), block['snapshot_count'])
             pinned[block['date']] = block
+    dated = bundle.get('schema') == 'lab-replay/3'
+    if dated:
+        _same('date basis', bundle['methodology'].get('date_basis'), DATE_BASIS)
     n_ok = n_subset = n_leaves = 0
     unanchored_inputs = set()
     index = defaultdict(list)
@@ -305,7 +357,18 @@ def _ledger_checks(bundle, ledger_path=None, ledger_sha256=None):
             seen_ids.add(sid)
             h = content_hash(sid, row['total_score'], row['components'])
             hashes.append(h)
-            index[(day, row['ticker'])].append((row, h))
+            analysis_day = day
+            if dated:
+                stamp = datetime.fromisoformat(row['signal_time_utc'])
+                if stamp.tzinfo is None or stamp.utcoffset().total_seconds() != 0:
+                    raise ValueError('snapshot timestamp must be UTC and timezone-aware')
+                canonical = stamp.astimezone(timezone.utc).isoformat()
+                payload = f"{row['ticker']}|{canonical}|v3.0"
+                expected_sid = f"snap_{row['ticker']}_{hashlib.sha256(payload.encode()).hexdigest()[:16]}"
+                _same(f'{sid} timestamp identity', sid, expected_sid)
+                _same(f'{sid} UTC ledger date', day, stamp.date().isoformat())
+                analysis_day = stamp.astimezone(ANALYSIS_ZONE).date().isoformat()
+            index[(analysis_day, row['ticker'])].append((row, h))
         n_leaves += len(rows)
         block = blocks.get(day)
         if block is None:
@@ -366,7 +429,7 @@ def _ledger_checks(bundle, ledger_path=None, ledger_sha256=None):
 def _run(path, ledger_path=None, ledger_sha256=None, require_external=False):
     FAILURES.clear()
     bundle = _load_json(path)
-    if bundle.get('schema') not in (None, 'lab-replay/2'):
+    if bundle.get('schema') not in (None, 'lab-replay/2', 'lab-replay/3'):
         raise ValueError('unsupported replay schema')
     meta = bundle['methodology']
     print(f"Replay bundle built {bundle['built_utc']} from source commit {(bundle.get('source_commit') or '?')[:12]}")
@@ -380,7 +443,7 @@ def _run(path, ledger_path=None, ledger_sha256=None, require_external=False):
     _same('bootstrap seed', meta['bootstrap']['seed'], 20260518)
     for panel in ('forward', 'in_sample'):
         p = bundle['panels'][panel]; exp = bundle['expected'][panel]
-        if bundle.get('schema') == 'lab-replay/2':
+        if bundle.get('schema') in ('lab-replay/2', 'lab-replay/3'):
             if not isinstance(p.get('trading_dates'), list) or not p['trading_dates'] or not p.get('observation_units'):
                 raise ValueError('lab-replay/2 requires calendar and observation units')
             for rb in p['rebalances']:
@@ -511,7 +574,7 @@ def _d(s):
     return date.fromisoformat(s)
 
 
-BUNDLE_URL = "https://yuclawlab.github.io/yuclaw-brain/replay/lab_replay_bundle.json"
+BUNDLE_URL = "https://yuclaw.ca/replay/lab_replay_bundle_v3.json"
 
 
 # Exit codes: 0 = reproduced, 1 = statistic/root mismatch, 2 = argparse,

@@ -68,6 +68,21 @@ else
     status+=("push:OK")
 fi
 
+# Public delivery is checked independently of generated file mtimes and push markers.
+public_report=/home/zhangd2/yuclaw/internal/status/public_site_health.json
+if public_result=$(timeout --signal=TERM --kill-after=5s 90 /usr/bin/python3 /home/zhangd2/yuclaw/tools/check_public_freshness.py --out "$public_report" 2>&1); then
+    status+=("public:OK")
+else
+    status+=("public:FAILED")
+    problems+=("Public website freshness failed: $public_result")
+fi
+for failed_run in /tmp/yuclaw_refresh_failed.marker /tmp/yuclaw_pipeline_failed.marker; do
+    if [[ -f "$failed_run" ]]; then
+        status+=("pipeline:FAILED")
+        problems+=("$(head -1 "$failed_run")")
+    fi
+done
+
 # 1d. C6 risk-artifact lag (restoration order, 2026-07-31) — dormancy can
 # never again hide: oldest qualifying evidence-tier filing (>= 2026-07-31)
 # still lacking its risk-channel artifact must be younger than 48h.

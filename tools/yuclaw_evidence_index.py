@@ -122,7 +122,10 @@ def main() -> int:
                         "data_through": v.get("data_through"),
                         "files": v.get("files")}
                     for k, v in packets.items() if isinstance(v, dict)},
-        "replay_bundle": f"{BASE}/replay/lab_replay_bundle.json",
+        "replay_bundle": f"{BASE}/replay/lab_replay_bundle_v3.json",
+        "replay_verifier": f"{BASE}/replay/replay_lab.py",
+        "legacy_replay_bundle": f"{BASE}/replay/lab_replay_bundle.json",
+        "legacy_replay_note": "Frozen verified format 2 snapshot from 2026-11-03 for released 9.1.0 clients; current website data uses format 3.",
         "schemas": {n: f"{BASE}/schemas/{n}.v1.json" for n in
                     next(e for e in _M["machine_surfaces"] if e["key"] == "schemas")["members"]},
         "registry": {"where": "registry/protocols.jsonl in "

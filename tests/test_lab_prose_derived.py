@@ -56,7 +56,7 @@ class DerivedProse(unittest.TestCase):
 
     def test_the_generator_renders_prose_and_table_from_one_dictionary(self):
         from v3.web import render_validation_lab as R
-        full = copy.deepcopy(json.loads((REPO / "docs" / "replay" / "lab_replay_bundle.json").read_text())["expected"]); i20 = full["forward"]["ic"]["20"]   # the complete public dictionary the page is rendered from
+        full = copy.deepcopy(json.loads((REPO / "docs" / "replay" / "lab_replay_bundle_v3.json").read_text())["expected"]); i20 = full["forward"]["ic"]["20"]   # the complete public dictionary the page is rendered from
         i20.update({"mean_ic": -0.0399, "ic_positive_share": 0.43, "n_dates": 67, "nw_p_value": 0.244, "t_reliable": True})
         html = R.rigor_panel_html(full); self.assertIsNotNone(re.search(r"20-day.*?monospace'>-0\.0399</td>", html, re.S)); self.assertIn(">43%<", html)
         self.assertIn("The forward 20-day IC is -0.0399, positive on 43% of 67 observed dates", html)
@@ -79,7 +79,7 @@ class DerivedProse(unittest.TestCase):
             L.restage("<p>a page without the fragments</p>", NEGATIVE, BUNDLE)
 
     def test_the_staged_page_in_this_tree_agrees_with_the_bundle_published_beside_it(self):
-        b = json.loads((REPO / "docs" / "replay" / "lab_replay_bundle.json").read_text()); html = (REPO / "docs" / "validation_lab.html").read_text()
+        b = json.loads((REPO / "docs" / "replay" / "lab_replay_bundle_v3.json").read_text()); html = (REPO / "docs" / "validation_lab.html").read_text()
         self.assertEqual(L.stale(html, b["expected"], L.bundle_identity(b)), [])
         ic20 = b["expected"]["forward"]["ic"]["20"]; self.assertIn(f"The forward 20-day IC is {ic20['mean_ic']:+.4f}", html); self.assertIn(f"{L.bundle_identity(b)['n_leaves']:,} leaf hashes", html)
 

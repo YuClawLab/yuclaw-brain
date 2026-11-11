@@ -99,7 +99,7 @@ def main():
         for old, new in replacements.items():
             html = html.replace(old, new)
         if path.name == 'validation_lab.html':
-            bundle = json.loads((DOCS / 'replay/lab_replay_bundle.json').read_text())
+            bundle = json.loads((DOCS / 'replay/lab_replay_bundle_v3.json').read_text())
             html = L.restage(html, bundle['expected'], L.bundle_identity(bundle))
             # Compare the displayed qualified-pool and universe numbers, not a
             # hard-coded direction. Do not derive a new return statistic.
