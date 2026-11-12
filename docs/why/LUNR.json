@@ -1,14 +1,14 @@
 {
  "ticker": "LUNR",
- "generated": "2026-11-11T05:13:30.793736+00:00",
+ "generated": "2026-11-12T00:01:47.883747+00:00",
  "label": "WATCH",
- "score": 0.0546,
+ "score": 0.1162,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.523,
+  "c1": -0.2645,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -16,16 +16,16 @@
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.0
+  "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 61,
-  "events_90d": 6,
-  "recency_days": 49.4,
+  "ecs": 48,
+  "events_90d": 4,
+  "recency_days": 50.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-11-11T05:13:22.157172+00:00",
-  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
+  "type_diversity": 1,
+  "as_of": "2026-11-12T00:01:39.219961+00:00",
+  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -575,20 +575,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3665,
-  "reconstructed_score": 0.054613915416098224,
-  "stored_score": 0.0546,
+  "reconstructed_score": 0.11623647112323784,
+  "stored_score": 0.1162,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.523,
+    "score": -0.2645,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.2946793997271487,
-    "contribution": -0.15411732605729878,
+    "contribution": -0.07794270122783083,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -677,30 +677,29 @@
    },
    {
     "id": "c9",
-    "score": 0.0,
+    "score": -0.06666666666666665,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.21828103683492497,
-    "contribution": 0.0,
+    "contribution": -0.014552069122328329,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-12T22:13:31.243651-07:00",
-  "window_end_inclusive": "2026-11-10T22:13:31.243651-07:00",
-  "event_objects": 6,
-  "distinct_accessions": 5,
+  "window_start_exclusive": "2026-08-13T17:01:48.385909-07:00",
+  "window_end_inclusive": "2026-11-11T17:01:48.385909-07:00",
+  "event_objects": 4,
+  "distinct_accessions": 3,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 4,
-   "OTHER_MATERIAL": 2
+   "INSIDER_SELL": 4
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 1.0,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -714,15 +713,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T06:49:24-07:00",
   "newest_returned_available_as_of": "2026-09-22T14:35:20.191740-06:00",
-  "build_id": "why-2026-11-11T051330",
+  "build_id": "why-2026-11-12T000147",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-10T22:13:31.243651-07:00",
+  "corpus_end": "2026-11-11T17:01:48.385909-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LUNR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-11T051330",
+ "build_id": "why-2026-11-12T000147",
  "corrections": [
   {
    "original": {
@@ -878,6 +877,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-11",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-11-10",
    "label": "WATCH"
   },
@@ -991,10 +994,6 @@
   },
   {
    "date": "2026-10-01",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-09-30",
    "label": "WATCH"
   }
  ],

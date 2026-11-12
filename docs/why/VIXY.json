@@ -1,14 +1,14 @@
 {
  "ticker": "VIXY",
- "generated": "2026-11-11T05:13:30.793736+00:00",
+ "generated": "2026-11-12T00:01:47.883747+00:00",
  "label": "NEUTRAL",
- "score": 0.3719,
+ "score": 0.2883,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.5705,
+  "c1": 0.2775,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,13 +19,13 @@
   "c9": 0.04761905
  },
  "evidence_coverage": {
-  "ecs": 54,
+  "ecs": 53,
   "events_90d": 1,
-  "recency_days": 7.3,
+  "recency_days": 8.1,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-11T05:13:22.157172+00:00",
-  "source_sha256": "296d6b6a5119e613b925aa36bb9233dfade20e8bc156574bd6751c046be598f7",
+  "as_of": "2026-11-12T00:01:39.219961+00:00",
+  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -55,20 +55,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3785,
-  "reconstructed_score": 0.37194363716424483,
-  "stored_score": 0.3719,
+  "reconstructed_score": 0.28833993835314836,
+  "stored_score": 0.2883,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.5705,
+    "score": 0.27749999999999997,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.285336856010568,
-    "contribution": 0.16278467635402905,
+    "contribution": 0.07918097754293262,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -171,8 +171,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-12T22:13:31.581512-07:00",
-  "window_end_inclusive": "2026-11-10T22:13:31.581512-07:00",
+  "window_start_exclusive": "2026-08-13T17:01:48.730022-07:00",
+  "window_end_inclusive": "2026-11-11T17:01:48.730022-07:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -193,17 +193,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-07T09:46:28-06:00",
   "newest_returned_available_as_of": "2026-11-03T14:43:49-07:00",
-  "build_id": "why-2026-11-11T051330",
+  "build_id": "why-2026-11-12T000147",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-10T22:13:31.581512-07:00",
+  "corpus_end": "2026-11-11T17:01:48.730022-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/VIXY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-11T051330",
+ "build_id": "why-2026-11-12T000147",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-11",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-10",
    "label": "NEUTRAL"
@@ -319,10 +323,6 @@
   {
    "date": "2026-10-01",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-09-30",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
