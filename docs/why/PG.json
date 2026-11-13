@@ -1,34 +1,44 @@
 {
  "ticker": "PG",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "WATCH",
- "score": 0.1073,
+ "score": 0.1792,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.4725,
+  "c1": 0.4895,
   "c2": 0.0,
-  "c3": -0.25189555,
+  "c3": 0.23314145,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.6524196,
+  "c7": 0.65155727,
   "c8": 0.0,
   "c9": -0.29411766
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 33,
-  "recency_days": 2.3,
+  "ecs": 87,
+  "events_90d": 34,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PG",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0000080424-26-000275",
+   "excerpt": "Abd El Hak Hesham S 2250 shares @ $168.47 on 2026-11-12 ($379,058)",
+   "source_hash": "952b358f5fc6958fc456ad5dad52929072b4f9885578d3fb4a7a505a562c9c4e",
+   "available_as_of": "2026-11-12T15:12:54.401900-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PG",
    "evidence_type": "INSIDER_SELL",
@@ -425,20 +435,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6718333333333333,
-  "reconstructed_score": 0.10728191784634393,
-  "stored_score": 0.1073,
+  "reconstructed_score": 0.17919456727993016,
+  "stored_score": 0.1792,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.4724999999999999,
+    "score": 0.48949999999999994,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1607541552964525,
-    "contribution": 0.0759563383775738,
+    "contribution": 0.07868915901761349,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -455,14 +465,14 @@
    },
    {
     "id": "c3",
-    "score": -0.2518955460268909,
+    "score": 0.23314144982408794,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.14289258248573555,
-    "contribution": -0.035994005088436906,
+    "contribution": 0.033314183849832466,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -503,14 +513,14 @@
    },
    {
     "id": "c7",
-    "score": 0.6524196253181865,
+    "score": 0.6515572590792238,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1488464400893079,
-    "contribution": 0.09711033867301215,
+    "contribution": 0.09698197852828934,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -541,16 +551,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.557115-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.557115-07:00",
-  "event_objects": 33,
-  "distinct_accessions": 33,
+  "window_start_exclusive": "2026-08-14T17:02:08.560414-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.560414-07:00",
+  "event_objects": 34,
+  "distinct_accessions": 34,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 25,
+   "INSIDER_SELL": 26,
    "OTHER_MATERIAL": 8
   },
-  "largest_type_share": 0.7575757575757576,
+  "largest_type_share": 0.7647058823529411,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -558,23 +568,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PG in the declared corpus",
-  "returned": 39,
-  "total_available": 39,
+  "returned": 40,
+  "total_available": 40,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-23T08:05:12-07:00",
-  "newest_returned_available_as_of": "2026-11-09T09:08:35.555266-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "newest_returned_available_as_of": "2026-11-12T15:12:54.401900-07:00",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.557115-07:00",
+  "corpus_end": "2026-11-12T17:02:08.560414-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PG.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-11",
    "label": "WATCH"
@@ -689,10 +703,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

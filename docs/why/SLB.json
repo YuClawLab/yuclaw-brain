@@ -1,31 +1,31 @@
 {
  "ticker": "SLB",
- "generated": "2026-11-12T00:01:47.883747+00:00",
- "label": "WATCH",
- "score": 0.1938,
+ "generated": "2026-11-13T00:02:07.934078+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2629,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.2245,
+  "c1": 0.2195,
   "c2": 0.0,
-  "c3": 0.41586322,
+  "c3": 0.91160935,
   "c4": 0.6,
-  "c5": 0.08339406,
-  "c6": -0.09780428,
-  "c7": -0.0487028,
+  "c5": 0.037336476,
+  "c6": -0.088634565,
+  "c7": 0.0,
   "c8": 0.0,
   "c9": 0.26666668
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 11,
-  "recency_days": 9.0,
+  "recency_days": 10.0,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -255,20 +255,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7415,
-  "reconstructed_score": 0.1937921163190822,
-  "stored_score": 0.1938,
+  "reconstructed_score": 0.26293517669214955,
+  "stored_score": 0.2629,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.2245,
+    "score": 0.21949999999999997,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1456507080242751,
-    "contribution": 0.03269858395144976,
+    "contribution": 0.03197033041132838,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -285,14 +285,14 @@
    },
    {
     "id": "c3",
-    "score": 0.41586320573511243,
+    "score": 0.9116093623350875,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1294672960215779,
-    "contribution": 0.053840684761390145,
+    "contribution": 0.11802359916947863,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -309,38 +309,38 @@
    },
    {
     "id": "c5",
-    "score": 0.08339405493337226,
+    "score": 0.03733647517594646,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
     "effective_weight": 0.06743088334457181,
-    "contribution": 0.005623334789843039,
+    "contribution": 0.002517631502086747,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.09780427607924377,
+    "score": -0.0886345686615009,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.2427511800404585,
-    "contribution": -0.023742103431239215,
+    "contribution": -0.02151614613495639,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.04870279885709403,
+    "score": 0.0,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13486176668914363,
-    "contribution": -0.006568145496573707,
+    "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -371,8 +371,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.621892-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.621892-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:08.625015-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.625015-07:00",
   "event_objects": 11,
   "distinct_accessions": 11,
   "objects_without_accession": 0,
@@ -396,15 +396,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
   "newest_returned_available_as_of": "2026-11-02T17:08:07.976069-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.621892-07:00",
+  "corpus_end": "2026-11-12T17:02:08.625015-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -459,6 +459,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-11",
    "label": "WATCH"
@@ -574,10 +578,6 @@
   {
    "date": "2026-10-02",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-01",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

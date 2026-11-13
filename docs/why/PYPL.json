@@ -1,31 +1,31 @@
 {
  "ticker": "PYPL",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "NEUTRAL",
- "score": 0.2363,
+ "score": 0.2522,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.306,
+  "c1": 0.1895,
   "c2": 0.0,
-  "c3": -0.19412392,
+  "c3": 0.043439645,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.118670985,
+  "c7": 0.1332011,
   "c8": 0.0,
-  "c9": 0.5
+  "c9": 0.4117647
  },
  "evidence_coverage": {
-  "ecs": 78,
+  "ecs": 77,
   "events_90d": 8,
-  "recency_days": 15.1,
+  "recency_days": 16.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -314,21 +314,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5251666666666667,
-  "reconstructed_score": 0.23632980255209882,
-  "stored_score": 0.2363,
+  "denominator": 0.5278333333333334,
+  "reconstructed_score": 0.2522064715252698,
+  "stored_score": 0.2522,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.306,
+    "score": 0.1895,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20564900031735955,
-    "contribution": 0.06292859409711202,
+    "effective_weight": 0.20461004104831068,
+    "contribution": 0.038773602778654874,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -345,14 +345,14 @@
    },
    {
     "id": "c3",
-    "score": -0.19412392545314808,
+    "score": 0.043439643673001425,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1827991113932085,
-    "contribution": -0.03548568107299692,
+    "effective_weight": 0.18187559204294285,
+    "contribution": 0.00790061091116161,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -363,8 +363,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.24278006981910505,
-    "contribution": 0.145668041891463,
+    "effective_weight": 0.24155352068203345,
+    "contribution": 0.14493211240922008,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -375,7 +375,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02856236115518883,
+    "effective_weight": 0.028418061256709818,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -387,20 +387,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.06854966677245318,
+    "effective_weight": 0.06820334701610356,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.1186709815044613,
+    "score": 0.13320110094146798,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1904157410345922,
-    "contribution": 0.02259682288247438,
+    "effective_weight": 0.18945374171139878,
+    "contribution": 0.02523544697343883,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -417,22 +417,22 @@
    },
    {
     "id": "c9",
-    "score": 0.5,
-    "confidence": 0.5333333333333333,
+    "score": 0.41176470588235303,
+    "confidence": 0.5666666666666667,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.042666666666666665,
-    "effective_weight": 0.08124404950809266,
-    "contribution": 0.04062202475404633,
+    "weight_times_confidence": 0.04533333333333333,
+    "effective_weight": 0.08588569624250078,
+    "contribution": 0.03536469845279445,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.585800-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.585800-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:08.589260-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.589260-07:00",
   "event_objects": 8,
   "distinct_accessions": 4,
   "objects_without_accession": 0,
@@ -454,15 +454,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T14:55:02-07:00",
   "newest_returned_available_as_of": "2026-10-27T15:05:11-06:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.585800-07:00",
+  "corpus_end": "2026-11-12T17:02:08.589260-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PYPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -541,6 +541,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-11",
    "label": "NEUTRAL"
@@ -655,10 +659,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

@@ -1,8 +1,8 @@
 {
  "ticker": "NVDA",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "WATCH",
- "score": 0.1591,
+ "score": 0.035,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -10,25 +10,35 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.8083122,
+  "c3": 0.2880861,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": 0.0,
-  "c7": 0.65944797,
+  "c6": -0.5983347,
+  "c7": 0.6551447,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 29,
-  "recency_days": 49.1,
+  "ecs": 100,
+  "events_90d": 30,
+  "recency_days": 0.4,
   "substrate_active": 1,
-  "type_diversity": 4,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "type_diversity": 5,
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "NVDA",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-11-12",
+   "accession_number": "0001045810-26-000082",
+   "excerpt": "On November 11, 2026, the Board of Directors, or the Board, of NVIDIA Corporation accepted the resignation of Jen-Hsun Huang, as NVIDIA’s President, Chief Executive Officer and member of the Boa",
+   "source_hash": "7a9295999ac777be860fd00b1bb54f4ec67bc7cbf73509ac4deacf037a73b367",
+   "available_as_of": "2026-11-12T06:52:41-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "NVDA",
    "evidence_type": "INSIDER_SELL",
@@ -814,9 +824,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5465,
-  "reconstructed_score": 0.15908132889832607,
-  "stored_score": 0.1591,
+  "denominator": 0.5825,
+  "reconstructed_score": 0.03495141136834791,
+  "stored_score": 0.035,
   "missing_components": [],
   "components": [
    {
@@ -827,8 +837,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19762122598353157,
-    "contribution": -0.19762122598353157,
+    "effective_weight": 0.1854077253218884,
+    "contribution": -0.1854077253218884,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -845,14 +855,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8083121643651385,
+    "score": 0.28808607423524263,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1756633119853614,
-    "contribution": 0.14199079191043604,
+    "effective_weight": 0.1648068669527897,
+    "contribution": 0.04747856330743913,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -863,8 +873,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2333028362305581,
-    "contribution": 0.13998170173833485,
+    "effective_weight": 0.21888412017167383,
+    "contribution": 0.1313304721030043,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -875,32 +885,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.06404391582799633,
-    "contribution": -0.036178379413756394,
+    "effective_weight": 0.06008583690987124,
+    "contribution": -0.033942462402777464,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.0,
+    "score": -0.5983347553279762,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.06180257510729613,
+    "contribution": -0.0369786286554629,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6594479614683312,
+    "score": 0.6551446953690436,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18298261665141813,
-    "contribution": 0.1206675135349188,
+    "effective_weight": 0.17167381974248927,
+    "contribution": 0.11247119233803324,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -917,32 +927,33 @@
    },
    {
     "id": "c9",
-    "score": -0.06666666666666665,
+    "score": 0.0,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1463860933211345,
-    "contribution": -0.009759072888075631,
+    "effective_weight": 0.13733905579399142,
+    "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.514839-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.514839-07:00",
-  "event_objects": 29,
-  "distinct_accessions": 10,
+  "window_start_exclusive": "2026-08-14T17:02:08.520006-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.520006-07:00",
+  "event_objects": 30,
+  "distinct_accessions": 11,
   "objects_without_accession": 0,
   "by_event_type": {
+   "EXEC_CHANGE": 1,
    "INSIDER_SELL": 25,
    "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 2,
    "PARTNERSHIP": 1
   },
-  "largest_type_share": 0.8620689655172413,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -950,23 +961,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for NVDA in the declared corpus",
-  "returned": 78,
-  "total_available": 78,
+  "returned": 79,
+  "total_available": 79,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:31:25-07:00",
-  "newest_returned_available_as_of": "2026-09-23T15:02:37.720893-06:00",
-  "build_id": "why-2026-11-12T000147",
+  "newest_returned_available_as_of": "2026-11-12T06:52:41-07:00",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.514839-07:00",
+  "corpus_end": "2026-11-12T17:02:08.520006-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/NVDA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-11",
    "label": "WATCH"
@@ -1081,10 +1096,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

@@ -1,31 +1,31 @@
 {
  "ticker": "MRK",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "NEUTRAL",
- "score": 0.2073,
+ "score": 0.313,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.0595,
+  "c1": 0.175,
   "c2": 0.0,
-  "c3": -0.43748945,
+  "c3": 0.12559772,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.34161633,
-  "c7": 0.50074226,
+  "c6": 0.31164512,
+  "c7": 0.51421595,
   "c8": 0.0,
-  "c9": -0.33333334
+  "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 67,
+  "ecs": 66,
   "events_90d": 3,
-  "recency_days": 7.1,
+  "recency_days": 8.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -254,21 +254,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5785,
-  "reconstructed_score": 0.2072528979350439,
-  "stored_score": 0.2073,
+  "denominator": 0.5451666666666667,
+  "reconstructed_score": 0.31302493336312587,
+  "stored_score": 0.313,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.05949999999999999,
+    "score": 0.17500000000000002,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18668971477960242,
-    "contribution": 0.011108038029386341,
+    "effective_weight": 0.19810455518190154,
+    "contribution": 0.03466829715683277,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -285,14 +285,14 @@
    },
    {
     "id": "c3",
-    "score": -0.43748945648644677,
+    "score": 0.1255977199702523,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16594641313742436,
-    "contribution": -0.07259980608936714,
+    "effective_weight": 0.17609293793946804,
+    "contribution": 0.022116871508060323,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -303,8 +303,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.22039757994814174,
-    "contribution": 0.13223854796888504,
+    "effective_weight": 0.233873433200856,
+    "contribution": 0.14032405992051358,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -315,32 +315,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.025929127052722555,
+    "effective_weight": 0.02751452155304188,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.34161633937073965,
-    "confidence": 0.6,
+    "score": 0.311645132880714,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.18668971477960242,
-    "contribution": 0.06377625696117525,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.13206970345460103,
+    "contribution": 0.04115888028262563,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.5007422462608191,
+    "score": 0.5142159548724184,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.17286084701815038,
-    "contribution": 0.08655872882641644,
+    "effective_weight": 0.18343014368694588,
+    "contribution": 0.0943227064883678,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -357,22 +357,22 @@
    },
    {
     "id": "c9",
-    "score": -0.33333333333333337,
-    "confidence": 0.3,
+    "score": -0.4,
+    "confidence": 0.3333333333333333,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.024,
-    "effective_weight": 0.04148660328435609,
-    "contribution": -0.013828867761452032,
+    "weight_times_confidence": 0.026666666666666665,
+    "effective_weight": 0.048914704983185564,
+    "contribution": -0.019565881993274227,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.440773-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.440773-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:08.444337-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.444337-07:00",
   "event_objects": 3,
   "distinct_accessions": 3,
   "objects_without_accession": 0,
@@ -394,17 +394,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-05-28T14:15:25-06:00",
   "newest_returned_available_as_of": "2026-11-04T14:14:20-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.440773-07:00",
+  "corpus_end": "2026-11-12T17:02:08.444337-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRK.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-11",
    "label": "NEUTRAL"
@@ -519,10 +523,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

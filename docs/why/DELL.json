@@ -1,31 +1,31 @@
 {
  "ticker": "DELL",
- "generated": "2026-11-12T00:01:47.883747+00:00",
- "label": "WATCH",
- "score": 0.0363,
+ "generated": "2026-11-13T00:02:07.934078+00:00",
+ "label": "WEAKENING",
+ "score": -0.0416,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.8083122,
+  "c3": 0.2880861,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.6808048,
+  "c7": 0.68320674,
   "c8": 0.0,
-  "c9": -0.06666667
+  "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 90,
+  "ecs": 89,
   "events_90d": 694,
-  "recency_days": 16.2,
+  "recency_days": 17.2,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,8 +1035,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.036325581393016025,
-  "stored_score": 0.0363,
+  "reconstructed_score": -0.04157228029034633,
+  "stored_score": -0.0416,
   "missing_components": [],
   "components": [
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8083121643651385,
+    "score": 0.28808607423524263,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.10983434929802306,
+    "contribution": 0.039145453823897086,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1113,14 +1113,14 @@
    },
    {
     "id": "c7",
-    "score": 0.6808047711524762,
+    "score": 0.6832067582175544,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.09636302493311764,
+    "contribution": 0.09670300894799072,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,22 +1137,22 @@
    },
    {
     "id": "c9",
-    "score": -0.06666666666666665,
+    "score": -0.1333333333333333,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11323425336164189,
-    "contribution": -0.007548950224109458,
+    "contribution": -0.015097900448218916,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.136435-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.136435-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:08.146795-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.146795-07:00",
   "event_objects": 694,
   "distinct_accessions": 68,
   "objects_without_accession": 0,
@@ -1176,17 +1176,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-09-24T14:13:48.197609-06:00",
   "newest_returned_available_as_of": "2026-10-26T14:10:28.274708-06:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.136435-07:00",
+  "corpus_end": "2026-11-12T17:02:08.146795-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DELL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-11",
    "label": "WATCH"
@@ -1301,10 +1305,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-01",
    "label": "NEUTRAL"
   }
  ],

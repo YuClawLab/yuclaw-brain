@@ -1,34 +1,44 @@
 {
  "ticker": "MSFT",
- "generated": "2026-11-12T00:01:47.883747+00:00",
- "label": "NEUTRAL",
- "score": 0.2019,
+ "generated": "2026-11-13T00:02:07.934078+00:00",
+ "label": "WATCH",
+ "score": 0.125,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.185,
+  "c1": -0.188,
   "c2": 0.0,
-  "c3": 0.8083122,
+  "c3": 0.2880861,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.14464402,
-  "c7": 0.69047457,
+  "c6": -0.177181,
+  "c7": 0.6926651,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 99,
-  "events_90d": 25,
-  "recency_days": 1.0,
+  "ecs": 100,
+  "events_90d": 26,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MSFT",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0000789019-26-000234",
+   "excerpt": "Numoto Takeshi S 5000 shares @ $531.00 on 2026-11-10 ($2,655,000)",
+   "source_hash": "1e877f3a50425fcb14d9b9a2f3b415be548732f8b5b5202d3ea915366dea4719",
+   "available_as_of": "2026-11-12T16:11:39.875585-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MSFT",
    "evidence_type": "INSIDER_SELL",
@@ -405,20 +415,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.20191513802718974,
-  "stored_score": 0.2019,
+  "reconstructed_score": 0.1249663330360423,
+  "stored_score": 0.125,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.18500000000000003,
+    "score": -0.18799999999999997,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": -0.027501720578114248,
+    "contribution": -0.027947694425326904,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -435,14 +445,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8083121643651385,
+    "score": 0.28808607423524263,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.10681069205650834,
+    "contribution": 0.03806780884595085,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -471,26 +481,26 @@
    },
    {
     "id": "c6",
-    "score": -0.14464402626683856,
+    "score": -0.17718100483607138,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.035837473816973074,
+    "contribution": -0.04389894132208238,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6904745574201553,
+    "score": 0.6926650971087883,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.09504123295528634,
+    "contribution": 0.09534275252701835,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -521,18 +531,18 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.484508-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.484508-07:00",
-  "event_objects": 25,
-  "distinct_accessions": 10,
+  "window_start_exclusive": "2026-08-14T17:02:08.485805-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.485805-07:00",
+  "event_objects": 26,
+  "distinct_accessions": 11,
   "objects_without_accession": 0,
   "by_event_type": {
    "BUYBACK_ANNOUNCE": 1,
-   "INSIDER_SELL": 19,
+   "INSIDER_SELL": 20,
    "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 4
   },
-  "largest_type_share": 0.76,
+  "largest_type_share": 0.7692307692307693,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -540,23 +550,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MSFT in the declared corpus",
-  "returned": 37,
-  "total_available": 37,
+  "returned": 38,
+  "total_available": 38,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
-  "newest_returned_available_as_of": "2026-11-10T16:12:41.043874-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "newest_returned_available_as_of": "2026-11-12T16:11:39.875585-07:00",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.484508-07:00",
+  "corpus_end": "2026-11-12T17:02:08.485805-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-11",
    "label": "NEUTRAL"
@@ -671,10 +685,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

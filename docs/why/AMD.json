@@ -1,31 +1,31 @@
 {
  "ticker": "AMD",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "WATCH",
- "score": 0.1667,
+ "score": 0.1302,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.348,
+  "c1": -0.167,
   "c2": 0.0,
-  "c3": 0.8083122,
+  "c3": 0.2880861,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.18634172,
-  "c7": 0.6856719,
+  "c6": -0.1691285,
+  "c7": 0.69326496,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
   "ecs": 80,
   "events_90d": 86,
-  "recency_days": 23.2,
+  "recency_days": 24.2,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.1666916691722349,
-  "stored_score": 0.1667,
+  "reconstructed_score": 0.13016583261263856,
+  "stored_score": 0.1302,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.348,
+    "score": -0.16699999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": -0.05173296627666895,
+    "contribution": -0.02482587749483826,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": 0.8083121643651385,
+    "score": 0.28808607423524263,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.10681069205650834,
+    "contribution": 0.03806780884595085,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.1863417158986793,
+    "score": -0.16912851464730522,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.04616862885307952,
+    "contribution": -0.04190383019479,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6856718975262215,
+    "score": 0.6932649791929809,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.09438016483499263,
+    "contribution": 0.09542532404583356,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,8 +1151,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:47.975879-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:47.975879-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:07.990176-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:07.990176-07:00",
   "event_objects": 86,
   "distinct_accessions": 13,
   "objects_without_accession": 0,
@@ -1175,15 +1175,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:21:23.555235-06:00",
   "newest_returned_available_as_of": "2026-10-19T14:20:10.642115-06:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:47.975879-07:00",
+  "corpus_end": "2026-11-12T17:02:07.990176-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMD.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -1212,6 +1212,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-11",
    "label": "WATCH"
@@ -1326,10 +1330,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-01",
    "label": "NEUTRAL"
   }
  ],

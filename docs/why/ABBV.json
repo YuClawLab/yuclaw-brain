@@ -1,34 +1,44 @@
 {
  "ticker": "ABBV",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "WATCH",
- "score": 0.1878,
+ "score": 0.1564,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.2465,
+  "c1": 0.366,
   "c2": 0.0,
-  "c3": -0.43748945,
+  "c3": 0.12559772,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.4796985,
+  "c6": -0.46211717,
+  "c7": 0.4931001,
   "c8": 0.0,
   "c9": 0.2173913
  },
  "evidence_coverage": {
-  "ecs": 82,
-  "events_90d": 8,
-  "recency_days": 8.2,
+  "ecs": 87,
+  "events_90d": 9,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "ABBV",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0001761675-26-000007",
+   "excerpt": "Stewart Jeffrey Ryan S 40619 shares @ $293.60 on 2026-11-09 ($11,925,738)",
+   "source_hash": "56982f5d9ff6bc719ff6292326ad2d833725620635d157a70eff1bcf153f5cf2",
+   "available_as_of": "2026-11-12T15:06:34.263178-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "ABBV",
    "evidence_type": "OTHER_MATERIAL",
@@ -214,21 +224,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6518333333333334,
-  "reconstructed_score": 0.1878182497053262,
-  "stored_score": 0.1878,
+  "denominator": 0.6878333333333333,
+  "reconstructed_score": 0.1563571159536881,
+  "stored_score": 0.1564,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.24649999999999997,
+    "score": 0.366,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.16568652518537458,
-    "contribution": 0.04084172845819483,
+    "effective_weight": 0.15701478071238187,
+    "contribution": 0.057467409740731765,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -245,14 +255,14 @@
    },
    {
     "id": "c3",
-    "score": -0.43748945648644677,
+    "score": 0.1255977199702523,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14727691127588852,
-    "contribution": -0.06443209586709112,
+    "effective_weight": 0.13956869396656169,
+    "contribution": 0.017529509741426055,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -263,8 +273,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19560214778828944,
-    "contribution": 0.11736128867297366,
+    "effective_weight": 0.18536467167433973,
+    "contribution": 0.11121880300460384,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -275,32 +285,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02301201738685758,
+    "effective_weight": 0.02180760843227526,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.8,
+    "score": -0.46211715726000974,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.144,
-    "effective_weight": 0.22091536691383276,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.2616913011873031,
+    "contribution": -0.12093204018434953,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.479698502556207,
+    "score": 0.4931001011313596,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1534134492457172,
-    "contribution": 0.07359220187515321,
+    "effective_weight": 0.14538405621516842,
+    "contribution": 0.07168889282258682,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -323,24 +333,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06133333333333334,
-    "effective_weight": 0.09409358220403989,
-    "contribution": 0.020455126566095636,
+    "effective_weight": 0.08916888781196997,
+    "contribution": 0.01938454082868913,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:47.912731-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:47.912731-07:00",
-  "event_objects": 8,
-  "distinct_accessions": 8,
+  "window_start_exclusive": "2026-08-14T17:02:07.950871-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:07.950871-07:00",
+  "event_objects": 9,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 1,
+   "INSIDER_SELL": 2,
    "OTHER_MATERIAL": 7
   },
-  "largest_type_share": 0.875,
+  "largest_type_share": 0.7777777777777778,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -348,21 +358,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for ABBV in the declared corpus",
-  "returned": 18,
-  "total_available": 18,
+  "returned": 19,
+  "total_available": 19,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
-  "newest_returned_available_as_of": "2026-11-03T11:43:40-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "newest_returned_available_as_of": "2026-11-12T15:06:34.263178-07:00",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:47.912731-07:00",
+  "corpus_end": "2026-11-12T17:02:07.950871-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -517,6 +527,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-11-11",
    "label": "WATCH"
   },
@@ -630,10 +644,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

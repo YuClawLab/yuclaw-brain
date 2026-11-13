@@ -1,31 +1,31 @@
 {
  "ticker": "UNH",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "NEUTRAL",
- "score": 0.2014,
+ "score": 0.3075,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.3225,
+  "c1": 0.3625,
   "c2": 0.0,
-  "c3": -0.43748945,
+  "c3": 0.12559772,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.47098342,
+  "c7": 0.49349245,
   "c8": 0.0,
-  "c9": -0.14285715
+  "c9": -0.18181819
  },
  "evidence_coverage": {
-  "ecs": 63,
+  "ecs": 62,
   "events_90d": 2,
-  "recency_days": 8.1,
+  "recency_days": 9.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -94,21 +94,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5385,
-  "reconstructed_score": 0.20135441749867294,
-  "stored_score": 0.2014,
+  "denominator": 0.5411666666666667,
+  "reconstructed_score": 0.3074652763562849,
+  "stored_score": 0.3075,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.3225,
+    "score": 0.36249999999999993,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20055710306406685,
-    "contribution": 0.06467966573816156,
+    "effective_weight": 0.19956883276870957,
+    "contribution": 0.0723437018786572,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -125,14 +125,14 @@
    },
    {
     "id": "c3",
-    "score": -0.43748945648644677,
+    "score": 0.1255977199702523,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17827298050139276,
-    "contribution": -0.07799254934577324,
+    "effective_weight": 0.17739451801663073,
+    "contribution": 0.02228034699811066,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -143,8 +143,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.23676880222841226,
-    "contribution": 0.14206128133704735,
+    "effective_weight": 0.2356020942408377,
+    "contribution": 0.1413612565445026,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -155,7 +155,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027855153203342618,
+    "effective_weight": 0.027717893440098552,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -167,20 +167,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.06685236768802229,
+    "effective_weight": 0.06652294425623652,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.47098341645734276,
+    "score": 0.4934924427099864,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18570102135561747,
-    "contribution": 0.08746210147768668,
+    "effective_weight": 0.1847859562673237,
+    "contribution": 0.09119047293686229,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -197,22 +197,22 @@
    },
    {
     "id": "c9",
-    "score": -0.1428571428571429,
-    "confidence": 0.7,
+    "score": -0.18181818181818177,
+    "confidence": 0.7333333333333333,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.10399257195914577,
-    "contribution": -0.0148560817084494,
+    "weight_times_confidence": 0.058666666666666666,
+    "effective_weight": 0.10840776101016322,
+    "contribution": -0.019710502001847853,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.696825-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.696825-07:00",
+  "window_start_exclusive": "2026-08-14T17:02:08.706928-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.706928-07:00",
   "event_objects": 2,
   "distinct_accessions": 2,
   "objects_without_accession": 0,
@@ -234,15 +234,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-27T14:50:58-06:00",
   "newest_returned_available_as_of": "2026-11-03T14:04:13-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.696825-07:00",
+  "corpus_end": "2026-11-12T17:02:08.706928-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/UNH.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -271,6 +271,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-12",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-11",
    "label": "NEUTRAL"
@@ -385,10 +389,6 @@
   },
   {
    "date": "2026-10-02",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-01",
    "label": "WATCH"
   }
  ],

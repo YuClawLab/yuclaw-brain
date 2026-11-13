@@ -1,34 +1,44 @@
 {
  "ticker": "V",
- "generated": "2026-11-12T00:01:47.883747+00:00",
+ "generated": "2026-11-13T00:02:07.934078+00:00",
  "label": "WATCH",
- "score": 0.0197,
+ "score": 0.0305,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.466,
+  "c1": 0.306,
   "c2": 0.0,
-  "c3": -0.19412392,
+  "c3": 0.043439645,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.10060199,
+  "c7": 0.12013362,
   "c8": 0.0,
   "c9": -0.30769232
  },
  "evidence_coverage": {
   "ecs": 87,
-  "events_90d": 16,
-  "recency_days": 1.1,
+  "events_90d": 17,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-12T00:01:39.219961+00:00",
-  "source_sha256": "f9072b6c7cfe0f55748d5864cd1cfa8dd6ddf02a4d457c7df5f909a392722ce6",
+  "as_of": "2026-11-13T00:01:58.289595+00:00",
+  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "V",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0001403161-26-000140",
+   "excerpt": "Fabara Paul D S 3401 shares @ $423.09 on 2026-11-10 ($1,438,929)",
+   "source_hash": "974a6260395434144558ec33d4cef7d96105b96b02a9d8b52c801fc412a721f4",
+   "available_as_of": "2026-11-12T15:13:05.048012-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "V",
    "evidence_type": "INSIDER_SELL",
@@ -335,20 +345,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6958333333333333,
-  "reconstructed_score": 0.019743062198477213,
-  "stored_score": 0.0197,
+  "reconstructed_score": 0.030491707129357698,
+  "stored_score": 0.0305,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.466,
+    "score": 0.306,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15520958083832337,
-    "contribution": 0.0723276646706587,
+    "contribution": 0.04749413173652695,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -365,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": -0.19412392545314808,
+    "score": 0.043439643673001425,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13796407185628742,
-    "contribution": -0.026782127200242704,
+    "contribution": 0.00599311012111349,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -413,14 +423,14 @@
    },
    {
     "id": "c7",
-    "score": 0.10060199263411021,
+    "score": 0.12013362058371678,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14371257485029942,
-    "contribution": 0.014457771396518835,
+    "contribution": 0.01726471194017487,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -451,16 +461,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-13T17:01:48.716489-07:00",
-  "window_end_inclusive": "2026-11-11T17:01:48.716489-07:00",
-  "event_objects": 16,
-  "distinct_accessions": 14,
+  "window_start_exclusive": "2026-08-14T17:02:08.728511-07:00",
+  "window_end_inclusive": "2026-11-12T17:02:08.728511-07:00",
+  "event_objects": 17,
+  "distinct_accessions": 15,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 13,
+   "INSIDER_SELL": 14,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.8125,
+  "largest_type_share": 0.8235294117647058,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -468,21 +478,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for V in the declared corpus",
-  "returned": 30,
-  "total_available": 30,
+  "returned": 31,
+  "total_available": 31,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-12T14:44:55-06:00",
-  "newest_returned_available_as_of": "2026-11-10T14:10:21.411772-07:00",
-  "build_id": "why-2026-11-12T000147",
+  "newest_returned_available_as_of": "2026-11-12T15:13:05.048012-07:00",
+  "build_id": "why-2026-11-13T000207",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-11T17:01:48.716489-07:00",
+  "corpus_end": "2026-11-12T17:02:08.728511-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/V.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-12T000147",
+ "build_id": "why-2026-11-13T000207",
  "corrections": [
   {
    "original": {
@@ -637,6 +647,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-12",
+   "label": "WATCH"
+  },
+  {
    "date": "2026-11-11",
    "label": "WATCH"
   },
@@ -751,10 +765,6 @@
   {
    "date": "2026-10-02",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-01",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
