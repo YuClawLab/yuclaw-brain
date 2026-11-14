@@ -1,34 +1,44 @@
 {
  "ticker": "GS",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.1752,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2691,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.1215,
+  "c1": 0.2155,
   "c2": 0.0,
-  "c3": 0.043439645,
+  "c3": 0.48273534,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.05738426,
-  "c7": 0.14079332,
+  "c6": -0.0519845,
+  "c7": 0.2790407,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 10,
-  "recency_days": 10.1,
+  "ecs": 87,
+  "events_90d": 11,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GS",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-13",
+   "accession_number": "0001193125-26-460732",
+   "excerpt": "The Goldman Sachs Group, Inc. (Exact name of registrant as specified in its charter) Delaware No. 001-14965 No. 13-4019460",
+   "source_hash": "91dd2ef749d35a15abf41dcc9bd98fb713706bd80470337101c27b1ab3752ba8",
+   "available_as_of": "2026-11-13T14:24:39-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GS",
    "evidence_type": "OTHER_MATERIAL",
@@ -555,20 +565,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7148333333333333,
-  "reconstructed_score": 0.17522723680354113,
-  "stored_score": 0.1752,
+  "reconstructed_score": 0.2691247573311511,
+  "stored_score": 0.2691,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.12150000000000001,
+    "score": 0.2155,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.151084168803917,
-    "contribution": 0.018356726509675916,
+    "contribution": 0.03255863837724411,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -585,14 +595,14 @@
    },
    {
     "id": "c3",
-    "score": 0.043439643673001425,
+    "score": 0.4827353301967135,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1342970389368151,
-    "contribution": 0.005833815517754446,
+    "contribution": 0.06482992543560433,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -621,26 +631,26 @@
    },
    {
     "id": "c6",
-    "score": -0.05738425895406773,
+    "score": -0.05198450165663032,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.2518069480065283,
-    "contribution": -0.014449755110840089,
+    "contribution": -0.013090058705796397,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.14079332834923886,
+    "score": 0.2790406820559531,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13989274889251574,
-    "contribution": 0.019695965728501588,
+    "contribution": 0.03903576806564977,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -671,16 +681,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.240617-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.240617-07:00",
-  "event_objects": 10,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-08-15T17:01:29.563788-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.563788-07:00",
+  "event_objects": 11,
+  "distinct_accessions": 7,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 8,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.8,
+  "largest_type_share": 0.7272727272727273,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -688,21 +698,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GS in the declared corpus",
-  "returned": 52,
-  "total_available": 52,
+  "returned": 53,
+  "total_available": 53,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-09T19:58:33-06:00",
-  "newest_returned_available_as_of": "2026-11-02T14:35:36-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-13T14:24:39-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.240617-07:00",
+  "corpus_end": "2026-11-13T17:01:29.563788-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GS.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -756,6 +766,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -870,10 +884,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

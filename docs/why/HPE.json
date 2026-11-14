@@ -1,31 +1,31 @@
 {
  "ticker": "HPE",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.0477,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "WEAKENING",
+ "score": -0.133,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.2880861,
+  "c3": -0.81540906,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.054413326,
-  "c7": 0.68320674,
+  "c6": -0.049292147,
+  "c7": 0.65716517,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
   "ecs": 75,
   "events_90d": 9,
-  "recency_days": 20.1,
+  "recency_days": 21.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -345,8 +345,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5985,
-  "reconstructed_score": 0.04771792725695358,
-  "stored_score": 0.0477,
+  "reconstructed_score": -0.1330188596591006,
+  "stored_score": -0.133,
   "missing_components": [],
   "components": [
    {
@@ -375,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": 0.28808607423524263,
+    "score": -0.8154090740779673,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.16040100250626566,
-    "contribution": 0.04620929511542739,
+    "contribution": -0.13079243293481177,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -411,26 +411,26 @@
    },
    {
     "id": "c6",
-    "score": -0.054413326181278046,
+    "score": -0.04929214640874053,
     "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.072,
     "effective_weight": 0.12030075187969923,
-    "contribution": -0.006545964051883072,
+    "contribution": -0.005929882274735702,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6832067582175544,
+    "score": 0.6571651814694245,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1670843776106934,
-    "contribution": 0.11415317597619956,
+    "contribution": 0.10980203533323717,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -461,8 +461,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.255224-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.255224-07:00",
+  "window_start_exclusive": "2026-08-15T17:01:29.580029-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.580029-07:00",
   "event_objects": 9,
   "distinct_accessions": 6,
   "objects_without_accession": 0,
@@ -484,15 +484,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
   "newest_returned_available_as_of": "2026-10-23T14:51:50.043266-06:00",
-  "build_id": "why-2026-11-13T000207",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.255224-07:00",
+  "corpus_end": "2026-11-13T17:01:29.580029-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/HPE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -546,6 +546,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -660,10 +664,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-02",
    "label": "NEUTRAL"
   }
  ],

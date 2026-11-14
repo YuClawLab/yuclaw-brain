@@ -1,34 +1,44 @@
 {
  "ticker": "CVX",
- "generated": "2026-11-13T00:02:07.934078+00:00",
+ "generated": "2026-11-14T00:01:29.239870+00:00",
  "label": "WATCH",
- "score": 0.1049,
+ "score": 0.0445,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0315,
+  "c1": -0.0485,
   "c2": 0.0,
-  "c3": 0.91160935,
+  "c3": 0.5569945,
   "c4": 0.6,
-  "c5": 0.037336476,
+  "c5": -0.055480476,
   "c6": -0.46211717,
-  "c7": 0.11007429,
+  "c7": 0.10014832,
   "c8": 0.0,
-  "c9": -0.18518518
+  "c9": -0.21428572
  },
  "evidence_coverage": {
   "ecs": 94,
-  "events_90d": 11,
+  "events_90d": 12,
   "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "CVX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-13",
+   "accession_number": "0000093410-26-000204",
+   "excerpt": "Booth Thomas Ryder S 6000 shares @ $212.14 on 2026-11-11 ($1,272,822)",
+   "source_hash": "c09b2e856ae4e0444b0e0ecbd5793231844db16c57d0325beb76ebc0f446d2be",
+   "available_as_of": "2026-11-13T14:16:27.236734-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "CVX",
    "evidence_type": "INSIDER_SELL",
@@ -644,21 +654,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.7335,
-  "reconstructed_score": 0.1049384178545152,
-  "stored_score": 0.1049,
+  "denominator": 0.7361666666666666,
+  "reconstructed_score": 0.04454588080658445,
+  "stored_score": 0.0445,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0315,
+    "score": -0.0485,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.14723926380368096,
-    "contribution": -0.00463803680981595,
+    "effective_weight": 0.1467059089880009,
+    "contribution": -0.007115236585918044,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -675,14 +685,14 @@
    },
    {
     "id": "c3",
-    "score": 0.9116093623350875,
+    "score": 0.5569945116253259,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.13087934560327197,
-    "contribution": 0.1193108367882323,
+    "effective_weight": 0.1304052524337786,
+    "contribution": 0.07263500989272985,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -693,20 +703,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.1738241308793456,
-    "contribution": 0.10429447852760736,
+    "effective_weight": 0.1731944758886122,
+    "contribution": 0.10391668553316731,
     "input_status": "FROZEN_2026-05-18"
    },
    {
     "id": "c5",
-    "score": 0.03733647517594646,
+    "score": -0.055480477461454486,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.0681663258350375,
-    "contribution": 0.0025450903323753554,
+    "effective_weight": 0.06791940230925969,
+    "contribution": -0.003768200869014342,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -717,20 +727,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
-    "effective_weight": 0.24539877300613494,
-    "contribution": -0.1134029833766895,
+    "effective_weight": 0.24450984831333483,
+    "contribution": -0.11299219602463448,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.11007428593456267,
+    "score": 0.10014831650957103,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.136332651670075,
-    "contribution": 0.015006719282148967,
+    "effective_weight": 0.13583880461851938,
+    "contribution": 0.013604027599217257,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -747,31 +757,31 @@
    },
    {
     "id": "c9",
-    "score": -0.18518518518518523,
-    "confidence": 0.9,
+    "score": -0.2142857142857143,
+    "confidence": 0.9333333333333333,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.07200000000000001,
-    "effective_weight": 0.09815950920245399,
-    "contribution": -0.018177686889343337,
+    "weight_times_confidence": 0.07466666666666667,
+    "effective_weight": 0.10142630744849447,
+    "contribution": -0.021734208738963104,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.133170-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.133170-07:00",
-  "event_objects": 11,
-  "distinct_accessions": 8,
+  "window_start_exclusive": "2026-08-15T17:01:29.453838-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.453838-07:00",
+  "event_objects": 12,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 9,
+   "INSIDER_SELL": 10,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.8181818181818182,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -779,23 +789,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for CVX in the declared corpus",
-  "returned": 61,
-  "total_available": 61,
+  "returned": 62,
+  "total_available": 62,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T14:44:53-07:00",
-  "newest_returned_available_as_of": "2026-11-12T14:14:21.926889-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-13T14:16:27.236734-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.133170-07:00",
+  "corpus_end": "2026-11-13T17:01:29.453838-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CVX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -910,10 +924,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

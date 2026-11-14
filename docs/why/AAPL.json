@@ -1,34 +1,44 @@
 {
  "ticker": "AAPL",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.0296,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "WEAKENING",
+ "score": -0.1562,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.1995,
+  "c1": 0.194,
   "c2": 0.0,
-  "c3": 0.2880861,
+  "c3": -0.81540906,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.16326638,
-  "c7": -0.070336625,
+  "c6": -0.29308763,
+  "c7": -0.06800294,
   "c8": 0.0,
-  "c9": -0.6
+  "c9": -0.6666667
  },
  "evidence_coverage": {
-  "ecs": 82,
-  "events_90d": 29,
-  "recency_days": 7.0,
+  "ecs": 87,
+  "events_90d": 30,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0001140361-26-043484",
+   "excerpt": "Newstead Jennifer S 2399 shares @ $351.36 on 2026-11-10 ($842,913)",
+   "source_hash": "ceb98c0b6057000acce5877acdd31022ab9a437212a7ab635de9ad110b0493ef",
+   "available_as_of": "2026-11-12T17:04:02.878281-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -495,20 +505,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.029606564238410873,
-  "stored_score": 0.0296,
+  "reconstructed_score": -0.15621218912189558,
+  "stored_score": -0.1562,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.1995,
+    "score": 0.194,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.029657260839642118,
+    "contribution": 0.028839642119752235,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -525,14 +535,14 @@
    },
    {
     "id": "c3",
-    "score": 0.28808607423524263,
+    "score": -0.8154090740779673,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.03806780884595085,
+    "contribution": -0.10774848053886422,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -561,26 +571,26 @@
    },
    {
     "id": "c6",
-    "score": -0.16326637383390893,
+    "score": -0.2930876280411534,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.04045140714398294,
+    "contribution": -0.07261634280441515,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0703366256765631,
+    "score": -0.06800293555213448,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": -0.009681572701522794,
+    "contribution": -0.009360349009240808,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -597,30 +607,30 @@
    },
    {
     "id": "c9",
-    "score": -0.6,
+    "score": -0.6666666666666667,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11011699931176876,
-    "contribution": -0.06607019958706126,
+    "contribution": -0.07341133287451251,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:07.936328-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:07.936328-07:00",
-  "event_objects": 29,
-  "distinct_accessions": 19,
+  "window_start_exclusive": "2026-08-15T17:01:29.242600-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.242600-07:00",
+  "event_objects": 30,
+  "distinct_accessions": 20,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 27,
+   "INSIDER_SELL": 28,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9310344827586207,
+  "largest_type_share": 0.9333333333333333,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -628,21 +638,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 46,
-  "total_available": 46,
+  "returned": 47,
+  "total_available": 47,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-11-05T16:35:18.555527-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-12T17:04:02.878281-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:07.936328-07:00",
+  "corpus_end": "2026-11-13T17:01:29.242600-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -671,6 +681,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -785,10 +799,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

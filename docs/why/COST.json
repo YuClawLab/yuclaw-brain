@@ -1,34 +1,44 @@
 {
  "ticker": "COST",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.1924,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2242,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.7205,
+  "c1": 0.6325,
   "c2": 0.0,
-  "c3": 0.23314145,
+  "c3": 0.7102773,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.614993,
-  "c7": 0.6050021,
+  "c6": -0.6910161,
+  "c7": 0.5761408,
   "c8": 0.0,
-  "c9": 0.09090909
+  "c9": 0.13043478
  },
  "evidence_coverage": {
   "ecs": 100,
-  "events_90d": 9,
+  "events_90d": 10,
   "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "COST",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-13",
+   "accession_number": "0000909832-26-000138",
+   "excerpt": "George Sarah Catherine S 756 shares @ $1096.01 on 2026-11-12 ($829,065)",
+   "source_hash": "97f8e2f48fe2836ce4afbf368ad4edc9f667e31abd6ca8ed914bb1c42abfe0a8",
+   "available_as_of": "2026-11-13T14:39:55.618860-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "COST",
    "evidence_type": "INSIDER_SELL",
@@ -194,21 +204,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6851666666666667,
-  "reconstructed_score": 0.19240631737293168,
-  "stored_score": 0.1924,
+  "denominator": 0.6878333333333333,
+  "reconstructed_score": 0.224222653478256,
+  "stored_score": 0.2242,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.7205,
+    "score": 0.6325,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.15762588178058864,
-    "contribution": 0.11356944782291413,
+    "effective_weight": 0.15701478071238187,
+    "contribution": 0.09931184880058153,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -225,14 +235,14 @@
    },
    {
     "id": "c3",
-    "score": 0.23314144982408794,
+    "score": 0.7102773265445708,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1401118949160788,
-    "contribution": 0.03266589031833487,
+    "effective_weight": 0.13956869396656169,
+    "contribution": 0.0991324788198868,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -243,8 +253,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.18608611043541717,
-    "contribution": 0.1116516662612503,
+    "effective_weight": 0.18536467167433973,
+    "contribution": 0.11121880300460384,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -255,32 +265,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.021892483580637313,
+    "effective_weight": 0.02180760843227526,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.6149929483753478,
+    "score": -0.6910160550829096,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
-    "effective_weight": 0.26270980296764773,
-    "contribution": -0.16156467629418036,
+    "effective_weight": 0.2616913011873031,
+    "contribution": -0.18083289059596375,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6050021331113719,
+    "score": 0.5761408171743869,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1459498905375821,
-    "contribution": 0.08829999510260839,
+    "effective_weight": 0.14538405621516842,
+    "contribution": 0.08376168895193414,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -297,32 +307,32 @@
    },
    {
     "id": "c9",
-    "score": 0.09090909090909083,
-    "confidence": 0.7333333333333333,
+    "score": 0.13043478260869557,
+    "confidence": 0.7666666666666667,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.058666666666666666,
-    "effective_weight": 0.08562393578204816,
-    "contribution": 0.0077839941620043715,
+    "weight_times_confidence": 0.06133333333333334,
+    "effective_weight": 0.08916888781196997,
+    "contribution": 0.011630724497213467,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.105126-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.105126-07:00",
-  "event_objects": 9,
-  "distinct_accessions": 9,
+  "window_start_exclusive": "2026-08-15T17:01:29.424170-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.424170-07:00",
+  "event_objects": 10,
+  "distinct_accessions": 10,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
    "EXEC_CHANGE": 2,
-   "INSIDER_SELL": 4,
+   "INSIDER_SELL": 5,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.4444444444444444,
+  "largest_type_share": 0.5,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -330,21 +340,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for COST in the declared corpus",
-  "returned": 16,
-  "total_available": 16,
+  "returned": 17,
+  "total_available": 17,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-05T14:19:07-07:00",
-  "newest_returned_available_as_of": "2026-11-12T15:24:11.301715-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-13T14:39:55.618860-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.105126-07:00",
+  "corpus_end": "2026-11-13T17:01:29.424170-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/COST.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -373,6 +383,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -487,10 +501,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

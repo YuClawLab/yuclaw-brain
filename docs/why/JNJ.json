@@ -1,34 +1,44 @@
 {
  "ticker": "JNJ",
- "generated": "2026-11-13T00:02:07.934078+00:00",
+ "generated": "2026-11-14T00:01:29.239870+00:00",
  "label": "NEUTRAL",
- "score": 0.3319,
+ "score": 0.2505,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
  },
  "components": {
-  "c1": 0.702,
+  "c1": 0.627,
   "c2": 0.0,
-  "c3": 0.12559772,
+  "c3": 0.3537993,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": 0.45451033,
+  "c6": -0.46211717,
+  "c7": 0.29020897,
   "c8": 0.0,
   "c9": -0.3846154
  },
  "evidence_coverage": {
-  "ecs": 62,
-  "events_90d": 4,
-  "recency_days": 22.2,
+  "ecs": 78,
+  "events_90d": 5,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "JNJ",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-13",
+   "accession_number": "0000200406-26-000199",
+   "excerpt": "Forminard Elizabeth S 13072 shares @ $284.39 on 2026-11-12 ($3,717,546)",
+   "source_hash": "258f359274449b3c3f1ed18ac3a9e2e26ed0c32c71b9969d963fcb2ef80172a6",
+   "available_as_of": "2026-11-13T14:57:30.686775-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "JNJ",
    "evidence_type": "OTHER_MATERIAL",
@@ -354,21 +364,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5518333333333334,
-  "reconstructed_score": 0.33190772927297957,
-  "stored_score": 0.3319,
+  "denominator": 0.5878333333333333,
+  "reconstructed_score": 0.2505174869767527,
+  "stored_score": 0.2505,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.702,
+    "score": 0.6269999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19571126547870732,
-    "contribution": 0.13738930836605254,
+    "effective_weight": 0.1837255457896229,
+    "contribution": 0.11519591721009355,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -385,14 +395,14 @@
    },
    {
     "id": "c3",
-    "score": 0.1255977199702523,
+    "score": 0.3537993270787088,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17396556931440652,
-    "contribution": 0.021849678859216345,
+    "effective_weight": 0.1633115962574426,
+    "contribution": 0.05777953286003297,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -403,8 +413,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.23104802174569614,
-    "contribution": 0.13862881304741767,
+    "effective_weight": 0.21689821377941595,
+    "contribution": 0.13013892826764956,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -415,32 +425,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.027182120205376015,
+    "effective_weight": 0.025517436915225403,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.2,
+    "score": -0.46211715726000974,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06523708849290244,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.12248369719308193,
+    "contribution": -0.056601817957562854,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.45451034153328373,
+    "score": 0.29020896017665787,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18121413470250677,
-    "contribution": 0.08236369825429483,
+    "effective_weight": 0.1701162461015027,
+    "contribution": 0.04936925889027353,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -463,24 +473,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.06933333333333334,
-    "effective_weight": 0.1256418000604047,
-    "contribution": -0.04832376925400181,
+    "effective_weight": 0.11794726396370855,
+    "contribution": -0.04536433229373406,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.308719-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.308719-07:00",
-  "event_objects": 4,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-08-15T17:01:29.632826-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.632826-07:00",
+  "event_objects": 5,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 3,
+   "INSIDER_SELL": 4,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.75,
+  "largest_type_share": 0.8,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -488,21 +498,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for JNJ in the declared corpus",
-  "returned": 32,
-  "total_available": 32,
+  "returned": 33,
+  "total_available": 33,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T19:11:31-07:00",
-  "newest_returned_available_as_of": "2026-10-21T14:18:47-06:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-13T14:57:30.686775-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.308719-07:00",
+  "corpus_end": "2026-11-13T17:01:29.632826-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/JNJ.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -556,6 +566,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-12",
    "label": "NEUTRAL"
@@ -671,10 +685,6 @@
   {
    "date": "2026-10-05",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

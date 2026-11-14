@@ -1,34 +1,44 @@
 {
  "ticker": "KO",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.1893,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "NEUTRAL",
+ "score": 0.215,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.4065,
+  "c1": 0.407,
   "c2": 0.0,
-  "c3": 0.23314145,
+  "c3": 0.7102773,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.6671928,
+  "c7": 0.6241857,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 79,
-  "events_90d": 8,
-  "recency_days": 3.3,
+  "ecs": 81,
+  "events_90d": 9,
+  "recency_days": 0.2,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-13",
+   "accession_number": "0000021344-26-000173",
+   "excerpt": "QUAN NANCY S 15000 shares @ $98.00 on 2026-11-12 ($1,470,000)",
+   "source_hash": "e0b9aab3c07f33903eb3eb0f7779f03fec59ef43670890535c1db78bb56199fd",
+   "available_as_of": "2026-11-13T13:24:21.002480-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "KO",
    "evidence_type": "INSIDER_SELL",
@@ -464,21 +474,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6705,
-  "reconstructed_score": 0.18934823642823162,
-  "stored_score": 0.1893,
+  "denominator": 0.7065,
+  "reconstructed_score": 0.2149753762494592,
+  "stored_score": 0.215,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.40650000000000003,
+    "score": 0.407,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1610738255033557,
-    "contribution": 0.0654765100671141,
+    "effective_weight": 0.15286624203821655,
+    "contribution": 0.06221656050955413,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -495,14 +505,14 @@
    },
    {
     "id": "c3",
-    "score": 0.23314144982408794,
+    "score": 0.7102773265445708,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14317673378076062,
-    "contribution": 0.033380431294724,
+    "effective_weight": 0.13588110403397027,
+    "contribution": 0.0965132673011731,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -513,8 +523,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19015659955257272,
-    "contribution": 0.11409395973154363,
+    "effective_weight": 0.18046709129511676,
+    "contribution": 0.10828025477707005,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -525,32 +535,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02237136465324385,
+    "effective_weight": 0.021231422505307854,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": -0.46211715726000974,
-    "confidence": 0.8,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.144,
-    "effective_weight": 0.21476510067114093,
-    "contribution": -0.09924663780080746,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.25477707006369427,
+    "contribution": -0.11773685535286872,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6671928398745824,
+    "score": 0.6241856827876588,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.14914243102162567,
-    "contribution": 0.09950676209911745,
+    "effective_weight": 0.14154281670205238,
+    "contribution": 0.08834899968685901,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -573,21 +583,21 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.11931394481730052,
-    "contribution": -0.0238627889634601,
+    "effective_weight": 0.11323425336164189,
+    "contribution": -0.022646850672328373,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.336863-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.336863-07:00",
-  "event_objects": 8,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-08-15T17:01:29.661540-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.661540-07:00",
+  "event_objects": 9,
+  "distinct_accessions": 5,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 8
+   "INSIDER_SELL": 9
   },
   "largest_type_share": 1.0,
   "independent_information_count": null,
@@ -597,21 +607,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for KO in the declared corpus",
-  "returned": 43,
-  "total_available": 43,
+  "returned": 44,
+  "total_available": 44,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T10:00:14-07:00",
-  "newest_returned_available_as_of": "2026-11-09T10:13:03.372649-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-13T13:24:21.002480-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.336863-07:00",
+  "corpus_end": "2026-11-13T17:01:29.661540-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/KO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -665,6 +675,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -779,10 +793,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

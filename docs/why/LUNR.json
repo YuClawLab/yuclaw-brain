@@ -1,34 +1,44 @@
 {
  "ticker": "LUNR",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "NEUTRAL",
- "score": 0.2898,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "BULLISH",
+ "score": 0.4839,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.4,
+  "ceiling": 0.55
  },
  "components": {
-  "c1": 0.349,
+  "c1": 0.8985,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.36404103,
+  "c6": 0.75899076,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": -0.13333334
+  "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 5,
-  "recency_days": 0.5,
+  "ecs": 80,
+  "events_90d": 6,
+  "recency_days": 1.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "LUNR",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-12",
+   "accession_number": "0001628280-26-073512",
+   "excerpt": "0001844452 us-gaap:ProductMember us-gaap:NonrelatedPartyMember 2026-07-01 2026-09-30",
+   "source_hash": "e69c1648cafd0284f4dce678ceba1c4b488792de71eebc9d42aeaf9a037a3d9b",
+   "available_as_of": "2026-11-12T15:33:46-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "LUNR",
    "evidence_type": "OTHER_MATERIAL",
@@ -584,21 +594,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.40249999999999997,
-  "reconstructed_score": 0.2897659897851377,
-  "stored_score": 0.2898,
+  "denominator": 0.4385,
+  "reconstructed_score": 0.4838890183406049,
+  "stored_score": 0.4839,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.349,
+    "score": 0.8985,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.26832298136645966,
-    "contribution": 0.09364472049689442,
+    "effective_weight": 0.24629418472063855,
+    "contribution": 0.22129532497149373,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -621,7 +631,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.08944099378881988,
+    "effective_weight": 0.08209806157354617,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -633,8 +643,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.31677018633540377,
-    "contribution": 0.19006211180124225,
+    "effective_weight": 0.29076396807297605,
+    "contribution": 0.17445838084378562,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -645,20 +655,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.037267080745341616,
+    "effective_weight": 0.03420752565564424,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.3640410431995714,
-    "confidence": 0.2,
+    "score": 0.758990757532712,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.08944099378881988,
-    "contribution": 0.03256019268368838,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.16419612314709234,
+    "contribution": 0.12462333989134607,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -687,30 +697,30 @@
    },
    {
     "id": "c9",
-    "score": -0.1333333333333333,
+    "score": -0.19999999999999996,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1987577639751553,
-    "contribution": -0.026501035196687367,
+    "effective_weight": 0.18244013683010263,
+    "contribution": -0.03648802736602052,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.387341-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.387341-07:00",
-  "event_objects": 5,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-08-15T17:01:29.707791-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.707791-07:00",
+  "event_objects": 6,
+  "distinct_accessions": 5,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 4,
-   "OTHER_MATERIAL": 1
+   "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.8,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -718,21 +728,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for LUNR in the declared corpus",
-  "returned": 55,
-  "total_available": 55,
+  "returned": 56,
+  "total_available": 56,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T06:49:24-07:00",
-  "newest_returned_available_as_of": "2026-11-12T05:32:47-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "newest_returned_available_as_of": "2026-11-12T15:33:46-07:00",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.387341-07:00",
+  "corpus_end": "2026-11-13T17:01:29.707791-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/LUNR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -888,6 +898,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-13",
+   "label": "BULLISH"
+  },
+  {
    "date": "2026-11-12",
    "label": "NEUTRAL"
   },
@@ -1001,10 +1015,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-02",
    "label": "WATCH"
   }
  ],

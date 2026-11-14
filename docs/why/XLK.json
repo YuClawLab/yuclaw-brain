@@ -1,22 +1,22 @@
 {
  "ticker": "XLK",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.0563,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "WEAKENING",
+ "score": -0.1905,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.5735,
+  "c1": -0.529,
   "c2": 0.0,
-  "c3": 0.2880861,
+  "c3": -0.81540906,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": -0.25925925
+  "c9": -0.2857143
  },
  "evidence_coverage": {
   "ecs": 0,
@@ -24,8 +24,8 @@
   "recency_days": null,
   "substrate_active": 0,
   "type_diversity": 0,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [],
@@ -33,21 +33,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.4185,
-  "reconstructed_score": 0.05627621615272793,
-  "stored_score": 0.0563,
+  "denominator": 0.4211666666666667,
+  "reconstructed_score": -0.1905293338618556,
+  "stored_score": -0.1905,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.5735,
+    "score": -0.529,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.25806451612903225,
-    "contribution": -0.148,
+    "effective_weight": 0.2564305500593589,
+    "contribution": -0.13565176098140086,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -64,14 +64,14 @@
    },
    {
     "id": "c3",
-    "score": 0.28808607423524263,
+    "score": -0.8154090740779673,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.22939068100358426,
-    "contribution": 0.06608426075647143,
+    "effective_weight": 0.22793826671943015,
+    "contribution": -0.18586293101262727,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -82,8 +82,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.30465949820788535,
-    "contribution": 0.18279569892473121,
+    "effective_weight": 0.30273051048674315,
+    "contribution": 0.1816383062920459,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -94,7 +94,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.035842293906810034,
+    "effective_weight": 0.035615354174910956,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -136,22 +136,22 @@
    },
    {
     "id": "c9",
-    "score": -0.2592592592592593,
-    "confidence": 0.9,
+    "score": -0.2857142857142857,
+    "confidence": 0.9333333333333333,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.07200000000000001,
-    "effective_weight": 0.17204301075268819,
-    "contribution": -0.044603743528474724,
+    "weight_times_confidence": 0.07466666666666667,
+    "effective_weight": 0.1772853185595568,
+    "contribution": -0.05065294815987337,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.837975-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.837975-07:00",
+  "window_start_exclusive": "2026-08-15T17:01:30.150544-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:30.150544-07:00",
   "event_objects": 0,
   "distinct_accessions": 0,
   "objects_without_accession": 0,
@@ -170,17 +170,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": null,
   "newest_returned_available_as_of": null,
-  "build_id": "why-2026-11-13T000207",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.837975-07:00",
+  "corpus_end": "2026-11-13T17:01:30.150544-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/XLK.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -295,10 +299,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-02",
    "label": "NEUTRAL"
   }
  ],

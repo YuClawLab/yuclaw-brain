@@ -1,31 +1,31 @@
 {
  "ticker": "MRVL",
- "generated": "2026-11-13T00:02:07.934078+00:00",
- "label": "WATCH",
- "score": 0.1413,
+ "generated": "2026-11-14T00:01:29.239870+00:00",
+ "label": "WEAKENING",
+ "score": -0.0196,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.2880861,
+  "c3": -0.81540906,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.31289205,
-  "c7": 0.6337266,
+  "c6": 0.28510144,
+  "c7": 0.6060074,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 100,
+  "ecs": 99,
   "events_90d": 14,
-  "recency_days": 0.4,
+  "recency_days": 1.4,
   "substrate_active": 1,
   "type_diversity": 6,
-  "as_of": "2026-11-13T00:01:58.289595+00:00",
-  "source_sha256": "f379f6f01dcfbf25e4689c13c6ba3c3dc34f1fbb12db3ecf3ec3b89879ea5415",
+  "as_of": "2026-11-14T00:01:19.700564+00:00",
+  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -455,8 +455,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.14132978957487052,
-  "stored_score": 0.1413,
+  "reconstructed_score": -0.019618224565227955,
+  "stored_score": -0.0196,
   "missing_components": [],
   "components": [
    {
@@ -485,14 +485,14 @@
    },
    {
     "id": "c3",
-    "score": 0.28808607423524263,
+    "score": -0.8154090740779673,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.039145453823897086,
+    "contribution": -0.11079868522503164,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -521,26 +521,26 @@
    },
    {
     "id": "c6",
-    "score": 0.312892060449437,
+    "score": 0.28510142910201464,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": 0.07971772240749987,
+    "contribution": 0.07263730677758334,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6337266232716406,
+    "score": 0.6060073821778866,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.08969945127694844,
+    "contribution": 0.08577599181569522,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -571,8 +571,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-14T17:02:08.458410-07:00",
-  "window_end_inclusive": "2026-11-12T17:02:08.458410-07:00",
+  "window_start_exclusive": "2026-08-15T17:01:29.774383-07:00",
+  "window_end_inclusive": "2026-11-13T17:01:29.774383-07:00",
   "event_objects": 14,
   "distinct_accessions": 14,
   "objects_without_accession": 0,
@@ -598,15 +598,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
   "newest_returned_available_as_of": "2026-11-12T07:11:22-07:00",
-  "build_id": "why-2026-11-13T000207",
+  "build_id": "why-2026-11-14T000129",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-12T17:02:08.458410-07:00",
+  "corpus_end": "2026-11-13T17:01:29.774383-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-13T000207",
+ "build_id": "why-2026-11-14T000129",
  "corrections": [
   {
    "original": {
@@ -710,6 +710,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-13",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-12",
    "label": "WATCH"
@@ -824,10 +828,6 @@
   },
   {
    "date": "2026-10-05",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-02",
    "label": "NEUTRAL"
   }
  ],
