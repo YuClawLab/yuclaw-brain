@@ -1,34 +1,44 @@
 {
  "ticker": "MRK",
- "generated": "2026-11-14T00:01:29.239870+00:00",
- "label": "NEUTRAL",
- "score": 0.2892,
+ "generated": "2026-11-17T00:01:53.009947+00:00",
+ "label": "WATCH",
+ "score": 0.1226,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": 0.013,
+  "c1": -0.025,
   "c2": 0.0,
-  "c3": 0.3537993,
+  "c3": 0.48142168,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.28395134,
-  "c7": 0.36017555,
+  "c6": -0.27573812,
+  "c7": -0.08303065,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 65,
-  "events_90d": 3,
-  "recency_days": 9.1,
+  "ecs": 81,
+  "events_90d": 4,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-11-14T00:01:19.700564+00:00",
-  "source_sha256": "7150405dfb1c724dc8c625a204060746f41ddb1d72e0479601e1f571503fb1c7",
+  "type_diversity": 3,
+  "as_of": "2026-11-17T00:01:43.491228+00:00",
+  "source_sha256": "839acf099c9ac256330ce4b178b89e46bea9728ce4cae0d752b6f43eb72025ae",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRK",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-16",
+   "accession_number": "0000310158-26-000252",
+   "excerpt": "DeLuca Richard R. S 58185 shares @ $148.01 on 2026-11-12 ($8,611,875)",
+   "source_hash": "618663d5555a427e03ce360b6c2f37390fee1fff623d8e8c664d8ae7e6929c5a",
+   "available_as_of": "2026-11-16T14:30:36.719077-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRK",
    "evidence_type": "PARTNERSHIP",
@@ -254,21 +264,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5451666666666667,
-  "reconstructed_score": 0.2892035218383057,
-  "stored_score": 0.2892,
+  "denominator": 0.5811666666666667,
+  "reconstructed_score": 0.12262753508935004,
+  "stored_score": 0.1226,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.013,
+    "score": -0.024999999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19810455518190154,
-    "contribution": 0.0025753592173647197,
+    "effective_weight": 0.18583309435044448,
+    "contribution": -0.004645827358761112,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -285,14 +295,14 @@
    },
    {
     "id": "c3",
-    "score": 0.3537993270787088,
+    "score": 0.48142169312018773,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17609293793946804,
-    "contribution": 0.06230156294629662,
+    "effective_weight": 0.16518497275595065,
+    "contribution": 0.07952362926218184,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -303,8 +313,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.233873433200856,
-    "contribution": 0.14032405992051358,
+    "effective_weight": 0.21938629194149697,
+    "contribution": 0.13163177516489818,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -315,32 +325,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02751452155304188,
+    "effective_weight": 0.02581015199311729,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.2839513394443328,
-    "confidence": 0.4,
+    "score": -0.27573810676791083,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.13206970345460103,
-    "contribution": 0.03750136919594979,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.18583309435044448,
+    "contribution": -0.05124126561101411,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.36017554815968333,
+    "score": -0.08303064532509713,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18343014368694588,
-    "contribution": 0.06606705255145522,
+    "effective_weight": 0.1720676799541153,
+    "contribution": -0.014286890506182471,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -363,24 +373,25 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.026666666666666665,
-    "effective_weight": 0.048914704983185564,
-    "contribution": -0.019565881993274227,
+    "effective_weight": 0.04588471465443074,
+    "contribution": -0.018353885861772296,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-15T17:01:29.761708-07:00",
-  "window_end_inclusive": "2026-11-13T17:01:29.761708-07:00",
-  "event_objects": 3,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-08-18T17:01:53.512975-07:00",
+  "window_end_inclusive": "2026-11-16T17:01:53.512975-07:00",
+  "event_objects": 4,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
+   "INSIDER_SELL": 1,
    "OTHER_MATERIAL": 2,
    "PARTNERSHIP": 1
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 0.5,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -388,23 +399,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRK in the declared corpus",
-  "returned": 22,
-  "total_available": 22,
+  "returned": 23,
+  "total_available": 23,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-05-28T14:15:25-06:00",
-  "newest_returned_available_as_of": "2026-11-04T14:14:20-07:00",
-  "build_id": "why-2026-11-14T000129",
+  "newest_returned_available_as_of": "2026-11-16T14:30:36.719077-07:00",
+  "build_id": "why-2026-11-17T000153",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-13T17:01:29.761708-07:00",
+  "corpus_end": "2026-11-16T17:01:53.512975-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRK.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-14T000129",
+ "build_id": "why-2026-11-17T000153",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-16",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-13",
    "label": "NEUTRAL"
@@ -519,10 +534,6 @@
   },
   {
    "date": "2026-10-06",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-05",
    "label": "WATCH"
   }
  ],
