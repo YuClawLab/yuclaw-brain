@@ -1,34 +1,44 @@
 {
  "ticker": "NVDA",
- "generated": "2026-11-17T00:01:53.009947+00:00",
- "label": "WEAKENING",
- "score": -0.0943,
+ "generated": "2026-11-18T00:02:18.301676+00:00",
+ "label": "WATCH",
+ "score": 0.0966,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.65921915,
+  "c3": 0.22648017,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.43391111,
-  "c7": 0.69905484,
+  "c6": 0.28330085,
+  "c7": 0.635748,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 97,
-  "events_90d": 29,
-  "recency_days": 4.4,
+  "ecs": 100,
+  "events_90d": 30,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-17T00:01:43.491228+00:00",
-  "source_sha256": "839acf099c9ac256330ce4b178b89e46bea9728ce4cae0d752b6f43eb72025ae",
+  "as_of": "2026-11-18T00:02:09.044872+00:00",
+  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "NVDA",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-17",
+   "accession_number": "0001045810-26-000088",
+   "excerpt": "On November 17, 2026, NVIDIA Corporation, or the Company, issued a press release announcing its results for the quarter ended October 25, 2026.",
+   "source_hash": "c37a5a621eed8148d8fbd712b861661a6b16335476965d80aa4611e2371642e7",
+   "available_as_of": "2026-11-17T14:20:51-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "NVDA",
    "evidence_type": "EXEC_CHANGE",
@@ -824,9 +834,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5825,
-  "reconstructed_score": -0.09431503083136097,
-  "stored_score": -0.0943,
+  "denominator": 0.6185,
+  "reconstructed_score": 0.09664739056047436,
+  "stored_score": 0.0966,
   "missing_components": [],
   "components": [
    {
@@ -837,8 +847,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1854077253218884,
-    "contribution": -0.1854077253218884,
+    "effective_weight": 0.17461600646725947,
+    "contribution": -0.17461600646725947,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -855,14 +865,14 @@
    },
    {
     "id": "c3",
-    "score": -0.6592191442361842,
+    "score": 0.22648017745631424,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1648068669527897,
-    "contribution": -0.1086438417968647,
+    "effective_weight": 0.15521422797089732,
+    "contribution": 0.03515294589459364,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -873,8 +883,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21888412017167383,
-    "contribution": 0.1313304721030043,
+    "effective_weight": 0.206143896523848,
+    "contribution": 0.1236863379143088,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -885,32 +895,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.06008583690987124,
-    "contribution": -0.033942462402777464,
+    "effective_weight": 0.05658852061438964,
+    "contribution": -0.03196682999129809,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.43391110137979927,
-    "confidence": 0.2,
+    "score": 0.28330084539237177,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06180257510729613,
-    "contribution": -0.026816823432914628,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.11641067097817298,
+    "contribution": 0.03297924150080964,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6990548305336323,
+    "score": 0.6357480417388099,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.17167381974248927,
-    "contribution": 0.12000941296714716,
+    "effective_weight": 0.16168148746968472,
+    "contribution": 0.10278868904426999,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -933,26 +943,26 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.13733905579399142,
-    "contribution": 0.009155937052932758,
+    "effective_weight": 0.12934518997574776,
+    "contribution": 0.008623012665049848,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-18T17:01:53.588610-07:00",
-  "window_end_inclusive": "2026-11-16T17:01:53.588610-07:00",
-  "event_objects": 29,
-  "distinct_accessions": 10,
+  "window_start_exclusive": "2026-08-19T17:02:18.904321-07:00",
+  "window_end_inclusive": "2026-11-17T17:02:18.904321-07:00",
+  "event_objects": 30,
+  "distinct_accessions": 11,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
    "INSIDER_SELL": 25,
    "M_AND_A_ANNOUNCE": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.8620689655172413,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -960,23 +970,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for NVDA in the declared corpus",
-  "returned": 79,
-  "total_available": 79,
+  "returned": 80,
+  "total_available": 80,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:31:25-07:00",
-  "newest_returned_available_as_of": "2026-11-12T06:52:41-07:00",
-  "build_id": "why-2026-11-17T000153",
+  "newest_returned_available_as_of": "2026-11-17T14:20:51-07:00",
+  "build_id": "why-2026-11-18T000218",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-16T17:01:53.588610-07:00",
+  "corpus_end": "2026-11-17T17:02:18.904321-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/NVDA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-17T000153",
+ "build_id": "why-2026-11-18T000218",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-17",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-16",
    "label": "WEAKENING"
@@ -1091,10 +1105,6 @@
   },
   {
    "date": "2026-10-07",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-06",
    "label": "WATCH"
   }
  ],
