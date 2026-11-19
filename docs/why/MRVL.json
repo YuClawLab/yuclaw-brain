@@ -1,8 +1,8 @@
 {
  "ticker": "MRVL",
- "generated": "2026-11-18T00:02:18.301676+00:00",
+ "generated": "2026-11-19T00:02:03.357319+00:00",
  "label": "WATCH",
- "score": 0.1006,
+ "score": 0.0806,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -10,25 +10,35 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": 0.22648017,
+  "c3": 0.42401394,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.21571158,
-  "c7": 0.62115824,
+  "c6": -0.000710256,
+  "c7": 0.63834554,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 96,
-  "events_90d": 12,
-  "recency_days": 5.4,
+  "ecs": 99,
+  "events_90d": 13,
+  "recency_days": 1.0,
   "substrate_active": 1,
   "type_diversity": 5,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRVL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-17",
+   "accession_number": "0001628280-26-074618",
+   "excerpt": "MURPHY MATTHEW J S 7500 shares @ $146.54 on 2026-11-16 ($1,099,050)",
+   "source_hash": "3b4ded266187842c65f02c799df279ba0950128a01a32199c8a3163702df029b",
+   "available_as_of": "2026-11-17T17:08:30.777160-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRVL",
    "evidence_type": "EXEC_CHANGE",
@@ -454,9 +464,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6705,
-  "reconstructed_score": 0.10055240981977079,
-  "stored_score": 0.1006,
+  "denominator": 0.7065,
+  "reconstructed_score": 0.08055491665922249,
+  "stored_score": 0.0806,
   "missing_components": [],
   "components": [
    {
@@ -467,8 +477,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1610738255033557,
-    "contribution": -0.1610738255033557,
+    "effective_weight": 0.15286624203821655,
+    "contribution": -0.15286624203821655,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -485,14 +495,14 @@
    },
    {
     "id": "c3",
-    "score": 0.22648017745631424,
+    "score": 0.4240139545496964,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14317673378076062,
-    "contribution": 0.03242669207428213,
+    "effective_weight": 0.13588110403397027,
+    "contribution": 0.05761548427002244,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -503,8 +513,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.19015659955257272,
-    "contribution": 0.11409395973154363,
+    "effective_weight": 0.18046709129511676,
+    "contribution": 0.10828025477707005,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -515,32 +525,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02237136465324385,
+    "effective_weight": 0.021231422505307854,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.21571157472855604,
-    "confidence": 0.8,
+    "score": -0.0007102560011672506,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.144,
-    "effective_weight": 0.21476510067114093,
-    "contribution": 0.04632731806250868,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.25477707006369427,
+    "contribution": -0.0001809569429725479,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6211582698743806,
+    "score": 0.6383455506317993,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.14914243102162567,
-    "contribution": 0.09264105441825216,
+    "effective_weight": 0.14154281670205238,
+    "contribution": 0.09035322726564747,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -563,27 +573,27 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.11931394481730052,
-    "contribution": -0.0238627889634601,
+    "effective_weight": 0.11323425336164189,
+    "contribution": -0.022646850672328373,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.850012-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.850012-07:00",
-  "event_objects": 12,
-  "distinct_accessions": 12,
+  "window_start_exclusive": "2026-08-20T17:02:03.892483-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.892483-07:00",
+  "event_objects": 13,
+  "distinct_accessions": 13,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 7,
+   "INSIDER_SELL": 8,
    "M_AND_A_ANNOUNCE": 2,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.5833333333333334,
+  "largest_type_share": 0.6153846153846154,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -591,21 +601,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRVL in the declared corpus",
-  "returned": 42,
-  "total_available": 42,
+  "returned": 43,
+  "total_available": 43,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
-  "newest_returned_available_as_of": "2026-11-12T07:11:22-07:00",
-  "build_id": "why-2026-11-18T000218",
+  "newest_returned_available_as_of": "2026-11-17T17:08:30.777160-07:00",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.850012-07:00",
+  "corpus_end": "2026-11-18T17:02:03.892483-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [
   {
    "original": {
@@ -709,6 +719,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-17",
    "label": "WATCH"
@@ -824,10 +838,6 @@
   {
    "date": "2026-10-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

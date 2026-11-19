@@ -1,34 +1,44 @@
 {
  "ticker": "MRK",
- "generated": "2026-11-18T00:02:18.301676+00:00",
+ "generated": "2026-11-19T00:02:03.357319+00:00",
  "label": "WEAKENING",
- "score": -0.0352,
+ "score": -0.1248,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0885,
+  "c1": -0.2035,
   "c2": 0.0,
-  "c3": -0.3906818,
+  "c3": -0.78030366,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.2945265,
-  "c7": -0.07436581,
+  "c6": -0.31134978,
+  "c7": -0.0113153085,
   "c8": 0.0,
   "c9": -0.4
  },
  "evidence_coverage": {
-  "ecs": 80,
-  "events_90d": 4,
-  "recency_days": 1.1,
+  "ecs": 84,
+  "events_90d": 5,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "MRK",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0000310158-26-000255",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Stock ($0.50 par value) MRK New York Stock Exchange",
+   "source_hash": "6115039fd1351a696abaf81be0f85caf32665f867b945dbf7a97b8b621dd952a",
+   "available_as_of": "2026-11-18T14:27:51-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "MRK",
    "evidence_type": "INSIDER_SELL",
@@ -264,21 +274,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5811666666666667,
-  "reconstructed_score": -0.0352318224957412,
-  "stored_score": -0.0352,
+  "denominator": 0.6171666666666666,
+  "reconstructed_score": -0.12479564845982286,
+  "stored_score": -0.1248,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0885,
+    "score": -0.2035,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18583309435044448,
-    "contribution": -0.016446228850014337,
+    "effective_weight": 0.17499324871725627,
+    "contribution": -0.03561112611396165,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -295,14 +305,14 @@
    },
    {
     "id": "c3",
-    "score": -0.3906817986169224,
+    "score": -0.7803036519607356,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16518497275595065,
-    "contribution": -0.06453476226078213,
+    "effective_weight": 0.15554955441533894,
+    "contribution": -0.12137588537115414,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -313,8 +323,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21938629194149697,
-    "contribution": 0.13163177516489818,
+    "effective_weight": 0.206589251957872,
+    "contribution": 0.1239535511747232,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -325,32 +335,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02581015199311729,
+    "effective_weight": 0.024304617877396704,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.29452648313069735,
-    "confidence": 0.6,
+    "score": -0.311349765797109,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.18583309435044448,
-    "contribution": -0.05473276772833147,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.23332433162300836,
+    "contribution": -0.07264547600559064,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.07436581328435071,
+    "score": -0.011315308447730278,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1720676799541153,
-    "contribution": -0.012795952959739154,
+    "effective_weight": 0.16203078584931138,
+    "contribution": -0.0018334283199130887,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -373,25 +383,25 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.026666666666666665,
-    "effective_weight": 0.04588471465443074,
-    "contribution": -0.018353885861772296,
+    "effective_weight": 0.043208209559816364,
+    "contribution": -0.017283283823926545,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.836658-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.836658-07:00",
-  "event_objects": 4,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-08-20T17:02:03.878332-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.878332-07:00",
+  "event_objects": 5,
+  "distinct_accessions": 5,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 2,
+   "OTHER_MATERIAL": 3,
    "PARTNERSHIP": 1
   },
-  "largest_type_share": 0.5,
+  "largest_type_share": 0.6,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -399,23 +409,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for MRK in the declared corpus",
-  "returned": 23,
-  "total_available": 23,
+  "returned": 24,
+  "total_available": 24,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-05-28T14:15:25-06:00",
-  "newest_returned_available_as_of": "2026-11-16T14:30:36.719077-07:00",
-  "build_id": "why-2026-11-18T000218",
+  "newest_returned_available_as_of": "2026-11-18T14:27:51-07:00",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.836658-07:00",
+  "corpus_end": "2026-11-18T17:02:03.878332-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRK.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-18",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-17",
    "label": "WEAKENING"
@@ -531,10 +545,6 @@
   {
    "date": "2026-10-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

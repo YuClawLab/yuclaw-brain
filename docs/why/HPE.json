@@ -1,34 +1,64 @@
 {
  "ticker": "HPE",
- "generated": "2026-11-18T00:02:18.301676+00:00",
+ "generated": "2026-11-19T00:02:03.357319+00:00",
  "label": "WATCH",
- "score": 0.0701,
+ "score": 0.1941,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.82,
+  "c1": -0.903,
   "c2": 0.0,
-  "c3": 0.22648017,
+  "c3": 0.42401394,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.03318588,
-  "c7": 0.66687447,
+  "c6": 0.41919312,
+  "c7": 0.68649936,
   "c8": 0.0,
-  "c9": -0.4
+  "c9": -0.33333334
  },
  "evidence_coverage": {
-  "ecs": 73,
-  "events_90d": 9,
-  "recency_days": 25.1,
+  "ecs": 94,
+  "events_90d": 12,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 2,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "type_diversity": 3,
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "HPE",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0001560849-26-000015",
+   "excerpt": "rahim rami S 11831 shares @ $46.34 on 2026-11-16 ($548,253)",
+   "source_hash": "e291986c95a89ebc5f4512ed5caf6062996f2d4364662bde6ee6d7ffd9395af8",
+   "available_as_of": "2026-11-18T14:52:11.577705-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "HPE",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0001560849-26-000015",
+   "excerpt": "rahim rami S 13724 shares @ $46.34 on 2026-11-16 ($635,976)",
+   "source_hash": "324b20772aca406d9d905152176427df12e5e2b3420a6b10434a7a3fac11ea97",
+   "available_as_of": "2026-11-18T14:52:11.577705-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "HPE",
+   "evidence_type": "M_AND_A_ANNOUNCE",
+   "filing_date": "2026-11-18",
+   "accession_number": "0001645590-26-000092",
+   "excerpt": "On July 16, 2025, Hewlett Packard Enterprise Company (the \"Company\") entered into a letter agreement (the \"Cooperation Agreement\") with Elliott Investment Mana",
+   "source_hash": "e1eb87153ba9d2edffcc6ae09e0fe4a70f4f329393ca3ebd714884d3700cbb1a",
+   "available_as_of": "2026-11-18T14:08:26-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "HPE",
    "evidence_type": "INSIDER_SELL",
@@ -344,21 +374,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5985,
-  "reconstructed_score": 0.07014229015348845,
-  "stored_score": 0.0701,
+  "denominator": 0.7065,
+  "reconstructed_score": 0.19408261718478528,
+  "stored_score": 0.1941,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.8199999999999998,
+    "score": -0.9029999999999999,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.18045112781954886,
-    "contribution": -0.14796992481203003,
+    "effective_weight": 0.15286624203821655,
+    "contribution": -0.13803821656050955,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -375,14 +405,14 @@
    },
    {
     "id": "c3",
-    "score": 0.22648017745631424,
+    "score": 0.4240139545496964,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.16040100250626566,
-    "contribution": 0.036327647511789754,
+    "effective_weight": 0.13588110403397027,
+    "contribution": 0.05761548427002244,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -393,8 +423,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21303258145363407,
-    "contribution": 0.12781954887218044,
+    "effective_weight": 0.18046709129511676,
+    "contribution": 0.10828025477707005,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -405,32 +435,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.02506265664160401,
+    "effective_weight": 0.021231422505307854,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.033185879779659234,
-    "confidence": 0.4,
+    "score": 0.4191931135747768,
+    "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.12030075187969923,
-    "contribution": -0.003992286289282314,
+    "weight_times_confidence": 0.18,
+    "effective_weight": 0.25477707006369427,
+    "contribution": 0.10680079326745906,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6668744696519212,
+    "score": 0.6864993562748679,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1670843776106934,
-    "contribution": 0.11142430570625249,
+    "effective_weight": 0.14154281670205238,
+    "contribution": 0.09716905255129057,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -447,30 +477,31 @@
    },
    {
     "id": "c9",
-    "score": -0.4,
+    "score": -0.33333333333333337,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1336675020885547,
-    "contribution": -0.053467000835421885,
+    "effective_weight": 0.11323425336164189,
+    "contribution": -0.0377447511205473,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.652716-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.652716-07:00",
-  "event_objects": 9,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-08-20T17:02:03.691573-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.691573-07:00",
+  "event_objects": 12,
+  "distinct_accessions": 8,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 8,
+   "INSIDER_SELL": 10,
+   "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.8888888888888888,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -478,21 +509,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for HPE in the declared corpus",
-  "returned": 31,
-  "total_available": 31,
+  "returned": 34,
+  "total_available": 34,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-03-18T14:40:49-06:00",
-  "newest_returned_available_as_of": "2026-10-23T14:51:50.043266-06:00",
-  "build_id": "why-2026-11-18T000218",
+  "newest_returned_available_as_of": "2026-11-18T14:52:11.577705-07:00",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.652716-07:00",
+  "corpus_end": "2026-11-18T17:02:03.691573-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/HPE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [
   {
    "original": {
@@ -546,6 +577,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-17",
    "label": "WATCH"
@@ -661,10 +696,6 @@
   {
    "date": "2026-10-08",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-07",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,31 +1,31 @@
 {
  "ticker": "ABBV",
- "generated": "2026-11-18T00:02:18.301676+00:00",
- "label": "WATCH",
- "score": 0.0049,
+ "generated": "2026-11-19T00:02:03.357319+00:00",
+ "label": "WEAKENING",
+ "score": -0.0682,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.1295,
+  "c1": 0.059,
   "c2": 0.0,
-  "c3": -0.3906818,
+  "c3": -0.78030366,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.03400475,
+  "c7": 0.008048992,
   "c8": 0.0,
   "c9": 0.2173913
  },
  "evidence_coverage": {
   "ecs": 80,
   "events_90d": 7,
-  "recency_days": 5.1,
+  "recency_days": 6.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -225,20 +225,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6518333333333334,
-  "reconstructed_score": 0.004862416790894756,
-  "stored_score": 0.0049,
+  "reconstructed_score": -0.06818274928452463,
+  "stored_score": -0.0682,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.12949999999999998,
+    "score": 0.059,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.16568652518537458,
-    "contribution": 0.021456405011506002,
+    "contribution": 0.0097755049859371,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -255,14 +255,14 @@
    },
    {
     "id": "c3",
-    "score": -0.3906817986169224,
+    "score": -0.7803036519607356,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.14727691127588852,
-    "contribution": -0.05753840859200903,
+    "contribution": -0.11492071171807305,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -303,14 +303,14 @@
    },
    {
     "id": "c7",
-    "score": 0.034004753241975154,
+    "score": 0.008048991583760394,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1534134492457172,
-    "contribution": 0.005216786485600893,
+    "contribution": 0.0012348235618144302,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -341,8 +341,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.330673-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.330673-07:00",
+  "window_start_exclusive": "2026-08-20T17:02:03.375339-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.375339-07:00",
   "event_objects": 7,
   "distinct_accessions": 7,
   "objects_without_accession": 0,
@@ -364,15 +364,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T15:00:05-07:00",
   "newest_returned_available_as_of": "2026-11-12T15:06:34.263178-07:00",
-  "build_id": "why-2026-11-18T000218",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.330673-07:00",
+  "corpus_end": "2026-11-18T17:02:03.375339-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/ABBV.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [
   {
    "original": {
@@ -527,6 +527,10 @@
  ],
  "label_history": [
   {
+   "date": "2026-11-18",
+   "label": "WEAKENING"
+  },
+  {
    "date": "2026-11-17",
    "label": "WATCH"
   },
@@ -640,10 +644,6 @@
   },
   {
    "date": "2026-10-08",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-07",
    "label": "NEUTRAL"
   }
  ],

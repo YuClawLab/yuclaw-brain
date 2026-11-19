@@ -1,34 +1,54 @@
 {
  "ticker": "AAPL",
- "generated": "2026-11-18T00:02:18.301676+00:00",
+ "generated": "2026-11-19T00:02:03.357319+00:00",
  "label": "WEAKENING",
- "score": -0.0047,
+ "score": -0.0502,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.123,
+  "c1": 0.1385,
   "c2": 0.0,
-  "c3": 0.22648017,
+  "c3": 0.42401394,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.19441527,
-  "c7": -0.06866261,
+  "c6": -0.46211717,
+  "c7": -0.07046651,
   "c8": 0.0,
-  "c9": -0.6666667
+  "c9": -0.73333335
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 30,
-  "recency_days": 5.0,
+  "ecs": 87,
+  "events_90d": 31,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0001140361-26-044773",
+   "excerpt": "LEVINSON ARTHUR D S 36792 shares @ $352.26 on 2026-11-16 ($12,960,350)",
+   "source_hash": "9bc31daec6c0169876ca5fdb7521a0cec1599e5e61d7e1ecc762ed09ce78a698",
+   "available_as_of": "2026-11-18T16:37:10.375945-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0001140361-26-044773",
+   "excerpt": "LEVINSON ARTHUR D S 53208 shares @ $353.43 on 2026-11-16 ($18,805,303)",
+   "source_hash": "4a7c49ff30b20f99e14b00f5cb57fcaf7010d1c5d955013cd2ffd40e157d801e",
+   "available_as_of": "2026-11-18T16:37:10.375945-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -505,20 +525,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": -0.004734661611650355,
-  "stored_score": -0.0047,
+  "reconstructed_score": -0.05024439206508319,
+  "stored_score": -0.0502,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.123,
+    "score": 0.13849999999999998,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.0182849277357192,
+    "contribution": 0.020589125946317958,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -535,14 +555,14 @@
    },
    {
     "id": "c3",
-    "score": 0.22648017745631424,
+    "score": 0.4240139545496964,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.029927181054103465,
+    "contribution": 0.056029373209595126,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -571,26 +591,26 @@
    },
    {
     "id": "c6",
-    "score": -0.1944152773632592,
+    "score": -0.46211715726000974,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.048168960668116524,
+    "contribution": -0.1144956480479033,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.06866261088332277,
+    "score": -0.07046651148967499,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": -0.009451150844228874,
+    "contribution": -0.009699450996514107,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -607,30 +627,30 @@
    },
    {
     "id": "c9",
-    "score": -0.6666666666666667,
+    "score": -0.7333333333333334,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.11011699931176876,
-    "contribution": -0.07341133287451251,
+    "contribution": -0.08075246616196376,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.304533-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.304533-07:00",
-  "event_objects": 30,
+  "window_start_exclusive": "2026-08-20T17:02:03.359952-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.359952-07:00",
+  "event_objects": 31,
   "distinct_accessions": 20,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 28,
+   "INSIDER_SELL": 29,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9333333333333333,
+  "largest_type_share": 0.9354838709677419,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -638,21 +658,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 47,
-  "total_available": 47,
+  "returned": 49,
+  "total_available": 49,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-11-12T17:04:02.878281-07:00",
-  "build_id": "why-2026-11-18T000218",
+  "newest_returned_available_as_of": "2026-11-18T16:37:10.375945-07:00",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.304533-07:00",
+  "corpus_end": "2026-11-18T17:02:03.359952-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [
   {
    "original": {
@@ -681,6 +701,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-18",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-17",
    "label": "WEAKENING"
@@ -796,10 +820,6 @@
   {
    "date": "2026-10-08",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-07",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

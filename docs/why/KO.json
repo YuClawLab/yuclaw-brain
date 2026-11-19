@@ -1,34 +1,64 @@
 {
  "ticker": "KO",
- "generated": "2026-11-18T00:02:18.301676+00:00",
+ "generated": "2026-11-19T00:02:03.357319+00:00",
  "label": "WATCH",
- "score": 0.0576,
+ "score": 0.0844,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": 0.2605,
+  "c1": 0.25,
   "c2": 0.0,
-  "c3": -0.18420361,
+  "c3": 0.072165795,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.529056,
+  "c7": 0.48346776,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 9,
-  "recency_days": 4.2,
+  "ecs": 81,
+  "events_90d": 12,
+  "recency_days": 0.3,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-18T00:02:09.044872+00:00",
-  "source_sha256": "30eb7fd53042d2a3558ff151194bbe182dd35d1a979b78d4b7032197939e982f",
+  "as_of": "2026-11-19T00:01:53.721816+00:00",
+  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0000021344-26-000177",
+   "excerpt": "ARROYO MANUEL S 57581 shares @ $99.40 on 2026-11-17 ($5,723,834)",
+   "source_hash": "cde032611601bcf78f44e4dbc2ee0f8f58faabe982a9ebe40803c8bd35c0f00e",
+   "available_as_of": "2026-11-18T10:24:42.614046-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0000021344-26-000175",
+   "excerpt": "Douglas Monica Howard S 5282 shares @ $100.14 on 2026-11-16 ($528,939)",
+   "source_hash": "54f1c639e0f869cb64dd6ec02f853a4d3b9b7f135d02621b9a1f324f317bd999",
+   "available_as_of": "2026-11-18T10:18:52.828307-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "KO",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-18",
+   "accession_number": "0000021344-26-000175",
+   "excerpt": "Douglas Monica Howard S 3782 shares @ $100.14 on 2026-11-16 ($378,729)",
+   "source_hash": "08f7536fda633153e252325b391ec142dd4266671025d92bf3ea4f9daa4cb63a",
+   "available_as_of": "2026-11-18T10:18:52.828307-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "KO",
    "evidence_type": "INSIDER_SELL",
@@ -475,20 +505,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.05757249333929261,
-  "stored_score": 0.0576,
+  "reconstructed_score": 0.0843504658335521,
+  "stored_score": 0.0844,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.2605,
+    "score": 0.25,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": 0.03982165605095541,
+    "contribution": 0.03821656050955414,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -505,14 +535,14 @@
    },
    {
     "id": "c3",
-    "score": -0.18420360548264472,
+    "score": 0.07216579616583399,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.025029789280019664,
+    "contribution": 0.009805968056503982,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -553,14 +583,14 @@
    },
    {
     "id": "c7",
-    "score": 0.5290560097734588,
+    "score": 0.48346775986286256,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.0748840778164839,
+    "contribution": 0.06843138851562103,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -591,13 +621,13 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-19T17:02:18.733033-07:00",
-  "window_end_inclusive": "2026-11-17T17:02:18.733033-07:00",
-  "event_objects": 9,
-  "distinct_accessions": 5,
+  "window_start_exclusive": "2026-08-20T17:02:03.772280-07:00",
+  "window_end_inclusive": "2026-11-18T17:02:03.772280-07:00",
+  "event_objects": 12,
+  "distinct_accessions": 7,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 9
+   "INSIDER_SELL": 12
   },
   "largest_type_share": 1.0,
   "independent_information_count": null,
@@ -607,21 +637,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for KO in the declared corpus",
-  "returned": 44,
-  "total_available": 44,
+  "returned": 47,
+  "total_available": 47,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T10:00:14-07:00",
-  "newest_returned_available_as_of": "2026-11-13T13:24:21.002480-07:00",
-  "build_id": "why-2026-11-18T000218",
+  "newest_returned_available_as_of": "2026-11-18T10:24:42.614046-07:00",
+  "build_id": "why-2026-11-19T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-17T17:02:18.733033-07:00",
+  "corpus_end": "2026-11-18T17:02:03.772280-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/KO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-18T000218",
+ "build_id": "why-2026-11-19T000203",
  "corrections": [
   {
    "original": {
@@ -675,6 +705,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-18",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-17",
    "label": "WATCH"
@@ -790,10 +824,6 @@
   {
    "date": "2026-10-08",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-07",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
