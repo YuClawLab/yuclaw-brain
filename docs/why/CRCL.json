@@ -1,8 +1,8 @@
 {
  "ticker": "CRCL",
- "generated": "2026-11-19T00:02:03.357319+00:00",
+ "generated": "2026-11-20T00:02:03.178982+00:00",
  "label": "WEAKENING",
- "score": -0.1415,
+ "score": -0.1253,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -13,19 +13,19 @@
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.46211717,
+  "c6": -0.4423177,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.46666667
+  "c9": 0.53333336
  },
  "evidence_coverage": {
-  "ecs": 84,
-  "events_90d": 41,
-  "recency_days": 5.1,
+  "ecs": 83,
+  "events_90d": 40,
+  "recency_days": 6.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-19T00:01:53.721816+00:00",
-  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
+  "as_of": "2026-11-20T00:01:53.505123+00:00",
+  "source_sha256": "0b7bd0150bfef50a16f15949e0537f9ecfe57d3870d1b949e778e51b19385d9d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,8 +1035,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5465,
-  "reconstructed_score": -0.14153294597157995,
-  "stored_score": -0.1415,
+  "reconstructed_score": -0.12525254629206378,
+  "stored_score": -0.1253,
   "missing_components": [],
   "components": [
    {
@@ -1101,14 +1101,14 @@
    },
    {
     "id": "c6",
-    "score": -0.46211715726000974,
+    "score": -0.44231768452933073,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.32936870997255263,
-    "contribution": -0.15220693194291265,
+    "contribution": -0.14568560515147216,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1137,30 +1137,30 @@
    },
    {
     "id": "c9",
-    "score": 0.46666666666666656,
+    "score": 0.5333333333333334,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
     "effective_weight": 0.1463860933211345,
-    "contribution": 0.06831351021652941,
+    "contribution": 0.07807258310460509,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-20T17:02:03.551648-07:00",
-  "window_end_inclusive": "2026-11-18T17:02:03.551648-07:00",
-  "event_objects": 41,
-  "distinct_accessions": 21,
+  "window_start_exclusive": "2026-08-21T17:02:03.360712-07:00",
+  "window_end_inclusive": "2026-11-19T17:02:03.360712-07:00",
+  "event_objects": 40,
+  "distinct_accessions": 20,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 40
+   "INSIDER_SELL": 39
   },
-  "largest_type_share": 0.975609756097561,
+  "largest_type_share": 0.975,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1174,15 +1174,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:22:20.663711-06:00",
   "newest_returned_available_as_of": "2026-11-13T15:08:54.422640-07:00",
-  "build_id": "why-2026-11-19T000203",
+  "build_id": "why-2026-11-20T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-18T17:02:03.551648-07:00",
+  "corpus_end": "2026-11-19T17:02:03.360712-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CRCL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-19T000203",
+ "build_id": "why-2026-11-20T000203",
  "corrections": [
   {
    "original": {
@@ -1211,6 +1211,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-19",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-18",
    "label": "WEAKENING"
@@ -1325,10 +1329,6 @@
   },
   {
    "date": "2026-10-09",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-08",
    "label": "WEAKENING"
   }
  ],

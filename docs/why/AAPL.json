@@ -1,34 +1,44 @@
 {
  "ticker": "AAPL",
- "generated": "2026-11-19T00:02:03.357319+00:00",
+ "generated": "2026-11-20T00:02:03.178982+00:00",
  "label": "WEAKENING",
- "score": -0.0502,
+ "score": -0.1195,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": 0.1385,
+  "c1": 0.143,
   "c2": 0.0,
-  "c3": 0.42401394,
+  "c3": -0.17838293,
   "c4": 0.6,
   "c5": -0.56489956,
   "c6": -0.46211717,
-  "c7": -0.07046651,
+  "c7": 0.0,
   "c8": 0.0,
   "c9": -0.73333335
  },
  "evidence_coverage": {
   "ecs": 87,
-  "events_90d": 31,
+  "events_90d": 32,
   "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-19T00:01:53.721816+00:00",
-  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
+  "as_of": "2026-11-20T00:01:53.505123+00:00",
+  "source_sha256": "0b7bd0150bfef50a16f15949e0537f9ecfe57d3870d1b949e778e51b19385d9d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AAPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-19",
+   "accession_number": "0001140361-26-044952",
+   "excerpt": "Newstead Jennifer S 2398 shares @ $352.77 on 2026-11-17 ($845,942)",
+   "source_hash": "3fe5439ad85bd8979351277b0db342d6c3efeda097ead8f8f4a047d1a3fa11e3",
+   "available_as_of": "2026-11-19T16:37:17.899914-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AAPL",
    "evidence_type": "INSIDER_SELL",
@@ -525,20 +535,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": -0.05024439206508319,
-  "stored_score": -0.0502,
+  "reconstructed_score": -0.11947694521363056,
+  "stored_score": -0.1195,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.13849999999999998,
+    "score": 0.143,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": 0.020589125946317958,
+    "contribution": 0.021258086717136953,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -555,14 +565,14 @@
    },
    {
     "id": "c3",
-    "score": 0.4240139545496964,
+    "score": -0.1783829309855865,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": 0.056029373209595126,
+    "contribution": -0.023571591706285346,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -603,14 +613,14 @@
    },
    {
     "id": "c7",
-    "score": -0.07046651148967499,
+    "score": 0.0,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": -0.009699450996514107,
+    "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -641,16 +651,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-20T17:02:03.359952-07:00",
-  "window_end_inclusive": "2026-11-18T17:02:03.359952-07:00",
-  "event_objects": 31,
-  "distinct_accessions": 20,
+  "window_start_exclusive": "2026-08-21T17:02:03.181446-07:00",
+  "window_end_inclusive": "2026-11-19T17:02:03.181446-07:00",
+  "event_objects": 32,
+  "distinct_accessions": 21,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 29,
+   "INSIDER_SELL": 30,
    "OTHER_MATERIAL": 2
   },
-  "largest_type_share": 0.9354838709677419,
+  "largest_type_share": 0.9375,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -658,21 +668,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AAPL in the declared corpus",
-  "returned": 49,
-  "total_available": 49,
+  "returned": 50,
+  "total_available": 50,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-03T16:30:41-06:00",
-  "newest_returned_available_as_of": "2026-11-18T16:37:10.375945-07:00",
-  "build_id": "why-2026-11-19T000203",
+  "newest_returned_available_as_of": "2026-11-19T16:37:17.899914-07:00",
+  "build_id": "why-2026-11-20T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-18T17:02:03.359952-07:00",
+  "corpus_end": "2026-11-19T17:02:03.181446-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AAPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-19T000203",
+ "build_id": "why-2026-11-20T000203",
  "corrections": [
   {
    "original": {
@@ -701,6 +711,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-19",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-18",
    "label": "WEAKENING"
@@ -816,10 +830,6 @@
   {
    "date": "2026-10-09",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-08",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

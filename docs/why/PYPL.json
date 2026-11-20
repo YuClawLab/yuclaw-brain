@@ -1,34 +1,44 @@
 {
  "ticker": "PYPL",
- "generated": "2026-11-19T00:02:03.357319+00:00",
- "label": "WATCH",
- "score": 0.132,
+ "generated": "2026-11-20T00:02:03.178982+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2189,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
-  "c1": 0.122,
+  "c1": -0.0675,
   "c2": 0.0,
-  "c3": -0.39718634,
+  "c3": 0.23028275,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.0,
-  "c7": -0.0051600817,
+  "c6": -0.04775107,
+  "c7": 0.16891733,
   "c8": 0.0,
   "c9": 0.4117647
  },
  "evidence_coverage": {
-  "ecs": 71,
-  "events_90d": 7,
-  "recency_days": 22.1,
+  "ecs": 87,
+  "events_90d": 8,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-19T00:01:53.721816+00:00",
-  "source_sha256": "7a7112947f74b4838758569ef2fc478b00c589f298344231aa93dc4e2da6c33d",
+  "as_of": "2026-11-20T00:01:53.505123+00:00",
+  "source_sha256": "0b7bd0150bfef50a16f15949e0537f9ecfe57d3870d1b949e778e51b19385d9d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "PYPL",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-19",
+   "accession_number": "0001896086-26-000022",
+   "excerpt": "Kereere Suzan S 4161 shares @ $57.97 on 2026-11-18 ($241,221)",
+   "source_hash": "6722696fce93579c3afa90b856b8304925ca91172e9c028ca2e3ab41fcba6758",
+   "available_as_of": "2026-11-19T14:41:40.565912-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "PYPL",
    "evidence_type": "OTHER_MATERIAL",
@@ -314,21 +324,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5278333333333334,
-  "reconstructed_score": 0.1320431376876223,
-  "stored_score": 0.132,
+  "denominator": 0.5638333333333333,
+  "reconstructed_score": 0.21892545224156357,
+  "stored_score": 0.2189,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.12199999999999998,
+    "score": -0.0675,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.20461004104831068,
-    "contribution": 0.0249624250078939,
+    "effective_weight": 0.19154596511971625,
+    "contribution": -0.012929352645580847,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -345,14 +355,14 @@
    },
    {
     "id": "c3",
-    "score": -0.3971863437376248,
+    "score": 0.23028275267746015,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.18187559204294285,
-    "contribution": -0.07223850141865232,
+    "effective_weight": 0.17026308010641444,
+    "contribution": 0.03920865076624802,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -363,8 +373,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.24155352068203345,
-    "contribution": 0.14493211240922008,
+    "effective_weight": 0.22613065326633167,
+    "contribution": 0.135678391959799,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -375,32 +385,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.028418061256709818,
+    "effective_weight": 0.026603606266627253,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.0,
-    "confidence": 0.2,
+    "score": -0.047751069171950045,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.06820334701610356,
-    "contribution": 0.0,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.1276973100798108,
+    "contribution": -0.006097683086693,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0051600815840470785,
+    "score": 0.16891733545545817,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.18945374171139878,
-    "contribution": -0.0009775967636338008,
+    "effective_weight": 0.17735737511084837,
+    "contribution": 0.0299587352270987,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -423,24 +433,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.04533333333333333,
-    "effective_weight": 0.08588569624250078,
-    "contribution": 0.03536469845279445,
+    "effective_weight": 0.08040201005025126,
+    "contribution": 0.0331067100206917,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-20T17:02:04.016730-07:00",
-  "window_end_inclusive": "2026-11-18T17:02:04.016730-07:00",
-  "event_objects": 7,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-08-21T17:02:03.833764-07:00",
+  "window_end_inclusive": "2026-11-19T17:02:03.833764-07:00",
+  "event_objects": 8,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 6,
+   "INSIDER_SELL": 7,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.8571428571428571,
+  "largest_type_share": 0.875,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -448,21 +458,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for PYPL in the declared corpus",
-  "returned": 28,
-  "total_available": 28,
+  "returned": 29,
+  "total_available": 29,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T14:55:02-07:00",
-  "newest_returned_available_as_of": "2026-10-27T15:05:11-06:00",
-  "build_id": "why-2026-11-19T000203",
+  "newest_returned_available_as_of": "2026-11-19T14:41:40.565912-07:00",
+  "build_id": "why-2026-11-20T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-18T17:02:04.016730-07:00",
+  "corpus_end": "2026-11-19T17:02:03.833764-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PYPL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-19T000203",
+ "build_id": "why-2026-11-20T000203",
  "corrections": [
   {
    "original": {
@@ -541,6 +551,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-19",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-18",
    "label": "WATCH"
@@ -655,10 +669,6 @@
   },
   {
    "date": "2026-10-09",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-08",
    "label": "NEUTRAL"
   }
  ],
