@@ -1,31 +1,31 @@
 {
  "ticker": "PFE",
- "generated": "2026-11-20T00:02:03.178982+00:00",
+ "generated": "2026-11-21T00:01:16.995300+00:00",
  "label": "WATCH",
- "score": 0.0177,
+ "score": 0.1779,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.427,
+  "c1": -0.4105,
   "c2": 0.0,
-  "c3": -0.31236824,
+  "c3": 0.52774173,
   "c4": 0.6,
   "c5": 0.0,
   "c6": 0.0,
-  "c7": 0.08974537,
+  "c7": 0.11549335,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 49,
+  "ecs": 48,
   "events_90d": 1,
-  "recency_days": 16.5,
+  "recency_days": 17.5,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-20T00:01:53.505123+00:00",
-  "source_sha256": "0b7bd0150bfef50a16f15949e0537f9ecfe57d3870d1b949e778e51b19385d9d",
+  "as_of": "2026-11-21T00:01:07.906712+00:00",
+  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -125,20 +125,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5305,
-  "reconstructed_score": 0.01766481646225814,
-  "stored_score": 0.0177,
+  "reconstructed_score": 0.17790488313087388,
+  "stored_score": 0.1779,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.42699999999999994,
+    "score": -0.41050000000000003,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.20358152686145148,
-    "contribution": -0.08692931196983977,
+    "contribution": -0.08357021677662584,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -155,14 +155,14 @@
    },
    {
     "id": "c3",
-    "score": -0.3123682486771767,
+    "score": 0.5277417239101709,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.18096135721017909,
-    "contribution": -0.056526582229988624,
+    "contribution": 0.09550085861522416,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -203,14 +203,14 @@
    },
    {
     "id": "c7",
-    "score": 0.08974537006236914,
+    "score": 0.11549335005552186,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.18850141376060323,
-    "contribution": 0.016917129135225098,
+    "contribution": 0.021770659765414115,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -241,8 +241,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-21T17:02:03.790001-07:00",
-  "window_end_inclusive": "2026-11-19T17:02:03.790001-07:00",
+  "window_start_exclusive": "2026-08-22T17:01:17.593766-07:00",
+  "window_end_inclusive": "2026-11-20T17:01:17.593766-07:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -263,15 +263,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-06-18T11:17:22-06:00",
   "newest_returned_available_as_of": "2026-11-03T06:07:34-07:00",
-  "build_id": "why-2026-11-20T000203",
+  "build_id": "why-2026-11-21T000116",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-19T17:02:03.790001-07:00",
+  "corpus_end": "2026-11-20T17:01:17.593766-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PFE.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-20T000203",
+ "build_id": "why-2026-11-21T000116",
  "corrections": [
   {
    "original": {
@@ -375,6 +375,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-20",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-19",
    "label": "WATCH"
@@ -489,10 +493,6 @@
   },
   {
    "date": "2026-10-12",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-09",
    "label": "NEUTRAL"
   }
  ],

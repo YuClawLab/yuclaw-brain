@@ -1,34 +1,44 @@
 {
  "ticker": "AMZN",
- "generated": "2026-11-20T00:02:03.178982+00:00",
+ "generated": "2026-11-21T00:01:16.995300+00:00",
  "label": "WATCH",
- "score": 0.1448,
+ "score": 0.0473,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.1,
+  "c1": -0.2965,
   "c2": 0.0,
-  "c3": -0.17838293,
+  "c3": -0.8107604,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.16815317,
-  "c7": 0.79994696,
+  "c6": -0.19158657,
+  "c7": 0.9527302,
   "c8": 0.0,
   "c9": 0.33333334
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 30,
-  "recency_days": 2.1,
+  "ecs": 87,
+  "events_90d": 31,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-20T00:01:53.505123+00:00",
-  "source_sha256": "0b7bd0150bfef50a16f15949e0537f9ecfe57d3870d1b949e778e51b19385d9d",
+  "as_of": "2026-11-21T00:01:07.906712+00:00",
+  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AMZN",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-20",
+   "accession_number": "0001018724-26-000056",
+   "excerpt": "Huttenlocher Daniel P S 783 shares @ $259.63 on 2026-11-18 ($203,290)",
+   "source_hash": "9461b349d9fb9ec1254cd5134d0af9bacc11bcd9ca333588301e513c969dbfcf",
+   "available_as_of": "2026-11-20T14:23:35.218837-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AMZN",
    "evidence_type": "INSIDER_SELL",
@@ -1018,16 +1028,6 @@
    "source_hash": "7487e75838e8e3d25e4b762f9ebbff46761f99bfc332b29a630e3c3de415d565",
    "available_as_of": "2026-02-24T15:18:54-07:00",
    "protocol_id": null
-  },
-  {
-   "ticker": "AMZN",
-   "evidence_type": "INSIDER_SELL",
-   "filing_date": "2026-02-24",
-   "accession_number": "0001936006-26-000006",
-   "excerpt": "Herrington Douglas J S 2135 shares @ $204.63 on 2026-02-23 ($436,882)",
-   "source_hash": "378390f196a5615b3bab0a6bc3a80dcdab0a41ab8430467488ee3180bec1837f",
-   "available_as_of": "2026-02-24T15:18:54-07:00",
-   "protocol_id": null
   }
  ],
  "component_anatomy": {
@@ -1035,20 +1035,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": 0.14480047701396534,
-  "stored_score": 0.1448,
+  "reconstructed_score": 0.04725067830587883,
+  "stored_score": 0.0473,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.09999999999999999,
+    "score": -0.2965,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": -0.014865794907088779,
+    "contribution": -0.044077081899518235,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1065,14 +1065,14 @@
    },
    {
     "id": "c3",
-    "score": -0.1783829309855865,
+    "score": -0.8107603923889497,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": -0.023571591706285346,
+    "contribution": -0.10713420188484402,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1101,26 +1101,26 @@
    },
    {
     "id": "c6",
-    "score": -0.16815316380279596,
+    "score": -0.19158656673596208,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.041662174101174496,
+    "contribution": -0.047468110134168164,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.7999469509271661,
+    "score": 0.9527301515398453,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.11010969730587282,
+    "contribution": 0.1311397318017681,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,16 +1151,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-21T17:02:03.251034-07:00",
-  "window_end_inclusive": "2026-11-19T17:02:03.251034-07:00",
-  "event_objects": 30,
-  "distinct_accessions": 13,
+  "window_start_exclusive": "2026-08-22T17:01:17.081397-07:00",
+  "window_end_inclusive": "2026-11-20T17:01:17.081397-07:00",
+  "event_objects": 31,
+  "distinct_accessions": 14,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 27,
+   "INSIDER_SELL": 28,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.9,
+  "largest_type_share": 0.9032258064516129,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1169,20 +1169,20 @@
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AMZN in the declared corpus",
   "returned": 100,
-  "total_available": 108,
+  "total_available": 109,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-24T15:18:54-07:00",
-  "newest_returned_available_as_of": "2026-11-17T14:48:39.240825-07:00",
-  "build_id": "why-2026-11-20T000203",
+  "newest_returned_available_as_of": "2026-11-20T14:23:35.218837-07:00",
+  "build_id": "why-2026-11-21T000116",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-19T17:02:03.251034-07:00",
+  "corpus_end": "2026-11-20T17:01:17.081397-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AMZN.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-20T000203",
+ "build_id": "why-2026-11-21T000116",
  "corrections": [
   {
    "original": {
@@ -1236,6 +1236,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-20",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-19",
    "label": "WATCH"
@@ -1351,10 +1355,6 @@
   {
    "date": "2026-10-12",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-09",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
