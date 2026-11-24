@@ -1,31 +1,31 @@
 {
  "ticker": "MSFT",
- "generated": "2026-11-21T00:01:16.995300+00:00",
- "label": "WEAKENING",
- "score": -0.0647,
+ "generated": "2026-11-24T00:02:03.162912+00:00",
+ "label": "WATCH",
+ "score": 0.133,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.4545,
+  "c1": -0.274,
   "c2": 0.0,
-  "c3": -0.8107604,
+  "c3": 0.7291816,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.34050477,
-  "c7": 0.9510823,
+  "c6": -0.2811263,
+  "c7": 0.60753,
   "c8": 0.0,
   "c9": -0.13333334
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 92,
   "events_90d": 26,
-  "recency_days": 8.0,
+  "recency_days": 11.0,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -415,20 +415,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7265,
-  "reconstructed_score": -0.06474848840997442,
-  "stored_score": -0.0647,
+  "reconstructed_score": 0.13299594264554768,
+  "stored_score": 0.133,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.45449999999999996,
+    "score": -0.27399999999999997,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1486579490708878,
-    "contribution": -0.0675650378527185,
+    "contribution": -0.04073227804542325,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -445,14 +445,14 @@
    },
    {
     "id": "c3",
-    "score": -0.8107603923889497,
+    "score": 0.7291816039993887,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1321403991741225,
-    "contribution": -0.10713420188484402,
+    "contribution": 0.09635434822290616,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -481,26 +481,26 @@
    },
    {
     "id": "c6",
-    "score": -0.3405047613953526,
+    "score": -0.281126281017517,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.24776324845147968,
-    "contribution": -0.08436456579650854,
+    "contribution": -0.06965276060998357,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.9510822890694075,
+    "score": 0.6075299994748667,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13764624913971094,
-    "contribution": 0.13091290971361424,
+    "contribution": 0.08362422566756596,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -531,8 +531,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.537021-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.537021-07:00",
+  "window_start_exclusive": "2026-08-25T17:02:03.728878-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.728878-07:00",
   "event_objects": 26,
   "distinct_accessions": 11,
   "objects_without_accession": 0,
@@ -556,17 +556,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T16:14:22-07:00",
   "newest_returned_available_as_of": "2026-11-12T16:11:39.875585-07:00",
-  "build_id": "why-2026-11-21T000116",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.537021-07:00",
+  "corpus_end": "2026-11-23T17:02:03.728878-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MSFT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-20",
    "label": "WEAKENING"
@@ -681,10 +685,6 @@
   },
   {
    "date": "2026-10-13",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-12",
    "label": "WATCH"
   }
  ],

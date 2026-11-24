@@ -1,34 +1,44 @@
 {
  "ticker": "KO",
- "generated": "2026-11-21T00:01:16.995300+00:00",
- "label": "WATCH",
- "score": 0.1598,
+ "generated": "2026-11-24T00:02:03.162912+00:00",
+ "label": "WEAKENING",
+ "score": -0.0636,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": 0.2325,
+  "c1": 0.0285,
   "c2": 0.0,
-  "c3": 0.6510892,
+  "c3": -0.5704361,
   "c4": 0.6,
   "c5": 0.0,
   "c6": -0.46211717,
-  "c7": 0.47962722,
+  "c7": 0.29466453,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 79,
-  "events_90d": 11,
-  "recency_days": 2.3,
+  "ecs": 87,
+  "events_90d": 9,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 1,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "type_diversity": 2,
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "KO",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-23",
+   "accession_number": "0001552781-26-000567",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "391885df88eecc21f91623daa42034e0011ecb89898e71e76ba30fd14bf33088",
+   "available_as_of": "2026-11-23T14:35:42-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "KO",
    "evidence_type": "INSIDER_SELL",
@@ -505,20 +515,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.15979645313081506,
-  "stored_score": 0.1598,
+  "reconstructed_score": -0.06355060749365572,
+  "stored_score": -0.0636,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": 0.2325,
+    "score": 0.028499999999999994,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.15286624203821655,
-    "contribution": 0.03554140127388535,
+    "contribution": 0.004356687898089171,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -535,14 +545,14 @@
    },
    {
     "id": "c3",
-    "score": 0.6510891782269271,
+    "score": -0.5704361230952166,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": 0.0884707163620453,
+    "contribution": -0.0775114901870358,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -583,14 +593,14 @@
    },
    {
     "id": "c7",
-    "score": 0.47962721333937586,
+    "score": 0.29466451929674786,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.06788778674301145,
+    "contribution": 0.04170764604341796,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -621,15 +631,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.400264-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.400264-07:00",
-  "event_objects": 11,
+  "window_start_exclusive": "2026-08-25T17:02:03.585826-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.585826-07:00",
+  "event_objects": 9,
   "distinct_accessions": 6,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 11
+   "INSIDER_SELL": 8,
+   "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 1.0,
+  "largest_type_share": 0.8888888888888888,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -637,21 +648,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for KO in the declared corpus",
-  "returned": 47,
-  "total_available": 47,
+  "returned": 48,
+  "total_available": 48,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-27T10:00:14-07:00",
-  "newest_returned_available_as_of": "2026-11-18T10:24:42.614046-07:00",
-  "build_id": "why-2026-11-21T000116",
+  "newest_returned_available_as_of": "2026-11-23T14:35:42-07:00",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.400264-07:00",
+  "corpus_end": "2026-11-23T17:02:03.585826-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/KO.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [
   {
    "original": {
@@ -705,6 +716,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-20",
    "label": "WATCH"
@@ -820,10 +835,6 @@
   {
    "date": "2026-10-13",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-12",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

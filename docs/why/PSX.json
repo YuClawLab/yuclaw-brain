@@ -1,31 +1,31 @@
 {
  "ticker": "PSX",
- "generated": "2026-11-21T00:01:16.995300+00:00",
- "label": "WATCH",
- "score": 0.0906,
+ "generated": "2026-11-24T00:02:03.162912+00:00",
+ "label": "WEAKENING",
+ "score": -0.077,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.8745,
+  "c1": -0.833,
   "c2": 0.0,
-  "c3": 0.43567428,
+  "c3": -0.67325354,
   "c4": 0.6,
-  "c5": -0.43360022,
-  "c6": 0.11041259,
-  "c7": 0.52556664,
+  "c5": -0.5247005,
+  "c6": 0.082186185,
+  "c7": 0.5498503,
   "c8": 0.0,
   "c9": -0.06666667
  },
  "evidence_coverage": {
-  "ecs": 68,
+  "ecs": 67,
   "events_90d": 4,
-  "recency_days": 23.3,
+  "recency_days": 26.3,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -345,20 +345,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6335,
-  "reconstructed_score": 0.09056314809016912,
-  "stored_score": 0.0906,
+  "reconstructed_score": -0.07697279633593916,
+  "stored_score": -0.077,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.8744999999999998,
+    "score": -0.833,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.17048145224940806,
-    "contribution": -0.14908602999210732,
+    "contribution": -0.14201104972375692,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -375,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": 0.4356742665741427,
+    "score": -0.6732535196061975,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1515390686661405,
-    "contribution": 0.06602167259844942,
+    "contribution": -0.10202421133732434,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -399,38 +399,38 @@
    },
    {
     "id": "c5",
-    "score": -0.4336002307238638,
+    "score": -0.5247005434523929,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
     "effective_weight": 0.07892659826361485,
-    "contribution": -0.034222591217353104,
+    "contribution": -0.041412829001767404,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.1104125885570657,
+    "score": 0.08218618470298301,
     "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.072,
     "effective_weight": 0.11365430149960537,
-    "contribution": 0.012548865629216624,
+    "contribution": 0.009340813415335086,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.525566632174222,
+    "score": 0.549850266107157,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.1578531965272297,
-    "contribution": 0.0829623728767517,
+    "contribution": 0.08679562211636262,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -461,8 +461,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.621800-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.621800-07:00",
+  "window_start_exclusive": "2026-08-25T17:02:03.818678-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.818678-07:00",
   "event_objects": 4,
   "distinct_accessions": 4,
   "objects_without_accession": 0,
@@ -485,15 +485,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T15:17:27-07:00",
   "newest_returned_available_as_of": "2026-10-28T11:59:52-06:00",
-  "build_id": "why-2026-11-21T000116",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.621800-07:00",
+  "corpus_end": "2026-11-23T17:02:03.818678-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/PSX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [
   {
    "original": {
@@ -598,6 +598,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-20",
    "label": "WATCH"
@@ -712,10 +716,6 @@
   },
   {
    "date": "2026-10-13",
-   "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-12",
    "label": "NEUTRAL"
   }
  ],

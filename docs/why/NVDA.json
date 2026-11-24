@@ -1,34 +1,44 @@
 {
  "ticker": "NVDA",
- "generated": "2026-11-21T00:01:16.995300+00:00",
- "label": "WEAKENING",
- "score": -0.0251,
+ "generated": "2026-11-24T00:02:03.162912+00:00",
+ "label": "NEUTRAL",
+ "score": 0.2378,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.2,
+  "ceiling": 0.4
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.8107604,
+  "c3": 0.7291816,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": 0.21309462,
-  "c7": 0.92914677,
+  "c6": 0.69189876,
+  "c7": 0.56869996,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 98,
-  "events_90d": 30,
-  "recency_days": 3.1,
+  "ecs": 100,
+  "events_90d": 31,
+  "recency_days": 0.4,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "NVDA",
+   "evidence_type": "EXEC_CHANGE",
+   "filing_date": "2026-11-23",
+   "accession_number": "0001045810-26-000090",
+   "excerpt": "On November 22, 2026, the Board of Directors of NVIDIA Corporation reinstated Jen-Hsun Huang as NVIDIA’s President, Chief Executive Officer and member of the Board of Directors, effective immediately",
+   "source_hash": "d0970b42cba21425e91f7e1446d04595624cabe57ab2306fd6840fa01f932367",
+   "available_as_of": "2026-11-23T06:57:54-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "NVDA",
    "evidence_type": "OTHER_MATERIAL",
@@ -834,9 +844,9 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6185,
-  "reconstructed_score": -0.025082718192713488,
-  "stored_score": -0.0251,
+  "denominator": 0.6545,
+  "reconstructed_score": 0.23782787177695033,
+  "stored_score": 0.2378,
   "missing_components": [],
   "components": [
    {
@@ -847,8 +857,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.17461600646725947,
-    "contribution": -0.17461600646725947,
+    "effective_weight": 0.1650114591291062,
+    "contribution": -0.1650114591291062,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -865,14 +875,14 @@
    },
    {
     "id": "c3",
-    "score": -0.8107603923889497,
+    "score": 0.7291816039993887,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.15521422797089732,
-    "contribution": -0.1258415483740326,
+    "effective_weight": 0.1466768525592055,
+    "contribution": 0.10695406261870331,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -883,8 +893,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.206143896523848,
-    "contribution": 0.1236863379143088,
+    "effective_weight": 0.19480519480519481,
+    "contribution": 0.11688311688311688,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -895,32 +905,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.05658852061438964,
-    "contribution": -0.03196682999129809,
+    "effective_weight": 0.053475935828877004,
+    "contribution": -0.03020853223776604,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.21309462037239416,
-    "confidence": 0.4,
+    "score": 0.6918987551341342,
+    "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.072,
-    "effective_weight": 0.11641067097817298,
-    "contribution": 0.024806487739389455,
+    "weight_times_confidence": 0.108,
+    "effective_weight": 0.1650114591291062,
+    "contribution": 0.11417122315429565,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.9291467481661803,
+    "score": 0.5686999355587071,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.16168148746968472,
-    "contribution": 0.15022582832112857,
+    "effective_weight": 0.15278838808250575,
+    "contribution": 0.08689074645663976,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -943,26 +953,26 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.12934518997574776,
-    "contribution": 0.008623012665049848,
+    "effective_weight": 0.12223071046600459,
+    "contribution": 0.008148714031066972,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.565818-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.565818-07:00",
-  "event_objects": 30,
-  "distinct_accessions": 11,
+  "window_start_exclusive": "2026-08-25T17:02:03.759286-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.759286-07:00",
+  "event_objects": 31,
+  "distinct_accessions": 12,
   "objects_without_accession": 0,
   "by_event_type": {
-   "EXEC_CHANGE": 1,
+   "EXEC_CHANGE": 2,
    "INSIDER_SELL": 25,
    "M_AND_A_ANNOUNCE": 1,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.8333333333333334,
+  "largest_type_share": 0.8064516129032258,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -970,23 +980,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for NVDA in the declared corpus",
-  "returned": 80,
-  "total_available": 80,
+  "returned": 81,
+  "total_available": 81,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:31:25-07:00",
-  "newest_returned_available_as_of": "2026-11-17T14:20:51-07:00",
-  "build_id": "why-2026-11-21T000116",
+  "newest_returned_available_as_of": "2026-11-23T06:57:54-07:00",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.565818-07:00",
+  "corpus_end": "2026-11-23T17:02:03.759286-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/NVDA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-20",
    "label": "WEAKENING"
@@ -1102,10 +1116,6 @@
   {
    "date": "2026-10-13",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-12",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

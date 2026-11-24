@@ -1,34 +1,44 @@
 {
  "ticker": "BMY",
- "generated": "2026-11-21T00:01:16.995300+00:00",
- "label": "NEUTRAL",
- "score": 0.2056,
+ "generated": "2026-11-24T00:02:03.162912+00:00",
+ "label": "WATCH",
+ "score": 0.0407,
  "threshold_band": {
-  "floor": 0.2,
-  "ceiling": 0.4
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.19,
+  "c1": -0.251,
   "c2": 0.0,
-  "c3": 0.52774173,
+  "c3": -0.39607164,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.066627696,
-  "c7": 0.13273397,
+  "c6": 0.04953701,
+  "c7": 0.102298364,
   "c8": 0.0,
   "c9": -0.05263158
  },
  "evidence_coverage": {
-  "ecs": 66,
-  "events_90d": 4,
-  "recency_days": 14.1,
+  "ecs": 78,
+  "events_90d": 5,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "BMY",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-23",
+   "accession_number": "0001140361-26-045300",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION Washington, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 OR 15(d) of The Securities Exchange Act of 1934",
+   "source_hash": "bf768cbc2486569523c263350337edbb9f25197aea56974e23b6f7e23e386fde",
+   "available_as_of": "2026-11-23T14:20:20-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "BMY",
    "evidence_type": "INSIDER_SELL",
@@ -114,21 +124,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6051666666666666,
-  "reconstructed_score": 0.20563876696757247,
-  "stored_score": 0.2056,
+  "denominator": 0.6411666666666667,
+  "reconstructed_score": 0.04065342752062825,
+  "stored_score": 0.0407,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.18999999999999997,
+    "score": -0.25099999999999995,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1784632332690719,
-    "contribution": -0.033908014321123656,
+    "effective_weight": 0.16844294255263842,
+    "contribution": -0.042279178580712236,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -145,14 +155,14 @@
    },
    {
     "id": "c3",
-    "score": 0.5277417239101709,
+    "score": -0.3960716352918307,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1586339851280639,
-    "contribution": 0.08371777278222486,
+    "effective_weight": 0.1497270600467897,
+    "contribution": -0.059302641520170125,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -163,8 +173,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.2106857614982099,
-    "contribution": 0.12641145689892594,
+    "effective_weight": 0.19885625162464257,
+    "contribution": 0.11931375097478554,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -175,32 +185,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.024786560176259985,
+    "effective_weight": 0.02339485313231089,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": 0.06662769873102632,
-    "confidence": 0.6,
+    "score": 0.04953701059266557,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.1784632332690719,
-    "contribution": 0.011890594540816597,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.22459059007018453,
+    "contribution": 0.011125546439319742,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.13273396851548658,
+    "score": 0.10229836741314714,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.1652437345083999,
-    "contribution": 0.021933456653619378,
+    "effective_weight": 0.1559656875487393,
+    "contribution": 0.015955035208705042,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -223,24 +233,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.050666666666666665,
-    "effective_weight": 0.08372349215092262,
-    "contribution": -0.004406499586890668,
+    "effective_weight": 0.07902261502469457,
+    "contribution": -0.004159085001299718,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.135381-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.135381-07:00",
-  "event_objects": 4,
-  "distinct_accessions": 4,
+  "window_start_exclusive": "2026-08-25T17:02:03.305836-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.305836-07:00",
+  "event_objects": 5,
+  "distinct_accessions": 5,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 2,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.5,
+  "largest_type_share": 0.6,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -248,21 +258,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for BMY in the declared corpus",
-  "returned": 8,
-  "total_available": 8,
+  "returned": 9,
+  "total_available": 9,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-02T14:29:24-06:00",
-  "newest_returned_available_as_of": "2026-11-06T14:31:23.979287-07:00",
-  "build_id": "why-2026-11-21T000116",
+  "newest_returned_available_as_of": "2026-11-23T14:20:20-07:00",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.135381-07:00",
+  "corpus_end": "2026-11-23T17:02:03.305836-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/BMY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [
   {
    "original": {
@@ -316,6 +326,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-20",
    "label": "NEUTRAL"
@@ -431,10 +445,6 @@
   {
    "date": "2026-10-13",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-12",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

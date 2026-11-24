@@ -1,8 +1,8 @@
 {
  "ticker": "CRCL",
- "generated": "2026-11-21T00:01:16.995300+00:00",
+ "generated": "2026-11-24T00:02:03.162912+00:00",
  "label": "WEAKENING",
- "score": -0.1132,
+ "score": -0.0777,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
@@ -13,19 +13,19 @@
   "c3": 0.0,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.40558633,
+  "c6": -0.2980084,
   "c7": 0.0,
   "c8": 0.0,
   "c9": 0.53333336
  },
  "evidence_coverage": {
-  "ecs": 82,
-  "events_90d": 40,
-  "recency_days": 7.1,
+  "ecs": 80,
+  "events_90d": 39,
+  "recency_days": 10.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-21T00:01:07.906712+00:00",
-  "source_sha256": "8ec2a31e298e1608ae159015283955a7fa0f230610aa19cb377670972565549a",
+  "as_of": "2026-11-24T00:01:53.310134+00:00",
+  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -1035,8 +1035,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.5465,
-  "reconstructed_score": -0.11315438866440573,
-  "stored_score": -0.1132,
+  "reconstructed_score": -0.07772158837741165,
+  "stored_score": -0.0777,
   "missing_components": [],
   "components": [
    {
@@ -1101,14 +1101,14 @@
    },
    {
     "id": "c6",
-    "score": -0.40558633373202446,
+    "score": -0.29800841508290077,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.32936870997255263,
-    "contribution": -0.1335874475238141,
+    "contribution": -0.09815464723682002,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -1151,16 +1151,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-22T17:01:17.188262-07:00",
-  "window_end_inclusive": "2026-11-20T17:01:17.188262-07:00",
-  "event_objects": 40,
-  "distinct_accessions": 20,
+  "window_start_exclusive": "2026-08-25T17:02:03.355960-07:00",
+  "window_end_inclusive": "2026-11-23T17:02:03.355960-07:00",
+  "event_objects": 39,
+  "distinct_accessions": 19,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 39
+   "INSIDER_SELL": 38
   },
-  "largest_type_share": 0.975,
+  "largest_type_share": 0.9743589743589743,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1174,15 +1174,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-07-16T01:22:20.663711-06:00",
   "newest_returned_available_as_of": "2026-11-13T15:08:54.422640-07:00",
-  "build_id": "why-2026-11-21T000116",
+  "build_id": "why-2026-11-24T000203",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-20T17:01:17.188262-07:00",
+  "corpus_end": "2026-11-23T17:02:03.355960-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CRCL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-21T000116",
+ "build_id": "why-2026-11-24T000203",
  "corrections": [
   {
    "original": {
@@ -1211,6 +1211,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-23",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-20",
    "label": "WEAKENING"
@@ -1325,10 +1329,6 @@
   },
   {
    "date": "2026-10-13",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-12",
    "label": "WEAKENING"
   }
  ],
