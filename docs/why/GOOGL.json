@@ -1,34 +1,44 @@
 {
  "ticker": "GOOGL",
- "generated": "2026-11-24T00:02:03.162912+00:00",
+ "generated": "2026-11-25T00:02:05.100519+00:00",
  "label": "WATCH",
- "score": 0.0104,
+ "score": 0.025,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.6495,
+  "c1": -0.6425,
   "c2": 0.0,
-  "c3": -0.012390543,
+  "c3": 0.01982314,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": -0.008965026,
+  "c6": -0.008119881,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": 0.26666668
+  "c9": 0.33333334
  },
  "evidence_coverage": {
-  "ecs": 67,
-  "events_90d": 3,
-  "recency_days": 7.0,
+  "ecs": 75,
+  "events_90d": 4,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-24T00:01:53.310134+00:00",
-  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
+  "as_of": "2026-11-25T00:01:55.413972+00:00",
+  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GOOGL",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-24",
+   "accession_number": "0001193125-26-475973",
+   "excerpt": "Depositary Shares, each representing a 1/20th interest in a share of 6.25% of Series A Mandatory Convertible Preferred Stock, par value $0.001 per Depositary Shares, each representing a 1/20th interest in a share of 6.25% of Series B Mandatory Convertible Preferred Stock, par value $0.001 per",
+   "source_hash": "9e2211aea0aa1f90cf16c5e19acc37349dd61a7bde9a363cace4f89d4ee00a0f",
+   "available_as_of": "2026-11-24T14:49:44-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GOOGL",
    "evidence_type": "INSIDER_SELL",
@@ -774,21 +784,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5545,
-  "reconstructed_score": 0.010384371835461526,
-  "stored_score": 0.0104,
+  "denominator": 0.5905,
+  "reconstructed_score": 0.024960102899674104,
+  "stored_score": 0.025,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.6495000000000001,
+    "score": -0.6425,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.19477006311992787,
-    "contribution": -0.12650315599639317,
+    "effective_weight": 0.18289585097375105,
+    "contribution": -0.11751058425063504,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -805,14 +815,14 @@
    },
    {
     "id": "c3",
-    "score": -0.012390542420547077,
+    "score": 0.019823139344565442,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.17312894499549145,
-    "contribution": -0.0021451615371911982,
+    "effective_weight": 0.16257408975444537,
+    "contribution": 0.0032227288350182596,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -823,8 +833,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.22993688007213706,
-    "contribution": 0.13796212804328223,
+    "effective_weight": 0.21591871295512277,
+    "contribution": 0.12955122777307365,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -835,20 +845,20 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.034999999999999996,
-    "effective_weight": 0.06311992786293957,
-    "contribution": -0.03565641902546054,
+    "effective_weight": 0.059271803556308206,
+    "contribution": -0.03348261532534779,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.00896502526462507,
-    "confidence": 0.6,
+    "score": -0.008119881471316082,
+    "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.108,
-    "effective_weight": 0.19477006311992787,
-    "contribution": -0.0017461185366627729,
+    "weight_times_confidence": 0.144,
+    "effective_weight": 0.24386113463166806,
+    "contribution": -0.001980123508669798,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -877,30 +887,30 @@
    },
    {
     "id": "c9",
-    "score": 0.2666666666666666,
+    "score": 0.33333333333333326,
     "confidence": 1.0,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.1442741208295762,
-    "contribution": 0.038473098887886976,
+    "effective_weight": 0.1354784081287045,
+    "contribution": 0.04515946937623482,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-25T17:02:03.471284-07:00",
-  "window_end_inclusive": "2026-11-23T17:02:03.471284-07:00",
-  "event_objects": 3,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-08-26T17:02:05.390035-07:00",
+  "window_end_inclusive": "2026-11-24T17:02:05.390035-07:00",
+  "event_objects": 4,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 0.75,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -908,21 +918,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GOOGL in the declared corpus",
-  "returned": 74,
-  "total_available": 74,
+  "returned": 75,
+  "total_available": 75,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T18:48:14-07:00",
-  "newest_returned_available_as_of": "2026-11-16T16:03:48.327353-07:00",
-  "build_id": "why-2026-11-24T000203",
+  "newest_returned_available_as_of": "2026-11-24T14:49:44-07:00",
+  "build_id": "why-2026-11-25T000205",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-23T17:02:03.471284-07:00",
+  "corpus_end": "2026-11-24T17:02:05.390035-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GOOGL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-24T000203",
+ "build_id": "why-2026-11-25T000205",
  "corrections": [
   {
    "original": {
@@ -1001,6 +1011,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-24",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-23",
    "label": "WATCH"
@@ -1116,10 +1130,6 @@
   {
    "date": "2026-10-14",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-13",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

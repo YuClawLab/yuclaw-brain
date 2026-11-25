@@ -1,14 +1,14 @@
 {
  "ticker": "GLD",
- "generated": "2026-11-24T00:02:03.162912+00:00",
+ "generated": "2026-11-25T00:02:05.100519+00:00",
  "label": "WEAKENING",
- "score": -0.0005,
+ "score": -0.0235,
  "threshold_band": {
   "floor": -0.2,
   "ceiling": 0.0
  },
  "components": {
-  "c1": -0.4875,
+  "c1": -0.5615,
   "c2": 0.0,
   "c3": 0.0,
   "c4": 0.6,
@@ -19,16 +19,26 @@
   "c9": -1.0
  },
  "evidence_coverage": {
-  "ecs": 25,
-  "events_90d": 0,
-  "recency_days": null,
+  "ecs": 59,
+  "events_90d": 1,
+  "recency_days": 0.1,
   "substrate_active": 1,
-  "type_diversity": 0,
-  "as_of": "2026-11-24T00:01:53.310134+00:00",
-  "source_sha256": "d3b04fae13ab88132da14a43bb31a6d63c415a970f9c5d9182ac35a6c75a127d",
+  "type_diversity": 1,
+  "as_of": "2026-11-25T00:01:55.413972+00:00",
+  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "GLD",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-24",
+   "accession_number": "0001437749-26-038190",
+   "excerpt": "ANNUAL REPORT PURSUANT TO SECTION 13 OR 15(d) OF THE SECURITIES EXCHANGE ACT OF 1934 For the fiscal year ended September 30 , 2026",
+   "source_hash": "229691199408f3bc3303c68ef03b43d980c0f076031d24e0f337bbee2aa1ff19",
+   "available_as_of": "2026-11-24T14:23:02-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "GLD",
    "evidence_type": "OTHER_MATERIAL",
@@ -44,21 +54,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.3105,
-  "reconstructed_score": -0.00048309178743961845,
-  "stored_score": -0.0005,
+  "denominator": 0.3465,
+  "reconstructed_score": -0.023497835497835476,
+  "stored_score": -0.0235,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.4875,
+    "score": -0.5615,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.34782608695652173,
-    "contribution": -0.16956521739130434,
+    "effective_weight": 0.3116883116883117,
+    "contribution": -0.175012987012987,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -81,7 +91,7 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.036,
-    "effective_weight": 0.11594202898550723,
+    "effective_weight": 0.10389610389610389,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -93,8 +103,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.4106280193236715,
-    "contribution": 0.24637681159420288,
+    "effective_weight": 0.367965367965368,
+    "contribution": 0.2207792207792208,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -105,19 +115,19 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.04830917874396135,
+    "effective_weight": 0.04329004329004329,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
     "score": 0.0,
-    "confidence": 0.0,
+    "confidence": 0.2,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.0,
-    "effective_weight": 0.0,
+    "weight_times_confidence": 0.036,
+    "effective_weight": 0.10389610389610389,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
@@ -153,21 +163,23 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.024,
-    "effective_weight": 0.07729468599033816,
-    "contribution": -0.07729468599033816,
+    "effective_weight": 0.06926406926406926,
+    "contribution": -0.06926406926406926,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-25T17:02:03.462371-07:00",
-  "window_end_inclusive": "2026-11-23T17:02:03.462371-07:00",
-  "event_objects": 0,
-  "distinct_accessions": 0,
+  "window_start_exclusive": "2026-08-26T17:02:05.379900-07:00",
+  "window_end_inclusive": "2026-11-24T17:02:05.379900-07:00",
+  "event_objects": 1,
+  "distinct_accessions": 1,
   "objects_without_accession": 0,
-  "by_event_type": {},
-  "largest_type_share": null,
+  "by_event_type": {
+   "OTHER_MATERIAL": 1
+  },
+  "largest_type_share": 1.0,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -175,23 +187,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for GLD in the declared corpus",
-  "returned": 1,
-  "total_available": 1,
+  "returned": 2,
+  "total_available": 2,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-04T10:31:10-06:00",
-  "newest_returned_available_as_of": "2026-08-04T10:31:10-06:00",
-  "build_id": "why-2026-11-24T000203",
+  "newest_returned_available_as_of": "2026-11-24T14:23:02-07:00",
+  "build_id": "why-2026-11-25T000205",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-23T17:02:03.462371-07:00",
+  "corpus_end": "2026-11-24T17:02:05.379900-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GLD.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-24T000203",
+ "build_id": "why-2026-11-25T000205",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-24",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-23",
    "label": "WEAKENING"
@@ -306,10 +322,6 @@
   },
   {
    "date": "2026-10-14",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-13",
    "label": "WATCH"
   }
  ],
