@@ -1,34 +1,74 @@
 {
  "ticker": "DHR",
- "generated": "2026-11-25T00:02:05.100519+00:00",
- "label": "WATCH",
- "score": 0.0988,
+ "generated": "2026-11-26T00:02:28.088392+00:00",
+ "label": "WEAKENING",
+ "score": -0.0956,
  "threshold_band": {
-  "floor": 0.0,
-  "ceiling": 0.2
+  "floor": -0.2,
+  "ceiling": 0.0
  },
  "components": {
-  "c1": -0.0305,
+  "c1": -0.1205,
   "c2": 0.0,
-  "c3": 0.44808644,
+  "c3": -0.5983076,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.34490782,
-  "c7": -0.0004938268,
+  "c6": -0.46211717,
+  "c7": 0.009907823,
   "c8": 0.0,
-  "c9": 0.23809524
+  "c9": 0.18181819
  },
  "evidence_coverage": {
-  "ecs": 78,
-  "events_90d": 9,
-  "recency_days": 14.1,
+  "ecs": 87,
+  "events_90d": 13,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-25T00:01:55.413972+00:00",
-  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
+  "as_of": "2026-11-26T00:02:18.440488+00:00",
+  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000313616-26-000242",
+   "excerpt": "Gugino Matthew E S 4210 shares @ $226.63 on 2026-11-23 ($954,118)",
+   "source_hash": "4a6e49e82f3348236f6f4ea0f7f6cf7879552e98eb65503f6eafbdfe10e529f3",
+   "available_as_of": "2026-11-25T15:04:12.978078-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000313616-26-000242",
+   "excerpt": "Gugino Matthew E S 1012 shares @ $226.72 on 2026-11-23 ($229,446)",
+   "source_hash": "250b92a2f6e5f26ccac7e1675daf3cbe2c015b8c07694df0ebac000a01f73668",
+   "available_as_of": "2026-11-25T15:04:12.978078-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000313616-26-000243",
+   "excerpt": "Bouda Christopher S 2893 shares @ $229.35 on 2026-11-24 ($663,510)",
+   "source_hash": "ba94c94914afc694ec7d6ad673c08e3102089251a9a0ee544d3eac464756dac5",
+   "available_as_of": "2026-11-25T15:04:12.133682-07:00",
+   "protocol_id": null
+  },
+  {
+   "ticker": "DHR",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000313616-26-000243",
+   "excerpt": "Bouda Christopher S 3050 shares @ $229.32 on 2026-11-24 ($699,426)",
+   "source_hash": "3eaa8773a51c8e285c72422da13a53729631dd87e73c23890b36d2bb029ed108",
+   "available_as_of": "2026-11-25T15:04:12.133682-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "DHR",
    "evidence_type": "INSIDER_SELL",
@@ -214,21 +254,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.6825,
-  "reconstructed_score": 0.09878804510005497,
-  "stored_score": 0.0988,
+  "denominator": 0.6851666666666667,
+  "reconstructed_score": -0.09556093693357173,
+  "stored_score": -0.0956,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.030499999999999996,
+    "score": -0.1205,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.15824175824175823,
-    "contribution": -0.004826373626373626,
+    "effective_weight": 0.15762588178058864,
+    "contribution": -0.01899391875456093,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -245,14 +285,14 @@
    },
    {
     "id": "c3",
-    "score": 0.4480864440987714,
+    "score": -0.5983075969671978,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.14065934065934066,
-    "contribution": 0.06302754378532169,
+    "effective_weight": 0.1401118949160788,
+    "contribution": -0.08383001115375965,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -263,8 +303,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.18681318681318682,
-    "contribution": 0.11208791208791209,
+    "effective_weight": 0.18608611043541717,
+    "contribution": 0.1116516662612503,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -275,32 +315,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.015,
-    "effective_weight": 0.021978021978021976,
+    "effective_weight": 0.021892483580637313,
     "contribution": 0.0,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.34490782503392575,
+    "score": -0.46211715726000974,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
-    "effective_weight": 0.26373626373626374,
-    "contribution": -0.09096470110784856,
+    "effective_weight": 0.26270980296764773,
+    "contribution": -0.12140270733174664,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": -0.0004938267992122642,
+    "score": 0.009907823266671617,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.14652014652014653,
-    "contribution": -7.235557497615594e-05,
+    "effective_weight": 0.1459498905375821,
+    "contribution": 0.0014460457212364314,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -317,30 +357,30 @@
    },
    {
     "id": "c9",
-    "score": 0.23809523809523814,
-    "confidence": 0.7,
+    "score": 0.18181818181818188,
+    "confidence": 0.7333333333333333,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.055999999999999994,
-    "effective_weight": 0.08205128205128204,
-    "contribution": 0.019536019536019536,
+    "weight_times_confidence": 0.058666666666666666,
+    "effective_weight": 0.08562393578204816,
+    "contribution": 0.015567988324008762,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-26T17:02:05.341328-07:00",
-  "window_end_inclusive": "2026-11-24T17:02:05.341328-07:00",
-  "event_objects": 9,
-  "distinct_accessions": 7,
+  "window_start_exclusive": "2026-08-27T17:02:28.346041-07:00",
+  "window_end_inclusive": "2026-11-25T17:02:28.346041-07:00",
+  "event_objects": 13,
+  "distinct_accessions": 9,
   "objects_without_accession": 0,
   "by_event_type": {
-   "INSIDER_SELL": 6,
+   "INSIDER_SELL": 10,
    "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 0.7692307692307693,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -348,21 +388,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for DHR in the declared corpus",
-  "returned": 18,
-  "total_available": 18,
+  "returned": 22,
+  "total_available": 22,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T15:00:11-07:00",
-  "newest_returned_available_as_of": "2026-11-10T15:02:11.582782-07:00",
-  "build_id": "why-2026-11-25T000205",
+  "newest_returned_available_as_of": "2026-11-25T15:04:12.978078-07:00",
+  "build_id": "why-2026-11-26T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-24T17:02:05.341328-07:00",
+  "corpus_end": "2026-11-25T17:02:28.346041-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/DHR.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-25T000205",
+ "build_id": "why-2026-11-26T000228",
  "corrections": [
   {
    "original": {
@@ -466,6 +506,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-25",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-24",
    "label": "WATCH"
@@ -580,10 +624,6 @@
   },
   {
    "date": "2026-10-15",
-   "label": "BULLISH"
-  },
-  {
-   "date": "2026-10-14",
    "label": "BULLISH"
   }
  ],

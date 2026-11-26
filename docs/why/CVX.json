@@ -1,34 +1,44 @@
 {
  "ticker": "CVX",
- "generated": "2026-11-25T00:02:05.100519+00:00",
- "label": "WEAKENING",
- "score": -0.0169,
+ "generated": "2026-11-26T00:02:28.088392+00:00",
+ "label": "WATCH",
+ "score": 0.0331,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
-  "c1": -0.525,
+  "c1": -0.454,
   "c2": 0.0,
-  "c3": 0.051925905,
+  "c3": 0.38394508,
   "c4": 0.6,
-  "c5": -0.05756953,
+  "c5": -0.104492515,
   "c6": -0.46211717,
-  "c7": 0.70069605,
+  "c7": 0.6996766,
   "c8": 0.0,
   "c9": -0.26666668
  },
  "evidence_coverage": {
-  "ecs": 86,
-  "events_90d": 8,
-  "recency_days": 11.1,
+  "ecs": 94,
+  "events_90d": 9,
+  "recency_days": 0.0,
   "substrate_active": 1,
   "type_diversity": 3,
-  "as_of": "2026-11-25T00:01:55.413972+00:00",
-  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
+  "as_of": "2026-11-26T00:02:18.440488+00:00",
+  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "CVX",
+   "evidence_type": "INSIDER_SELL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000093410-26-000206",
+   "excerpt": "Pate R. Hewitt S 4790 shares @ $205.71 on 2026-11-23 ($985,351)",
+   "source_hash": "d7c2078f40e4d6bfc1b08b08622143f587e4c0de912d99896a3c8743cfc747e4",
+   "available_as_of": "2026-11-25T16:02:11.065884-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "CVX",
    "evidence_type": "INSIDER_SELL",
@@ -655,20 +665,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7415,
-  "reconstructed_score": -0.016909514080577705,
-  "stored_score": -0.0169,
+  "reconstructed_score": 0.03311576369628319,
+  "stored_score": 0.0331,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.5249999999999999,
+    "score": -0.454,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1456507080242751,
-    "contribution": -0.07646662171274442,
+    "contribution": -0.0661254214430209,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -685,14 +695,14 @@
    },
    {
     "id": "c3",
-    "score": 0.05192590525100854,
+    "score": 0.3839450756181535,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1294672960215779,
-    "contribution": 0.006722706546320728,
+    "contribution": 0.04970833076108259,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -709,14 +719,14 @@
    },
    {
     "id": "c5",
-    "score": -0.0575695286904605,
+    "score": -0.10449251160888401,
     "confidence": 1.0,
     "nominal_weight": 0.05,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
     "effective_weight": 0.06743088334457181,
-    "contribution": -0.0038819641733284223,
+    "contribution": -0.007046022360679974,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -733,14 +743,14 @@
    },
    {
     "id": "c7",
-    "score": 0.7006960647981291,
+    "score": 0.6996765874203053,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13486176668914363,
-    "contribution": 0.09449710921080634,
+    "contribution": 0.09435962069053341,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -771,17 +781,17 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-26T17:02:05.297408-07:00",
-  "window_end_inclusive": "2026-11-24T17:02:05.297408-07:00",
-  "event_objects": 8,
-  "distinct_accessions": 6,
+  "window_start_exclusive": "2026-08-27T17:02:28.301768-07:00",
+  "window_end_inclusive": "2026-11-25T17:02:28.301768-07:00",
+  "event_objects": 9,
+  "distinct_accessions": 7,
   "objects_without_accession": 0,
   "by_event_type": {
    "EXEC_CHANGE": 1,
-   "INSIDER_SELL": 6,
+   "INSIDER_SELL": 7,
    "OTHER_MATERIAL": 1
   },
-  "largest_type_share": 0.75,
+  "largest_type_share": 0.7777777777777778,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -789,23 +799,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for CVX in the declared corpus",
-  "returned": 62,
-  "total_available": 62,
+  "returned": 63,
+  "total_available": 63,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T14:44:53-07:00",
-  "newest_returned_available_as_of": "2026-11-13T14:16:27.236734-07:00",
-  "build_id": "why-2026-11-25T000205",
+  "newest_returned_available_as_of": "2026-11-25T16:02:11.065884-07:00",
+  "build_id": "why-2026-11-26T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-24T17:02:05.297408-07:00",
+  "corpus_end": "2026-11-25T17:02:28.301768-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/CVX.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-25T000205",
+ "build_id": "why-2026-11-26T000228",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-25",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-24",
    "label": "WEAKENING"
@@ -921,10 +935,6 @@
   {
    "date": "2026-10-15",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-14",
-   "label": "NEUTRAL"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

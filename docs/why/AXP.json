@@ -1,34 +1,44 @@
 {
  "ticker": "AXP",
- "generated": "2026-11-25T00:02:05.100519+00:00",
+ "generated": "2026-11-26T00:02:28.088392+00:00",
  "label": "WATCH",
- "score": 0.0826,
+ "score": 0.1246,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.0735,
+  "c1": -0.042,
   "c2": 0.0,
-  "c3": 0.021144878,
+  "c3": 0.36122295,
   "c4": 0.6,
   "c5": 0.55431795,
   "c6": -0.46211717,
-  "c7": 0.14135051,
+  "c7": 0.09248615,
   "c8": 0.0,
   "c9": 0.4
  },
  "evidence_coverage": {
-  "ecs": 81,
-  "events_90d": 14,
-  "recency_days": 8.3,
+  "ecs": 87,
+  "events_90d": 15,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-25T00:01:55.413972+00:00",
-  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
+  "as_of": "2026-11-26T00:02:18.440488+00:00",
+  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "AXP",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-25",
+   "accession_number": "0000004962-26-000440",
+   "excerpt": "Securities registered pursuant to Section 12(b) of the Act: Title of each class Trading Symbol(s) Name of each exchange on which registered Common Shares (par value $0.20 per Share) AXP New York Stock Exchange",
+   "source_hash": "36ff4a4a86b155253d007c55134aec0df8cf1071f431d0a485033042606e8b67",
+   "available_as_of": "2026-11-25T14:30:58-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "AXP",
    "evidence_type": "OTHER_MATERIAL",
@@ -335,20 +345,20 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7415,
-  "reconstructed_score": 0.08261870316183284,
-  "stored_score": 0.0826,
+  "reconstructed_score": 0.12464575752114775,
+  "stored_score": 0.1246,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.0735,
+    "score": -0.041999999999999996,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1456507080242751,
-    "contribution": -0.01070532703978422,
+    "contribution": -0.006117329737019553,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -365,14 +375,14 @@
    },
    {
     "id": "c3",
-    "score": 0.021144878143189494,
+    "score": 0.36122296665364695,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1294672960215779,
-    "contribution": 0.0027375701979045065,
+    "contribution": 0.04676656075354027,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -413,14 +423,14 @@
    },
    {
     "id": "c7",
-    "score": 0.1413505064028979,
+    "score": 0.09248614950717873,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.13486176668914363,
-    "contribution": 0.01906277901589992,
+    "contribution": 0.012472845516814393,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -451,16 +461,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-26T17:02:05.202132-07:00",
-  "window_end_inclusive": "2026-11-24T17:02:05.202132-07:00",
-  "event_objects": 14,
-  "distinct_accessions": 9,
+  "window_start_exclusive": "2026-08-27T17:02:28.196546-07:00",
+  "window_end_inclusive": "2026-11-25T17:02:28.196546-07:00",
+  "event_objects": 15,
+  "distinct_accessions": 10,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 8,
-   "OTHER_MATERIAL": 6
+   "OTHER_MATERIAL": 7
   },
-  "largest_type_share": 0.5714285714285714,
+  "largest_type_share": 0.5333333333333333,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -468,23 +478,27 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for AXP in the declared corpus",
-  "returned": 30,
-  "total_available": 30,
+  "returned": 31,
+  "total_available": 31,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-20T14:05:01-07:00",
-  "newest_returned_available_as_of": "2026-11-16T10:00:34-07:00",
-  "build_id": "why-2026-11-25T000205",
+  "newest_returned_available_as_of": "2026-11-25T14:30:58-07:00",
+  "build_id": "why-2026-11-26T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-24T17:02:05.202132-07:00",
+  "corpus_end": "2026-11-25T17:02:28.196546-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/AXP.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-25T000205",
+ "build_id": "why-2026-11-26T000228",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-25",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-24",
    "label": "WATCH"
@@ -600,10 +614,6 @@
   {
    "date": "2026-10-15",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-14",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

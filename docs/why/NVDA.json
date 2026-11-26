@@ -1,8 +1,8 @@
 {
  "ticker": "NVDA",
- "generated": "2026-11-25T00:02:05.100519+00:00",
+ "generated": "2026-11-26T00:02:28.088392+00:00",
  "label": "WATCH",
- "score": 0.0292,
+ "score": 0.036,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -10,22 +10,22 @@
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.6984282,
+  "c3": -0.72216624,
   "c4": 0.6,
   "c5": -0.56489956,
-  "c6": 0.6476877,
-  "c7": 0.6747527,
+  "c6": 0.60347164,
+  "c7": 0.78976864,
   "c8": 0.0,
   "c9": 0.0
  },
  "evidence_coverage": {
-  "ecs": 99,
+  "ecs": 98,
   "events_90d": 29,
-  "recency_days": 1.4,
+  "recency_days": 2.4,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-25T00:01:55.413972+00:00",
-  "source_sha256": "836686dfe89a5392cfff5b962d657ec270e802acf85cd5b0a3bd0a58e4c1ce22",
+  "as_of": "2026-11-26T00:02:18.440488+00:00",
+  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -845,8 +845,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6545,
-  "reconstructed_score": 0.029190139025929776,
-  "stored_score": 0.0292,
+  "reconstructed_score": 0.03598526199228899,
+  "stored_score": 0.036,
   "missing_components": [],
   "components": [
    {
@@ -875,14 +875,14 @@
    },
    {
     "id": "c3",
-    "score": -0.6984282183374323,
+    "score": -0.7221662622466181,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.1466768525592055,
-    "contribution": -0.10244325280426815,
+    "contribution": -0.10592507437077973,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -911,26 +911,26 @@
    },
    {
     "id": "c6",
-    "score": 0.6476876884622011,
+    "score": 0.603471652946889,
     "confidence": 0.6,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
     "effective_weight": 0.1650114591291062,
-    "contribution": 0.10687589053310577,
+    "contribution": 0.09957973799581973,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.6747526894856469,
+    "score": 0.7897686098098233,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.15278838808250575,
-    "contribution": 0.10309437578084751,
+    "contribution": 0.12066747285100435,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -961,8 +961,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-26T17:02:05.667850-07:00",
-  "window_end_inclusive": "2026-11-24T17:02:05.667850-07:00",
+  "window_start_exclusive": "2026-08-27T17:02:28.676796-07:00",
+  "window_end_inclusive": "2026-11-25T17:02:28.676796-07:00",
   "event_objects": 29,
   "distinct_accessions": 10,
   "objects_without_accession": 0,
@@ -986,17 +986,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T14:31:25-07:00",
   "newest_returned_available_as_of": "2026-11-23T06:57:54-07:00",
-  "build_id": "why-2026-11-25T000205",
+  "build_id": "why-2026-11-26T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-24T17:02:05.667850-07:00",
+  "corpus_end": "2026-11-25T17:02:28.676796-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/NVDA.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-25T000205",
+ "build_id": "why-2026-11-26T000228",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-25",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-24",
    "label": "WATCH"
@@ -1111,10 +1115,6 @@
   },
   {
    "date": "2026-10-15",
-   "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-14",
    "label": "WEAKENING"
   }
  ],
