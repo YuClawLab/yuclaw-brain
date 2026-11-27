@@ -1,8 +1,8 @@
 {
  "ticker": "WMT",
- "generated": "2026-11-26T00:02:28.088392+00:00",
+ "generated": "2026-11-27T00:02:28.344207+00:00",
  "label": "WATCH",
- "score": 0.1268,
+ "score": 0.1338,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -13,19 +13,19 @@
   "c3": 0.16255759,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.30893245,
+  "c6": -0.2814501,
   "c7": 0.43509686,
   "c8": 0.0,
   "c9": -0.53333336
  },
  "evidence_coverage": {
   "ecs": 87,
-  "events_90d": 19,
-  "recency_days": 0.1,
+  "events_90d": 18,
+  "recency_days": 1.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-26T00:02:18.440488+00:00",
-  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
+  "as_of": "2026-11-27T00:02:18.631501+00:00",
+  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -875,8 +875,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": 0.12684034783324782,
-  "stored_score": 0.1268,
+  "reconstructed_score": 0.1338422256088627,
+  "stored_score": 0.1338,
   "missing_components": [],
   "components": [
    {
@@ -941,14 +941,14 @@
    },
    {
     "id": "c6",
-    "score": -0.30893245070168995,
+    "score": -0.28145008043240155,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -0.07870890463737323,
+    "contribution": -0.07170702686175835,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -991,16 +991,16 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-27T17:02:28.949273-07:00",
-  "window_end_inclusive": "2026-11-25T17:02:28.949273-07:00",
-  "event_objects": 19,
-  "distinct_accessions": 14,
+  "window_start_exclusive": "2026-08-28T17:02:29.184512-07:00",
+  "window_end_inclusive": "2026-11-26T17:02:29.184512-07:00",
+  "event_objects": 18,
+  "distinct_accessions": 13,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 15,
-   "OTHER_MATERIAL": 4
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.7894736842105263,
+  "largest_type_share": 0.8333333333333334,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -1014,15 +1014,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-19T16:40:27-07:00",
   "newest_returned_available_as_of": "2026-11-25T14:30:08.079421-07:00",
-  "build_id": "why-2026-11-26T000228",
+  "build_id": "why-2026-11-27T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-25T17:02:28.949273-07:00",
+  "corpus_end": "2026-11-26T17:02:29.184512-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/WMT.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-26T000228",
+ "build_id": "why-2026-11-27T000228",
  "corrections": [
   {
    "original": {
@@ -1051,6 +1051,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-26",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-25",
    "label": "WATCH"
@@ -1165,10 +1169,6 @@
   },
   {
    "date": "2026-10-16",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-15",
    "label": "WATCH"
   }
  ],

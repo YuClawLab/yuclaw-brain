@@ -1,11 +1,11 @@
 {
  "ticker": "GLD",
- "generated": "2026-11-26T00:02:28.088392+00:00",
- "label": "WEAKENING",
- "score": -0.0196,
+ "generated": "2026-11-27T00:02:28.344207+00:00",
+ "label": "WATCH",
+ "score": 0.0081,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
   "c1": -0.549,
@@ -16,16 +16,16 @@
   "c6": 0.0,
   "c7": 0.0,
   "c8": 0.0,
-  "c9": -1.0
+  "c9": -0.6
  },
  "evidence_coverage": {
   "ecs": 58,
   "events_90d": 1,
-  "recency_days": 1.1,
+  "recency_days": 2.1,
   "substrate_active": 1,
   "type_diversity": 1,
-  "as_of": "2026-11-26T00:02:18.440488+00:00",
-  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
+  "as_of": "2026-11-27T00:02:18.631501+00:00",
+  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -55,8 +55,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.3465,
-  "reconstructed_score": -0.019601731601731606,
-  "stored_score": -0.0196,
+  "reconstructed_score": 0.0081038961038961,
+  "stored_score": 0.0081,
   "missing_components": [],
   "components": [
    {
@@ -157,22 +157,22 @@
    },
    {
     "id": "c9",
-    "score": -1.0,
+    "score": -0.6,
     "confidence": 0.3,
     "nominal_weight": 0.08,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.024,
     "effective_weight": 0.06926406926406926,
-    "contribution": -0.06926406926406926,
+    "contribution": -0.04155844155844156,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-27T17:02:28.388029-07:00",
-  "window_end_inclusive": "2026-11-25T17:02:28.388029-07:00",
+  "window_start_exclusive": "2026-08-28T17:02:28.626939-07:00",
+  "window_end_inclusive": "2026-11-26T17:02:28.626939-07:00",
   "event_objects": 1,
   "distinct_accessions": 1,
   "objects_without_accession": 0,
@@ -193,17 +193,21 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-08-04T10:31:10-06:00",
   "newest_returned_available_as_of": "2026-11-24T14:23:02-07:00",
-  "build_id": "why-2026-11-26T000228",
+  "build_id": "why-2026-11-27T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-25T17:02:28.388029-07:00",
+  "corpus_end": "2026-11-26T17:02:28.626939-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/GLD.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-26T000228",
+ "build_id": "why-2026-11-27T000228",
  "corrections": [],
  "label_history": [
+  {
+   "date": "2026-11-26",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-25",
    "label": "WEAKENING"
@@ -318,10 +322,6 @@
   },
   {
    "date": "2026-10-16",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-15",
    "label": "WATCH"
   }
  ],

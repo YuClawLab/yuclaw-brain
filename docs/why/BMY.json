@@ -1,8 +1,8 @@
 {
  "ticker": "BMY",
- "generated": "2026-11-26T00:02:28.088392+00:00",
+ "generated": "2026-11-27T00:02:28.344207+00:00",
  "label": "WATCH",
- "score": 0.0368,
+ "score": 0.0359,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
@@ -13,7 +13,7 @@
   "c3": -0.5983076,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": 0.040647883,
+  "c6": 0.03681939,
   "c7": 0.017571084,
   "c8": 0.0,
   "c9": -0.05263158
@@ -21,11 +21,11 @@
  "evidence_coverage": {
   "ecs": 76,
   "events_90d": 5,
-  "recency_days": 2.1,
+  "recency_days": 3.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-26T00:02:18.440488+00:00",
-  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
+  "as_of": "2026-11-27T00:02:18.631501+00:00",
+  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -125,8 +125,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.6411666666666667,
-  "reconstructed_score": 0.036767675076844065,
-  "stored_score": 0.0368,
+  "reconstructed_score": 0.03590783118408365,
+  "stored_score": 0.0359,
   "missing_components": [],
   "components": [
    {
@@ -191,14 +191,14 @@
    },
    {
     "id": "c6",
-    "score": 0.04064788384623261,
+    "score": 0.036819389106129245,
     "confidence": 0.8,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.144,
     "effective_weight": 0.22459059007018453,
-    "contribution": 0.009129132218129703,
+    "contribution": 0.008269288325369292,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -241,8 +241,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-27T17:02:28.225481-07:00",
-  "window_end_inclusive": "2026-11-25T17:02:28.225481-07:00",
+  "window_start_exclusive": "2026-08-28T17:02:28.469947-07:00",
+  "window_end_inclusive": "2026-11-26T17:02:28.469947-07:00",
   "event_objects": 5,
   "distinct_accessions": 5,
   "objects_without_accession": 0,
@@ -264,15 +264,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-04-02T14:29:24-06:00",
   "newest_returned_available_as_of": "2026-11-23T14:20:20-07:00",
-  "build_id": "why-2026-11-26T000228",
+  "build_id": "why-2026-11-27T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-25T17:02:28.225481-07:00",
+  "corpus_end": "2026-11-26T17:02:28.469947-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/BMY.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-26T000228",
+ "build_id": "why-2026-11-27T000228",
  "corrections": [
   {
    "original": {
@@ -326,6 +326,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-26",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-25",
    "label": "WATCH"
@@ -440,10 +444,6 @@
   },
   {
    "date": "2026-10-16",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-15",
    "label": "WATCH"
   }
  ],

@@ -1,8 +1,8 @@
 {
  "ticker": "SLB",
- "generated": "2026-11-26T00:02:28.088392+00:00",
+ "generated": "2026-11-27T00:02:28.344207+00:00",
  "label": "NEUTRAL",
- "score": 0.201,
+ "score": 0.2016,
  "threshold_band": {
   "floor": 0.2,
   "ceiling": 0.4
@@ -13,19 +13,19 @@
   "c3": 0.38394508,
   "c4": 0.6,
   "c5": -0.104492515,
-  "c6": -0.024524584,
+  "c6": -0.022213293,
   "c7": 0.7038215,
   "c8": 0.0,
   "c9": 0.26666668
  },
  "evidence_coverage": {
-  "ecs": 87,
+  "ecs": 86,
   "events_90d": 9,
-  "recency_days": 23.0,
+  "recency_days": 24.0,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-26T00:02:18.440488+00:00",
-  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
+  "as_of": "2026-11-27T00:02:18.631501+00:00",
+  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -255,8 +255,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7415,
-  "reconstructed_score": 0.20101033105135913,
-  "stored_score": 0.201,
+  "reconstructed_score": 0.20157139973636226,
+  "stored_score": 0.2016,
   "missing_components": [],
   "components": [
    {
@@ -321,14 +321,14 @@
    },
    {
     "id": "c6",
-    "score": -0.024524585165457476,
+    "score": -0.02221329388806949,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.2427511800404585,
-    "contribution": -0.005953371988917526,
+    "contribution": -0.005392303303914374,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -371,8 +371,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-27T17:02:28.785012-07:00",
-  "window_end_inclusive": "2026-11-25T17:02:28.785012-07:00",
+  "window_start_exclusive": "2026-08-28T17:02:29.033281-07:00",
+  "window_end_inclusive": "2026-11-26T17:02:29.033281-07:00",
   "event_objects": 9,
   "distinct_accessions": 9,
   "objects_without_accession": 0,
@@ -396,15 +396,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-25T15:30:51-07:00",
   "newest_returned_available_as_of": "2026-11-02T17:08:07.976069-07:00",
-  "build_id": "why-2026-11-26T000228",
+  "build_id": "why-2026-11-27T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-25T17:02:28.785012-07:00",
+  "corpus_end": "2026-11-26T17:02:29.033281-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/SLB.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-26T000228",
+ "build_id": "why-2026-11-27T000228",
  "corrections": [
   {
    "original": {
@@ -459,6 +459,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-26",
+   "label": "NEUTRAL"
+  },
   {
    "date": "2026-11-25",
    "label": "NEUTRAL"
@@ -574,10 +578,6 @@
   {
    "date": "2026-10-16",
    "label": "NEUTRAL"
-  },
-  {
-   "date": "2026-10-15",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,6 +1,6 @@
 {
  "ticker": "MRVL",
- "generated": "2026-11-26T00:02:28.088392+00:00",
+ "generated": "2026-11-27T00:02:28.344207+00:00",
  "label": "WEAKENING",
  "score": -0.0563,
  "threshold_band": {
@@ -13,19 +13,19 @@
   "c3": -0.72216624,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.00035512837,
+  "c6": -0.0003216481,
   "c7": 0.7714459,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
   "ecs": 94,
-  "events_90d": 13,
-  "recency_days": 8.0,
+  "events_90d": 12,
+  "recency_days": 9.0,
   "substrate_active": 1,
-  "type_diversity": 5,
-  "as_of": "2026-11-26T00:02:18.440488+00:00",
-  "source_sha256": "3a108d106ecc37dc7e4d43b7c8035f3b0d07bb8c307401ead5168ec83a49880d",
+  "type_diversity": 4,
+  "as_of": "2026-11-27T00:02:18.631501+00:00",
+  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -465,7 +465,7 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.056259442442340796,
+  "reconstructed_score": -0.056250912442663975,
   "stored_score": -0.0563,
   "missing_components": [],
   "components": [
@@ -531,14 +531,14 @@
    },
    {
     "id": "c6",
-    "score": -0.0003551283628222813,
+    "score": -0.00032164811409076115,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -9.04785637763774e-05,
+    "contribution": -8.194856409955698e-05,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -581,19 +581,18 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-27T17:02:28.614441-07:00",
-  "window_end_inclusive": "2026-11-25T17:02:28.614441-07:00",
-  "event_objects": 13,
-  "distinct_accessions": 13,
+  "window_start_exclusive": "2026-08-28T17:02:28.865746-07:00",
+  "window_end_inclusive": "2026-11-26T17:02:28.865746-07:00",
+  "event_objects": 12,
+  "distinct_accessions": 12,
   "objects_without_accession": 0,
   "by_event_type": {
    "DIVIDEND_CHANGE": 1,
    "EXEC_CHANGE": 1,
    "INSIDER_SELL": 8,
-   "M_AND_A_ANNOUNCE": 2,
-   "OTHER_MATERIAL": 1
+   "M_AND_A_ANNOUNCE": 2
   },
-  "largest_type_share": 0.6153846153846154,
+  "largest_type_share": 0.6666666666666666,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -607,15 +606,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
   "newest_returned_available_as_of": "2026-11-17T17:08:30.777160-07:00",
-  "build_id": "why-2026-11-26T000228",
+  "build_id": "why-2026-11-27T000228",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-25T17:02:28.614441-07:00",
+  "corpus_end": "2026-11-26T17:02:28.865746-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-26T000228",
+ "build_id": "why-2026-11-27T000228",
  "corrections": [
   {
    "original": {
@@ -719,6 +718,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-26",
+   "label": "WEAKENING"
+  },
   {
    "date": "2026-11-25",
    "label": "WEAKENING"
@@ -834,10 +837,6 @@
   {
    "date": "2026-10-16",
    "label": "WEAKENING"
-  },
-  {
-   "date": "2026-10-15",
-   "label": "WATCH"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",
