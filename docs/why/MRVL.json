@@ -1,31 +1,31 @@
 {
  "ticker": "MRVL",
- "generated": "2026-11-27T00:02:28.344207+00:00",
- "label": "WEAKENING",
- "score": -0.0563,
+ "generated": "2026-11-28T00:01:39.388399+00:00",
+ "label": "WATCH",
+ "score": 0.1162,
  "threshold_band": {
-  "floor": -0.2,
-  "ceiling": 0.0
+  "floor": 0.0,
+  "ceiling": 0.2
  },
  "components": {
   "c1": -1.0,
   "c2": 0.0,
-  "c3": -0.72216624,
+  "c3": 0.7165638,
   "c4": 0.6,
   "c5": 0.0,
-  "c6": -0.0003216481,
-  "c7": 0.7714459,
+  "c6": -0.00029132434,
+  "c7": 0.6085352,
   "c8": 0.0,
   "c9": -0.2
  },
  "evidence_coverage": {
-  "ecs": 94,
+  "ecs": 93,
   "events_90d": 12,
-  "recency_days": 9.0,
+  "recency_days": 10.0,
   "substrate_active": 1,
   "type_diversity": 4,
-  "as_of": "2026-11-27T00:02:18.631501+00:00",
-  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
+  "as_of": "2026-11-28T00:01:29.436740+00:00",
+  "source_sha256": "b12d8acbe4d18f2955440e843ab49a430680b6b4223fa1abc84a4a1b8e05e4e8",
   "metric_id": "ecs"
  },
  "evidence_objects": [
@@ -465,8 +465,8 @@
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
   "denominator": 0.7065,
-  "reconstructed_score": -0.056250912442663975,
-  "stored_score": -0.0563,
+  "reconstructed_score": 0.11619419987770298,
+  "stored_score": 0.1162,
   "missing_components": [],
   "components": [
    {
@@ -495,14 +495,14 @@
    },
    {
     "id": "c3",
-    "score": -0.7221662622466181,
+    "score": 0.7165637969569995,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
     "effective_weight": 0.13588110403397027,
-    "contribution": -0.09812874901015617,
+    "contribution": 0.0973674798412908,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -531,26 +531,26 @@
    },
    {
     "id": "c6",
-    "score": -0.00032164811409076115,
+    "score": -0.0002913243364203664,
     "confidence": 1.0,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.18,
     "effective_weight": 0.25477707006369427,
-    "contribution": -8.194856409955698e-05,
+    "contribution": -7.422276087143093e-05,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.7714458819546957,
+    "score": 0.6085351608628087,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
     "effective_weight": 0.14154281670205238,
-    "contribution": 0.10919262306506662,
+    "contribution": 0.08613378073075849,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -581,8 +581,8 @@
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-28T17:02:28.865746-07:00",
-  "window_end_inclusive": "2026-11-26T17:02:28.865746-07:00",
+  "window_start_exclusive": "2026-08-29T17:01:39.910209-07:00",
+  "window_end_inclusive": "2026-11-27T17:01:39.910209-07:00",
   "event_objects": 12,
   "distinct_accessions": 12,
   "objects_without_accession": 0,
@@ -606,15 +606,15 @@
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-18T04:05:14-07:00",
   "newest_returned_available_as_of": "2026-11-17T17:08:30.777160-07:00",
-  "build_id": "why-2026-11-27T000228",
+  "build_id": "why-2026-11-28T000139",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-26T17:02:28.865746-07:00",
+  "corpus_end": "2026-11-27T17:01:39.910209-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/MRVL.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-27T000228",
+ "build_id": "why-2026-11-28T000139",
  "corrections": [
   {
    "original": {
@@ -718,6 +718,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-27",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-26",
    "label": "WEAKENING"
@@ -833,10 +837,6 @@
   {
    "date": "2026-10-19",
    "label": "WATCH"
-  },
-  {
-   "date": "2026-10-16",
-   "label": "WEAKENING"
   }
  ],
  "as_of_recipe": "Load /why/{TICKER}.json for history_url and history_manifest_url. Use ONLY the COMPLETE history file whose build_id, SHA-256, byte count and object count match the manifest. Filter available_as_of <= D after normalizing timestamps to UTC; a date-only D means 23:59:59.999999 UTC. Do not substitute filing_date or generated. A capped PREVIEW returns INCOMPLETE unless returned equals total_available; it cannot establish zero historical evidence. D outside corpus_start/corpus_end returns OUT_OF_RANGE. Classification at D uses the label_history entry with the maximum eligible date, not list order. Before that ribbon, use yuclaw replay TICKER --date D on a research backend.",

@@ -1,34 +1,44 @@
 {
  "ticker": "C",
- "generated": "2026-11-27T00:02:28.344207+00:00",
+ "generated": "2026-11-28T00:01:39.388399+00:00",
  "label": "WATCH",
- "score": 0.1935,
+ "score": 0.0991,
  "threshold_band": {
   "floor": 0.0,
   "ceiling": 0.2
  },
  "components": {
-  "c1": -0.3185,
+  "c1": -0.2895,
   "c2": 0.0,
-  "c3": 0.36122295,
+  "c3": -0.16445121,
   "c4": 0.6,
   "c5": 0.55431795,
-  "c6": -0.021843469,
-  "c7": 0.065565154,
+  "c6": -0.019784713,
+  "c7": 0.016785013,
   "c8": 0.0,
   "c9": 0.06666667
  },
  "evidence_coverage": {
-  "ecs": 67,
-  "events_90d": 3,
-  "recency_days": 6.1,
+  "ecs": 75,
+  "events_90d": 4,
+  "recency_days": 0.1,
   "substrate_active": 1,
   "type_diversity": 2,
-  "as_of": "2026-11-27T00:02:18.631501+00:00",
-  "source_sha256": "d581ba27fbd297fee36ebe5f5aa6071436c9e76d4c31394bcefc752516a47be5",
+  "as_of": "2026-11-28T00:01:29.436740+00:00",
+  "source_sha256": "b12d8acbe4d18f2955440e843ab49a430680b6b4223fa1abc84a4a1b8e05e4e8",
   "metric_id": "ecs"
  },
  "evidence_objects": [
+  {
+   "ticker": "C",
+   "evidence_type": "OTHER_MATERIAL",
+   "filing_date": "2026-11-27",
+   "accession_number": "0001193125-26-480258",
+   "excerpt": "UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934",
+   "source_hash": "0bc42ac45ad6fec83ddfef85acf8464fbed45ad8297ea7d4d543e1d379d22fa6",
+   "available_as_of": "2026-11-27T14:05:36-07:00",
+   "protocol_id": null
+  },
   {
    "ticker": "C",
    "evidence_type": "INSIDER_SELL",
@@ -124,21 +134,21 @@
   "formula": "sum(weight * confidence * score) / sum(weight * confidence), excluding not_implemented components",
   "status": "RECONCILED",
   "weight_provenance": "RECORDED",
-  "denominator": 0.5975,
-  "reconstructed_score": 0.193470772310541,
-  "stored_score": 0.1935,
+  "denominator": 0.6335,
+  "reconstructed_score": 0.0990527497694475,
+  "stored_score": 0.0991,
   "missing_components": [],
   "components": [
    {
     "id": "c1",
-    "score": -0.3185,
+    "score": -0.2895,
     "confidence": 0.9,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.108,
-    "effective_weight": 0.1807531380753138,
-    "contribution": -0.05756987447698744,
+    "effective_weight": 0.17048145224940806,
+    "contribution": -0.04935438042620363,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -155,14 +165,14 @@
    },
    {
     "id": "c3",
-    "score": 0.36122296665364695,
+    "score": -0.16445120902027807,
     "confidence": 0.8,
     "nominal_weight": 0.12,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.096,
-    "effective_weight": 0.1606694560669456,
-    "contribution": 0.05803749757112989,
+    "effective_weight": 0.1515390686661405,
+    "contribution": -0.024920783055953744,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -173,8 +183,8 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1275,
-    "effective_weight": 0.21338912133891214,
-    "contribution": 0.1280334728033473,
+    "effective_weight": 0.20126282557221786,
+    "contribution": 0.12075769534333071,
     "input_status": "FROZEN_2026-05-18"
    },
    {
@@ -185,32 +195,32 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.05,
-    "effective_weight": 0.08368200836820083,
-    "contribution": 0.04638643976445994,
+    "effective_weight": 0.07892659826361485,
+    "contribution": 0.043750430559218345,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c6",
-    "score": -0.021843468714646645,
-    "confidence": 0.2,
+    "score": -0.019784713700885682,
+    "confidence": 0.4,
     "nominal_weight": 0.18,
     "weight_source": "RECORDED",
     "active": true,
-    "weight_times_confidence": 0.036,
-    "effective_weight": 0.060251046025104595,
-    "contribution": -0.0013160918388741073,
+    "weight_times_confidence": 0.072,
+    "effective_weight": 0.11365430149960537,
+    "contribution": -0.0022486178160438346,
     "input_status": "NOT_ASSESSED"
    },
    {
     "id": "c7",
-    "score": 0.06556515437927267,
+    "score": 0.01678501338757298,
     "confidence": 1.0,
     "nominal_weight": 0.1,
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.1,
-    "effective_weight": 0.16736401673640167,
-    "contribution": 0.01097324759485735,
+    "effective_weight": 0.1578531965272297,
+    "contribution": 0.002649568016980739,
     "input_status": "NOT_ASSESSED"
    },
    {
@@ -233,24 +243,24 @@
     "weight_source": "RECORDED",
     "active": true,
     "weight_times_confidence": 0.08,
-    "effective_weight": 0.13389121338912133,
-    "contribution": 0.008926080892608086,
+    "effective_weight": 0.12628255722178375,
+    "contribution": 0.008418837148118915,
     "input_status": "NOT_ASSESSED"
    }
   ],
   "note": "Confidence is a model input, not a calibrated probability. Current configuration weights do not establish historical weights. C4 is disclosed as frozen; no past score is changed."
  },
  "descriptive_denominators_90d": {
-  "window_start_exclusive": "2026-08-28T17:02:28.482232-07:00",
-  "window_end_inclusive": "2026-11-26T17:02:28.482232-07:00",
-  "event_objects": 3,
-  "distinct_accessions": 3,
+  "window_start_exclusive": "2026-08-29T17:01:39.530416-07:00",
+  "window_end_inclusive": "2026-11-27T17:01:39.530416-07:00",
+  "event_objects": 4,
+  "distinct_accessions": 4,
   "objects_without_accession": 0,
   "by_event_type": {
    "INSIDER_SELL": 1,
-   "OTHER_MATERIAL": 2
+   "OTHER_MATERIAL": 3
   },
-  "largest_type_share": 0.6666666666666666,
+  "largest_type_share": 0.75,
   "independent_information_count": null,
   "note": "Multiple events can come from one filing. Counts describe this corpus; neither events nor filings are independent observations by assumption."
  },
@@ -258,21 +268,21 @@
  "evidence_objects_collection": {
   "schema": "evidence-collection/1",
   "scope": "accepted evidence objects for C in the declared corpus",
-  "returned": 9,
-  "total_available": 9,
+  "returned": 10,
+  "total_available": 10,
   "cap": 100,
   "ordering": "available_as_of DESC, accession_number DESC, source_hash DESC",
   "oldest_returned_available_as_of": "2026-02-24T14:09:46-07:00",
-  "newest_returned_available_as_of": "2026-11-20T14:06:15.568443-07:00",
-  "build_id": "why-2026-11-27T000228",
+  "newest_returned_available_as_of": "2026-11-27T14:05:36-07:00",
+  "build_id": "why-2026-11-28T000139",
   "completeness": "PREVIEW",
   "corpus_start": "2026-01-02T12:32:35-07:00",
-  "corpus_end": "2026-11-26T17:02:28.482232-07:00",
+  "corpus_end": "2026-11-27T17:01:39.530416-07:00",
   "note": "PREVIEW: a capped newest-first slice; total_available counts objects in scope; an as-of query over this slice is INCOMPLETE unless returned == total_available"
  },
  "history_url": "/why/C.history.json",
  "history_manifest_url": "/why/history_manifest.json",
- "build_id": "why-2026-11-27T000228",
+ "build_id": "why-2026-11-28T000139",
  "corrections": [
   {
    "original": {
@@ -301,6 +311,10 @@
   }
  ],
  "label_history": [
+  {
+   "date": "2026-11-27",
+   "label": "WATCH"
+  },
   {
    "date": "2026-11-26",
    "label": "WATCH"
@@ -415,10 +429,6 @@
   },
   {
    "date": "2026-10-19",
-   "label": "WATCH"
-  },
-  {
-   "date": "2026-10-16",
    "label": "WATCH"
   }
  ],
